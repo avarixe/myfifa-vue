@@ -1,12 +1,12 @@
 import axios from 'axios'
-import apiRootUrl from './root'
+import urlFor from './root'
 
-const apiUrl = {
+const subPath = {
   logUserIn: '/oauth/token'
 }
 
 export default {
   logUserIn (payload) {
-    return axios.post(apiRootUrl + apiUrl.logUserIn, payload)
+    return axios.post(urlFor(subPath.logUserIn), payload)
   }
 }

@@ -2,8 +2,6 @@ import userApi from '@/api/user'
 
 // initial state
 const state = {
-  name: null,
-  id: null,
   token: localStorage.getItem('token')
 }
 
@@ -34,6 +32,7 @@ const actions = {
   },
   logUserOut ({ commit }) {
     localStorage.removeItem('token')
+    commit('team/setActiveTeam', null, { root: true })
     commit('setToken', null)
   }
 }

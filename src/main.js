@@ -20,6 +20,12 @@ import {
   VTextField,
   VAlert,
   VForm,
+  VRadioGroup,
+  VSwitch,
+  VTabs,
+  VTooltip,
+  VMenu,
+  VDatePicker,
   transitions
 } from 'vuetify'
 import '../node_modules/vuetify/src/stylus/app.styl'
@@ -40,6 +46,12 @@ Vue.use(Vuetify, {
     VTextField,
     VAlert,
     VForm,
+    VRadioGroup,
+    VSwitch,
+    VTabs,
+    VTooltip,
+    VMenu,
+    VDatePicker,
     transitions
   }
 })

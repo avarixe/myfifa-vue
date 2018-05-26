@@ -17,7 +17,7 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar dark fixed app>
+    <v-toolbar color="primary" dark fixed app>
       <v-toolbar-side-icon
         v-if="loggedIn"
         @click.stop="drawer = !drawer"
@@ -64,6 +64,9 @@
     methods: {
       logOut () {
         this.$store.dispatch('user/logUserOut')
+          .then(() => {
+            this.$router.push({ path: '/' })
+          })
       }
     },
     components: {
