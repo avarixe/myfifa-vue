@@ -32,7 +32,6 @@
                     v-model="team.current_date"
                     label="Current Date"
                     type="date"
-                  ></v-text-field>                  
                   ></v-text-field>
                 </v-flex>
               </v-layout>
