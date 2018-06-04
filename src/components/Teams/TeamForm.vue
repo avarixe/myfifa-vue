@@ -33,6 +33,7 @@
                     label="Current Date"
                     type="date"
                   ></v-text-field>                  
+                  ></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -63,6 +64,7 @@
         saveError: false,
         errorMessage: '',
         team: {
+          id: '',
           title: '',
           current_date: format(new Date(), 'YYYY-MM-DD')
         },
@@ -78,7 +80,8 @@
             .then((data) => {
               this.team = {
                 current_date: data.current_date,
-                title: data.title
+                title: data.title,
+                id: data.id
               }
             })
             .catch((error) => {

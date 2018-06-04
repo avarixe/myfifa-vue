@@ -24,7 +24,7 @@
             <v-tooltip bottom>
               <v-btn icon @click.native="setActiveTeam(team.id)" slot="activator">
                 <v-icon color="blue">
-                  mdi-checkbox-{{ team.id == activeId ? 'marked-circle' : 'blank-circle-outline' }}
+                  radio_button_{{ team.id == activeId ? 'checked' : 'unchecked' }}
                 </v-icon>
               </v-btn>
               <span>Set as Active</span>

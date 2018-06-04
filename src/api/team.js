@@ -15,9 +15,9 @@ export default {
   },
   saveTeam ({ token, team }) {
     if (team.id) {
-      return axios.post(urlFor(subPath.getTeam, { teamId: team.id }), { team: team }, { headers: { 'Authorization': 'Bearer ' + token } })
+      return axios.patch(urlFor(subPath.getTeam, { teamId: team.id }), { team: team }, { headers: { 'Authorization': 'Bearer ' + token } })
     } else {
-      return axios.patch(urlFor(subPath.getAllTeams), { team: team }, { headers: { 'Authorization': 'Bearer ' + token } })
+      return axios.post(urlFor(subPath.getAllTeams), { team: team }, { headers: { 'Authorization': 'Bearer ' + token } })
     }
   }
 }
