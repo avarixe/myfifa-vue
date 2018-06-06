@@ -16,14 +16,30 @@
       <v-icon>menu</v-icon>
       <v-icon>close</v-icon>
     </v-btn>
-    <v-btn
-      dark
-      color="red"
-      fab
-      @click.native="logOut"
-    >
-      <v-icon>exit_to_app</v-icon>
-    </v-btn>
+    <v-tooltip left>
+      <v-btn
+        slot="activator"
+        dark
+        color="red"
+        fab
+        @click.native="logOut"
+      >
+        <v-icon>exit_to_app</v-icon>
+      </v-btn>
+      <span>Log Out</span>
+    </v-tooltip>
+    <v-tooltip left>
+      <v-btn
+        slot="activator"
+        dark
+        color="indigo"
+        fab
+        to="/teams"
+      >
+        <v-icon>swap_horiz</v-icon>
+      </v-btn>
+      <span>Change Team</span>
+    </v-tooltip>
   </v-speed-dial>
 </template>
 
