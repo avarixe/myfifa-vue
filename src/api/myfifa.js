@@ -1,7 +1,7 @@
 export default {
-  team: {
-    all: '/teams',
-    get: '/teams/{{ teamId }}'
+  teams: {
+    all: 'teams',
+    get: 'teams/{{ teamId }}'
   },
-  login: '/oauth/token'
+  login: 'oauth/token'
 }

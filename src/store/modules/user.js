@@ -15,7 +15,7 @@ const getters = {
 const actions = {
   logUserIn ({ commit }, payload) {
     return apiRequest({
-      type: 'POST',
+      method: 'post',
       path: myfifa.login,
       data: payload,
       success: ({ data }) => {

@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-const host = 'https://api.myfifa.joondev.com'
+const baseURL = 'https://api.myfifa.joondev.com/'
 
-function pathFor (path, pathData) {
+function urlFor (path, pathData) {
   const matches = path.match(/\{\{(.+)\}\}/g) || []
   for (var i = 0; i < matches.length; i++) {
     let prop = matches[i].replace(/[{}\s]/g, '')
@@ -13,7 +13,7 @@ function pathFor (path, pathData) {
 }
 
 function apiRequest ({
-  type,
+  method,
   path,
   pathData,
   params,
@@ -24,9 +24,9 @@ function apiRequest ({
 }) {
   return new Promise(function (resolve, reject) {
     axios({
-      type: type || 'GET',
-      baseUrl: host,
-      path: pathFor(path, pathData),
+      method: method || 'get',
+      baseURL: baseURL,
+      url: urlFor(path, pathData),
       params: params,
       data: data,
       headers: {

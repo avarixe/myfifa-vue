@@ -17,7 +17,7 @@ const actions = {
     return apiRequest({
       path: myfifa.teams.all,
       token: rootGetters['user/token'],
-      beforeResolve: function ({ data }) {
+      success: function ({ data }) {
         if (!state.activeId && data.length > 0) {
           localStorage.setItem('activeIteam', data[0].id)
           commit('setActiveTeam', data[0].id)
@@ -36,7 +36,7 @@ const actions = {
   },
   createTeam ({ state, commit, rootGetters }, payload) {
     return apiRequest({
-      type: 'POST',
+      method: 'post',
       path: myfifa.teams.all,
       token: rootGetters['user/token'],
       data: { team: payload },
@@ -45,7 +45,7 @@ const actions = {
   },
   updateTeam ({ state, commit, rootGetters }, payload) {
     return apiRequest({
-      type: 'PATCH',
+      method: 'patch',
       path: myfifa.teams.get,
       pathData: { teamId: payload.id },
       token: rootGetters['user/token'],
