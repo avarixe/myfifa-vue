@@ -1,4 +1,5 @@
-import teamApi from '@/api/team'
+import apiRequest from '@/api'
+import myfifa from '@/api/myfifa'
 
 // initial state
 const state = {
@@ -13,46 +14,43 @@ const getters = {
 // actions
 const actions = {
   getAllTeams ({ state, commit, rootGetters }) {
-    return new Promise((resolve, reject) => {
-      teamApi.getAllTeams({ token: rootGetters['user/token'] })
-        .then(({ data }) => {
-          if (!state.activeId && data.length > 0) {
-            localStorage.setItem('activeIteam', data[0].id)
-            commit('setActiveTeam', data[0].id)
-          }
-          resolve(data)
-        })
-        .catch((error) => {
-          if (error) {
-            reject(new Error('Failed to retrieve Teams. Please try again.'))
-          }
-        })
+    return apiRequest({
+      path: myfifa.teams.all,
+      token: rootGetters['user/token'],
+      beforeResolve: function ({ data }) {
+        if (!state.activeId && data.length > 0) {
+          localStorage.setItem('activeIteam', data[0].id)
+          commit('setActiveTeam', data[0].id)
+        }
+      },
+      errorMessage: 'Failed to retrieve Teams. Please try again.'
     })
   },
   getTeam ({ state, commit, rootGetters }, { teamId }) {
-    return new Promise((resolve, reject) => {
-      teamApi.getTeam({ token: rootGetters['user/token'], teamId: teamId })
-        .then(({ data }) => {
-          resolve(data)
-        })
-        .catch((error) => {
-          if (error) {
-            reject(new Error('Failed to retrieve Team. Please try again.'))
-          }
-        })
+    return apiRequest({
+      path: myfifa.teams.get,
+      pathData: { teamId: teamId },
+      token: rootGetters['user/token'],
+      errorMessage: 'Failed to retrieve Team. Please try again.'
     })
   },
-  saveTeam ({ state, commit, rootGetters }, payload) {
-    return new Promise((resolve, reject) => {
-      teamApi.saveTeam({ token: rootGetters['user/token'], team: payload })
-        .then(({ data }) => {
-          resolve(data)
-        })
-        .catch((error) => {
-          if (error) {
-            reject(new Error('Failed to save Team. Please try again.'))
-          }
-        })
+  createTeam ({ state, commit, rootGetters }, payload) {
+    return apiRequest({
+      type: 'POST',
+      path: myfifa.teams.all,
+      token: rootGetters['user/token'],
+      data: { team: payload },
+      errorMessage: 'Failed to create Team. Please try again.'
+    })
+  },
+  updateTeam ({ state, commit, rootGetters }, payload) {
+    return apiRequest({
+      type: 'PATCH',
+      path: myfifa.teams.get,
+      pathData: { teamId: payload.id },
+      token: rootGetters['user/token'],
+      data: { team: payload },
+      errorMessage: 'Failed to update Team. Please try again.'
     })
   }
 }
