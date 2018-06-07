@@ -1,4 +1,5 @@
-import userApi from '@/api/user'
+import apiRequest from '@/api'
+import myfifa from '@/api/myfifa'
 
 // initial state
 const state = {
@@ -13,21 +14,19 @@ const getters = {
 // actions
 const actions = {
   logUserIn ({ commit }, payload) {
-    return new Promise((resolve, reject) => {
-      userApi.logUserIn(payload)
-        .then(({ data }) => {
-          if (data.access_token) {
-            localStorage.setItem('token', data.access_token)
-            commit('setToken', data.access_token)
-            resolve()
-          } else {
-            reject(new Error('Failed to sign in.'))
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-          reject(new Error('Invalid Email or Password. Please try again.'))
-        })
+    return apiRequest({
+      method: 'post',
+      path: myfifa.login,
+      data: payload,
+      success: ({ data }) => {
+        if (data.access_token) {
+          localStorage.setItem('token', data.access_token)
+          commit('setToken', data.access_token)
+        } else {
+          throw new Error('Failed to sign in.')
+        }
+      },
+      errorMessage: 'Invalid Email or Password. Please try again.'
     })
   },
   logUserOut ({ commit }) {
