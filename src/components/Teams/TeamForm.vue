@@ -1,5 +1,5 @@
 <template>
-  <div class="team-form" @click="openForm">
+  <div class="d-inline-block" @click="openForm">
     <slot></slot>
     <v-dialog v-model="inForm" max-width="500px">
       <v-form v-model="valid" @submit.prevent="saveForm">
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
   import { format } from 'date-fns'
 
   export default {
@@ -71,11 +72,15 @@
       }
     },
     methods: {
+      ...mapActions({
+        getTeam: 'team/getTeam',
+        saveTeam: 'team/saveTeam'
+      }),
       openForm () {
         this.inForm = true
 
         if (this.teamId) {
-          this.$store.dispatch('team/getTeam', { teamId: this.teamId })
+          this.getTeam({ teamId: this.teamId })
             .then((data) => {
               this.team = {
                 current_date: data.current_date,
@@ -90,7 +95,7 @@
         }
       },
       saveForm () {
-        this.$store.dispatch('team/saveTeam', this.team)
+        this.saveTeam(this.team)
           .then((data) => {
             this.inForm = false
             this.$router.push('/teams')

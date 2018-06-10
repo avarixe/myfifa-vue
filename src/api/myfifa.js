@@ -3,5 +3,9 @@ export default {
     all: 'teams',
     get: 'teams/{{ teamId }}'
   },
-  login: 'oauth/token'
+  user: 'users/sync',
+  token: {
+    get: 'oauth/token',
+    revoke: 'oauth/revoke'
+  }
 }
