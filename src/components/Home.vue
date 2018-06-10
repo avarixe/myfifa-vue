@@ -7,8 +7,7 @@
           sm6
           md4
           v-for="(item, i) in items"
-          :key="i"
-        >
+          :key="i">
           <v-card>
             <v-card-media v-if="item.src" :src="item.src" height="200px">
             </v-card-media>

@@ -14,8 +14,7 @@
                     <v-alert
                       type="error"
                       v-model="loginError"
-                      dismissible
-                    >
+                      dismissible>
                       {{ errorMessage }}
                     </v-alert>
                   </v-flex>

@@ -1,8 +1,8 @@
 <template>
-  <div class="d-inline-block" @click="openForm">
+  <div class="d-inline-block" @click="open">
     <slot></slot>
     <v-dialog v-model="inForm" max-width="500px">
-      <v-form v-model="valid" @submit.prevent="saveForm">
+      <v-form v-model="valid" @submit.prevent="team.id ? updateTeam : createTeam">
         <v-card>
           <v-card-title primary-title>
             <div class="headline">{{ formTitle }}</div>
@@ -14,8 +14,7 @@
                   <v-alert
                     type="error"
                     v-model="saveError"
-                    dismissible
-                  >
+                    dismissible>
                     {{ errorMessage }}
                   </v-alert>
                 </v-flex>
@@ -74,9 +73,10 @@
     methods: {
       ...mapActions({
         getTeam: 'team/getTeam',
-        saveTeam: 'team/saveTeam'
+        create: 'team/create',
+        update: 'team/update'
       }),
-      openForm () {
+      open () {
         this.inForm = true
 
         if (this.teamId) {
@@ -90,20 +90,18 @@
             })
             .catch((error) => {
               this.errorMessage = error.message
-              this.loginError = true
             })
         }
       },
-      saveForm () {
-        this.saveTeam(this.team)
-          .then((data) => {
-            this.inForm = false
-            this.$router.push('/teams')
-          })
-          .catch((error) => {
-            this.errorMessage = error.message
-            this.loginError = true
-          })
+      createTeam () {
+        this.create(this.team)
+          .then((data) => { this.inForm = false })
+          .catch((error) => { this.errorMessage = error.message })
+      },
+      updateTeam () {
+        this.update(this.team)
+          .then((data) => { this.inForm = false })
+          .catch((error) => { this.errorMessage = error.message })
       }
     }
   }

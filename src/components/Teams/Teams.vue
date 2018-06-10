@@ -6,14 +6,12 @@
           <v-btn color="secondary">New Team</v-btn>
         </team-form>
       </v-flex>
-
       <v-flex
         xs12
         sm6
         md4
         v-for="team in teams"
-        :key="team.id"
-      >
+        :key="team.id">
         <v-card>
           <v-card-title primary-title>
             <div class="headline">{{ team.title }}</div>
@@ -38,13 +36,20 @@
               </v-tooltip>
             </team-form>
             <v-tooltip bottom>
-              <v-btn icon slot="activator">
+              <v-btn icon slot="activator" @click.native="teamToDelete = team.id">
                 <v-icon color="red">cancel</v-icon>
               </v-btn>
               <span>Remove</span>
             </v-tooltip>
           </v-card-actions>
         </v-card>
+        <v-snackbar
+          color="red"
+          v-model="teamToDelete === team.id">
+          Delete {{ team.title }}?
+          <v-btn dark flat @click.native="deleteTeam(teamToDelete)">Yes</v-btn>
+          <v-btn dark flat @click.native="teamToDelete = ''">No</v-btn>
+        </v-snackbar>
       </v-flex>
     </v-layout>
   </v-container>
@@ -56,7 +61,8 @@
 
   export default {
     data: () => ({
-      teams: []
+      teams: [],
+      teamToDelete: ''
     }),
     computed: {
       ...mapGetters({
@@ -68,8 +74,15 @@
         setActiveTeam: 'team/setActiveTeam'
       }),
       ...mapActions({
-        getAllTeams: 'team/getAllTeams'
-      })
+        getAllTeams: 'team/getAllTeams',
+        delete: 'team/delete'
+      }),
+      deleteTeam (teamId) {
+        this.delete(teamId)
+          .then((data) => {
+            this.teamToDelete = ''
+          })
+      }
     },
     mounted () {
       this.getAllTeams()

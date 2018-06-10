@@ -21,8 +21,7 @@
           v-model="fab"
           color="blue darken-2"
           dark
-          fab
-        >
+          fab>
           <v-icon>menu</v-icon>
           <v-icon>close</v-icon>
         </v-btn>
@@ -32,8 +31,7 @@
             dark
             color="red"
             fab
-            @click.native="logUserOut"
-          >
+            @click.native="logUserOut">
             <v-icon>exit_to_app</v-icon>
           </v-btn>
           <span>Log Out</span>
@@ -44,8 +42,7 @@
             dark
             color="indigo"
             fab
-            to="/teams"
-          >
+            to="/teams">
             <v-icon>swap_horiz</v-icon>
           </v-btn>
           <span>Change Team</span>

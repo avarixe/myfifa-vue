@@ -26,7 +26,7 @@ const actions = {
       errorMessage: 'Failed to retrieve Teams. Please try again.'
     })
   },
-  getTeam ({ state, commit, rootGetters }, { teamId }) {
+  getTeam ({ rootGetters }, { teamId }) {
     return apiRequest({
       path: myfifa.teams.get,
       pathData: { teamId: teamId },
@@ -34,7 +34,7 @@ const actions = {
       errorMessage: 'Failed to retrieve Team. Please try again.'
     })
   },
-  createTeam ({ state, commit, rootGetters }, payload) {
+  create ({ rootGetters }, payload) {
     return apiRequest({
       method: 'post',
       path: myfifa.teams.all,
@@ -43,7 +43,7 @@ const actions = {
       errorMessage: 'Failed to create Team. Please try again.'
     })
   },
-  updateTeam ({ state, commit, rootGetters }, payload) {
+  update ({ rootGetters }, payload) {
     return apiRequest({
       method: 'patch',
       path: myfifa.teams.get,
@@ -51,6 +51,15 @@ const actions = {
       token: rootGetters['user/token'],
       data: { team: payload },
       errorMessage: 'Failed to update Team. Please try again.'
+    })
+  },
+  delete ({ rootGetters }, payload) {
+    return apiRequest({
+      method: 'delete',
+      path: myfifa.teams.get,
+      pathData: { teamId: payload },
+      token: rootGetters['user/token'],
+      errorMessage: 'Failed to delete Team. Please try again.'
     })
   }
 }
