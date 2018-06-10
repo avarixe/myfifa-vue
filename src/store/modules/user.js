@@ -8,38 +8,55 @@ const state = {
 
 // getters
 const getters = {
-  token: state => state.token
-}
-
-// actions
-const actions = {
-  logUserIn ({ commit }, payload) {
-    return apiRequest({
-      method: 'post',
-      path: myfifa.login,
-      data: payload,
-      success: ({ data }) => {
-        if (data.access_token) {
-          localStorage.setItem('token', data.access_token)
-          commit('setToken', data.access_token)
-        } else {
-          throw new Error('Failed to sign in.')
-        }
-      },
-      errorMessage: 'Invalid Email or Password. Please try again.'
-    })
-  },
-  logUserOut ({ commit }) {
-    localStorage.removeItem('token')
-    commit('team/setActiveTeam', null, { root: true })
-    commit('setToken', null)
-  }
+  token: state => state.token,
+  authenticated: state => (state.token !== null)
 }
 
 // mutations
 const mutations = {
   setToken (state, token) {
     state.token = token
+    if (token === null) {
+      localStorage.removeItem('token')
+    }
+  }
+}
+
+// actions
+const actions = {
+  logUserIn ({ commit, dispatch }, payload) {
+    return apiRequest({
+      method: 'post',
+      path: myfifa.token.get,
+      data: payload,
+      success: ({ data }) => {
+        localStorage.setItem('token', data.access_token)
+        commit('setToken', data.access_token)
+        dispatch('getInfo')
+      },
+      errorMessage: 'Invalid Email or Password. Please try again.'
+    })
+  },
+  logUserOut ({ commit, state }) {
+    return apiRequest({
+      method: 'post',
+      path: myfifa.token.revoke,
+      data: { token: state.token },
+      success: ({ data }) => {
+        commit('team/setActiveTeam', null, { root: true })
+        commit('setToken', null)
+      },
+      errorMessage: 'An error occurred when logging out. Please try again.'
+    })
+  },
+  getInfo ({ state }) {
+    return apiRequest({
+      path: myfifa.user,
+      token: state.token,
+      success: ({ data }) => {
+        console.log(data)
+      }
+    })
   }
 }
 
@@ -48,6 +65,6 @@ export default {
 
   state,
   getters,
-  actions,
-  mutations
+  mutations,
+  actions
 }

@@ -10,23 +10,90 @@
       <v-spacer></v-spacer>
     </v-toolbar>
     <v-content>
-      <myfifa-login-drawer></myfifa-login-drawer>
-      <myfifa-fab></myfifa-fab>
+      <v-speed-dial
+        v-model="fab"
+        v-if="isAuthenticated"
+        fixed
+        bottom
+        right>
+        <v-btn
+          slot="activator"
+          v-model="fab"
+          color="blue darken-2"
+          dark
+          fab
+        >
+          <v-icon>menu</v-icon>
+          <v-icon>close</v-icon>
+        </v-btn>
+        <v-tooltip left>
+          <v-btn
+            slot="activator"
+            dark
+            color="red"
+            fab
+            @click.native="logUserOut"
+          >
+            <v-icon>exit_to_app</v-icon>
+          </v-btn>
+          <span>Log Out</span>
+        </v-tooltip>
+        <v-tooltip left>
+          <v-btn
+            slot="activator"
+            dark
+            color="indigo"
+            fab
+            to="/teams"
+          >
+            <v-icon>swap_horiz</v-icon>
+          </v-btn>
+          <span>Change Team</span>
+        </v-tooltip>
+      </v-speed-dial>
+
       <router-view></router-view>
     </v-content>
   </v-app>
 </template>
 
 <script>
-  import LoginDrawer from '@/components/LoginDrawer'
-  import SystemMenu from '@/components/SystemMenu'
+  import { mapGetters, mapActions } from 'vuex'
 
   export default {
     data: () => ({
+      fab: false
     }),
-    components: {
-      'myfifa-login-drawer': LoginDrawer,
-      'myfifa-fab': SystemMenu
+    computed: {
+      ...mapGetters({
+        isAuthenticated: 'user/authenticated'
+      })
+    },
+    watch: {
+      isAuthenticated () {
+        this.redirectToAuthentication()
+      }
+    },
+    methods: {
+      ...mapActions({
+        logUserOut: 'user/logUserOut'
+      }),
+      redirectToAuthentication () {
+        switch (this.$route.path) {
+          case '/login':
+            if (this.isAuthenticated) {
+              this.$router.push('/')
+            }
+            break
+          default:
+            if (!this.isAuthenticated) {
+              this.$router.push('/login')
+            }
+        }
+      }
+    },
+    mounted () {
+      this.redirectToAuthentication()
     },
     name: 'App'
   }

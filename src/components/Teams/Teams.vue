@@ -51,34 +51,30 @@
 </template>
 
 <script>
-  import TeamForm from '@/components/Teams/TeamForm.vue'
+  import { mapGetters, mapMutations, mapActions } from 'vuex'
+  import TeamForm from '@/components/Teams/TeamForm'
 
   export default {
-    data () {
-      return {
-        teams: []
-      }
-    },
+    data: () => ({
+      teams: []
+    }),
     computed: {
-      activeId () {
-        return this.$store.state.team.activeId
-      }
+      ...mapGetters({
+        activeId: 'team/activeId'
+      })
     },
     methods: {
-      setActiveTeam (id) {
-        if (this.activeId !== id) {
-          this.$store.commit('team/setActiveTeam', id)
-        }
-      }
+      ...mapMutations({
+        setActiveTeam: 'team/setActiveTeam'
+      }),
+      ...mapActions({
+        getAllTeams: 'team/getAllTeams'
+      })
     },
     mounted () {
-      this.$store.dispatch('team/getAllTeams')
-        .then((teams) => {
-          this.teams = teams
-        })
-        .catch((error) => {
-          alert(error.message)
-        })
+      this.getAllTeams()
+        .then((teams) => { this.teams = teams })
+        .catch((error) => { alert(error.message) })
     },
     components: {
       'team-form': TeamForm
