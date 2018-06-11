@@ -13,7 +13,7 @@
                 <v-flex xs12>
                   <v-alert
                     type="error"
-                    v-model="saveError"
+                    v-model="formError"
                     dismissible>
                     {{ errorMessage }}
                   </v-alert>
@@ -60,7 +60,6 @@
       return {
         inForm: false,
         valid: false,
-        saveError: false,
         errorMessage: '',
         team: {
           id: '',
@@ -68,6 +67,12 @@
           current_date: format(new Date(), 'YYYY-MM-DD')
         },
         menu: false
+      }
+    },
+    computed: {
+      formError: {
+        get: function () { return this.errorMessage.length > 0 },
+        set: function (val) { this.errorMessage = val }
       }
     },
     methods: {

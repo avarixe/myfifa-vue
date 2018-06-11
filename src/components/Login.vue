@@ -2,7 +2,7 @@
   <v-container fluid fill-height>
     <v-layout align-center justify-center>
       <v-flex xs12 sm8 md6>
-        <v-form v-model="valid" @submit.prevent="logIn">
+        <v-form v-model="valid" @submit.prevent="authenticate">
           <v-card>
             <v-card-title primary-title>
               <div class="headline">Log In</div>
@@ -64,7 +64,6 @@
       passwordRules: [
         v => !!v || 'Password is required'
       ],
-      loginError: false,
       errorMessage: '',
       credentials: {
         email: '',
@@ -72,20 +71,21 @@
         grant_type: 'password'
       }
     }),
+    computed: {
+      loginError: {
+        get: function () { return this.errorMessage.length > 0 },
+        set: function (val) { this.errorMessage = val }
+      }
+    },
     methods: {
       ...mapActions({
-        logUserIn: 'user/logUserIn',
-        getUser: 'user/getInfo'
+        login: 'user/login',
+        info: 'user/info'
       }),
-      logIn () {
-        this.logUserIn(this.credentials)
-          .then(() => {
-            this.$router.push('/teams')
-          })
-          .catch((error) => {
-            this.errorMessage = error.message
-            this.loginError = true
-          })
+      authenticate () {
+        this.login(this.credentials)
+          .then(() => { this.$router.push('/teams') })
+          .catch((error) => { this.errorMessage = error.message })
       }
     }
   }

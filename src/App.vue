@@ -31,7 +31,7 @@
             dark
             color="red"
             fab
-            @click.native="logUserOut">
+            @click.native="logout">
             <v-icon>exit_to_app</v-icon>
           </v-btn>
           <span>Log Out</span>
@@ -61,11 +61,9 @@
     data: () => ({
       fab: false
     }),
-    computed: {
-      ...mapGetters({
-        isAuthenticated: 'user/authenticated'
-      })
-    },
+    computed: mapGetters({
+      isAuthenticated: 'user/authenticated'
+    }),
     watch: {
       isAuthenticated () {
         this.redirectToAuthentication()
@@ -73,7 +71,7 @@
     },
     methods: {
       ...mapActions({
-        logUserOut: 'user/logUserOut'
+        logout: 'user/logout'
       }),
       redirectToAuthentication () {
         switch (this.$route.path) {

@@ -14,7 +14,7 @@ const getters = {
 
 // mutations
 const mutations = {
-  setToken (state, token) {
+  set (state, token) {
     state.token = token
     if (token === null) {
       localStorage.removeItem('token')
@@ -24,32 +24,32 @@ const mutations = {
 
 // actions
 const actions = {
-  logUserIn ({ commit, dispatch }, payload) {
+  login ({ commit, dispatch }, payload) {
     return apiRequest({
       method: 'post',
       path: myfifa.token.get,
       data: payload,
       success: ({ data }) => {
         localStorage.setItem('token', data.access_token)
-        commit('setToken', data.access_token)
-        dispatch('getInfo')
+        commit('set', data.access_token)
+        dispatch('info')
       },
       errorMessage: 'Invalid Email or Password. Please try again.'
     })
   },
-  logUserOut ({ commit, state }) {
+  logout ({ commit, state }) {
     return apiRequest({
       method: 'post',
       path: myfifa.token.revoke,
       data: { token: state.token },
       success: ({ data }) => {
-        commit('team/setActiveTeam', null, { root: true })
-        commit('setToken', null)
+        commit('team/set', null, { root: true })
+        commit('set', null)
       },
       errorMessage: 'An error occurred when logging out. Please try again.'
     })
   },
-  getInfo ({ state }) {
+  info ({ state }) {
     return apiRequest({
       path: myfifa.user,
       token: state.token,
