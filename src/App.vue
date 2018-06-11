@@ -63,6 +63,7 @@
     }),
     computed: mapGetters({
       isAuthenticated: 'user/authenticated',
+      activeTeam: 'team/activeId',
       expirationDate: 'user/expirationDate'
     }),
     watch: {

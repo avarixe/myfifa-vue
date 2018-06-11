@@ -21,10 +21,6 @@ const actions = {
       token: rootGetters['user/token'],
       success: function ({ data }) {
         commit('refresh', data)
-        if (!state.activeId && data.length > 0) {
-          localStorage.setItem('activeTeam', data[0].id)
-          commit('set', data[0].id)
-        }
       },
       errorMessage: 'Failed to retrieve Teams. Please try again.'
     })
@@ -81,6 +77,11 @@ const actions = {
 const mutations = {
   set (state, teamId) {
     state.activeId = teamId
+    if (teamId !== null) {
+      localStorage.setItem('activeTeam', teamId)
+    } else {
+      localStorage.removeItem('activeTeam')
+    }
   },
   refresh (state, teams) {
     state.list = teams

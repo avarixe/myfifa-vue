@@ -45,7 +45,7 @@ const actions = {
         let expirationDate = (data.created_at + data.expires_in) * 1000
         commit('setToken', data.access_token)
         commit('setExpirationDate', expirationDate)
-        // dispatch('info')
+        commit('team/set', data.user.current_team, { root: true })
       },
       errorMessage: 'Invalid Email or Password. Please try again.'
     })
@@ -62,9 +62,9 @@ const actions = {
     })
   },
   clear ({ commit }) {
-    commit('team/set', null, { root: true })
     commit('setToken', null)
     commit('setExpirationDate', null)
+    commit('team/set', null, { root: true })
   },
   info ({ state }) {
     return apiRequest({
