@@ -20,7 +20,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-tooltip bottom>
-              <v-btn icon @click.native="setActiveTeam(team.id)" slot="activator">
+              <v-btn icon @click.native="set(team.id)" slot="activator">
                 <v-icon color="blue">
                   radio_button_{{ team.id == activeId ? 'checked' : 'unchecked' }}
                 </v-icon>
@@ -61,32 +61,28 @@
 
   export default {
     data: () => ({
-      teams: [],
       teamToDelete: ''
     }),
-    computed: {
-      ...mapGetters({
-        activeId: 'team/activeId'
-      })
-    },
+    computed: mapGetters({
+      activeId: 'team/activeId',
+      teams: 'team/list'
+    }),
     methods: {
       ...mapMutations({
-        setActiveTeam: 'team/setActiveTeam'
+        set: 'team/set'
       }),
       ...mapActions({
-        getAllTeams: 'team/getAllTeams',
+        refresh: 'team/refresh',
         delete: 'team/delete'
       }),
       deleteTeam (teamId) {
         this.delete(teamId)
-          .then((data) => {
-            this.teamToDelete = ''
-          })
+          .then((data) => { this.teamToDelete = '' })
+          .catch((error) => { alert(error) })
       }
     },
     mounted () {
-      this.getAllTeams()
-        .then((teams) => { this.teams = teams })
+      this.refresh()
         .catch((error) => { alert(error.message) })
     },
     components: {

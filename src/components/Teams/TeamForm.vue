@@ -2,7 +2,7 @@
   <div class="d-inline-block" @click="open">
     <slot></slot>
     <v-dialog v-model="inForm" max-width="500px">
-      <v-form v-model="valid" @submit.prevent="team.id ? updateTeam : createTeam">
+      <v-form v-model="valid" @submit.prevent="team.id ? updateTeam() : createTeam()">
         <v-card>
           <v-card-title primary-title>
             <div class="headline">{{ formTitle }}</div>
@@ -72,7 +72,7 @@
     },
     methods: {
       ...mapActions({
-        getTeam: 'team/getTeam',
+        get: 'team/get',
         create: 'team/create',
         update: 'team/update'
       }),
@@ -80,7 +80,7 @@
         this.inForm = true
 
         if (this.teamId) {
-          this.getTeam({ teamId: this.teamId })
+          this.get({ teamId: this.teamId })
             .then((data) => {
               this.team = {
                 current_date: data.current_date,
