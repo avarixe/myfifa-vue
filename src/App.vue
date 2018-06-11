@@ -67,7 +67,7 @@
       expirationDate: 'user/expirationDate'
     }),
     watch: {
-      isAuthenticated () {
+      '$route' () {
         this.redirectToAuthentication()
       }
     },
