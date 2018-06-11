@@ -62,7 +62,8 @@
       fab: false
     }),
     computed: mapGetters({
-      isAuthenticated: 'user/authenticated'
+      isAuthenticated: 'user/authenticated',
+      expirationDate: 'user/expirationDate'
     }),
     watch: {
       isAuthenticated () {
@@ -71,8 +72,14 @@
     },
     methods: {
       ...mapActions({
-        logout: 'user/logout'
+        logout: 'user/logout',
+        clear: 'user/clear'
       }),
+      checkIfTokenExpired () {
+        if (this.isAuthenticated && Date.now() > this.expirationDate) {
+          this.clear()
+        }
+      },
       redirectToAuthentication () {
         switch (this.$route.path) {
           case '/login':

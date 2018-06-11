@@ -3,21 +3,33 @@ import myfifa from '@/api/myfifa'
 
 // initial state
 const state = {
-  token: localStorage.getItem('token')
+  token: localStorage.getItem('token'),
+  expirationDate: localStorage.getItem('expirationDate')
 }
 
 // getters
 const getters = {
   token: state => state.token,
+  expirationDate: state => state.expirationDate,
   authenticated: state => (state.token !== null)
 }
 
 // mutations
 const mutations = {
-  set (state, token) {
+  setToken (state, token) {
     state.token = token
-    if (token === null) {
+    if (token !== null) {
+      localStorage.setItem('token', token)
+    } else {
       localStorage.removeItem('token')
+    }
+  },
+  setExpirationDate (state, expirationDate) {
+    state.expirationDate = expirationDate
+    if (expirationDate !== null) {
+      localStorage.setItem('expirationDate', expirationDate)
+    } else {
+      localStorage.removeItem('expirationDate')
     }
   }
 }
@@ -30,24 +42,29 @@ const actions = {
       path: myfifa.token.get,
       data: payload,
       success: ({ data }) => {
-        localStorage.setItem('token', data.access_token)
-        commit('set', data.access_token)
-        dispatch('info')
+        let expirationDate = (data.created_at + data.expires_in) * 1000
+        commit('setToken', data.access_token)
+        commit('setExpirationDate', expirationDate)
+        // dispatch('info')
       },
       errorMessage: 'Invalid Email or Password. Please try again.'
     })
   },
-  logout ({ commit, state }) {
+  logout ({ dispatch, state }) {
     return apiRequest({
       method: 'post',
       path: myfifa.token.revoke,
       data: { token: state.token },
       success: ({ data }) => {
-        commit('team/set', null, { root: true })
-        commit('set', null)
+        dispatch('clear')
       },
       errorMessage: 'An error occurred when logging out. Please try again.'
     })
+  },
+  clear ({ commit }) {
+    commit('team/set', null, { root: true })
+    commit('setToken', null)
+    commit('setExpirationDate', null)
   },
   info ({ state }) {
     return apiRequest({
