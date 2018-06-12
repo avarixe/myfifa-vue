@@ -84,7 +84,7 @@
       }),
       authenticate () {
         this.login(this.credentials)
-          .then((data) => { this.$router.push(data.user.current_team ? '/' : '/teams') })
+          .then((data) => { this.$router.push('/teams') })
           .catch((error) => { this.errorMessage = error.message })
       }
     }

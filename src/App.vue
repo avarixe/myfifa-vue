@@ -2,10 +2,8 @@
   <v-app>
     <v-toolbar color="primary" dark fixed app>
       <v-toolbar-title>
-        <router-link to="/" tag="span">
-          <v-icon>fa-futbol</v-icon>
-          MyFIFA Manager
-        </router-link>
+        <v-icon>fa-futbol</v-icon>
+        MyFIFA Manager
       </v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
@@ -101,9 +99,3 @@
     name: 'App'
   }
 </script>
-
-<style scoped>
-  .toolbar__title > span {
-    cursor: pointer;
-  }
-</style>

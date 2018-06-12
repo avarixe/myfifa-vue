@@ -14,19 +14,27 @@
         :key="team.id">
         <v-card>
           <v-card-title primary-title>
-            <div class="headline">{{ team.title }}</div>
+            <div class="headline">
+              {{ team.title }}
+              <v-tooltip top>
+                <v-btn icon slot="activator" :to="'/teams/' + team.id">
+                  <v-icon color="primary">arrow_forward</v-icon>
+                </v-btn>
+                <span>Team Dashboard</span>
+              </v-tooltip>
+            </div>
             <v-flex xs12>{{ team.time_period }}</v-flex>
           </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-tooltip bottom>
-              <v-btn icon @click.native="set(team.id)" slot="activator">
-                <v-icon color="blue">
-                  radio_button_{{ team.id == activeId ? 'checked' : 'unchecked' }}
-                </v-icon>
-              </v-btn>
-              <span>Set as Active</span>
-            </v-tooltip>
+            <!-- <v-tooltip bottom> -->
+              <!-- <v-btn icon @click.native="set(team.id)" slot="activator"> -->
+                <!-- <v-icon color="blue"> -->
+                  <!-- radio_button_{{ team.id == activeId ? 'checked' : 'unchecked' }} -->
+                <!-- </v-icon> -->
+              <!-- </v-btn> -->
+              <!-- <span>Set as Active</span> -->
+            <!-- </v-tooltip> -->
             <team-form :teamId="team.id" :formTitle="'Edit ' + team.title">
               <v-tooltip bottom>
                 <v-btn icon slot="activator">
@@ -56,7 +64,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapMutations, mapActions } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
   import TeamForm from '@/components/Teams/TeamForm'
 
   export default {
@@ -64,13 +72,13 @@
       teamToDelete: ''
     }),
     computed: mapGetters({
-      activeId: 'team/activeId',
+      // activeId: 'team/activeId',
       teams: 'team/list'
     }),
     methods: {
-      ...mapMutations({
-        set: 'team/set'
-      }),
+      // ...mapMutations({
+      //   set: 'team/set'
+      // }),
       ...mapActions({
         refresh: 'team/refresh',
         delete: 'team/delete'

@@ -3,7 +3,7 @@ import myfifa from '@/api/myfifa'
 
 // initial state
 const state = {
-  activeId: localStorage.getItem('activeTeam'),
+  // activeId: localStorage.getItem('activeTeam'),
   list: []
 }
 
@@ -75,14 +75,14 @@ const actions = {
 
 // mutations
 const mutations = {
-  set (state, teamId) {
-    state.activeId = teamId
-    if (teamId !== null) {
-      localStorage.setItem('activeTeam', teamId)
-    } else {
-      localStorage.removeItem('activeTeam')
-    }
-  },
+  // set (state, teamId) {
+  //   state.activeId = teamId
+  //   if (teamId !== null) {
+  //     localStorage.setItem('activeTeam', teamId)
+  //   } else {
+  //     localStorage.removeItem('activeTeam')
+  //   }
+  // },
   refresh (state, teams) {
     state.list = teams
   },
