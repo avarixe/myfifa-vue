@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/Home'
+import Home from '@/components/Home/Home'
+import Dashboard from '@/components/Dashboard/Dashboard'
 import Login from '@/components/Login'
-import Teams from '@/components/Teams/Teams'
 import Players from '@/components/Players/Players'
 
 Vue.use(Router)
@@ -20,9 +20,9 @@ export default new Router({
       component: Login
     },
     {
-      path: '/teams',
-      name: 'Teams',
-      component: Teams
+      path: '/team/:team_id',
+      name: 'Dashboard',
+      component: Dashboard
     },
     {
       path: '/players',

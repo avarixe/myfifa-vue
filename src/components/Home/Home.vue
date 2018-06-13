@@ -17,7 +17,7 @@
             <div class="headline">
               {{ team.title }}
               <v-tooltip top>
-                <v-btn icon slot="activator" :to="'/teams/' + team.id">
+                <v-btn icon slot="activator" :to="'/team/' + team.id">
                   <v-icon color="primary">arrow_forward</v-icon>
                 </v-btn>
                 <span>Team Dashboard</span>
@@ -65,7 +65,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
-  import TeamForm from '@/components/Teams/TeamForm'
+  import TeamForm from '@/components/Home/TeamForm'
 
   export default {
     data: () => ({
