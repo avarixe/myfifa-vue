@@ -84,7 +84,7 @@
       }),
       authenticate () {
         this.login(this.credentials)
-          .then((data) => { this.$router.push('/teams') })
+          .then((data) => { this.$router.push('/') })
           .catch((error) => { this.errorMessage = error.message })
       }
     }

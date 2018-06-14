@@ -64,7 +64,6 @@ const actions = {
   clear ({ commit }) {
     commit('setToken', null)
     commit('setExpirationDate', null)
-    commit('team/set', null, { root: true })
   },
   info ({ state }) {
     return apiRequest({

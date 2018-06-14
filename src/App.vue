@@ -42,7 +42,7 @@
             dark
             color="indigo"
             fab
-            to="/teams">
+            to="/">
             <v-icon>swap_horiz</v-icon>
           </v-btn>
           <span>Change Team</span>
@@ -68,6 +68,9 @@
     }),
     watch: {
       '$route' () {
+        this.redirectToAuthentication()
+      },
+      isAuthenticated () {
         this.redirectToAuthentication()
       }
     },
