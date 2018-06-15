@@ -39,8 +39,8 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import PlayersPanel from '@/components/Dashboard/Players'
-  import MatchesPanel from '@/components/Dashboard/Matches'
+  import PlayersPanel from '@/components/players'
+  import MatchesPanel from '@/components/matches'
 
   export default {
     data: () => ({

@@ -57,7 +57,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
-  import TeamForm from '@/components/Home/TeamForm'
+  import TeamForm from '@/components/teams/form'
 
   export default {
     data: () => ({

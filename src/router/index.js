@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/Home/Home'
-import Dashboard from '@/components/Dashboard/Dashboard'
-import Login from '@/components/Login'
-import Players from '@/components/Players/Players'
+import Teams from '@/components/teams'
+import Dashboard from '@/components/teams/dashboard'
+import Login from '@/components/login'
 
 Vue.use(Router)
 
@@ -11,23 +10,15 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: Home
+      component: Teams
     },
     {
       path: '/login',
-      name: 'Login',
       component: Login
     },
     {
       path: '/team/:team_id',
-      name: 'Dashboard',
       component: Dashboard
-    },
-    {
-      path: '/players',
-      name: 'Players',
-      component: Players
     }
   ],
   mode: 'history'
