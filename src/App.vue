@@ -29,24 +29,24 @@
           <v-btn
             slot="activator"
             dark
-            color="red"
+            color="red darken-2"
             fab
             @click.native="logout">
             <v-icon>exit_to_app</v-icon>
           </v-btn>
           <span>Log Out</span>
         </v-tooltip>
-        <v-tooltip left>
-          <v-btn
-            slot="activator"
-            dark
-            color="indigo"
-            fab
-            to="/">
-            <v-icon>swap_horiz</v-icon>
-          </v-btn>
-          <span>Change Team</span>
-        </v-tooltip>
+        <!-- <v-tooltip left> -->
+          <!-- <v-btn -->
+            <!-- slot="activator" -->
+            <!-- dark -->
+            <!-- color="indigo" -->
+            <!-- fab -->
+            <!-- to="/"> -->
+            <!-- <v-icon>swap_horiz</v-icon> -->
+          <!-- </v-btn> -->
+          <!-- <span>Change Team</span> -->
+        <!-- </v-tooltip> -->
       </v-speed-dial>
 
       <router-view></router-view>

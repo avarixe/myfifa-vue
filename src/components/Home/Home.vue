@@ -2,7 +2,7 @@
   <v-container fluid grid-list-lg>
     <v-layout row wrap>
       <v-flex xs12 class="text-xs-center text-sm-left">
-        <team-form formTitle="New Team">
+        <team-form title="New Team">
           <v-btn color="secondary">New Team</v-btn>
         </team-form>
       </v-flex>
@@ -27,25 +27,17 @@
           </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <!-- <v-tooltip bottom> -->
-              <!-- <v-btn icon @click.native="set(team.id)" slot="activator"> -->
-                <!-- <v-icon color="blue"> -->
-                  <!-- radio_button_{{ team.id == activeId ? 'checked' : 'unchecked' }} -->
-                <!-- </v-icon> -->
-              <!-- </v-btn> -->
-              <!-- <span>Set as Active</span> -->
-            <!-- </v-tooltip> -->
-            <team-form :teamId="team.id" :formTitle="'Edit ' + team.title">
+            <team-form :id="team.id" :title="'Edit ' + team.title">
               <v-tooltip bottom>
                 <v-btn icon slot="activator">
-                  <v-icon>edit</v-icon>
+                  <v-icon color="orange darken-2">edit</v-icon>
                 </v-btn>
                 <span>Edit</span>
               </v-tooltip>
             </team-form>
             <v-tooltip bottom>
               <v-btn icon slot="activator" @click.native="teamToDelete = team.id">
-                <v-icon color="red">cancel</v-icon>
+                <v-icon color="red darken-2">cancel</v-icon>
               </v-btn>
               <span>Remove</span>
             </v-tooltip>
@@ -69,23 +61,19 @@
 
   export default {
     data: () => ({
-      teamToDelete: ''
+      teamToDelete: 0
     }),
     computed: mapGetters({
-      // activeId: 'team/activeId',
       teams: 'team/list'
     }),
     methods: {
-      // ...mapMutations({
-      //   set: 'team/set'
-      // }),
       ...mapActions({
         refresh: 'team/refresh',
         delete: 'team/delete'
       }),
       deleteTeam (teamId) {
         this.delete(teamId)
-          .then((data) => { this.teamToDelete = '' })
+          .then((data) => { this.teamToDelete = 0 })
           .catch((error) => { alert(error) })
       }
     },

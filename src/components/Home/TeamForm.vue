@@ -2,10 +2,10 @@
   <div class="d-inline-block" @click="open">
     <slot></slot>
     <v-dialog v-model="inForm" max-width="500px">
-      <v-form v-model="valid" @submit.prevent="team.id ? updateTeam() : createTeam()">
+      <v-form v-model="valid" @submit.prevent="id ? updateTeam() : createTeam()">
         <v-card>
           <v-card-title primary-title>
-            <div class="headline">{{ formTitle }}</div>
+            <div class="headline">{{ title }}</div>
           </v-card-title>
           <v-card-text>
             <v-container grid-list-md>
@@ -23,20 +23,20 @@
                     ref="menu"
                     :close-on-content-click="false"
                     v-model="menu"
-                    :return-value.sync="team.current_date"
+                    :return-value.sync="team.start_date"
                     lazy
                     transition="scale-transition"
                     full-width>
                     <v-text-field
                       slot="activator"
                       label="Start Date"
-                      v-model="team.current_date"
+                      v-model="team.start_date"
                       readonly
                     ></v-text-field>
                     <v-date-picker
-                      v-model="team.current_date"
+                      v-model="team.start_date"
                       landscape
-                      @input="$refs.menu.save(team.current_date)"
+                      @input="$refs.menu.save(team.start_date)"
                     ></v-date-picker>
                   </v-menu>
 
@@ -67,8 +67,8 @@
 
   export default {
     props: [
-      'teamId',
-      'formTitle'
+      'id',
+      'title'
     ],
     data () {
       return {
@@ -78,7 +78,7 @@
         team: {
           id: '',
           title: '',
-          current_date: format(new Date(), 'YYYY-MM-DD')
+          start_date: format(new Date(), 'YYYY-MM-DD')
         },
         menu: false
       }
@@ -98,11 +98,11 @@
       open () {
         this.inForm = true
 
-        if (this.teamId) {
-          this.get({ teamId: this.teamId })
+        if (this.id) {
+          this.get({ teamId: this.id })
             .then((data) => {
               this.team = {
-                current_date: data.current_date,
+                start_date: data.start_date,
                 title: data.title,
                 id: data.id
               }
