@@ -11,14 +11,6 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-alert
-                    type="error"
-                    v-model="formError"
-                    dismissible>
-                    {{ errorMessage }}
-                  </v-alert>
-                </v-flex>
-                <v-flex xs12>
                   <v-text-field
                     v-model="team.title"
                     label="Team"
@@ -27,15 +19,37 @@
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field
-                    v-model="team.current_date"
-                    label="Current Date"
-                    type="date"
-                  ></v-text-field>
+                  <v-menu
+                    ref="menu"
+                    :close-on-content-click="false"
+                    v-model="menu"
+                    :return-value.sync="team.current_date"
+                    lazy
+                    transition="scale-transition"
+                    full-width>
+                    <v-text-field
+                      slot="activator"
+                      label="Start Date"
+                      v-model="team.current_date"
+                      readonly
+                    ></v-text-field>
+                    <v-date-picker
+                      v-model="team.current_date"
+                      landscape
+                      @input="$refs.menu.save(team.current_date)"
+                    ></v-date-picker>
+                  </v-menu>
+
                 </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
+          <v-alert
+            type="error"
+            v-model="formError"
+            dismissible>
+            {{ errorMessage }}
+          </v-alert>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn type="submit" :disabled="!valid" flat large>Save</v-btn>
