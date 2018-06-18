@@ -39,7 +39,6 @@
                       @input="$refs.menu.save(team.start_date)"
                     ></v-date-picker>
                   </v-menu>
-
                 </v-flex>
               </v-layout>
             </v-container>

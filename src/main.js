@@ -27,7 +27,10 @@ import {
   VMenu,
   VDatePicker,
   VSpeedDial,
-  VSnackBar,
+  VSnackbar,
+  VDataTable,
+  VPagination,
+  VBreadcrumbs,
   transitions
 } from 'vuetify'
 import '../node_modules/vuetify/src/stylus/app.styl'
@@ -55,7 +58,10 @@ Vue.use(Vuetify, {
     VMenu,
     VDatePicker,
     VSpeedDial,
-    VSnackBar,
+    VSnackbar,
+    VDataTable,
+    VPagination,
+    VBreadcrumbs,
     transitions
   }
 })

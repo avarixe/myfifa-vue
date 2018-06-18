@@ -7,7 +7,13 @@
           MyFIFA Manager
         </router-link>
       </v-toolbar-title>
-      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-xs-only">
+        <v-breadcrumbs large divider="/">
+          <v-breadcrumbs-item v-if="activeTeam && activeTeam.title">
+            // {{ activeTeam.title }}
+          </v-breadcrumbs-item>
+        </v-breadcrumbs>
+      </v-toolbar-items>
     </v-toolbar>
     <v-content>
       <v-speed-dial
@@ -63,8 +69,10 @@
     }),
     computed: mapGetters({
       isAuthenticated: 'user/authenticated',
-      activeTeam: 'team/activeId',
-      expirationDate: 'user/expirationDate'
+      expirationDate: 'user/expirationDate',
+
+      activeTeam: 'team/active'
+      // activePlayer: 'player/active'
     }),
     watch: {
       '$route' () {

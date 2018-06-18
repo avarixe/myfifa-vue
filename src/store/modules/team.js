@@ -3,14 +3,17 @@ import myfifa from '@/api/myfifa'
 
 // initial state
 const state = {
-  // activeId: localStorage.getItem('activeTeam'),
-  list: []
+  list: [],
+  active: {
+    id: null,
+    title: ''
+  }
 }
 
 // getters
 const getters = {
-  activeId: state => state.activeId,
-  list: state => state.list
+  list: state => state.list,
+  active: state => state.active
 }
 
 // actions
@@ -25,12 +28,15 @@ const actions = {
       errorMessage: 'Failed to retrieve Teams. Please try again.'
     })
   },
-  get ({ rootGetters }, { teamId }) {
+  get ({ commit, rootGetters }, { teamId, activate }) {
     return apiRequest({
       path: myfifa.teams.get,
       pathData: { teamId: teamId },
       token: rootGetters['user/token'],
-      errorMessage: 'Failed to retrieve Team. Please try again.'
+      errorMessage: 'Failed to retrieve Team. Please try again.',
+      success: ({ data }) => {
+        activate && commit('set', data)
+      }
     })
   },
   create ({ commit, rootGetters }, payload) {
@@ -65,7 +71,6 @@ const actions = {
       pathData: { teamId: payload },
       token: rootGetters['user/token'],
       success: ({ data }) => {
-        console.log(data)
         commit('remove', data)
       },
       errorMessage: 'Failed to delete Team. Please try again.'
@@ -75,14 +80,6 @@ const actions = {
 
 // mutations
 const mutations = {
-  // set (state, teamId) {
-  //   state.activeId = teamId
-  //   if (teamId !== null) {
-  //     localStorage.setItem('activeTeam', teamId)
-  //   } else {
-  //     localStorage.removeItem('activeTeam')
-  //   }
-  // },
   refresh (state, teams) {
     state.list = teams
   },
@@ -96,6 +93,15 @@ const mutations = {
   remove (state, team) {
     let index = state.list.findIndex(t => t.id === team.id)
     state.list.splice(index, 1)
+  },
+  set (state, team) {
+    if (team !== null) {
+      state.active.id = team.id
+      state.active.title = team.title
+    } else {
+      state.active.id = null
+      state.active.title = ''
+    }
   }
 }
 

@@ -56,7 +56,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapGetters, mapActions, mapMutations } from 'vuex'
   import TeamForm from '@/components/teams/form'
 
   export default {
@@ -71,6 +71,9 @@
         refresh: 'team/refresh',
         delete: 'team/delete'
       }),
+      ...mapMutations({
+        set: 'team/set'
+      }),
       deleteTeam (teamId) {
         this.delete(teamId)
           .then((data) => { this.teamToDelete = 0 })
@@ -78,6 +81,7 @@
       }
     },
     mounted () {
+      this.set(null)
       this.refresh()
         .catch((error) => { alert(error.message) })
     },

@@ -1,29 +1,22 @@
 <template>
   <v-container fluid grid-list-lg>
-    <v-layout row wrap>
-      <v-flex xs12>
-        <v-card dark color="light-blue accent-1">
-          <v-card-title>
-            <v-btn icon to="/">
-              <v-icon>arrow_back</v-icon>
-            </v-btn>
-            <div class="headline">
-              TEAM // {{ team.title.toUpperCase() }}
-            </div>
-          </v-card-title>
-        </v-card>
-      </v-flex>
+    <v-layout
+      v-if="'id' in team"
+      row
+      wrap>
       <v-flex xs12 sm8 md4>
-        <v-card>
-          <v-card-text>
-            <v-date-picker
-              v-model="team.current_date"
-              @input="update(team)"
-              color="blue-grey"
-              full-width
-            ></v-date-picker>
-          </v-card-text>
-        </v-card>
+        <v-flex xs12>
+          <v-card>
+            <v-card-text>
+              <v-date-picker
+                v-model="team.current_date"
+                @input="update(team)"
+                color="blue-grey"
+                full-width
+              ></v-date-picker>
+            </v-card-text>
+          </v-card>
+        </v-flex>
       </v-flex>
       <v-flex xs12 md8>
         <v-flex xs12>
@@ -62,7 +55,7 @@
       'matches-panel': MatchesPanel
     },
     mounted () {
-      this.get({ teamId: this.teamId })
+      this.get({ teamId: this.teamId, activate: true })
         .then((data) => { this.team = data })
     }
   }
