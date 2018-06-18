@@ -3,6 +3,10 @@ export default {
     all: 'teams',
     get: 'teams/{{ teamId }}'
   },
+  players: {
+    all: 'teams/{{ teamId }}/players',
+    get: 'players/{{ playerId }}'
+  },
   user: 'users/sync',
   token: {
     get: 'oauth/token',
