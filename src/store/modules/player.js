@@ -3,12 +3,28 @@ import myfifa from '@/api/myfifa'
 
 // initial state
 const state = {
-  list: []
+  list: [],
+  positions: [
+    'GK',
+    'CB',
+    'LB',
+    'LWB',
+    'RB',
+    'RWB',
+    'CDM',
+    'CM',
+    'CAM',
+    'LM',
+    'LW',
+    'RM',
+    'RW',
+    'CF',
+    'ST'
+  ]
 }
 
 // getters
 const getters = {
-  list: state => state.list
 }
 
 // actions
@@ -32,13 +48,13 @@ const actions = {
       errorMessage: 'Failed to retrieve Player. Please try again.'
     })
   },
-  create ({ commit, rootGetters }, payload) {
+  create ({ commit, rootGetters }, { teamId, player }) {
     return apiRequest({
       method: 'post',
       path: myfifa.players.all,
-      pathData: { teamId: payload.team_id },
+      pathData: { teamId: teamId },
       token: rootGetters['user/token'],
-      data: { player: payload },
+      data: { player: player },
       success: ({ data }) => {
         commit('add', data)
       },
