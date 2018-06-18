@@ -2,10 +2,8 @@
   <v-app>
     <v-toolbar color="primary" dark fixed app>
       <v-toolbar-title>
-        <router-link to="/" tag="span">
           <v-icon>fa-futbol</v-icon>
           MyFIFA Manager
-        </router-link>
       </v-toolbar-title>
       <v-toolbar-items class="hidden-xs-only">
         <v-breadcrumbs large divider="/">
@@ -18,7 +16,7 @@
     <v-content>
       <v-speed-dial
         v-model="fab"
-        v-if="isAuthenticated"
+        v-if="authenticated"
         fixed
         bottom
         right>
@@ -42,17 +40,18 @@
           </v-btn>
           <span>Log Out</span>
         </v-tooltip>
-        <!-- <v-tooltip left> -->
-          <!-- <v-btn -->
-            <!-- slot="activator" -->
-            <!-- dark -->
-            <!-- color="indigo" -->
-            <!-- fab -->
-            <!-- to="/"> -->
-            <!-- <v-icon>swap_horiz</v-icon> -->
-          <!-- </v-btn> -->
-          <!-- <span>Change Team</span> -->
-        <!-- </v-tooltip> -->
+        <v-tooltip left>
+          <v-btn
+            slot="activator"
+            v-show="this.$route.path !== '/'"
+            dark
+            color="indigo"
+            fab
+            to="/">
+            <v-icon>swap_horiz</v-icon>
+          </v-btn>
+          <span>Change Team</span>
+        </v-tooltip>
       </v-speed-dial>
 
       <router-view></router-view>
@@ -61,46 +60,50 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapState, mapGetters, mapActions } from 'vuex'
 
   export default {
     data: () => ({
       fab: false
     }),
-    computed: mapGetters({
-      isAuthenticated: 'user/authenticated',
-      expirationDate: 'user/expirationDate',
-
-      activeTeam: 'team/active'
-      // activePlayer: 'player/active'
-    }),
+    computed: {
+      ...mapState('user', [
+        'expirationDate'
+      ]),
+      ...mapState('team', {
+        activeTeam: 'active'
+      }),
+      ...mapGetters('user', [
+        'authenticated'
+      ])
+    },
     watch: {
       '$route' () {
         this.redirectToAuthentication()
       },
-      isAuthenticated () {
+      authenticated () {
         this.redirectToAuthentication()
       }
     },
     methods: {
-      ...mapActions({
-        logout: 'user/logout',
-        clear: 'user/clear'
-      }),
+      ...mapActions('user', [
+        'logout',
+        'clear'
+      ]),
       checkIfTokenExpired () {
-        if (this.isAuthenticated && Date.now() > this.expirationDate) {
+        if (this.authenticated && Date.now() > this.expirationDate) {
           this.clear()
         }
       },
       redirectToAuthentication () {
         switch (this.$route.path) {
           case '/login':
-            if (this.isAuthenticated) {
+            if (this.authenticated) {
               this.$router.push('/')
             }
             break
           default:
-            if (!this.isAuthenticated) {
+            if (!this.authenticated) {
               this.$router.push('/login')
             }
         }
@@ -112,9 +115,3 @@
     name: 'App'
   }
 </script>
-
-<style scoped>
-  .toolbar__title > span {
-    cursor: pointer;
-  }
-</style>

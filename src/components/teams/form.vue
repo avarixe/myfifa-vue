@@ -89,11 +89,11 @@
       }
     },
     methods: {
-      ...mapActions({
-        get: 'team/get',
-        create: 'team/create',
-        update: 'team/update'
-      }),
+      ...mapActions('team', [
+        'get',
+        'create',
+        'update'
+      ]),
       open () {
         this.inForm = true
 

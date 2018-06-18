@@ -6,16 +6,16 @@
       wrap>
       <v-flex xs12 sm8 md4>
         <v-flex xs12>
-          <v-card>
-            <v-card-text>
+          <v-slide-x-transition>
+            <v-card>
               <v-date-picker
                 v-model="team.current_date"
                 @input="update(team)"
                 color="blue-grey"
                 full-width
               ></v-date-picker>
-            </v-card-text>
-          </v-card>
+            </v-card>
+          </v-slide-x-transition>
         </v-flex>
       </v-flex>
       <v-flex xs12 md8>
@@ -45,10 +45,10 @@
       }
     },
     methods: {
-      ...mapActions({
-        get: 'team/get',
-        update: 'team/update'
-      })
+      ...mapActions('team', [
+        'get',
+        'update'
+      ])
     },
     components: {
       'players-panel': PlayersPanel,

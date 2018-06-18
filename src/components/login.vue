@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid fill-height>  
+  <v-container fluid fill-height>
     <v-layout align-center justify-center>
       <v-flex xs12 sm8 md6>
         <v-form v-model="valid" @submit.prevent="authenticate">
@@ -74,10 +74,10 @@
       }
     },
     methods: {
-      ...mapActions({
-        login: 'user/login',
-        info: 'user/info'
-      }),
+      ...mapActions('user', [
+        'login',
+        'info'
+      ]),
       authenticate () {
         this.login(this.credentials)
           .then((data) => { this.$router.push('/') })

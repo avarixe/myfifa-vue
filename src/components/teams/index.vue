@@ -56,24 +56,24 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions, mapMutations } from 'vuex'
+  import { mapState, mapActions, mapMutations } from 'vuex'
   import TeamForm from '@/components/teams/form'
 
   export default {
     data: () => ({
       teamToDelete: 0
     }),
-    computed: mapGetters({
-      teams: 'team/list'
+    computed: mapState('team', {
+      teams: 'list'
     }),
     methods: {
-      ...mapActions({
-        refresh: 'team/refresh',
-        delete: 'team/delete'
-      }),
-      ...mapMutations({
-        set: 'team/set'
-      }),
+      ...mapActions('team', [
+        'refresh',
+        'delete'
+      ]),
+      ...mapMutations('team', [
+        'set'
+      ]),
       deleteTeam (teamId) {
         this.delete(teamId)
           .then((data) => { this.teamToDelete = 0 })
