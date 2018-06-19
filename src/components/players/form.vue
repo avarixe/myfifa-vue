@@ -5,6 +5,7 @@
       v-model="inForm"
       fullscreen
       hide-overlay
+      transition="dialog-bottom-transition"
       scrollable>
       <v-form v-model="valid" @submit.prevent="id ? updatePlayer() : createPlayer()">
         <v-card tile>

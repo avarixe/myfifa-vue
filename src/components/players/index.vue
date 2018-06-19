@@ -43,6 +43,14 @@
                 <player-form :id="props.item.id" :team-id="teamId" :title="'Edit ' + props.item.name">
                   <v-btn dark color="orange darken-2">Edit</v-btn>
                 </player-form>
+                <v-btn dark color="red darken-2" @click.native="playerToDelete = props.item.id">Remove</v-btn>
+                <v-snackbar
+                  color="red"
+                  v-model="playerToDelete === props.item.id">
+                  Remove {{ props.item.name }}?
+                  <v-btn dark flat @click.native="deletePlayer(playerToDelete)">Yes</v-btn>
+                  <v-btn dark flat @click.native="playerToDelete = ''">No</v-btn>
+                </v-snackbar>
               </v-card-text>
             </v-card>
           </template>
@@ -65,6 +73,7 @@
   export default {
     props: ['teamId'],
     data: () => ({
+      playerToDelete: 0,
       table: {
         headers: [
           { text: 'Name', value: 'name' },
@@ -88,8 +97,14 @@
     },
     methods: {
       ...mapActions('player', [
-        'refresh'
-      ])
+        'refresh',
+        'delete'
+      ]),
+      deletePlayer (playerId) {
+        this.delete(playerId)
+          .then((data) => { this.playerToDelete = 0 })
+          .catch((error) => { alert(error) })
+      }
     },
     mounted () {
       this.table.loading = true

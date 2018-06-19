@@ -46,7 +46,7 @@
         <v-snackbar
           color="red"
           v-model="teamToDelete === team.id">
-          Delete {{ team.title }}?
+          Remove {{ team.title }}?
           <v-btn dark flat @click.native="deleteTeam(teamToDelete)">Yes</v-btn>
           <v-btn dark flat @click.native="teamToDelete = ''">No</v-btn>
         </v-snackbar>
