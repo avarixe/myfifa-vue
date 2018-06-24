@@ -1,26 +1,12 @@
 <template>
   <div class="d-inline-block" @click="open">
     <slot></slot>
-    <v-dialog
-      v-model="inForm"
-      fullscreen
-      hide-overlay
-      transition="dialog-bottom-transition"
-      scrollable>
+    <v-dialog v-model="inForm">
       <v-form v-model="valid" @submit.prevent="id ? updatePlayer() : createPlayer()">
-        <v-card tile>
-          <v-toolbar card dark color="primary">
-            <v-btn icon dark @click.native="close">
-              <v-icon>close</v-icon>
-            </v-btn>
-            <v-toolbar-title>{{ title }}</v-toolbar-title>
-          </v-toolbar>
-          <v-alert
-            type="error"
-            v-model="formError"
-            dismissible>
-            {{ errorMessage }}
-          </v-alert>
+        <v-card>
+          <v-card-title>
+            <div class="headline">{{ title }}</div>
+          </v-card-title>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
@@ -77,13 +63,26 @@
                   <v-text-field
                     v-model="player.value"
                     label="Value"
-                    prefix="$"
+                    :prefix="team.currency"
                     required
                   ></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-checkbox
+                    label="Youth Player"
+                    v-model="player.youth"
+                    :disabled="player.id > 0"
+                  ></v-checkbox>
                 </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
+          <v-alert
+            type="error"
+            v-model="formError"
+            dismissible>
+            {{ errorMessage }}
+          </v-alert>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn type="submit" :disabled="!valid" flat large>Save</v-btn>
@@ -97,38 +96,40 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  // import { format } from 'date-fns'
 
   export default {
     props: [
       'id',
-      'teamId',
-      'title'
+      'teamId'
     ],
-    data () {
-      return {
-        inForm: false,
-        valid: false,
-        errorMessage: '',
-        player: {
-          id: '',
-          name: '',
-          pos: '',
-          sec_pos: [],
-          ovr: 70,
-          value: null,
-          age: 16
-        },
-        menu: false
+    data: () => ({
+      inForm: false,
+      valid: false,
+      errorMessage: '',
+      player: {
+        id: '',
+        name: '',
+        pos: '',
+        sec_pos: [],
+        ovr: 70,
+        value: null,
+        age: 16,
+        youth: false
       }
-    },
+    }),
     computed: {
       ...mapState('player', [
         'positions'
       ]),
+      ...mapState('team', {
+        team: 'active'
+      }),
       formError: {
         get: function () { return this.errorMessage.length > 0 },
         set: function (val) { this.errorMessage = val }
+      },
+      title () {
+        return this.player.name.length > 0 ? 'Edit ' + this.player.name : 'New Player'
       }
     },
     methods: {
@@ -156,7 +157,8 @@
           sec_pos: [],
           ovr: 70,
           value: null,
-          age: 16
+          age: 16,
+          youth: false
         }
       },
       createPlayer () {
@@ -177,7 +179,7 @@
 
 <style scoped>
   .dialog > form { min-width: 100%; }
-  .dialg--fullscreen > form > .card {
+  .dialog--fullscreen > form > .card {
     min-height: 100%;
     min-width: 100%;
     margin: 0 !important;

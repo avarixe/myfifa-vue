@@ -40,6 +40,14 @@
                     ></v-date-picker>
                   </v-menu>
                 </v-flex>
+                <v-flex xs12>
+                  <v-text-field
+                    v-model="team.currency"
+                    label="Currency"
+                    required
+                    auto-grow
+                  ></v-text-field>
+                </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
@@ -77,7 +85,8 @@
         team: {
           id: '',
           title: '',
-          start_date: format(new Date(), 'YYYY-MM-DD')
+          start_date: format(new Date(), 'YYYY-MM-DD'),
+          currency: '$'
         },
         menu: false
       }
@@ -103,12 +112,23 @@
               this.team = {
                 start_date: data.start_date,
                 title: data.title,
-                id: data.id
+                id: data.id,
+                currency: data.currency
               }
             })
             .catch((error) => {
               this.errorMessage = error.message
             })
+        }
+      },
+      close () {
+        this.inForm = false
+        this.errorMessage = ''
+        this.player = {
+          id: '',
+          title: '',
+          start_date: format(new Date(), 'YYYY-MM-DD'),
+          currency: '$'
         }
       },
       createTeam () {

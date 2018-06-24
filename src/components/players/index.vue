@@ -5,7 +5,7 @@
         <div class="title">
           // PLAYERS
         </div>
-        <player-form title="New Player" :team-id="teamId">
+        <player-form :team-id="teamId">
           <v-tooltip bottom>
             <v-btn slot="activator" flat icon>
               <v-icon>person_add</v-icon>
@@ -34,16 +34,20 @@
             <tr @click="props.expanded = !props.expanded">
               <td>{{ props.item.name }}</td>
               <td>{{ props.item.pos }}</td>
+              <td>{{ props.item.sec_pos.toString() }}</td>
               <td>{{ props.item.ovr }}</td>
             </tr>
           </template>
           <template slot="expand" slot-scope="props">
             <v-card flat>
-              <v-card-text>
-                <player-form :id="props.item.id" :team-id="teamId" :title="'Edit ' + props.item.name">
+              <v-card-text class="text-xs-center">
+                <player-form :id="props.item.id" :team-id="teamId">
                   <v-btn dark color="orange darken-2">Edit</v-btn>
                 </player-form>
-                <v-btn dark color="red darken-2" @click.native="playerToDelete = props.item.id">Remove</v-btn>
+                <contract-form :player="props.item" :contract="props.item.last_contract">
+                  <v-btn dark color="blue darken-2">Contract</v-btn>
+                </contract-form>
+                <v-btn dark @click.native="playerToDelete = props.item.id">Remove</v-btn>
                 <v-snackbar
                   color="red"
                   v-model="playerToDelete === props.item.id">
@@ -69,6 +73,7 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import PlayerForm from '@/components/players/form'
+  import ContractForm from '@/components/players/contract_form'
 
   export default {
     props: ['teamId'],
@@ -78,6 +83,7 @@
         headers: [
           { text: 'Name', value: 'name' },
           { text: 'Position', value: 'pos' },
+          { text: 'Secondary Position(s)', value: 'sec_pos' },
           { text: 'OVR', value: 'ovr' }
         ],
         pagination: {
@@ -113,7 +119,8 @@
         .catch((error) => { alert(error.message) })
     },
     components: {
-      'player-form': PlayerForm
+      'player-form': PlayerForm,
+      'contract-form': ContractForm
     }
   }
 </script>

@@ -7,6 +7,10 @@ export default {
     all: 'teams/{{ teamId }}/players',
     get: 'players/{{ playerId }}'
   },
+  contracts: {
+    all: 'players/{{ playerId }}/contracts',
+    get: 'contracts/{{ contractId }}'
+  },
   user: 'users/sync',
   token: {
     get: 'oauth/token',

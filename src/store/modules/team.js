@@ -6,7 +6,9 @@ const state = {
   list: [],
   active: {
     id: null,
-    title: ''
+    title: '',
+    current_date: null,
+    currency: '$'
   }
 }
 
@@ -96,11 +98,14 @@ const mutations = {
   },
   set (state, team) {
     if (team !== null) {
-      state.active.id = team.id
-      state.active.title = team.title
+      state.active = team
     } else {
-      state.active.id = null
-      state.active.title = ''
+      state.active = {
+        id: null,
+        title: '',
+        current_date: null,
+        currency: '$'
+      }
     }
   }
 }

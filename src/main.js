@@ -33,6 +33,7 @@ import {
   VBreadcrumbs,
   VSelect,
   VSlider,
+  VCheckbox,
   transitions
 } from 'vuetify'
 import '../node_modules/vuetify/src/stylus/app.styl'
@@ -66,6 +67,7 @@ Vue.use(Vuetify, {
     VBreadcrumbs,
     VSelect,
     VSlider,
+    VCheckbox,
     transitions
   }
 })
