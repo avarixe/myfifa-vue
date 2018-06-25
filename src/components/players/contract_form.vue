@@ -1,20 +1,29 @@
 <template>
-  <div class="d-inline-block" @click="open">
-    <slot></slot>
+  <v-btn
+    :dark="dark"
+    :color="color + ' darken-2'"
+    @click="open">
+    Contract
     <v-dialog v-model="inForm" max-width="500px">
       <v-form v-model="valid" @submit.prevent="contract.id ? createContract() : updateContract()">
         <v-card>
-          <v-card-title primary-title>
+          <v-card-title
+            primary-title
+            :class="color + ' accent-2'">
             <div class="headline">{{ title }}</div>
           </v-card-title>
+          <v-divider></v-divider>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12>
                   <v-text-field
                     v-model="contract.wage"
+                    type="number"
                     label="Wage"
                     :prefix="team.currency"
+                    :hint="numberHint(contract.wage)"
+                    persistent-hint
                     required
                   ></v-text-field>
                 </v-flex>
@@ -22,24 +31,33 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="contract.signing_bonus"
+                    type="number"
                     label="Signing Bonus"
                     :prefix="team.currency"
+                    :hint="numberHint(contract.signing_bonus)"
+                    persistent-hint
                   ></v-text-field>
                 </v-flex>
 
                 <v-flex xs12>
                   <v-text-field
                     v-model="contract.release_clause"
+                    type="number"
                     label="Release Clause"
                     :prefix="team.currency"
+                    :hint="numberHint(contract.release_clause)"
+                    persistent-hint
                   ></v-text-field>
                 </v-flex>
 
                 <v-flex xs12>
                   <v-text-field
                     v-model="contract.performance_bonus"
+                    type="number"
                     label="Performance Bonus"
                     :prefix="team.currency"
+                    :hint="numberHint(contract.performance_bonus)"
+                    persistent-hint
                   ></v-text-field>
                 </v-flex>
 
@@ -70,26 +88,44 @@
           </v-alert>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn type="submit" :disabled="!valid" flat large>Save</v-btn>
+            <v-btn
+              type="submit"
+              :disabled="!valid"
+              :color="color + ' darken-2'"
+              flat
+              large
+            >Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
     </v-dialog>
-  </div>
+  </v-btn>
 </template>
 
 <script>
   import { mapState, mapActions } from 'vuex'
+  import formMixin from '@/mixins/form'
 
   export default {
+    mixins: [formMixin],
     props: [
       'player',
-      'contract'
+      'color',
+      'dark'
     ],
     data: () => ({
       inForm: false,
       valid: false,
-      errorMessage: ''
+      errorMessage: '',
+      contract: {
+        id: null,
+        wage: null,
+        signing_bonus: null,
+        release_clause: null,
+        performance_bonus: null,
+        bonus_req: null,
+        bonus_req_type: null
+      }
     }),
     computed: {
       ...mapState('team', {
@@ -132,16 +168,8 @@
       }
     },
     mounted () {
-      if (!this.contract) {
-        this.contract = {
-          id: null,
-          wage: 0,
-          signing_bonus: null,
-          release_clause: null,
-          performance_bonus: null,
-          bonus_req: null,
-          bonus_req_type: null
-        }
+      if (this.player.last_contract) {
+        this.contract = this.player.last_contract
       }
     }
   }

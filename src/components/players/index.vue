@@ -5,7 +5,7 @@
         <div class="title">
           // PLAYERS
         </div>
-        <player-form :team-id="teamId">
+        <player-form :team-id="teamId" color="orange">
           <v-tooltip bottom>
             <v-btn slot="activator" flat icon>
               <v-icon>person_add</v-icon>
@@ -41,15 +41,23 @@
           <template slot="expand" slot-scope="props">
             <v-card flat>
               <v-card-text class="text-xs-center">
-                <player-form :id="props.item.id" :team-id="teamId">
+                <player-form :id="props.item.id" :team-id="teamId" color="orange">
                   <v-btn dark color="orange darken-2">Edit</v-btn>
                 </player-form>
-                <contract-form :player="props.item" :contract="props.item.last_contract">
-                  <v-btn dark color="blue darken-2">Contract</v-btn>
-                </contract-form>
+                <transfer-form
+                  :player="props.item"
+                  color="red"
+                  dark
+                ></transfer-form>
+                <contract-form
+                  :player="props.item"
+                  :contract="props.item.last_contract"
+                  color="blue"
+                  dark
+                ></contract-form>
                 <v-btn dark @click.native="playerToDelete = props.item.id">Remove</v-btn>
                 <v-snackbar
-                  color="red"
+                  color="black"
                   v-model="playerToDelete === props.item.id">
                   Remove {{ props.item.name }}?
                   <v-btn dark flat @click.native="deletePlayer(playerToDelete)">Yes</v-btn>
@@ -74,6 +82,7 @@
   import { mapState, mapActions } from 'vuex'
   import PlayerForm from '@/components/players/form'
   import ContractForm from '@/components/players/contract_form'
+  import TransferForm from '@/components/players/transfer_form'
 
   export default {
     props: ['teamId'],
@@ -120,7 +129,8 @@
     },
     components: {
       'player-form': PlayerForm,
-      'contract-form': ContractForm
+      'contract-form': ContractForm,
+      'transfer-form': TransferForm
     }
   }
 </script>

@@ -85,6 +85,16 @@ const actions = {
       },
       errorMessage: 'Failed to delete Player. Please try again.'
     })
+  },
+  transfer ({ rootGetters }, { playerId, transfer }) {
+    return apiRequest({
+      method: 'post',
+      path: myfifa.players.transfer,
+      pathData: { playerId: playerId },
+      token: rootGetters['user/token'],
+      data: { transfer: transfer },
+      errorMessage: 'Failed to record Transfer. Please try again.'
+    })
   }
 }
 

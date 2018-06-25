@@ -1,12 +1,13 @@
 <template>
   <div class="d-inline-block" @click="open">
     <slot></slot>
-    <v-dialog v-model="inForm">
+    <v-dialog v-model="inForm" max-width="500px">
       <v-form v-model="valid" @submit.prevent="id ? updatePlayer() : createPlayer()">
         <v-card>
-          <v-card-title>
+          <v-card-title primary-title :class="color + ' accent-2'">
             <div class="headline">{{ title }}</div>
           </v-card-title>
+          <v-divider></v-divider>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
@@ -62,8 +63,11 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="player.value"
+                    type="number"
                     label="Value"
                     :prefix="team.currency"
+                    :hint="numberHint(player.value)"
+                    persistent-hint
                     required
                   ></v-text-field>
                 </v-flex>
@@ -85,7 +89,13 @@
           </v-alert>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn type="submit" :disabled="!valid" flat large>Save</v-btn>
+            <v-btn
+              type="submit"
+              :disabled="!valid"
+              :color="color + ' darken-2'"
+              flat
+              large
+            >Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
@@ -96,11 +106,14 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
+  import formMixin from '@/mixins/form'
 
   export default {
+    mixins: [formMixin],
     props: [
       'id',
-      'teamId'
+      'teamId',
+      'color'
     ],
     data: () => ({
       inForm: false,

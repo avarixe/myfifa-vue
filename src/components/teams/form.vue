@@ -1,12 +1,13 @@
 <template>
   <div class="d-inline-block" @click="open">
     <slot></slot>
-    <v-dialog v-model="inForm" max-width="500px">
+    <v-dialog v-model="inForm" scrollable max-width="500px">
       <v-form v-model="valid" @submit.prevent="id ? updateTeam() : createTeam()">
         <v-card>
           <v-card-title primary-title>
             <div class="headline">{{ title }}</div>
           </v-card-title>
+          <v-divider></v-divider>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
