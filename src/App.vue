@@ -29,7 +29,7 @@
           <v-icon>menu</v-icon>
           <v-icon>close</v-icon>
         </v-btn>
-        <v-tooltip left>
+        <v-tooltip left color="red darken-2">
           <v-btn
             slot="activator"
             dark
@@ -40,7 +40,7 @@
           </v-btn>
           <span>Log Out</span>
         </v-tooltip>
-        <v-tooltip left>
+        <v-tooltip left color="indigo">
           <v-btn
             slot="activator"
             v-show="this.$route.path !== '/'"

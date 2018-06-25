@@ -5,9 +5,9 @@
         <div class="title">
           // PLAYERS
         </div>
-        <player-form :team-id="teamId" color="orange">
-          <v-tooltip bottom>
-            <v-btn slot="activator" flat icon>
+        <player-form :team-id="teamId" color="green">
+          <v-tooltip top color="green darken-2">
+            <v-btn slot="activator" flat icon color="green darken-2">
               <v-icon>person_add</v-icon>
             </v-btn>
             <span>Add Player</span>

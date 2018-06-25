@@ -16,7 +16,7 @@
           <v-card-title primary-title>
             <div class="headline">
               {{ team.title }}
-              <v-tooltip top>
+              <v-tooltip top color="primary">
                 <v-btn icon slot="activator" :to="'/team/' + team.id">
                   <v-icon color="primary">arrow_forward</v-icon>
                 </v-btn>
@@ -28,14 +28,14 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <team-form :id="team.id" :title="'Edit ' + team.title">
-              <v-tooltip bottom>
+              <v-tooltip bottom color="orange darken-2">
                 <v-btn icon slot="activator">
                   <v-icon color="orange darken-2">edit</v-icon>
                 </v-btn>
                 <span>Edit</span>
               </v-tooltip>
             </team-form>
-            <v-tooltip bottom>
+            <v-tooltip bottom color="red darken-2">
               <v-btn icon slot="activator" @click.native="teamToDelete = team.id">
                 <v-icon color="red darken-2">cancel</v-icon>
               </v-btn>
