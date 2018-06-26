@@ -4,7 +4,7 @@
     <v-dialog v-model="inForm" max-width="500px">
       <v-form v-model="valid" @submit.prevent="id ? updatePlayer() : createPlayer()">
         <v-card>
-          <v-card-title primary-title :class="color + ' accent-2'">
+          <v-card-title primary-title :class="formColor">
             <div class="headline">{{ title }}</div>
           </v-card-title>
           <v-divider></v-divider>
@@ -92,7 +92,7 @@
             <v-btn
               type="submit"
               :disabled="!valid"
-              :color="color + ' darken-2'"
+              :color="buttonColor"
               flat
               large
             >Save</v-btn>
@@ -143,6 +143,12 @@
       },
       title () {
         return this.player.name.length > 0 ? 'Edit ' + this.player.name : 'New Player'
+      },
+      buttonColor () {
+        return this.color ? this.color + ' darken-2' : null
+      },
+      formColor () {
+        return this.color ? this.color + ' accent-2' : null
       }
     },
     methods: {

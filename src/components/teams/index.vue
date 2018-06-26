@@ -28,9 +28,9 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <team-form :id="team.id" :title="'Edit ' + team.title">
-              <v-tooltip bottom color="orange darken-2">
+              <v-tooltip bottom color="deep-orange darken-2">
                 <v-btn icon slot="activator">
-                  <v-icon color="orange darken-2">edit</v-icon>
+                  <v-icon color="deep-orange darken-2">edit</v-icon>
                 </v-btn>
                 <span>Edit</span>
               </v-tooltip>

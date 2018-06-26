@@ -7,9 +7,21 @@ export default {
     all: 'teams/{{ teamId }}/players',
     get: 'players/{{ playerId }}'
   },
+  transfers: {
+    all: 'players/{{ playerId }}/transfers',
+    get: 'transfers/{{ transferId }}'
+  },
   contracts: {
     all: 'players/{{ playerId }}/contracts',
     get: 'contracts/{{ contractId }}'
+  },
+  injuries: {
+    all: 'players/{{ playerId }}/injuries',
+    get: 'injuries/{{ injuryId }}'
+  },
+  loans: {
+    all: 'players/{{ playerId }}/loans',
+    get: 'loans/{{ loanId }}'
   },
   user: 'users/sync',
   token: {

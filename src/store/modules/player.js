@@ -89,7 +89,7 @@ const actions = {
   transfer ({ rootGetters }, { playerId, transfer }) {
     return apiRequest({
       method: 'post',
-      path: myfifa.players.transfer,
+      path: myfifa.transfers.all,
       pathData: { playerId: playerId },
       token: rootGetters['user/token'],
       data: { transfer: transfer },

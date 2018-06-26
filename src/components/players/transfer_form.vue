@@ -1,111 +1,118 @@
 <template>
-  <v-btn
-    :dark="dark"
-    :color="color + ' darken-2'"
-    @click="open">
-    Transfer
-    <v-dialog v-model="inForm" max-width="500px">
-      <v-form v-model="valid" @submit.prevent="saveTransfer">
-        <v-card>
-          <v-card-title
-            primary-title
-            :class="color + ' accent-2'">
-            <div class="headline">Transfer {{ player.name }}</div>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout wrap>
+  <v-tooltip bottom :color="color + ' darken-2'">
+    <v-btn
+      icon
+      slot="activator"
+      @click="open">
+      <v-icon :color="color + ' darken-2'">
+        fa-plane-{{ transferOut ? 'departure' : 'arrival' }}
+      </v-icon>
+      <v-dialog v-model="inForm" max-width="500px">
+        <v-form v-model="valid" @submit.prevent="saveTransfer">
+          <v-card>
+            <v-card-title
+              primary-title
+              :class="color + ' accent-2'">
+              <div class="headline">Transfer {{ player.name }}</div>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+              <v-container grid-list-md>
+                <v-layout wrap>
 
-                <v-flex xs12>
-                  <v-menu
-                    ref="menu"
-                    :close-on-content-click="false"
-                    v-model="menu"
-                    :return-value.sync="transfer.effective_date"
-                    lazy
-                    transition="scale-transition"
-                    full-width>
+                  <v-flex xs12>
+                    <v-menu
+                      ref="menu"
+                      :close-on-content-click="false"
+                      v-model="menu"
+                      :return-value.sync="transfer.effective_date"
+                      lazy
+                      transition="scale-transition"
+                      full-width>
+                      <v-text-field
+                        slot="activator"
+                        label="Effective Date"
+                        v-model="transfer.effective_date"
+                        required
+                        readonly
+                      ></v-text-field>
+                      <v-date-picker
+                        v-model="transfer.effective_date"
+                        landscape
+                        @input="$refs.menu.save(transfer.effective_date)"
+                      ></v-date-picker>
+                    </v-menu>
+                  </v-flex>
+                  <v-flex xs12>
                     <v-text-field
-                      slot="activator"
-                      label="Effective Date"
-                      v-model="transfer.effective_date"
+                      v-model="transfer.origin"
+                      label="Origin"
+                      :disabled="transferOut"
                       required
-                      readonly
                     ></v-text-field>
-                    <v-date-picker
-                      v-model="transfer.effective_date"
-                      landscape
-                      @input="$refs.menu.save(transfer.effective_date)"
-                    ></v-date-picker>
-                  </v-menu>
-                </v-flex>
-                <v-flex xs12>
-                  <v-text-field
-                    v-model="transfer.origin"
-                    label="Origin"
-                    required
-                  ></v-text-field>
-                </v-flex>
-                <v-flex xs12>
-                  <v-text-field
-                    v-model="transfer.destination"
-                    label="Destination"
-                    required
-                  ></v-text-field>
-                </v-flex>
-                <v-flex xs12>
-                  <v-text-field
-                    v-model="transfer.fee"
-                    type="number"
-                    label="Fee"
-                    :prefix="team.currency"
-                    :hint="numberHint(transfer.fee)"
-                    persistent-hint
-                  ></v-text-field>
-                </v-flex>
-                <v-flex xs12>
-                  <v-slider
-                    v-model="transfer.addon_clause"
-                    :label="percentLabel(transfer.addon_clause)"
-                    min="0"
-                    max="25"
-                    thumb-label
-                    ticks
-                    hint="Add-On Clause"
-                    persistent-hint
-                  ></v-slider>
-                </v-flex>
-                <v-flex xs12>
-                  <v-checkbox
-                    v-model="transfer.loan"
-                    label="Loan"
-                    :disabled="transferOut"
-                  ></v-checkbox>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-          <v-alert
-            type="error"
-            v-model="formError"
-            dismissible>
-            {{ errorMessage }}
-          </v-alert>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              type="submit"
-              :disabled="!valid"
-              :color="color + ' darken-2'"
-              flat
-              large
-            >Save</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-form>
-    </v-dialog>
-  </v-btn>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-text-field
+                      v-model="transfer.destination"
+                      label="Destination"
+                      :disabled="!transferOut"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-text-field
+                      v-model="transfer.fee"
+                      type="number"
+                      label="Fee"
+                      :prefix="team.currency"
+                      :hint="numberHint(transfer.fee)"
+                      persistent-hint
+                    ></v-text-field>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-slider
+                      v-model="transfer.addon_clause"
+                      :label="percentLabel(transfer.addon_clause)"
+                      min="0"
+                      max="25"
+                      thumb-label
+                      ticks
+                      hint="Add-On Clause"
+                      persistent-hint
+                    ></v-slider>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-checkbox
+                      v-model="transfer.loan"
+                      label="Loan"
+                      :disabled="transferOut"
+                    ></v-checkbox>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card-text>
+            <v-alert
+              type="error"
+              v-model="formError"
+              dismissible>
+              {{ errorMessage }}
+            </v-alert>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                type="submit"
+                :disabled="!valid"
+                :color="color + ' darken-2'"
+                flat
+                large
+              >Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
+      </v-dialog>
+    </v-btn>
+    <span>Transfer {{ transferOut ? 'Out' : 'In' }}</span>
+  </v-tooltip>
 </template>
 
 <script>
@@ -142,7 +149,7 @@
         set: function (val) { this.errorMessage = val }
       },
       transferOut () {
-        return this.team.title === this.transfer.origin
+        return this.player.status && this.player.status.length > 0
       }
     },
     methods: {
@@ -174,6 +181,11 @@
     },
     mounted () {
       this.transfer.effective_date = this.team.current_date
+      if (this.transferOut) {
+        this.transfer.origin = this.team.title
+      } else {
+        this.transfer.destination = this.team.title
+      }
     }
   }
 </script>

@@ -3,12 +3,6 @@ import myfifa from '@/api/myfifa'
 
 // initial state
 const state = {
-  bonusRequirementTypes: [
-    'Appearances',
-    'Goals',
-    'Assists',
-    'Clean Sheets'
-  ]
 }
 
 // getters
@@ -17,44 +11,44 @@ const getters = {
 
 // actions
 const actions = {
-  get ({ rootGetters }, { contractId }) {
+  get ({ rootGetters }, { loanId }) {
     return apiRequest({
-      path: myfifa.contracts.get,
-      pathData: { contractId: contractId },
+      path: myfifa.loans.get,
+      pathData: { loanId: loanId },
       token: rootGetters['user/token'],
-      errorMessage: 'Failed to retrieve Contract. Please try again.'
+      errorMessage: 'Failed to retrieve Loan. Please try again.'
     })
   },
-  create ({ commit, rootGetters }, { playerId, contract }) {
+  create ({ commit, rootGetters }, { playerId, loan }) {
     return apiRequest({
       method: 'post',
-      path: myfifa.contracts.all,
+      path: myfifa.loans.all,
       pathData: { playerId: playerId },
       token: rootGetters['user/token'],
-      data: { contract: contract },
-      errorMessage: 'Failed to create Contract. Please try again.'
+      data: { loan: loan },
+      errorMessage: 'Failed to create Loan. Please try again.'
     })
   },
   update ({ commit, rootGetters }, payload) {
     return apiRequest({
       method: 'patch',
-      path: myfifa.contracts.get,
-      pathData: { contractId: payload.id },
+      path: myfifa.loans.get,
+      pathData: { loanId: payload.id },
       token: rootGetters['user/token'],
-      data: { contract: payload },
-      errorMessage: 'Failed to update Contract. Please try again.'
+      data: { loan: payload },
+      errorMessage: 'Failed to update Loan. Please try again.'
     })
   },
   delete ({ commit, rootGetters }, payload) {
     return apiRequest({
       method: 'delete',
-      path: myfifa.contracts.get,
-      pathData: { contractId: payload },
+      path: myfifa.loans.get,
+      pathData: { loanId: payload },
       token: rootGetters['user/token'],
       success: ({ data }) => {
         commit('remove', data)
       },
-      errorMessage: 'Failed to delete Contract. Please try again.'
+      errorMessage: 'Failed to delete Loan. Please try again.'
     })
   }
 }

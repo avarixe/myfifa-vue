@@ -5,9 +5,9 @@
         <div class="title">
           // PLAYERS
         </div>
-        <player-form :team-id="teamId" color="green">
-          <v-tooltip top color="green darken-2">
-            <v-btn slot="activator" flat icon color="green darken-2">
+        <player-form :team-id="teamId">
+          <v-tooltip top>
+            <v-btn slot="activator" flat icon>
               <v-icon>person_add</v-icon>
             </v-btn>
             <span>Add Player</span>
@@ -39,32 +39,7 @@
             </tr>
           </template>
           <template slot="expand" slot-scope="props">
-            <v-card flat>
-              <v-card-text class="text-xs-center">
-                <player-form :id="props.item.id" :team-id="teamId" color="orange">
-                  <v-btn dark color="orange darken-2">Edit</v-btn>
-                </player-form>
-                <transfer-form
-                  :player="props.item"
-                  color="red"
-                  dark
-                ></transfer-form>
-                <contract-form
-                  :player="props.item"
-                  :contract="props.item.last_contract"
-                  color="blue"
-                  dark
-                ></contract-form>
-                <v-btn dark @click.native="playerToDelete = props.item.id">Remove</v-btn>
-                <v-snackbar
-                  color="black"
-                  v-model="playerToDelete === props.item.id">
-                  Remove {{ props.item.name }}?
-                  <v-btn dark flat @click.native="deletePlayer(playerToDelete)">Yes</v-btn>
-                  <v-btn dark flat @click.native="playerToDelete = ''">No</v-btn>
-                </v-snackbar>
-              </v-card-text>
-            </v-card>
+            <player-actions :player="props.item"></player-actions>
           </template>
         </v-data-table>
         <div class="text-xs-center pt-2" v-if="pages > 1">
@@ -81,13 +56,11 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import PlayerForm from '@/components/players/form'
-  import ContractForm from '@/components/players/contract_form'
-  import TransferForm from '@/components/players/transfer_form'
+  import PlayerActions from '@/components/players/actions'
 
   export default {
     props: ['teamId'],
     data: () => ({
-      playerToDelete: 0,
       table: {
         headers: [
           { text: 'Name', value: 'name' },
@@ -129,8 +102,7 @@
     },
     components: {
       'player-form': PlayerForm,
-      'contract-form': ContractForm,
-      'transfer-form': TransferForm
+      'player-actions': PlayerActions
     }
   }
 </script>
