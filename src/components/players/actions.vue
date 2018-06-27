@@ -11,7 +11,7 @@
       </player-form>
       <transfer-form
         :player="player"
-        :color="active ? 'red' : 'green'"
+        :color="transferOut ? 'red' : 'green'"
         dark
       ></transfer-form>
       <contract-form
@@ -50,6 +50,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   import PlayerForm from '@/components/players/form'
   import ContractForm from '@/components/players/contract_form'
   import InjuryForm from '@/components/players/injury_form'
@@ -64,8 +65,14 @@
       promptDeletion: false
     }),
     computed: {
+      ...mapState('team', {
+        team: 'active'
+      }),
       active () {
         return this.player.status && this.player.status.length > 0
+      },
+      transferOut () {
+        return this.active && this.player.last_transfer
       }
     },
     components: {

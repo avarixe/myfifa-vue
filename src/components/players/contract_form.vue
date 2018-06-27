@@ -6,7 +6,7 @@
       @click="open">
       <v-icon :color="color + ' darken-2'">fa-file-contract</v-icon>
       <v-dialog v-model="inForm" max-width="500px">
-        <v-form v-model="valid" @submit.prevent="contract.id ? createContract() : updateContract()">
+        <v-form v-model="valid" @submit.prevent="contract.id ?  updateContract() : createContract()">
           <v-card>
             <v-card-title
               primary-title
@@ -17,6 +17,20 @@
             <v-card-text>
               <v-container grid-list-md>
                 <v-layout wrap>
+                  <v-flex xs12>
+                    <v-slider
+                      v-model="contract.duration"
+                      label="Duration"
+                      :hint="contract.duration + ' Year(s)'"
+                      min="1"
+                      max="5"
+                      thumb-label
+                      ticks
+                      persistent-hint
+                      required
+                    ></v-slider>
+                  </v-flex>
+
                   <v-flex xs12>
                     <v-text-field
                       v-model="contract.wage"
@@ -76,6 +90,7 @@
                       v-model="contract.bonus_req_type"
                       label="Bonus Req. Type"
                       :items="bonusRequirementTypes"
+                      autocomplete
                     ></v-select>
                   </v-flex>
                 </v-layout>
@@ -122,6 +137,7 @@
       errorMessage: '',
       contract: {
         wage: null,
+        duration: 1,
         signing_bonus: null,
         release_clause: null,
         performance_bonus: null,

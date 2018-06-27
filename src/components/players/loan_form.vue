@@ -6,7 +6,7 @@
       @click="open">
       <v-icon :color="color + ' darken-2'">fa-handshake</v-icon>
       <v-dialog v-model="inForm" max-width="500px">
-        <v-form v-model="valid" @submit.prevent="loan.id ? createLoan() : updateLoan()">
+        <v-form v-model="valid" @submit.prevent="loan.id ? updateLoan() : createLoan()">
           <v-card>
             <v-card-title
               primary-title

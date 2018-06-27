@@ -23,6 +23,7 @@
                     v-model="player.pos"
                     :items="positions"
                     label="Position"
+                    autocomplete
                     required
                   ></v-select>
                 </v-flex>
@@ -142,7 +143,7 @@
         set: function (val) { this.errorMessage = val }
       },
       title () {
-        return this.player.name.length > 0 ? 'Edit ' + this.player.name : 'New Player'
+        return this.player.id ? 'Edit ' + this.player.name : 'New Player'
       },
       buttonColor () {
         return this.color ? this.color + ' darken-2' : null

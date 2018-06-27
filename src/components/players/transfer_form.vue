@@ -149,7 +149,7 @@
         set: function (val) { this.errorMessage = val }
       },
       transferOut () {
-        return this.player.status && this.player.status.length > 0
+        return this.player.last_transfer && this.player.last_transfer.destination === this.team.title
       }
     },
     methods: {
