@@ -1,10 +1,10 @@
 <template>
-  <v-tooltip bottom :color="color + ' darken-2'">
+  <v-tooltip bottom :color="color">
     <v-btn
       icon
       slot="activator"
       @click="open">
-      <v-icon :color="color + ' darken-2'">
+      <v-icon :color="color">
         fa-plane-{{ transferOut ? 'departure' : 'arrival' }}
       </v-icon>
       <v-dialog v-model="inForm" max-width="500px">
@@ -102,7 +102,7 @@
               <v-btn
                 type="submit"
                 :disabled="!valid"
-                :color="color + ' darken-2'"
+                :color="color"
                 flat
                 large
               >Save</v-btn>

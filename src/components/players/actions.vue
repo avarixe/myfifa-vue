@@ -1,10 +1,9 @@
 <template>
-  <v-card flat>
-    <v-card-text class="text-xs-center">
-      <player-form :id="player.id" color="deep-orange">
-        <v-tooltip bottom color="deep-orange">
+  <v-card-text id="actions" class="text-xs-center pa-0">
+      <player-form :id="player.id" color="orange">
+        <v-tooltip bottom color="orange">
           <v-btn icon slot="activator">
-            <v-icon color="deep-orange">fa-user-edit</v-icon>
+            <v-icon color="orange">fa-user-edit</v-icon>
           </v-btn>
           <span>Edit</span>
         </v-tooltip>
@@ -22,7 +21,7 @@
       <injury-form
         v-if="active"
         :player="player"
-        color="lime"
+        color="pink"
         dark
       ></injury-form>
       <loan-form
@@ -45,8 +44,7 @@
         <v-btn dark flat @click.native="deletePlayer(playerToDelete)">Yes</v-btn>
         <v-btn dark flat @click.native="promptDeletion = false">No</v-btn>
       </v-snackbar>
-    </v-card-text>
-  </v-card>
+  </v-card-text>
 </template>
 
 <script>

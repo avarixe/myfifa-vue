@@ -5,6 +5,8 @@
         <div class="title">
           // PLAYERS
         </div>
+
+        <!-- New Player Form -->
         <player-form :team-id="teamId">
           <v-tooltip top>
             <v-btn slot="activator" flat icon>
@@ -13,29 +15,51 @@
             <span>Add Player</span>
           </v-tooltip>
         </player-form>
+
+        <!-- Display Menu -->
+        <v-menu bottom right>
+          <v-btn slot="activator" icon>
+            <v-icon>menu</v-icon>
+          </v-btn>
+          <v-list>
+            <v-list-tile
+              v-for="(mode, i) in modes"
+              :key="i"
+              @click="display = mode.value">
+              <v-list-tile-title>{{ mode.text }}</v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-menu>
+
         <v-spacer></v-spacer>
+
+        <!-- Player Search -->
         <v-text-field
-          v-model="table.search"
+          v-model="search"
           label="Search"
           append-icon="search"
         ></v-text-field>
       </v-card-title>
       <v-card-text>
+
+        <!-- Player Information Grid -->
         <v-data-table
-          :headers="table.headers"
+          :headers="headers"
           :items="players"
-          :pagination.sync="table.pagination"
-          :loading="table.loading"
-          :search="table.search"
+          :pagination.sync="pagination"
+          :loading="loading"
+          :search="search"
           item-key="id"
           hide-actions
           no-data-text="No Players Recorded">
           <template slot="items" slot-scope="props">
             <tr @click="props.expanded = !props.expanded">
-              <td>{{ props.item.name }}</td>
-              <td>{{ props.item.pos }}</td>
-              <td>{{ props.item.sec_pos.toString() }}</td>
-              <td>{{ props.item.ovr }}</td>
+              <td
+                v-for="(header, i) in headers"
+                :class="'text-xs-' + header.align"
+                :key="i">
+                {{ getProperty(props.item, header.value, header.format) }}
+              </td>
             </tr>
           </template>
           <template slot="expand" slot-scope="props">
@@ -44,7 +68,7 @@
         </v-data-table>
         <div class="text-xs-center pt-2" v-if="pages > 1">
           <v-pagination
-            v-model="table.pagination.page"
+            v-model="pagination.page"
             :length="pages"
           ></v-pagination>
         </div>
@@ -55,32 +79,59 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
+  import get from 'lodash.get'
+  import { format } from 'date-fns'
   import PlayerForm from '@/components/players/form'
   import PlayerActions from '@/components/players/actions'
 
   export default {
     props: ['teamId'],
     data: () => ({
-      table: {
-        headers: [
-          { text: 'Name', value: 'name' },
-          { text: 'Position', value: 'pos' },
-          { text: 'Secondary Position(s)', value: 'sec_pos' },
-          { text: 'OVR', value: 'ovr' }
-        ],
-        pagination: {
-          sortBy: 'posIdx'
-        },
-        loading: false,
-        search: ''
-      }
+      pagination: {
+        sortBy: 'posIdx'
+      },
+      display: 'ovr',
+      modes: [
+        { text: 'Status', value: 'status' },
+        { text: 'Contract', value: 'contract' },
+        { text: 'Analytics', value: 'analytics' }
+      ],
+      loading: false,
+      search: ''
     }),
     computed: {
       ...mapState('player', {
         players: 'list'
       }),
+      ...mapState('team', {
+        team: 'active'
+      }),
+      headers () {
+        let headers = [
+          { text: 'Name',     value: 'name', align: 'left' },
+          { text: 'Position', value: 'pos',  align: 'center' }
+        ]
+
+        switch (this.display) {
+          case 'contract':
+            return headers.concat([
+             { text: 'OVR',         value: 'ovr',                       align: 'center' },
+             { text: 'Value',       value: 'value',                     align: 'center', format: 'money' },
+             { text: 'Wage',        value: 'last_contract.wage',        align: 'center', format: 'money' },
+             { text: 'Signed Date', value: 'last_contract.signed_date', align: 'center', format: 'date' },
+             { text: 'Duration',    value: 'last_contract.duration',    align: 'center', format: 'years' }
+            ])
+          default: // Status
+            return headers.concat([
+              { text: 'Secondary Position(s)', value: 'sec_pos', align: 'center', format: 'array' },
+              { text: 'OVR',                   value: 'ovr',     align: 'center' },
+              { text: 'Value',                 value: 'value',   align: 'center', format: 'money' },
+              { text: 'Status',                value: 'status',  align: 'center', format: 'status' }
+            ])
+        }
+      },
       pages () {
-        return this.table.pagination.rowsPerPage == null || this.table.pagination.totalItems == null ? 0 : Math.ceil(this.table.pagination.totalItems / this.table.pagination.rowsPerPage)
+        return this.pagination.rowsPerPage == null || this.pagination.totalItems == null ? 0 : Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
       }
     },
     methods: {
@@ -92,12 +143,30 @@
         this.delete(playerId)
           .then((data) => { this.playerToDelete = 0 })
           .catch((error) => { alert(error) })
+      },
+      getProperty (player, property, outputFormat) {
+        let value = get(player, property, '')
+
+        if (!value) return '-'
+
+        switch (outputFormat) {
+          case 'money':
+            return this.team.currency + value.toLocaleString()
+          case 'array':
+            return value.toString()
+          case 'date':
+            return format(new Date(value), 'MMM D, YYYY')
+          case 'years':
+            return value + ' Years'
+          default:
+            return value
+        }
       }
     },
     mounted () {
-      this.table.loading = true
+      this.loading = true
       this.refresh({ teamId: this.teamId })
-        .then((data) => { this.table.loading = false })
+        .then((data) => { this.loading = false })
         .catch((error) => { alert(error.message) })
     },
     components: {
@@ -109,7 +178,7 @@
 
 <style scoped>
   table.table tbody td {
-    padding: 5px;
+    padding: 8px 16px;
     height: auto;
   }
   .search { width: auto; }

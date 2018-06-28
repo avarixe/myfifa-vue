@@ -1,10 +1,10 @@
 <template>
-  <v-tooltip bottom :color="color + ' darken-2'">
+  <v-tooltip bottom :color="color">
     <v-btn
       icon
       slot="activator"
       @click="open">
-      <v-icon :color="color + ' darken-2'">fa-file-contract</v-icon>
+      <v-icon :color="color">fa-file-contract</v-icon>
       <v-dialog v-model="inForm" max-width="500px">
         <v-form v-model="valid" @submit.prevent="contract.id ?  updateContract() : createContract()">
           <v-card>
@@ -107,7 +107,7 @@
               <v-btn
                 type="submit"
                 :disabled="!valid"
-                :color="color + ' darken-2'"
+                :color="color"
                 flat
                 large
               >Save</v-btn>
