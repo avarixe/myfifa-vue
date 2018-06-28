@@ -110,6 +110,7 @@
       }
     },
     mounted () {
+      this.checkIfTokenExpired()
       this.redirectToAuthentication()
     },
     name: 'App'

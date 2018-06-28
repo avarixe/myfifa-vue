@@ -29,9 +29,7 @@ function apiRequest ({
       url: urlFor(path, pathData),
       params: params,
       data: data,
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
+      headers: token ? { 'Authorization': 'Bearer ' + token } : null
     }).then((response) => {
       try {
         if (success) {
