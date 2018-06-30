@@ -86,12 +86,11 @@
                   </v-flex>
 
                   <v-flex xs12 sm6>
-                    <v-select
+                    <v-autocomplete
                       v-model="contract.bonus_req_type"
                       label="Bonus Req. Type"
                       :items="bonusRequirementTypes"
-                      autocomplete
-                    ></v-select>
+                    ></v-autocomplete>
                   </v-flex>
                 </v-layout>
               </v-container>

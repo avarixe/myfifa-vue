@@ -19,24 +19,22 @@
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-select
+                  <v-autocomplete
                     v-model="player.pos"
                     :items="positions"
                     label="Position"
-                    autocomplete
                     required
-                  ></v-select>
+                  ></v-autocomplete>
                 </v-flex>
                 <v-flex xs12>
-                  <v-select
+                  <v-autocomplete
                     v-model="player.sec_pos"
                     :items="positions"
                     label="Secondary Position(s)"
                     multiple
                     chips
                     deletable-chips
-                    autocomplete
-                  ></v-select>
+                  ></v-autocomplete>
                 </v-flex>
                 <v-flex xs12>
                   <v-slider
