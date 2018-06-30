@@ -72,13 +72,12 @@
                   <v-flex xs12>
                     <v-slider
                       v-model="transfer.addon_clause"
-                      :label="percentLabel(transfer.addon_clause)"
+                      label="Add-On Clause"
                       min="0"
                       max="25"
-                      thumb-label
+                      :thumb-label="transfer.addon_clause > 0 ? 'always' : true"
+                      append-icon="fa-percent"
                       ticks
-                      hint="Add-On Clause"
-                      persistent-hint
                     ></v-slider>
                   </v-flex>
                   <v-flex xs12>

@@ -39,24 +39,22 @@
                 <v-flex xs12>
                   <v-slider
                     v-model="player.age"
-                    :label="player.age.toString()"
+                    label="Age"
                     min="16"
                     max="50"
-                    thumb-label
+                    thumb-label="always"
                     ticks
-                    hint="Age"
-                    persistent-hint
+                    always-dirty
                   ></v-slider>
                 </v-flex>
                 <v-flex xs12>
                   <v-slider
                     v-model="player.ovr"
-                    :label="player.ovr.toString()"
+                    label="OVR"
                     min="40"
-                    thumb-label
+                    thumb-label="always"
                     ticks
-                    hint="OVR"
-                    persistent-hint
+                    always-dirty
                   ></v-slider>
                 </v-flex>
                 <v-flex xs12>
@@ -194,13 +192,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .dialog > form { min-width: 100%; }
-  .dialog--fullscreen > form > .card {
-    min-height: 100%;
-    min-width: 100%;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-</style>

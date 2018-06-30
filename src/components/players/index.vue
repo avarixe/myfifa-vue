@@ -177,9 +177,8 @@
 </script>
 
 <style scoped>
-  table.table tbody td {
+  table.v-table tbody td {
     padding: 8px 16px;
     height: auto;
   }
-  .search { width: auto; }
 </style>

@@ -28,6 +28,7 @@
                       ticks
                       persistent-hint
                       required
+                      always-dirty
                     ></v-slider>
                   </v-flex>
 
