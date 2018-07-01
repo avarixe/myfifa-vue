@@ -12,20 +12,18 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="credentials.email"
-                    :rules="emailRules"
+                    :rules="$validate('Email', ['required', 'email'])"
                     label="Email"
                     type="email"
                     autofocus
-                    required
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
                   <v-text-field
                     v-model="credentials.password"
-                    :rules="passwordRules"
+                    :rules="$validate('Password', ['required'])"
                     label="Password"
                     type="password"
-                    required
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -54,12 +52,6 @@
   export default {
     data: () => ({
       valid: false,
-      emailRules: [
-        v => !!v || 'Email is required'
-      ],
-      passwordRules: [
-        v => !!v || 'Password is required'
-      ],
       errorMessage: '',
       credentials: {
         email: '',

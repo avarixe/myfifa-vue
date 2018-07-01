@@ -1,6 +1,6 @@
 <template>
   <v-card-text id="actions" class="text-xs-center pa-0">
-      <player-form :id="player.id" color="orange">
+      <player-form :initial-player="player" color="orange">
         <v-tooltip bottom color="orange">
           <v-btn icon slot="activator">
             <v-icon color="orange">fa-user-edit</v-icon>
@@ -70,7 +70,7 @@
         return this.player.status && this.player.status.length > 0
       },
       transferOut () {
-        return this.active && this.player.last_transfer
+        return this.active
       }
     },
     components: {

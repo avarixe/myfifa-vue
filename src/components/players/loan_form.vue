@@ -3,10 +3,10 @@
     <v-btn
       icon
       slot="activator"
-      @click="open">
+      @click="inForm = true">
       <v-icon :color="color">fa-handshake</v-icon>
       <v-dialog v-model="inForm" max-width="500px">
-        <v-form v-model="valid" @submit.prevent="loan.id ? updateLoan() : createLoan()">
+        <v-form ref="form" v-model="valid" @submit.prevent="save">
           <v-card>
             <v-card-title
               primary-title
@@ -20,8 +20,8 @@
                   <v-flex xs12>
                     <v-text-field
                       v-model="loan.destination"
+                      :rules="$validate('Destination', ['required'])"
                       label="Destination"
-                      required
                     ></v-text-field>
                   </v-flex>
 
@@ -68,16 +68,18 @@
       'color',
       'dark'
     ],
-    data: () => ({
-      inForm: false,
-      valid: false,
-      errorMessage: '',
-      loan: {
-        destination: '',
-        end_date: null
-      },
-      returned: false
-    }),
+    data () {
+      return {
+        inForm: false,
+        valid: !!this.player.last_loan,
+        errorMessage: '',
+        loan: this.player.last_loan || {
+          destination: '',
+          end_date: null
+        },
+        returned: false
+      }
+    },
     computed: {
       ...mapState('team', {
         team: 'active'
@@ -93,6 +95,12 @@
     watch: {
       returned (val) {
         this.loan.end_date = val ? this.team.current_date : null
+      },
+      inForm (val) {
+        if (!val) {
+          Object.assign(this.$data, this.$options.data.apply(this))
+          // this.$refs.form.reset()
+        }
       }
     },
     methods: {
@@ -100,29 +108,21 @@
         'create',
         'update'
       ]),
-      open () {
-        this.inForm = true
-      },
-      close () {
-        this.inForm = false
-        this.errorMessage = ''
-      },
-      createLoan () {
-        this.create({
-          playerId: this.player.id,
-          loan: this.loan
-        }).then((data) => { this.close() })
-          .catch((error) => { this.errorMessage = error.message })
-      },
-      updateLoan () {
-        this.update(this.loan)
-          .then((data) => { this.close() })
-          .catch((error) => { this.errorMessage = error.message })
-      }
-    },
-    mounted () {
-      if (this.player.status === 'Loaned') {
-        this.loan = this.player.last_loan
+      save () {
+        if (this.$refs.form.validate()) {
+          let params, save
+          if ('id' in this.loan) {
+            params = this.loan
+            save = this.update
+          } else {
+            params = { playerId: this.player.id, loan: this.loan }
+            save = this.create
+          }
+
+          save(params)
+            .then((data) => { this.inForm = false })
+            .catch((error) => { this.errorMessage = error.message })
+        }
       }
     }
   }

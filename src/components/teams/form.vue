@@ -1,8 +1,8 @@
 <template>
-  <div class="d-inline-block" @click="open">
+  <div class="d-inline-block" @click="inForm = true">
     <slot></slot>
     <v-dialog v-model="inForm" scrollable max-width="500px">
-      <v-form v-model="valid" @submit.prevent="id ? updateTeam() : createTeam()">
+      <v-form ref="form" v-model="valid" @submit.prevent="submit">
         <v-card>
           <v-card-title primary-title>
             <div class="headline">{{ title }}</div>
@@ -14,9 +14,9 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="team.title"
+                    :rules="$validate('Team', ['required'])"
                     label="Team"
                     autofocus
-                    required
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
@@ -32,6 +32,7 @@
                       slot="activator"
                       label="Start Date"
                       v-model="team.start_date"
+                      :rules="$validate('Start Date', ['required', 'date'])"
                       readonly
                     ></v-text-field>
                     <v-date-picker
@@ -44,9 +45,8 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="team.currency"
+                    :rules="$validate('Currency', ['required'])"
                     label="Currency"
-                    required
-                    auto-grow
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -75,20 +75,19 @@
 
   export default {
     props: [
-      'id',
-      'title'
+      'initialTeam'
     ],
     data () {
       return {
         inForm: false,
-        valid: false,
+        valid: !!this.initialTeam,
         errorMessage: '',
-        team: {
+        team: Object.assign({
           id: '',
           title: '',
           start_date: format(new Date(), 'YYYY-MM-DD'),
           currency: '$'
-        },
+        }, this.initialTeam),
         menu: false
       }
     },
@@ -96,51 +95,31 @@
       formError: {
         get: function () { return this.errorMessage.length > 0 },
         set: function (val) { this.errorMessage = val }
+      },
+      title () {
+        return this.initialTeam ? 'Edit ' + this.team.title : 'New Team'
+      }
+    },
+    watch: {
+      inForm (val) {
+        if (!val) {
+          Object.assign(this.$data, this.$options.data.apply(this))
+          // this.$refs.form.reset()
+        }
       }
     },
     methods: {
       ...mapActions('team', [
-        'get',
         'create',
         'update'
       ]),
-      open () {
-        this.inForm = true
-
-        if (this.id) {
-          this.get({ teamId: this.id })
-            .then((data) => {
-              this.team = {
-                start_date: data.start_date,
-                title: data.title,
-                id: data.id,
-                currency: data.currency
-              }
-            })
-            .catch((error) => {
-              this.errorMessage = error.message
-            })
+      submit () {
+        if (this.$refs.form.validate()) {
+          const save = this.id ? this.update : this.create
+          save(this.team)
+            .then((data) => { this.inForm = false })
+            .catch((error) => { this.errorMessage = error.message })
         }
-      },
-      close () {
-        this.inForm = false
-        this.errorMessage = ''
-        this.player = {
-          id: '',
-          title: '',
-          start_date: format(new Date(), 'YYYY-MM-DD'),
-          currency: '$'
-        }
-      },
-      createTeam () {
-        this.create(this.team)
-          .then((data) => { this.inForm = false })
-          .catch((error) => { this.errorMessage = error.message })
-      },
-      updateTeam () {
-        this.update(this.team)
-          .then((data) => { this.inForm = false })
-          .catch((error) => { this.errorMessage = error.message })
       }
     }
   }

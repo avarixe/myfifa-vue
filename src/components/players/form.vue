@@ -1,8 +1,8 @@
 <template>
-  <div class="d-inline-block" @click="open">
+  <div class="d-inline-block" @click="inForm = true">
     <slot></slot>
     <v-dialog v-model="inForm" max-width="500px">
-      <v-form v-model="valid" @submit.prevent="id ? updatePlayer() : createPlayer()">
+      <v-form ref="form" v-model="valid" @submit.prevent="submit">
         <v-card>
           <v-card-title primary-title :class="formColor">
             <div class="headline">{{ title }}</div>
@@ -14,16 +14,16 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="player.name"
+                    :rules="$validate('Name', ['required'])"
                     label="Name"
-                    required
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
                   <v-autocomplete
                     v-model="player.pos"
+                    :rules="$validate('Position', ['required'])"
                     :items="positions"
                     label="Position"
-                    required
                   ></v-autocomplete>
                 </v-flex>
                 <v-flex xs12>
@@ -60,6 +60,7 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="player.value"
+                    :rules="$validate('Value', ['required'])"
                     type="number"
                     label="Value"
                     :prefix="team.currency"
@@ -108,25 +109,27 @@
   export default {
     mixins: [formMixin],
     props: [
-      'id',
+      'initialPlayer',
       'teamId',
       'color'
     ],
-    data: () => ({
-      inForm: false,
-      valid: false,
-      errorMessage: '',
-      player: {
-        id: '',
-        name: '',
-        pos: '',
-        sec_pos: [],
-        ovr: 70,
-        value: null,
-        age: 16,
-        youth: false
+    data () {
+      return {
+        inForm: false,
+        valid: !!this.initialPlayer,
+        errorMessage: '',
+        player: Object.assign({
+          id: '',
+          name: '',
+          pos: '',
+          sec_pos: [],
+          ovr: 70,
+          value: null,
+          age: 16,
+          youth: false
+        }, this.initialPlayer)
       }
-    }),
+    },
     computed: {
       ...mapState('player', [
         'positions'
@@ -148,46 +151,34 @@
         return this.color ? this.color + ' accent-2' : null
       }
     },
+    watch: {
+      inForm (val) {
+        if (!val) {
+          Object.assign(this.$data, this.$options.data.apply(this))
+          // this.$refs.form.reset()
+        }
+      }
+    },
     methods: {
       ...mapActions('player', [
-        'get',
         'create',
         'update'
       ]),
-      open () {
-        this.inForm = true
+      submit () {
+        if (this.$refs.form.validate()) {
+          let params, save
+          if (this.initialPlayer) {
+            params = this.player
+            save = this.update
+          } else {
+            params = { teamId: this.teamId, player: this.player }
+            save = this.create
+          }
 
-        if (this.id) {
-          this.get({ playerId: this.id })
-            .then((data) => { this.player = data })
+          save(params)
+            .then((data) => { this.inForm = false })
             .catch((error) => { this.errorMessage = error.message })
         }
-      },
-      close () {
-        this.inForm = false
-        this.errorMessage = ''
-        this.player = {
-          id: '',
-          name: '',
-          pos: '',
-          sec_pos: [],
-          ovr: 70,
-          value: null,
-          age: 16,
-          youth: false
-        }
-      },
-      createPlayer () {
-        this.create({
-          teamId: this.teamId,
-          player: this.player
-        }).then((data) => { this.close() })
-          .catch((error) => { this.errorMessage = error.message })
-      },
-      updatePlayer () {
-        this.update(this.player)
-          .then((data) => { this.close() })
-          .catch((error) => { this.errorMessage = error.message })
       }
     }
   }

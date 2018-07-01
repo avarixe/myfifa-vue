@@ -3,10 +3,10 @@
     <v-btn
       icon
       slot="activator"
-      @click="open">
+      @click="inForm = true">
       <v-icon :color="color">fa-ambulance</v-icon>
       <v-dialog v-model="inForm" max-width="500px">
-        <v-form v-model="valid" @submit.prevent="injury.id ? updateInjury() : createInjury()">
+        <v-form ref="form" v-model="valid" @submit.prevent="injury.id ? updateInjury() : createInjury()">
           <v-card>
             <v-card-title
               primary-title
@@ -20,8 +20,8 @@
                   <v-flex xs12>
                     <v-text-field
                       v-model="injury.description"
+                      :rules="$validate('Description', ['required'])"
                       label="Description"
-                      required
                     ></v-text-field>
                   </v-flex>
 
@@ -68,16 +68,18 @@
       'color',
       'dark'
     ],
-    data: () => ({
-      inForm: false,
-      valid: false,
-      errorMessage: '',
-      injury: {
-        description: '',
-        end_date: null
-      },
-      recovered: false
-    }),
+    data () {
+      return {
+        inForm: false,
+        valid: !!this.player.last_injury,
+        errorMessage: '',
+        injury: this.player.last_injury || {
+          description: '',
+          end_date: null
+        },
+        recovered: false
+      }
+    },
     computed: {
       ...mapState('team', {
         team: 'active'
@@ -93,6 +95,12 @@
     watch: {
       recovered (val) {
         this.injury.end_date = val ? this.team.current_date : null
+      },
+      inForm (val) {
+        if (!val) {
+          Object.assign(this.$data, this.$options.data.apply(this))
+          // this.$refs.form.reset()
+        }
       }
     },
     methods: {
@@ -100,29 +108,21 @@
         'create',
         'update'
       ]),
-      open () {
-        this.inForm = true
-      },
-      close () {
-        this.inForm = false
-        this.errorMessage = ''
-      },
-      createInjury () {
-        this.create({
-          playerId: this.player.id,
-          injury: this.injury
-        }).then((data) => { this.close() })
-          .catch((error) => { this.errorMessage = error.message })
-      },
-      updateInjury () {
-        this.update(this.injury)
-          .then((data) => { this.close() })
-          .catch((error) => { this.errorMessage = error.message })
-      }
-    },
-    mounted () {
-      if (this.player.status === 'Injured') {
-        this.injury = this.player.last_injury
+      save () {
+        if (this.$refs.form.validate()) {
+          let params, save
+          if ('id' in this.injury) {
+            params = this.injury
+            save = this.update
+          } else {
+            params = { playerId: this.player.id, injury: this.injury }
+            save = this.create
+          }
+
+          save(params)
+            .then((data) => { this.inForm = false })
+            .catch((error) => { this.errorMessage = error.message })
+        }
       }
     }
   }

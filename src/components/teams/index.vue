@@ -2,7 +2,7 @@
   <v-container fluid grid-list-lg>
     <v-layout row wrap>
       <v-flex xs12 class="text-xs-center text-sm-left">
-        <team-form title="New Team">
+        <team-form>
           <v-btn color="secondary">New Team</v-btn>
         </team-form>
       </v-flex>
@@ -27,7 +27,7 @@
           </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <team-form :id="team.id" :title="'Edit ' + team.title">
+            <team-form :initial-team="team">
               <v-tooltip bottom color="deep-orange darken-2">
                 <v-btn icon slot="activator">
                   <v-icon color="deep-orange darken-2">edit</v-icon>

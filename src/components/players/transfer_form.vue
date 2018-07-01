@@ -148,7 +148,15 @@
         set: function (val) { this.errorMessage = val }
       },
       transferOut () {
-        return this.player.last_transfer && this.player.last_transfer.destination === this.team.title
+        return this.player.status && this.player.status.length > 0
+      }
+    },
+    watch: {
+      inForm (val) {
+        if (!val) {
+          Object.assign(this.$data, this.$options.data())
+          // this.$refs.form.reset()
+        }
       }
     },
     methods: {
@@ -157,33 +165,19 @@
       }),
       open () {
         this.inForm = true
-      },
-      close () {
-        this.inForm = false
-        this.errorMessage = ''
-        this.transfer = {
-          effective_date: null,
-          origin: '',
-          destination: '',
-          fee: null,
-          addon_clause: 0,
-          loan: false
+        this.transfer.effective_date = this.team.current_date
+        if (this.transferOut) {
+          this.transfer.origin = this.team.title
+        } else {
+          this.transfer.destination = this.team.title
         }
       },
       saveTransfer () {
         this.save({
           playerId: this.player.id,
           transfer: this.transfer
-        }).then((data) => { this.close() })
+        }).then((data) => { this.inForm = false })
           .catch((error) => { this.errorMessage = error.message })
-      }
-    },
-    mounted () {
-      this.transfer.effective_date = this.team.current_date
-      if (this.transferOut) {
-        this.transfer.origin = this.team.title
-      } else {
-        this.transfer.destination = this.team.title
       }
     }
   }

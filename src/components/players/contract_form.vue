@@ -3,10 +3,10 @@
     <v-btn
       icon
       slot="activator"
-      @click="open">
+      @click="inForm = true">
       <v-icon :color="color">fa-file-contract</v-icon>
       <v-dialog v-model="inForm" max-width="500px">
-        <v-form v-model="valid" @submit.prevent="contract.id ?  updateContract() : createContract()">
+        <v-form ref="form" v-model="valid" @submit.prevent="save">
           <v-card>
             <v-card-title
               primary-title
@@ -27,7 +27,6 @@
                       thumb-label
                       ticks
                       persistent-hint
-                      required
                       always-dirty
                     ></v-slider>
                   </v-flex>
@@ -35,12 +34,12 @@
                   <v-flex xs12>
                     <v-text-field
                       v-model="contract.wage"
+                      :rules="$validate('Wage', ['required'])"
                       type="number"
                       label="Wage"
                       :prefix="team.currency"
                       :hint="numberHint(contract.wage)"
                       persistent-hint
-                      required
                     ></v-text-field>
                   </v-flex>
 
@@ -131,20 +130,22 @@
       'color',
       'dark'
     ],
-    data: () => ({
-      inForm: false,
-      valid: false,
-      errorMessage: '',
-      contract: {
-        wage: null,
-        duration: 1,
-        signing_bonus: null,
-        release_clause: null,
-        performance_bonus: null,
-        bonus_req: null,
-        bonus_req_type: null
+    data () {
+      return {
+        inForm: false,
+        valid: !!this.player.last_contract,
+        errorMessage: '',
+        contract: this.player.last_contract || {
+          wage: null,
+          duration: 1,
+          signing_bonus: null,
+          release_clause: null,
+          performance_bonus: null,
+          bonus_req: null,
+          bonus_req_type: null
+        }
       }
-    }),
+    },
     computed: {
       ...mapState('team', {
         team: 'active'
@@ -153,11 +154,19 @@
         'bonusRequirementTypes'
       ]),
       title () {
-        return this.contract && this.contract.id ? 'Update Contract' : 'Sign New Contract'
+        return this.contract.id ? 'Update Contract' : 'Sign New Contract'
       },
       formError: {
         get: function () { return this.errorMessage.length > 0 },
         set: function (val) { this.errorMessage = val }
+      }
+    },
+    watch: {
+      inForm (val) {
+        if (!val) {
+          Object.assign(this.$data, this.$options.data.apply(this))
+          // this.$refs.form.reset()
+        }
       }
     },
     methods: {
@@ -165,29 +174,21 @@
         'create',
         'update'
       ]),
-      open () {
-        this.inForm = true
-      },
-      close () {
-        this.inForm = false
-        this.errorMessage = ''
-      },
-      createContract () {
-        this.create({
-          playerId: this.player.id,
-          contract: this.contract
-        }).then((data) => { this.close() })
-          .catch((error) => { this.errorMessage = error.message })
-      },
-      updateContract () {
-        this.update(this.contract)
-          .then((data) => { this.close() })
-          .catch((error) => { this.errorMessage = error.message })
-      }
-    },
-    mounted () {
-      if (this.player.status === 'Active') {
-        this.contract = this.player.last_contract
+      save () {
+        if (this.$refs.form.validate()) {
+          let params, save
+          if ('id' in this.contract) {
+            params = this.contract
+            save = this.update
+          } else {
+            params = { playerId: this.player.id, contract: this.contract }
+            save = this.create
+          }
+
+          save(params)
+            .then((data) => { this.inForm = false })
+            .catch((error) => { this.errorMessage = error.message })
+        }
       }
     }
   }
