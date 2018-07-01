@@ -116,3 +116,10 @@
     name: 'App'
   }
 </script>
+
+<style>
+  .v-dialog--active .v-card > .v-card__text {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+</style>

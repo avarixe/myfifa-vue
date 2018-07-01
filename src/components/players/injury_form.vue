@@ -6,7 +6,7 @@
       @click="inForm = true">
       <v-icon :color="color">fa-ambulance</v-icon>
       <v-dialog v-model="inForm" max-width="500px">
-        <v-form ref="form" v-model="valid" @submit.prevent="injury.id ? updateInjury() : createInjury()">
+        <v-form ref="form" v-model="valid" @submit.prevent="save">
           <v-card>
             <v-card-title
               primary-title
@@ -27,7 +27,7 @@
 
                   <v-flex xs12>
                     <v-checkbox
-                      v-model="recovered"
+                      v-model="injury.recovered"
                       label="Player Recovered"
                     ></v-checkbox>
                   </v-flex>
@@ -71,13 +71,12 @@
     data () {
       return {
         inForm: false,
-        valid: !!this.player.last_injury,
+        valid: !!this.player.active_injury,
         errorMessage: '',
-        injury: this.player.last_injury || {
+        injury: Object.assign({
           description: '',
-          end_date: null
-        },
-        recovered: false
+          recovered: false
+        }, this.player.active_injury)
       }
     },
     computed: {
@@ -93,14 +92,14 @@
       }
     },
     watch: {
-      recovered (val) {
-        this.injury.end_date = val ? this.team.current_date : null
-      },
       inForm (val) {
         if (!val) {
           Object.assign(this.$data, this.$options.data.apply(this))
           // this.$refs.form.reset()
         }
+      },
+      player (val) {
+        Object.assign(this.$data, this.$options.data.apply(this))
       }
     },
     methods: {

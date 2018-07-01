@@ -27,7 +27,7 @@
 
                   <v-flex xs12>
                     <v-checkbox
-                      v-model="returned"
+                      v-model="loan.returned"
                       label="Player Returned"
                     ></v-checkbox>
                   </v-flex>
@@ -71,13 +71,12 @@
     data () {
       return {
         inForm: false,
-        valid: !!this.player.last_loan,
+        valid: !!this.player.active_loan,
         errorMessage: '',
-        loan: this.player.last_loan || {
+        loan: Object.assign({
           destination: '',
-          end_date: null
-        },
-        returned: false
+          returned: false
+        }, this.player.active_loan)
       }
     },
     computed: {
@@ -93,9 +92,6 @@
       }
     },
     watch: {
-      returned (val) {
-        this.loan.end_date = val ? this.team.current_date : null
-      },
       inForm (val) {
         if (!val) {
           Object.assign(this.$data, this.$options.data.apply(this))

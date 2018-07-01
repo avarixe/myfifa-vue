@@ -26,6 +26,9 @@ const actions = {
       pathData: { playerId: playerId },
       token: rootGetters['user/token'],
       data: { loan: loan },
+      success: ({ data }) => {
+        commit('player/update', data, { root: true })
+      },
       errorMessage: 'Failed to create Loan. Please try again.'
     })
   },
@@ -36,6 +39,9 @@ const actions = {
       pathData: { loanId: payload.id },
       token: rootGetters['user/token'],
       data: { loan: payload },
+      success: ({ data }) => {
+        commit('player/update', data, { root: true })
+      },
       errorMessage: 'Failed to update Loan. Please try again.'
     })
   },

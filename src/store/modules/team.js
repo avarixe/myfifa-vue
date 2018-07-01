@@ -62,6 +62,7 @@ const actions = {
       data: { team: payload },
       success: ({ data }) => {
         commit('update', data)
+        commit('set', data)
       },
       errorMessage: 'Failed to update Team. Please try again.'
     })

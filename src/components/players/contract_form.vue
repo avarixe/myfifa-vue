@@ -18,17 +18,57 @@
               <v-container grid-list-md>
                 <v-layout wrap>
                   <v-flex xs12>
-                    <v-slider
-                      v-model="contract.duration"
-                      label="Duration"
-                      :hint="contract.duration + ' Year(s)'"
-                      min="1"
-                      max="5"
-                      thumb-label
-                      ticks
-                      persistent-hint
-                      always-dirty
-                    ></v-slider>
+                    <v-menu
+                      ref="menu1"
+                      :close-on-content-click="false"
+                      v-model="menus.effective_date"
+                      :return-value.sync="contract.effective_date"
+                      lazy
+                      transition="scale-transition"
+                      full-width>
+                      <v-text-field
+                        slot="activator"
+                        label="Effective Date"
+                        v-model="contract.effective_date"
+                        :rules="$validate('Effective Date', ['required', 'date'])"
+                        readonly
+                      ></v-text-field>
+                      <v-date-picker
+                        ref="picker1"
+                        v-model="contract.effective_date"
+                        landscape
+                        :min="team.current_date"
+                        :max="contract.end_date"
+                        @input="$refs.menu1.save(contract.effective_date)"
+                      ></v-date-picker>
+                    </v-menu>
+                  </v-flex>
+
+                  <v-flex xs12>
+                    <v-menu
+                      ref="menu2"
+                      :close-on-content-click="false"
+                      v-model="menus.end_date"
+                      :return-value.sync="contract.end_date"
+                      lazy
+                      transition="scale-transition"
+                      full-width>
+                      <v-text-field
+                        slot="activator"
+                        label="End Date"
+                        v-model="contract.end_date"
+                        :rules="$validate('End Date', ['required', 'date'])"
+                        readonly
+                      ></v-text-field>
+                      <v-date-picker
+                        ref="picker2"
+                        v-model="contract.end_date"
+                        landscape
+                        :min="contract.effective_date"
+                        :max="maxEndDate"
+                        @input="$refs.menu2.save(contract.end_date)"
+                      ></v-date-picker>
+                    </v-menu>
                   </v-flex>
 
                   <v-flex xs12>
@@ -121,6 +161,7 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
+  import { format, parse, addYears } from 'date-fns'
   import formMixin from '@/mixins/form'
 
   export default {
@@ -133,16 +174,21 @@
     data () {
       return {
         inForm: false,
-        valid: !!this.player.last_contract,
+        valid: !!this.player.active_contract,
         errorMessage: '',
-        contract: this.player.last_contract || {
+        contract: Object.assign({
+          effective_date: null,
+          end_date: null,
           wage: null,
-          duration: 1,
           signing_bonus: null,
           release_clause: null,
           performance_bonus: null,
           bonus_req: null,
           bonus_req_type: null
+        }, this.player.active_contract),
+        menus: {
+          effective_date: false,
+          end_date: false
         }
       }
     },
@@ -154,19 +200,27 @@
         'bonusRequirementTypes'
       ]),
       title () {
-        return this.contract.id ? 'Update Contract' : 'Sign New Contract'
+        return ('id' in this.contract) ? 'Update Contract' : 'Sign New Contract'
       },
       formError: {
         get: function () { return this.errorMessage.length > 0 },
         set: function (val) { this.errorMessage = val }
+      },
+      maxEndDate () {
+        return format(addYears(parse(this.contract.effective_date, 'YYYY-MM-DD'), 6), 'YYYY-MM-DD')
       }
     },
     watch: {
       inForm (val) {
-        if (!val) {
+        if (val) {
+          this.contract.effective_date = this.contract.effective_date || this.team.current_date
+        } else {
           Object.assign(this.$data, this.$options.data.apply(this))
           // this.$refs.form.reset()
         }
+      },
+      'menus.end_date' (val, oldVal) {
+        return !oldVal && val && this.$nextTick(() => (this.$refs.picker2.activePicker = 'YEAR'))
       }
     },
     methods: {

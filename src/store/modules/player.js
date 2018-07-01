@@ -86,13 +86,16 @@ const actions = {
       errorMessage: 'Failed to delete Player. Please try again.'
     })
   },
-  transfer ({ rootGetters }, { playerId, transfer }) {
+  transfer ({ commit, rootGetters }, { playerId, transfer }) {
     return apiRequest({
       method: 'post',
       path: myfifa.transfers.all,
       pathData: { playerId: playerId },
       token: rootGetters['user/token'],
       data: { transfer: transfer },
+      success: ({ data }) => {
+        commit('update', data.player)
+      },
       errorMessage: 'Failed to record Transfer. Please try again.'
     })
   }

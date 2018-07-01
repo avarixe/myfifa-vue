@@ -31,6 +31,10 @@
           </v-list>
         </v-menu>
 
+        <v-btn icon @click="reloadTable">
+          <v-icon>refresh</v-icon>
+        </v-btn>
+
         <v-spacer></v-spacer>
 
         <!-- Player Search -->
@@ -115,11 +119,11 @@
         switch (this.display) {
           case 'contract':
             return headers.concat([
-             { text: 'OVR',         value: 'ovr',                       align: 'center' },
-             { text: 'Value',       value: 'value',                     align: 'center', format: 'money' },
-             { text: 'Wage',        value: 'last_contract.wage',        align: 'center', format: 'money' },
-             { text: 'Signed Date', value: 'last_contract.signed_date', align: 'center', format: 'date' },
-             { text: 'Duration',    value: 'last_contract.duration',    align: 'center', format: 'years' }
+             { text: 'OVR',         value: 'ovr',                         align: 'center' },
+             { text: 'Value',       value: 'value',                       align: 'center', format: 'money' },
+             { text: 'Wage',        value: 'active_contract.wage',        align: 'center', format: 'money' },
+             { text: 'Signed Date', value: 'active_contract.signed_date', align: 'center', format: 'date' },
+             { text: 'Duration',    value: 'active_contract.duration',    align: 'center', format: 'years' }
             ])
           default: // Status
             return headers.concat([
@@ -132,6 +136,11 @@
       },
       pages () {
         return this.pagination.rowsPerPage == null || this.pagination.totalItems == null ? 0 : Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
+      }
+    },
+    watch: {
+      'team.current_date' (val) {
+        this.reloadTable()
       }
     },
     methods: {
@@ -161,13 +170,16 @@
           default:
             return value
         }
+      },
+      reloadTable () {
+        this.loading = true
+        this.refresh({ teamId: this.teamId })
+          .then((data) => { this.loading = false })
+          .catch((error) => { alert(error.message) })
       }
     },
     mounted () {
-      this.loading = true
-      this.refresh({ teamId: this.teamId })
-        .then((data) => { this.loading = false })
-        .catch((error) => { alert(error.message) })
+      this.reloadTable()
     },
     components: {
       'player-form': PlayerForm,

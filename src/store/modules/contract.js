@@ -32,6 +32,9 @@ const actions = {
       pathData: { playerId: playerId },
       token: rootGetters['user/token'],
       data: { contract: contract },
+      success: ({ data }) => {
+        commit('player/update', data, { root: true })
+      },
       errorMessage: 'Failed to create Contract. Please try again.'
     })
   },
@@ -42,6 +45,9 @@ const actions = {
       pathData: { contractId: payload.id },
       token: rootGetters['user/token'],
       data: { contract: payload },
+      success: ({ data }) => {
+        commit('player/update', data, { root: true })
+      },
       errorMessage: 'Failed to update Contract. Please try again.'
     })
   },
