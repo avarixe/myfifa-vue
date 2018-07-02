@@ -38,6 +38,7 @@ import {
   VAutocomplete,
   transitions
 } from 'vuetify'
+import { format, parse } from 'date-fns'
 import validate from './lib/validators'
 import '../node_modules/vuetify/src/stylus/app.styl'
 
@@ -79,6 +80,8 @@ Vue.use(Vuetify, {
 
 Vue.config.productionTip = false
 Vue.prototype.$validate = validate
+Vue.prototype.$parse = parse
+Vue.prototype.$format = (date, dateFormat) => format(date, dateFormat || 'YYYY-MM-DD')
 
 /* eslint-disable no-new */
 new Vue({

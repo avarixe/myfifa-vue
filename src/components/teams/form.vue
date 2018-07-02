@@ -71,7 +71,6 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import { format } from 'date-fns'
 
   export default {
     props: [
@@ -85,7 +84,7 @@
         team: Object.assign({
           id: '',
           title: '',
-          start_date: format(new Date(), 'YYYY-MM-DD'),
+          start_date: this.$format(new Date()),
           currency: '$'
         }, this.initialTeam),
         menu: false

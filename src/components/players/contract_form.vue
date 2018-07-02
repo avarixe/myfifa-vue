@@ -161,7 +161,7 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import { format, parse, addYears } from 'date-fns'
+  import { addYears } from 'date-fns'
   import formMixin from '@/mixins/form'
 
   export default {
@@ -207,7 +207,7 @@
         set: function (val) { this.errorMessage = val }
       },
       maxEndDate () {
-        return format(addYears(parse(this.contract.effective_date, 'YYYY-MM-DD'), 6), 'YYYY-MM-DD')
+        return this.$format(addYears(this.$parse(this.contract.effective_date), 6))
       }
     },
     watch: {
