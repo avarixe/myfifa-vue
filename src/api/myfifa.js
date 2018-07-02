@@ -7,6 +7,10 @@ export default {
     all: 'teams/{{ teamId }}/players',
     get: 'players/{{ playerId }}'
   },
+  matches: {
+    all: 'teams/{{ teamId }}/matches',
+    get: 'matches/{{ matchId }}'
+  },
   transfers: {
     all: 'players/{{ playerId }}/transfers',
     get: 'transfers/{{ transferId }}'
