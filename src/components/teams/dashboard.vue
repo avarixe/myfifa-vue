@@ -5,11 +5,7 @@
         <v-flex xs12>
           <v-slide-x-transition>
             <v-card>
-              <v-date-picker
-                v-model="currentDate"
-                color="blue-grey"
-                full-width
-              ></v-date-picker>
+              <team-calendar></team-calendar>
             </v-card>
           </v-slide-x-transition>
         </v-flex>
@@ -27,35 +23,20 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import TeamCalendar from '@/components/teams/calendar'
   import PlayersPanel from '@/components/players'
   import MatchesPanel from '@/components/matches'
 
   export default {
-    data: () => ({
-      currentDate: null
-    }),
     computed: {
       teamId () {
         return this.$route.params.team_id
       }
     },
-    watch: {
-      currentDate (val, oldVal) {
-        oldVal && this.update({ id: this.teamId, current_date: val })
-      }
-    },
-    methods: mapActions('team', [
-      'get',
-      'update'
-    ]),
     components: {
+      'team-calendar': TeamCalendar,
       'players-panel': PlayersPanel,
       'matches-panel': MatchesPanel
-    },
-    mounted () {
-      this.get({ teamId: this.teamId, activate: true })
-        .then((data) => { this.currentDate = data.current_date })
     }
   }
 </script>
