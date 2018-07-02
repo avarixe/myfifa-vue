@@ -12,18 +12,16 @@
   import { mapActions, mapGetters } from 'vuex'
 
   export default {
-    data: () => ({
-      currentDate: null
-    }),
-    computed: {
-      ...mapGetters('team', [
-        'seasonStart',
-        'seasonEnd'
-      ]),
-      teamId () {
-        return this.$route.params.team_id
+    data () {
+      return {
+        teamId: this.$route.params.teamId,
+        currentDate: null
       }
     },
+    computed: mapGetters('team', [
+      'seasonStart',
+      'seasonEnd'
+    ]),
     watch: {
       currentDate (val, oldVal) {
         oldVal && this.update({ id: this.teamId, current_date: val })

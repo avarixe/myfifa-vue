@@ -5,7 +5,7 @@
         <v-btn icon slot="activator">
           <v-icon color="orange">edit</v-icon>
         </v-btn>
-        <span>Edit</span>
+        Edit
       </v-tooltip>
     </player-form>
     <transfer-form
@@ -34,7 +34,7 @@
       <v-btn icon slot="activator" @click.native="promptDeletion = true">
         <v-icon color="black">remove_circle</v-icon>
       </v-btn>
-      <span>Remove</span>
+      Remove
     </v-tooltip>
 
     <v-snackbar

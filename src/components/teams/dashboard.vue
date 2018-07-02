@@ -12,10 +12,10 @@
       </v-flex>
       <v-flex xs12 md8>
         <v-flex xs12>
-          <players-panel :team-id="teamId"></players-panel>
+          <players-panel></players-panel>
         </v-flex>
         <v-flex xs12>
-          <matches-panel :team-id="teamId"></matches-panel>
+          <matches-panel></matches-panel>
         </v-flex>
       </v-flex>
     </v-layout>
@@ -28,11 +28,6 @@
   import MatchesPanel from '@/components/matches'
 
   export default {
-    computed: {
-      teamId () {
-        return this.$route.params.team_id
-      }
-    },
     components: {
       'team-calendar': TeamCalendar,
       'players-panel': PlayersPanel,

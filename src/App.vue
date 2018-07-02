@@ -42,7 +42,7 @@
         <v-tooltip left color="indigo">
           <v-btn
             slot="activator"
-            v-show="this.$route.path !== '/'"
+            v-show="this.$route.path !== '/teams'"
             dark
             color="indigo"
             fab

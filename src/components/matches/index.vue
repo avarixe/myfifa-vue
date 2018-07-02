@@ -12,7 +12,7 @@
             <v-btn slot="activator" flat icon>
               <v-icon>add_circle</v-icon>
             </v-btn>
-            <span>Record Match</span>
+            Record Match
           </v-tooltip>
         </match-form>
 
@@ -68,22 +68,24 @@
   import MatchActions from '@/components/matches/actions'
 
   export default {
-    props: ['teamId'],
-    data: () => ({
-      pagination: {
-        sortBy: 'date_played',
-        descending: true
-      },
-      headers: [
-        { text: 'Competition', value: 'competition', align: 'center' },
-        { text: 'Home',        value: 'home',        align: 'right' },
-        { text: 'Score',       value: 'score',       align: 'center', sortable: false },
-        { text: 'Away',        value: 'away',        align: 'left' },
-        { text: 'Date Played', value: 'date_played', align: 'center' }
-      ],
-      loading: false,
-      search: ''
-    }),
+    data () {
+      return {
+        teamId: this.$route.params.teamId,
+        pagination: {
+          sortBy: 'date_played',
+          descending: true
+        },
+        headers: [
+          { text: 'Competition', value: 'competition', align: 'center' },
+          { text: 'Home',        value: 'home',        align: 'right' },
+          { text: 'Score',       value: 'score',       align: 'center', sortable: false },
+          { text: 'Away',        value: 'away',        align: 'left' },
+          { text: 'Date Played', value: 'date_played', align: 'center' }
+        ],
+        loading: false,
+        search: ''
+      }
+    },
     computed: {
       ...mapState('match', {
         matches: 'list'

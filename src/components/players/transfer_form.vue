@@ -112,7 +112,7 @@
         </v-form>
       </v-dialog>
     </v-btn>
-    <span>Transfer {{ transferOut ? 'Out' : 'In' }}</span>
+    Transfer {{ transferOut ? 'Out' : 'In' }}
   </v-tooltip>
 </template>
 

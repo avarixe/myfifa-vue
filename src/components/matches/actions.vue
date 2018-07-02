@@ -5,14 +5,50 @@
         <v-btn icon slot="activator">
           <v-icon color="orange">edit</v-icon>
         </v-btn>
-        <span>Edit</span>
+        Edit
       </v-tooltip>
     </match-form>
+
+    <v-tooltip bottom color="blue">
+      <v-btn icon slot="activator">
+        <v-icon color="blue">camera</v-icon>
+      </v-btn>
+      Goal
+    </v-tooltip>
+
+    <v-tooltip bottom color="red">
+      <v-btn icon slot="activator">
+        <v-icon color="red">book</v-icon>
+      </v-btn>
+      Booking
+    </v-tooltip>
+
+    <v-tooltip bottom color="green">
+      <v-btn icon slot="activator">
+        <v-icon color="green">repeat</v-icon>
+      </v-btn>
+      Substitution
+    </v-tooltip>
+
+    <v-tooltip bottom color="pink">
+      <v-btn icon slot="activator">
+        <v-icon color="pink">local_hospital</v-icon>
+      </v-btn>
+      Injury
+    </v-tooltip>
+
+    <v-tooltip bottom color="indigo">
+      <v-btn icon slot="activator">
+        <v-icon color="indigo">pan_tool</v-icon>
+      </v-btn>
+      Penalty Shootout
+    </v-tooltip>
+
     <v-tooltip bottom color="black">
       <v-btn icon slot="activator" @click.native="promptDeletion = true">
         <v-icon color="black">remove_circle</v-icon>
       </v-btn>
-      <span>Remove</span>
+      Remove
     </v-tooltip>
 
     <v-snackbar

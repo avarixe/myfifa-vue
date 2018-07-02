@@ -28,7 +28,7 @@
                     prepend-icon="people">
                     <v-tooltip slot="append" bottom>
                       <v-icon slot="activator" @click="setHome">arrow_back</v-icon>
-                      <span>Home Match for {{ team.title }}</span>
+                      Home Match for {{ team.title }}
                     </v-tooltip>
                   </v-text-field>
                 </v-flex>
@@ -40,7 +40,7 @@
                     prepend-icon="people">
                     <v-tooltip slot="append" bottom>
                       <v-icon slot="activator" @click="setAway">arrow_back</v-icon>
-                      <span>Away Match for {{ team.title }}</span>
+                      Away Match for {{ team.title }}
                     </v-tooltip>
                   </v-text-field>
                 </v-flex>

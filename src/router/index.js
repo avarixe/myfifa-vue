@@ -8,18 +8,10 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    {
-      path: '/',
-      component: Teams
-    },
-    {
-      path: '/login',
-      component: Login
-    },
-    {
-      path: '/team/:team_id',
-      component: Dashboard
-    }
+    { path: '/', redirect: '/teams' },
+    { path: '/teams', component: Teams },
+    { path: '/login', component: Login },
+    { path: '/teams/:teamId', component: Dashboard }
   ],
   mode: 'history'
 })

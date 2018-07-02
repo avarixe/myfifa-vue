@@ -57,7 +57,7 @@
         </v-form>
       </v-dialog>
     </v-btn>
-    <span>{{ title }}</span>
+    {{ title }}
   </v-tooltip>
 </template>
 

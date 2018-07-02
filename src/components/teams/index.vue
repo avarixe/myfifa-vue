@@ -20,10 +20,10 @@
             <div class="headline">
               {{ team.title }}
               <v-tooltip top color="primary">
-                <v-btn icon slot="activator" :to="'/team/' + team.id">
+                <v-btn icon slot="activator" :to="'/teams/' + team.id">
                   <v-icon color="primary">arrow_forward</v-icon>
                 </v-btn>
-                <span>Team Dashboard</span>
+                Team Dashboard
               </v-tooltip>
             </div>
             <v-flex xs12>{{ team.time_period }}</v-flex>
@@ -35,14 +35,14 @@
                 <v-btn icon slot="activator">
                   <v-icon color="deep-orange darken-2">edit</v-icon>
                 </v-btn>
-                <span>Edit</span>
+                Edit
               </v-tooltip>
             </team-form>
             <v-tooltip bottom color="black">
               <v-btn icon slot="activator" @click.native="teamToDelete = team.id">
                 <v-icon color="black">remove_circle</v-icon>
               </v-btn>
-              <span>Remove</span>
+              Remove
             </v-tooltip>
           </v-card-actions>
         </v-card>

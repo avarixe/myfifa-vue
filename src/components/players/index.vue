@@ -12,7 +12,7 @@
             <v-btn slot="activator" flat icon>
               <v-icon>add_circle</v-icon>
             </v-btn>
-            <span>Add Player</span>
+            Add Player
           </v-tooltip>
         </player-form>
 
@@ -84,20 +84,22 @@
   import PlayerActions from '@/components/players/actions'
 
   export default {
-    props: ['teamId'],
-    data: () => ({
-      pagination: {
-        sortBy: 'posIdx'
-      },
-      display: 'ovr',
-      modes: [
-        { text: 'Status', value: 'status' },
-        { text: 'Contract', value: 'contract' },
-        { text: 'Analytics', value: 'analytics' }
-      ],
-      loading: false,
-      search: ''
-    }),
+    data () {
+      return {
+        teamId: this.$route.params.teamId,
+        pagination: {
+          sortBy: 'posIdx'
+        },
+        display: 'ovr',
+        modes: [
+          { text: 'Status', value: 'status' },
+          { text: 'Contract', value: 'contract' },
+          { text: 'Analytics', value: 'analytics' }
+        ],
+        loading: false,
+        search: ''
+      }
+    },
     computed: {
       ...mapState('player', {
         players: 'list'
