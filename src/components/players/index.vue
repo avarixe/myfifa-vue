@@ -31,10 +31,6 @@
           </v-list>
         </v-menu>
 
-        <v-btn icon @click="reloadTable">
-          <v-icon>refresh</v-icon>
-        </v-btn>
-
         <v-spacer></v-spacer>
 
         <!-- Player Search -->
@@ -84,7 +80,6 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import get from 'lodash.get'
-  import { format } from 'date-fns'
   import PlayerForm from '@/components/players/form'
   import PlayerActions from '@/components/players/actions'
 
@@ -119,11 +114,10 @@
         switch (this.display) {
           case 'contract':
             return headers.concat([
-             { text: 'OVR',         value: 'ovr',                         align: 'center' },
-             { text: 'Value',       value: 'value',                       align: 'center', format: 'money' },
-             { text: 'Wage',        value: 'active_contract.wage',        align: 'center', format: 'money' },
-             { text: 'Signed Date', value: 'active_contract.signed_date', align: 'center', format: 'date' },
-             { text: 'Duration',    value: 'active_contract.duration',    align: 'center', format: 'years' }
+             { text: 'Value',          value: 'value',                          align: 'center', format: 'money' },
+             { text: 'Wage',           value: 'active_contract.wage',           align: 'center', format: 'money' },
+             { text: 'Effective Date', value: 'active_contract.effective_date', align: 'center', format: 'date' },
+             { text: 'End Date',       value: 'active_contract.end_date',       align: 'center', format: 'date' }
             ])
           default: // Status
             return headers.concat([
@@ -145,14 +139,8 @@
     },
     methods: {
       ...mapActions('player', [
-        'refresh',
-        'delete'
+        'refresh'
       ]),
-      deletePlayer (playerId) {
-        this.delete(playerId)
-          .then((data) => { this.playerToDelete = 0 })
-          .catch((error) => { alert(error) })
-      },
       getProperty (player, property, outputFormat) {
         let value = get(player, property, '')
 
@@ -164,7 +152,7 @@
           case 'array':
             return value.toString()
           case 'date':
-            return format(new Date(value), 'MMM D, YYYY')
+            return this.$format(this.$parse(value), 'MMM D, YYYY')
           case 'years':
             return value + ' Years'
           default:

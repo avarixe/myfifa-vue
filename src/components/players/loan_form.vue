@@ -28,6 +28,7 @@
                   <v-flex xs12>
                     <v-checkbox
                       v-model="loan.returned"
+                      v-if="loan.id"
                       label="Player Returned"
                     ></v-checkbox>
                   </v-flex>

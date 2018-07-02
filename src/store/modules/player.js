@@ -74,7 +74,7 @@ const actions = {
       errorMessage: 'Failed to update Player. Please try again.'
     })
   },
-  delete ({ commit, rootGetters }, payload) {
+  destroy ({ commit, rootGetters }, payload) {
     return apiRequest({
       method: 'delete',
       path: myfifa.players.get,

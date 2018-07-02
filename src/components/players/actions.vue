@@ -41,14 +41,14 @@
         color="black"
         v-model="promptDeletion">
         Remove {{ player.name }}?
-        <v-btn dark flat @click.native="deletePlayer(playerToDelete)">Yes</v-btn>
+        <v-btn dark flat @click.native="destroy(player.id)">Yes</v-btn>
         <v-btn dark flat @click.native="promptDeletion = false">No</v-btn>
       </v-snackbar>
   </v-card-text>
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   import PlayerForm from '@/components/players/form'
   import ContractForm from '@/components/players/contract_form'
   import InjuryForm from '@/components/players/injury_form'
@@ -73,6 +73,9 @@
         return this.active
       }
     },
+    methods: mapActions('player', [
+      'destroy'
+    ]),
     components: {
       'player-form': PlayerForm,
       'contract-form': ContractForm,

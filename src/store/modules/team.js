@@ -1,3 +1,4 @@
+import { format, parse, addYears } from 'date-fns'
 import apiRequest from '@/api'
 import myfifa from '@/api/myfifa'
 
@@ -7,6 +8,7 @@ const state = {
   active: {
     id: null,
     title: '',
+    start_date: null,
     current_date: null,
     currency: '$'
   }
@@ -14,8 +16,23 @@ const state = {
 
 // getters
 const getters = {
-  list: state => state.list,
-  active: state => state.active
+  seasonStart: state => {
+    if (state.active.start_date) {
+      let date = parse(state.active.start_date)
+      let currentDate = parse(state.active.current_date)
+      let yearDiff = parseInt((currentDate - date) / (525600 * 60 * 1000))
+      date = addYears(date, yearDiff)
+      return format(date, 'YYYY-MM-DD')
+    }
+  },
+  seasonEnd: (state, getters) => {
+    if (getters.seasonStart) {
+      let date = parse(getters.seasonStart)
+      date = addYears(date, 1)
+      return format(date, 'YYYY-MM-DD')
+    }
+  }
+
 }
 
 // actions
@@ -104,6 +121,7 @@ const mutations = {
       state.active = {
         id: null,
         title: '',
+        start_date: null,
         current_date: null,
         currency: '$'
       }

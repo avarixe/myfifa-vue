@@ -28,6 +28,7 @@
                   <v-flex xs12>
                     <v-checkbox
                       v-model="injury.recovered"
+                      v-if="injury.id"
                       label="Player Recovered"
                     ></v-checkbox>
                   </v-flex>
