@@ -4,7 +4,7 @@
       icon
       slot="activator"
       @click="inForm = true">
-      <v-icon :color="color">fa-file-contract</v-icon>
+      <v-icon :color="color">description</v-icon>
       <v-dialog v-model="inForm" max-width="500px">
         <v-form ref="form" v-model="valid" @submit.prevent="save">
           <v-card>
@@ -29,6 +29,7 @@
                       <v-text-field
                         slot="activator"
                         label="Effective Date"
+                        prepend-icon="calendar_today"
                         v-model="contract.effective_date"
                         :rules="$validate('Effective Date', ['required', 'date'])"
                         readonly
@@ -56,6 +57,7 @@
                       <v-text-field
                         slot="activator"
                         label="End Date"
+                        prepend-icon="calendar_today"
                         v-model="contract.end_date"
                         :rules="$validate('End Date', ['required', 'date'])"
                         readonly

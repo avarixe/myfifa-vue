@@ -5,7 +5,7 @@
       slot="activator"
       @click="open">
       <v-icon :color="color">
-        fa-plane-{{ transferOut ? 'departure' : 'arrival' }}
+        flight_{{ transferOut ? 'takeoff' : 'land' }}
       </v-icon>
       <v-dialog v-model="inForm" max-width="500px">
         <v-form v-model="valid" @submit.prevent="saveTransfer">
@@ -32,6 +32,7 @@
                       <v-text-field
                         slot="activator"
                         label="Effective Date"
+                        prepend-icon="calendar_today"
                         v-model="transfer.effective_date"
                         required
                         readonly
@@ -47,6 +48,7 @@
                     <v-text-field
                       v-model="transfer.origin"
                       label="Origin"
+                      prepend-icon="flight_takeoff"
                       :disabled="transferOut"
                       required
                     ></v-text-field>
@@ -55,6 +57,7 @@
                     <v-text-field
                       v-model="transfer.destination"
                       label="Destination"
+                      prepend-icon="flight_land"
                       :disabled="!transferOut"
                       required
                     ></v-text-field>
@@ -72,11 +75,10 @@
                   <v-flex xs12>
                     <v-slider
                       v-model="transfer.addon_clause"
-                      label="Add-On Clause"
+                      label="Add-On Clause (%)"
                       min="0"
                       max="25"
                       :thumb-label="transfer.addon_clause > 0 ? 'always' : true"
-                      append-icon="fa-percent"
                       ticks
                     ></v-slider>
                   </v-flex>

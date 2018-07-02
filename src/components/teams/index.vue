@@ -3,7 +3,10 @@
     <v-layout row wrap>
       <v-flex xs12 class="text-xs-center text-sm-left">
         <team-form>
-          <v-btn color="secondary">New Team</v-btn>
+          <v-btn color="secondary">
+            <v-icon left>add_circle_outline</v-icon>
+            New Team
+          </v-btn>
         </team-form>
       </v-flex>
       <v-flex
@@ -35,18 +38,18 @@
                 <span>Edit</span>
               </v-tooltip>
             </team-form>
-            <v-tooltip bottom color="red darken-2">
+            <v-tooltip bottom color="black">
               <v-btn icon slot="activator" @click.native="teamToDelete = team.id">
-                <v-icon color="red darken-2">cancel</v-icon>
+                <v-icon color="black">remove_circle</v-icon>
               </v-btn>
               <span>Remove</span>
             </v-tooltip>
           </v-card-actions>
         </v-card>
         <v-snackbar
-          color="red"
+          color="black"
           v-model="teamToDelete === team.id">
-          Remove {{ team.title }}?
+          Remove Team: {{ team.title }}?
           <v-btn dark flat @click.native="deleteTeam(teamToDelete)">Yes</v-btn>
           <v-btn dark flat @click.native="teamToDelete = ''">No</v-btn>
         </v-snackbar>

@@ -2,7 +2,6 @@
   <v-app>
     <v-toolbar color="primary" dark fixed app>
       <v-toolbar-title>
-          <v-icon>fa-futbol</v-icon>
           MyFIFA Manager
       </v-toolbar-title>
       <v-toolbar-items class="hidden-xs-only">

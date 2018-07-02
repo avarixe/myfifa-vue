@@ -10,7 +10,7 @@
         <player-form :team-id="teamId">
           <v-tooltip top>
             <v-btn slot="activator" flat icon>
-              <v-icon>person_add</v-icon>
+              <v-icon>add_circle</v-icon>
             </v-btn>
             <span>Add Player</span>
           </v-tooltip>
@@ -177,7 +177,7 @@
 </script>
 
 <style scoped>
-  table.v-table tbody td {
+  >>> table.v-table tbody td {
     padding: 8px 16px;
     height: auto;
   }

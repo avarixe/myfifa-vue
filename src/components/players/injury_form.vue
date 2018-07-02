@@ -4,7 +4,7 @@
       icon
       slot="activator"
       @click="inForm = true">
-      <v-icon :color="color">fa-ambulance</v-icon>
+      <v-icon :color="color">local_hospital</v-icon>
       <v-dialog v-model="inForm" max-width="500px">
         <v-form ref="form" v-model="valid" @submit.prevent="save">
           <v-card>
@@ -22,6 +22,7 @@
                       v-model="injury.description"
                       :rules="$validate('Description', ['required'])"
                       label="Description"
+                      prepend-icon="local_hospital"
                     ></v-text-field>
                   </v-flex>
 

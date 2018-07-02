@@ -4,7 +4,7 @@
       icon
       slot="activator"
       @click="inForm = true">
-      <v-icon :color="color">fa-handshake</v-icon>
+      <v-icon :color="color">transfer_within_a_station</v-icon>
       <v-dialog v-model="inForm" max-width="500px">
         <v-form ref="form" v-model="valid" @submit.prevent="save">
           <v-card>
@@ -22,6 +22,7 @@
                       v-model="loan.destination"
                       :rules="$validate('Destination', ['required'])"
                       label="Destination"
+                      prepend-icon="transfer_within_a_station"
                     ></v-text-field>
                   </v-flex>
 
