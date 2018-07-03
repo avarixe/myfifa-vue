@@ -77,11 +77,8 @@
       ])
     },
     watch: {
-      '$route' () {
-        this.redirectToAuthentication()
-      },
-      authenticated () {
-        this.redirectToAuthentication()
+      authenticated (val) {
+        !val && this.$router.push('/login')
       }
     },
     methods: {
@@ -93,24 +90,10 @@
         if (this.authenticated && Date.now() > this.expirationDate) {
           this.clear()
         }
-      },
-      redirectToAuthentication () {
-        switch (this.$route.path) {
-          case '/login':
-            if (this.authenticated) {
-              this.$router.push('/')
-            }
-            break
-          default:
-            if (!this.authenticated) {
-              this.$router.push('/login')
-            }
-        }
       }
     },
     mounted () {
       this.checkIfTokenExpired()
-      this.redirectToAuthentication()
     },
     name: 'App'
   }

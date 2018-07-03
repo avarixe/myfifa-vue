@@ -47,7 +47,7 @@
 
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
 
   export default {
     data: () => ({
@@ -60,6 +60,9 @@
       }
     }),
     computed: {
+      ...mapGetters('user', [
+        'authenticated'
+      ]),
       loginError: {
         get: function () { return this.errorMessage.length > 0 },
         set: function (val) { this.errorMessage = val }
@@ -74,6 +77,11 @@
         this.login(this.credentials)
           .then((data) => { this.$router.push('/') })
           .catch((error) => { this.errorMessage = error.message })
+      }
+    },
+    mounted () {
+      if (this.authenticated) {
+        this.$router.push('/')
       }
     }
   }
