@@ -25,6 +25,7 @@ const state = {
 
 // getters
 const getters = {
+  active: state => state.list.filter(player => player.status === 'Active')
 }
 
 // actions
@@ -72,6 +73,17 @@ const actions = {
         commit('update', data)
       },
       errorMessage: 'Failed to update Player. Please try again.'
+    })
+  },
+  updateMultiple ({ commit, rootGetters }, { teamId, players }) {
+    return apiRequest({
+      method: 'patch',
+      path: myfifa.players.update_multiple,
+      pathData: { teamId: teamId },
+      data: { players: players },
+      success: ({ data }) => {
+        commit('refresh', data)
+      }
     })
   },
   destroy ({ commit, rootGetters }, payload) {

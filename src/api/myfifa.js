@@ -5,7 +5,8 @@ export default {
   },
   players: {
     all: 'teams/{{ teamId }}/players',
-    get: 'players/{{ playerId }}'
+    get: 'players/{{ playerId }}',
+    update_multiple: 'teams/{{ teamId }}/players/update_multiple'
   },
   matches: {
     all: 'teams/{{ teamId }}/matches',

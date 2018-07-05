@@ -40,15 +40,13 @@
                   ></v-autocomplete>
                 </v-flex>
                 <v-flex xs12>
-                  <v-slider
-                    v-model="player.age"
-                    label="Age"
-                    min="16"
-                    max="50"
-                    thumb-label="always"
-                    ticks
-                    always-dirty
-                  ></v-slider>
+                  <v-text-field
+                    v-model="player.birth_year"
+                    label="Birth Year"
+                    prepend-icon="date_range"
+                    mask="####"
+                    :rules="$validate('Birth Year', ['required'])"
+                  ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
                   <v-slider
@@ -69,7 +67,6 @@
                     :prefix="team.currency"
                     :hint="numberHint(player.value)"
                     persistent-hint
-                    required
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
@@ -101,7 +98,6 @@
         </v-card>
       </v-form>
     </v-dialog>
-
   </div>
 </template>
 

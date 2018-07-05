@@ -16,6 +16,8 @@
           </v-tooltip>
         </player-form>
 
+        <player-mass-update :team-id="teamId"></player-mass-update>
+
         <!-- Display Menu -->
         <v-menu bottom right>
           <v-btn slot="activator" icon>
@@ -56,8 +58,8 @@
             <tr @click="props.expanded = !props.expanded">
               <td
                 v-for="(header, i) in headers"
-                :class="'text-xs-' + header.align"
-                :key="i">
+                :key="i"
+                :class="'text-xs-' + header.align">
                 {{ getProperty(props.item, header.value, header.format) }}
               </td>
             </tr>
@@ -82,6 +84,7 @@
   import get from 'lodash.get'
   import PlayerForm from '@/components/players/form'
   import PlayerActions from '@/components/players/actions'
+  import PlayerMassUpdate from '@/components/players/mass_update'
 
   export default {
     data () {
@@ -173,7 +176,8 @@
     },
     components: {
       'player-form': PlayerForm,
-      'player-actions': PlayerActions
+      'player-actions': PlayerActions,
+      'player-mass-update': PlayerMassUpdate
     }
   }
 </script>
