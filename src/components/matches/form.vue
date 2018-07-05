@@ -44,6 +44,17 @@
                     </v-tooltip>
                   </v-text-field>
                 </v-flex>
+                <v-flex xs12>
+                  <v-expansion-panel popout>
+                    <v-expansion-panel-content>
+                      <div slot="header">Starting Lineup</div>
+                      <v-card>
+                        <v-card-text>
+                        </v-card-text>
+                      </v-card>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>

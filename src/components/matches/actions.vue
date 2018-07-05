@@ -1,5 +1,5 @@
 <template>
-  <v-card-text id="actions" class="text-xs-center pa-0">
+  <div class="text-xs-center">
     <match-form :initial-match="match" color="orange">
       <v-tooltip bottom color="orange">
         <v-btn icon slot="activator">
@@ -58,7 +58,7 @@
       <v-btn dark flat @click.native="destroy(match.id)">Yes</v-btn>
       <v-btn dark flat @click.native="promptDeletion = false">No</v-btn>
     </v-snackbar>
-  </v-card-text>
+  </div>
 </template>
 
 <script>

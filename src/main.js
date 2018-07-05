@@ -37,6 +37,7 @@ import {
   VDivider,
   VAutocomplete,
   VCombobox,
+  VExpansionPanel,
   transitions
 } from 'vuetify'
 import { format, parse } from 'date-fns'
@@ -76,6 +77,7 @@ Vue.use(Vuetify, {
     VDivider,
     VAutocomplete,
     VCombobox,
+    VExpansionPanel,
     transitions
   }
 })

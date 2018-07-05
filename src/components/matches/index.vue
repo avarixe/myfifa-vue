@@ -43,11 +43,14 @@
               <td class="text-xs-right">{{ props.item.home }}</td>
               <td class="text-xs-center">{{ props.item.score }}</td>
               <td class="text-xs-left">{{ props.item.away }}</td>
-              <td class="text-xs-center">{{ props.item.date_played }}</td>
+              <td class="text-xs-center">{{ $format($parse(props.item.date_played), 'MMM DD, YYYY') }}</td>
             </tr>
           </template>
           <template slot="expand" slot-scope="props">
-            <match-actions :match="props.item"></match-actions>
+            <div class="pa-0">
+              <match-actions :match="props.item"></match-actions>
+              <!-- <match-info :match="props.item"></match-info> -->
+            </div>
           </template>
         </v-data-table>
         <div class="text-xs-center pt-2" v-if="pages > 1">
@@ -66,6 +69,7 @@
   // import get from 'lodash.get'
   import MatchForm from '@/components/matches/form'
   import MatchActions from '@/components/matches/actions'
+  import MatchInfo from '@/components/matches/info'
 
   export default {
     data () {
@@ -118,7 +122,8 @@
     },
     components: {
       'match-form': MatchForm,
-      'match-actions': MatchActions
+      'match-actions': MatchActions,
+      'match-info': MatchInfo
     }
   }
 </script>
