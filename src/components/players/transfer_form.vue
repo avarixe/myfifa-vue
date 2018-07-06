@@ -32,7 +32,7 @@
                       <v-text-field
                         slot="activator"
                         label="Effective Date"
-                        prepend-icon="calendar_today"
+                        prepend-inner-icon="calendar_today"
                         v-model="transfer.effective_date"
                         required
                         readonly
@@ -48,7 +48,7 @@
                     <v-text-field
                       v-model="transfer.origin"
                       label="Origin"
-                      prepend-icon="flight_takeoff"
+                      prepend-inner-icon="flight_takeoff"
                       :disabled="transferOut"
                       required
                     ></v-text-field>
@@ -57,7 +57,7 @@
                     <v-text-field
                       v-model="transfer.destination"
                       label="Destination"
-                      prepend-icon="flight_land"
+                      prepend-inner-icon="flight_land"
                       :disabled="!transferOut"
                       required
                     ></v-text-field>

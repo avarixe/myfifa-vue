@@ -4,7 +4,7 @@
     <v-dialog v-model="inForm" scrollable max-width="500px">
       <v-form ref="form" v-model="valid" @submit.prevent="submit">
         <v-card>
-          <v-card-title primary-title>
+          <v-card-title primary-title :class="formColor">
             <div class="headline">{{ title }}</div>
           </v-card-title>
           <v-divider></v-divider>
@@ -16,7 +16,7 @@
                     v-model="team.title"
                     :rules="$validate('Team', ['required'])"
                     label="Team"
-                    prepend-icon="people"
+                    prepend-inner-icon="people"
                     autofocus
                   ></v-text-field>
                 </v-flex>
@@ -32,7 +32,7 @@
                     <v-text-field
                       slot="activator"
                       label="Start Date"
-                      prepend-icon="calendar_today"
+                      prepend-inner-icon="calendar_today"
                       v-model="team.start_date"
                       :rules="$validate('Start Date', ['required', 'date'])"
                       readonly
@@ -62,7 +62,13 @@
           </v-alert>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn type="submit" :disabled="!valid" flat large>Save</v-btn>
+            <v-btn
+              type="submit"
+              :disabled="!valid"
+              :color="buttonColor"
+              flat
+              large
+            >Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
@@ -76,7 +82,8 @@
 
   export default {
     props: [
-      'initialTeam'
+      'initialTeam',
+      'color'
     ],
     data () {
       return {
@@ -99,6 +106,12 @@
       },
       title () {
         return this.initialTeam ? 'Edit ' + this.team.title : 'New Team'
+      },
+      buttonColor () {
+        return this.color ? this.color + ' darken-2' : null
+      },
+      formColor () {
+        return this.color ? this.color + ' accent-2' : null
       }
     },
     watch: {

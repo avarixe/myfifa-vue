@@ -29,7 +29,7 @@
                       <v-text-field
                         slot="activator"
                         label="Effective Date"
-                        prepend-icon="calendar_today"
+                        prepend-inner-icon="calendar_today"
                         v-model="contract.effective_date"
                         :rules="$validate('Effective Date', ['required', 'date'])"
                         readonly
@@ -57,7 +57,7 @@
                       <v-text-field
                         slot="activator"
                         label="End Date"
-                        prepend-icon="calendar_today"
+                        prepend-inner-icon="calendar_today"
                         v-model="contract.end_date"
                         :rules="$validate('End Date', ['required', 'date'])"
                         readonly
@@ -132,6 +132,7 @@
                       v-model="contract.bonus_req_type"
                       label="Bonus Req. Type"
                       :items="bonusRequirementTypes"
+                      clearable
                     ></v-autocomplete>
                   </v-flex>
                 </v-layout>

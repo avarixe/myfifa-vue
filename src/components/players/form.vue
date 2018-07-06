@@ -16,7 +16,7 @@
                     v-model="player.name"
                     :rules="$validate('Name', ['required'])"
                     label="Name"
-                    prepend-icon="person"
+                    prepend-inner-icon="person"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
@@ -25,7 +25,7 @@
                     :rules="$validate('Position', ['required'])"
                     :items="positions"
                     label="Position"
-                    prepend-icon="directions_run"
+                    prepend-inner-icon="directions_run"
                   ></v-autocomplete>
                 </v-flex>
                 <v-flex xs12>
@@ -33,7 +33,7 @@
                     v-model="player.sec_pos"
                     :items="positions"
                     label="Secondary Position(s)"
-                    prepend-icon="directions_walk"
+                    prepend-inner-icon="directions_walk"
                     multiple
                     chips
                     deletable-chips
@@ -43,7 +43,7 @@
                   <v-text-field
                     v-model="player.birth_year"
                     label="Birth Year"
-                    prepend-icon="date_range"
+                    prepend-inner-icon="date_range"
                     mask="####"
                     :rules="$validate('Birth Year', ['required'])"
                   ></v-text-field>

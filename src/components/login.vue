@@ -23,7 +23,9 @@
                     v-model="credentials.password"
                     :rules="$validate('Password', ['required'])"
                     label="Password"
-                    type="password"
+                    :type="visible ? 'text' : 'password'"
+                    :append-icon="visible ? 'visibility_off' : 'visibility'"
+                    @click:append="visible = !visible"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -53,6 +55,7 @@
     data: () => ({
       valid: false,
       errorMessage: '',
+      visible: false,
       credentials: {
         email: '',
         password: '',

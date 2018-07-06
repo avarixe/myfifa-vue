@@ -30,10 +30,10 @@
           </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <team-form :initial-team="team">
-              <v-tooltip bottom color="deep-orange darken-2">
+            <team-form :initial-team="team" color="orange">
+              <v-tooltip bottom color="orange darken-2">
                 <v-btn icon slot="activator">
-                  <v-icon color="deep-orange darken-2">edit</v-icon>
+                  <v-icon color="orange darken-2">edit</v-icon>
                 </v-btn>
                 Edit
               </v-tooltip>

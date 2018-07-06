@@ -22,7 +22,7 @@
                       v-model="injury.description"
                       :rules="$validate('Description', ['required'])"
                       label="Description"
-                      prepend-icon="local_hospital"
+                      prepend-inner-icon="local_hospital"
                     ></v-text-field>
                   </v-flex>
 
