@@ -13,46 +13,7 @@
       </v-toolbar-items>
     </v-toolbar>
     <v-content>
-      <v-speed-dial
-        v-model="fab"
-        v-if="authenticated"
-        fixed
-        bottom
-        right>
-        <v-btn
-          slot="activator"
-          v-model="fab"
-          color="blue darken-2"
-          dark
-          fab>
-          <v-icon>menu</v-icon>
-          <v-icon>close</v-icon>
-        </v-btn>
-        <v-tooltip left color="red darken-2">
-          <v-btn
-            slot="activator"
-            dark
-            color="red darken-2"
-            fab
-            @click.native="logout">
-            <v-icon>exit_to_app</v-icon>
-          </v-btn>
-          <span>Log Out</span>
-        </v-tooltip>
-        <v-tooltip left color="indigo">
-          <v-btn
-            slot="activator"
-            v-show="this.$route.path !== '/teams'"
-            dark
-            color="indigo"
-            fab
-            to="/">
-            <v-icon>swap_horiz</v-icon>
-          </v-btn>
-          <span>Change Team</span>
-        </v-tooltip>
-      </v-speed-dial>
-
+      <navigation-dial></navigation-dial>
       <router-view></router-view>
     </v-content>
   </v-app>
@@ -60,6 +21,7 @@
 
 <script>
   import { mapState, mapGetters, mapActions } from 'vuex'
+  import NavigationDial from '@/components/navigation'
 
   export default {
     data: () => ({
@@ -78,12 +40,11 @@
     },
     watch: {
       authenticated (val) {
-        !val && this.$router.push('/login')
+        !val && this.$router.push('/')
       }
     },
     methods: {
       ...mapActions('user', [
-        'logout',
         'clear'
       ]),
       checkIfTokenExpired () {
@@ -94,6 +55,9 @@
     },
     mounted () {
       this.checkIfTokenExpired()
+    },
+    components: {
+      'navigation-dial': NavigationDial
     },
     name: 'App'
   }
