@@ -130,6 +130,9 @@
           this.players = this.activePlayers.map(player => ({ ...player }))
           this.selected = []
         }
+      },
+      activePlayers (val) {
+        this.pagination.totalItems = val.length
       }
     },
     methods: {

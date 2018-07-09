@@ -104,6 +104,9 @@
     watch: {
       'team.current_date' (val) {
         this.reloadTable()
+      },
+      matches (val) {
+        this.pagination.totalItems = val.length
       }
     },
     methods: {

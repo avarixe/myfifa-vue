@@ -126,10 +126,10 @@
             ])
           default: // Status
             return headers.concat([
-              { text: 'Secondary Position(s)', value: 'sec_pos', align: 'center', format: 'array' },
-              { text: 'OVR',                   value: 'ovr',     align: 'center' },
-              { text: 'Value',                 value: 'value',   align: 'center', format: 'money' },
-              { text: 'Status',                value: 'status',  align: 'center', format: 'status' }
+              { text: '2nd Position(s)', value: 'sec_pos', align: 'center', format: 'array' },
+              { text: 'OVR',             value: 'ovr',     align: 'center' },
+              { text: 'Value',           value: 'value',   align: 'center', format: 'money' },
+              { text: 'Status',          value: 'status',  align: 'center', format: 'status' }
             ])
         }
       },
@@ -140,6 +140,9 @@
     watch: {
       'team.current_date' (val) {
         this.reloadTable()
+      },
+      players (val) {
+        this.pagination.totalItems = val.length
       }
     },
     methods: {
