@@ -91,7 +91,7 @@
       return {
         teamId: this.$route.params.teamId,
         pagination: {
-          sortBy: 'posIdx'
+          sortBy: 'pos_idx'
         },
         display: 'ovr',
         modes: [
