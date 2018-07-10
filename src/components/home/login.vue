@@ -9,7 +9,6 @@
           <v-flex xs12>
             <v-text-field
               v-model="credentials.email"
-              :rules="$validate('Email', ['required', 'email'])"
               label="Email"
               type="email"
               autofocus
@@ -18,7 +17,6 @@
           <v-flex xs12>
             <v-text-field
               v-model="credentials.password"
-              :rules="$validate('Password', ['required'])"
               label="Password"
               :type="visible ? 'text' : 'password'"
               :append-icon="visible ? 'visibility_off' : 'visibility'"
