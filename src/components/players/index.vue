@@ -33,6 +33,13 @@
           </v-list>
         </v-menu>
 
+        <v-tooltip top>
+          <v-btn slot="activator" icon @click.native="activeFilter = !activeFilter">
+            <v-icon>check_box{{ activeFilter ? '' : '_outline_blank' }}</v-icon>
+          </v-btn>
+          Display {{ activeFilter ? 'Active' : 'All' }} Players
+        </v-tooltip>
+
         <v-spacer></v-spacer>
 
         <!-- Player Search -->
@@ -51,6 +58,7 @@
           :pagination.sync="pagination"
           :loading="loading"
           :search="search"
+          :custom-filter="customFilter"
           item-key="id"
           hide-actions
           no-data-text="No Players Recorded">
@@ -100,6 +108,7 @@
           { text: 'Analytics', value: 'analytics' }
         ],
         loading: false,
+        activeFilter: false,
         search: ''
       }
     },
@@ -172,6 +181,13 @@
         this.refresh({ teamId: this.teamId })
           .then((data) => { this.loading = false })
           .catch((error) => { alert(error.message) })
+      },
+      customFilter (items, search, filter) {
+        search = search.toString().toLowerCase()
+        return items.filter(row => (
+          (!this.activeFilter || row.status) &&
+          Object.keys(row).some(k => filter(row[k], search))
+        ))
       }
     },
     mounted () {

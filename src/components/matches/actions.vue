@@ -9,6 +9,13 @@
       </v-tooltip>
     </match-form>
 
+    <v-tooltip bottom color="green">
+      <v-btn icon slot="activator">
+        <v-icon color="green">repeat</v-icon>
+      </v-btn>
+      Substitution
+    </v-tooltip>
+
     <v-tooltip bottom color="blue">
       <v-btn icon slot="activator">
         <v-icon color="blue">camera</v-icon>
@@ -21,20 +28,6 @@
         <v-icon color="red">book</v-icon>
       </v-btn>
       Booking
-    </v-tooltip>
-
-    <v-tooltip bottom color="green">
-      <v-btn icon slot="activator">
-        <v-icon color="green">repeat</v-icon>
-      </v-btn>
-      Substitution
-    </v-tooltip>
-
-    <v-tooltip bottom color="pink">
-      <v-btn icon slot="activator">
-        <v-icon color="pink">local_hospital</v-icon>
-      </v-btn>
-      Injury
     </v-tooltip>
 
     <v-tooltip bottom color="indigo">

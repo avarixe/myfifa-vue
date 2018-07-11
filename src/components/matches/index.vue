@@ -39,9 +39,9 @@
           no-data-text="No Matches Recorded">
           <template slot="items" slot-scope="props">
             <tr @click="props.expanded = !props.expanded">
-              <td  class="text-xs-center">{{ props.item.competition }}</td>
+              <td class="text-xs-center">{{ props.item.competition }}</td>
               <td class="text-xs-right">{{ props.item.home }}</td>
-              <td class="text-xs-center">{{ props.item.score }}</td>
+              <td :class="resultColor(props.item.team_result) + '--text text-xs-center'">{{ props.item.score }}</td>
               <td class="text-xs-left">{{ props.item.away }}</td>
               <td class="text-xs-center">{{ $format($parse(props.item.date_played), 'MMM DD, YYYY') }}</td>
             </tr>
@@ -118,6 +118,18 @@
         this.refresh({ teamId: this.teamId })
           .then((data) => { this.loading = false })
           .catch((error) => { alert(error.message) })
+      },
+      resultColor (result) {
+        switch (result) {
+          case 'win':
+            return 'green'
+          case 'draw':
+            return 'grey'
+          case 'loss':
+            return 'red'
+          default:
+            return ''
+        }
       }
     },
     mounted () {

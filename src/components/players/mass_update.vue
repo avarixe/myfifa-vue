@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip bottom>
+  <v-tooltip top>
     <v-btn slot="activator" icon @click="inForm = true">
       <v-icon>update</v-icon>
     </v-btn>
@@ -8,6 +8,14 @@
         <v-card>
           <v-card-title primary-title>
             <div class="headline">Mass Update Players</div>
+
+            <v-spacer></v-spacer>
+
+            <v-text-field
+              v-model="search"
+              label="Search"
+              append-icon="search"
+            ></v-text-field>
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
@@ -19,7 +27,6 @@
               item-key="id"
               :pagination.sync="pagination"
               :search="search"
-              hide-actions
               no-data-text="No Players to Update">
               <template slot="headers" slot-scope="props">
                 <th>
@@ -111,7 +118,7 @@
           { text: 'Value',    value: 'value', align: 'center' }
         ],
         pagination: {
-          sortBy: 'posIdx'
+          sortBy: 'pos_idx'
         },
         search: ''
       }
@@ -130,9 +137,6 @@
           this.players = this.activePlayers.map(player => ({ ...player }))
           this.selected = []
         }
-      },
-      activePlayers (val) {
-        this.pagination.totalItems = val.length
       }
     },
     methods: {
