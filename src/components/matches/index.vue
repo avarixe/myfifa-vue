@@ -48,7 +48,7 @@
           <template slot="expand" slot-scope="props">
             <div class="pa-0">
               <match-actions :match="props.item"></match-actions>
-              <!-- <match-info :match="props.item"></match-info> -->
+              <match-info :match="props.item"></match-info>
             </div>
           </template>
         </v-data-table>
