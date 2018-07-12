@@ -166,19 +166,13 @@
   import { mapState, mapActions } from 'vuex'
   import { addYears } from 'date-fns'
   import formMixin from '@/mixins/form'
+  import playerAction from '@/mixins/playerAction'
 
   export default {
-    mixins: [formMixin],
-    props: [
-      'player',
-      'color',
-      'dark'
-    ],
+    mixins: [ formMixin, playerAction ],
     data () {
       return {
-        inForm: false,
         valid: !!this.player.active_contract,
-        errorMessage: '',
         contract: Object.assign({
           effective_date: null,
           end_date: null,
@@ -204,10 +198,6 @@
       ]),
       title () {
         return ('id' in this.contract) ? 'Update Contract' : 'Sign New Contract'
-      },
-      formError: {
-        get: function () { return this.errorMessage.length > 0 },
-        set: function (val) { this.errorMessage = val }
       },
       maxEndDate () {
         return this.$format(addYears(this.$parse(this.contract.effective_date), 6))

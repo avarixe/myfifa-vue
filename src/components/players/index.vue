@@ -54,13 +54,11 @@
         <!-- Player Information Grid -->
         <v-data-table
           :headers="headers"
-          :items="players"
+          :items="rows"
           :pagination.sync="pagination"
           :loading="loading"
           :search="search"
-          :custom-filter="customFilter"
           item-key="id"
-          hide-actions
           no-data-text="No Players Recorded">
           <template slot="items" slot-scope="props">
             <tr @click="props.expanded = !props.expanded">
@@ -76,12 +74,6 @@
             <player-actions :player="props.item"></player-actions>
           </template>
         </v-data-table>
-        <div class="text-xs-center pt-2" v-if="pages > 1">
-          <v-pagination
-            v-model="pagination.page"
-            :length="pages"
-          ></v-pagination>
-        </div>
       </v-card-text>
     </v-card>
   </v-slide-x-reverse-transition>
@@ -142,16 +134,16 @@
             ])
         }
       },
-      pages () {
-        return this.pagination.rowsPerPage == null || this.pagination.totalItems == null ? 0 : Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
+      rows () {
+        return this.players.filter(row => !this.activeFilter || row.status)
       }
     },
     watch: {
       'team.current_date' (val) {
         this.reloadTable()
       },
-      players (val) {
-        this.pagination.totalItems = val.length
+      activeFilter () {
+        this.pagination.page = 1
       }
     },
     methods: {
@@ -181,13 +173,6 @@
         this.refresh({ teamId: this.teamId })
           .then((data) => { this.loading = false })
           .catch((error) => { alert(error.message) })
-      },
-      customFilter (items, search, filter) {
-        search = search.toString().toLowerCase()
-        return items.filter(row => (
-          (!this.activeFilter || row.status) &&
-          Object.keys(row).some(k => filter(row[k], search))
-        ))
       }
     },
     mounted () {

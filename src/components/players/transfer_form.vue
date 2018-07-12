@@ -119,18 +119,11 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import formMixin from '@/mixins/form'
+  import playerAction from '@/mixins/playerAction'
 
   export default {
-    mixins: [formMixin],
-    props: [
-      'player',
-      'color',
-      'dark'
-    ],
+    mixins: [ formMixin, playerAction ],
     data: () => ({
-      inForm: false,
-      valid: false,
-      errorMessage: '',
       menu: false,
       transfer: {
         effective_date: null,
@@ -145,20 +138,8 @@
       ...mapState('team', {
         team: 'active'
       }),
-      formError: {
-        get: function () { return this.errorMessage.length > 0 },
-        set: function (val) { this.errorMessage = val }
-      },
       transferOut () {
         return this.player.status && this.player.status.length > 0
-      }
-    },
-    watch: {
-      inForm (val) {
-        if (!val) {
-          Object.assign(this.$data, this.$options.data())
-          // this.$refs.form.reset()
-        }
       }
     },
     methods: {

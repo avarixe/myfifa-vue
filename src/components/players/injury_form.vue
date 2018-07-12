@@ -62,9 +62,12 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
+  import formMixin from '@/mixins/form'
+  import playerAction from '@/mixins/playerAction'
 
   export default {
+    mixins: [ formMixin, playerAction ],
     props: [
       'player',
       'color',
@@ -72,9 +75,7 @@
     ],
     data () {
       return {
-        inForm: false,
         valid: !!this.player.active_injury,
-        errorMessage: '',
         injury: Object.assign({
           description: '',
           recovered: false
@@ -82,24 +83,11 @@
       }
     },
     computed: {
-      ...mapState('team', {
-        team: 'active'
-      }),
       title () {
         return this.injury && this.injury.id ? 'Update Injury' : 'Record New Injury'
-      },
-      formError: {
-        get: function () { return this.errorMessage.length > 0 },
-        set: function (val) { this.errorMessage = val }
       }
     },
     watch: {
-      inForm (val) {
-        if (!val) {
-          Object.assign(this.$data, this.$options.data.apply(this))
-          // this.$refs.form.reset()
-        }
-      },
       player (val) {
         Object.assign(this.$data, this.$options.data.apply(this))
       }

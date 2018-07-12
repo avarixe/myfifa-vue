@@ -62,19 +62,15 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
+  import formMixin from '@/mixins/form'
+  import playerAction from '@/mixins/playerAction'
 
   export default {
-    props: [
-      'player',
-      'color',
-      'dark'
-    ],
+    mixins: [ formMixin, playerAction ],
     data () {
       return {
-        inForm: false,
         valid: !!this.player.active_loan,
-        errorMessage: '',
         loan: Object.assign({
           destination: '',
           returned: false
@@ -82,23 +78,8 @@
       }
     },
     computed: {
-      ...mapState('team', {
-        team: 'active'
-      }),
       title () {
         return this.loan && this.loan.id ? 'Update Loan' : 'Record New Loan'
-      },
-      formError: {
-        get: function () { return this.errorMessage.length > 0 },
-        set: function (val) { this.errorMessage = val }
-      }
-    },
-    watch: {
-      inForm (val) {
-        if (!val) {
-          Object.assign(this.$data, this.$options.data.apply(this))
-          // this.$refs.form.reset()
-        }
       }
     },
     methods: {

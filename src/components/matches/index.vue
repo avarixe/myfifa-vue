@@ -35,7 +35,6 @@
           :loading="loading"
           :search="search"
           item-key="id"
-          hide-actions
           no-data-text="No Matches Recorded">
           <template slot="items" slot-scope="props">
             <tr @click="props.expanded = !props.expanded">
@@ -53,12 +52,6 @@
             </div>
           </template>
         </v-data-table>
-        <div class="text-xs-center pt-2" v-if="pages > 1">
-          <v-pagination
-            v-model="pagination.page"
-            :length="pages"
-          ></v-pagination>
-        </div>
       </v-card-text>
     </v-card>
   </v-slide-x-reverse-transition>
@@ -96,17 +89,11 @@
       }),
       ...mapState('team', {
         team: 'active'
-      }),
-      pages () {
-        return this.pagination.rowsPerPage == null || this.pagination.totalItems == null ? 0 : Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
-      }
+      })
     },
     watch: {
       'team.current_date' (val) {
         this.reloadTable()
-      },
-      matches (val) {
-        this.pagination.totalItems = val.length
       }
     },
     methods: {

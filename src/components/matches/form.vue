@@ -9,7 +9,7 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <v-container grid-list-md>
+            <v-container>
               <v-layout wrap>
                 <v-flex xs12>
                   <v-combobox
@@ -59,7 +59,7 @@
                               <v-text-field
                                 v-model="player.position"
                                 label="Position"
-                                :prefix="i+1"
+                                :prefix="(i+1).toString()"
                                 hide-details
                               ></v-text-field>
                             </v-flex>
@@ -107,8 +107,10 @@
 
 <script>
   import { mapState, mapGetters, mapActions } from 'vuex'
+  import formMixin from '@/mixins/form'
 
   export default {
+    mixins: [ formMixin ],
     props: [
       'initialMatch',
       'teamId',
@@ -116,10 +118,8 @@
     ],
     data () {
       return {
-        inForm: false,
         expanded: null,
         valid: !!this.initialMatch,
-        errorMessage: '',
         match: Object.assign({
           competition: '',
           home: '',
@@ -138,10 +138,6 @@
       ...mapGetters('match', [
         'competitions'
       ]),
-      formError: {
-        get: function () { return this.errorMessage.length > 0 },
-        set: function (val) { this.errorMessage = val }
-      },
       title () {
         return this.match.id ? 'Edit Match' : 'New Match'
       },
