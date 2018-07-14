@@ -3,7 +3,32 @@ import myfifa from '@/api/myfifa'
 
 // initial state
 const state = {
-  list: []
+  list: [],
+  positions: [
+    'GK',
+    'CB',
+    'LCB',
+    'RCB',
+    'LB',
+    'LWB',
+    'RB',
+    'RWB',
+    'CDM',
+    'LDM',
+    'RDM',
+    'CM',
+    'LCM',
+    'RCM',
+    'CAM',
+    'LAM',
+    'RAM',
+    'LM',
+    'LW',
+    'RM',
+    'RW',
+    'CF',
+    'ST'
+  ]
 }
 
 // getters

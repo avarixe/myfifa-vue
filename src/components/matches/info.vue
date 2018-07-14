@@ -1,9 +1,36 @@
 <template>
   <v-layout row wrap>
     <!-- Line Up -->
-    <v-flex xs12 md6>
-      <v-list>
-        <v-subheader inset>Lineup</v-subheader>
+    <v-flex xs12 md6 v-if="match.team_result">
+      <v-list dense>
+        <v-subheader>Lineup</v-subheader>
+
+        <v-list-tile
+          v-for="(player, i) in sortedLogs"
+          :key="i">
+
+          <v-list-tile-action>
+            <v-list-tile-action-text>{{ player.pos }}</v-list-tile-action-text>
+          </v-list-tile-action>
+
+          <v-list-tile-avatar>
+            <v-icon small color="green" v-if="parseInt(player.start) > 0">subdirectory_arrow_right</v-icon>
+            <v-icon small color="red" v-if="player.subbed_out">subdirectory_arrow_left</v-icon>
+          </v-list-tile-avatar>
+
+          <v-list-tile-content>
+            <v-list-tile-title>
+              {{ player.name }}
+              <v-icon
+                v-for="index in numGoals(player)"
+                :key="index"
+                color="blue"
+                small
+              >camera</v-icon>
+            </v-list-tile-title>
+          </v-list-tile-content>
+
+        </v-list-tile>
 
       </v-list>
 
@@ -18,11 +45,11 @@
           v-for="(event, i) in events"
           :key="i">
           <v-list-tile-action>
-            <v-list-tile-action-text>{{ event.minute }}'</v-list-tile-action-text>
+            <v-list-tile-action-text :class="teamColor(event)">{{ event.minute }}'</v-list-tile-action-text>
           </v-list-tile-action>
 
           <v-list-tile-avatar>
-            <v-icon :class="eventColor(event)">{{ eventIcon(event) }}</v-icon>
+            <v-icon small :color="eventColor(event)">{{ eventIcon(event) }}</v-icon>
           </v-list-tile-avatar>
 
           <v-list-tile-content>
@@ -45,6 +72,8 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+
   export default {
     props: [
       'match'
@@ -54,19 +83,36 @@
       }
     },
     computed: {
+      ...mapState('match', [
+        'positions'
+      ]),
       events () {
         return this.match.events.slice().sort()
+      },
+      sortedLogs () {
+        return this.match.logs.slice().sort((a, b) => {
+          if (this.positions.indexOf(a.pos) > this.positions.indexOf(b.pos)) {
+            return 1
+          } else if (this.positions.indexOf(a.pos) < this.positions.indexOf(b.pos)) {
+            return -1
+          } else {
+            return a.start >= b.start
+          }
+        })
       }
     },
     methods: {
+      teamColor (event) {
+        return event.home ? 'teal--text' : 'pink--text'
+      },
       eventColor (event) {
         switch (event.event_type) {
           case 'Goal':
-            return 'blue--text'
+            return 'blue'
           case 'Booking':
-            return 'red--text'
+            return 'red'
           case 'Substitution':
-            return 'green--text'
+            return 'green'
         }
       },
       eventIcon (event) {
@@ -107,6 +153,11 @@
           case 'Substitution':
             return 'Replaced by ' + event.replaced_by
         }
+      },
+      numGoals (log) {
+        return this.events
+               .filter(event => event.event_type === 'Goal' && event.player_id === log.player_id)
+               .length
       }
     }
   }

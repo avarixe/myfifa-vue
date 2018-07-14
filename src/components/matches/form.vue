@@ -56,12 +56,13 @@
                             row
                             wrap>
                             <v-flex xs4>
-                              <v-text-field
+                              <v-autocomplete
                                 v-model="player.position"
+                                :items="positions"
                                 label="Position"
                                 :prefix="(i+1).toString()"
                                 hide-details
-                              ></v-text-field>
+                              ></v-autocomplete>
                             </v-flex>
                             <v-flex xs8>
                               <v-autocomplete
@@ -132,6 +133,9 @@
       ...mapState('team', {
         team: 'active'
       }),
+      ...mapState('match', [
+        'positions'
+      ]),
       ...mapGetters('player', {
         activePlayers: 'active'
       }),

@@ -47,7 +47,7 @@
           </template>
           <template slot="expand" slot-scope="props">
             <div class="pa-0">
-              <match-actions :match="props.item"></match-actions>
+              <match-actions v-if="props.item.date_played === team.current_date" :match="props.item"></match-actions>
               <match-info :match="props.item"></match-info>
             </div>
           </template>
