@@ -3,52 +3,44 @@
     <v-card>
       <v-card-title primary-title>
         <div class="title">
-          // MATCHES
+          // SQUADS
         </div>
 
-        <!-- New Match Form -->
-        <match-form :team-id="teamId">
+        <!-- New Squad Form -->
+        <squad-form :team-id="teamId">
           <v-tooltip top>
             <v-btn slot="activator" flat icon>
               <v-icon>add_circle</v-icon>
             </v-btn>
-            Record Match
+            Add Squad
           </v-tooltip>
-        </match-form>
+        </squad-form>
 
-        <v-spacer></v-spacer>
-
-        <!-- Match Search -->
-        <v-text-field
-          v-model="search"
-          label="Search"
-          append-icon="search"
-        ></v-text-field>
       </v-card-title>
       <v-card-text>
 
-        <!-- Match History Grid -->
+        <!-- Squads Grid -->
         <v-data-table
           :headers="headers"
-          :items="matches"
-          :pagination.sync="pagination"
+          :items="squads"
           :loading="loading"
-          :search="search"
           item-key="id"
-          no-data-text="No Matches Recorded">
+          no-data-text="No Squads Recorded">
           <template slot="items" slot-scope="props">
             <tr @click="props.expanded = !props.expanded">
-              <td class="text-xs-center">{{ props.item.competition }}</td>
-              <td class="text-xs-right">{{ props.item.home }}</td>
-              <td :class="resultColor(props.item.team_result) + '--text text-xs-center'">{{ props.item.score }}</td>
-              <td class="text-xs-left">{{ props.item.away }}</td>
-              <td class="text-xs-center">{{ $format($parse(props.item.date_played), 'MMM DD, YYYY') }}</td>
+              <td class="text-xs-center">{{ props.item.name }}</td>
             </tr>
           </template>
           <template slot="expand" slot-scope="props">
             <div class="pa-0">
-              <match-actions v-if="props.item.date_played === team.current_date" :match="props.item"></match-actions>
-              <match-info :match="props.item" :team="team"></match-info>
+              <squad-form :initial-squad="props.item" color="orange">
+                <v-tooltip bottom color="orange">
+                  <v-btn icon slot="activator">
+                    <v-icon color="orange">edit</v-icon>
+                  </v-btn>
+                  Edit
+                </v-tooltip>
+              </squad-form>
             </div>
           </template>
         </v-data-table>
@@ -60,18 +52,12 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   // import get from 'lodash.get'
-  import MatchForm from '@/components/matches/form'
-  import MatchActions from '@/components/matches/actions'
-  import MatchInfo from '@/components/matches/info'
+  import SquadForm from '@/components/squads/form'
 
   export default {
     data () {
       return {
         teamId: this.$route.params.teamId,
-        pagination: {
-          sortBy: 'date_played',
-          descending: true
-        },
         headers: [
           { text: 'Competition', value: 'competition', align: 'center' },
           { text: 'Home',        value: 'home',        align: 'right' },
@@ -84,15 +70,15 @@
       }
     },
     computed: {
-      ...mapState('match', {
-        matches: 'list'
+      ...mapState('squad', {
+        squads: 'list'
       }),
       ...mapState('team', {
         team: 'active'
       })
     },
     methods: {
-      ...mapActions('match', [
+      ...mapActions('squad', [
         'refresh'
       ]),
       reloadTable () {
@@ -117,9 +103,7 @@
       this.reloadTable()
     },
     components: {
-      'match-form': MatchForm,
-      'match-actions': MatchActions,
-      'match-info': MatchInfo
+      'squad-form': SquadForm
     }
   }
 </script>

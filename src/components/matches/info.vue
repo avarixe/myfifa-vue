@@ -2,8 +2,21 @@
   <v-layout row wrap>
     <!-- Line Up -->
     <v-flex xs12 md6 v-if="match.team_result">
+
       <v-list dense>
         <v-subheader>Lineup</v-subheader>
+
+        <log-form :match="match" v-if="sortedLogs.length < 11">
+          <v-btn color="secondary">
+            <v-icon left>add_circle_outline</v-icon>
+            Add Player
+          </v-btn>
+        </log-form>
+
+        <v-btn color="secondary">
+          <v-icon left>people_outline</v-icon>
+          Apply Squad
+        </v-btn>
 
         <v-list-tile
           v-for="(player, i) in sortedLogs"
@@ -30,10 +43,19 @@
             </v-list-tile-title>
           </v-list-tile-content>
 
+          <v-list-tile-action v-if="team.current_date === match.date_played && player.start === 0">
+            <log-form :match="match" :initial-log="player">
+              <v-tooltip bottom>
+                <v-btn slot="activator" icon>
+                  <v-icon>edit</v-icon>
+                </v-btn>
+                Edit
+              </v-tooltip>
+            </log-form>
+          </v-list-tile-action>
+
         </v-list-tile>
-
       </v-list>
-
     </v-flex>
 
     <!-- Match Events -->
@@ -57,14 +79,15 @@
             <v-list-tile-sub-title>{{ eventSubtitle(event) }}</v-list-tile-sub-title>
           </v-list-tile-content>
 
-          <!-- <v-list-tile-action> -->
-            <!-- <v-tooltip bottom> -->
-              <!-- <v-btn slot="activator" icon @click="remove"> -->
-                <!-- <v-icon>remove_circle</v-icon> -->
-              <!-- </v-btn> -->
-              <!-- Remove -->
-            <!-- </v-tooltip> -->
-          <!-- </v-list-tile-action> -->
+          <v-list-tile-action v-if="team.current_date === match.date_played">
+            <v-tooltip bottom>
+              <v-btn slot="activator" icon @click="removeEvent(event)">
+                <v-icon>remove_circle</v-icon>
+              </v-btn>
+              Remove
+            </v-tooltip>
+          </v-list-tile-action>
+
         </v-list-tile>
       </v-list>
     </v-flex>
@@ -73,13 +96,16 @@
 
 <script>
   import { mapState } from 'vuex'
+  import LogForm from '@/components/matches/log_form'
 
   export default {
     props: [
+      'team',
       'match'
     ],
     data () {
       return {
+        dialog: false
       }
     },
     computed: {
@@ -90,7 +116,7 @@
         return this.match.events.slice().sort()
       },
       sortedLogs () {
-        return this.match.logs.slice().sort((a, b) => {
+        return this.match.match_logs.slice().sort((a, b) => {
           if (this.positions.indexOf(a.pos) > this.positions.indexOf(b.pos)) {
             return 1
           } else if (this.positions.indexOf(a.pos) < this.positions.indexOf(b.pos)) {
@@ -158,7 +184,13 @@
         return this.events
                .filter(event => event.event_type === 'Goal' && event.player_id === log.player_id)
                .length
+      },
+      removeEvent (event) {
+        console.log('Removing event')
       }
+    },
+    components: {
+      'log-form': LogForm
     }
   }
 </script>

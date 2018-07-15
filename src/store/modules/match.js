@@ -33,7 +33,8 @@ const state = {
 
 // getters
 const getters = {
-  competitions: state => [ ...new Set(state.list.map((match) => match.competition)) ]
+  competitions: state => [ ...new Set(state.list.map(match => match.competition)) ].reverse(),
+  teams: state => [ ...new Set([ ...state.list.map(match => match.home), ...state.list.map(match => match.away) ]) ]
 }
 
 // actions
@@ -93,6 +94,32 @@ const actions = {
         commit('remove', data)
       },
       errorMessage: 'Failed to delete Match. Please try again.'
+    })
+  },
+  addLog ({ commit, rootGetters }, { matchId, matchLog }) {
+    return apiRequest({
+      method: 'post',
+      path: myfifa.matchLogs.all,
+      pathData: { matchId: matchId },
+      token: rootGetters['user/token'],
+      data: { match_log: matchLog },
+      success: ({ data }) => {
+        commit('update', data)
+      },
+      errorMessage: 'Failed to add Player to Match Log. Please try again.'
+    })
+  },
+  updateLog ({ commit, rootGetters }, payload) {
+    return apiRequest({
+      method: 'patch',
+      path: myfifa.matchLogs.get,
+      pathData: { logId: payload.id },
+      token: rootGetters['user/token'],
+      data: { match_log: payload },
+      success: ({ data }) => {
+        commit('update', data)
+      },
+      errorMessage: 'Failed to update Match Log. Please try again.'
     })
   }
 }

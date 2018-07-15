@@ -17,6 +17,9 @@
         <v-flex xs12>
           <matches-panel></matches-panel>
         </v-flex>
+        <v-flex xs12>
+          <squads-panel></squads-panel>
+        </v-flex>
       </v-flex>
     </v-layout>
   </v-container>
@@ -26,12 +29,14 @@
   import TeamCalendar from '@/components/teams/calendar'
   import PlayersPanel from '@/components/players'
   import MatchesPanel from '@/components/matches'
+  import SquadsPanel from '@/components/squads'
 
   export default {
     components: {
       'team-calendar': TeamCalendar,
       'players-panel': PlayersPanel,
-      'matches-panel': MatchesPanel
+      'matches-panel': MatchesPanel,
+      'squads-panel': SquadsPanel
     }
   }
 </script>

@@ -8,10 +8,6 @@ export default {
     get: 'players/{{ playerId }}',
     update_multiple: 'teams/{{ teamId }}/players/update_multiple'
   },
-  matches: {
-    all: 'teams/{{ teamId }}/matches',
-    get: 'matches/{{ matchId }}'
-  },
   transfers: {
     all: 'players/{{ playerId }}/transfers',
     get: 'transfers/{{ transferId }}'
@@ -28,6 +24,21 @@ export default {
     all: 'players/{{ playerId }}/loans',
     get: 'loans/{{ loanId }}'
   },
+
+  squads: {
+    all: 'teams/{{ teamId }}/squads',
+    get: 'squads/{{ squadId }}'
+  },
+
+  matches: {
+    all: 'teams/{{ teamId }}/matches',
+    get: 'matches/{{ matchId }}'
+  },
+  matchLogs: {
+    all: 'matches//{{ matchId }}/logs',
+    get: 'logs/{{ logId }}'
+  },
+
   user: 'users/sync',
   token: {
     get: 'oauth/token',

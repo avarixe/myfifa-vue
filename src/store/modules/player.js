@@ -25,7 +25,9 @@ const state = {
 
 // getters
 const getters = {
-  active: state => state.list.filter(player => player.status === 'Active')
+  active: state => state.list
+                   .filter(player => player.status === 'Active')
+                   .sort((a, b) => state.positions.indexOf(a.pos) - state.positions.indexOf(b.pos))
 }
 
 // actions

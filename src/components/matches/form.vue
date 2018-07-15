@@ -1,5 +1,5 @@
 <template>
-  <div class="d-inline-block" @click="inForm = true">
+  <div class="d-inline-block" @click.stop="inForm = true">
     <slot></slot>
     <v-dialog v-model="inForm" max-width="500px">
       <v-form ref="form" v-model="valid" @submit.prevent="submit">
@@ -21,8 +21,9 @@
                   ></v-combobox>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field
+                  <v-combobox
                     v-model="match.home"
+                    :items="teams"
                     :rules="$validate('Home Team', ['required'])"
                     label="Home Team"
                     prepend-inner-icon="people">
@@ -30,11 +31,12 @@
                       <v-icon slot="activator" @click="setHome">arrow_back</v-icon>
                       Home Match for {{ team.title }}
                     </v-tooltip>
-                  </v-text-field>
+                  </v-combobox>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field
+                  <v-combobox
                     v-model="match.away"
+                    :items="teams"
                     :rules="$validate('Away Team', ['required'])"
                     label="Away Team"
                     prepend-inner-icon="people">
@@ -42,43 +44,7 @@
                       <v-icon slot="activator" @click="setAway">arrow_back</v-icon>
                       Away Match for {{ team.title }}
                     </v-tooltip>
-                  </v-text-field>
-                </v-flex>
-                <v-flex xs12 v-if="!match.id">
-                  <v-expansion-panel v-model="expanded" popout>
-                    <v-expansion-panel-content>
-                      <div slot="header">Starting Lineup</div>
-                      <v-card>
-                        <v-card-text>
-                          <v-layout
-                            v-for="(player, i) in match.lineup"
-                            :key="i"
-                            row
-                            wrap>
-                            <v-flex xs4>
-                              <v-autocomplete
-                                v-model="player.position"
-                                :items="positions"
-                                label="Position"
-                                :prefix="(i+1).toString()"
-                                hide-details
-                              ></v-autocomplete>
-                            </v-flex>
-                            <v-flex xs8>
-                              <v-autocomplete
-                                v-model="player.name"
-                                :items="activePlayers.map(player => player.name)"
-                                label="Player"
-                                prepend-inner-icon="person"
-                                hide-details
-                                clearable
-                              ></v-autocomplete>
-                            </v-flex>
-                          </v-layout>
-                        </v-card-text>
-                      </v-card>
-                    </v-expansion-panel-content>
-                  </v-expansion-panel>
+                  </v-combobox>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -119,13 +85,11 @@
     ],
     data () {
       return {
-        expanded: null,
         valid: !!this.initialMatch,
         match: Object.assign({
           competition: '',
           home: '',
-          away: '',
-          lineup: []
+          away: ''
         }, this.initialMatch)
       }
     },
@@ -133,14 +97,9 @@
       ...mapState('team', {
         team: 'active'
       }),
-      ...mapState('match', [
-        'positions'
-      ]),
-      ...mapGetters('player', {
-        activePlayers: 'active'
-      }),
       ...mapGetters('match', [
-        'competitions'
+        'competitions',
+        'teams'
       ]),
       title () {
         return this.match.id ? 'Edit Match' : 'New Match'
@@ -154,23 +113,6 @@
       isTeamGame () {
         return this.match.home === this.team.title ||
                this.match.away === this.team.title
-      }
-    },
-    watch: {
-      inForm (val) {
-        if (!val) {
-          Object.assign(this.$data, this.$options.data.apply(this))
-          // this.$refs.form.reset()
-        } else if (!('id' in this.match)) {
-          for (let i = 0; i < 11; i++) {
-            this.match.lineup.push({ name: '', position: '' })
-          }
-        }
-      },
-      isTeamGame (val) {
-        if (val) {
-          this.expanded = 0
-        }
       }
     },
     methods: {
