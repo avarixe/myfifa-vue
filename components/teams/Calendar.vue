@@ -14,7 +14,7 @@
   export default {
     data () {
       return {
-        teamId: this.$route.params.teamId,
+        teamId: this.$route.params.id,
         currentDate: null
       }
     },

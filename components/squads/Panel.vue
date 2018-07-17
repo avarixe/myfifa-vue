@@ -29,19 +29,17 @@
           <template slot="items" slot-scope="props">
             <tr @click="props.expanded = !props.expanded">
               <td class="text-xs-center">{{ props.item.name }}</td>
+              <td class="justify-center layout px-0">
+                <squad-form :initial-squad="props.item" color="orange">
+                  <v-tooltip bottom color="orange">
+                    <v-btn icon slot="activator">
+                      <v-icon color="orange">edit</v-icon>
+                    </v-btn>
+                    Edit
+                  </v-tooltip>
+                </squad-form>
+              </td>
             </tr>
-          </template>
-          <template slot="expand" slot-scope="props">
-            <div class="pa-0">
-              <squad-form :initial-squad="props.item" color="orange">
-                <v-tooltip bottom color="orange">
-                  <v-btn icon slot="activator">
-                    <v-icon color="orange">edit</v-icon>
-                  </v-btn>
-                  Edit
-                </v-tooltip>
-              </squad-form>
-            </div>
           </template>
         </v-data-table>
       </v-card-text>
@@ -59,11 +57,8 @@
       return {
         teamId: this.$route.params.id,
         headers: [
-          { text: 'Competition', value: 'competition', align: 'center' },
-          { text: 'Home',        value: 'home',        align: 'right' },
-          { text: 'Score',       value: 'score',       align: 'center', sortable: false },
-          { text: 'Away',        value: 'away',        align: 'left' },
-          { text: 'Date Played', value: 'date_played', align: 'center' }
+          { text: 'Name',    value: 'name',    align: 'center' },
+          { text: 'Actions', value: 'actions', align: 'right' }
         ],
         loading: false,
         search: ''
