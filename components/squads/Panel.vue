@@ -57,7 +57,7 @@
   export default {
     data () {
       return {
-        teamId: this.$route.params.teamId,
+        teamId: this.$route.params.id,
         headers: [
           { text: 'Competition', value: 'competition', align: 'center' },
           { text: 'Home',        value: 'home',        align: 'right' },

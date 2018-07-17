@@ -67,7 +67,7 @@
   export default {
     data () {
       return {
-        teamId: this.$route.params.teamId,
+        teamId: this.$route.params.id,
         pagination: {
           sortBy: 'date_played',
           descending: true

@@ -118,11 +118,11 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import formMixin from '@/mixins/form'
-  import playerAction from '@/mixins/playerAction'
+  import FormMixin from '@/mixins/Form'
+  import PlayerAction from '@/mixins/PlayerAction'
 
   export default {
-    mixins: [ formMixin, playerAction ],
+    mixins: [ FormMixin, PlayerAction ],
     data: () => ({
       menu: false,
       transfer: {

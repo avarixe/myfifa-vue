@@ -27,9 +27,9 @@
 
 <script>
   import TeamCalendar from '@/components/teams/Calendar'
-  import PlayersPanel from '@/components/players'
-  import MatchesPanel from '@/components/matches'
-  import SquadsPanel from '@/components/squads'
+  import PlayersPanel from '@/components/players/Panel'
+  import MatchesPanel from '@/components/matches/Panel'
+  import SquadsPanel from '@/components/squads/Panel'
 
   export default {
     components: {
