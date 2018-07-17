@@ -1,16 +1,8 @@
 import apiRequest from '@/api'
 import myfifa from '@/api/myfifa'
 
-// initial state
-const state = {
-}
-
-// getters
-const getters = {
-}
-
 // actions
-const actions = {
+export const actions = {
   get ({ rootState }, { loanId }) {
     return apiRequest({
       path: myfifa.loans.get,
@@ -57,17 +49,4 @@ const actions = {
       errorMessage: 'Failed to delete Loan. Please try again.'
     })
   }
-}
-
-// mutations
-const mutations = {
-}
-
-export default {
-  namespaced: true,
-
-  state,
-  getters,
-  actions,
-  mutations
 }

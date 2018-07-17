@@ -3,7 +3,7 @@ import apiRequest from '@/api'
 import myfifa from '@/api/myfifa'
 
 // initial state
-const state = {
+export const state = () => ({
   list: [],
   active: {
     id: null,
@@ -12,10 +12,10 @@ const state = {
     current_date: null,
     currency: '$'
   }
-}
+})
 
 // getters
-const getters = {
+export const getters = {
   seasonStart: state => {
     if (state.active.start_date) {
       let date = parse(state.active.start_date)
@@ -36,7 +36,7 @@ const getters = {
 }
 
 // actions
-const actions = {
+export const actions = {
   refresh ({ state, commit, rootState }) {
     return apiRequest({
       path: myfifa.teams.all,
@@ -99,7 +99,7 @@ const actions = {
 }
 
 // mutations
-const mutations = {
+export const mutations = {
   refresh (state, teams) {
     state.list = teams
   },
@@ -127,13 +127,4 @@ const mutations = {
       }
     }
   }
-}
-
-export default {
-  namespaced: true,
-
-  state,
-  getters,
-  actions,
-  mutations
 }

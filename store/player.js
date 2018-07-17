@@ -2,7 +2,7 @@ import apiRequest from '@/api'
 import myfifa from '@/api/myfifa'
 
 // initial state
-const state = {
+export const state = () => ({
   list: [],
   positions: [
     'GK',
@@ -21,10 +21,10 @@ const state = {
     'CF',
     'ST'
   ]
-}
+})
 
 // getters
-const getters = {
+export const getters = {
   active: state => (
     state.list
       .filter(player => player.status === 'Active')
@@ -33,7 +33,7 @@ const getters = {
 }
 
 // actions
-const actions = {
+export const actions = {
   refresh ({ state, commit, rootState }, { teamId }) {
     return apiRequest({
       path: myfifa.players.all,
@@ -118,7 +118,7 @@ const actions = {
 }
 
 // mutations
-const mutations = {
+export const mutations = {
   refresh (state, players) {
     state.list = players
   },
@@ -133,13 +133,4 @@ const mutations = {
     let index = state.list.findIndex(t => t.id === player.id)
     state.list.splice(index, 1)
   }
-}
-
-export default {
-  namespaced: true,
-
-  state,
-  getters,
-  actions,
-  mutations
 }

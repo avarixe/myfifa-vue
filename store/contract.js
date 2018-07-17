@@ -2,21 +2,17 @@ import apiRequest from '@/api'
 import myfifa from '@/api/myfifa'
 
 // initial state
-const state = {
+export const state = () => ({
   bonusRequirementTypes: [
     'Appearances',
     'Goals',
     'Assists',
     'Clean Sheets'
   ]
-}
-
-// getters
-const getters = {
-}
+})
 
 // actions
-const actions = {
+export const actions = {
   get ({ rootState }, { contractId }) {
     return apiRequest({
       path: myfifa.contracts.get,
@@ -63,17 +59,4 @@ const actions = {
       errorMessage: 'Failed to delete Contract. Please try again.'
     })
   }
-}
-
-// mutations
-const mutations = {
-}
-
-export default {
-  namespaced: true,
-
-  state,
-  getters,
-  actions,
-  mutations
 }

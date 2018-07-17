@@ -2,18 +2,18 @@ import apiRequest from '@/api'
 import myfifa from '@/api/myfifa'
 
 // initial state
-const state = {
+export const state = () => ({
   token: null // localStorage.getItem('token'),
   // expirationDate: localStorage.getItem('expirationDate')
-}
+})
 
 // getters
-const getters = {
+export const getters = {
   authenticated: state => state.token !== null
 }
 
 // mutations
-const mutations = {
+export const mutations = {
   setToken (state, token) {
     state.token = token
     // if (token !== null) {
@@ -33,7 +33,7 @@ const mutations = {
 }
 
 // actions
-const actions = {
+export const actions = {
   login ({ commit, dispatch }, payload) {
     return apiRequest({
       method: 'post',
@@ -72,13 +72,4 @@ const actions = {
       }
     })
   }
-}
-
-export default {
-  namespaced: true,
-
-  state,
-  getters,
-  mutations,
-  actions
 }
