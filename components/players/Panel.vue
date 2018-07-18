@@ -7,7 +7,7 @@
         </div>
 
         <!-- New Player Form -->
-        <player-form :team-id="teamId">
+        <player-form>
           <v-tooltip top>
             <v-btn slot="activator" flat icon>
               <v-icon>add_circle</v-icon>
@@ -16,7 +16,7 @@
           </v-tooltip>
         </player-form>
 
-        <player-mass-update :team-id="teamId"></player-mass-update>
+        <player-mass-update></player-mass-update>
 
         <!-- Display Menu -->
         <v-menu bottom right>
@@ -89,7 +89,6 @@
   export default {
     data () {
       return {
-        teamId: this.$route.params.id,
         pagination: {
           sortBy: 'pos_idx'
         },
@@ -170,7 +169,7 @@
       },
       reloadTable () {
         this.loading = true
-        this.refresh({ teamId: this.teamId })
+        this.refresh({ teamId: this.team.id })
           .then((data) => { this.loading = false })
           .catch((error) => { alert(error.message) })
       }

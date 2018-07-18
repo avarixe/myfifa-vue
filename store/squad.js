@@ -12,7 +12,7 @@ export const actions = {
     return apiRequest({
       path: myfifa.squads.all,
       pathData: { teamId: teamId },
-      token: rootState.user.token,
+      token: rootState.token,
       success: function ({ data }) {
         commit('refresh', data)
       },
@@ -23,7 +23,7 @@ export const actions = {
     return apiRequest({
       path: myfifa.squads.get,
       pathData: { squadId: squadId },
-      token: rootState.user.token,
+      token: rootState.token,
       errorMessage: 'Failed to retrieve Squad. Please try again.'
     })
   },
@@ -32,7 +32,7 @@ export const actions = {
       method: 'post',
       path: myfifa.squads.all,
       pathData: { teamId: teamId },
-      token: rootState.user.token,
+      token: rootState.token,
       data: { squad: squad },
       success: ({ data }) => {
         commit('add', data)
@@ -45,7 +45,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.squads.get,
       pathData: { squadId: payload.id },
-      token: rootState.user.token,
+      token: rootState.token,
       data: { squad: payload },
       success: ({ data }) => {
         commit('update', data)
@@ -58,7 +58,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.squads.get,
       pathData: { squadId: payload },
-      token: rootState.user.token,
+      token: rootState.token,
       success: ({ data }) => {
         commit('remove', data)
       },

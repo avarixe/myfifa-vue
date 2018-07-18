@@ -43,7 +43,7 @@ export const actions = {
     return apiRequest({
       path: myfifa.matches.all,
       pathData: { teamId: teamId },
-      token: rootState.user.token,
+      token: rootState.token,
       success: function ({ data }) {
         commit('refresh', data)
       },
@@ -54,7 +54,7 @@ export const actions = {
     return apiRequest({
       path: myfifa.matches.get,
       pathData: { matchId: matchId },
-      token: rootState.user.token,
+      token: rootState.token,
       errorMessage: 'Failed to retrieve Match. Please try again.'
     })
   },
@@ -63,7 +63,7 @@ export const actions = {
       method: 'post',
       path: myfifa.matches.all,
       pathData: { teamId: teamId },
-      token: rootState.user.token,
+      token: rootState.token,
       data: { match: match },
       success: ({ data }) => {
         commit('add', data)
@@ -76,7 +76,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.matches.get,
       pathData: { matchId: payload.id },
-      token: rootState.user.token,
+      token: rootState.token,
       data: { match: payload },
       success: ({ data }) => {
         commit('update', data)
@@ -89,7 +89,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.matches.get,
       pathData: { matchId: payload },
-      token: rootState.user.token,
+      token: rootState.token,
       success: ({ data }) => {
         commit('remove', data)
       },
@@ -101,7 +101,7 @@ export const actions = {
       method: 'post',
       path: myfifa.matchLogs.all,
       pathData: { matchId: matchId },
-      token: rootState.user.token,
+      token: rootState.token,
       data: { match_log: matchLog },
       success: ({ data }) => {
         commit('update', data)
@@ -114,7 +114,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.matchLogs.get,
       pathData: { logId: payload.id },
-      token: rootState.user.token,
+      token: rootState.token,
       data: { match_log: payload },
       success: ({ data }) => {
         commit('update', data)

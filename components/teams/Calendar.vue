@@ -9,31 +9,28 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
 
   export default {
+    props: [
+      'team'
+    ],
     data () {
       return {
-        teamId: this.$route.params.id,
-        currentDate: null
+        currentDate: this.team.current_date
       }
     },
-    computed: mapGetters('team', [
-      'seasonStart',
-      'seasonEnd'
-    ]),
+    computed: {
+      ...mapGetters('team', [
+        'seasonStart',
+        'seasonEnd'
+      ])
+    },
     watch: {
       currentDate (val, oldVal) {
-        oldVal && this.update({ id: this.teamId, current_date: val })
+        oldVal && this.update({ id: this.team.id, current_date: val })
       }
     },
-    methods: mapActions('team', [
-      'get',
-      'update'
-    ]),
-    mounted () {
-      this.get({ teamId: this.teamId, activate: true })
-        .then((data) => { this.currentDate = data.current_date })
-    }
+    methods: mapActions('team', [ 'update' ])
   }
 </script>

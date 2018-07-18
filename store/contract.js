@@ -17,7 +17,7 @@ export const actions = {
     return apiRequest({
       path: myfifa.contracts.get,
       pathData: { contractId: contractId },
-      token: rootState.user.token,
+      token: rootState.token,
       errorMessage: 'Failed to retrieve Contract. Please try again.'
     })
   },
@@ -26,7 +26,7 @@ export const actions = {
       method: 'post',
       path: myfifa.contracts.all,
       pathData: { playerId: playerId },
-      token: rootState.user.token,
+      token: rootState.token,
       data: { contract: contract },
       success: ({ data }) => {
         commit('player/update', data, { root: true })
@@ -39,7 +39,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.contracts.get,
       pathData: { contractId: payload.id },
-      token: rootState.user.token,
+      token: rootState.token,
       data: { contract: payload },
       success: ({ data }) => {
         commit('player/update', data, { root: true })
@@ -52,7 +52,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.contracts.get,
       pathData: { contractId: payload },
-      token: rootState.user.token,
+      token: rootState.token,
       success: ({ data }) => {
         commit('remove', data)
       },

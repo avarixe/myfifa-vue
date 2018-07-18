@@ -97,14 +97,11 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapState, mapGetters, mapActions } from 'vuex'
   import FormMixin from '@/mixins/Form'
 
   export default {
     mixins: [ FormMixin ],
-    props: [
-      'teamId'
-    ],
     data () {
       return {
         inForm: false,
@@ -124,6 +121,9 @@
       }
     },
     computed: {
+      ...mapState('team', {
+        team: 'active'
+      }),
       ...mapGetters('player', {
         activePlayers: 'active'
       }),
@@ -151,7 +151,7 @@
           data[id] = { ovr, value }
         }
 
-        this.updateMultiple({ teamId: this.teamId, players: data })
+        this.updateMultiple({ teamId: this.team.id, players: data })
           .then(() => { this.inForm = false })
       },
       toggleAll () {

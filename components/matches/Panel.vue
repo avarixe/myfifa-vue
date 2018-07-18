@@ -7,7 +7,7 @@
         </div>
 
         <!-- New Match Form -->
-        <match-form :team-id="teamId">
+        <match-form>
           <v-tooltip top>
             <v-btn slot="activator" flat icon>
               <v-icon>add_circle</v-icon>
@@ -67,7 +67,6 @@
   export default {
     data () {
       return {
-        teamId: this.$route.params.id,
         pagination: {
           sortBy: 'date_played',
           descending: true
@@ -97,7 +96,7 @@
       ]),
       reloadTable () {
         this.loading = true
-        this.refresh({ teamId: this.teamId })
+        this.refresh({ teamId: this.team.id })
           .then((data) => { this.loading = false })
       },
       resultColor (result) {

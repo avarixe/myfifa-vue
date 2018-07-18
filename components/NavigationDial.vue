@@ -1,7 +1,6 @@
 <template>
   <v-speed-dial
     v-model="fab"
-    v-if="authenticated"
     fixed
     bottom
     right>
@@ -20,7 +19,7 @@
         dark
         color="red darken-2"
         fab
-        @click.native="logUserOut">
+        @click.native="logout">
         <v-icon>exit_to_app</v-icon>
       </v-btn>
       <span>Log Out</span>
@@ -28,40 +27,28 @@
     <v-tooltip left color="indigo">
       <v-btn
         slot="activator"
-        v-show="this.$route.path !== '/teams'"
         dark
         color="indigo"
         fab
-        to="/teams">
-        <v-icon>swap_horiz</v-icon>
+        to="/">
+        <v-icon>home</v-icon>
       </v-btn>
-      <span>Change Team</span>
+      <span>Home Page</span>
     </v-tooltip>
   </v-speed-dial>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
   import Cookie from 'js-cookie'
 
   export default {
-    data () {
-      return {
-        fab: false
-      }
-    },
-    computed: mapGetters('user', [
-      'authenticated'
-    ]),
+    data: () => ({
+      fab: false
+    }),
     methods: {
-      ...mapActions('user', [
-        'logout'
-      ]),
-      logUserOut () {
-        this.logout()
-          .then(() => {
-            Cookie.remove('token')
-          })
+      logout () {
+        this.$store.dispatch('logout')
+          .then(() => { Cookie.remove('token') })
       }
     }
   }

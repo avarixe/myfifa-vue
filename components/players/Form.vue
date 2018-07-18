@@ -107,12 +107,8 @@
 
   export default {
     mixins: [ FormMixin ],
-    created () {
-      console.log(this)
-    },
     props: [
       'initialPlayer',
-      'teamId',
       'color'
     ],
     data () {
@@ -159,7 +155,7 @@
             params = this.player
             save = this.update
           } else {
-            params = { teamId: this.teamId, player: this.player }
+            params = { teamId: this.team.id, player: this.player }
             save = this.create
           }
 

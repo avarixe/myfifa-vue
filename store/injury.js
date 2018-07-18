@@ -7,7 +7,7 @@ export const actions = {
   //   return apiRequest({
   //     path: myfifa.injuries.get,
   //     pathData: { injuryId: injuryId },
-  //     token: rootState.user.token,
+  //     token: rootState.token,
   //     errorMessage: 'Failed to retrieve Injury. Please try again.'
   //   })
   // },
@@ -16,7 +16,7 @@ export const actions = {
       method: 'post',
       path: myfifa.injuries.all,
       pathData: { playerId: playerId },
-      token: rootState.user.token,
+      token: rootState.token,
       data: { injury: injury },
       success: ({ data }) => {
         commit('player/update', data, { root: true })
@@ -29,7 +29,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.injuries.get,
       pathData: { injuryId: payload.id },
-      token: rootState.user.token,
+      token: rootState.token,
       data: { injury: payload },
       success: ({ data }) => {
         commit('player/update', data, { root: true })
@@ -42,7 +42,7 @@ export const actions = {
   //     method: 'delete',
   //     path: myfifa.injuries.get,
   //     pathData: { injuryId: payload },
-  //     token: rootState.user.token,
+  //     token: rootState.token,
   //     success: ({ data }) => {
   //       commit('remove', data)
   //     },

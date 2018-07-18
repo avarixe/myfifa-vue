@@ -38,7 +38,7 @@ export const actions = {
     return apiRequest({
       path: myfifa.players.all,
       pathData: { teamId: teamId },
-      token: rootState['user/token'],
+      token: rootState.token,
       success: function ({ data }) {
         commit('refresh', data)
       },
@@ -49,7 +49,7 @@ export const actions = {
     return apiRequest({
       path: myfifa.players.get,
       pathData: { playerId: playerId },
-      token: rootState['user/token'],
+      token: rootState.token,
       errorMessage: 'Failed to retrieve Player. Please try again.'
     })
   },
@@ -58,7 +58,7 @@ export const actions = {
       method: 'post',
       path: myfifa.players.all,
       pathData: { teamId: teamId },
-      token: rootState['user/token'],
+      token: rootState.token,
       data: { player: player },
       success: ({ data }) => {
         commit('add', data)
@@ -71,7 +71,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.players.get,
       pathData: { playerId: payload.id },
-      token: rootState['user/token'],
+      token: rootState.token,
       data: { player: payload },
       success: ({ data }) => {
         commit('update', data)
@@ -95,7 +95,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.players.get,
       pathData: { playerId: payload },
-      token: rootState.user.token,
+      token: rootState.token,
       success: ({ data }) => {
         commit('remove', data)
       },
@@ -107,7 +107,7 @@ export const actions = {
       method: 'post',
       path: myfifa.transfers.all,
       pathData: { playerId: playerId },
-      token: rootState['user/token'],
+      token: rootState.token,
       data: { transfer: transfer },
       success: ({ data }) => {
         commit('update', data.player)

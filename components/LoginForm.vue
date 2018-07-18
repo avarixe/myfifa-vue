@@ -27,7 +27,7 @@
       </v-card-text>
       <v-alert
         type="error"
-        v-model="loginError"
+        v-model="formError"
         dismissible>
         {{ errorMessage }}
       </v-alert>
@@ -41,13 +41,12 @@
 
 
 <script>
-  import { mapActions } from 'vuex'
   import Cookie from 'js-cookie'
+  import FormMixin from '@/mixins/Form'
 
   export default {
+    mixins: [ FormMixin ],
     data: () => ({
-      valid: false,
-      errorMessage: '',
       visible: false,
       credentials: {
         email: '',
@@ -55,22 +54,11 @@
         grant_type: 'password'
       }
     }),
-    computed: {
-      loginError: {
-        get: function () { return this.errorMessage.length > 0 },
-        set: function (val) { this.errorMessage = val }
-      }
-    },
     methods: {
-      ...mapActions('user', [
-        'login',
-        'info'
-      ]),
       authenticate () {
-        this.login(this.credentials)
+        this.$store.dispatch('login', this.credentials)
           .then((data) => {
             Cookie.set('token', data.access_token, data.expires_in / 86400)
-            this.$router.push('/teams')
           }).catch((error) => {
             this.errorMessage = error.message
           })

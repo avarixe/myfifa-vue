@@ -59,10 +59,11 @@
 </template>
 
 <script>
-  import { mapState, mapActions, mapMutations } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   import TeamForm from '@/components/teams/Form'
 
   export default {
+    middleware: 'authenticated',
     data: () => ({
       teamToDelete: 0
     }),
@@ -71,11 +72,7 @@
     }),
     methods: {
       ...mapActions('team', [
-        'refresh',
         'delete'
-      ]),
-      ...mapMutations('team', [
-        'set'
       ]),
       deleteTeam (teamId) {
         this.delete(teamId)
@@ -83,10 +80,9 @@
           .catch((error) => { alert(error) })
       }
     },
-    mounted () {
-      this.set(null)
-      this.refresh()
-        .catch((error) => { alert(error.message) })
+    async fetch ({ store }) {
+      store.commit('team/set')
+      await store.dispatch('team/refresh')
     },
     components: {
       'team-form': TeamForm

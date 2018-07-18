@@ -80,7 +80,6 @@
     mixins: [ FormMixin ],
     props: [
       'initialMatch',
-      'teamId',
       'color'
     ],
     data () {
@@ -139,7 +138,7 @@
             params = this.match
             save = this.update
           } else {
-            params = { teamId: this.teamId, match: this.match }
+            params = { teamId: this.team.id, match: this.match }
             save = this.create
           }
 

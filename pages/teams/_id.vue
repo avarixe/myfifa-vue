@@ -5,7 +5,7 @@
         <v-flex xs12>
           <v-slide-x-transition>
             <v-card>
-              <team-calendar></team-calendar>
+              <team-calendar :team="team"></team-calendar>
             </v-card>
           </v-slide-x-transition>
         </v-flex>
@@ -26,12 +26,22 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   import TeamCalendar from '@/components/teams/Calendar'
   import PlayersPanel from '@/components/players/Panel'
   import MatchesPanel from '@/components/matches/Panel'
   import SquadsPanel from '@/components/squads/Panel'
 
   export default {
+    middleware: 'authenticated',
+    async fetch ({ store, params }) {
+      await store.dispatch('team/get', { teamId: params.id, activate: true })
+    },
+    computed: {
+      ...mapState('team', {
+        team: 'active'
+      })
+    },
     components: {
       'team-calendar': TeamCalendar,
       'players-panel': PlayersPanel,

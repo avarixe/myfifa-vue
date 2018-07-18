@@ -40,7 +40,7 @@ export const actions = {
   refresh ({ state, commit, rootState }) {
     return apiRequest({
       path: myfifa.teams.all,
-      token: rootState.user.token,
+      token: rootState.token,
       success: function ({ data }) {
         commit('refresh', data)
       },
@@ -51,7 +51,7 @@ export const actions = {
     return apiRequest({
       path: myfifa.teams.get,
       pathData: { teamId: teamId },
-      token: rootState.user.token,
+      token: rootState.token,
       errorMessage: 'Failed to retrieve Team. Please try again.',
       success: ({ data }) => {
         activate && commit('set', data)
@@ -62,7 +62,7 @@ export const actions = {
     return apiRequest({
       method: 'post',
       path: myfifa.teams.all,
-      token: rootState.user.token,
+      token: rootState.token,
       data: { team: payload },
       success: ({ data }) => {
         commit('add', data)
@@ -75,7 +75,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.teams.get,
       pathData: { teamId: payload.id },
-      token: rootState.user.token,
+      token: rootState.token,
       data: { team: payload },
       success: ({ data }) => {
         commit('update', data)
@@ -89,7 +89,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.teams.get,
       pathData: { teamId: payload },
-      token: rootState.user.token,
+      token: rootState.token,
       success: ({ data }) => {
         commit('remove', data)
       },

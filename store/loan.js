@@ -7,7 +7,7 @@ export const actions = {
     return apiRequest({
       path: myfifa.loans.get,
       pathData: { loanId: loanId },
-      token: rootState.user.token,
+      token: rootState.token,
       errorMessage: 'Failed to retrieve Loan. Please try again.'
     })
   },
@@ -16,7 +16,7 @@ export const actions = {
       method: 'post',
       path: myfifa.loans.all,
       pathData: { playerId: playerId },
-      token: rootState.user.token,
+      token: rootState.token,
       data: { loan: loan },
       success: ({ data }) => {
         commit('player/update', data, { root: true })
@@ -29,7 +29,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.loans.get,
       pathData: { loanId: payload.id },
-      token: rootState.user.token,
+      token: rootState.token,
       data: { loan: payload },
       success: ({ data }) => {
         commit('player/update', data, { root: true })
@@ -42,7 +42,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.loans.get,
       pathData: { loanId: payload },
-      token: rootState.user.token,
+      token: rootState.token,
       success: ({ data }) => {
         commit('remove', data)
       },
