@@ -45,7 +45,7 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   // import get from 'lodash.get'
-  import SquadForm from '@/components/squads/Form'
+  import SquadForm from '@/components/Squad/SquadForm'
 
   export default {
     data () {

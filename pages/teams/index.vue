@@ -60,7 +60,7 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import TeamForm from '@/components/teams/Form'
+  import TeamForm from '@/components/Team/TeamForm'
 
   export default {
     middleware: 'authenticated',

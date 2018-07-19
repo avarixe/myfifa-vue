@@ -83,10 +83,15 @@
 
   export default {
     mixins: [ FormMixin ],
-    props: [
-      'initialTeam',
-      'color'
-    ],
+    props: {
+      initialTeam: {
+        type: Object
+      },
+      color: {
+        type: String,
+        default: 'white'
+      }
+    },
     data () {
       return {
         valid: !!this.initialTeam,

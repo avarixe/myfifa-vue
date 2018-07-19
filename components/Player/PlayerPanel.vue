@@ -82,9 +82,9 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import get from 'lodash.get'
-  import PlayerForm from '@/components/players/Form'
-  import PlayerActions from '@/components/players/Actions'
-  import PlayerMassUpdate from '@/components/players/MassUpdate'
+  import PlayerForm from '@/components/Player/PlayerForm'
+  import PlayerActions from '@/components/Player/PlayerActions'
+  import PlayerMassUpdate from '@/components/Player/PlayerMassUpdate'
 
   export default {
     data () {

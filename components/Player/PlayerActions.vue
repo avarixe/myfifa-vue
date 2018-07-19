@@ -49,16 +49,19 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import PlayerForm from '@/components/players/Form'
-  import ContractForm from '@/components/players/ContractForm'
-  import InjuryForm from '@/components/players/InjuryForm'
-  import LoanForm from '@/components/players/LoanForm'
-  import TransferForm from '@/components/players/TransferForm'
+  import PlayerForm from '@/components/Player/PlayerForm'
+  import ContractForm from '@/components/Player/ContractForm'
+  import InjuryForm from '@/components/Player/InjuryForm'
+  import LoanForm from '@/components/Player/LoanForm'
+  import TransferForm from '@/components/Player/TransferForm'
 
   export default {
-    props: [
-      'player'
-    ],
+    props: {
+      player: {
+        type: Object,
+        required: true
+      }
+    },
     data: () => ({
       promptDeletion: false
     }),

@@ -78,10 +78,15 @@
 
   export default {
     mixins: [ FormMixin ],
-    props: [
-      'initialMatch',
-      'color'
-    ],
+    props: {
+      initialMatch: {
+        type: Object
+      },
+      color: {
+        type: String,
+        default: 'white'
+      }
+    },
     data () {
       return {
         valid: !!this.initialMatch,

@@ -1,7 +1,15 @@
 export default {
-  props: [
-    'player',
-    'color',
-    'dark'
-  ]
+  props: {
+    player: {
+      type: Object
+    },
+    color: {
+      type: String,
+      default: 'white'
+    },
+    dark: {
+      type: Boolean,
+      default: false
+    }
+  }
 }

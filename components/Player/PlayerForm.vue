@@ -108,10 +108,15 @@
 
   export default {
     mixins: [ FormMixin ],
-    props: [
-      'initialPlayer',
-      'color'
-    ],
+    props: {
+      initialPlayer: {
+        type: Object
+      },
+      color: {
+        type: String,
+        default: 'white'
+      }
+    },
     data () {
       return {
         valid: !!this.initialPlayer,

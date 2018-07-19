@@ -60,9 +60,9 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   // import get from 'lodash.get'
-  import MatchForm from '@/components/matches/Form'
-  import MatchActions from '@/components/matches/Actions'
-  import MatchInfo from '@/components/matches/Info'
+  import MatchForm from '@/components/Match/MatchForm'
+  import MatchActions from '@/components/Match/MatchActions'
+  import MatchInfo from '@/components/Match/MatchInfo'
 
   export default {
     data () {

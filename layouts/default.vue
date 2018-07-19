@@ -23,7 +23,7 @@
 
 <script>
   import { mapState, mapGetters } from 'vuex'
-  import NavigationDial from '@/components/NavigationDial'
+  import TheNavigationDial from '@/components/TheNavigationDial'
 
   export default {
     computed: {
@@ -53,7 +53,7 @@
     //   this.checkIfTokenExpired()
     // },
     components: {
-      'navigation-dial': NavigationDial
+      'navigation-dial': TheNavigationDial
     },
     name: 'App'
   }

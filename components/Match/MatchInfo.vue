@@ -6,12 +6,12 @@
       <v-list dense>
         <v-subheader>Lineup</v-subheader>
 
-        <log-form :match="match" v-if="sortedLogs.length < 11">
+        <match-log-form :match="match" v-if="sortedLogs.length < 11">
           <v-btn color="secondary">
             <v-icon left>add_circle_outline</v-icon>
             Add Player
           </v-btn>
-        </log-form>
+        </match-log-form>
 
         <v-btn color="secondary">
           <v-icon left>people_outline</v-icon>
@@ -44,14 +44,14 @@
           </v-list-tile-content>
 
           <v-list-tile-action v-if="team.current_date === match.date_played && player.start === 0">
-            <log-form :match="match" :initial-log="player">
+            <match-log-form :match="match" :initial-log="player">
               <v-tooltip bottom>
                 <v-btn slot="activator" icon>
                   <v-icon>edit</v-icon>
                 </v-btn>
                 Edit
               </v-tooltip>
-            </log-form>
+            </match-log-form>
           </v-list-tile-action>
 
         </v-list-tile>
@@ -96,13 +96,19 @@
 
 <script>
   import { mapState } from 'vuex'
-  import LogForm from '@/components/matches/LogForm'
+  import MatchLogForm from '@/components/Match/MatchLogForm'
 
   export default {
-    props: [
-      'team',
-      'match'
-    ],
+    props: {
+      team: {
+        type: Object,
+        required: true
+      },
+      match: {
+        type: Object,
+        required: true
+      }
+    },
     data () {
       return {
         dialog: false
@@ -188,7 +194,7 @@
       }
     },
     components: {
-      'log-form': LogForm
+      'match-log-form': MatchLogForm
     }
   }
 </script>

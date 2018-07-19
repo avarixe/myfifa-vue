@@ -12,13 +12,13 @@
       </v-flex>
       <v-flex xs12 md8>
         <v-flex xs12>
-          <players-panel></players-panel>
+          <player-panel></player-panel>
         </v-flex>
         <v-flex xs12>
-          <matches-panel></matches-panel>
+          <match-panel></match-panel>
         </v-flex>
         <v-flex xs12>
-          <squads-panel></squads-panel>
+          <squad-panel></squad-panel>
         </v-flex>
       </v-flex>
     </v-layout>
@@ -27,10 +27,10 @@
 
 <script>
   import { mapState } from 'vuex'
-  import TeamCalendar from '@/components/teams/Calendar'
-  import PlayersPanel from '@/components/players/Panel'
-  import MatchesPanel from '@/components/matches/Panel'
-  import SquadsPanel from '@/components/squads/Panel'
+  import TeamCalendar from '@/components/Team/TeamCalendar'
+  import PlayerPanel from '@/components/Player/PlayerPanel'
+  import MatchPanel from '@/components/Match/MatchPanel'
+  import SquadPanel from '@/components/Squad/SquadPanel'
 
   export default {
     middleware: 'authenticated',
@@ -44,9 +44,9 @@
     },
     components: {
       'team-calendar': TeamCalendar,
-      'players-panel': PlayersPanel,
-      'matches-panel': MatchesPanel,
-      'squads-panel': SquadsPanel
+      'player-panel': PlayerPanel,
+      'match-panel': MatchPanel,
+      'squad-panel': SquadPanel
     }
   }
 </script>

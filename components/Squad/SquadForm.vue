@@ -2,7 +2,7 @@
   <div class="d-inline-block" @click.stop="inForm = true">
     <slot></slot>
     <v-dialog v-model="inForm" max-width="500px">
-      <v-form ref="form" v-model="valid" @submit.prevent="save">
+      <v-form ref="form" v-model="valid" @submit.prevent="submit">
         <v-card>
           <v-card-title primary-title :class="formColor">
             <div class="headline">{{ title }}</div>
@@ -12,23 +12,40 @@
             <v-container>
               <v-layout wrap>
                 <v-flex xs12>
+                  <v-text-field
+                    v-model="squad.name"
+                    :rules="$validate('Name', ['required'])"
+                    label="Name"
+                    prepend-inner-icon="people_outline"
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+              <v-layout
+                v-for="(position, i) in squad.positions_list"
+                :key="i"
+                row
+                wrap>
+                <v-flex xs4>
                   <v-autocomplete
-                    v-model="match_log.pos"
+                    v-model="squad.positions_list[i]"
                     :items="positions"
-                    :rules="$validate('Position', ['required'])"
                     label="Position"
-                    prepend-inner-icon="directions_run"
+                    prepend-icon="directions_run"
+                    hide-details
+                    auto
                   ></v-autocomplete>
                 </v-flex>
-                <v-flex xs12>
+                <v-flex xs8>
                   <v-autocomplete
-                    v-model="match_log.player_id"
+                    v-model="squad.players_list[i]"
                     :items="players"
-                    item-text="name"
                     item-value="id"
-                    :rules="$validate('Player', ['required'])"
+                    item-text="name"
                     label="Player"
-                    prepend-inner-icon="person">
+                    prepend-icon="person"
+                    hide-details
+                    auto>
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -61,6 +78,7 @@
         </v-card>
       </v-form>
     </v-dialog>
+
   </div>
 </template>
 
@@ -70,21 +88,33 @@
 
   export default {
     mixins: [ FormMixin ],
-    props: [
-      'initialLog',
-      'match',
-      'color'
-    ],
+    props: {
+      initialSquad: {
+        type: Object
+      },
+      color: {
+        type: String,
+        default: 'white'
+      }
+    },
     data () {
       return {
-        valid: !!this.initialLog,
-        match_log: Object.assign({
-          player_id: null,
-          pos: ''
-        }, this.initialLog)
+        valid: !!this.initialSquad,
+        squad: Object.assign({
+          name: '',
+          players_list: [],
+          positions_list: []
+        }, {
+          ...this.initialSquad,
+          players_list: ((this.initialSquad || {}).players_list || []).map(p => parseInt(p)),
+          positions_list: ((this.initialSquad || {}).positions_list || []).slice()
+        })
       }
     },
     computed: {
+      ...mapState('team', {
+        team: 'active'
+      }),
       ...mapState('match', [
         'positions'
       ]),
@@ -92,7 +122,7 @@
         players: 'active'
       }),
       title () {
-        return this.match_log.id ? 'Edit Position' : 'Add Position'
+        return this.squad.id ? 'Edit Squad' : 'New Squad'
       },
       buttonColor () {
         return this.color ? this.color + ' darken-2' : null
@@ -101,25 +131,41 @@
         return this.color ? this.color + ' accent-2' : null
       }
     },
+    watch: {
+      inForm (val) {
+        if (!val) {
+          Object.assign(this.$data, this.$options.data.apply(this))
+          // this.$refs.form.reset()
+        } else if (!('id' in this.squad)) {
+          for (let i = 0; i < 11; i++) {
+            this.squad.players_list.push(null)
+            this.squad.positions_list.push(null)
+          }
+        }
+      }
+    },
     methods: {
-      ...mapActions('match', {
-        create: 'addLog',
-        update: 'updateLog'
-      }),
-      save () {
+      ...mapActions('squad', [
+        'create',
+        'update'
+      ]),
+      async submit () {
         if (this.$refs.form.validate()) {
           let params, save
-          if ('id' in this.match_log) {
-            params = this.match_log
+          if (this.initialSquad) {
+            params = this.squad
             save = this.update
           } else {
-            params = { matchId: this.match.id, matchLog: this.match_log }
+            params = { teamId: this.team.id, squad: this.squad }
             save = this.create
           }
 
-          save(params)
-            .then((data) => { this.inForm = false })
-            .catch((error) => { this.errorMessage = error.message })
+          try {
+            await save(params)
+            this.inForm = false
+          } catch (e) {
+            this.errorMessage = e.message
+          }
         }
       }
     }

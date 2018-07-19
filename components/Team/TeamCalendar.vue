@@ -12,9 +12,12 @@
   import { mapGetters, mapActions } from 'vuex'
 
   export default {
-    props: [
-      'team'
-    ],
+    props: {
+      team: {
+        type: Object,
+        required: true
+      }
+    },
     data () {
       return {
         currentDate: this.team.current_date

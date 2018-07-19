@@ -56,12 +56,15 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import MatchForm from '@/components/matches/Form'
+  import MatchForm from '@/components/Match/MatchForm'
 
   export default {
-    props: [
-      'match'
-    ],
+    props: {
+      match: {
+        type: Object,
+        required: true
+      }
+    },
     data: () => ({
       promptDeletion: false
     }),
