@@ -14,7 +14,7 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="team.title"
-                    :rules="$validate('Team', ['required'])"
+                    :rules="$_validate('Team', ['required'])"
                     label="Team"
                     prepend-inner-icon="people"
                     autofocus
@@ -34,7 +34,7 @@
                       label="Start Date"
                       prepend-inner-icon="calendar_today"
                       v-model="team.start_date"
-                      :rules="$validate('Start Date', ['required', 'date'])"
+                      :rules="$_validate('Start Date', ['required', 'date'])"
                       readonly
                     ></v-text-field>
                     <v-date-picker
@@ -47,7 +47,7 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="team.currency"
-                    :rules="$validate('Currency', ['required'])"
+                    :rules="$_validate('Currency', ['required'])"
                     label="Currency"
                   ></v-text-field>
                 </v-flex>
@@ -79,17 +79,13 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import FormMixin from '@/mixins/Form'
+  import FormBase from '@/mixins/FormBase'
 
   export default {
-    mixins: [ FormMixin ],
+    mixins: [ FormBase ],
     props: {
       initialTeam: {
         type: Object
-      },
-      color: {
-        type: String,
-        default: 'white'
       }
     },
     data () {
@@ -98,7 +94,7 @@
         team: Object.assign({
           id: '',
           title: '',
-          start_date: this.$format(new Date()),
+          start_date: this.$_format(new Date()),
           currency: '$'
         }, this.initialTeam),
         menu: false
@@ -107,12 +103,6 @@
     computed: {
       title () {
         return this.initialTeam ? 'Edit ' + this.team.title : 'New Team'
-      },
-      buttonColor () {
-        return this.color ? this.color + ' darken-2' : null
-      },
-      formColor () {
-        return this.color ? this.color + ' accent-2' : null
       }
     },
     methods: {

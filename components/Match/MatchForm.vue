@@ -15,7 +15,7 @@
                   <v-combobox
                     v-model="match.competition"
                     :items="competitions"
-                    :rules="$validate('Competition', ['required'])"
+                    :rules="$_validate('Competition', ['required'])"
                     label="Competition"
                     prepend-inner-icon="whatshot"
                   ></v-combobox>
@@ -24,7 +24,7 @@
                   <v-combobox
                     v-model="match.home"
                     :items="teams"
-                    :rules="$validate('Home Team', ['required'])"
+                    :rules="$_validate('Home Team', ['required'])"
                     label="Home Team"
                     prepend-inner-icon="people">
                     <v-tooltip slot="append" bottom>
@@ -37,7 +37,7 @@
                   <v-combobox
                     v-model="match.away"
                     :items="teams"
-                    :rules="$validate('Away Team', ['required'])"
+                    :rules="$_validate('Away Team', ['required'])"
                     label="Away Team"
                     prepend-inner-icon="people">
                     <v-tooltip slot="append" bottom>
@@ -73,18 +73,15 @@
 </template>
 
 <script>
-  import { mapState, mapGetters, mapActions } from 'vuex'
-  import FormMixin from '@/mixins/Form'
+  import { mapGetters, mapActions } from 'vuex'
+  import TeamAction from '@/mixins/TeamAction'
+  import FormBase from '@/mixins/FormBase'
 
   export default {
-    mixins: [ FormMixin ],
+    mixins: [ FormBase, TeamAction ],
     props: {
       initialMatch: {
         type: Object
-      },
-      color: {
-        type: String,
-        default: 'white'
       }
     },
     data () {
@@ -98,21 +95,12 @@
       }
     },
     computed: {
-      ...mapState('team', {
-        team: 'active'
-      }),
       ...mapGetters('match', [
         'competitions',
         'teams'
       ]),
       title () {
         return this.match.id ? 'Edit Match' : 'New Match'
-      },
-      buttonColor () {
-        return this.color ? this.color + ' darken-2' : null
-      },
-      formColor () {
-        return this.color ? this.color + ' accent-2' : null
       },
       isTeamGame () {
         return this.match.home === this.team.title ||

@@ -31,7 +31,7 @@
                         label="Effective Date"
                         prepend-inner-icon="calendar_today"
                         v-model="contract.effective_date"
-                        :rules="$validate('Effective Date', ['required', 'date'])"
+                        :rules="$_validate('Effective Date', ['required', 'date'])"
                         readonly
                       ></v-text-field>
                       <v-date-picker
@@ -59,7 +59,7 @@
                         label="End Date"
                         prepend-inner-icon="calendar_today"
                         v-model="contract.end_date"
-                        :rules="$validate('End Date', ['required', 'date'])"
+                        :rules="$_validate('End Date', ['required', 'date'])"
                         readonly
                       ></v-text-field>
                       <v-date-picker
@@ -76,11 +76,11 @@
                   <v-flex xs12>
                     <v-text-field
                       v-model="contract.wage"
-                      :rules="$validate('Wage', ['required'])"
+                      :rules="$_validate('Wage', ['required'])"
                       type="number"
                       label="Wage"
                       :prefix="team.currency"
-                      :hint="numberHint(contract.wage)"
+                      :hint="$_numberHint(contract.wage)"
                       persistent-hint
                     ></v-text-field>
                   </v-flex>
@@ -91,7 +91,7 @@
                       type="number"
                       label="Signing Bonus"
                       :prefix="team.currency"
-                      :hint="numberHint(contract.signing_bonus)"
+                      :hint="$_numberHint(contract.signing_bonus)"
                       persistent-hint
                     ></v-text-field>
                   </v-flex>
@@ -102,7 +102,7 @@
                       type="number"
                       label="Release Clause"
                       :prefix="team.currency"
-                      :hint="numberHint(contract.release_clause)"
+                      :hint="$_numberHint(contract.release_clause)"
                       persistent-hint
                     ></v-text-field>
                   </v-flex>
@@ -113,7 +113,7 @@
                       type="number"
                       label="Performance Bonus"
                       :prefix="team.currency"
-                      :hint="numberHint(contract.performance_bonus)"
+                      :hint="$_numberHint(contract.performance_bonus)"
                       persistent-hint
                     ></v-text-field>
                   </v-flex>
@@ -165,11 +165,12 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import { addYears } from 'date-fns'
-  import FormMixin from '@/mixins/Form'
+  import TeamAction from '@/mixins/TeamAction'
+  import FormBase from '@/mixins/FormBase'
   import PlayerAction from '@/mixins/PlayerAction'
 
   export default {
-    mixins: [ FormMixin, PlayerAction ],
+    mixins: [ FormBase, PlayerAction, TeamAction ],
     data () {
       return {
         valid: !!this.player.active_contract,
@@ -190,9 +191,6 @@
       }
     },
     computed: {
-      ...mapState('team', {
-        team: 'active'
-      }),
       ...mapState('contract', [
         'bonusRequirementTypes'
       ]),
@@ -200,7 +198,7 @@
         return ('id' in this.contract) ? 'Update Contract' : 'Sign New Contract'
       },
       maxEndDate () {
-        return this.$format(addYears(this.$parse(this.contract.effective_date), 6))
+        return this.$_format(addYears(this.$_parse(this.contract.effective_date), 6))
       }
     },
     watch: {

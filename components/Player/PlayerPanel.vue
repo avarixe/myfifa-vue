@@ -82,11 +82,13 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import get from 'lodash.get'
+  import TeamAction from '@/mixins/TeamAction'
   import PlayerForm from '@/components/Player/PlayerForm'
   import PlayerActions from '@/components/Player/PlayerActions'
   import PlayerMassUpdate from '@/components/Player/PlayerMassUpdate'
 
   export default {
+    mixins: [ TeamAction ],
     data () {
       return {
         pagination: {
@@ -106,9 +108,6 @@
     computed: {
       ...mapState('player', {
         players: 'list'
-      }),
-      ...mapState('team', {
-        team: 'active'
       }),
       headers () {
         let headers = [
@@ -160,7 +159,7 @@
           case 'array':
             return value.toString()
           case 'date':
-            return this.$format(this.$parse(value), 'MMM D, YYYY')
+            return this.$_format(this.$_parse(value), 'MMM D, YYYY')
           case 'years':
             return value + ' Years'
           default:

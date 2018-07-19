@@ -48,7 +48,8 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
+  import TeamAction from '@/mixins/TeamAction'
   import PlayerForm from '@/components/Player/PlayerForm'
   import ContractForm from '@/components/Player/ContractForm'
   import InjuryForm from '@/components/Player/InjuryForm'
@@ -56,6 +57,7 @@
   import TransferForm from '@/components/Player/TransferForm'
 
   export default {
+    mixins: [ TeamAction ],
     props: {
       player: {
         type: Object,
@@ -66,9 +68,6 @@
       promptDeletion: false
     }),
     computed: {
-      ...mapState('team', {
-        team: 'active'
-      }),
       active () {
         return this.player.status && this.player.status.length > 0
       },

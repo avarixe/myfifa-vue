@@ -45,9 +45,11 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   // import get from 'lodash.get'
+  import TeamAction from '@/mixins/TeamAction'
   import SquadForm from '@/components/Squad/SquadForm'
 
   export default {
+    mixins: [ TeamAction ],
     data () {
       return {
         teamId: this.$route.params.id,
@@ -62,9 +64,6 @@
     computed: {
       ...mapState('squad', {
         squads: 'list'
-      }),
-      ...mapState('team', {
-        team: 'active'
       })
     },
     methods: {

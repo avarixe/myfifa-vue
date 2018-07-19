@@ -20,7 +20,7 @@
                   <v-flex xs12>
                     <v-text-field
                       v-model="loan.destination"
-                      :rules="$validate('Destination', ['required'])"
+                      :rules="$_validate('Destination', ['required'])"
                       label="Destination"
                       prepend-inner-icon="transfer_within_a_station"
                     ></v-text-field>
@@ -63,11 +63,11 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import FormMixin from '@/mixins/Form'
+  import FormBase from '@/mixins/FormBase'
   import PlayerAction from '@/mixins/PlayerAction'
 
   export default {
-    mixins: [ FormMixin, PlayerAction ],
+    mixins: [ FormBase, PlayerAction ],
     data () {
       return {
         valid: !!this.player.active_loan,

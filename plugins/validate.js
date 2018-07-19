@@ -1,4 +1,4 @@
 import Vue from 'vue'
 import validate from '~/lib/validators'
 
-Vue.prototype.$validate = validate
+Vue.prototype.$_validate = validate

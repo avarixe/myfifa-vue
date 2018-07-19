@@ -14,7 +14,7 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="player.name"
-                    :rules="$validate('Name', ['required'])"
+                    :rules="$_validate('Name', ['required'])"
                     label="Name"
                     prepend-inner-icon="person"
                   ></v-text-field>
@@ -22,7 +22,7 @@
                 <v-flex xs12>
                   <v-autocomplete
                     v-model="player.pos"
-                    :rules="$validate('Position', ['required'])"
+                    :rules="$_validate('Position', ['required'])"
                     :items="positions"
                     label="Position"
                     prepend-inner-icon="directions_run"
@@ -46,7 +46,7 @@
                     label="Birth Year"
                     prepend-inner-icon="date_range"
                     mask="####"
-                    :rules="$validate('Birth Year', ['required'])"
+                    :rules="$_validate('Birth Year', ['required'])"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
@@ -62,11 +62,11 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="player.value"
-                    :rules="$validate('Value', ['required'])"
+                    :rules="$_validate('Value', ['required'])"
                     type="number"
                     label="Value"
                     :prefix="team.currency"
-                    :hint="numberHint(player.value)"
+                    :hint="$_numberHint(player.value)"
                     persistent-hint
                   ></v-text-field>
                 </v-flex>
@@ -104,17 +104,14 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import FormMixin from '@/mixins/Form'
+  import FormBase from '@/mixins/FormBase'
+  import TeamAction from '@/mixins/TeamAction'
 
   export default {
-    mixins: [ FormMixin ],
+    mixins: [ FormBase, TeamAction ],
     props: {
       initialPlayer: {
         type: Object
-      },
-      color: {
-        type: String,
-        default: 'white'
       }
     },
     data () {
@@ -136,17 +133,8 @@
       ...mapState('player', [
         'positions'
       ]),
-      ...mapState('team', {
-        team: 'active'
-      }),
       title () {
         return this.player.id ? 'Edit ' + this.player.name : 'New Player'
-      },
-      buttonColor () {
-        return this.color ? this.color + ' darken-2' : null
-      },
-      formColor () {
-        return this.color ? this.color + ' accent-2' : null
       }
     },
     methods: {

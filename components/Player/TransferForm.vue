@@ -68,7 +68,7 @@
                       type="number"
                       label="Fee"
                       :prefix="team.currency"
-                      :hint="numberHint(transfer.fee)"
+                      :hint="$_numberHint(transfer.fee)"
                       persistent-hint
                     ></v-text-field>
                   </v-flex>
@@ -117,12 +117,13 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
-  import FormMixin from '@/mixins/Form'
+  import { mapActions } from 'vuex'
+  import TeamAction from '@/mixins/TeamAction'
+  import FormBase from '@/mixins/FormBase'
   import PlayerAction from '@/mixins/PlayerAction'
 
   export default {
-    mixins: [ FormMixin, PlayerAction ],
+    mixins: [ FormBase, PlayerAction, TeamAction ],
     data: () => ({
       menu: false,
       transfer: {
@@ -135,9 +136,6 @@
       }
     }),
     computed: {
-      ...mapState('team', {
-        team: 'active'
-      }),
       transferOut () {
         return this.player.status && this.player.status.length > 0
       }

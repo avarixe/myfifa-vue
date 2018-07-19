@@ -14,7 +14,7 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="squad.name"
-                    :rules="$validate('Name', ['required'])"
+                    :rules="$_validate('Name', ['required'])"
                     label="Name"
                     prepend-inner-icon="people_outline"
                   ></v-text-field>
@@ -84,17 +84,14 @@
 
 <script>
   import { mapState, mapGetters, mapActions } from 'vuex'
-  import FormMixin from '@/mixins/Form'
+  import TeamAction from '@/mixins/TeamAction'
+  import FormBase from '@/mixins/FormBase'
 
   export default {
-    mixins: [ FormMixin ],
+    mixins: [ FormBase, TeamAction ],
     props: {
       initialSquad: {
         type: Object
-      },
-      color: {
-        type: String,
-        default: 'white'
       }
     },
     data () {
@@ -112,9 +109,6 @@
       }
     },
     computed: {
-      ...mapState('team', {
-        team: 'active'
-      }),
       ...mapState('match', [
         'positions'
       ]),
@@ -123,12 +117,6 @@
       }),
       title () {
         return this.squad.id ? 'Edit Squad' : 'New Squad'
-      },
-      buttonColor () {
-        return this.color ? this.color + ' darken-2' : null
-      },
-      formColor () {
-        return this.color ? this.color + ' accent-2' : null
       }
     },
     watch: {

@@ -42,7 +42,7 @@
               <td class="text-xs-right">{{ props.item.home }}</td>
               <td :class="resultColor(props.item.team_result) + '--text text-xs-center'">{{ props.item.score }}</td>
               <td class="text-xs-left">{{ props.item.away }}</td>
-              <td class="text-xs-center">{{ $format($parse(props.item.date_played), 'MMM DD, YYYY') }}</td>
+              <td class="text-xs-center">{{ $_format($_parse(props.item.date_played), 'MMM DD, YYYY') }}</td>
             </tr>
           </template>
           <template slot="expand" slot-scope="props">
@@ -60,11 +60,13 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   // import get from 'lodash.get'
+  import TeamAction from '@/mixins/TeamAction'
   import MatchForm from '@/components/Match/MatchForm'
   import MatchActions from '@/components/Match/MatchActions'
   import MatchInfo from '@/components/Match/MatchInfo'
 
   export default {
+    mixins: [ TeamAction ],
     data () {
       return {
         pagination: {
@@ -85,9 +87,6 @@
     computed: {
       ...mapState('match', {
         matches: 'list'
-      }),
-      ...mapState('team', {
-        team: 'active'
       })
     },
     methods: {

@@ -55,10 +55,12 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
+  import TeamAction from '@/mixins/TeamAction'
   import MatchForm from '@/components/Match/MatchForm'
 
   export default {
+    mixins: [ TeamAction ],
     props: {
       match: {
         type: Object,
@@ -69,9 +71,6 @@
       promptDeletion: false
     }),
     computed: {
-      ...mapState('team', {
-        team: 'active'
-      }),
       active () {
         return this.match.status && this.match.status.length > 0
       }

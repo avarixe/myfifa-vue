@@ -1,4 +1,10 @@
 export default {
+  props: {
+    color: {
+      type: String,
+      default: 'white'
+    }
+  },
   data () {
     return {
       inForm: false,
@@ -10,6 +16,12 @@ export default {
     formError: {
       get: function () { return this.errorMessage.length > 0 },
       set: function (val) { this.errorMessage = val }
+    },
+    buttonColor () {
+      return this.color ? this.color + ' darken-2' : null
+    },
+    formColor () {
+      return this.color ? this.color + ' accent-2' : null
     }
   },
   watch: {
@@ -21,11 +33,8 @@ export default {
     }
   },
   methods: {
-    numberHint (num) {
+    $_numberHint (num) {
       return num && parseInt(num).toLocaleString()
-    },
-    percentLabel (num) {
-      return isNaN(num) ? '0%' : num.toString() + '%'
     }
   }
 }

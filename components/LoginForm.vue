@@ -42,10 +42,10 @@
 
 <script>
   import Cookie from 'js-cookie'
-  import FormMixin from '@/mixins/Form'
+  import FormBase from '@/mixins/FormBase'
 
   export default {
-    mixins: [ FormMixin ],
+    mixins: [ FormBase ],
     data: () => ({
       visible: false,
       credentials: {

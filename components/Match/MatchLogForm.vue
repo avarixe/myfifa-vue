@@ -15,7 +15,7 @@
                   <v-autocomplete
                     v-model="match_log.pos"
                     :items="positions"
-                    :rules="$validate('Position', ['required'])"
+                    :rules="$_validate('Position', ['required'])"
                     label="Position"
                     prepend-inner-icon="directions_run"
                   ></v-autocomplete>
@@ -26,7 +26,7 @@
                     :items="players"
                     item-text="name"
                     item-value="id"
-                    :rules="$validate('Player', ['required'])"
+                    :rules="$_validate('Player', ['required'])"
                     label="Player"
                     prepend-inner-icon="person">
                     <template slot="item" slot-scope="data">
@@ -66,10 +66,10 @@
 
 <script>
   import { mapState, mapGetters, mapActions } from 'vuex'
-  import FormMixin from '@/mixins/Form'
+  import FormBase from '@/mixins/FormBase'
 
   export default {
-    mixins: [ FormMixin ],
+    mixins: [ FormBase ],
     props: {
       initialLog: {
         type: Object
@@ -77,10 +77,6 @@
       match: {
         type: Object,
         required: true
-      },
-      color: {
-        type: String,
-        default: 'white'
       }
     },
     data () {
@@ -101,12 +97,6 @@
       }),
       title () {
         return this.match_log.id ? 'Edit Position' : 'Add Position'
-      },
-      buttonColor () {
-        return this.color ? this.color + ' darken-2' : null
-      },
-      formColor () {
-        return this.color ? this.color + ' accent-2' : null
       }
     },
     methods: {

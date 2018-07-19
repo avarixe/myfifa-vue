@@ -26,7 +26,7 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import TeamAction from '@/mixins/TeamAction'
   import TeamCalendar from '@/components/Team/TeamCalendar'
   import PlayerPanel from '@/components/Player/PlayerPanel'
   import MatchPanel from '@/components/Match/MatchPanel'
@@ -34,13 +34,9 @@
 
   export default {
     middleware: 'authenticated',
+    mixins: [ TeamAction ],
     async fetch ({ store, params }) {
       await store.dispatch('team/get', { teamId: params.id, activate: true })
-    },
-    computed: {
-      ...mapState('team', {
-        team: 'active'
-      })
     },
     components: {
       'team-calendar': TeamCalendar,

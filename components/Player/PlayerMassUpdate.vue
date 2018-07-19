@@ -71,8 +71,8 @@
                       v-model="props.item.value"
                       type="number"
                       prefix="$"
-                      :hint="numberHint(props.item.value)"
-                      :rules="$validate('Value', ['required'])"
+                      :hint="$_numberHint(props.item.value)"
+                      :rules="$_validate('Value', ['required'])"
                       persistent-hint
                     ></v-text-field>
                   </td>
@@ -97,11 +97,12 @@
 </template>
 
 <script>
-  import { mapState, mapGetters, mapActions } from 'vuex'
-  import FormMixin from '@/mixins/Form'
+  import { mapGetters, mapActions } from 'vuex'
+  import TeamAction from '@/mixins/TeamAction'
+  import FormBase from '@/mixins/FormBase'
 
   export default {
-    mixins: [ FormMixin ],
+    mixins: [ FormBase, TeamAction ],
     data () {
       return {
         inForm: false,
@@ -121,9 +122,6 @@
       }
     },
     computed: {
-      ...mapState('team', {
-        team: 'active'
-      }),
       ...mapGetters('player', {
         activePlayers: 'active'
       }),
