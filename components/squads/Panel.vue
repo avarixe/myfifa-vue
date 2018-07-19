@@ -29,14 +29,9 @@
           <template slot="items" slot-scope="props">
             <tr @click="props.expanded = !props.expanded">
               <td class="text-xs-center">{{ props.item.name }}</td>
-              <td class="justify-center layout px-0">
+              <td class="text-xs-right">
                 <squad-form :initial-squad="props.item" color="orange">
-                  <v-tooltip bottom color="orange">
-                    <v-btn icon slot="activator">
-                      <v-icon color="orange">edit</v-icon>
-                    </v-btn>
-                    Edit
-                  </v-tooltip>
+                  <v-icon small color="orange" @click>edit</v-icon>
                 </squad-form>
               </td>
             </tr>

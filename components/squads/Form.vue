@@ -33,6 +33,7 @@
                     label="Position"
                     prepend-icon="directions_run"
                     hide-details
+                    auto
                   ></v-autocomplete>
                 </v-flex>
                 <v-flex xs8>
@@ -42,7 +43,9 @@
                     item-value="id"
                     item-text="name"
                     label="Player"
-                    prepend-icon="person">
+                    prepend-icon="person"
+                    hide-details
+                    auto>
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -97,7 +100,11 @@
           name: '',
           players_list: [],
           positions_list: []
-        }, this.initialSquad)
+        }, {
+          ...this.initialSquad,
+          players_list: ((this.initialSquad || {}).players_list || []).map(p => parseInt(p)),
+          positions_list: ((this.initialSquad || {}).positions_list || []).slice()
+        })
       }
     },
     computed: {

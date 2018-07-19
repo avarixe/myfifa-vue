@@ -26,6 +26,7 @@
                     :items="positions"
                     label="Position"
                     prepend-inner-icon="directions_run"
+                    auto
                   ></v-autocomplete>
                 </v-flex>
                 <v-flex xs12>

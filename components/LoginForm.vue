@@ -57,7 +57,7 @@
     methods: {
       async authenticate () {
         try {
-          const { data } = this.$store.dispatch('login', this.credentials)
+          const { data } = await this.$store.dispatch('login', this.credentials)
           Cookie.set('token', data.access_token, data.expires_in / 86400)
         } catch (e) {
           this.errorMessage = e.message
