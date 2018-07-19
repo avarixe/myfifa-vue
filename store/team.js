@@ -2,16 +2,18 @@ import { format, parse, addYears } from 'date-fns'
 import apiRequest from '@/api'
 import myfifa from '@/api/myfifa'
 
+const defaultActive = {
+  id: null,
+  title: '',
+  start_date: null,
+  current_date: null,
+  currency: '$'
+}
+
 // initial state
 export const state = () => ({
   list: [],
-  active: {
-    id: null,
-    title: '',
-    start_date: null,
-    current_date: null,
-    currency: '$'
-  }
+  active: { ...defaultActive }
 })
 
 // getters
@@ -41,10 +43,9 @@ export const actions = {
     return apiRequest({
       path: myfifa.teams.all,
       token: rootState.token,
-      success: function ({ data }) {
+      success: ({ data }) => {
         commit('refresh', data)
-      },
-      errorMessage: 'Failed to retrieve Teams. Please try again.'
+      }
     })
   },
   get ({ commit, rootState }, { teamId, activate }) {
@@ -52,7 +53,6 @@ export const actions = {
       path: myfifa.teams.get,
       pathData: { teamId: teamId },
       token: rootState.token,
-      errorMessage: 'Failed to retrieve Team. Please try again.',
       success: ({ data }) => {
         activate && commit('set', data)
       }
@@ -66,8 +66,7 @@ export const actions = {
       data: { team: payload },
       success: ({ data }) => {
         commit('add', data)
-      },
-      errorMessage: 'Failed to create Team. Please try again.'
+      }
     })
   },
   update ({ commit, rootState }, payload) {
@@ -80,8 +79,7 @@ export const actions = {
       success: ({ data }) => {
         commit('update', data)
         commit('set', data)
-      },
-      errorMessage: 'Failed to update Team. Please try again.'
+      }
     })
   },
   delete ({ commit, rootState }, payload) {
@@ -92,8 +90,7 @@ export const actions = {
       token: rootState.token,
       success: ({ data }) => {
         commit('remove', data)
-      },
-      errorMessage: 'Failed to delete Team. Please try again.'
+      }
     })
   }
 }
@@ -115,16 +112,6 @@ export const mutations = {
     state.list.splice(index, 1)
   },
   set (state, team) {
-    if (team !== null) {
-      state.active = team
-    } else {
-      state.active = {
-        id: null,
-        title: '',
-        start_date: null,
-        current_date: null,
-        currency: '$'
-      }
-    }
+    state.active = team || { ...defaultActive }
   }
 }

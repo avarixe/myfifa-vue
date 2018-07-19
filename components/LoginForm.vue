@@ -55,13 +55,13 @@
       }
     }),
     methods: {
-      authenticate () {
-        this.$store.dispatch('login', this.credentials)
-          .then((data) => {
-            Cookie.set('token', data.access_token, data.expires_in / 86400)
-          }).catch((error) => {
-            this.errorMessage = error.message
-          })
+      async authenticate () {
+        try {
+          const { data } = this.$store.dispatch('login', this.credentials)
+          Cookie.set('token', data.access_token, data.expires_in / 86400)
+        } catch (e) {
+          this.errorMessage = e.message
+        }
       }
     }
   }

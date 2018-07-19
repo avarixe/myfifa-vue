@@ -4,8 +4,7 @@ import myfifa from '@/api/myfifa'
 
 // initial state
 export const state = () => ({
-  token: null // localStorage.getItem('token'),
-  // expirationDate: localStorage.getItem('expirationDate')
+  token: null
 })
 
 // getters
@@ -17,20 +16,7 @@ export const getters = {
 export const mutations = {
   setToken (state, token) {
     state.token = token
-    // if (token !== null) {
-    //   localStorage.setItem('token', token)
-    // } else {
-    //   localStorage.removeItem('token')
-    // }
   }
-  // setExpirationDate (state, expirationDate) {
-  //   state.expirationDate = expirationDate
-  //   if (expirationDate !== null) {
-  //     localStorage.setItem('expirationDate', expirationDate)
-  //   } else {
-  //     localStorage.removeItem('expirationDate')
-  //   }
-  // }
 }
 
 // actions
@@ -49,12 +35,8 @@ export const actions = {
       path: myfifa.token.get,
       data: payload,
       success: ({ data }) => {
-        // let expirationDate = (data.created_at + data.expires_in) * 1000
         commit('setToken', data.access_token)
-        // commit('setExpirationDate', expirationDate)
-        // commit('team/set', data.user.current_team, { root: true })
-      },
-      errorMessage: 'Invalid Email or Password. Please try again.'
+      }
     })
   },
   logout ({ commit, state }) {
@@ -64,8 +46,7 @@ export const actions = {
       data: { token: state.token },
       success: ({ data }) => {
         commit('setToken', null)
-      },
-      errorMessage: 'An error occurred when logging out. Please try again.'
+      }
     })
   }
   // info ({ state }) {

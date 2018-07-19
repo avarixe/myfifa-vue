@@ -87,7 +87,7 @@
         'create',
         'update'
       ]),
-      save () {
+      async save () {
         if (this.$refs.form.validate()) {
           let params, save
           if ('id' in this.loan) {
@@ -98,9 +98,12 @@
             save = this.create
           }
 
-          save(params)
-            .then((data) => { this.inForm = false })
-            .catch((error) => { this.errorMessage = error.message })
+          try {
+            await save(params)
+            this.inForm = false
+          } catch (e) {
+            this.errorMessage = e.message
+          }
         }
       }
     }

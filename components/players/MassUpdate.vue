@@ -143,7 +143,7 @@
       ...mapActions('player', [
         'updateMultiple'
       ]),
-      submit () {
+      async submit () {
         // Format selected player data
         let data = {}
         for (let i in this.selected) {
@@ -151,8 +151,13 @@
           data[id] = { ovr, value }
         }
 
-        this.updateMultiple({ teamId: this.team.id, players: data })
-          .then(() => { this.inForm = false })
+        try {
+          await this.updateMultiple({ teamId: this.team.id, players: data })
+        } catch (e) {
+          alert(e.message)
+        } finally {
+          this.inForm = false
+        }
       },
       toggleAll () {
         if (this.selected.length) this.selected = []

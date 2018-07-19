@@ -74,14 +74,17 @@
       ...mapActions('team', [
         'delete'
       ]),
-      deleteTeam (teamId) {
-        this.delete(teamId)
-          .then((data) => { this.teamToDelete = 0 })
-          .catch((error) => { alert(error) })
+      async deleteTeam (teamId) {
+        try {
+          await this.delete(teamId)
+          this.teamToDelete = 0
+        } catch (e) {
+          alert(e)
+        }
       }
     },
     async fetch ({ store }) {
-      store.commit('team/set')
+      store.commit('team/set', null)
       await store.dispatch('team/refresh')
     },
     components: {

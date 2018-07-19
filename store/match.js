@@ -46,16 +46,14 @@ export const actions = {
       token: rootState.token,
       success: function ({ data }) {
         commit('refresh', data)
-      },
-      errorMessage: 'Failed to retrieve Matches. Please try again.'
+      }
     })
   },
   get ({ rootState }, { matchId }) {
     return apiRequest({
       path: myfifa.matches.get,
       pathData: { matchId: matchId },
-      token: rootState.token,
-      errorMessage: 'Failed to retrieve Match. Please try again.'
+      token: rootState.token
     })
   },
   create ({ commit, rootState }, { teamId, match }) {
@@ -67,8 +65,7 @@ export const actions = {
       data: { match: match },
       success: ({ data }) => {
         commit('add', data)
-      },
-      errorMessage: 'Failed to create Match. Please try again.'
+      }
     })
   },
   update ({ commit, rootState }, payload) {
@@ -80,8 +77,7 @@ export const actions = {
       data: { match: payload },
       success: ({ data }) => {
         commit('update', data)
-      },
-      errorMessage: 'Failed to update Match. Please try again.'
+      }
     })
   },
   destroy ({ commit, rootState }, payload) {
@@ -92,8 +88,7 @@ export const actions = {
       token: rootState.token,
       success: ({ data }) => {
         commit('remove', data)
-      },
-      errorMessage: 'Failed to delete Match. Please try again.'
+      }
     })
   },
   addLog ({ commit, rootState }, { matchId, matchLog }) {
@@ -105,8 +100,7 @@ export const actions = {
       data: { match_log: matchLog },
       success: ({ data }) => {
         commit('update', data)
-      },
-      errorMessage: 'Failed to add Player to Match Log. Please try again.'
+      }
     })
   },
   updateLog ({ commit, rootState }, payload) {
@@ -118,8 +112,7 @@ export const actions = {
       data: { match_log: payload },
       success: ({ data }) => {
         commit('update', data)
-      },
-      errorMessage: 'Failed to update Match Log. Please try again.'
+      }
     })
   }
 }

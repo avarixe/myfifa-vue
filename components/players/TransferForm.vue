@@ -155,12 +155,16 @@
           this.transfer.destination = this.team.title
         }
       },
-      saveTransfer () {
-        this.save({
-          playerId: this.player.id,
-          transfer: this.transfer
-        }).then((data) => { this.inForm = false })
-          .catch((error) => { this.errorMessage = error.message })
+      async saveTransfer () {
+        try {
+          await this.save({
+            playerId: this.player.id,
+            transfer: this.transfer
+          })
+          this.inForm = false
+        } catch (e) {
+          this.errorMessage = e.message
+        }
       }
     }
   }

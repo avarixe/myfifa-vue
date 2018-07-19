@@ -38,6 +38,9 @@
       return {
       }
     },
+    fetch ({ store }) {
+      store.commit('team/set', null)
+    },
     computed: mapGetters([ 'authenticated' ]),
     components: {
       'login-form': LoginForm

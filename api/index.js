@@ -13,39 +13,32 @@ function urlFor (path, pathData) {
   return path
 }
 
-function apiRequest ({
+async function apiRequest ({
   method,
   path,
   pathData,
   params,
   data,
   token,
-  errorMessage,
   success
 }) {
-  return new Promise(function (resolve, reject) {
-    axios({
+  try {
+    const res = await axios({
       method: method || 'get',
       baseURL: baseURL,
       url: urlFor(path, pathData),
       params: params,
       data: data,
       headers: token ? { 'Authorization': 'Bearer ' + token } : null
-    }).then((response) => {
-      try {
-        if (success) {
-          success(response)
-        }
-        resolve(response.data)
-      } catch (error) {
-        reject(error)
-      }
-    }).catch((error) => {
-      if (error) {
-        reject(new Error(errorMessage))
-      }
     })
-  })
+    success && success(res)
+    return res
+  } catch (e) {
+    const errorMessage = e.response && e.response.data
+      ? e.response.data.error_description
+      : 'An Error occurred. Please try again.'
+    throw new Error(errorMessage)
+  }
 }
 
 export default apiRequest

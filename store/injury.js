@@ -7,8 +7,7 @@ export const actions = {
   //   return apiRequest({
   //     path: myfifa.injuries.get,
   //     pathData: { injuryId: injuryId },
-  //     token: rootState.token,
-  //     errorMessage: 'Failed to retrieve Injury. Please try again.'
+  //     token: rootState.token
   //   })
   // },
   create ({ commit, rootState }, { playerId, injury }) {
@@ -20,8 +19,7 @@ export const actions = {
       data: { injury: injury },
       success: ({ data }) => {
         commit('player/update', data, { root: true })
-      },
-      errorMessage: 'Failed to create Injury. Please try again.'
+      }
     })
   },
   update ({ commit, rootState }, payload) {
@@ -33,8 +31,7 @@ export const actions = {
       data: { injury: payload },
       success: ({ data }) => {
         commit('player/update', data, { root: true })
-      },
-      errorMessage: 'Failed to update Injury. Please try again.'
+      }
     })
   }
   // delete ({ commit, rootState }, payload) {
@@ -45,8 +42,7 @@ export const actions = {
   //     token: rootState.token,
   //     success: ({ data }) => {
   //       commit('remove', data)
-  //     },
-  //     errorMessage: 'Failed to delete Injury. Please try again.'
+  //     }
   //   })
   // }
 }

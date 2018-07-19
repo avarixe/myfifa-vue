@@ -138,7 +138,7 @@
         'create',
         'update'
       ]),
-      submit () {
+      async submit () {
         if (this.$refs.form.validate()) {
           let params, save
           if (this.initialSquad) {
@@ -149,9 +149,12 @@
             save = this.create
           }
 
-          save(params)
-            .then((data) => { this.inForm = false })
-            .catch((error) => { this.errorMessage = error.message })
+          try {
+            await save(params)
+            this.inForm = false
+          } catch (e) {
+            this.errorMessage = e.message
+          }
         }
       }
     }

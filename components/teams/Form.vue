@@ -115,12 +115,15 @@
         'create',
         'update'
       ]),
-      submit () {
+      async submit () {
         if (this.$refs.form.validate()) {
           const save = this.id ? this.update : this.create
-          save(this.team)
-            .then((data) => { this.inForm = false })
-            .catch((error) => { this.errorMessage = error.message })
+          try {
+            await save(this.team)
+            this.inForm = false
+          } catch (e) {
+            this.errorMessage = e.message
+          }
         }
       }
     }

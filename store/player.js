@@ -41,16 +41,14 @@ export const actions = {
       token: rootState.token,
       success: function ({ data }) {
         commit('refresh', data)
-      },
-      errorMessage: 'Failed to retrieve Players. Please try again.'
+      }
     })
   },
   get ({ rootState }, { playerId }) {
     return apiRequest({
       path: myfifa.players.get,
       pathData: { playerId: playerId },
-      token: rootState.token,
-      errorMessage: 'Failed to retrieve Player. Please try again.'
+      token: rootState.token
     })
   },
   create ({ commit, rootState }, { teamId, player }) {
@@ -62,8 +60,7 @@ export const actions = {
       data: { player: player },
       success: ({ data }) => {
         commit('add', data)
-      },
-      errorMessage: 'Failed to create Player. Please try again.'
+      }
     })
   },
   update ({ commit, rootState }, payload) {
@@ -75,8 +72,7 @@ export const actions = {
       data: { player: payload },
       success: ({ data }) => {
         commit('update', data)
-      },
-      errorMessage: 'Failed to update Player. Please try again.'
+      }
     })
   },
   updateMultiple ({ commit, rootState }, { teamId, players }) {
@@ -98,8 +94,7 @@ export const actions = {
       token: rootState.token,
       success: ({ data }) => {
         commit('remove', data)
-      },
-      errorMessage: 'Failed to delete Player. Please try again.'
+      }
     })
   },
   transfer ({ commit, rootState }, { playerId, transfer }) {
@@ -111,8 +106,7 @@ export const actions = {
       data: { transfer: transfer },
       success: ({ data }) => {
         commit('update', data.player)
-      },
-      errorMessage: 'Failed to record Transfer. Please try again.'
+      }
     })
   }
 }

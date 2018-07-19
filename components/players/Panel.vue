@@ -167,11 +167,16 @@
             return value
         }
       },
-      reloadTable () {
+      async reloadTable () {
         this.loading = true
-        this.refresh({ teamId: this.team.id })
-          .then((data) => { this.loading = false })
-          .catch((error) => { alert(error.message) })
+
+        try {
+          this.refresh({ teamId: this.team.id })
+        } catch (e) {
+          alert(e.message)
+        } finally {
+          this.loading = false
+        }
       }
     },
     mounted () {

@@ -17,8 +17,7 @@ export const actions = {
     return apiRequest({
       path: myfifa.contracts.get,
       pathData: { contractId: contractId },
-      token: rootState.token,
-      errorMessage: 'Failed to retrieve Contract. Please try again.'
+      token: rootState.token
     })
   },
   create ({ commit, rootState }, { playerId, contract }) {
@@ -30,8 +29,7 @@ export const actions = {
       data: { contract: contract },
       success: ({ data }) => {
         commit('player/update', data, { root: true })
-      },
-      errorMessage: 'Failed to create Contract. Please try again.'
+      }
     })
   },
   update ({ commit, rootState }, payload) {
@@ -43,8 +41,7 @@ export const actions = {
       data: { contract: payload },
       success: ({ data }) => {
         commit('player/update', data, { root: true })
-      },
-      errorMessage: 'Failed to update Contract. Please try again.'
+      }
     })
   },
   delete ({ commit, rootState }, payload) {
@@ -55,8 +52,7 @@ export const actions = {
       token: rootState.token,
       success: ({ data }) => {
         commit('remove', data)
-      },
-      errorMessage: 'Failed to delete Contract. Please try again.'
+      }
     })
   }
 }

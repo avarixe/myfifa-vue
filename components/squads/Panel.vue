@@ -76,10 +76,15 @@
       ...mapActions('squad', [
         'refresh'
       ]),
-      reloadTable () {
+      async reloadTable () {
         this.loading = true
-        this.refresh({ teamId: this.teamId })
-          .then((data) => { this.loading = false })
+        try {
+          await this.refresh({ teamId: this.teamId })
+        } catch (e) {
+          alert(e.message)
+        } finally {
+          this.loading = false
+        }
       },
       resultColor (result) {
         switch (result) {

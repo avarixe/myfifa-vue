@@ -46,9 +46,9 @@
       fab: false
     }),
     methods: {
-      logout () {
-        this.$store.dispatch('logout')
-          .then(() => { Cookie.remove('token') })
+      async logout () {
+        await this.$store.dispatch('logout')
+        Cookie.remove('token')
       }
     }
   }
