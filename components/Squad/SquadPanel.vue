@@ -30,9 +30,7 @@
             <tr @click="props.expanded = !props.expanded">
               <td class="text-xs-center">{{ props.item.name }}</td>
               <td class="text-xs-right">
-                <squad-form :initial-squad="props.item" color="orange">
-                  <v-icon small color="orange" @click>edit</v-icon>
-                </squad-form>
+                <squad-actions :squad="props.item"></squad-actions>
               </td>
             </tr>
           </template>
@@ -47,8 +45,13 @@
   // import get from 'lodash.get'
   import TeamAction from '@/mixins/TeamAction'
   import SquadForm from '@/components/Squad/SquadForm'
+  import SquadActions from '@/components/Squad/SquadActions'
 
   export default {
+    components: {
+      'squad-form': SquadForm,
+      'squad-actions': SquadActions
+    },
     mixins: [ TeamAction ],
     data () {
       return {
@@ -65,6 +68,9 @@
       ...mapState('squad', {
         squads: 'list'
       })
+    },
+    mounted () {
+      this.reloadTable()
     },
     methods: {
       ...mapActions('squad', [
@@ -92,12 +98,6 @@
             return ''
         }
       }
-    },
-    mounted () {
-      this.reloadTable()
-    },
-    components: {
-      'squad-form': SquadForm
     }
   }
 </script>

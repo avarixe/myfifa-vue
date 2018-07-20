@@ -20,7 +20,7 @@
     },
     data () {
       return {
-        currentDate: this.team.current_date
+        currentDate: this.team && this.team.current_date
       }
     },
     computed: {

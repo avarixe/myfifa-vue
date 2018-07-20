@@ -48,7 +48,7 @@
           <template slot="expand" slot-scope="props">
             <div class="pa-0">
               <match-actions v-if="props.item.date_played === team.current_date" :match="props.item"></match-actions>
-              <match-info :match="props.item" :team="team"></match-info>
+              <match-info :match="props.item"></match-info>
             </div>
           </template>
         </v-data-table>
@@ -66,6 +66,11 @@
   import MatchInfo from '@/components/Match/MatchInfo'
 
   export default {
+    components: {
+      'match-form': MatchForm,
+      'match-actions': MatchActions,
+      'match-info': MatchInfo
+    },
     mixins: [ TeamAction ],
     data () {
       return {
@@ -89,6 +94,9 @@
         matches: 'list'
       })
     },
+    mounted () {
+      this.reloadTable()
+    },
     methods: {
       ...mapActions('match', [
         'refresh'
@@ -110,14 +118,6 @@
             return ''
         }
       }
-    },
-    mounted () {
-      this.reloadTable()
-    },
-    components: {
-      'match-form': MatchForm,
-      'match-actions': MatchActions,
-      'match-info': MatchInfo
     }
   }
 </script>

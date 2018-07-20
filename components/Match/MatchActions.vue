@@ -60,6 +60,9 @@
   import MatchForm from '@/components/Match/MatchForm'
 
   export default {
+    components: {
+      'match-form': MatchForm
+    },
     mixins: [ TeamAction ],
     props: {
       match: {
@@ -77,9 +80,6 @@
     },
     methods: mapActions('match', [
       'destroy'
-    ]),
-    components: {
-      'match-form': MatchForm
-    }
+    ])
   }
 </script>

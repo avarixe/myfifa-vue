@@ -2,26 +2,19 @@ import { format, parse, addYears } from 'date-fns'
 import apiRequest from '@/api'
 import myfifa from '@/api/myfifa'
 
-const defaultActive = {
-  id: null,
-  title: '',
-  start_date: null,
-  current_date: null,
-  currency: '$'
-}
-
 // initial state
 export const state = () => ({
-  list: [],
-  active: { ...defaultActive }
+  list: {},
+  currentId: null
 })
 
 // getters
 export const getters = {
-  seasonStart: state => {
-    if (state.active.start_date) {
-      let date = parse(state.active.start_date)
-      let currentDate = parse(state.active.current_date)
+  current: state => state.list[state.currentId],
+  seasonStart: (state, getters) => {
+    if (state.currentId !== null) {
+      let date = parse(getters.current.start_date)
+      let currentDate = parse(getters.current.current_date)
       let yearDiff = parseInt((currentDate - date) / (525600 * 60 * 1000))
       date = addYears(date, yearDiff)
       return format(date, 'YYYY-MM-DD')
@@ -54,7 +47,10 @@ export const actions = {
       pathData: { teamId: teamId },
       token: rootState.token,
       success: ({ data }) => {
-        activate && commit('set', data)
+        if (activate) {
+          commit('set', data)
+          commit('select', data.id)
+        }
       }
     })
   },
@@ -65,7 +61,7 @@ export const actions = {
       token: rootState.token,
       data: { team: payload },
       success: ({ data }) => {
-        commit('add', data)
+        commit('set', data)
       }
     })
   },
@@ -77,8 +73,8 @@ export const actions = {
       token: rootState.token,
       data: { team: payload },
       success: ({ data }) => {
-        commit('update', data)
         commit('set', data)
+        commit('select', data.id)
       }
     })
   },
@@ -98,20 +94,18 @@ export const actions = {
 // mutations
 export const mutations = {
   refresh (state, teams) {
-    state.list = teams
-  },
-  add (state, team) {
-    state.list.push(team)
-  },
-  update (state, team) {
-    let index = state.list.findIndex(t => t.id === team.id)
-    state.list.splice(index, 1, team)
-  },
-  remove (state, team) {
-    let index = state.list.findIndex(t => t.id === team.id)
-    state.list.splice(index, 1)
+    state.list = {}
+    for (let t of teams) {
+      state.list[t.id] = t
+    }
   },
   set (state, team) {
-    state.active = team || { ...defaultActive }
+    state.list[team.id] = team
+  },
+  remove (state, team) {
+    delete state.list[team.id]
+  },
+  select (state, teamId) {
+    state.currentId = teamId
   }
 }

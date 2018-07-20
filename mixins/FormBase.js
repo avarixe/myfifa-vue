@@ -1,8 +1,7 @@
 export default {
   props: {
     color: {
-      type: String,
-      default: 'white'
+      type: String
     }
   },
   data () {

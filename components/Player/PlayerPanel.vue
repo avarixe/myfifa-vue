@@ -88,6 +88,11 @@
   import PlayerMassUpdate from '@/components/Player/PlayerMassUpdate'
 
   export default {
+    components: {
+      'player-form': PlayerForm,
+      'player-actions': PlayerActions,
+      'player-mass-update': PlayerMassUpdate
+    },
     mixins: [ TeamAction ],
     data () {
       return {
@@ -144,6 +149,9 @@
         this.pagination.page = 1
       }
     },
+    mounted () {
+      this.reloadTable()
+    },
     methods: {
       ...mapActions('player', [
         'refresh'
@@ -177,14 +185,6 @@
           this.loading = false
         }
       }
-    },
-    mounted () {
-      this.reloadTable()
-    },
-    components: {
-      'player-form': PlayerForm,
-      'player-actions': PlayerActions,
-      'player-mass-update': PlayerMassUpdate
     }
   }
 </script>

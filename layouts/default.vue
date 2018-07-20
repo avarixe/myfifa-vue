@@ -22,40 +22,22 @@
 </template>
 
 <script>
-  import { mapState, mapGetters } from 'vuex'
+  import { mapGetters } from 'vuex'
+  import TeamAction from '@/mixins/TeamAction'
   import TheNavigationDial from '@/components/TheNavigationDial'
 
   export default {
-    computed: {
-      ...mapState('team', {
-        team: 'active'
-      }),
-      ...mapGetters([
-        'authenticated'
-      ])
+    name: 'App',
+    components: {
+      'navigation-dial': TheNavigationDial
     },
+    mixins: [ TeamAction ],
+    computed: mapGetters([ 'authenticated' ]),
     watch: {
       authenticated (val) {
         !val && this.$router.push('/')
       }
-    },
-    methods: {
-      // ...mapMutations([
-      //   'setToken'
-      // ])
-      // checkIfTokenExpired () {
-      //   if (this.authenticated && Date.now() > this.expirationDate) {
-      //     this.clear()
-      //   }
-      // }
-    },
-    // mounted () {
-    //   this.checkIfTokenExpired()
-    // },
-    components: {
-      'navigation-dial': TheNavigationDial
-    },
-    name: 'App'
+    }
   }
 </script>
 

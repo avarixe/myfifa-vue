@@ -1,5 +1,5 @@
 <template>
-  <v-layout row wrap>
+  <v-layout row wrap class="mx-0">
     <!-- Line Up -->
     <v-flex xs12 md6 v-if="match.team_result">
 
@@ -13,7 +13,7 @@
           </v-btn>
         </match-log-form>
 
-        <v-btn color="secondary">
+        <v-btn color="secondary" v-if="team.current_date === match.date_played">
           <v-icon left>people_outline</v-icon>
           Apply Squad
         </v-btn>
@@ -96,14 +96,15 @@
 
 <script>
   import { mapState } from 'vuex'
+  import TeamAction from '@/mixins/TeamAction'
   import MatchLogForm from '@/components/Match/MatchLogForm'
 
   export default {
+    components: {
+      'match-log-form': MatchLogForm
+    },
+    mixins: [ TeamAction ],
     props: {
-      team: {
-        type: Object,
-        required: true
-      },
       match: {
         type: Object,
         required: true
@@ -192,9 +193,6 @@
       removeEvent (event) {
         console.log('Removing event')
       }
-    },
-    components: {
-      'match-log-form': MatchLogForm
     }
   }
 </script>

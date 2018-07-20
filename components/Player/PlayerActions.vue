@@ -57,6 +57,13 @@
   import TransferForm from '@/components/Player/TransferForm'
 
   export default {
+    components: {
+      'player-form': PlayerForm,
+      'contract-form': ContractForm,
+      'injury-form': InjuryForm,
+      'loan-form': LoanForm,
+      'transfer-form': TransferForm
+    },
     mixins: [ TeamAction ],
     props: {
       player: {
@@ -77,13 +84,6 @@
     },
     methods: mapActions('player', [
       'destroy'
-    ]),
-    components: {
-      'player-form': PlayerForm,
-      'contract-form': ContractForm,
-      'injury-form': InjuryForm,
-      'loan-form': LoanForm,
-      'transfer-form': TransferForm
-    }
+    ])
   }
 </script>

@@ -34,16 +34,12 @@
   import LoginForm from '@/components/LoginForm'
 
   export default {
-    data () {
-      return {
-      }
-    },
-    fetch ({ store }) {
-      store.commit('team/set', null)
-    },
-    computed: mapGetters([ 'authenticated' ]),
     components: {
       'login-form': LoginForm
+    },
+    computed: mapGetters([ 'authenticated' ]),
+    fetch ({ store }) {
+      store.commit('team/select', null)
     }
   }
 </script>

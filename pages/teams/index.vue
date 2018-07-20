@@ -13,7 +13,7 @@
         xs12
         sm6
         md4
-        v-for="team in teams"
+        v-for="(team, teamId) in teams"
         :key="team.id">
         <v-card>
           <v-card-title primary-title>
@@ -63,6 +63,9 @@
   import TeamForm from '@/components/Team/TeamForm'
 
   export default {
+    components: {
+      'team-form': TeamForm
+    },
     middleware: 'authenticated',
     data: () => ({
       teamToDelete: 0
@@ -70,6 +73,10 @@
     computed: mapState('team', {
       teams: 'list'
     }),
+    async fetch ({ store }) {
+      store.commit('team/select', null)
+      await store.dispatch('team/refresh')
+    },
     methods: {
       ...mapActions('team', [
         'delete'
@@ -82,13 +89,6 @@
           alert(e)
         }
       }
-    },
-    async fetch ({ store }) {
-      store.commit('team/set', null)
-      await store.dispatch('team/refresh')
-    },
-    components: {
-      'team-form': TeamForm
     }
   }
 </script>

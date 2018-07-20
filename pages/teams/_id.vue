@@ -33,16 +33,16 @@
   import SquadPanel from '@/components/Squad/SquadPanel'
 
   export default {
-    middleware: 'authenticated',
-    mixins: [ TeamAction ],
-    async fetch ({ store, params }) {
-      await store.dispatch('team/get', { teamId: params.id, activate: true })
-    },
     components: {
       'team-calendar': TeamCalendar,
       'player-panel': PlayerPanel,
       'match-panel': MatchPanel,
       'squad-panel': SquadPanel
+    },
+    middleware: 'authenticated',
+    mixins: [ TeamAction ],
+    async fetch ({ store, params }) {
+      await store.dispatch('team/get', { teamId: params.id, activate: true })
     }
   }
 </script>
