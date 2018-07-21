@@ -57,6 +57,7 @@
                     thumb-label="always"
                     ticks
                     always-dirty
+                    hide-details
                   ></v-slider>
                 </v-flex>
                 <v-flex xs12>
@@ -75,6 +76,7 @@
                     label="Youth Player"
                     v-model="player.youth"
                     :disabled="player.id > 0"
+                    hide-details
                   ></v-checkbox>
                 </v-flex>
               </v-layout>

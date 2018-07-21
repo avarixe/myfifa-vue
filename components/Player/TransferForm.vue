@@ -80,6 +80,7 @@
                       max="25"
                       :thumb-label="transfer.addon_clause > 0 ? 'always' : true"
                       ticks
+                      hide-details
                     ></v-slider>
                   </v-flex>
                   <v-flex xs12>

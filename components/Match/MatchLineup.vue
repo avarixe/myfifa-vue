@@ -31,8 +31,8 @@
         <v-list-tile-action v-if="team.current_date === match.date_played && player.start === 0">
           <match-log-form :match="match" :initial-log="player">
             <v-tooltip bottom>
-              <v-btn slot="activator" icon>
-                <v-icon>edit</v-icon>
+              <v-btn slot="activator" small icon>
+                <v-icon small>edit</v-icon>
               </v-btn>
               Edit
             </v-tooltip>

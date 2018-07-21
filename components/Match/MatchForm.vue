@@ -124,20 +124,26 @@
           this.match.home = ''
         }
       },
-      submit () {
+      async submit () {
         if (this.$refs.form.validate()) {
           let params, save
           if (this.initialMatch) {
             params = this.match
             save = this.update
           } else {
-            params = { teamId: this.team.id, match: this.match }
+            params = {
+              teamId: this.team.id,
+              match: this.match
+            }
             save = this.create
           }
 
-          save(params)
-            .then((data) => { this.inForm = false })
-            .catch((error) => { this.errorMessage = error.message })
+          try {
+            await save(params)
+            this.inForm = false
+          } catch (e) {
+            this.errorMessage = e.message
+          }
         }
       }
     }

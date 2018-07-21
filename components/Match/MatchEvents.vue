@@ -21,8 +21,8 @@
 
         <v-list-tile-action v-if="team.current_date === match.date_played">
           <v-tooltip bottom>
-            <v-btn slot="activator" icon @click="removeEvent(event)">
-              <v-icon>remove_circle</v-icon>
+            <v-btn slot="activator" small icon @click="removeEvent(event)">
+              <v-icon small>remove_circle</v-icon>
             </v-btn>
             Remove
           </v-tooltip>

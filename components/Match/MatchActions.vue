@@ -23,11 +23,11 @@
         <v-btn slot="activator" icon>
           <v-icon>people_outline</v-icon>
         </v-btn>
-        <v-list dark>
+        <v-list>
           <v-list-tile
             v-for="(squad, squadId) in squads"
             :key="squadId"
-            @click="applySquad(squadId)">
+            @click="applySquadToMatch(squadId)">
             {{ squad.name }}
           </v-list-tile>
         </v-list>
@@ -42,12 +42,14 @@
       Substitution
     </v-tooltip>
 
-    <v-tooltip v-if="match.match_logs.length >= 11" bottom color="blue">
-      <v-btn icon slot="activator">
-        <v-icon color="blue">camera</v-icon>
-      </v-btn>
-      Goal
-    </v-tooltip>
+    <goal-form :match="match" color="blue">
+      <v-tooltip v-if="match.match_logs.length >= 11" bottom color="blue">
+        <v-btn icon slot="activator">
+          <v-icon color="blue">camera</v-icon>
+        </v-btn>
+        Goal
+      </v-tooltip>
+    </goal-form>
 
     <v-tooltip v-if="match.match_logs.length >= 11" bottom color="red">
       <v-btn icon slot="activator">
@@ -85,11 +87,13 @@
   import TeamAction from '@/mixins/TeamAction'
   import MatchForm from '@/components/Match/MatchForm'
   import MatchLogForm from '@/components/Match/MatchLogForm'
+  import GoalForm from '@/components/Match/GoalForm'
 
   export default {
     components: {
       'match-form': MatchForm,
-      'match-log-form': MatchLogForm
+      'match-log-form': MatchLogForm,
+      'goal-form': GoalForm
     },
     mixins: [ TeamAction ],
     props: {
@@ -111,10 +115,18 @@
     },
     methods: {
       ...mapActions('match', [
+        'applySquad',
         'remove'
       ]),
-      applySquad (squadId) {
-        console.log(squadId)
+      async applySquadToMatch (squadId) {
+        try {
+          await this.applySquad({
+            matchId: this.match.id,
+            squadId: squadId
+          })
+        } catch (e) {
+          alert(e.message)
+        }
       }
     }
   }

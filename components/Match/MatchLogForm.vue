@@ -104,20 +104,26 @@
         create: 'addLog',
         update: 'updateLog'
       }),
-      save () {
+      async save () {
         if (this.$refs.form.validate()) {
           let params, save
           if ('id' in this.match_log) {
             params = this.match_log
             save = this.update
           } else {
-            params = { matchId: this.match.id, matchLog: this.match_log }
+            params = {
+              matchId: this.match.id,
+              matchLog: this.match_log
+            }
             save = this.create
           }
 
-          save(params)
-            .then((data) => { this.inForm = false })
-            .catch((error) => { this.errorMessage = error.message })
+          try {
+            await save(params)
+            this.inForm = false
+          } catch (e) {
+            this.errorMessage = e.message
+          }
         }
       }
     }

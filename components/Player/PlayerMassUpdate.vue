@@ -80,6 +80,12 @@
               </template>
             </v-data-table>
           </v-card-text>
+          <v-alert
+            type="error"
+            v-model="formError"
+            dismissible>
+            {{ errorMessage }}
+          </v-alert>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -105,8 +111,6 @@
     mixins: [ FormBase, TeamAction ],
     data () {
       return {
-        inForm: false,
-        valid: false,
         players: [],
         selected: [],
         headers: [
@@ -150,11 +154,13 @@
         }
 
         try {
-          await this.updateMultiple({ teamId: this.team.id, players: data })
-        } catch (e) {
-          alert(e.message)
-        } finally {
+          await this.updateMultiple({
+            teamId: this.team.id,
+            players: data
+          })
           this.inForm = false
+        } catch (e) {
+          this.errorMessage = e.message
         }
       },
       toggleAll () {
