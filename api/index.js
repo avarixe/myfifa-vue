@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const baseURL = 'https://api.myfifa.joondev.com/'
-// const baseURL = 'http://api.myfifa.joondev.com:3000'
+// const baseURL = 'https://api.myfifa.joondev.com'
+const baseURL = 'http://api.myfifa.joondev.com:3000'
 
 function urlFor (path, pathData) {
   const matches = path.match(/\{\{(.+)\}\}/g) || []
@@ -29,6 +29,7 @@ async function apiRequest ({
       url: urlFor(path, pathData),
       params: params,
       data: data,
+      credentials: false,
       headers: token ? { 'Authorization': 'Bearer ' + token } : null
     })
     success && success(res)

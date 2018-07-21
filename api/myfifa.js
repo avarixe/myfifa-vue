@@ -58,6 +58,11 @@ export default {
     record: 'bookings/{{ bookingId }}'
   },
 
+  penaltyShootouts: {
+    index: 'matches/{{ matchId }}/penalty_shootouts',
+    record: 'penalty_shootouts/{{ penaltyShootoutId }}'
+  },
+
   matchLogs: {
     index: 'matches//{{ matchId }}/logs',
     record: 'logs/{{ logId }}'

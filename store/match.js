@@ -134,18 +134,6 @@ export const actions = {
         commit('set', data)
       }
     })
-  },
-  recordPenaltyShootout ({ commit, rootState }, { matchId, penaltyShootout }) {
-    return apiRequest({
-      method: 'post',
-      path: myfifa.matches.penaltyShootout,
-      pathData: { matchId: matchId },
-      token: rootState.token,
-      data: { penalty_shootout: penaltyShootout },
-      success: ({ data }) => {
-        commit('set', data)
-      }
-    })
   }
 }
 

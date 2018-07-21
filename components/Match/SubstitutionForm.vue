@@ -32,8 +32,7 @@
                     item-value="player_id"
                     item-text="name"
                     label="Player"
-                    prepend-inner-icon="person"
-                    @change="setPlayerName">
+                    prepend-inner-icon="subdirectory_arrow_left">
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -52,9 +51,7 @@
                     item-value="id"
                     item-text="name"
                     label="Replaced By"
-                    prepend-inner-icon="person_outline"
-                    @change="setReplacedBy"
-                    clearable>
+                    prepend-inner-icon="subdirectory_arrow_right">
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>

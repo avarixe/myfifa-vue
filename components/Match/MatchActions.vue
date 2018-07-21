@@ -35,8 +35,11 @@
       Apply Squad
     </v-tooltip>
 
-    <substitution-form :match="match" color="green">
-      <v-tooltip v-if="match.match_logs.length >= 11" bottom color="green">
+    <substitution-form
+      v-if="validMatch"
+      :match="match"
+      color="green">
+      <v-tooltip bottom color="green">
         <v-btn icon slot="activator">
           <v-icon color="green">repeat</v-icon>
         </v-btn>
@@ -44,8 +47,11 @@
       </v-tooltip>
     </substitution-form>
 
-    <goal-form :match="match" color="blue">
-      <v-tooltip v-if="match.match_logs.length >= 11" bottom color="blue">
+    <goal-form
+      v-if="validMatch"
+      :match="match"
+      color="blue">
+      <v-tooltip bottom color="blue">
         <v-btn icon slot="activator">
           <v-icon color="blue">camera</v-icon>
         </v-btn>
@@ -53,8 +59,11 @@
       </v-tooltip>
     </goal-form>
 
-    <booking-form :match="match" color="red">
-      <v-tooltip v-if="match.match_logs.length >= 11" bottom color="red">
+    <booking-form
+      v-if="validMatch"
+      :match="match"
+      color="red">
+      <v-tooltip bottom color="red">
         <v-btn icon slot="activator">
           <v-icon color="red">book</v-icon>
         </v-btn>
@@ -62,12 +71,17 @@
       </v-tooltip>
     </booking-form>
 
-    <v-tooltip v-if="match.match_logs.length >= 11" bottom color="indigo">
-      <v-btn icon slot="activator">
-        <v-icon color="indigo">accessibility_new</v-icon>
-      </v-btn>
-      Penalty Shootout
-    </v-tooltip>
+    <penalty-shootout-form
+      v-if="validMatch && matchDraw &&  !match.penalty_shootout"
+      :match="match"
+      color="indigo">
+      <v-tooltip bottom color="indigo">
+        <v-btn icon slot="activator">
+          <v-icon color="indigo">accessibility_new</v-icon>
+        </v-btn>
+        Penalty Shootout
+      </v-tooltip>
+    </penalty-shootout-form>
 
     <v-tooltip bottom color="black">
       <v-btn icon slot="activator" @click.native="promptDeletion = true">
@@ -94,6 +108,7 @@
   import GoalForm from '@/components/Match/GoalForm'
   import BookingForm from '@/components/Match/BookingForm'
   import SubstitutionForm from '@/components/Match/SubstitutionForm'
+  import PenaltyShootoutForm from '@/components/Match/PenaltyShootoutForm'
 
   export default {
     components: {
@@ -101,7 +116,8 @@
       'match-log-form': MatchLogForm,
       'goal-form': GoalForm,
       'booking-form': BookingForm,
-      'substitution-form': SubstitutionForm
+      'substitution-form': SubstitutionForm,
+      'penalty-shootout-form': PenaltyShootoutForm
     },
     mixins: [ TeamAction ],
     props: {
@@ -119,6 +135,12 @@
       }),
       active () {
         return this.match.status && this.match.status.length > 0
+      },
+      validMatch () {
+        return !this.match.team_result || this.match.match_logs.length >= 11
+      },
+      matchDraw () {
+        return this.match.home_score === this.match.away_score
       }
     },
     methods: {

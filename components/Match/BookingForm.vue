@@ -46,8 +46,7 @@
                     item-value="player_id"
                     item-text="name"
                     label="Player"
-                    prepend-inner-icon="person"
-                    @change="setPlayerName">
+                    prepend-inner-icon="person">
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -111,25 +110,16 @@
       players: 'list'
     }),
     watch: {
-      'booking.home': function (val) {
-        if (val) {
-          this.booking.player_name = ''
-        } else {
-          this.booking.player_id = null
-        }
+      'booking.player_id': function (val) {
+        this.booking.player_name = val
+          ? this.players[val].name
+          : ''
       }
     },
     methods: {
       ...mapActions('booking', [
         'create'
       ]),
-
-      setPlayerName () {
-        this.booking.player_name = this.booking.player_id
-          ? this.players[this.booking.player_id].name
-          : ''
-      },
-
       async submit () {
         if (this.$refs.form.validate()) {
           try {

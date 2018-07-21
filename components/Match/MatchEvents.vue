@@ -27,7 +27,31 @@
             Remove
           </v-tooltip>
         </v-list-tile-action>
+      </v-list-tile>
 
+      <v-list-tile v-if="match.penalty_shootout">
+        <!-- Blank Action for alignment -->
+        <v-list-tile-action></v-list-tile-action>
+
+        <v-list-tile-avatar>
+          <v-icon small color="indigo">accessibility_new</v-icon>
+        </v-list-tile-avatar>
+
+        <v-list-tile-content>
+          <v-list-tile-title>Penalty Shootout</v-list-tile-title>
+          <v-list-tile-sub-title>
+            {{ match.penalty_shootout.home_score }} - {{ match.penalty_shootout.away_score }}
+          </v-list-tile-sub-title>
+        </v-list-tile-content>
+
+        <v-list-tile-action v-if="team.current_date === match.date_played">
+          <v-tooltip bottom>
+            <v-btn slot="activator" small icon @click="removeEvent(penaltyShootoutEvent)">
+              <v-icon small>remove_circle</v-icon>
+            </v-btn>
+            Remove
+          </v-tooltip>
+        </v-list-tile-action>
       </v-list-tile>
     </v-list>
   </v-flex>
@@ -51,31 +75,24 @@
     computed: {
       events () {
         return this.match.events.slice().sort()
+      },
+      penaltyShootoutEvent () {
+        return this.match.penalty_shootout
+          ? { id: this.match.penalty_shootout.id, event_type: 'PenaltyShootout' }
+          : {}
       }
     },
     methods: {
       ...mapActions({
         removeGoal: 'goal/remove',
         removeBooking: 'booking/remove',
-        removeSubstitution: 'substitution/remove'
+        removeSubstitution: 'substitution/remove',
+        removePenaltyShootout: 'penaltyShootout/remove'
       }),
       async removeEvent (event) {
-        let remove
-        switch (event.event_type) {
-          case 'Goal':
-            remove = this.removeGoal
-            break
-          case 'Booking':
-            remove = this.removeBooking
-            break
-          case 'Substitution':
-            remove = this.removeSubstitution
-            break
-        }
-
-        if (remove && confirm('Remove ' + event.event_type + '?')) {
+        if (confirm('Remove ' + event.event_type + '?')) {
           try {
-            await remove(event.id)
+            await this['remove' + event.event_type](event.id)
           } catch (e) {
             alert(e.message)
           }
