@@ -37,7 +37,7 @@ export const getters = {
 export const actions = {
   refresh ({ state, commit, rootState }, { teamId }) {
     return apiRequest({
-      path: myfifa.players.all,
+      path: myfifa.players.index,
       pathData: { teamId: teamId },
       token: rootState.token,
       success: function ({ data }) {
@@ -47,7 +47,7 @@ export const actions = {
   },
   get ({ rootState }, { playerId }) {
     return apiRequest({
-      path: myfifa.players.get,
+      path: myfifa.players.record,
       pathData: { playerId: playerId },
       token: rootState.token
     })
@@ -55,7 +55,7 @@ export const actions = {
   create ({ commit, rootState }, { teamId, player }) {
     return apiRequest({
       method: 'post',
-      path: myfifa.players.all,
+      path: myfifa.players.index,
       pathData: { teamId: teamId },
       token: rootState.token,
       data: { player: player },
@@ -67,7 +67,7 @@ export const actions = {
   update ({ commit, rootState }, payload) {
     return apiRequest({
       method: 'patch',
-      path: myfifa.players.get,
+      path: myfifa.players.record,
       pathData: { playerId: payload.id },
       token: rootState.token,
       data: { player: payload },
@@ -90,7 +90,7 @@ export const actions = {
   remove ({ commit, rootState }, payload) {
     return apiRequest({
       method: 'delete',
-      path: myfifa.players.get,
+      path: myfifa.players.record,
       pathData: { playerId: payload },
       token: rootState.token,
       success: ({ data }) => {
@@ -124,6 +124,6 @@ export const mutations = {
     Vue.set(state.list, player.id, player)
   },
   remove (state, playerId) {
-    delete state.list[playerId]
+    Vue.delete(state.list, playerId)
   }
 }

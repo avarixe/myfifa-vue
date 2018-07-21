@@ -1,45 +1,70 @@
 export default {
+
   teams: {
-    all: 'teams',
-    get: 'teams/{{ teamId }}'
+    index: 'teams',
+    record: 'teams/{{ teamId }}'
   },
+
   players: {
-    all: 'teams/{{ teamId }}/players',
-    get: 'players/{{ playerId }}',
+    index: 'teams/{{ teamId }}/players',
+    record: 'players/{{ playerId }}',
     update_multiple: 'teams/{{ teamId }}/players/update_multiple'
   },
+
   transfers: {
-    all: 'players/{{ playerId }}/transfers',
-    get: 'transfers/{{ transferId }}'
+    index: 'players/{{ playerId }}/transfers',
+    record: 'transfers/{{ transferId }}'
   },
+
   contracts: {
-    all: 'players/{{ playerId }}/contracts',
-    get: 'contracts/{{ contractId }}'
+    index: 'players/{{ playerId }}/contracts',
+    record: 'contracts/{{ contractId }}'
   },
+
   injuries: {
-    all: 'players/{{ playerId }}/injuries',
-    get: 'injuries/{{ injuryId }}'
+    index: 'players/{{ playerId }}/injuries',
+    record: 'injuries/{{ injuryId }}'
   },
+
   loans: {
-    all: 'players/{{ playerId }}/loans',
-    get: 'loans/{{ loanId }}'
+    index: 'players/{{ playerId }}/loans',
+    record: 'loans/{{ loanId }}'
   },
 
   squads: {
-    all: 'teams/{{ teamId }}/squads',
-    get: 'squads/{{ squadId }}'
+    index: 'teams/{{ teamId }}/squads',
+    record: 'squads/{{ squadId }}'
   },
 
   matches: {
-    all: 'teams/{{ teamId }}/matches',
-    get: 'matches/{{ matchId }}'
+    index: 'teams/{{ teamId }}/matches',
+    record: 'matches/{{ matchId }}',
+    applySquad: 'matches/{{ matchId }}/apply_squad',
+    penaltyShootout: 'matches/{{ matchId }}/penalty_shootout'
   },
+
+  goals: {
+    index: 'matches/{{ matchId }}/goals',
+    record: 'goals/{{ goalId }}'
+  },
+
+  subs: {
+    index: 'matches/{{ matchId }}/substitutions',
+    record: 'substitutions/{{ subId }}'
+  },
+
+  bookings: {
+    index: 'matches/{{ matchId }}/bookings',
+    record: 'bookings/{{ bookingId }}'
+  },
+
   matchLogs: {
-    all: 'matches//{{ matchId }}/logs',
-    get: 'logs/{{ logId }}'
+    index: 'matches//{{ matchId }}/logs',
+    record: 'logs/{{ logId }}'
   },
 
   user: 'users/sync',
+
   token: {
     get: 'oauth/token',
     revoke: 'oauth/revoke'

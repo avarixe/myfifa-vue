@@ -16,7 +16,7 @@ export const actions = {
   create ({ commit, rootState }, { playerId, contract }) {
     return apiRequest({
       method: 'post',
-      path: myfifa.contracts.all,
+      path: myfifa.contracts.index,
       pathData: { playerId: playerId },
       token: rootState.token,
       data: { contract: contract },
@@ -28,7 +28,7 @@ export const actions = {
   update ({ commit, rootState }, payload) {
     return apiRequest({
       method: 'patch',
-      path: myfifa.contracts.get,
+      path: myfifa.contracts.record,
       pathData: { contractId: payload.id },
       token: rootState.token,
       data: { contract: payload },

@@ -6,7 +6,7 @@ export const actions = {
   create ({ commit, rootState }, { playerId, loan }) {
     return apiRequest({
       method: 'post',
-      path: myfifa.loans.all,
+      path: myfifa.loans.index,
       pathData: { playerId: playerId },
       token: rootState.token,
       data: { loan: loan },
@@ -18,7 +18,7 @@ export const actions = {
   update ({ commit, rootState }, payload) {
     return apiRequest({
       method: 'patch',
-      path: myfifa.loans.get,
+      path: myfifa.loans.record,
       pathData: { loanId: payload.id },
       token: rootState.token,
       data: { loan: payload },

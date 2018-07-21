@@ -8,24 +8,24 @@ export const state = () => ({
   positions: [
     'GK',
     'CB',
-    'LCB',
-    'RCB',
     'LB',
     'LWB',
+    'LCB',
+    'RCB',
     'RB',
     'RWB',
-    'CDM',
     'LDM',
+    'CDM',
     'RDM',
-    'CM',
+    'LM',
     'LCM',
+    'CM',
     'RCM',
+    'RM',
     'CAM',
     'LAM',
     'RAM',
-    'LM',
     'LW',
-    'RM',
     'RW',
     'CF',
     'ST'
@@ -49,7 +49,7 @@ export const getters = {
 export const actions = {
   refresh ({ state, commit, rootState }, { teamId }) {
     return apiRequest({
-      path: myfifa.matches.all,
+      path: myfifa.matches.index,
       pathData: { teamId: teamId },
       token: rootState.token,
       success: function ({ data }) {
@@ -59,7 +59,7 @@ export const actions = {
   },
   get ({ rootState }, { matchId }) {
     return apiRequest({
-      path: myfifa.matches.get,
+      path: myfifa.matches.record,
       pathData: { matchId: matchId },
       token: rootState.token
     })
@@ -67,7 +67,7 @@ export const actions = {
   create ({ commit, rootState }, { teamId, match }) {
     return apiRequest({
       method: 'post',
-      path: myfifa.matches.all,
+      path: myfifa.matches.index,
       pathData: { teamId: teamId },
       token: rootState.token,
       data: { match: match },
@@ -79,7 +79,7 @@ export const actions = {
   update ({ commit, rootState }, payload) {
     return apiRequest({
       method: 'patch',
-      path: myfifa.matches.get,
+      path: myfifa.matches.record,
       pathData: { matchId: payload.id },
       token: rootState.token,
       data: { match: payload },
@@ -88,10 +88,10 @@ export const actions = {
       }
     })
   },
-  destroy ({ commit, rootState }, payload) {
+  remove ({ commit, rootState }, payload) {
     return apiRequest({
       method: 'delete',
-      path: myfifa.matches.get,
+      path: myfifa.matches.record,
       pathData: { matchId: payload },
       token: rootState.token,
       success: ({ data }) => {
@@ -122,6 +122,30 @@ export const actions = {
         commit('set', data)
       }
     })
+  },
+  applySquad ({ commit, rootState }, { matchId, squadId }) {
+    return apiRequest({
+      method: 'post',
+      path: myfifa.matches.applySquad,
+      pathData: { matchId: matchId },
+      token: rootState.token,
+      data: { squad_id: squadId },
+      success: ({ data }) => {
+        commit('set', data)
+      }
+    })
+  },
+  recordPenaltyShootout ({ commit, rootState }, { matchId, penaltyShootout }) {
+    return apiRequest({
+      method: 'post',
+      path: myfifa.matches.penaltyShootout,
+      pathData: { matchId: matchId },
+      token: rootState.token,
+      data: { penalty_shootout: penaltyShootout },
+      success: ({ data }) => {
+        commit('set', data)
+      }
+    })
   }
 }
 
@@ -137,6 +161,6 @@ export const mutations = {
     Vue.set(state.list, match.id, match)
   },
   remove (state, matchId) {
-    delete state.list[matchId]
+    Vue.delete(state.list, matchId)
   }
 }
