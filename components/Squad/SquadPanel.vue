@@ -22,9 +22,10 @@
         <!-- Squads Grid -->
         <v-data-table
           :headers="headers"
-          :items="squads"
+          :items="rows"
           :loading="loading"
           item-key="id"
+          disable-initial-sort
           no-data-text="No Squads Recorded">
           <template slot="items" slot-scope="props">
             <tr @click="props.expanded = !props.expanded">
@@ -57,8 +58,8 @@
       return {
         teamId: this.$route.params.id,
         headers: [
-          { text: 'Name',    value: 'name',    align: 'center' },
-          { text: 'Actions', value: 'actions', align: 'right' }
+          { text: 'Name',    value: 'name',    align: 'center', sortable: false },
+          { text: 'Actions', value: 'actions', align: 'right',  sortable: false }
         ],
         loading: false,
         search: ''
@@ -67,10 +68,10 @@
     computed: {
       ...mapState('squad', {
         squads: 'list'
-      })
-    },
-    mounted () {
-      this.reloadTable()
+      }),
+      rows () {
+        return Object.values(this.squads)
+      }
     },
     methods: {
       ...mapActions('squad', [

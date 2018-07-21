@@ -30,7 +30,7 @@
         <!-- Match History Grid -->
         <v-data-table
           :headers="headers"
-          :items="matches"
+          :items="rows"
           :pagination.sync="pagination"
           :loading="loading"
           :search="search"
@@ -48,7 +48,10 @@
           <template slot="expand" slot-scope="props">
             <div class="pa-0">
               <match-actions v-if="props.item.date_played === team.current_date" :match="props.item"></match-actions>
-              <match-info :match="props.item"></match-info>
+              <v-layout row wrap class="mx-0">
+                <match-lineup :match="props.item" v-if="props.item.team_result"></match-lineup>
+                <match-events :match="props.item"></match-events>
+              </v-layout>
             </div>
           </template>
         </v-data-table>
@@ -59,17 +62,18 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  // import get from 'lodash.get'
   import TeamAction from '@/mixins/TeamAction'
   import MatchForm from '@/components/Match/MatchForm'
   import MatchActions from '@/components/Match/MatchActions'
-  import MatchInfo from '@/components/Match/MatchInfo'
+  import MatchLineup from '@/components/Match/MatchLineup'
+  import MatchEvents from '@/components/Match/MatchEvents'
 
   export default {
     components: {
       'match-form': MatchForm,
       'match-actions': MatchActions,
-      'match-info': MatchInfo
+      'match-lineup': MatchLineup,
+      'match-events': MatchEvents
     },
     mixins: [ TeamAction ],
     data () {
@@ -92,19 +96,24 @@
     computed: {
       ...mapState('match', {
         matches: 'list'
-      })
-    },
-    mounted () {
-      this.reloadTable()
+      }),
+      rows () {
+        return Object.values(this.matches)
+      }
     },
     methods: {
       ...mapActions('match', [
         'refresh'
       ]),
-      reloadTable () {
+      async reloadTable () {
         this.loading = true
-        this.refresh({ teamId: this.team.id })
-          .then((data) => { this.loading = false })
+        try {
+          await this.refresh({ teamId: this.team.id })
+        } catch (e) {
+          alert(e.message)
+        } finally {
+          this.loading = false
+        }
       },
       resultColor (result) {
         switch (result) {

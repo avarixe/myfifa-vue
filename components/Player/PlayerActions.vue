@@ -41,7 +41,7 @@
       color="black"
       v-model="promptDeletion">
       Remove Player: {{ player.name }}?
-      <v-btn dark flat @click.native="destroy(player.id)">Yes</v-btn>
+      <v-btn dark flat @click.native="remove(player.id)">Yes</v-btn>
       <v-btn dark flat @click.native="promptDeletion = false">No</v-btn>
     </v-snackbar>
   </v-card-text>
@@ -83,7 +83,7 @@
       }
     },
     methods: mapActions('player', [
-      'destroy'
+      'remove'
     ])
   }
 </script>

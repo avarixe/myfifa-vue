@@ -55,10 +55,11 @@
         <v-data-table
           :headers="headers"
           :items="rows"
-          :pagination.sync="pagination"
           :loading="loading"
+          :pagination.sync="pagination"
           :search="search"
           item-key="id"
+          disable-initial-sort
           no-data-text="No Players Recorded">
           <template slot="items" slot-scope="props">
             <tr @click="props.expanded = !props.expanded">
@@ -96,9 +97,6 @@
     mixins: [ TeamAction ],
     data () {
       return {
-        pagination: {
-          sortBy: 'pos_idx'
-        },
         display: 'ovr',
         modes: [
           { text: 'Status', value: 'status' },
@@ -106,6 +104,7 @@
           { text: 'Analytics', value: 'analytics' }
         ],
         loading: false,
+        pagination: {},
         activeFilter: false,
         search: ''
       }
@@ -138,7 +137,9 @@
         }
       },
       rows () {
-        return this.players.filter(row => !this.activeFilter || row.status)
+        return Object.values(this.players)
+          .sort((a, b) => a.pos_idx - b.pos_idx)
+          .filter(player => !this.activeFilter || player.status)
       }
     },
     watch: {
@@ -148,9 +149,6 @@
       activeFilter () {
         this.pagination.page = 1
       }
-    },
-    mounted () {
-      this.reloadTable()
     },
     methods: {
       ...mapActions('player', [
