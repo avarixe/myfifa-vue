@@ -20,7 +20,7 @@
             <div class="headline">
               {{ team.title }}
               <v-tooltip top color="primary">
-                <v-btn icon slot="activator" :to="'/teams/' + team.id">
+                <v-btn icon slot="activator" nuxt :to="'/teams/' + team.id">
                   <v-icon color="primary">arrow_forward</v-icon>
                 </v-btn>
                 Team Dashboard
@@ -74,16 +74,18 @@
       teams: 'list'
     }),
     async fetch ({ store }) {
-      store.commit('team/select', null)
       await store.dispatch('team/refresh')
+    },
+    beforeMount () {
+      this.$store.commit('team/clear')
     },
     methods: {
       ...mapActions('team', [
-        'delete'
+        'remove'
       ]),
       async deleteTeam (teamId) {
         try {
-          await this.delete(teamId)
+          await this.remove(teamId)
           this.teamToDelete = 0
         } catch (e) {
           alert(e)

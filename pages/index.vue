@@ -11,6 +11,7 @@
             class="mx-0"
             color="primary"
             large
+            nuxt
             to="/teams">
             Teams
           </v-btn>
@@ -38,8 +39,8 @@
       'login-form': LoginForm
     },
     computed: mapGetters([ 'authenticated' ]),
-    fetch ({ store }) {
-      store.commit('team/select', null)
+    beforeMount () {
+      this.$store.commit('team/clear')
     }
   }
 </script>

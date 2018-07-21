@@ -35,6 +35,7 @@ import {
   VExpansionPanel,
   VSubheader,
   VJumbotron,
+  VProgressCircular,
   transitions
 } from 'vuetify'
 
@@ -74,6 +75,7 @@ Vue.use(Vuetify, {
     VExpansionPanel,
     VSubheader,
     VJumbotron,
+    VProgressCircular,
     transitions
   }
 })

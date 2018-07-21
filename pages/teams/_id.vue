@@ -43,6 +43,9 @@
     mixins: [ TeamAction ],
     async fetch ({ store, params }) {
       await store.dispatch('team/get', { teamId: params.id, activate: true })
+      await store.dispatch('player/refresh', { teamId: params.id })
+      await store.dispatch('match/refresh', { teamId: params.id })
+      await store.dispatch('squad/refresh', { teamId: params.id })
     }
   }
 </script>

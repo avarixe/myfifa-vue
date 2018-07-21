@@ -2,9 +2,9 @@
   <v-app>
     <v-toolbar color="primary" dark fixed app>
       <v-toolbar-title>
-        <router-link to="/" tag="span">
+        <nuxt-link to="/" tag="span">
           MyFIFA Manager
-        </router-link>
+        </nuxt-link>
       </v-toolbar-title>
       <v-toolbar-items class="hidden-xs-only">
         <v-breadcrumbs large divider="/">
@@ -16,7 +16,7 @@
     </v-toolbar>
     <v-content>
       <navigation-dial v-if="authenticated"></navigation-dial>
-      <router-view></router-view>
+      <nuxt />
     </v-content>
   </v-app>
 </template>
