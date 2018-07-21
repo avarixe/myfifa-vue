@@ -15,9 +15,9 @@ export const actions = {
       }
     })
   },
-  remove ({ commit, rootState }, { bookingId }) {
+  remove ({ commit, rootState }, bookingId) {
     return apiRequest({
-      method: 'patch',
+      method: 'delete',
       path: myfifa.bookings.record,
       pathData: { bookingId: bookingId },
       token: rootState.token,

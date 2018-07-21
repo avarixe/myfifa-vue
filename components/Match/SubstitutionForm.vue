@@ -6,8 +6,8 @@
         <v-card>
           <v-card-title primary-title :class="formColor">
             <div class="headline">
-              <v-icon left>camera</v-icon>
-              Record Goal
+              <v-icon left>repeat</v-icon>
+              Record Substitution
             </div>
           </v-card-title>
           <v-divider></v-divider>
@@ -15,23 +15,9 @@
             <v-container>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-radio-group v-model="goal.home" row hide-details>
-                    <v-radio
-                      :label="match.home"
-                      :value="true"
-                      color="teal"
-                    ></v-radio>
-                    <v-radio
-                      :label="match.away"
-                      :value="false"
-                      color="pink"
-                    ></v-radio>
-                  </v-radio-group>
-                </v-flex>
-                <v-flex xs12>
                   <v-slider
-                    v-model="goal.minute"
-                    :label="goal.minute.toString() + '\''"
+                    v-model="substitution.minute"
+                    :label="substitution.minute.toString() + '\''"
                     min="1"
                     max="120"
                     ticks
@@ -40,14 +26,14 @@
                 </v-flex>
                 <v-flex xs12>
                   <v-autocomplete
-                    v-if="teamGoal"
-                    v-model="goal.player_id"
-                    :rules="$_validate('Goal Scorer', ['required'])"
+                    v-model="substitution.player_id"
+                    :rules="$_validate('Player', ['required'])"
                     :items="match.match_logs"
                     item-value="player_id"
                     item-text="name"
-                    label="Goal Scorer"
-                    prepend-inner-icon="person">
+                    label="Player"
+                    prepend-inner-icon="person"
+                    @change="setPlayerName">
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -57,26 +43,18 @@
                       </v-list-tile-content>
                     </template>
                   </v-autocomplete>
-                  <v-text-field
-                    v-else
-                    v-model="goal.player_name"
-                    :rules="$_validate('Goal Scorer', ['required'])"
-                    label="Goal Scorer"
-                    prepend-inner-icon="person"
-                  ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
                   <v-autocomplete
-                    v-if="teamGoal"
-                    v-model="goal.assist_id"
-                    :items="match.match_logs"
-                    item-value="player_id"
+                    v-model="substitution.replacement_id"
+                    :rules="$_validate('Replaced By', ['required'])"
+                    :items="availablePlayers"
+                    item-value="id"
                     item-text="name"
-                    label="Assisted By"
+                    label="Replaced By"
                     prepend-inner-icon="person_outline"
-                    :disabled="goal.penalty || goal.own_goal"
-                    clearable
-                    hide-details>
+                    @change="setReplacedBy"
+                    clearable>
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -86,28 +64,11 @@
                       </v-list-tile-content>
                     </template>
                   </v-autocomplete>
-                  <v-text-field
-                    v-else
-                    v-model="goal.assisted_by"
-                    label="Assisted By"
-                    prepend-inner-icon="person_outline"
-                    :disabled="goal.penalty || goal.own_goal"
-                    hide-details
-                  ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
                   <v-checkbox
-                    label="Penalty"
-                    v-model="goal.penalty"
-                    :disabled="goal.own_goal"
-                    hide-details
-                  ></v-checkbox>
-                </v-flex>
-                <v-flex xs12>
-                  <v-checkbox
-                    label="Own Goal"
-                    v-model="goal.own_goal"
-                    :disabled="goal.penalty"
+                    label="Injury"
+                    v-model="substitution.injury"
                     hide-details
                   ></v-checkbox>
                 </v-flex>
@@ -138,7 +99,7 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapState, mapGetters, mapActions } from 'vuex'
   import TeamAction from '@/mixins/TeamAction'
   import FormBase from '@/mixins/FormBase'
 
@@ -152,15 +113,13 @@
     },
     data () {
       return {
-        goal: {
-          home: true, // default to Team side
+        substitution: {
           minute: 1,
           player_id: null,
           player_name: '',
-          assisted_by: '',
-          assist_id: '',
-          own_goal: false,
-          penalty: false
+          replaced_by: '',
+          replacement_id: '',
+          injury: false
         }
       }
     },
@@ -168,46 +127,28 @@
       ...mapState('player', {
         players: 'list'
       }),
-      scoredTeam () {
-        return this.home ? this.match.home : this.match.away
-      },
-      teamGoal () {
-        return !this.goal.home ^ this.match.home === this.team.title
+      ...mapGetters('player', {
+        activePlayers: 'active'
+      }),
+      availablePlayers () {
+        const selectedIds = this.match.match_logs.map(p => p.player_id)
+        return this.activePlayers.filter(p => selectedIds.indexOf(p.id) < 0)
       }
     },
     watch: {
-      'goal.home': function (val) {
-        if (val) {
-          this.goal.player_name = ''
-          this.goal.assisted_by = ''
-        } else {
-          this.goal.player_id = null
-          this.goal.assist_id = null
-        }
-      },
-      'goal.player_id': function (val) {
-        this.goal.player_name = val
+      'substitution.player_id': function (val) {
+        this.substitution.player_name = val
           ? this.players[val].name
           : ''
       },
-      'goal.assist_id': function (val) {
-        this.goal.assisted_by = val
+      'substitution.replacement_id': function (val) {
+        this.substitution.replaced_by = val
           ? this.players[val].name
           : ''
-      },
-      'goal.penalty': function (val) {
-        if (val) {
-          this.goal.assist_id = null
-        }
-      },
-      'goal.own_goal': function (val) {
-        if (val) {
-          this.goal.assist_id = null
-        }
       }
     },
     methods: {
-      ...mapActions('goal', [
+      ...mapActions('substitution', [
         'create'
       ]),
       async submit () {
@@ -215,7 +156,7 @@
           try {
             await this.create({
               matchId: this.match.id,
-              goal: this.goal
+              substitution: this.substitution
             })
             this.inForm = false
           } catch (e) {

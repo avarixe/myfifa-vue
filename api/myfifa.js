@@ -48,9 +48,9 @@ export default {
     record: 'goals/{{ goalId }}'
   },
 
-  subs: {
+  substitutions: {
     index: 'matches/{{ matchId }}/substitutions',
-    record: 'substitutions/{{ subId }}'
+    record: 'substitutions/{{ substitutionId }}'
   },
 
   bookings: {

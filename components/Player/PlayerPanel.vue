@@ -34,10 +34,10 @@
         </v-menu>
 
         <v-tooltip top>
-          <v-btn slot="activator" icon @click.native="activeFilter = !activeFilter">
-            <v-icon>check_box{{ activeFilter ? '' : '_outline_blank' }}</v-icon>
+          <v-btn slot="activator" icon @click.native="filterActive = !filterActive">
+            <v-icon>check_box{{ filterActive ? '' : '_outline_blank' }}</v-icon>
           </v-btn>
-          Display {{ activeFilter ? 'Active' : 'All' }} Players
+          Display {{ filterActive ? 'Active' : 'All' }} Players
         </v-tooltip>
 
         <v-spacer></v-spacer>
@@ -105,7 +105,7 @@
         ],
         loading: false,
         pagination: {},
-        activeFilter: false,
+        filterActive: true,
         search: ''
       }
     },
@@ -139,14 +139,14 @@
       rows () {
         return Object.values(this.players)
           .sort((a, b) => a.pos_idx - b.pos_idx)
-          .filter(player => !this.activeFilter || player.status)
+          .filter(player => !this.filterActive || player.status)
       }
     },
     watch: {
       'team.current_date' (val) {
         this.reloadTable()
       },
-      activeFilter () {
+      filterActive () {
         this.pagination.page = 1
       }
     },

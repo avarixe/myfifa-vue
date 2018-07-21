@@ -34,6 +34,7 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
   import TeamAction from '@/mixins/TeamAction'
 
   export default {
@@ -53,8 +54,32 @@
       }
     },
     methods: {
-      removeEvent (event) {
-        console.log('Removing event')
+      ...mapActions({
+        removeGoal: 'goal/remove',
+        removeBooking: 'booking/remove',
+        removeSubstitution: 'substitution/remove'
+      }),
+      async removeEvent (event) {
+        let remove
+        switch (event.event_type) {
+          case 'Goal':
+            remove = this.removeGoal
+            break
+          case 'Booking':
+            remove = this.removeBooking
+            break
+          case 'Substitution':
+            remove = this.removeSubstitution
+            break
+        }
+
+        if (remove && confirm('Remove ' + event.event_type + '?')) {
+          try {
+            await remove(event.id)
+          } catch (e) {
+            alert(e.message)
+          }
+        }
       },
 
       teamColor (event) {
@@ -63,21 +88,21 @@
       eventColor (event) {
         switch (event.event_type) {
           case 'Goal':
-            return 'blue'
+            return event.own_goal ? 'gray' : 'blue'
           case 'Booking':
-            return 'red'
+            return event.red_card ? 'red' : 'yellow darken-2'
           case 'Substitution':
-            return 'green'
+            return event.injury ? 'pink' : 'green'
         }
       },
       eventIcon (event) {
         switch (event.event_type) {
           case 'Goal':
-            return 'camera'
+            return event.penalty ? 'filter_tilt_shift' : 'camera'
           case 'Booking':
             return 'book'
           case 'Substitution':
-            return 'repeat'
+            return event.injury ? 'local_hospital' : 'repeat'
         }
       },
       eventTitle (event) {

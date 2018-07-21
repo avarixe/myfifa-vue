@@ -15,9 +15,9 @@ export const actions = {
       }
     })
   },
-  remove ({ commit, rootState }, { goalId }) {
+  remove ({ commit, rootState }, goalId) {
     return apiRequest({
-      method: 'patch',
+      method: 'delete',
       path: myfifa.goals.record,
       pathData: { goalId: goalId },
       token: rootState.token,

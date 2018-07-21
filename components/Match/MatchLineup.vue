@@ -25,6 +25,17 @@
               color="blue"
               small
             >camera</v-icon>
+            <v-icon
+              v-for="(color, i) in bookings(player)"
+              :key="i"
+              :color="color"
+              small
+            >book</v-icon>
+            <v-icon
+              v-if="injured(player)"
+              color="pink"
+              small
+            >local_hospital</v-icon>
           </v-list-tile-title>
         </v-list-tile-content>
 
@@ -84,7 +95,24 @@
     },
     methods: {
       numGoals (log) {
-        return this.events.filter(event => event.event_type === 'Goal' && event.player_id === log.player_id).length
+        return this.events.filter(event => (
+          event.event_type === 'Goal' &&
+          event.player_id === log.player_id &&
+          !event.own_goal
+        )).length
+      },
+      bookings (log) {
+        return this.events
+          .filter(event => event.event_type === 'Booking' && event.player_id === log.player_id)
+          .map(booking => booking.red_card ? 'red' : 'yellow darken-2')
+      },
+      injured (log) {
+        return this.events
+          .filter(event => (
+            event.event_type === 'Substitution' &&
+            event.player_id === log.player_id &&
+            event.injury
+          )).length > 0
       }
     }
   }

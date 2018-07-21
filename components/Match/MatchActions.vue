@@ -35,12 +35,14 @@
       Apply Squad
     </v-tooltip>
 
-    <v-tooltip v-if="match.match_logs.length >= 11" bottom color="green">
-      <v-btn icon slot="activator">
-        <v-icon color="green">repeat</v-icon>
-      </v-btn>
-      Substitution
-    </v-tooltip>
+    <substitution-form :match="match" color="green">
+      <v-tooltip v-if="match.match_logs.length >= 11" bottom color="green">
+        <v-btn icon slot="activator">
+          <v-icon color="green">repeat</v-icon>
+        </v-btn>
+        Substitution
+      </v-tooltip>
+    </substitution-form>
 
     <goal-form :match="match" color="blue">
       <v-tooltip v-if="match.match_logs.length >= 11" bottom color="blue">
@@ -51,16 +53,18 @@
       </v-tooltip>
     </goal-form>
 
-    <v-tooltip v-if="match.match_logs.length >= 11" bottom color="red">
-      <v-btn icon slot="activator">
-        <v-icon color="red">book</v-icon>
-      </v-btn>
-      Booking
-    </v-tooltip>
+    <booking-form :match="match" color="red">
+      <v-tooltip v-if="match.match_logs.length >= 11" bottom color="red">
+        <v-btn icon slot="activator">
+          <v-icon color="red">book</v-icon>
+        </v-btn>
+        Booking
+      </v-tooltip>
+    </booking-form>
 
     <v-tooltip v-if="match.match_logs.length >= 11" bottom color="indigo">
       <v-btn icon slot="activator">
-        <v-icon color="indigo">pan_tool</v-icon>
+        <v-icon color="indigo">accessibility_new</v-icon>
       </v-btn>
       Penalty Shootout
     </v-tooltip>
@@ -88,12 +92,16 @@
   import MatchForm from '@/components/Match/MatchForm'
   import MatchLogForm from '@/components/Match/MatchLogForm'
   import GoalForm from '@/components/Match/GoalForm'
+  import BookingForm from '@/components/Match/BookingForm'
+  import SubstitutionForm from '@/components/Match/SubstitutionForm'
 
   export default {
     components: {
       'match-form': MatchForm,
       'match-log-form': MatchLogForm,
-      'goal-form': GoalForm
+      'goal-form': GoalForm,
+      'booking-form': BookingForm,
+      'substitution-form': SubstitutionForm
     },
     mixins: [ TeamAction ],
     props: {
