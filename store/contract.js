@@ -13,13 +13,6 @@ export const state = () => ({
 
 // actions
 export const actions = {
-  get ({ rootState }, { contractId }) {
-    return apiRequest({
-      path: myfifa.contracts.get,
-      pathData: { contractId: contractId },
-      token: rootState.token
-    })
-  },
   create ({ commit, rootState }, { playerId, contract }) {
     return apiRequest({
       method: 'post',
@@ -28,7 +21,7 @@ export const actions = {
       token: rootState.token,
       data: { contract: contract },
       success: ({ data }) => {
-        commit('player/update', data, { root: true })
+        commit('player/set', data, { root: true })
       }
     })
   },
@@ -40,18 +33,7 @@ export const actions = {
       token: rootState.token,
       data: { contract: payload },
       success: ({ data }) => {
-        commit('player/update', data, { root: true })
-      }
-    })
-  },
-  delete ({ commit, rootState }, payload) {
-    return apiRequest({
-      method: 'delete',
-      path: myfifa.contracts.get,
-      pathData: { contractId: payload },
-      token: rootState.token,
-      success: ({ data }) => {
-        commit('remove', data)
+        commit('player/set', data, { root: true })
       }
     })
   }

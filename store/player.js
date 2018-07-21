@@ -1,9 +1,10 @@
+import Vue from 'vue'
 import apiRequest from '@/api'
 import myfifa from '@/api/myfifa'
 
 // initial state
 export const state = () => ({
-  list: [],
+  list: {},
   positions: [
     'GK',
     'CB',
@@ -26,7 +27,7 @@ export const state = () => ({
 // getters
 export const getters = {
   active: state => (
-    state.list
+    Object.values(state.list)
       .filter(player => player.status === 'Active')
       .sort((a, b) => state.positions.indexOf(a.pos) - state.positions.indexOf(b.pos))
   )
@@ -59,7 +60,7 @@ export const actions = {
       token: rootState.token,
       data: { player: player },
       success: ({ data }) => {
-        commit('add', data)
+        commit('set', data)
       }
     })
   },
@@ -71,7 +72,7 @@ export const actions = {
       token: rootState.token,
       data: { player: payload },
       success: ({ data }) => {
-        commit('update', data)
+        commit('set', data)
       }
     })
   },
@@ -86,14 +87,14 @@ export const actions = {
       }
     })
   },
-  destroy ({ commit, rootState }, payload) {
+  remove ({ commit, rootState }, payload) {
     return apiRequest({
       method: 'delete',
       path: myfifa.players.get,
       pathData: { playerId: payload },
       token: rootState.token,
       success: ({ data }) => {
-        commit('remove', data)
+        commit('remove', data.id)
       }
     })
   },
@@ -105,7 +106,7 @@ export const actions = {
       token: rootState.token,
       data: { transfer: transfer },
       success: ({ data }) => {
-        commit('update', data.player)
+        commit('set', data.player)
       }
     })
   }
@@ -114,17 +115,15 @@ export const actions = {
 // mutations
 export const mutations = {
   refresh (state, players) {
-    state.list = players
+    state.list = players.reduce((list, player) => {
+      list[player.id] = player
+      return list
+    }, {})
   },
-  add (state, player) {
-    state.list.push(player)
+  set (state, player) {
+    Vue.set(state.list, player.id, player)
   },
-  update (state, player) {
-    let index = state.list.findIndex(t => t.id === player.id)
-    state.list.splice(index, 1, player)
-  },
-  remove (state, player) {
-    let index = state.list.findIndex(t => t.id === player.id)
-    state.list.splice(index, 1)
+  remove (state, playerId) {
+    delete state.list[playerId]
   }
 }

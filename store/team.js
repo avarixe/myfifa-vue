@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import { format, parse, addYears } from 'date-fns'
 import apiRequest from '@/api'
 import myfifa from '@/api/myfifa'
@@ -78,7 +79,7 @@ export const actions = {
       }
     })
   },
-  delete ({ commit, rootState }, payload) {
+  remove ({ commit, rootState }, payload) {
     return apiRequest({
       method: 'delete',
       path: myfifa.teams.get,
@@ -94,18 +95,21 @@ export const actions = {
 // mutations
 export const mutations = {
   refresh (state, teams) {
-    state.list = {}
-    for (let t of teams) {
-      state.list[t.id] = t
-    }
+    state.list = teams.reduce((list, team) => {
+      list[team.id] = team
+      return list
+    }, {})
   },
   set (state, team) {
-    state.list[team.id] = team
+    Vue.set(state.list, team.id, team)
   },
   remove (state, team) {
     delete state.list[team.id]
   },
   select (state, teamId) {
     state.currentId = teamId
+  },
+  clear (state) {
+    state.currentId = null
   }
 }

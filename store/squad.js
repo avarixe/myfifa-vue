@@ -1,9 +1,10 @@
+import Vue from 'vue'
 import apiRequest from '@/api'
 import myfifa from '@/api/myfifa'
 
 // initial state
 export const state = () => ({
-  list: []
+  list: {}
 })
 
 // actions
@@ -49,14 +50,14 @@ export const actions = {
       }
     })
   },
-  destroy ({ commit, rootState }, payload) {
+  remove ({ commit, rootState }, payload) {
     return apiRequest({
       method: 'delete',
       path: myfifa.squads.get,
       pathData: { squadId: payload },
       token: rootState.token,
       success: ({ data }) => {
-        commit('remove', data)
+        commit('remove', data.id)
       }
     })
   }
@@ -65,17 +66,18 @@ export const actions = {
 // mutations
 export const mutations = {
   refresh (state, squads) {
-    state.list = squads
+    state.list = squads.reduce((list, squad) => {
+      list[squad.id] = squad
+      return list
+    }, {})
   },
   add (state, squad) {
-    state.list.push(squad)
+    Vue.set(state.list, squad.id, squad)
   },
   update (state, squad) {
-    let index = state.list.findIndex(t => t.id === squad.id)
-    state.list.splice(index, 1, squad)
+    state.list[squad.id] = squad
   },
-  remove (state, squad) {
-    let index = state.list.findIndex(t => t.id === squad.id)
-    state.list.splice(index, 1)
+  remove (state, squadId) {
+    delete state.list[squadId]
   }
 }

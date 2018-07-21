@@ -49,13 +49,4 @@ export const actions = {
       }
     })
   }
-  // info ({ state }) {
-  //   return apiRequest({
-  //     path: myfifa.user,
-  //     token: state.token,
-  //     success: ({ data }) => {
-  //       console.log(data)
-  //     }
-  //   })
-  // }
 }

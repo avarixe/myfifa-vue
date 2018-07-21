@@ -1,9 +1,10 @@
+import Vue from 'vue'
 import apiRequest from '@/api'
 import myfifa from '@/api/myfifa'
 
 // initial state
 export const state = () => ({
-  list: [],
+  list: {},
   positions: [
     'GK',
     'CB',
@@ -33,8 +34,15 @@ export const state = () => ({
 
 // getters
 export const getters = {
-  competitions: state => [ ...new Set(state.list.map(match => match.competition)) ].reverse(),
-  teams: state => [ ...new Set([ ...state.list.map(match => match.home), ...state.list.map(match => match.away) ]) ]
+  competitions: state => [
+    ...new Set(Object.values(state.list).map(match => match.competition))
+  ].reverse(),
+  teams: state => [
+    ...new Set([
+      ...Object.values(state.list).map(match => match.home),
+      ...Object.values(state.list).map(match => match.away)
+    ])
+  ]
 }
 
 // actions
@@ -64,7 +72,7 @@ export const actions = {
       token: rootState.token,
       data: { match: match },
       success: ({ data }) => {
-        commit('add', data)
+        commit('set', data)
       }
     })
   },
@@ -76,7 +84,7 @@ export const actions = {
       token: rootState.token,
       data: { match: payload },
       success: ({ data }) => {
-        commit('update', data)
+        commit('set', data)
       }
     })
   },
@@ -87,7 +95,7 @@ export const actions = {
       pathData: { matchId: payload },
       token: rootState.token,
       success: ({ data }) => {
-        commit('remove', data)
+        commit('remove', data.id)
       }
     })
   },
@@ -99,7 +107,7 @@ export const actions = {
       token: rootState.token,
       data: { match_log: matchLog },
       success: ({ data }) => {
-        commit('update', data)
+        commit('set', data)
       }
     })
   },
@@ -111,7 +119,7 @@ export const actions = {
       token: rootState.token,
       data: { match_log: payload },
       success: ({ data }) => {
-        commit('update', data)
+        commit('set', data)
       }
     })
   }
@@ -120,17 +128,15 @@ export const actions = {
 // mutations
 export const mutations = {
   refresh (state, matches) {
-    state.list = matches
+    state.list = matches.reduce((list, match) => {
+      list[match.id] = match
+      return list
+    }, {})
   },
-  add (state, match) {
-    state.list.push(match)
+  set (state, match) {
+    Vue.set(state.list, match.id, match)
   },
-  update (state, match) {
-    let index = state.list.findIndex(t => t.id === match.id)
-    state.list.splice(index, 1, match)
-  },
-  remove (state, match) {
-    let index = state.list.findIndex(t => t.id === match.id)
-    state.list.splice(index, 1)
+  remove (state, matchId) {
+    delete state.list[matchId]
   }
 }

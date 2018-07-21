@@ -3,13 +3,6 @@ import myfifa from '@/api/myfifa'
 
 // actions
 export const actions = {
-  // get ({ rootState }, { injuryId }) {
-  //   return apiRequest({
-  //     path: myfifa.injuries.get,
-  //     pathData: { injuryId: injuryId },
-  //     token: rootState.token
-  //   })
-  // },
   create ({ commit, rootState }, { playerId, injury }) {
     return apiRequest({
       method: 'post',
@@ -18,7 +11,7 @@ export const actions = {
       token: rootState.token,
       data: { injury: injury },
       success: ({ data }) => {
-        commit('player/update', data, { root: true })
+        commit('player/set', data, { root: true })
       }
     })
   },
@@ -30,19 +23,8 @@ export const actions = {
       token: rootState.token,
       data: { injury: payload },
       success: ({ data }) => {
-        commit('player/update', data, { root: true })
+        commit('player/set', data, { root: true })
       }
     })
   }
-  // delete ({ commit, rootState }, payload) {
-  //   return apiRequest({
-  //     method: 'delete',
-  //     path: myfifa.injuries.get,
-  //     pathData: { injuryId: payload },
-  //     token: rootState.token,
-  //     success: ({ data }) => {
-  //       commit('remove', data)
-  //     }
-  //   })
-  // }
 }
