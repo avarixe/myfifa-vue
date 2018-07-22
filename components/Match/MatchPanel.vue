@@ -1,63 +1,61 @@
 <template>
-  <v-slide-x-reverse-transition>
-    <v-card>
-      <v-card-title primary-title>
-        <div class="title">
-          // MATCHES
-        </div>
+  <v-card>
+    <v-card-title primary-title>
+      <div class="title">
+        // MATCHES
+      </div>
 
-        <!-- New Match Form -->
-        <match-form>
-          <v-tooltip top>
-            <v-btn slot="activator" flat icon>
-              <v-icon>add_circle</v-icon>
-            </v-btn>
-            Record Match
-          </v-tooltip>
-        </match-form>
+      <!-- New Match Form -->
+      <match-form>
+        <v-tooltip top>
+          <v-btn slot="activator" flat icon>
+            <v-icon>add_circle</v-icon>
+          </v-btn>
+          Record Match
+        </v-tooltip>
+      </match-form>
 
-        <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
 
-        <!-- Match Search -->
-        <v-text-field
-          v-model="search"
-          label="Search"
-          append-icon="search"
-        ></v-text-field>
-      </v-card-title>
-      <v-card-text>
+      <!-- Match Search -->
+      <v-text-field
+        v-model="search"
+        label="Search"
+        append-icon="search"
+      ></v-text-field>
+    </v-card-title>
+    <v-card-text>
 
-        <!-- Match History Grid -->
-        <v-data-table
-          :headers="headers"
-          :items="rows"
-          :pagination.sync="pagination"
-          :loading="loading"
-          :search="search"
-          item-key="id"
-          no-data-text="No Matches Recorded">
-          <template slot="items" slot-scope="props">
-            <tr @click="props.expanded = !props.expanded">
-              <td class="text-xs-center">{{ props.item.competition }}</td>
-              <td class="text-xs-right">{{ props.item.home }}</td>
-              <td :class="resultColor(props.item.team_result) + '--text text-xs-center'">{{ props.item.score }}</td>
-              <td class="text-xs-left">{{ props.item.away }}</td>
-              <td class="text-xs-center">{{ $_format($_parse(props.item.date_played), 'MMM DD, YYYY') }}</td>
-            </tr>
-          </template>
-          <template slot="expand" slot-scope="props">
-            <div class="pa-0">
-              <match-actions v-if="props.item.date_played === team.current_date" :match="props.item"></match-actions>
-              <v-layout row wrap class="mx-0">
-                <match-lineup :match="props.item" v-if="props.item.team_result"></match-lineup>
-                <match-events :match="props.item"></match-events>
-              </v-layout>
-            </div>
-          </template>
-        </v-data-table>
-      </v-card-text>
-    </v-card>
-  </v-slide-x-reverse-transition>
+      <!-- Match History Grid -->
+      <v-data-table
+        :headers="headers"
+        :items="rows"
+        :pagination.sync="pagination"
+        :loading="loading"
+        :search="search"
+        item-key="id"
+        no-data-text="No Matches Recorded">
+        <template slot="items" slot-scope="props">
+          <tr @click="props.expanded = !props.expanded">
+            <td class="text-xs-center">{{ props.item.competition }}</td>
+            <td class="text-xs-right">{{ props.item.home }}</td>
+            <td :class="resultColor(props.item.team_result) + '--text text-xs-center'">{{ props.item.score }}</td>
+            <td class="text-xs-left">{{ props.item.away }}</td>
+            <td class="text-xs-center">{{ $_format($_parse(props.item.date_played), 'MMM DD, YYYY') }}</td>
+          </tr>
+        </template>
+        <template slot="expand" slot-scope="props">
+          <div class="pa-0">
+            <match-actions v-if="props.item.date_played === team.current_date" :match="props.item"></match-actions>
+            <v-layout row wrap class="mx-0">
+              <match-lineup :match="props.item" v-if="props.item.team_result"></match-lineup>
+              <match-events :match="props.item"></match-events>
+            </v-layout>
+          </div>
+        </template>
+      </v-data-table>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

@@ -1,83 +1,81 @@
 <template>
-  <v-slide-x-reverse-transition>
-    <v-card>
-      <v-card-title primary-title>
-        <div class="title">
-          // PLAYERS
-        </div>
+  <v-card>
+    <v-card-title primary-title>
+      <div class="title">
+        // PLAYERS
+      </div>
 
-        <!-- New Player Form -->
-        <player-form>
-          <v-tooltip top>
-            <v-btn slot="activator" flat icon>
-              <v-icon>add_circle</v-icon>
-            </v-btn>
-            Add Player
-          </v-tooltip>
-        </player-form>
-
-        <player-mass-update></player-mass-update>
-
-        <!-- Display Menu -->
-        <v-menu bottom right>
-          <v-btn slot="activator" icon>
-            <v-icon>menu</v-icon>
-          </v-btn>
-          <v-list>
-            <v-list-tile
-              v-for="(mode, i) in modes"
-              :key="i"
-              @click="display = mode.value">
-              <v-list-tile-title>{{ mode.text }}</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
-
+      <!-- New Player Form -->
+      <player-form>
         <v-tooltip top>
-          <v-btn slot="activator" icon @click.native="filterActive = !filterActive">
-            <v-icon>check_box{{ filterActive ? '' : '_outline_blank' }}</v-icon>
+          <v-btn slot="activator" flat icon>
+            <v-icon>add_circle</v-icon>
           </v-btn>
-          Display {{ filterActive ? 'Active' : 'All' }} Players
+          Add Player
         </v-tooltip>
+      </player-form>
 
-        <v-spacer></v-spacer>
+      <player-mass-update></player-mass-update>
 
-        <!-- Player Search -->
-        <v-text-field
-          v-model="search"
-          label="Search"
-          append-icon="search"
-        ></v-text-field>
-      </v-card-title>
-      <v-card-text>
+      <!-- Display Menu -->
+      <v-menu bottom right>
+        <v-btn slot="activator" icon>
+          <v-icon>menu</v-icon>
+        </v-btn>
+        <v-list>
+          <v-list-tile
+            v-for="(mode, i) in modes"
+            :key="i"
+            @click="display = mode.value">
+            <v-list-tile-title>{{ mode.text }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
 
-        <!-- Player Information Grid -->
-        <v-data-table
-          :headers="headers"
-          :items="rows"
-          :loading="loading"
-          :pagination.sync="pagination"
-          :search="search"
-          item-key="id"
-          disable-initial-sort
-          no-data-text="No Players Recorded">
-          <template slot="items" slot-scope="props">
-            <tr @click="props.expanded = !props.expanded">
-              <td
-                v-for="(header, i) in headers"
-                :key="i"
-                :class="'text-xs-' + header.align">
-                {{ getProperty(props.item, header.value, header.format) }}
-              </td>
-            </tr>
-          </template>
-          <template slot="expand" slot-scope="props">
-            <player-actions :player="props.item"></player-actions>
-          </template>
-        </v-data-table>
-      </v-card-text>
-    </v-card>
-  </v-slide-x-reverse-transition>
+      <v-tooltip top>
+        <v-btn slot="activator" icon @click.native="filterActive = !filterActive">
+          <v-icon>check_box{{ filterActive ? '' : '_outline_blank' }}</v-icon>
+        </v-btn>
+        Display {{ filterActive ? 'Active' : 'All' }} Players
+      </v-tooltip>
+
+      <v-spacer></v-spacer>
+
+      <!-- Player Search -->
+      <v-text-field
+        v-model="search"
+        label="Search"
+        append-icon="search"
+      ></v-text-field>
+    </v-card-title>
+    <v-card-text>
+
+      <!-- Player Information Grid -->
+      <v-data-table
+        :headers="headers"
+        :items="rows"
+        :loading="loading"
+        :pagination.sync="pagination"
+        :search="search"
+        item-key="id"
+        disable-initial-sort
+        no-data-text="No Players Recorded">
+        <template slot="items" slot-scope="props">
+          <tr @click="props.expanded = !props.expanded">
+            <td
+              v-for="(header, i) in headers"
+              :key="i"
+              :class="'text-xs-' + header.align">
+              {{ getProperty(props.item, header.value, header.format) }}
+            </td>
+          </tr>
+        </template>
+        <template slot="expand" slot-scope="props">
+          <player-actions :player="props.item"></player-actions>
+        </template>
+      </v-data-table>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

@@ -33,6 +33,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    // analyze: true,
     babel: {
       plugins: [
         ["transform-imports", {

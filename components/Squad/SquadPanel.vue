@@ -1,44 +1,42 @@
 <template>
-  <v-slide-x-reverse-transition>
-    <v-card>
-      <v-card-title primary-title>
-        <div class="title">
-          // SQUADS
-        </div>
+  <v-card>
+    <v-card-title primary-title>
+      <div class="title">
+        // SQUADS
+      </div>
 
-        <!-- New Squad Form -->
-        <squad-form :team-id="teamId">
-          <v-tooltip top>
-            <v-btn slot="activator" flat icon>
-              <v-icon>add_circle</v-icon>
-            </v-btn>
-            Add Squad
-          </v-tooltip>
-        </squad-form>
+      <!-- New Squad Form -->
+      <squad-form :team-id="teamId">
+        <v-tooltip top>
+          <v-btn slot="activator" flat icon>
+            <v-icon>add_circle</v-icon>
+          </v-btn>
+          Add Squad
+        </v-tooltip>
+      </squad-form>
 
-      </v-card-title>
-      <v-card-text>
+    </v-card-title>
+    <v-card-text>
 
-        <!-- Squads Grid -->
-        <v-data-table
-          :headers="headers"
-          :items="rows"
-          :loading="loading"
-          item-key="id"
-          disable-initial-sort
-          no-data-text="No Squads Recorded">
-          <template slot="items" slot-scope="props">
-            <tr @click="props.expanded = !props.expanded">
-              <td class="text-xs-center">{{ props.item.name }}</td>
-              <td class="text-xs-right">
-                <squad-actions :squad="props.item"></squad-actions>
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
-      </v-card-text>
-    </v-card>
-  </v-slide-x-reverse-transition>
+      <!-- Squads Grid -->
+      <v-data-table
+        :headers="headers"
+        :items="rows"
+        :loading="loading"
+        item-key="id"
+        disable-initial-sort
+        no-data-text="No Squads Recorded">
+        <template slot="items" slot-scope="props">
+          <tr @click="props.expanded = !props.expanded">
+            <td class="text-xs-center">{{ props.item.name }}</td>
+            <td class="text-xs-right">
+              <squad-actions :squad="props.item"></squad-actions>
+            </td>
+          </tr>
+        </template>
+      </v-data-table>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

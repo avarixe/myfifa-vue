@@ -72,7 +72,7 @@
     </booking-form>
 
     <penalty-shootout-form
-      v-if="validMatch && matchDraw &&  !match.penalty_shootout"
+      v-if="validMatch && matchDraw && !match.penalty_shootout"
       :match="match"
       color="indigo">
       <v-tooltip bottom color="indigo">
