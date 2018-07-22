@@ -5,7 +5,11 @@
       slot="activator"
       @click="inForm = true">
       <v-icon :color="color">transfer_within_a_station</v-icon>
-      <v-dialog v-model="inForm" max-width="500px">
+      <v-dialog
+        v-model="inForm"
+        persistent
+        lazy
+        max-width="500px">
         <v-form ref="form" v-model="valid" @submit.prevent="save">
           <v-card>
             <v-card-title
@@ -45,6 +49,11 @@
             </v-alert>
             <v-card-actions>
               <v-spacer></v-spacer>
+              <v-btn
+                flat
+                large
+                @click="inForm = false"
+              >Cancel</v-btn>
               <v-btn
                 type="submit"
                 :disabled="!valid"

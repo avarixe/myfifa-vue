@@ -17,7 +17,7 @@ export default {
       set: function (val) { this.errorMessage = val }
     },
     buttonColor () {
-      return this.color ? this.color + ' darken-2' : null
+      return this.color ? this.color + ' darken-2' : 'primary'
     },
     formColor () {
       return this.color ? this.color + ' accent-2' : null

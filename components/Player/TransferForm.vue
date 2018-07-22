@@ -7,7 +7,11 @@
       <v-icon :color="color">
         flight_{{ transferOut ? 'takeoff' : 'land' }}
       </v-icon>
-      <v-dialog v-model="inForm" max-width="500px">
+      <v-dialog
+        v-model="inForm"
+        persistent
+        lazy
+        max-width="500px">
         <v-form v-model="valid" @submit.prevent="saveTransfer">
           <v-card>
             <v-card-title
@@ -101,6 +105,11 @@
             </v-alert>
             <v-card-actions>
               <v-spacer></v-spacer>
+              <v-btn
+                flat
+                large
+                @click="inForm = false"
+              >Cancel</v-btn>
               <v-btn
                 type="submit"
                 :disabled="!valid"

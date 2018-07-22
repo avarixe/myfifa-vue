@@ -1,7 +1,11 @@
 <template>
   <div class="d-inline-block" @click.stop="inForm = true">
     <slot></slot>
-    <v-dialog v-model="inForm" max-width="500px">
+    <v-dialog
+      v-model="inForm"
+      persistent
+      lazy
+      max-width="500px">
       <v-form ref="form" v-model="valid" @submit.prevent="save">
         <v-card>
           <v-card-title primary-title :class="formColor">
@@ -50,6 +54,11 @@
           </v-alert>
           <v-card-actions>
             <v-spacer></v-spacer>
+            <v-btn
+              flat
+              large
+              @click="inForm = false"
+            >Cancel</v-btn>
             <v-btn
               type="submit"
               :disabled="!valid"
