@@ -102,7 +102,7 @@ export const actions = {
   addLog ({ commit, rootState }, { matchId, matchLog }) {
     return apiRequest({
       method: 'post',
-      path: myfifa.matchLogs.all,
+      path: myfifa.matchLogs.index,
       pathData: { matchId: matchId },
       token: rootState.token,
       data: { match_log: matchLog },
@@ -114,7 +114,7 @@ export const actions = {
   updateLog ({ commit, rootState }, payload) {
     return apiRequest({
       method: 'patch',
-      path: myfifa.matchLogs.get,
+      path: myfifa.matchLogs.record,
       pathData: { logId: payload.id },
       token: rootState.token,
       data: { match_log: payload },
