@@ -48,8 +48,8 @@
           <div class="pa-0">
             <match-actions v-if="props.item.date_played === team.current_date" :match="props.item"></match-actions>
             <v-layout row wrap class="mx-0">
-              <match-lineup :match="props.item" v-if="props.item.team_result"></match-lineup>
               <match-events :match="props.item"></match-events>
+              <match-lineup :match="props.item" v-if="props.item.team_result"></match-lineup>
             </v-layout>
           </div>
         </template>
