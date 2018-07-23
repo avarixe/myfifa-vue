@@ -19,24 +19,26 @@
             <v-container>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-slider
+                  <v-text-field
                     v-model="substitution.minute"
-                    :label="substitution.minute.toString() + '\''"
+                    :rules="$_validate('Minute', [{ type: 'range', options: { min: 1, max: 120 }}])"
+                    label="Minute"
+                    prepend-inner-icon="timer"
+                    type="number"
                     min="1"
                     max="120"
-                    ticks
-                    hide-details
-                  ></v-slider>
+                  ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-autocomplete
+                  <v-select
                     v-model="substitution.player_id"
                     :rules="$_validate('Player', ['required'])"
                     :items="match.match_logs"
                     item-value="player_id"
                     item-text="name"
                     label="Player"
-                    prepend-inner-icon="subdirectory_arrow_left">
+                    prepend-inner-icon="subdirectory_arrow_left"
+                    offset-y>
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -45,17 +47,18 @@
                         <v-list-tile-title>{{ data.item.name }}</v-list-tile-title>
                       </v-list-tile-content>
                     </template>
-                  </v-autocomplete>
+                  </v-select>
                 </v-flex>
                 <v-flex xs12>
-                  <v-autocomplete
+                  <v-select
                     v-model="substitution.replacement_id"
                     :rules="$_validate('Replaced By', ['required'])"
                     :items="availablePlayers"
                     item-value="id"
                     item-text="name"
                     label="Replaced By"
-                    prepend-inner-icon="subdirectory_arrow_right">
+                    prepend-inner-icon="subdirectory_arrow_right"
+                    offset-y>
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -64,7 +67,7 @@
                         <v-list-tile-title>{{ data.item.name }}</v-list-tile-title>
                       </v-list-tile-content>
                     </template>
-                  </v-autocomplete>
+                  </v-select>
                 </v-flex>
                 <v-flex xs12>
                   <v-checkbox

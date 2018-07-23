@@ -132,12 +132,13 @@
                   </v-flex>
 
                   <v-flex xs12 sm6>
-                    <v-autocomplete
+                    <v-select
                       v-model="contract.bonus_req_type"
                       label="Bonus Req. Type"
                       :items="bonusRequirementTypes"
                       clearable
-                    ></v-autocomplete>
+                      offset-y
+                    ></v-select>
                   </v-flex>
                 </v-layout>
               </v-container>

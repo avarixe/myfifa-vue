@@ -32,7 +32,7 @@
                     label="Home Team"
                     prepend-inner-icon="people">
                     <v-tooltip slot="append" bottom>
-                      <v-icon slot="activator" @click="setHome">arrow_back</v-icon>
+                      <v-icon slot="activator" @click.stop="setHome">arrow_back</v-icon>
                       Home Match for {{ team.title }}
                     </v-tooltip>
                   </v-combobox>
@@ -45,7 +45,7 @@
                     label="Away Team"
                     prepend-inner-icon="people">
                     <v-tooltip slot="append" bottom>
-                      <v-icon slot="activator" @click="setAway">arrow_back</v-icon>
+                      <v-icon slot="activator" @click.stop="setAway">arrow_back</v-icon>
                       Away Match for {{ team.title }}
                     </v-tooltip>
                   </v-combobox>

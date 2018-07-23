@@ -16,23 +16,25 @@
             <v-container>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-autocomplete
+                  <v-select
                     v-model="match_log.pos"
                     :items="positions"
                     :rules="$_validate('Position', ['required'])"
                     label="Position"
                     prepend-inner-icon="directions_run"
-                  ></v-autocomplete>
+                    offset-y
+                  ></v-select>
                 </v-flex>
                 <v-flex xs12>
-                  <v-autocomplete
+                  <v-select
                     v-model="match_log.player_id"
                     :items="players"
                     item-text="name"
                     item-value="id"
                     :rules="$_validate('Player', ['required'])"
                     label="Player"
-                    prepend-inner-icon="person">
+                    prepend-inner-icon="person"
+                    offset-y>
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -41,7 +43,7 @@
                         <v-list-tile-title>{{ data.item.name }}</v-list-tile-title>
                       </v-list-tile-content>
                     </template>
-                  </v-autocomplete>
+                  </v-select>
                 </v-flex>
               </v-layout>
             </v-container>

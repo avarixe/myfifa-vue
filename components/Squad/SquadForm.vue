@@ -31,17 +31,18 @@
                 row
                 wrap>
                 <v-flex xs4>
-                  <v-autocomplete
+                  <v-select
                     v-model="squad.positions_list[i]"
                     :items="positions"
                     label="Position"
                     prepend-icon="directions_run"
                     hide-details
                     auto
-                  ></v-autocomplete>
+                    offset-y
+                  ></v-select>
                 </v-flex>
                 <v-flex xs8>
-                  <v-autocomplete
+                  <v-select
                     v-model="squad.players_list[i]"
                     :items="players"
                     item-value="id"
@@ -49,7 +50,8 @@
                     label="Player"
                     prepend-icon="person"
                     hide-details
-                    auto>
+                    auto
+                    offset-y>
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -58,7 +60,7 @@
                         <v-list-tile-title>{{ data.item.name }}</v-list-tile-title>
                       </v-list-tile-content>
                     </template>
-                  </v-autocomplete>
+                  </v-select>
                 </v-flex>
               </v-layout>
             </v-container>

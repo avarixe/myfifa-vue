@@ -24,17 +24,18 @@
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-autocomplete
+                  <v-select
                     v-model="player.pos"
                     :rules="$_validate('Position', ['required'])"
                     :items="positions"
                     label="Position"
                     prepend-inner-icon="directions_run"
                     auto
-                  ></v-autocomplete>
+                    offset-y
+                  ></v-select>
                 </v-flex>
                 <v-flex xs12>
-                  <v-autocomplete
+                  <v-select
                     v-model="player.sec_pos"
                     :items="positions"
                     label="Secondary Position(s)"
@@ -42,7 +43,8 @@
                     multiple
                     chips
                     deletable-chips
-                  ></v-autocomplete>
+                    offset-y
+                  ></v-select>
                 </v-flex>
                 <v-flex xs12>
                   <v-text-field
@@ -54,15 +56,15 @@
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-slider
+                  <v-text-field
                     v-model="player.ovr"
+                    :rules="$_validate('OVR', [{ type: 'range', options: { min: 40, max: 100 }}])"
                     label="OVR"
+                    prepend-inner-icon="trending_up"
+                    type="number"
                     min="40"
-                    thumb-label="always"
-                    ticks
-                    always-dirty
-                    hide-details
-                  ></v-slider>
+                    max="100"
+                  ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
                   <v-text-field
@@ -133,7 +135,7 @@
           name: '',
           pos: '',
           sec_pos: [],
-          ovr: 70,
+          ovr: null,
           value: null,
           age: 16,
           youth: false

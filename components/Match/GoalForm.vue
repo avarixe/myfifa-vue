@@ -33,17 +33,18 @@
                   </v-radio-group>
                 </v-flex>
                 <v-flex xs12>
-                  <v-slider
+                  <v-text-field
                     v-model="goal.minute"
-                    :label="goal.minute.toString() + '\''"
+                    :rules="$_validate('Minute', [{ type: 'range', options: { min: 1, max: 120 }}])"
+                    label="Minute"
+                    prepend-inner-icon="timer"
+                    type="number"
                     min="1"
                     max="120"
-                    ticks
-                    hide-details
-                  ></v-slider>
+                  ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-autocomplete
+                  <v-select
                     v-if="teamGoal"
                     v-model="goal.player_id"
                     :rules="$_validate('Goal Scorer', ['required'])"
@@ -51,7 +52,8 @@
                     item-value="player_id"
                     item-text="name"
                     label="Goal Scorer"
-                    prepend-inner-icon="person">
+                    prepend-inner-icon="person"
+                    offset-y>
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -60,7 +62,7 @@
                         <v-list-tile-title>{{ data.item.name }}</v-list-tile-title>
                       </v-list-tile-content>
                     </template>
-                  </v-autocomplete>
+                  </v-select>
                   <v-text-field
                     v-else
                     v-model="goal.player_name"
@@ -70,7 +72,7 @@
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-autocomplete
+                  <v-select
                     v-if="teamGoal"
                     v-model="goal.assist_id"
                     :items="match.match_logs"
@@ -80,7 +82,8 @@
                     prepend-inner-icon="person_outline"
                     :disabled="goal.penalty || goal.own_goal"
                     clearable
-                    hide-details>
+                    hide-details
+                    offset-y>
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -89,7 +92,7 @@
                         <v-list-tile-title>{{ data.item.name }}</v-list-tile-title>
                       </v-list-tile-content>
                     </template>
-                  </v-autocomplete>
+                  </v-select>
                   <v-text-field
                     v-else
                     v-model="goal.assisted_by"

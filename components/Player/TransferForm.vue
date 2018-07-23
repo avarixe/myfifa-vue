@@ -77,15 +77,14 @@
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs12>
-                    <v-slider
+                    <v-text-field
                       v-model="transfer.addon_clause"
                       label="Add-On Clause (%)"
+                      :rules="$_validate('Add-On Clause', [{ type: 'range', options: { min: 0, max: 25 }}])"
+                      type="number"
                       min="0"
                       max="25"
-                      :thumb-label="transfer.addon_clause > 0 ? 'always' : true"
-                      ticks
-                      hide-details
-                    ></v-slider>
+                    ></v-text-field>
                   </v-flex>
                   <v-flex xs12>
                     <v-checkbox

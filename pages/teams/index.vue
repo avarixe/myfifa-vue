@@ -19,12 +19,9 @@
           <v-card-title primary-title>
             <div class="headline">
               {{ team.title }}
-              <v-tooltip top color="primary">
-                <v-btn icon slot="activator" nuxt :to="'/teams/' + team.id">
-                  <v-icon color="primary">arrow_forward</v-icon>
-                </v-btn>
-                Team Dashboard
-              </v-tooltip>
+              <v-btn icon slot="activator" nuxt :to="'/teams/' + team.id">
+                <v-icon color="primary">arrow_forward</v-icon>
+              </v-btn>
             </div>
             <v-flex xs12>{{ team.time_period }}</v-flex>
           </v-card-title>
