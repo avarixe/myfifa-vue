@@ -123,7 +123,7 @@
     data () {
       return {
         substitution: {
-          minute: 1,
+          minute: null,
           player_id: null,
           player_name: '',
           replaced_by: '',

@@ -110,7 +110,7 @@
     data () {
       return {
         booking: {
-          minute: 1,
+          minute: null,
           player_id: null,
           player_name: '',
           red_card: false

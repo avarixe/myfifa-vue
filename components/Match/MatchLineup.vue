@@ -39,7 +39,7 @@
           </v-list-tile-title>
         </v-list-tile-content>
 
-        <v-list-tile-action v-if="team.current_date === match.date_played && player.start === 0">
+        <v-list-tile-action v-if="team.current_date === match.date_played">
           <match-log-form :match="match" :initial-log="player">
             <v-tooltip bottom>
               <v-btn slot="activator" small icon>

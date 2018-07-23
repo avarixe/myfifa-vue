@@ -166,7 +166,7 @@
       return {
         goal: {
           home: true, // default to Team side
-          minute: 1,
+          minute: null,
           player_id: null,
           player_name: '',
           assisted_by: '',

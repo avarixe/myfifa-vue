@@ -32,6 +32,7 @@
                     item-text="name"
                     item-value="id"
                     :rules="$_validate('Player', ['required'])"
+                    :disabled="match_log.start > 0"
                     label="Player"
                     prepend-inner-icon="person"
                     offset-y>
