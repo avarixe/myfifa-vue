@@ -3,7 +3,7 @@
     <v-btn
       icon
       slot="activator"
-      @click="inForm = true">
+      @click.stop="inForm = true">
       <v-icon :color="color">transfer_within_a_station</v-icon>
       <v-dialog
         v-model="inForm"

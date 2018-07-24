@@ -3,7 +3,7 @@
     <v-btn
       icon
       slot="activator"
-      @click="inForm = true">
+      @click.stop="inForm = true">
       <v-icon :color="color">description</v-icon>
       <v-dialog
         v-model="inForm"

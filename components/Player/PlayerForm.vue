@@ -1,5 +1,5 @@
 <template>
-  <div class="d-inline-block" @click="inForm = true">
+  <div class="d-inline-block" @click.stop="inForm = true">
     <slot></slot>
     <v-dialog
       v-model="inForm"
