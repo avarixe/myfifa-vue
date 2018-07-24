@@ -33,7 +33,7 @@
                       <v-text-field
                         slot="activator"
                         label="Effective Date"
-                        prepend-inner-icon="calendar_today"
+                        prepend-icon="calendar_today"
                         v-model="contract.effective_date"
                         :rules="$_validate('Effective Date', ['required', 'date'])"
                         readonly
@@ -61,7 +61,7 @@
                       <v-text-field
                         slot="activator"
                         label="End Date"
-                        prepend-inner-icon="calendar_today"
+                        prepend-icon="calendar_today"
                         v-model="contract.end_date"
                         :rules="$_validate('End Date', ['required', 'date'])"
                         readonly

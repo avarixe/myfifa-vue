@@ -20,7 +20,7 @@
                     v-model="squad.name"
                     :rules="$_validate('Name', ['required'])"
                     label="Name"
-                    prepend-inner-icon="people_outline"
+                    prepend-icon="people_outline"
                   ></v-text-field>
                 </v-flex>
               </v-layout>

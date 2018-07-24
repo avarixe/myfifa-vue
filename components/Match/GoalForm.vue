@@ -33,15 +33,13 @@
                   </v-radio-group>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field
+                  <v-select
                     v-model="goal.minute"
-                    :rules="$_validate('Minute', [{ type: 'range', options: { min: 1, max: 120 }}])"
+                    :items="Array.from({ length: 120 }, (v, k) => k + 1)"
+                    :rules="$_validate('Minute', ['required'])"
                     label="Minute"
-                    prepend-inner-icon="timer"
-                    type="number"
-                    min="1"
-                    max="120"
-                  ></v-text-field>
+                    prepend-icon="timer"
+                  ></v-select>
                 </v-flex>
                 <v-flex xs12>
                   <v-select
@@ -52,8 +50,7 @@
                     item-value="player_id"
                     item-text="name"
                     label="Goal Scorer"
-                    prepend-inner-icon="person"
-                    offset-y>
+                    prepend-icon="person">
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -68,7 +65,7 @@
                     v-model="goal.player_name"
                     :rules="$_validate('Goal Scorer', ['required'])"
                     label="Goal Scorer"
-                    prepend-inner-icon="person"
+                    prepend-icon="person"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
@@ -79,11 +76,10 @@
                     item-value="player_id"
                     item-text="name"
                     label="Assisted By"
-                    prepend-inner-icon="person_outline"
+                    prepend-icon="person_outline"
                     :disabled="goal.penalty || goal.own_goal"
                     clearable
-                    hide-details
-                    offset-y>
+                    hide-details>
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -97,7 +93,7 @@
                     v-else
                     v-model="goal.assisted_by"
                     label="Assisted By"
-                    prepend-inner-icon="person_outline"
+                    prepend-icon="person_outline"
                     :disabled="goal.penalty || goal.own_goal"
                     hide-details
                   ></v-text-field>

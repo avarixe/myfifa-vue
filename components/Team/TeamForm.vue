@@ -20,7 +20,7 @@
                     v-model="team.title"
                     :rules="$_validate('Team', ['required'])"
                     label="Team"
-                    prepend-inner-icon="people"
+                    prepend-icon="people"
                     autofocus
                   ></v-text-field>
                 </v-flex>
@@ -36,7 +36,7 @@
                     <v-text-field
                       slot="activator"
                       label="Start Date"
-                      prepend-inner-icon="calendar_today"
+                      prepend-icon="calendar_today"
                       v-model="team.start_date"
                       :rules="$_validate('Start Date', ['required', 'date'])"
                       readonly

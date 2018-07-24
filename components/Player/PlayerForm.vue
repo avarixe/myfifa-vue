@@ -20,7 +20,7 @@
                     v-model="player.name"
                     :rules="$_validate('Name', ['required'])"
                     label="Name"
-                    prepend-inner-icon="person"
+                    prepend-icon="person"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
@@ -29,9 +29,7 @@
                     :rules="$_validate('Position', ['required'])"
                     :items="positions"
                     label="Position"
-                    prepend-inner-icon="directions_run"
-                    auto
-                    offset-y
+                    prepend-icon="directions_run"
                   ></v-select>
                 </v-flex>
                 <v-flex xs12>
@@ -39,32 +37,29 @@
                     v-model="player.sec_pos"
                     :items="positions"
                     label="Secondary Position(s)"
-                    prepend-inner-icon="directions_walk"
+                    prepend-icon="directions_walk"
                     multiple
                     chips
                     deletable-chips
-                    offset-y
                   ></v-select>
                 </v-flex>
                 <v-flex xs12>
                   <v-text-field
                     v-model="player.birth_year"
                     label="Birth Year"
-                    prepend-inner-icon="date_range"
+                    prepend-icon="date_range"
                     mask="####"
                     :rules="$_validate('Birth Year', ['required'])"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field
+                  <v-select
                     v-model="player.ovr"
-                    :rules="$_validate('OVR', [{ type: 'range', options: { min: 40, max: 100 }}])"
+                    :items="Array.from({ length: 61 }, (v, k) => k + 40)"
+                    :rules="$_validate('OVR', ['required'])"
                     label="OVR"
-                    prepend-inner-icon="trending_up"
-                    type="number"
-                    min="40"
-                    max="100"
-                  ></v-text-field>
+                    prepend-icon="trending_up"
+                  ></v-select>
                 </v-flex>
                 <v-flex xs12>
                   <v-text-field

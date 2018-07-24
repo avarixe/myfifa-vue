@@ -19,15 +19,13 @@
             <v-container>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-text-field
+                  <v-select
                     v-model="substitution.minute"
-                    :rules="$_validate('Minute', [{ type: 'range', options: { min: 1, max: 120 }}])"
+                    :items="Array.from({ length: 120 }, (v, k) => k + 1)"
+                    :rules="$_validate('Minute', ['required'])"
                     label="Minute"
-                    prepend-inner-icon="timer"
-                    type="number"
-                    min="1"
-                    max="120"
-                  ></v-text-field>
+                    prepend-icon="timer"
+                  ></v-select>
                 </v-flex>
                 <v-flex xs12>
                   <v-select
@@ -37,8 +35,7 @@
                     item-value="player_id"
                     item-text="name"
                     label="Player"
-                    prepend-inner-icon="subdirectory_arrow_left"
-                    offset-y>
+                    prepend-icon="subdirectory_arrow_left">
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -57,8 +54,7 @@
                     item-value="id"
                     item-text="name"
                     label="Replaced By"
-                    prepend-inner-icon="subdirectory_arrow_right"
-                    offset-y>
+                    prepend-icon="subdirectory_arrow_right">
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>

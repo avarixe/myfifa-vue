@@ -21,8 +21,7 @@
                     :items="positions"
                     :rules="$_validate('Position', ['required'])"
                     label="Position"
-                    prepend-inner-icon="directions_run"
-                    offset-y
+                    prepend-icon="directions_run"
                   ></v-select>
                 </v-flex>
                 <v-flex xs12>
@@ -34,8 +33,7 @@
                     :rules="$_validate('Player', ['required'])"
                     :disabled="match_log.start > 0"
                     label="Player"
-                    prepend-inner-icon="person"
-                    offset-y>
+                    prepend-icon="person">
                     <template slot="item" slot-scope="data">
                       <v-list-tile-action>
                         <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>

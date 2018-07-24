@@ -26,7 +26,7 @@
                       v-model="loan.destination"
                       :rules="$_validate('Destination', ['required'])"
                       label="Destination"
-                      prepend-inner-icon="transfer_within_a_station"
+                      prepend-icon="transfer_within_a_station"
                     ></v-text-field>
                   </v-flex>
 
