@@ -1,128 +1,98 @@
 <template>
-  <v-tooltip bottom :color="color">
-    <v-btn
-      icon
+  <dialog-form
+    v-model="dialog"
+    :title="title"
+    :submit="submit"
+    :color="color">
+    <v-tooltip
       slot="activator"
-      @click.stop="open">
-      <v-icon :color="color">
-        flight_{{ transferOut ? 'takeoff' : 'land' }}
-      </v-icon>
-      <v-dialog
-        v-model="inForm"
-        persistent
-        lazy
-        max-width="500px">
-        <v-form v-model="valid" @submit.prevent="saveTransfer">
-          <v-card>
-            <v-card-title
-              primary-title
-              :class="color + ' accent-2'">
-              <div class="headline">Transfer {{ player.name }}</div>
-            </v-card-title>
-            <v-divider></v-divider>
-            <v-card-text>
-              <v-container grid-list-md>
-                <v-layout wrap>
+      bottom
+      :color="color">
+      <v-btn
+        icon
+        slot="activator"
+        @click.stop="open">
+        <v-icon :color="color">
+          flight_{{ transferOut ? 'takeoff' : 'land' }}
+        </v-icon>
+      </v-btn>
+      Transfer {{ transferOut ? 'Out' : 'In' }}
+    </v-tooltip>
+    <v-container slot="form">
+      <v-layout wrap>
 
-                  <v-flex xs12>
-                    <v-menu
-                      ref="menu"
-                      :close-on-content-click="false"
-                      v-model="menu"
-                      :return-value.sync="transfer.effective_date"
-                      lazy
-                      transition="scale-transition"
-                      full-width>
-                      <v-text-field
-                        slot="activator"
-                        label="Effective Date"
-                        prepend-icon="calendar_today"
-                        v-model="transfer.effective_date"
-                        required
-                        readonly
-                      ></v-text-field>
-                      <v-date-picker
-                        v-model="transfer.effective_date"
-                        landscape
-                        @input="$refs.menu.save(transfer.effective_date)"
-                      ></v-date-picker>
-                    </v-menu>
-                  </v-flex>
-                  <v-flex xs12>
-                    <v-text-field
-                      v-model="transfer.origin"
-                      label="Origin"
-                      prepend-icon="flight_takeoff"
-                      :disabled="transferOut"
-                      required
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs12>
-                    <v-text-field
-                      v-model="transfer.destination"
-                      label="Destination"
-                      prepend-icon="flight_land"
-                      :disabled="!transferOut"
-                      required
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs12>
-                    <v-text-field
-                      v-model="transfer.fee"
-                      type="number"
-                      label="Fee"
-                      :prefix="team.currency"
-                      :hint="$_numberHint(transfer.fee)"
-                      persistent-hint
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs12>
-                    <v-text-field
-                      v-model="transfer.addon_clause"
-                      label="Add-On Clause (%)"
-                      :rules="$_validate('Add-On Clause', [{ type: 'range', options: { min: 0, max: 25 }}])"
-                      type="number"
-                      min="0"
-                      max="25"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs12>
-                    <v-checkbox
-                      v-model="transfer.loan"
-                      label="Loan"
-                      :disabled="transferOut"
-                    ></v-checkbox>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card-text>
-            <v-alert
-              type="error"
-              v-model="formError"
-              dismissible>
-              {{ errorMessage }}
-            </v-alert>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                flat
-                large
-                @click="inForm = false"
-              >Cancel</v-btn>
-              <v-btn
-                type="submit"
-                :disabled="!valid"
-                :color="color"
-                flat
-                large
-              >Save</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-form>
-      </v-dialog>
-    </v-btn>
-    Transfer {{ transferOut ? 'Out' : 'In' }}
-  </v-tooltip>
+        <v-flex xs12>
+          <v-menu
+            ref="menu"
+            :close-on-content-click="false"
+            v-model="menu"
+            :return-value.sync="transfer.effective_date"
+            lazy
+            transition="scale-transition"
+            full-width>
+            <v-text-field
+              slot="activator"
+              label="Effective Date"
+              prepend-icon="calendar_today"
+              v-model="transfer.effective_date"
+              required
+              readonly
+            ></v-text-field>
+            <v-date-picker
+              v-model="transfer.effective_date"
+              landscape
+              @input="$refs.menu.save(transfer.effective_date)"
+            ></v-date-picker>
+          </v-menu>
+        </v-flex>
+        <v-flex xs12>
+          <v-text-field
+            v-model="transfer.origin"
+            label="Origin"
+            prepend-icon="flight_takeoff"
+            :disabled="transferOut"
+            required
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12>
+          <v-text-field
+            v-model="transfer.destination"
+            label="Destination"
+            prepend-icon="flight_land"
+            :disabled="!transferOut"
+            required
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12>
+          <v-text-field
+            v-model="transfer.fee"
+            type="number"
+            label="Fee"
+            :prefix="team.currency"
+            :hint="$_numberHint(transfer.fee)"
+            persistent-hint
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12>
+          <v-text-field
+            v-model="transfer.addon_clause"
+            label="Add-On Clause (%)"
+            :rules="$_validate('Add-On Clause', [{ type: 'range', options: { min: 0, max: 25 }}])"
+            type="number"
+            min="0"
+            max="25"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12>
+          <v-checkbox
+            v-model="transfer.loan"
+            label="Loan"
+            :disabled="transferOut"
+          ></v-checkbox>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </dialog-form>
 </template>
 
 <script>
@@ -132,7 +102,11 @@
   import PlayerAction from '@/mixins/PlayerAction'
 
   export default {
-    mixins: [ FormBase, PlayerAction, TeamAction ],
+    mixins: [
+      FormBase,
+      PlayerAction,
+      TeamAction
+    ],
     data: () => ({
       menu: false,
       transfer: {
@@ -147,31 +121,32 @@
     computed: {
       transferOut () {
         return this.player.status && this.player.status.length > 0
+      },
+      title () {
+        return 'Transfer ' + this.player.name
+      }
+    },
+    watch: {
+      dialog (val) {
+        if (val) {
+          this.transfer.effective_date = this.team.current_date
+          if (this.transferOut) {
+            this.transfer.origin = this.team.title
+          } else {
+            this.transfer.destination = this.team.title
+          }
+        }
       }
     },
     methods: {
       ...mapActions('player', {
         save: 'transfer'
       }),
-      open () {
-        this.inForm = true
-        this.transfer.effective_date = this.team.current_date
-        if (this.transferOut) {
-          this.transfer.origin = this.team.title
-        } else {
-          this.transfer.destination = this.team.title
-        }
-      },
-      async saveTransfer () {
-        try {
-          await this.save({
-            playerId: this.player.id,
-            transfer: this.transfer
-          })
-          this.inForm = false
-        } catch (e) {
-          this.errorMessage = e.message
-        }
+      submit () {
+        this.save({
+          playerId: this.player.id,
+          transfer: this.transfer
+        })
       }
     }
   }

@@ -1,77 +1,44 @@
 <template>
-  <div class="d-inline-block" @click.stop="inForm = true">
-    <slot></slot>
-    <v-dialog
-      v-model="inForm"
-      persistent
-      lazy
-      max-width="500px">
-      <v-form ref="form" v-model="valid" @submit.prevent="save">
-        <v-card>
-          <v-card-title primary-title :class="formColor">
-            <div class="headline">{{ title }}</div>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-container>
-              <v-layout wrap>
-                <v-flex xs12>
-                  <v-select
-                    v-model="match_log.pos"
-                    :items="positions"
-                    :rules="$_validate('Position', ['required'])"
-                    label="Position"
-                    prepend-icon="directions_run"
-                  ></v-select>
-                </v-flex>
-                <v-flex xs12>
-                  <v-select
-                    v-model="match_log.player_id"
-                    :items="players"
-                    item-text="name"
-                    item-value="id"
-                    :rules="$_validate('Player', ['required'])"
-                    :disabled="match_log.start > 0"
-                    label="Player"
-                    prepend-icon="person">
-                    <template slot="item" slot-scope="data">
-                      <v-list-tile-action>
-                        <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
-                      </v-list-tile-action>
-                      <v-list-tile-content>
-                        <v-list-tile-title>{{ data.item.name }}</v-list-tile-title>
-                      </v-list-tile-content>
-                    </template>
-                  </v-select>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-          <v-alert
-            type="error"
-            v-model="formError"
-            dismissible>
-            {{ errorMessage }}
-          </v-alert>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              flat
-              large
-              @click="inForm = false"
-            >Cancel</v-btn>
-            <v-btn
-              type="submit"
-              :disabled="!valid"
-              :color="buttonColor"
-              flat
-              large
-            >Save</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-form>
-    </v-dialog>
-  </div>
+  <dialog-form
+    v-model="dialog"
+    :title="title"
+    :submit="submit"
+    :color="color">
+    <slot slot="activator"></slot>
+    <v-container slot="form">
+      <v-layout wrap>
+        <v-flex xs12>
+          <v-select
+            v-model="match_log.pos"
+            :items="positions"
+            :rules="$_validate('Position', ['required'])"
+            label="Position"
+            prepend-icon="directions_run"
+          ></v-select>
+        </v-flex>
+        <v-flex xs12>
+          <v-select
+            v-model="match_log.player_id"
+            :items="players"
+            item-text="name"
+            item-value="id"
+            :rules="$_validate('Player', ['required'])"
+            :disabled="match_log.start > 0"
+            label="Player"
+            prepend-icon="person">
+            <template slot="item" slot-scope="data">
+              <v-list-tile-action>
+                <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ data.item.name }}</v-list-tile-title>
+              </v-list-tile-content>
+            </template>
+          </v-select>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </dialog-form>
 </template>
 
 <script>
@@ -79,7 +46,9 @@
   import FormBase from '@/mixins/FormBase'
 
   export default {
-    mixins: [ FormBase ],
+    mixins: [
+      FormBase
+    ],
     props: {
       initialLog: {
         type: Object
@@ -114,26 +83,14 @@
         create: 'addLog',
         update: 'updateLog'
       }),
-      async save () {
-        if (this.$refs.form.validate()) {
-          let params, save
-          if ('id' in this.match_log) {
-            params = this.match_log
-            save = this.update
-          } else {
-            params = {
-              matchId: this.match.id,
-              matchLog: this.match_log
-            }
-            save = this.create
-          }
-
-          try {
-            await save(params)
-            this.inForm = false
-          } catch (e) {
-            this.errorMessage = e.message
-          }
+      submit () {
+        if ('id' in this.match_log) {
+          this.update(this.match_log)
+        } else {
+          this.create({
+            matchId: this.match.id,
+            matchLog: this.match_log
+          })
         }
       }
     }

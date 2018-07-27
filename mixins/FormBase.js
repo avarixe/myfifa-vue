@@ -1,4 +1,9 @@
+import DialogForm from '@/components/DialogForm'
+
 export default {
+  components: {
+    'dialog-form': DialogForm
+  },
   props: {
     color: {
       type: String
@@ -6,25 +11,11 @@ export default {
   },
   data () {
     return {
-      inForm: false,
-      valid: false,
-      errorMessage: ''
-    }
-  },
-  computed: {
-    formError: {
-      get: function () { return this.errorMessage.length > 0 },
-      set: function (val) { this.errorMessage = val }
-    },
-    buttonColor () {
-      return this.color ? this.color + ' darken-2' : 'primary'
-    },
-    formColor () {
-      return this.color ? this.color + ' accent-2' : null
+      dialog: false
     }
   },
   watch: {
-    inForm (val) {
+    dialog (val) {
       if (!val) {
         Object.assign(this.$data, this.$options.data.apply(this))
         // this.$refs.form.reset()

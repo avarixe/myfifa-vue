@@ -1,84 +1,50 @@
 <template>
-  <div class="d-inline-block" @click.stop="inForm = true">
-    <slot></slot>
-    <v-dialog
-      v-model="inForm"
-      persistent
-      lazy
-      max-width="500px">
-      <v-form ref="form" v-model="valid" @submit.prevent="submit">
-        <v-card>
-          <v-card-title primary-title :class="formColor">
-            <div class="headline">{{ title }}</div>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-container>
-              <v-layout wrap>
-                <v-flex xs12>
-                  <v-combobox
-                    v-model="match.competition"
-                    :items="competitions"
-                    :rules="$_validate('Competition', ['required'])"
-                    label="Competition"
-                    prepend-icon="whatshot"
-                  ></v-combobox>
-                </v-flex>
-                <v-flex xs12>
-                  <v-combobox
-                    v-model="match.home"
-                    :items="teams"
-                    :rules="$_validate('Home Team', ['required'])"
-                    label="Home Team"
-                    prepend-icon="people">
-                    <v-tooltip slot="append" bottom>
-                      <v-icon slot="activator" @click.stop="setHome">arrow_back</v-icon>
-                      Home Match for {{ team.title }}
-                    </v-tooltip>
-                  </v-combobox>
-                </v-flex>
-                <v-flex xs12>
-                  <v-combobox
-                    v-model="match.away"
-                    :items="teams"
-                    :rules="$_validate('Away Team', ['required'])"
-                    label="Away Team"
-                    prepend-icon="people">
-                    <v-tooltip slot="append" bottom>
-                      <v-icon slot="activator" @click.stop="setAway">arrow_back</v-icon>
-                      Away Match for {{ team.title }}
-                    </v-tooltip>
-                  </v-combobox>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-          <v-alert
-            type="error"
-            v-model="formError"
-            dismissible>
-            {{ errorMessage }}
-          </v-alert>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              flat
-              large
-              @click="inForm = false"
-            >Cancel</v-btn>
-            <v-btn
-              type="submit"
-              :disabled="!valid"
-              :color="buttonColor"
-              flat
-              large
-            >Save</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-form>
-    </v-dialog>
-
-  </div>
+  <dialog-form
+    v-model="dialog"
+    :title="title"
+    :submit="submit"
+    :color="color">
+    <slot slot="activator"></slot>
+    <v-container slot="form">
+      <v-layout wrap>
+        <v-flex xs12>
+          <v-combobox
+            v-model="match.competition"
+            :items="competitions"
+            :rules="$_validate('Competition', ['required'])"
+            label="Competition"
+            prepend-icon="whatshot"
+          ></v-combobox>
+        </v-flex>
+        <v-flex xs12>
+          <v-combobox
+            v-model="match.home"
+            :items="teams"
+            :rules="$_validate('Home Team', ['required'])"
+            label="Home Team"
+            prepend-icon="people">
+            <v-tooltip slot="append" bottom>
+              <v-icon slot="activator" @click.stop="setHome">arrow_back</v-icon>
+              Home Match for {{ team.title }}
+            </v-tooltip>
+          </v-combobox>
+        </v-flex>
+        <v-flex xs12>
+          <v-combobox
+            v-model="match.away"
+            :items="teams"
+            :rules="$_validate('Away Team', ['required'])"
+            label="Away Team"
+            prepend-icon="people">
+            <v-tooltip slot="append" bottom>
+              <v-icon slot="activator" @click.stop="setAway">arrow_back</v-icon>
+              Away Match for {{ team.title }}
+            </v-tooltip>
+          </v-combobox>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </dialog-form>
 </template>
 
 <script>
@@ -87,7 +53,10 @@
   import FormBase from '@/mixins/FormBase'
 
   export default {
-    mixins: [ FormBase, TeamAction ],
+    mixins: [
+      FormBase,
+      TeamAction
+    ],
     props: {
       initialMatch: {
         type: Object
@@ -133,26 +102,14 @@
           this.match.home = ''
         }
       },
-      async submit () {
-        if (this.$refs.form.validate()) {
-          let params, save
-          if (this.initialMatch) {
-            params = this.match
-            save = this.update
-          } else {
-            params = {
-              teamId: this.team.id,
-              match: this.match
-            }
-            save = this.create
-          }
-
-          try {
-            await save(params)
-            this.inForm = false
-          } catch (e) {
-            this.errorMessage = e.message
-          }
+      submit () {
+        if (this.initialMatch) {
+          this.update(this.match)
+        } else {
+          this.create({
+            teamId: this.team.id,
+            match: this.match
+          })
         }
       }
     }
