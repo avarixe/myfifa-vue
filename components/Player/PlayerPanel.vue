@@ -148,6 +148,9 @@
         this.pagination.page = 1
       }
     },
+    mounted () {
+      this.reloadTable()
+    },
     methods: {
       ...mapActions('player', [
         'refresh'

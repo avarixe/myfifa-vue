@@ -99,6 +99,9 @@
         return Object.values(this.matches)
       }
     },
+    mounted () {
+      this.reloadTable()
+    },
     methods: {
       ...mapActions('match', [
         'refresh'

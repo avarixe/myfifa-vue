@@ -71,6 +71,9 @@
         return Object.values(this.squads)
       }
     },
+    mounted () {
+      this.reloadTable()
+    },
     methods: {
       ...mapActions('squad', [
         'refresh'

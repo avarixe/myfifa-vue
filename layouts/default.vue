@@ -53,6 +53,7 @@
     cursor: pointer;
   }
 
+  /* 
   .v-content {
     background: url(~/static/stadium.jpeg) no-repeat center center fixed;
     -webkit-background-size: cover;
@@ -60,4 +61,5 @@
     -o-background-size: cover;
     background-size: cover;
   }
+  */
 </style>
