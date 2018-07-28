@@ -8,10 +8,7 @@
       slot="activator"
       bottom
       :color="color">
-      <v-btn
-        icon
-        slot="activator"
-        @click.stop="open">
+      <v-btn slot="activator" icon>
         <v-icon :color="color">
           flight_{{ transferOut ? 'takeoff' : 'land' }}
         </v-icon>
