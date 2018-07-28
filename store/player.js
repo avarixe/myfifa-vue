@@ -26,10 +26,13 @@ export const state = () => ({
 
 // getters
 export const getters = {
-  active: state => (
+  contracted: state => (
     Object.values(state.list)
-      .filter(player => player.status === 'Active')
+      .filter(player => player.status)
       .sort((a, b) => state.positions.indexOf(a.pos) - state.positions.indexOf(b.pos))
+  ),
+  active: (state, getters) => (
+    getters.contracted.filter(player => player.status === 'Active')
   )
 }
 

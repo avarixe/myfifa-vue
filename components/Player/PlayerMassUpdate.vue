@@ -17,6 +17,7 @@
         v-model="search"
         label="Search"
         append-icon="search"
+        hide-details
       ></v-text-field>
     </template>
     <template slot="form">
@@ -27,6 +28,7 @@
         :items="players"
         item-key="id"
         :search="search"
+        disable-initial-sort
         no-data-text="No Players to Update">
         <template slot="headers" slot-scope="props">
           <th>
@@ -107,7 +109,7 @@
     },
     computed: {
       ...mapGetters('player', {
-        activePlayers: 'active'
+        contractedPlayers: 'contracted'
       }),
       selectedPlayers () {
         return this.players.map(player => player.selected)
@@ -116,8 +118,7 @@
     watch: {
       dialog (val) {
         if (val) {
-          console.log(this.activePlayers)
-          this.players = this.activePlayers.map(player => ({ ...player }))
+          this.players = this.contractedPlayers.map(player => ({ ...player }))
           this.selected = []
         } else {
           Object.assign(this.$data, this.$options.data.apply(this))
