@@ -68,7 +68,7 @@ export default {
     record: 'logs/{{ logId }}'
   },
 
-  user: 'users/sync',
+  register: 'users/sign_up',
 
   token: {
     get: 'oauth/token',

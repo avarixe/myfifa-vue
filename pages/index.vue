@@ -14,7 +14,18 @@
             to="/teams">
             Teams
           </v-btn>
-          <login-form v-else></login-form>
+          <div v-else>
+            <login-form
+              color="blue"
+            ></login-form>
+            <user-form>
+              <v-btn
+                color="orange"
+                dark
+                large
+              >Register</v-btn>
+            </user-form>
+          </div>
         </v-jumbotron>
       </v-flex>
     </v-layout>
@@ -24,10 +35,12 @@
 <script>
   import { mapGetters } from 'vuex'
   import LoginForm from '@/components/LoginForm'
+  import UserForm from '@/components/UserForm'
 
   export default {
     components: {
-      'login-form': LoginForm
+      'login-form': LoginForm,
+      'user-form': UserForm
     },
     computed: mapGetters([ 'authenticated' ]),
     beforeMount () {
