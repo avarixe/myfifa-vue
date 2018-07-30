@@ -35,10 +35,16 @@ async function apiRequest ({
     success && success(res)
     return res
   } catch (e) {
-    const errorMessage = e.response && e.response.data
-      ? e.response.data.error_description
-      : 'An Error occurred. Please try again.'
-    throw new Error(errorMessage)
+    if (e.response && e.response.data) {
+      const res = e.response.data
+      if ('error_description' in res) {
+        throw new Error(res.error_description)
+      } else if ('errors' in res) {
+        throw new Error(res.errors[0])
+      }
+    } else {
+      throw new Error('An Error occurred. Please try again.')
+    }
   }
 }
 
