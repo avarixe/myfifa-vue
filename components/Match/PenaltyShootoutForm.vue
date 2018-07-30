@@ -59,8 +59,8 @@
       ...mapActions('penaltyShootout', [
         'create'
       ]),
-      submit () {
-        this.create({
+      async submit () {
+        await this.create({
           matchId: this.match.id,
           penaltyShootout: this.penaltyShootout
         })

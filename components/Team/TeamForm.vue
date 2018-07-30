@@ -86,9 +86,9 @@
         'create',
         'update'
       ]),
-      submit () {
+      async submit () {
         const save = this.team.id ? this.update : this.create
-        save(this.team)
+        await save(this.team)
       }
     }
   }

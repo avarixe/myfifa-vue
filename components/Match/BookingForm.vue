@@ -95,8 +95,8 @@
       ...mapActions('booking', [
         'create'
       ]),
-      submit () {
-        this.create({
+      async submit () {
+        await this.create({
           matchId: this.match.id,
           booking: this.booking
         })

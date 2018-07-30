@@ -185,8 +185,8 @@
       ...mapActions('goal', [
         'create'
       ]),
-      submit () {
-        this.create({
+      async submit () {
+        await this.create({
           matchId: this.match.id,
           goal: this.goal
         })

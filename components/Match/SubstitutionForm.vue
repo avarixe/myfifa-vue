@@ -123,8 +123,8 @@
       ...mapActions('substitution', [
         'create'
       ]),
-      submit () {
-        this.create({
+      async submit () {
+        await this.create({
           matchId: this.match.id,
           substitution: this.substitution
         })

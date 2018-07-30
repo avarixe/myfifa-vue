@@ -134,7 +134,7 @@
         if (this.selected.length) this.selected = []
         else this.selected = this.players.slice()
       },
-      submit () {
+      async submit () {
         // Format selected player data
         let data = {}
         for (let i in this.selected) {
@@ -142,7 +142,7 @@
           data[id] = { ovr, value }
         }
 
-        this.updateMultiple({
+        await this.updateMultiple({
           teamId: this.team.id,
           players: data
         })

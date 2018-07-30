@@ -102,11 +102,11 @@
           this.match.home = ''
         }
       },
-      submit () {
+      async submit () {
         if (this.initialMatch) {
-          this.update(this.match)
+          await this.update(this.match)
         } else {
-          this.create({
+          await this.create({
             teamId: this.team.id,
             match: this.match
           })

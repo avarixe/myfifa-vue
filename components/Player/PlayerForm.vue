@@ -120,11 +120,11 @@
         'create',
         'update'
       ]),
-      submit () {
+      async submit () {
         if (this.initialPlayer) {
-          this.update(this.player)
+          await this.update(this.player)
         } else {
-          this.create({
+          await this.create({
             teamId: this.team.id,
             player: this.player
           })

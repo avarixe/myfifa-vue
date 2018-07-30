@@ -139,8 +139,8 @@
       ...mapActions('player', {
         save: 'transfer'
       }),
-      submit () {
-        this.save({
+      async submit () {
+        await this.save({
           playerId: this.player.id,
           transfer: this.transfer
         })
