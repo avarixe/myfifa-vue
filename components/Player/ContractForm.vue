@@ -184,11 +184,10 @@
       dialog (val) {
         if (val) {
           this.contract.effective_date = this.contract.effective_date || this.team.current_date
+        } else {
+          Object.assign(this.$data, this.$options.data.apply(this))
+          // this.$refs.form.reset()
         }
-        // else {
-        //   Object.assign(this.$data, this.$options.data.apply(this))
-        //   // this.$refs.form.reset()
-        // }
       },
       'menus.end_date' (val, oldVal) {
         return !oldVal && val && this.$nextTick(() => (this.$refs.picker2.activePicker = 'YEAR'))
