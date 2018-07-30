@@ -112,6 +112,20 @@ export const actions = {
         commit('set', data.player)
       }
     })
+  },
+  getActiveInjury ({ rootState }, { playerId }) {
+    return apiRequest({
+      path: myfifa.players.active_injury,
+      pathData: { playerId: playerId },
+      token: rootState.token
+    })
+  },
+  getActiveLoan ({ rootState }, { playerId }) {
+    return apiRequest({
+      path: myfifa.players.active_loan,
+      pathData: { playerId: playerId },
+      token: rootState.token
+    })
   }
 }
 

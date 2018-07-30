@@ -14,14 +14,14 @@ export default {
       dialog: false
     }
   },
-  watch: {
-    dialog (val) {
-      if (!val) {
-        Object.assign(this.$data, this.$options.data.apply(this))
-        // this.$refs.form.reset()
-      }
-    }
-  },
+  // watch: {
+  //   dialog (val) {
+  //     if (!val) {
+  //       Object.assign(this.$data, this.$options.data.apply(this))
+  //       // this.$refs.form.reset()
+  //     }
+  //   }
+  // },
   methods: {
     $_numberHint (num) {
       return num && parseInt(num).toLocaleString()

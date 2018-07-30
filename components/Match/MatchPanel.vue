@@ -36,7 +36,7 @@
         item-key="id"
         no-data-text="No Matches Recorded">
         <template slot="items" slot-scope="props">
-          <tr @click="props.expanded = !props.expanded">
+          <tr @click="viewMatch(props)">
             <td class="text-xs-center">{{ props.item.competition }}</td>
             <td class="text-xs-right">{{ props.item.home }}</td>
             <td :class="resultColor(props.item.team_result) + '--text text-xs-center'">{{ props.item.score }}</td>
@@ -103,9 +103,11 @@
       this.reloadTable()
     },
     methods: {
-      ...mapActions('match', [
-        'refresh'
-      ]),
+      ...mapActions({
+        refresh: 'match/refresh',
+        getEvents: 'match/getEvents',
+        getLogs: 'matchLog/getAll'
+      }),
       async reloadTable () {
         this.loading = true
         try {
@@ -114,6 +116,24 @@
           alert(e.message)
         } finally {
           this.loading = false
+        }
+      },
+      async viewMatch (props) {
+        if (props.expanded) {
+          props.expanded = false
+        } else {
+          if (!('events' in props.item)) {
+            try {
+              this.loading = true
+              await this.getLogs({ matchId: props.item.id })
+              await this.getEvents({ matchId: props.item.id })
+              this.loading = false
+            } catch (e) {
+              alert(e.message)
+            }
+          }
+
+          props.expanded = true
         }
       },
       resultColor (result) {

@@ -46,28 +46,46 @@
     ],
     data () {
       return {
-        valid: !!this.player.active_loan,
-        loan: Object.assign({
+        loan: {
           destination: '',
           returned: false
-        }, this.player.active_loan)
+        }
       }
     },
     computed: {
+      playerLoaned () {
+        return this.player.status && this.player.status === 'Loaned'
+      },
       title () {
-        return this.loan && this.loan.id ? 'Update Loan' : 'Record New Loan'
+        return this.playerLoaned
+          ? 'Update Loan'
+          : 'Record New Loan'
+      }
+    },
+    watch: {
+      async dialog (val) {
+        if (val && this.playerLoaned) {
+          try {
+            const { data } = await this.getActiveLoan({ playerId: this.player.id })
+            this.loan = data
+          } catch (e) {
+            alert(e)
+            this.dialog = false
+          }
+        }
       }
     },
     methods: {
-      ...mapActions('loan', [
-        'create',
-        'update'
-      ]),
-      submit () {
+      ...mapActions({
+        getActiveLoan: 'player/getActiveLoan',
+        create: 'loan/create',
+        update: 'loan/update'
+      }),
+      async submit () {
         if ('id' in this.loan) {
-          this.update(this.loan)
+          await this.update(this.loan)
         } else {
-          this.create({
+          await this.create({
             playerId: this.player.id,
             loan: this.loan
           })

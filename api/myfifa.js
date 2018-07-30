@@ -7,8 +7,10 @@ export default {
 
   players: {
     index: 'teams/{{ teamId }}/players',
+    update_multiple: 'teams/{{ teamId }}/players/update_multiple',
     record: 'players/{{ playerId }}',
-    update_multiple: 'teams/{{ teamId }}/players/update_multiple'
+    active_injury: 'players/{{ playerId }}/active_injury',
+    active_loan: 'players/{{ playerId }}/active_loan'
   },
 
   transfers: {
@@ -39,6 +41,7 @@ export default {
   matches: {
     index: 'teams/{{ teamId }}/matches',
     record: 'matches/{{ matchId }}',
+    events: 'matches/{{ matchId }}/events',
     applySquad: 'matches/{{ matchId }}/apply_squad',
     penaltyShootout: 'matches/{{ matchId }}/penalty_shootout'
   },

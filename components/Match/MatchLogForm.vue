@@ -50,8 +50,8 @@
       FormBase
     ],
     props: {
-      initialLog: {
-        type: Object
+      logId: {
+        type: Number
       },
       match: {
         type: Object,
@@ -60,11 +60,10 @@
     },
     data () {
       return {
-        valid: !!this.initialLog,
-        match_log: Object.assign({
+        match_log: {
           player_id: null,
           pos: ''
-        }, this.initialLog)
+        }
       }
     },
     computed: {
@@ -78,16 +77,30 @@
         return this.match_log.id ? 'Edit Position' : 'Add Position'
       }
     },
+    watch: {
+      async dialog (val) {
+        if (val && this.logId) {
+          try {
+            const { data } = await this.get({ logId: this.logId })
+            this.match_log = data
+          } catch (e) {
+            alert(e.message)
+            this.dialog = false
+          }
+        }
+      }
+    },
     methods: {
-      ...mapActions('match', {
-        create: 'addLog',
-        update: 'updateLog'
-      }),
-      submit () {
-        if ('id' in this.match_log) {
-          this.update(this.match_log)
+      ...mapActions('matchLog', [
+        'get',
+        'create',
+        'update'
+      ]),
+      async submit () {
+        if (this.logId) {
+          await this.update(this.match_log)
         } else {
-          this.create({
+          await this.create({
             matchId: this.match.id,
             matchLog: this.match_log
           })

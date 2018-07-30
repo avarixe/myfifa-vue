@@ -184,10 +184,11 @@
       dialog (val) {
         if (val) {
           this.contract.effective_date = this.contract.effective_date || this.team.current_date
-        } else {
-          Object.assign(this.$data, this.$options.data.apply(this))
-          // this.$refs.form.reset()
         }
+        // else {
+        //   Object.assign(this.$data, this.$options.data.apply(this))
+        //   // this.$refs.form.reset()
+        // }
       },
       'menus.end_date' (val, oldVal) {
         return !oldVal && val && this.$nextTick(() => (this.$refs.picker2.activePicker = 'YEAR'))
@@ -198,11 +199,11 @@
         'create',
         'update'
       ]),
-      submit () {
+      async submit () {
         if ('id' in this.contract) {
-          this.update(this.contract)
+          await this.update(this.contract)
         } else {
-          this.create({
+          await this.create({
             playerId: this.player.id,
             contract: this.contract
           })

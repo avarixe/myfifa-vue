@@ -99,31 +99,20 @@ export const actions = {
       }
     })
   },
-  addLog ({ commit, rootState }, { matchId, matchLog }) {
+  getEvents ({ state, commit, rootState }, { matchId }) {
     return apiRequest({
-      method: 'post',
-      path: myfifa.matchLogs.index,
+      path: myfifa.matches.events,
       pathData: { matchId: matchId },
       token: rootState.token,
-      data: { match_log: matchLog },
       success: ({ data }) => {
-        commit('set', data)
+        commit('set', {
+          ...state.list[matchId],
+          events: data
+        })
       }
     })
   },
-  updateLog ({ commit, rootState }, payload) {
-    return apiRequest({
-      method: 'patch',
-      path: myfifa.matchLogs.record,
-      pathData: { logId: payload.id },
-      token: rootState.token,
-      data: { match_log: payload },
-      success: ({ data }) => {
-        commit('set', data)
-      }
-    })
-  },
-  applySquad ({ commit, rootState }, { matchId, squadId }) {
+  applySquad ({ state, commit, rootState }, { matchId, squadId }) {
     return apiRequest({
       method: 'post',
       path: myfifa.matches.applySquad,
@@ -131,7 +120,11 @@ export const actions = {
       token: rootState.token,
       data: { squad_id: squadId },
       success: ({ data }) => {
-        commit('set', data)
+        console.log(data)
+        commit('set', {
+          ...state.list[matchId],
+          match_logs: data
+        })
       }
     })
   }
@@ -150,5 +143,11 @@ export const mutations = {
   },
   remove (state, matchId) {
     Vue.delete(state.list, matchId)
+  },
+  setLog (state, matchLog) {
+    let logs = state.list[matchLog.match_id].match_logs
+    logs = logs.filter(log => log.id !== matchLog.id)
+    logs.push(matchLog)
+    state.list[matchLog.match_id].match_logs = logs
   }
 }

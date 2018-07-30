@@ -46,33 +46,46 @@
     ],
     data () {
       return {
-        valid: !!this.player.active_injury,
-        injury: Object.assign({
+        injury: {
           description: '',
           recovered: false
-        }, this.player.active_injury)
+        }
       }
     },
     computed: {
+      playerInjured () {
+        return this.player.status && this.player.status === 'Injured'
+      },
       title () {
-        return this.injury && this.injury.id ? 'Update Injury' : 'Record New Injury'
+        return this.playerInjured
+          ? 'Update Injury'
+          : 'Record New Injury'
       }
     },
     watch: {
-      player (val) {
-        Object.assign(this.$data, this.$options.data.apply(this))
+      async dialog (val) {
+        if (val && this.playerInjured) {
+          try {
+            const { data } = await this.getActiveInjury({ playerId: this.player.id })
+            this.injury = data
+          } catch (e) {
+            alert(e)
+            this.dialog = false
+          }
+        }
       }
     },
     methods: {
-      ...mapActions('injury', [
-        'create',
-        'update'
-      ]),
-      submit () {
+      ...mapActions({
+        getActiveInjury: 'player/getActiveInjury',
+        create: 'injury/create',
+        update: 'injury/update'
+      }),
+      async submit () {
         if ('id' in this.injury) {
-          this.update(this.injury)
+          await this.update(this.injury)
         } else {
-          this.create({
+          await this.create({
             playerId: this.player.id,
             injury: this.injury
           })
