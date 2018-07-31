@@ -104,7 +104,7 @@ export const actions = {
   transfer ({ commit, rootState }, { playerId, transfer }) {
     return apiRequest({
       method: 'post',
-      path: myfifa.transfers.all,
+      path: myfifa.transfers.index,
       pathData: { playerId: playerId },
       token: rootState.token,
       data: { transfer: transfer },
