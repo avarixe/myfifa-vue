@@ -109,7 +109,7 @@ export const actions = {
       token: rootState.token,
       data: { transfer: transfer },
       success: ({ data }) => {
-        commit('set', data.player)
+        commit('set', data)
       }
     })
   },
