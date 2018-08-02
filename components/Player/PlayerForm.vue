@@ -13,6 +13,9 @@
             :rules="$_validate('Name', ['required'])"
             label="Name"
             prepend-icon="person"
+            spellcheck="false"
+            autocapitalize="words"
+            autocorrect="off"
           ></v-text-field>
         </v-flex>
         <v-flex xs12>

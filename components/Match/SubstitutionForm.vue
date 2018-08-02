@@ -21,7 +21,7 @@
           <v-select
             v-model="substitution.player_id"
             :rules="$_validate('Player', ['required'])"
-            :items="match.match_logs"
+            :items="match.performances"
             item-value="player_id"
             item-text="name"
             label="Player"
@@ -103,7 +103,7 @@
         activePlayers: 'active'
       }),
       availablePlayers () {
-        const selectedIds = this.match.match_logs.map(p => p.player_id)
+        const selectedIds = this.match.performances.map(p => p.player_id)
         return this.activePlayers.filter(p => selectedIds.indexOf(p.id) < 0)
       }
     },

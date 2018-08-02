@@ -45,19 +45,25 @@
         <v-flex xs12>
           <v-text-field
             v-model="transfer.origin"
+            :rules="$_validate('Origin', ['required'])"
             label="Origin"
             prepend-icon="flight_takeoff"
             :disabled="transferOut"
-            required
+            spellcheck="false"
+            autocapitalize="words"
+            autocorrect="off"
           ></v-text-field>
         </v-flex>
         <v-flex xs12>
           <v-text-field
             v-model="transfer.destination"
+            :rules="$_validate('Destination', ['required'])"
             label="Destination"
             prepend-icon="flight_land"
             :disabled="!transferOut"
-            required
+            spellcheck="false"
+            autocapitalize="words"
+            autocorrect="off"
           ></v-text-field>
         </v-flex>
         <v-flex xs12>

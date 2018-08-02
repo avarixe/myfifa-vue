@@ -19,6 +19,9 @@
             :rules="$_validate('Destination', ['required'])"
             label="Destination"
             prepend-icon="transfer_within_a_station"
+            spellcheck="false"
+            autocapitalize="words"
+            autocorrect="off"
           ></v-text-field>
         </v-flex>
 

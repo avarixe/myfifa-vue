@@ -13,7 +13,9 @@
             :rules="$_validate('Team', ['required'])"
             label="Team"
             prepend-icon="people"
-            autofocus
+            spellcheck="false"
+            autocapitalize="words"
+            autocorrect="off"
           ></v-text-field>
         </v-flex>
         <v-flex xs12>

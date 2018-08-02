@@ -5,45 +5,45 @@ import myfifa from '@/api/myfifa'
 export const actions = {
   getAll ({ state, commit, rootState }, { matchId }) {
     return apiRequest({
-      path: myfifa.matchLogs.index,
+      path: myfifa.performances.index,
       pathData: { matchId: matchId },
       token: rootState.token,
       success: ({ data }) => {
         commit('match/set', {
           ...rootState.match.list[matchId],
-          match_logs: data
+          performances: data
         }, { root: true })
       }
     })
   },
-  get ({ rootState }, { logId }) {
+  get ({ rootState }, { performanceId }) {
     return apiRequest({
-      path: myfifa.matchLogs.record,
-      pathData: { logId: logId },
+      path: myfifa.performances.record,
+      pathData: { performanceId: performanceId },
       token: rootState.token
     })
   },
-  create ({ commit, rootState }, { matchId, matchLog }) {
+  create ({ commit, rootState }, { matchId, performance }) {
     return apiRequest({
       method: 'post',
-      path: myfifa.matchLogs.index,
+      path: myfifa.performances.index,
       pathData: { matchId: matchId },
       token: rootState.token,
-      data: { match_log: matchLog },
+      data: { performance: performance },
       success: ({ data }) => {
-        commit('match/setLog', data, { root: true })
+        commit('match/setPerformance', data, { root: true })
       }
     })
   },
   update ({ commit, rootState }, payload) {
     return apiRequest({
       method: 'patch',
-      path: myfifa.matchLogs.record,
-      pathData: { logId: payload.id },
+      path: myfifa.performances.record,
+      pathData: { performanceId: payload.id },
       token: rootState.token,
-      data: { match_log: payload },
+      data: { performance: payload },
       success: ({ data }) => {
-        commit('match/setLog', data, { root: true })
+        commit('match/setPerformance', data, { root: true })
       }
     })
   }

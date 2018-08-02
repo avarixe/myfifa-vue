@@ -36,7 +36,7 @@
             v-if="teamGoal"
             v-model="goal.player_id"
             :rules="$_validate('Goal Scorer', ['required'])"
-            :items="match.match_logs"
+            :items="match.performances"
             item-value="player_id"
             item-text="name"
             label="Goal Scorer"
@@ -56,13 +56,16 @@
             :rules="$_validate('Goal Scorer', ['required'])"
             label="Goal Scorer"
             prepend-icon="person"
+            spellcheck="false"
+            autocapitalize="words"
+            autocorrect="off"
           ></v-text-field>
         </v-flex>
         <v-flex xs12>
           <v-select
             v-if="teamGoal"
             v-model="goal.assist_id"
-            :items="match.match_logs"
+            :items="match.performances"
             item-value="player_id"
             item-text="name"
             label="Assisted By"
@@ -86,6 +89,9 @@
             prepend-icon="person_outline"
             :disabled="goal.penalty || goal.own_goal"
             hide-details
+            spellcheck="false"
+            autocapitalize="words"
+            autocorrect="off"
           ></v-text-field>
         </v-flex>
         <v-flex xs12>

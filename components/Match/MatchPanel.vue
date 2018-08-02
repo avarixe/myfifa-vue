@@ -106,7 +106,7 @@
       ...mapActions({
         refresh: 'match/refresh',
         getEvents: 'match/getEvents',
-        getLogs: 'matchLog/getAll'
+        getPerformances: 'performance/getAll'
       }),
       async reloadTable () {
         this.loading = true
@@ -125,7 +125,7 @@
           if (!('events' in props.item)) {
             try {
               this.loading = true
-              await this.getLogs({ matchId: props.item.id })
+              await this.getPerformances({ matchId: props.item.id })
               await this.getEvents({ matchId: props.item.id })
               this.loading = false
             } catch (e) {
