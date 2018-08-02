@@ -21,6 +21,7 @@
             prepend-icon="transfer_within_a_station"
             spellcheck="false"
             autocapitalize="words"
+            autocomplete="off"
             autocorrect="off"
           ></v-text-field>
         </v-flex>

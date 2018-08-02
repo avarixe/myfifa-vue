@@ -58,6 +58,7 @@
             prepend-icon="person"
             spellcheck="false"
             autocapitalize="words"
+            autocomplete="off"
             autocorrect="off"
           ></v-text-field>
         </v-flex>
@@ -91,6 +92,7 @@
             hide-details
             spellcheck="false"
             autocapitalize="words"
+            autocomplete="off"
             autocorrect="off"
           ></v-text-field>
         </v-flex>
