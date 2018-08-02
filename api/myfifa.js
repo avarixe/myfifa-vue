@@ -71,7 +71,9 @@ export default {
     record: 'performances/{{ performanceId }}'
   },
 
-  user: 'users/sync',
+  users: {
+    index: 'users.json'
+  },
 
   token: {
     get: 'oauth/token',

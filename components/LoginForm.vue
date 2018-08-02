@@ -54,6 +54,10 @@
       async authenticate () {
         const { data } = await this.$store.dispatch('login', this.credentials)
         Cookie.set('token', data.access_token, data.expires_in / 86400)
+        this.$store.commit('broadcaster/announce', {
+          message: 'You have successfully logged in!',
+          color: 'success'
+        })
       }
     }
   }
