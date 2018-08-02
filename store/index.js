@@ -29,13 +29,6 @@ export const actions = {
     }
     commit('setToken', accessToken)
   },
-  register ({ commit, rootState }, payload) {
-    return apiRequest({
-      method: 'post',
-      path: myfifa.users.index,
-      data: { user: payload }
-    })
-  },
   login ({ commit }, payload) {
     return apiRequest({
       method: 'post',

@@ -38,6 +38,7 @@
 
 
 <script>
+  import { mapActions } from 'vuex'
   import FormBase from '@/mixins/FormBase'
 
   export default {
@@ -63,8 +64,21 @@
       }
     },
     methods: {
-      submit () {
-        this.$store.dispatch('register', this.user)
+      ...mapActions('user', [
+        'create',
+        'update'
+      ]),
+      async submit () {
+        try {
+          let save = this.user.id ? this.update : this.create
+          await save(this.user)
+        } catch (e) {
+          this.$store.commit('broadcaster/announce', {
+            message: 'Could not save Account',
+            color: 'error'
+          })
+          throw e
+        }
       }
     }
   }

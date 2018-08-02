@@ -15,7 +15,8 @@
       </v-toolbar-items>
     </v-toolbar>
     <v-content>
-      <navigation-dial v-if="authenticated"></navigation-dial>
+      <app-navigation-dial v-if="authenticated"></app-navigation-dial>
+      <app-broadcaster></app-broadcaster>
       <nuxt />
     </v-content>
   </v-app>
@@ -24,12 +25,14 @@
 <script>
   import { mapGetters } from 'vuex'
   import TeamAction from '@/mixins/TeamAction'
-  import TheNavigationDial from '@/components/TheNavigationDial'
+  import AppNavigationDial from '@/components/AppNavigationDial'
+  import AppBroadcaster from '@/components/AppBroadcaster'
 
   export default {
     name: 'App',
     components: {
-      'navigation-dial': TheNavigationDial
+      'app-navigation-dial': AppNavigationDial,
+      'app-broadcaster': AppBroadcaster
     },
     mixins: [ TeamAction ],
     computed: mapGetters([ 'authenticated' ]),
@@ -53,7 +56,7 @@
     cursor: pointer;
   }
 
-  /* 
+  /*
   .v-content {
     background: url(~/static/stadium.jpeg) no-repeat center center fixed;
     -webkit-background-size: cover;
