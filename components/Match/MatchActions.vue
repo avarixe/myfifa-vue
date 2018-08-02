@@ -9,14 +9,14 @@
       </v-tooltip>
     </match-form>
 
-    <match-log-form :match="match" v-if="match.match_logs.length < 11">
+    <performance-form :match="match" v-if="match.performances.length < 11">
       <v-tooltip bottom>
         <v-btn icon slot="activator">
           <v-icon>add_circle_outline</v-icon>
         </v-btn>
         Add Player
       </v-tooltip>
-    </match-log-form>
+    </performance-form>
 
     <v-tooltip bottom>
       <v-menu slot="activator" offset-y>
@@ -104,7 +104,7 @@
   import { mapState, mapActions } from 'vuex'
   import TeamAction from '@/mixins/TeamAction'
   import MatchForm from '@/components/Match/MatchForm'
-  import MatchLogForm from '@/components/Match/MatchLogForm'
+  import PerformanceForm from '@/components/Match/PerformanceForm'
   import GoalForm from '@/components/Match/GoalForm'
   import BookingForm from '@/components/Match/BookingForm'
   import SubstitutionForm from '@/components/Match/SubstitutionForm'
@@ -113,7 +113,7 @@
   export default {
     components: {
       'match-form': MatchForm,
-      'match-log-form': MatchLogForm,
+      'performance-form': PerformanceForm,
       'goal-form': GoalForm,
       'booking-form': BookingForm,
       'substitution-form': SubstitutionForm,
@@ -137,7 +137,7 @@
         return this.match.status && this.match.status.length > 0
       },
       validMatch () {
-        return !this.match.team_result || this.match.match_logs.length >= 11
+        return !this.match.team_result || this.match.performances.length >= 11
       },
       matchDraw () {
         return this.match.home_score === this.match.away_score

@@ -9,7 +9,7 @@
       <v-layout wrap>
         <v-flex xs12>
           <v-select
-            v-model="match_log.pos"
+            v-model="performance.pos"
             :items="positions"
             :rules="$_validate('Position', ['required'])"
             label="Position"
@@ -18,12 +18,12 @@
         </v-flex>
         <v-flex xs12>
           <v-select
-            v-model="match_log.player_id"
+            v-model="performance.player_id"
             :items="players"
             item-text="name"
             item-value="id"
             :rules="$_validate('Player', ['required'])"
-            :disabled="match_log.start > 0"
+            :disabled="performance.start > 0"
             label="Player"
             prepend-icon="person">
             <template slot="item" slot-scope="data">
@@ -50,7 +50,7 @@
       FormBase
     ],
     props: {
-      logId: {
+      performanceId: {
         type: Number
       },
       match: {
@@ -60,7 +60,7 @@
     },
     data () {
       return {
-        match_log: {
+        performance: {
           player_id: null,
           pos: ''
         }
@@ -74,15 +74,17 @@
         players: 'active'
       }),
       title () {
-        return this.match_log.id ? 'Edit Position' : 'Add Position'
+        return this.performance.id ? 'Edit Position' : 'Add Position'
       }
     },
     watch: {
       async dialog (val) {
-        if (val && this.logId) {
+        if (val && this.performanceId) {
           try {
-            const { data } = await this.get({ logId: this.logId })
-            this.match_log = data
+            const { data } = await this.get({
+              performanceId: this.performanceId
+            })
+            this.performance = data
           } catch (e) {
             alert(e.message)
             this.dialog = false
@@ -91,18 +93,18 @@
       }
     },
     methods: {
-      ...mapActions('matchLog', [
+      ...mapActions('performance', [
         'get',
         'create',
         'update'
       ]),
       async submit () {
-        if (this.logId) {
-          await this.update(this.match_log)
+        if (this.performanceId) {
+          await this.update(this.performance)
         } else {
           await this.create({
             matchId: this.match.id,
-            matchLog: this.match_log
+            performance: this.performance
           })
         }
       }

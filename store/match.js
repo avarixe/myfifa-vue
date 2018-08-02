@@ -120,10 +120,9 @@ export const actions = {
       token: rootState.token,
       data: { squad_id: squadId },
       success: ({ data }) => {
-        console.log(data)
         commit('set', {
           ...state.list[matchId],
-          match_logs: data
+          performances: data
         })
       }
     })
@@ -144,10 +143,14 @@ export const mutations = {
   remove (state, matchId) {
     Vue.delete(state.list, matchId)
   },
-  setLog (state, matchLog) {
-    let logs = state.list[matchLog.match_id].match_logs
-    logs = logs.filter(log => log.id !== matchLog.id)
-    logs.push(matchLog)
-    state.list[matchLog.match_id].match_logs = logs
+  setPerformance (state, performance) {
+    let performances = state.list[performance.match_id].performances
+    const pIdx = performances.findIndex(p => p.id !== performance.id)
+    if (pIdx > -1) {
+      performances.splice(pIdx, 1, performance)
+    } else {
+      performances.push(performance)
+    }
+    state.list[performance.match_id].performances = performances
   }
 }

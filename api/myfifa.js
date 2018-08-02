@@ -66,9 +66,9 @@ export default {
     record: 'penalty_shootouts/{{ penaltyShootoutId }}'
   },
 
-  matchLogs: {
-    index: 'matches//{{ matchId }}/logs',
-    record: 'logs/{{ logId }}'
+  performances: {
+    index: 'matches/{{ matchId }}/performances',
+    record: 'performances/{{ performanceId }}'
   },
 
   user: 'users/sync',

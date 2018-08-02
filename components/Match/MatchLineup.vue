@@ -40,14 +40,14 @@
         </v-list-tile-content>
 
         <v-list-tile-action v-if="team.current_date === match.date_played">
-          <match-log-form :match="match" :log-id="player.id">
+          <performance-form :match="match" :performance-id="player.id">
             <v-tooltip bottom>
               <v-btn slot="activator" small icon>
                 <v-icon small>edit</v-icon>
               </v-btn>
               Edit
             </v-tooltip>
-          </match-log-form>
+          </performance-form>
         </v-list-tile-action>
 
       </v-list-tile>
@@ -58,11 +58,11 @@
 <script>
   import { mapState } from 'vuex'
   import TeamAction from '@/mixins/TeamAction'
-  import MatchLogForm from '@/components/Match/MatchLogForm'
+  import PerformanceForm from '@/components/Match/PerformanceForm'
 
   export default {
     components: {
-      'match-log-form': MatchLogForm
+      'performance-form': PerformanceForm
     },
     mixins: [ TeamAction ],
     props: {
@@ -82,7 +82,7 @@
         return this.match.events.slice().sort()
       },
       sortedLogs () {
-        return this.match.match_logs.slice().sort((a, b) => {
+        return this.match.performances.slice().sort((a, b) => {
           if (this.positions.indexOf(a.pos) > this.positions.indexOf(b.pos)) {
             return 1
           } else if (this.positions.indexOf(a.pos) < this.positions.indexOf(b.pos)) {
