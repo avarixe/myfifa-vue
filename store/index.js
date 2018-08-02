@@ -32,7 +32,7 @@ export const actions = {
   register ({ commit, rootState }, payload) {
     return apiRequest({
       method: 'post',
-      path: myfifa.users.register,
+      path: myfifa.users.index,
       data: { user: payload }
     })
   },
