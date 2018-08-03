@@ -145,7 +145,7 @@ export const mutations = {
   },
   setPerformance (state, performance) {
     let performances = state.list[performance.match_id].performances
-    const pIdx = performances.findIndex(p => p.id !== performance.id)
+    const pIdx = performances.findIndex(p => p.id === performance.id)
     if (pIdx > -1) {
       performances.splice(pIdx, 1, performance)
     } else {

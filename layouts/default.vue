@@ -122,7 +122,7 @@
   }
 
   #app .v-datatable__actions,
-  #app .v-list {
+  #app .v-datatable .v-list {
     background-color: transparent;
   }
 </style>
