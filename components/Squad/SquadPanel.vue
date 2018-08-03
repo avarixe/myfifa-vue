@@ -6,7 +6,7 @@
       </div>
 
       <!-- New Squad Form -->
-      <squad-form :team-id="teamId">
+      <squad-form :team-id="team.id">
         <v-tooltip top>
           <v-btn slot="activator" flat icon>
             <v-icon>add_circle</v-icon>
@@ -54,7 +54,6 @@
     mixins: [ TeamAction ],
     data () {
       return {
-        teamId: this.$route.params.id,
         headers: [
           { text: 'Name',    value: 'name',    align: 'center', sortable: false },
           { text: 'Actions', value: 'actions', align: 'right',  sortable: false }
@@ -81,7 +80,7 @@
       async reloadTable () {
         this.loading = true
         try {
-          await this.refresh({ teamId: this.teamId })
+          await this.refresh({ teamId: this.team.id })
         } catch (e) {
           alert(e.message)
         } finally {

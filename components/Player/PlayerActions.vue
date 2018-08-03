@@ -1,5 +1,11 @@
 <template>
   <v-card-text id="actions" class="text-xs-center pa-0">
+    <v-btn
+      icon
+      nuxt
+      :to="$route.path + '/players/' + player.id">
+      <v-icon color="primary">arrow_forward</v-icon>
+    </v-btn>
     <player-form :initial-player="player" color="orange">
       <v-tooltip bottom color="orange">
         <v-btn icon slot="activator">

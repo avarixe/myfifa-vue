@@ -48,11 +48,14 @@ export const actions = {
       }
     })
   },
-  get ({ rootState }, { playerId }) {
+  get ({ commit, rootState }, { playerId }) {
     return apiRequest({
       path: myfifa.players.record,
       pathData: { playerId: playerId },
-      token: rootState.token
+      token: rootState.token,
+      success: ({ data }) => {
+        commit('set', data)
+      }
     })
   },
   create ({ commit, rootState }, { teamId, player }) {

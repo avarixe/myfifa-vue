@@ -98,8 +98,8 @@
         display: 'ovr',
         modes: [
           { text: 'Status', value: 'status' },
-          { text: 'Contract', value: 'contract' },
-          { text: 'Analytics', value: 'analytics' }
+          { text: 'Contract', value: 'contract' }
+          // { text: 'Analytics', value: 'analytics' }
         ],
         loading: false,
         pagination: {},
