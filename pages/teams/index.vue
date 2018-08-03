@@ -73,9 +73,6 @@
     async fetch ({ store }) {
       await store.dispatch('team/refresh')
     },
-    beforeMount () {
-      this.$store.commit('team/clear')
-    },
     methods: {
       ...mapActions('team', [
         'remove'

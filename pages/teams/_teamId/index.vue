@@ -1,25 +1,15 @@
 <template>
   <v-container fluid grid-list-lg>
+    <team-calendar :team="team"></team-calendar>
     <v-layout row wrap>
-      <v-flex xs12 sm8 md4>
-        <v-flex xs12>
-          <v-slide-x-transition>
-            <v-card>
-              <team-calendar :team="team"></team-calendar>
-            </v-card>
-          </v-slide-x-transition>
-        </v-flex>
+      <v-flex xs12>
+        <player-panel></player-panel>
       </v-flex>
-      <v-flex xs12 md8>
-        <v-flex xs12>
-          <player-panel></player-panel>
-        </v-flex>
-        <v-flex xs12>
-          <match-panel></match-panel>
-        </v-flex>
-        <v-flex xs12>
-          <squad-panel></squad-panel>
-        </v-flex>
+      <v-flex xs12>
+        <match-panel></match-panel>
+      </v-flex>
+      <v-flex xs12>
+        <squad-panel></squad-panel>
       </v-flex>
     </v-layout>
   </v-container>
@@ -42,7 +32,7 @@
     middleware: 'authenticated',
     mixins: [ TeamAction ],
     async fetch ({ store, params }) {
-      await store.dispatch('team/get', { teamId: params.id, activate: true })
+      await store.dispatch('team/get', { teamId: params.teamId, activate: true })
     }
   }
 </script>
