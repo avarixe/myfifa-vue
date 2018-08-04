@@ -152,7 +152,7 @@
     ],
     data () {
       return {
-        valid: !!this.player.active_contract,
+        valid: !!this.player.current_contract,
         contract: Object.assign({
           effective_date: null,
           end_date: null,
@@ -162,7 +162,7 @@
           performance_bonus: null,
           bonus_req: null,
           bonus_req_type: null
-        }, this.player.active_contract),
+        }, this.player.current_contract),
         menus: {
           effective_date: false,
           end_date: false

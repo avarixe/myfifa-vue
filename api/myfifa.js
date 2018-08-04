@@ -9,8 +9,8 @@ export default {
     index: 'teams/{{ teamId }}/players',
     update_multiple: 'teams/{{ teamId }}/players/update_multiple',
     record: 'players/{{ playerId }}',
-    active_injury: 'players/{{ playerId }}/active_injury',
-    active_loan: 'players/{{ playerId }}/active_loan'
+    current_injury: 'players/{{ playerId }}/current_injury',
+    current_loan: 'players/{{ playerId }}/current_loan'
   },
 
   transfers: {

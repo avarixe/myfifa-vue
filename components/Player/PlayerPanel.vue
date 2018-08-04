@@ -121,9 +121,9 @@
           case 'contract':
             return headers.concat([
               { text: 'Value',          value: 'value',                          align: 'center', format: 'money' },
-              { text: 'Wage',           value: 'active_contract.wage',           align: 'center', format: 'money' },
-              { text: 'Effective Date', value: 'active_contract.effective_date', align: 'center', format: 'date' },
-              { text: 'End Date',       value: 'active_contract.end_date',       align: 'center', format: 'date' }
+              { text: 'Wage',           value: 'current_contract.wage',           align: 'center', format: 'money' },
+              { text: 'Effective Date', value: 'current_contract.effective_date', align: 'center', format: 'date' },
+              { text: 'End Date',       value: 'current_contract.end_date',       align: 'center', format: 'date' }
             ])
           default: // Status
             return headers.concat([

@@ -117,9 +117,11 @@
     background-color: #fafafa;
   }
 
-  #app .v-datatable {
+  #app .v-datatable,
+  #app .v-datatable tbody tr:hover:not(.v-datatable__expand-row)  {
     background-color: rgba(255, 255, 255, 0.5);
   }
+
 
   #app .v-datatable__actions,
   #app .v-datatable .v-list {

@@ -116,16 +116,16 @@ export const actions = {
       }
     })
   },
-  getActiveInjury ({ rootState }, { playerId }) {
+  getCurrentInjury ({ rootState }, { playerId }) {
     return apiRequest({
-      path: myfifa.players.active_injury,
+      path: myfifa.players.current_injury,
       pathData: { playerId: playerId },
       token: rootState.token
     })
   },
-  getActiveLoan ({ rootState }, { playerId }) {
+  getCurrentLoan ({ rootState }, { playerId }) {
     return apiRequest({
-      path: myfifa.players.active_loan,
+      path: myfifa.players.current_loan,
       pathData: { playerId: playerId },
       token: rootState.token
     })

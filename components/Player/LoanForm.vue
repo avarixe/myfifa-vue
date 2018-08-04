@@ -70,7 +70,7 @@
       async dialog (val) {
         if (val && this.playerLoaned) {
           try {
-            const { data } = await this.getActiveLoan({ playerId: this.player.id })
+            const { data } = await this.getCurrentLoan({ playerId: this.player.id })
             this.loan = data
           } catch (e) {
             alert(e)
@@ -81,7 +81,7 @@
     },
     methods: {
       ...mapActions({
-        getActiveLoan: 'player/getActiveLoan',
+        getCurrentLoan: 'player/getCurrentLoan',
         create: 'loan/create',
         update: 'loan/update'
       }),

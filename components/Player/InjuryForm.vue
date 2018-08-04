@@ -66,7 +66,7 @@
       async dialog (val) {
         if (val && this.playerInjured) {
           try {
-            const { data } = await this.getActiveInjury({ playerId: this.player.id })
+            const { data } = await this.getCurrentInjury({ playerId: this.player.id })
             this.injury = data
           } catch (e) {
             alert(e)
@@ -77,7 +77,7 @@
     },
     methods: {
       ...mapActions({
-        getActiveInjury: 'player/getActiveInjury',
+        getCurrentInjury: 'player/getCurrentInjury',
         create: 'injury/create',
         update: 'injury/update'
       }),
