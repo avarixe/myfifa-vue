@@ -20,7 +20,8 @@ module.exports = {
   plugins: [
     '~/plugins/vuetify.js',
     '~/plugins/validate.js',
-    '~/plugins/date-fns.js'
+    '~/plugins/date-fns.js',
+    '~/plugins/chartkick.js'
   ],
   css: [
     '~/assets/style/app.styl'
