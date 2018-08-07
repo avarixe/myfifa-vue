@@ -13,6 +13,13 @@ export const state = () => ({
 
 // actions
 export const actions = {
+  getAll ({ rootState }, { playerId }) {
+    return apiRequest({
+      path: myfifa.contracts.index,
+      pathData: { playerId: playerId },
+      token: rootState.token
+    })
+  },
   create ({ commit, rootState }, { playerId, contract }) {
     return apiRequest({
       method: 'post',

@@ -104,18 +104,6 @@ export const actions = {
       }
     })
   },
-  transfer ({ commit, rootState }, { playerId, transfer }) {
-    return apiRequest({
-      method: 'post',
-      path: myfifa.transfers.index,
-      pathData: { playerId: playerId },
-      token: rootState.token,
-      data: { transfer: transfer },
-      success: ({ data }) => {
-        commit('set', data)
-      }
-    })
-  },
   getCurrentInjury ({ rootState }, { playerId }) {
     return apiRequest({
       path: myfifa.players.current_injury,

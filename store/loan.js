@@ -3,6 +3,13 @@ import myfifa from '@/api/myfifa'
 
 // actions
 export const actions = {
+  getAll ({ rootState }, { playerId }) {
+    return apiRequest({
+      path: myfifa.loans.index,
+      pathData: { playerId: playerId },
+      token: rootState.token
+    })
+  },
   create ({ commit, rootState }, { playerId, loan }) {
     return apiRequest({
       method: 'post',

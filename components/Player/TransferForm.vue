@@ -144,11 +144,9 @@
       }
     },
     methods: {
-      ...mapActions('player', {
-        save: 'transfer'
-      }),
+      ...mapActions('transfer', [ 'create' ]),
       async submit () {
-        await this.save({
+        await this.create({
           playerId: this.player.id,
           transfer: this.transfer
         })
