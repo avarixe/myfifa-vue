@@ -33,25 +33,35 @@
       <v-flex xs12>
         <v-card>
           <v-card-title>
-            <div class="headline">Evaluation History</div>
+            <div class="headline">Player Growth</div>
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <v-data-table
-              :headers="historyHeaders"
-              :items="player.player_histories"
-              item-key="id"
-              :pagination.sync="defaultPagination"
-              hide-details
-              hide-actions>
-              <template slot="items" slot-scope="props">
-                <tr>
-                  <td class="text-xs-center">{{ $_format($_parse(props.item.datestamp), 'MMM DD, YYYY') }}</td>
-                  <td class="text-xs-center">{{ props.item.ovr }}</td>
-                  <td class="text-xs-center">{{ formatMoney(props.item.value) }}</td>
-                </tr>
-              </template>
-            </v-data-table>
+            <v-layout class="text-xs-center" row wrap>
+              <v-flex sm6>
+                <div class="display-1">{{ player.ovr }}</div>
+                <div class="subheading">OVR</div>
+                <line-chart
+                  :data="ovrGrowth"
+                  label="OVR"
+                  min="40"
+                  :library="{ backgroundColor: 'transparent' }"
+                  class="g-chart"
+                ></line-chart>
+              </v-flex>
+              <v-flex sm6>
+                <div class="display-1">{{ formatMoney(player.value) }}</div>
+                <div class="subheading">Value</div>
+                <line-chart
+                  :data="valueGrowth"
+                  label="Value"
+                  :prefix="team.currency"
+                  thousands=","
+                  :library="{ backgroundColor: 'transparent' }"
+                  class="g-chart"
+                ></line-chart>
+              </v-flex>
+            </v-layout>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -88,7 +98,7 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   import TeamAction from '@/mixins/TeamAction'
 
   export default {
@@ -119,6 +129,12 @@
       player () {
         return this.players[this.$route.params.playerId]
       },
+      ovrGrowth () {
+        return this.player.player_histories.map(h => [ h.datestamp, h.ovr ])
+      },
+      valueGrowth () {
+        return this.player.player_histories.map(h => [ h.datestamp, h.value ])
+      },
       contracts () {
         return []
         // return this.player.contracts.reduce((arr, c) => {
@@ -130,7 +146,13 @@
       await store.dispatch('team/get', { teamId: params.teamId, activate: true })
       await store.dispatch('player/get', { playerId: params.playerId })
     },
+    async mounted () {
+      // this.getContracts({ playerId: this.$route.params.playerId })
+    },
     methods: {
+      ...mapActions({
+        getContracts: 'contract/getAll'
+      }),
       listArray (arr) {
         return arr && arr.length > 0
           ? arr.join(', ')
@@ -141,6 +163,19 @@
           ? this.team.currency + parseInt(amount).toLocaleString()
           : 'N/A'
       }
+    },
+    head () {
+      return {
+        script: [
+          { src: 'https://www.gstatic.com/charts/loader.js' }
+        ]
+      }
     }
   }
 </script>
+
+<style scoped>
+  .g-chart {
+    line-height: 0 !important;
+  }
+</style>
