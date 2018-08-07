@@ -66,33 +66,115 @@
         </v-card>
       </v-flex>
 
-      <!-- <v-flex xs12> -->
-        <!-- <v-card> -->
-          <!-- <v-card-title> -->
-            <!-- <div class="headline">Contracts</div> -->
-          <!-- </v-card-title> -->
-          <!-- <v-divider></v-divider> -->
-          <!-- <v-card-text> -->
-            <!-- <v-data-table -->
-              <!-- :headers="contractHeaders" -->
-              <!-- :items="contracts" -->
-              <!-- item-key="id" -->
-              <!-- :pagination.sync="defaultPagination" -->
-              <!-- hide-details -->
-              <!-- hide-actions -->
-              <!-- no-data-text="No Contracts Recorded"> -->
-              <!-- <template slot="items" slot-scope="props"> -->
-                <!-- <tr> -->
-                  <!-- <td class="text-xs-center">{{ $_format($_parse(props.item.effective_date), 'MMM DD, YYYY') }}</td> -->
-                  <!-- <td class="text-xs-center">{{ $_format($_parse(props.item.end_date), 'MMM DD, YYYY') }}</td> -->
-                  <!-- <td class="text-xs-center">{{ formatMoney(props.item.wage) }}</td> -->
-                  <!-- <td class="text-xs-center">{{ formatMoney(props.item.signing_bonus) }}</td> -->
-                <!-- </tr> -->
-              <!-- </template> -->
-            <!-- </v-data-table> -->
-          <!-- </v-card-text> -->
-        <!-- </v-card> -->
-      <!-- </v-flex> -->
+      <v-flex xs12>
+        <v-card>
+          <v-card-title>
+            <div class="headline">Contracts</div>
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-data-table
+              :headers="contractHeaders"
+              :items="contracts"
+              item-key="id"
+              :pagination.sync="defaultPagination"
+              hide-details
+              hide-actions
+              no-data-text="No Contracts Recorded">
+              <template slot="items" slot-scope="props">
+                <tr>
+                  <td class="text-xs-center">{{ formatDate(props.item.effective_date) }}</td>
+                  <td class="text-xs-center">{{ formatDate(props.item.end_date) }}</td>
+                  <td class="text-xs-center">{{ formatMoney(props.item.wage) }}</td>
+                  <td class="text-xs-center">{{ formatMoney(props.item.signing_bonus) }}</td>
+                </tr>
+              </template>
+            </v-data-table>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+
+      <v-flex xs12>
+        <v-card>
+          <v-card-title>
+            <div class="headline">Injuries</div>
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-data-table
+              :headers="injuryHeaders"
+              :items="injuries"
+              item-key="id"
+              :pagination.sync="defaultPagination"
+              hide-details
+              hide-actions
+              no-data-text="No Injuries Recorded">
+              <template slot="items" slot-scope="props">
+                <tr>
+                  <td class="text-xs-center">{{ props.item.description }}</td>
+                  <td class="text-xs-center">{{ formatDate(props.item.start_date) }}</td>
+                  <td class="text-xs-center">{{ formatDate(props.item.end_date) }}</td>
+                </tr>
+              </template>
+            </v-data-table>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+
+      <v-flex xs12>
+        <v-card>
+          <v-card-title>
+            <div class="headline">Loans</div>
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-data-table
+              :headers="loanHeaders"
+              :items="loans"
+              item-key="id"
+              :pagination.sync="defaultPagination"
+              hide-details
+              hide-actions
+              no-data-text="No Loans Recorded">
+              <template slot="items" slot-scope="props">
+                <tr>
+                  <td class="text-xs-center">{{ props.item.destination }}</td>
+                  <td class="text-xs-center">{{ formatDate(props.item.start_date) }}</td>
+                  <td class="text-xs-center">{{ formatDate(props.item.end_date) }}</td>
+                </tr>
+              </template>
+            </v-data-table>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+
+      <v-flex xs12>
+        <v-card>
+          <v-card-title>
+            <div class="headline">Transfers</div>
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-data-table
+              :headers="transferHeaders"
+              :items="transfers"
+              item-key="id"
+              :pagination.sync="defaultPagination"
+              hide-details
+              hide-actions
+              no-data-text="No Transfers Recorded">
+              <template slot="items" slot-scope="props">
+                <tr>
+                  <td class="text-xs-center">{{ props.item.origin }}</td>
+                  <td class="text-xs-center">{{ props.item.destination }}</td>
+                  <td class="text-xs-center">{{ formatDate(props.item.effective_date) }}</td>
+                  <td class="text-xs-center">{{ formatMoney(props.item.fee) }}</td>
+                </tr>
+              </template>
+            </v-data-table>
+          </v-card-text>
+        </v-card>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -117,9 +199,29 @@
           { text: 'Wage', value: 'wage', align: 'center' },
           { text: 'Signing Bonus', value: 'signing_bonus', align: 'center' }
         ],
+        injuryHeaders: [
+          { text: 'Description', value: 'description', align: 'center' },
+          { text: 'Start Date',   value: 'start_date',  align: 'center' },
+          { text: 'End Date', value: 'end_date',    align: 'center' }
+        ],
+        loanHeaders: [
+          { text: 'Destination', value: 'datestamp', align: 'center' },
+          { text: 'Start Date', value: 'start_date', align: 'center' },
+          { text: 'End Date', value: 'end_date', align: 'center' }
+        ],
+        transferHeaders: [
+          { text: 'Origin', value: 'origin', align: 'center' },
+          { text: 'Destination', value: 'destination', align: 'center' },
+          { text: 'Effective Date', value: 'effective_date', align: 'center' },
+          { text: 'Transfer Fee', value: 'fee', align: 'center' }
+        ],
         defaultPagination: {
           rowsPerPage: -1
-        }
+        },
+        contracts: [],
+        loans: [],
+        injuries: [],
+        transfers: []
       }
     },
     computed: {
@@ -134,24 +236,24 @@
       },
       valueGrowth () {
         return this.player.player_histories.map(h => [ h.datestamp, h.value ])
-      },
-      contracts () {
-        return []
-        // return this.player.contracts.reduce((arr, c) => {
-        //   return arr + c.contract_histories
-        // }, [])
       }
     },
     async fetch ({ store, params }) {
       await store.dispatch('team/get', { teamId: params.teamId, activate: true })
       await store.dispatch('player/get', { playerId: params.playerId })
     },
-    async mounted () {
-      // this.getContracts({ playerId: this.$route.params.playerId })
+    mounted () {
+      this.setContracts()
+      this.setLoans()
+      this.setInjuries()
+      this.setTransfers()
     },
     methods: {
       ...mapActions({
-        getContracts: 'contract/getAll'
+        getContracts: 'contract/getAll',
+        getLoans: 'loan/getAll',
+        getInjuries: 'injury/getAll',
+        getTransfers: 'transfer/getAll'
       }),
       listArray (arr) {
         return arr && arr.length > 0
@@ -162,13 +264,35 @@
         return amount
           ? this.team.currency + parseInt(amount).toLocaleString()
           : 'N/A'
-      }
-    },
-    head () {
-      return {
-        script: [
-          { src: 'https://www.gstatic.com/charts/loader.js' }
-        ]
+      },
+      formatDate (date, dateFormat = 'MMM DD, YYYY') {
+        return date
+          ? this.$_format(this.$_parse(date), dateFormat)
+          : 'N/A'
+      },
+      async setContracts () {
+        const { data } = await this.getContracts({
+          playerId: this.$route.params.playerId
+        })
+        this.contracts = data
+      },
+      async setLoans () {
+        const { data } = await this.getLoans({
+          playerId: this.$route.params.playerId
+        })
+        this.loans = data
+      },
+      async setInjuries () {
+        const { data } = await this.getInjuries({
+          playerId: this.$route.params.playerId
+        })
+        this.injuries = data
+      },
+      async setTransfers () {
+        const { data } = await this.getTransfers({
+          playerId: this.$route.params.playerId
+        })
+        this.transfers = data
       }
     }
   }
