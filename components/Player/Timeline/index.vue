@@ -37,6 +37,10 @@
       TimelineItemContent
     },
     props: {
+      filter: {
+        type: String,
+        required: true
+      },
       contracts: {
         type: Array,
         required: true
@@ -96,8 +100,13 @@
           })
         ]
       },
+      filteredItems () {
+        return this.filter !== 'All'
+          ? this.items.filter(item => item.type === this.filter)
+          : this.items
+      },
       sortedItems () {
-        return this.items.sort((a, b) => a.date < b.date)
+        return this.filteredItems.sort((a, b) => a.date < b.date)
       }
     }
   }

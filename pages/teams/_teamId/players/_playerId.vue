@@ -69,11 +69,36 @@
         <v-card>
           <v-card-title>
             <div class="headline">Timeline</div>
+
+            <!-- Timeline Filter -->
+            <v-tooltip top>
+              <v-menu slot="activator" bottom right>
+                <v-btn slot="activator" icon>
+                  <v-icon :color="currentFilter.color">
+                    {{ currentFilter.icon }}
+                  </v-icon>
+                </v-btn>
+                <v-list>
+                  <v-list-tile
+                    v-for="(event, key) in filterOptions"
+                    :key="key"
+                    @click="timelineFilter = key">
+                    <v-list-tile-avatar v-if="'icon' in event">
+                      <v-icon :color="event.color">{{ event.icon }}</v-icon>
+                    </v-list-tile-avatar>
+                    <v-list-tile-title>{{ key }}</v-list-tile-title>
+                  </v-list-tile>
+                </v-list>
+              </v-menu>
+              Filter Timeline
+            </v-tooltip>
+
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <player-timeline
               :contracts="contracts"
+              :filter="timelineFilter"
               :injuries="injuries"
               :loans="loans"
               :transfers="transfers"
@@ -103,31 +128,14 @@
           { text: 'OVR',   value: 'ovr',  align: 'center' },
           { text: 'Value', value: 'value',    align: 'center' }
         ],
-        contractHeaders: [
-          { text: 'Effective Date', value: 'effective_date', align: 'center' },
-          { text: 'Expiration Date', value: 'end_date', align: 'center' },
-          { text: 'Wage', value: 'wage', align: 'center' },
-          { text: 'Signing Bonus', value: 'signing_bonus', align: 'center' }
-        ],
-        injuryHeaders: [
-          { text: 'Description', value: 'description', align: 'center' },
-          { text: 'Start Date',   value: 'start_date',  align: 'center' },
-          { text: 'End Date', value: 'end_date',    align: 'center' }
-        ],
-        loanHeaders: [
-          { text: 'Destination', value: 'datestamp', align: 'center' },
-          { text: 'Start Date', value: 'start_date', align: 'center' },
-          { text: 'End Date', value: 'end_date', align: 'center' }
-        ],
-        transferHeaders: [
-          { text: 'Origin', value: 'origin', align: 'center' },
-          { text: 'Destination', value: 'destination', align: 'center' },
-          { text: 'Effective Date', value: 'effective_date', align: 'center' },
-          { text: 'Transfer Fee', value: 'fee', align: 'center' }
-        ],
-        defaultPagination: {
-          rowsPerPage: -1
+        filterOptions: {
+          'All': { icon: 'filter_list' },
+          'Contract': { icon: 'description', color: 'blue' },
+          'Injury': { icon: 'local_hospital', color: 'pink' },
+          'Loan': { icon: 'transfer_within_a_station', color: 'indigo' },
+          'Transfer': { icon: 'flight_takeoff', color: 'green' }
         },
+        timelineFilter: 'All',
         contracts: [],
         loans: [],
         injuries: [],
@@ -149,6 +157,9 @@
       },
       valueGrowth () {
         return this.histories.map(h => [ h.datestamp, h.value ])
+      },
+      currentFilter () {
+        return this.filterOptions[this.timelineFilter]
       }
     },
     async fetch ({ store, params }) {
