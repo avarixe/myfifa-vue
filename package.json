@@ -1,6 +1,6 @@
 {
   "name": "nuxt-myfifa",
-  "version": "1.0.0",
+  "version": "0.12.1",
   "description": "Nuxt.js + Vuetify.js project",
   "author": "Joon Lee <joon.lee@ucla.edu>",
   "private": true,
