@@ -108,7 +108,8 @@
     overflow-y: auto;
   }
 
-  #app .v-card {
+  #app .v-card,
+  #app .v-expansion-panel__container--active > .v-expansion-panel__header {
     background-color: rgba(255, 255, 255, 0.75);
   }
 
@@ -118,13 +119,14 @@
   }
 
   #app .v-datatable,
-  #app .v-datatable tbody tr:hover:not(.v-datatable__expand-row)  {
+  #app .v-datatable tbody tr:hover:not(.v-datatable__expand-row) {
     background-color: rgba(255, 255, 255, 0.5);
   }
 
 
   #app .v-datatable__actions,
-  #app .v-datatable .v-list {
+  #app .v-datatable .v-list,
+  #app .v-expansion-panel__container {
     background-color: transparent;
   }
 </style>

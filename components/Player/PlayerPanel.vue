@@ -18,19 +18,22 @@
       <player-mass-update></player-mass-update>
 
       <!-- Display Menu -->
-      <v-menu bottom right>
-        <v-btn slot="activator" icon>
-          <v-icon>menu</v-icon>
-        </v-btn>
-        <v-list>
-          <v-list-tile
-            v-for="(mode, i) in modes"
-            :key="i"
-            @click="display = mode.value">
-            <v-list-tile-title>{{ mode.text }}</v-list-tile-title>
-          </v-list-tile>
-        </v-list>
-      </v-menu>
+      <v-tooltip top>
+        <v-menu slot="activator" bottom right>
+          <v-btn slot="activator" icon>
+            <v-icon>menu</v-icon>
+          </v-btn>
+          <v-list>
+            <v-list-tile
+              v-for="(mode, i) in modes"
+              :key="i"
+              @click="display = mode.value">
+              <v-list-tile-title>{{ mode.text }}</v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-menu>
+        Display Mode
+      </v-tooltip>
 
       <v-tooltip top>
         <v-btn slot="activator" icon @click.native="filterActive = !filterActive">
@@ -46,6 +49,7 @@
         v-model="search"
         label="Search"
         append-icon="search"
+        hide-details
       ></v-text-field>
     </v-card-title>
     <v-card-text>

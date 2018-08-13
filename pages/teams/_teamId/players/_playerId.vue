@@ -14,7 +14,7 @@
                 <div class="subheading">Position</div>
               </v-flex>
               <v-flex xs12 sm3>
-                <div class="display-1">{{ listArray(player.sec_pos) }}</div>
+                <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
                 <div class="subheading">Secondary Position(s)</div>
               </v-flex>
               <v-flex xs12 sm3>
@@ -50,12 +50,11 @@
                 ></line-chart>
               </v-flex>
               <v-flex sm6>
-                <div class="display-1">{{ formatMoney(player.value) }}</div>
+                <div class="display-1">{{ $_formatMoney(player.value) }}</div>
                 <div class="subheading">Value</div>
                 <line-chart
                   :data="valueGrowth"
                   label="Value"
-                  :prefix="team.currency"
                   thousands=","
                   :library="{ backgroundColor: 'transparent' }"
                   class="g-chart"
@@ -69,109 +68,41 @@
       <v-flex xs12>
         <v-card>
           <v-card-title>
-            <div class="headline">Contracts</div>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-data-table
-              :headers="contractHeaders"
-              :items="contracts"
-              item-key="id"
-              :pagination.sync="defaultPagination"
-              hide-details
-              hide-actions
-              no-data-text="No Contracts Recorded">
-              <template slot="items" slot-scope="props">
-                <tr>
-                  <td class="text-xs-center">{{ formatDate(props.item.effective_date) }}</td>
-                  <td class="text-xs-center">{{ formatDate(props.item.end_date) }}</td>
-                  <td class="text-xs-center">{{ formatMoney(props.item.wage) }}</td>
-                  <td class="text-xs-center">{{ formatMoney(props.item.signing_bonus) }}</td>
-                </tr>
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-card>
-      </v-flex>
+            <div class="headline">Timeline</div>
 
-      <v-flex xs12>
-        <v-card>
-          <v-card-title>
-            <div class="headline">Injuries</div>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-data-table
-              :headers="injuryHeaders"
-              :items="injuries"
-              item-key="id"
-              :pagination.sync="defaultPagination"
-              hide-details
-              hide-actions
-              no-data-text="No Injuries Recorded">
-              <template slot="items" slot-scope="props">
-                <tr>
-                  <td class="text-xs-center">{{ props.item.description }}</td>
-                  <td class="text-xs-center">{{ formatDate(props.item.start_date) }}</td>
-                  <td class="text-xs-center">{{ formatDate(props.item.end_date) }}</td>
-                </tr>
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-card>
-      </v-flex>
+            <!-- Timeline Filter -->
+            <v-tooltip top>
+              <v-menu slot="activator" bottom right>
+                <v-btn slot="activator" icon>
+                  <v-icon :color="currentFilter.color">
+                    {{ currentFilter.icon }}
+                  </v-icon>
+                </v-btn>
+                <v-list>
+                  <v-list-tile
+                    v-for="(event, key) in filterOptions"
+                    :key="key"
+                    @click="timelineFilter = key">
+                    <v-list-tile-avatar v-if="'icon' in event">
+                      <v-icon :color="event.color">{{ event.icon }}</v-icon>
+                    </v-list-tile-avatar>
+                    <v-list-tile-title>{{ key }}</v-list-tile-title>
+                  </v-list-tile>
+                </v-list>
+              </v-menu>
+              Filter Timeline
+            </v-tooltip>
 
-      <v-flex xs12>
-        <v-card>
-          <v-card-title>
-            <div class="headline">Loans</div>
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <v-data-table
-              :headers="loanHeaders"
-              :items="loans"
-              item-key="id"
-              :pagination.sync="defaultPagination"
-              hide-details
-              hide-actions
-              no-data-text="No Loans Recorded">
-              <template slot="items" slot-scope="props">
-                <tr>
-                  <td class="text-xs-center">{{ props.item.destination }}</td>
-                  <td class="text-xs-center">{{ formatDate(props.item.start_date) }}</td>
-                  <td class="text-xs-center">{{ formatDate(props.item.end_date) }}</td>
-                </tr>
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-card>
-      </v-flex>
-
-      <v-flex xs12>
-        <v-card>
-          <v-card-title>
-            <div class="headline">Transfers</div>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-data-table
-              :headers="transferHeaders"
-              :items="transfers"
-              item-key="id"
-              :pagination.sync="defaultPagination"
-              hide-details
-              hide-actions
-              no-data-text="No Transfers Recorded">
-              <template slot="items" slot-scope="props">
-                <tr>
-                  <td class="text-xs-center">{{ props.item.origin }}</td>
-                  <td class="text-xs-center">{{ props.item.destination }}</td>
-                  <td class="text-xs-center">{{ formatDate(props.item.effective_date) }}</td>
-                  <td class="text-xs-center">{{ formatMoney(props.item.fee) }}</td>
-                </tr>
-              </template>
-            </v-data-table>
+            <player-timeline
+              :contracts="contracts"
+              :filter="timelineFilter"
+              :injuries="injuries"
+              :loans="loans"
+              :transfers="transfers"
+            /></v-card-text>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -181,11 +112,15 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
+  import PlayerTimeline from '@/components/Player/Timeline'
   import TeamAction from '@/mixins/TeamAction'
 
   export default {
     middleware: 'authenticated',
     mixins: [ TeamAction ],
+    components: {
+      'player-timeline': PlayerTimeline
+    },
     data () {
       return {
         historyHeaders: [
@@ -193,31 +128,14 @@
           { text: 'OVR',   value: 'ovr',  align: 'center' },
           { text: 'Value', value: 'value',    align: 'center' }
         ],
-        contractHeaders: [
-          { text: 'Effective Date', value: 'effective_date', align: 'center' },
-          { text: 'Expiration Date', value: 'end_date', align: 'center' },
-          { text: 'Wage', value: 'wage', align: 'center' },
-          { text: 'Signing Bonus', value: 'signing_bonus', align: 'center' }
-        ],
-        injuryHeaders: [
-          { text: 'Description', value: 'description', align: 'center' },
-          { text: 'Start Date',   value: 'start_date',  align: 'center' },
-          { text: 'End Date', value: 'end_date',    align: 'center' }
-        ],
-        loanHeaders: [
-          { text: 'Destination', value: 'datestamp', align: 'center' },
-          { text: 'Start Date', value: 'start_date', align: 'center' },
-          { text: 'End Date', value: 'end_date', align: 'center' }
-        ],
-        transferHeaders: [
-          { text: 'Origin', value: 'origin', align: 'center' },
-          { text: 'Destination', value: 'destination', align: 'center' },
-          { text: 'Effective Date', value: 'effective_date', align: 'center' },
-          { text: 'Transfer Fee', value: 'fee', align: 'center' }
-        ],
-        defaultPagination: {
-          rowsPerPage: -1
+        filterOptions: {
+          'All': { icon: 'filter_list' },
+          'Contract': { icon: 'description', color: 'blue' },
+          'Injury': { icon: 'local_hospital', color: 'pink' },
+          'Loan': { icon: 'transfer_within_a_station', color: 'indigo' },
+          'Transfer': { icon: 'flight_takeoff', color: 'green' }
         },
+        timelineFilter: 'All',
         contracts: [],
         loans: [],
         injuries: [],
@@ -231,11 +149,17 @@
       player () {
         return this.players[this.$route.params.playerId]
       },
+      histories () {
+        return this.player.player_histories
+      },
       ovrGrowth () {
-        return this.player.player_histories.map(h => [ h.datestamp, h.ovr ])
+        return this.histories.map(h => [ h.datestamp, h.ovr ])
       },
       valueGrowth () {
-        return this.player.player_histories.map(h => [ h.datestamp, h.value ])
+        return this.histories.map(h => [ h.datestamp, h.value ])
+      },
+      currentFilter () {
+        return this.filterOptions[this.timelineFilter]
       }
     },
     async fetch ({ store, params }) {
@@ -255,21 +179,6 @@
         getInjuries: 'injury/getAll',
         getTransfers: 'transfer/getAll'
       }),
-      listArray (arr) {
-        return arr && arr.length > 0
-          ? arr.join(', ')
-          : 'N/A'
-      },
-      formatMoney (amount) {
-        return amount
-          ? this.team.currency + parseInt(amount).toLocaleString()
-          : 'N/A'
-      },
-      formatDate (date, dateFormat = 'MMM DD, YYYY') {
-        return date
-          ? this.$_format(this.$_parse(date), dateFormat)
-          : 'N/A'
-      },
       async setContracts () {
         const { data } = await this.getContracts({
           playerId: this.$route.params.playerId

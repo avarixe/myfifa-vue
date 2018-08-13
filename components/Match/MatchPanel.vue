@@ -22,6 +22,7 @@
         v-model="search"
         label="Search"
         append-icon="search"
+        hide-details
       ></v-text-field>
     </v-card-title>
     <v-card-text>
