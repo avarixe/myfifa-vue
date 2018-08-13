@@ -22,7 +22,7 @@ module.exports = {
   },
   plugins: [
     '~/plugins/vuetify.js',
-    '~/plugins/validate.js',
+    '~/plugins/custom.js',
     '~/plugins/date-fns.js',
     '~/plugins/chartkick.js'
   ],

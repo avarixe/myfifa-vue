@@ -5887,6 +5887,10 @@ vue-chartkick@^0.4.0:
     deep-equal "^1.0.1"
     deepmerge "^2.1.1"
 
+vue-cute-timeline@^1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/vue-cute-timeline/-/vue-cute-timeline-1.2.5.tgz#ac4659910e8170250a340e4fda541f898f4ab2e8"
+
 vue-hot-reload-api@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.0.tgz#97976142405d13d8efae154749e88c4e358cf926"
