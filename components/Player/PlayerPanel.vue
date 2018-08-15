@@ -21,13 +21,18 @@
       <v-tooltip top>
         <v-menu slot="activator" bottom right>
           <v-btn slot="activator" icon>
-            <v-icon>menu</v-icon>
+            <v-icon :color="currentMode.color">
+              {{ currentMode.icon }}
+            </v-icon>
           </v-btn>
           <v-list>
             <v-list-tile
-              v-for="(mode, i) in modes"
-              :key="i"
-              @click="display = mode.value">
+              v-for="(mode, key) in modes"
+              :key="key"
+              @click="display = key">
+              <v-list-tile-avatar>
+                <v-icon :color="mode.color">{{ mode.icon }}</v-icon>
+              </v-list-tile-avatar>
               <v-list-tile-title>{{ mode.text }}</v-list-tile-title>
             </v-list-tile>
           </v-list>
@@ -99,12 +104,23 @@
     mixins: [ TeamAction ],
     data () {
       return {
-        display: 'ovr',
-        modes: [
-          { text: 'Status', value: 'status' },
-          { text: 'Contract', value: 'contract' }
-          // { text: 'Analytics', value: 'analytics' }
-        ],
+        display: 'status',
+        modes: {
+          status: {
+            text: 'Status',
+            icon: 'filter_list'
+          },
+          contract: {
+            text: 'Contract',
+            icon: 'description',
+            color: 'blue'
+          },
+          analytics: {
+            text: 'Analytics',
+            icon: 'trending_up',
+            color: 'green'
+          }
+        },
         loading: false,
         pagination: {},
         filterActive: true,
@@ -115,6 +131,9 @@
       ...mapState('player', {
         players: 'list'
       }),
+      currentMode () {
+        return this.modes[this.display]
+      },
       headers () {
         let headers = [
           { text: 'Name',     value: 'name', align: 'left' },
@@ -124,10 +143,16 @@
         switch (this.display) {
           case 'contract':
             return headers.concat([
-              { text: 'Value',          value: 'value',                          align: 'center', format: 'money' },
+              { text: 'Value',          value: 'value',                           align: 'center', format: 'money' },
               { text: 'Wage',           value: 'current_contract.wage',           align: 'center', format: 'money' },
               { text: 'Effective Date', value: 'current_contract.effective_date', align: 'center', format: 'date' },
               { text: 'End Date',       value: 'current_contract.end_date',       align: 'center', format: 'date' }
+            ])
+          case 'analytics':
+            return headers.concat([
+              { text: 'Games',   value: 'num_games',   align: 'center' },
+              { text: 'Goals',   value: 'num_goals',   align: 'center' },
+              { text: 'Assists', value: 'num_assists', align: 'center' }
             ])
           default: // Status
             return headers.concat([
@@ -157,7 +182,8 @@
     },
     methods: {
       ...mapActions('player', [
-        'refresh'
+        'getAll',
+        'analyze'
       ]),
       getProperty (player, property, outputFormat) {
         let value = get(player, property, '')
@@ -181,7 +207,11 @@
         this.loading = true
 
         try {
-          this.refresh({ teamId: this.team.id })
+          await this.getAll({ teamId: this.team.id })
+          await this.analyze({
+            teamId: this.team.id,
+            playerIds: Object.keys(this.players)
+          })
         } catch (e) {
           alert(e.message)
         } finally {

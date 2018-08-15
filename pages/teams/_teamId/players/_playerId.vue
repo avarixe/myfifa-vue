@@ -108,7 +108,7 @@
                     v-for="(event, key) in filterOptions"
                     :key="key"
                     @click="timelineFilter = key">
-                    <v-list-tile-avatar v-if="'icon' in event">
+                    <v-list-tile-avatar>
                       <v-icon :color="event.color">{{ event.icon }}</v-icon>
                     </v-list-tile-avatar>
                     <v-list-tile-title>{{ key }}</v-list-tile-title>
@@ -192,7 +192,10 @@
       await store.dispatch('player/get', { playerId: params.playerId })
     },
     mounted () {
-      this.analyzeStatistics(this.player)
+      this.analyzeStatistics({
+        teamId: this.team.id,
+        playerIds: [ this.player.id ]
+      })
       this.setContracts()
       this.setLoans()
       this.setInjuries()

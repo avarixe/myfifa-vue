@@ -38,13 +38,13 @@ export const getters = {
 
 // actions
 export const actions = {
-  refresh ({ state, commit, rootState }, { teamId }) {
+  getAll ({ state, commit, rootState }, { teamId }) {
     return apiRequest({
       path: myfifa.players.index,
       pathData: { teamId: teamId },
       token: rootState.token,
       success: function ({ data }) {
-        commit('refresh', data)
+        commit('setAll', data)
       }
     })
   },
@@ -58,23 +58,25 @@ export const actions = {
       }
     })
   },
-  analyze ({ commit, state, rootState }, player) {
+  analyze ({ commit, state, rootState }, { teamId, playerIds }) {
     return apiRequest({
       method: 'post',
       path: myfifa.teams.statistics,
-      pathData: { teamId: player.team_id },
+      pathData: { teamId: teamId },
       data: {
         query: {
-          player_ids: [ player.id ]
+          player_ids: playerIds
         }
       },
       success: ({ data }) => {
-        commit('set', {
-          ...state.list[player.id],
-          num_games: data.num_games[player.id],
-          num_goals: data.num_goals[player.id],
-          num_assists: data.num_assists[player.id]
-        })
+        for (let playerId of data.player_ids) {
+          commit('set', {
+            ...state.list[playerId],
+            num_games: data.num_games[playerId] || 0,
+            num_goals: data.num_goals[playerId] || 0,
+            num_assists: data.num_assists[playerId] || 0
+          })
+        }
       }
     })
   },
@@ -142,7 +144,7 @@ export const actions = {
 
 // mutations
 export const mutations = {
-  refresh (state, players) {
+  setAll (state, players) {
     state.list = players.reduce((list, player) => {
       list[player.id] = player
       return list
