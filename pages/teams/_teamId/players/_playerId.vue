@@ -116,11 +116,11 @@
   import TeamAction from '@/mixins/TeamAction'
 
   export default {
+    components: {
+      PlayerTimeline
+    },
     middleware: 'authenticated',
     mixins: [ TeamAction ],
-    components: {
-      'player-timeline': PlayerTimeline
-    },
     data () {
       return {
         historyHeaders: [
