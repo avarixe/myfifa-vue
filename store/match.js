@@ -34,13 +34,14 @@ export const state = () => ({
 
 // getters
 export const getters = {
-  competitions: state => [
-    ...new Set(Object.values(state.list).map(match => match.competition))
-  ].reverse(),
-  teams: state => [
+  allByRecency: state => Object.values(state.list).reverse(),
+  competitions: (state, getters) => [
+    ...new Set(getters.allByRecency.map(match => match.competition))
+  ],
+  teams: (state, getters) => [
     ...new Set([
-      ...Object.values(state.list).map(match => match.home),
-      ...Object.values(state.list).map(match => match.away)
+      ...getters.allByRecency.map(match => match.home),
+      ...getters.allByRecency.map(match => match.away)
     ])
   ]
 }

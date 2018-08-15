@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-toolbar fixed app>
+    <v-toolbar fixed dense app>
       <v-menu
         v-if="authenticated"
         v-model="menu"

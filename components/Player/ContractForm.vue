@@ -152,8 +152,8 @@
     ],
     data () {
       return {
-        valid: !!this.player.current_contract,
-        contract: Object.assign({
+        valid: false,
+        contract: {
           effective_date: null,
           end_date: null,
           wage: null,
@@ -162,7 +162,7 @@
           performance_bonus: null,
           bonus_req: null,
           bonus_req_type: null
-        }, this.player.current_contract),
+        },
         menus: {
           effective_date: false,
           end_date: false
@@ -183,7 +183,10 @@
     watch: {
       dialog (val) {
         if (val) {
-          this.contract.effective_date = this.contract.effective_date || this.team.current_date
+          this.contract = {
+            ...this.player.current_contract,
+            effective_date: this.team.current_date
+          }
         } else {
           Object.assign(this.$data, this.$options.data.apply(this))
           // this.$refs.form.reset()
@@ -195,18 +198,13 @@
     },
     methods: {
       ...mapActions('contract', [
-        'create',
-        'update'
+        'create'
       ]),
       async submit () {
-        if ('id' in this.contract) {
-          await this.update(this.contract)
-        } else {
-          await this.create({
-            playerId: this.player.id,
-            contract: this.contract
-          })
-        }
+        await this.create({
+          playerId: this.player.id,
+          contract: this.contract
+        })
       }
     }
   }

@@ -4,7 +4,7 @@
       v-for="(item, i) in sortedItems"
       :key="i">
       {{ item.dateRange }}
-      <v-expansion-panel inset>
+      <v-expansion-panel popout>
         <v-expansion-panel-content>
           <div slot="header">
             <v-icon left small :color="item.color">

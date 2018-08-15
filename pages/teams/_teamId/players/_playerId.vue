@@ -32,6 +32,31 @@
 
       <v-flex xs12>
         <v-card>
+          <v-card-title primary-title>
+            <div class="headline">Match Statistics</div>
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-layout class="text-xs-center" row wrap>
+              <v-flex xs12 sm4>
+                <div class="teal--text display-1">{{ player.num_games }}</div>
+                <div class="subheading">Matches</div>
+              </v-flex>
+              <v-flex xs12 sm4>
+                <div class="blue--text display-1">{{ player.num_goals }}</div>
+                <div class="subheading">Goals</div>
+              </v-flex>
+              <v-flex xs12 sm4>
+                <div class="orange--text display-1">{{ player.num_assists }}</div>
+                <div class="subheading">Assists</div>
+              </v-flex>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+
+      <v-flex xs12>
+        <v-card>
           <v-card-title>
             <div class="headline">Player Growth</div>
           </v-card-title>
@@ -116,11 +141,11 @@
   import TeamAction from '@/mixins/TeamAction'
 
   export default {
+    components: {
+      PlayerTimeline
+    },
     middleware: 'authenticated',
     mixins: [ TeamAction ],
-    components: {
-      'player-timeline': PlayerTimeline
-    },
     data () {
       return {
         historyHeaders: [
@@ -167,6 +192,7 @@
       await store.dispatch('player/get', { playerId: params.playerId })
     },
     mounted () {
+      this.analyzeStatistics(this.player)
       this.setContracts()
       this.setLoans()
       this.setInjuries()
@@ -174,6 +200,7 @@
     },
     methods: {
       ...mapActions({
+        analyzeStatistics: 'player/analyze',
         getContracts: 'contract/getAll',
         getLoans: 'loan/getAll',
         getInjuries: 'injury/getAll',

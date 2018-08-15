@@ -1,33 +1,35 @@
 <template>
-  <v-container fluid grid-list-lg>
-    <team-calendar :team="team"></team-calendar>
-    <v-layout row wrap>
-      <v-flex xs12>
-        <player-panel></player-panel>
-      </v-flex>
-      <v-flex xs12>
-        <match-panel></match-panel>
-      </v-flex>
-      <v-flex xs12>
-        <squad-panel></squad-panel>
-      </v-flex>
-    </v-layout>
-  </v-container>
+  <div class="pt-5">
+    <team-toolbar :team="team"></team-toolbar>
+    <v-container fluid grid-list-lg>
+      <v-layout row wrap>
+        <v-flex xs12>
+          <player-panel></player-panel>
+        </v-flex>
+        <v-flex xs12>
+          <match-panel></match-panel>
+        </v-flex>
+        <v-flex xs12>
+          <squad-panel></squad-panel>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </div>
 </template>
 
 <script>
   import TeamAction from '@/mixins/TeamAction'
-  import TeamCalendar from '@/components/Team/TeamCalendar'
+  import TeamToolbar from '@/components/Team/TeamToolbar'
   import PlayerPanel from '@/components/Player/PlayerPanel'
   import MatchPanel from '@/components/Match/MatchPanel'
   import SquadPanel from '@/components/Squad/SquadPanel'
 
   export default {
     components: {
-      'team-calendar': TeamCalendar,
-      'player-panel': PlayerPanel,
-      'match-panel': MatchPanel,
-      'squad-panel': SquadPanel
+      TeamToolbar,
+      PlayerPanel,
+      MatchPanel,
+      SquadPanel
     },
     middleware: 'authenticated',
     mixins: [ TeamAction ],
