@@ -58,6 +58,26 @@ export const actions = {
       }
     })
   },
+  analyze ({ commit, state, rootState }, player) {
+    return apiRequest({
+      method: 'post',
+      path: myfifa.teams.statistics,
+      pathData: { teamId: player.team_id },
+      data: {
+        query: {
+          player_ids: [ player.id ]
+        }
+      },
+      success: ({ data }) => {
+        commit('set', {
+          ...state.list[player.id],
+          num_games: data.num_games[player.id],
+          num_goals: data.num_goals[player.id],
+          num_assists: data.num_assists[player.id]
+        })
+      }
+    })
+  },
   create ({ commit, rootState }, { teamId, player }) {
     return apiRequest({
       method: 'post',

@@ -2,7 +2,8 @@ export default {
 
   teams: {
     index: 'teams',
-    record: 'teams/{{ teamId }}'
+    record: 'teams/{{ teamId }}',
+    statistics: 'teams/{{ teamId }}/statistics'
   },
 
   players: {
