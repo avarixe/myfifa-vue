@@ -64,17 +64,11 @@
 
 <style scoped>
   .v-toolbar {
-    top: 64px;
+    top: 48px;
     background-color: rgba(255,255,255, 0.75);
   }
 
   .v-toolbar__title {
     text-transform: uppercase;
-  }
-
-  @media only screen and (max-width: 959px) {
-    .v-toolbar {
-      top: 48px;
-    }
   }
 </style>
