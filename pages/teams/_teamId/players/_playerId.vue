@@ -38,17 +38,21 @@
           <v-divider></v-divider>
           <v-card-text>
             <v-layout class="text-xs-center" row wrap>
-              <v-flex xs12 sm4>
+              <v-flex xs12 sm3>
                 <div class="teal--text display-1">{{ player.num_games }}</div>
                 <div class="subheading">Matches</div>
               </v-flex>
-              <v-flex xs12 sm4>
+              <v-flex xs12 sm3>
                 <div class="blue--text display-1">{{ player.num_goals }}</div>
                 <div class="subheading">Goals</div>
               </v-flex>
-              <v-flex xs12 sm4>
+              <v-flex xs12 sm3>
                 <div class="orange--text display-1">{{ player.num_assists }}</div>
                 <div class="subheading">Assists</div>
+              </v-flex>
+              <v-flex xs12 sm3>
+                <div class="pink--text display-1">{{ player.num_cs }}</div>
+                <div class="subheading">Clean Sheets</div>
               </v-flex>
             </v-layout>
           </v-card-text>

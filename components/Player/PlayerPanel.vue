@@ -150,9 +150,10 @@
             ])
           case 'analytics':
             return headers.concat([
-              { text: 'Games',   value: 'num_games',   align: 'center' },
-              { text: 'Goals',   value: 'num_goals',   align: 'center' },
-              { text: 'Assists', value: 'num_assists', align: 'center' }
+              { text: 'Games Played', value: 'num_games',   align: 'center' },
+              { text: 'Goals',        value: 'num_goals',   align: 'center' },
+              { text: 'Assists',      value: 'num_assists', align: 'center' },
+              { text: 'Clean Sheets', value: 'num_cs',      align: 'center' }
             ])
           default: // Status
             return headers.concat([
