@@ -7,28 +7,28 @@ export const state = () => ({
   list: {},
   positions: [
     'GK',
-    'CB',
     'LB',
     'LWB',
     'LCB',
+    'CB',
     'RCB',
     'RB',
     'RWB',
     'LDM',
-    'CDM',
-    'RDM',
     'LM',
     'LCM',
+    'CDM',
     'CM',
+    'RDM',
     'RCM',
     'RM',
     'LAM',
     'CAM',
     'RAM',
     'LW',
-    'RW',
     'CF',
-    'ST'
+    'ST',
+    'RW'
   ]
 })
 
