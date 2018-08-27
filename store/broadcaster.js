@@ -6,11 +6,11 @@ export const state = () => ({
 
 // mutations
 export const mutations = {
-  announce (state, { message, color }) {
+  ANNOUNCE (state, { message, color }) {
     state.color = color
     state.message = message || ''
   },
-  clear (state) {
+  CLEAR (state) {
     state.message = ''
     state.color = ''
   }

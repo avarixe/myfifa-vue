@@ -10,11 +10,9 @@
         </team-form>
       </v-flex>
       <v-flex
-        xs12
-        sm6
-        md4
         v-for="(team, teamId) in teams"
-        :key="team.id">
+        :key="team.id"
+        xs12 sm6 md4>
         <v-card>
           <v-card-title primary-title>
             <div class="headline">
@@ -71,7 +69,7 @@
       teams: 'list'
     }),
     async fetch ({ store }) {
-      await store.dispatch('team/refresh')
+      await store.dispatch('team/getAll')
     },
     methods: {
       ...mapActions('team', [

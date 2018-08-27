@@ -83,13 +83,9 @@
       },
       sortedLogs () {
         return this.match.performances.slice().sort((a, b) => {
-          if (this.positions.indexOf(a.pos) > this.positions.indexOf(b.pos)) {
-            return 1
-          } else if (this.positions.indexOf(a.pos) < this.positions.indexOf(b.pos)) {
-            return -1
-          } else {
-            return a.start >= b.start
-          }
+          let aPos = this.positions.indexOf(a.pos)
+          let bPos = this.positions.indexOf(b.pos)
+          return aPos - bPos || a.start - b.start
         })
       }
     },

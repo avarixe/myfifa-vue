@@ -44,7 +44,7 @@ export const actions = {
       pathData: { teamId: teamId },
       token: rootState.token,
       success: function ({ data }) {
-        commit('setAll', data)
+        commit('SET_ALL', data)
       }
     })
   },
@@ -54,7 +54,7 @@ export const actions = {
       pathData: { playerId: playerId },
       token: rootState.token,
       success: ({ data }) => {
-        commit('set', data)
+        commit('SET', data)
       }
     })
   },
@@ -70,7 +70,7 @@ export const actions = {
       },
       success: ({ data }) => {
         for (let playerId of data.player_ids) {
-          commit('set', {
+          commit('SET', {
             ...state.list[playerId],
             num_games: data.num_games[playerId] || 0,
             num_goals: data.num_goals[playerId] || 0,
@@ -89,7 +89,7 @@ export const actions = {
       token: rootState.token,
       data: { player: player },
       success: ({ data }) => {
-        commit('set', data)
+        commit('SET', data)
       }
     })
   },
@@ -101,7 +101,7 @@ export const actions = {
       token: rootState.token,
       data: { player: payload },
       success: ({ data }) => {
-        commit('set', data)
+        commit('SET', data)
       }
     })
   },
@@ -112,7 +112,7 @@ export const actions = {
       pathData: { teamId: teamId },
       data: { players: players },
       success: ({ data }) => {
-        commit('refresh', data)
+        commit('SET_ALL', data)
       }
     })
   },
@@ -123,7 +123,7 @@ export const actions = {
       pathData: { playerId: payload },
       token: rootState.token,
       success: ({ data }) => {
-        commit('remove', data.id)
+        commit('REMOVE', data.id)
       }
     })
   },
@@ -145,16 +145,16 @@ export const actions = {
 
 // mutations
 export const mutations = {
-  setAll (state, players) {
+  SET_ALL (state, players) {
     state.list = players.reduce((list, player) => {
       list[player.id] = player
       return list
     }, {})
   },
-  set (state, player) {
+  SET (state, player) {
     Vue.set(state.list, player.id, player)
   },
-  remove (state, playerId) {
+  REMOVE (state, playerId) {
     Vue.delete(state.list, playerId)
   }
 }

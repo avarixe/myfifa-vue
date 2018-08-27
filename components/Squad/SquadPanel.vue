@@ -74,13 +74,13 @@
       this.reloadTable()
     },
     methods: {
-      ...mapActions('squad', [
-        'refresh'
-      ]),
+      ...mapActions('squad', {
+        getSquads: 'getAll'
+      }),
       async reloadTable () {
         this.loading = true
         try {
-          await this.refresh({ teamId: this.team.id })
+          await this.getSquads({ teamId: this.team.id })
         } catch (e) {
           alert(e.message)
         } finally {

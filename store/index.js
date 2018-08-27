@@ -14,7 +14,7 @@ export const getters = {
 
 // mutations
 export const mutations = {
-  setToken (state, token) {
+  SET_TOKEN (state, token) {
     state.token = token
   }
 }
@@ -27,7 +27,7 @@ export const actions = {
       var parsed = cookieparser.parse(req.headers.cookie)
       accessToken = parsed.token
     }
-    commit('setToken', accessToken)
+    commit('SET_TOKEN', accessToken)
   },
   login ({ commit }, payload) {
     return apiRequest({
@@ -35,7 +35,7 @@ export const actions = {
       path: myfifa.token.get,
       data: payload,
       success: ({ data }) => {
-        commit('setToken', data.access_token)
+        commit('SET_TOKEN', data.access_token)
       }
     })
   },
@@ -45,7 +45,7 @@ export const actions = {
       path: myfifa.token.revoke,
       data: { token: state.token },
       success: ({ data }) => {
-        commit('setToken', null)
+        commit('SET_TOKEN', null)
       }
     })
   }

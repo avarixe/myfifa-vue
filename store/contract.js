@@ -28,7 +28,7 @@ export const actions = {
       token: rootState.token,
       data: { contract: contract },
       success: ({ data }) => {
-        commit('player/set', data, { root: true })
+        commit('player/SET', data, { root: true })
       }
     })
   },
@@ -40,7 +40,7 @@ export const actions = {
       token: rootState.token,
       data: { contract: payload },
       success: ({ data }) => {
-        commit('player/set', data, { root: true })
+        commit('player/SET', data, { root: true })
       }
     })
   }

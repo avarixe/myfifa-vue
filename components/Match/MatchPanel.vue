@@ -105,14 +105,14 @@
     },
     methods: {
       ...mapActions({
-        refresh: 'match/refresh',
+        getMatches: 'match/getAll',
         getEvents: 'match/getEvents',
         getPerformances: 'performance/getAll'
       }),
       async reloadTable () {
         this.loading = true
         try {
-          await this.refresh({ teamId: this.team.id })
+          await this.getMatches({ teamId: this.team.id })
         } catch (e) {
           alert(e.message)
         } finally {

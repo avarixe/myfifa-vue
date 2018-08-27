@@ -48,13 +48,13 @@ export const getters = {
 
 // actions
 export const actions = {
-  refresh ({ state, commit, rootState }, { teamId }) {
+  getAll ({ state, commit, rootState }, { teamId }) {
     return apiRequest({
       path: myfifa.matches.index,
       pathData: { teamId: teamId },
       token: rootState.token,
       success: function ({ data }) {
-        commit('refresh', data)
+        commit('SET_ALL', data)
       }
     })
   },
@@ -73,7 +73,7 @@ export const actions = {
       token: rootState.token,
       data: { match: match },
       success: ({ data }) => {
-        commit('set', data)
+        commit('SET', data)
       }
     })
   },
@@ -85,7 +85,7 @@ export const actions = {
       token: rootState.token,
       data: { match: payload },
       success: ({ data }) => {
-        commit('set', data)
+        commit('SET', data)
       }
     })
   },
@@ -96,7 +96,7 @@ export const actions = {
       pathData: { matchId: payload },
       token: rootState.token,
       success: ({ data }) => {
-        commit('remove', data.id)
+        commit('REMOVE', data.id)
       }
     })
   },
@@ -106,7 +106,7 @@ export const actions = {
       pathData: { matchId: matchId },
       token: rootState.token,
       success: ({ data }) => {
-        commit('set', {
+        commit('SET', {
           ...state.list[matchId],
           events: data
         })
@@ -121,7 +121,7 @@ export const actions = {
       token: rootState.token,
       data: { squad_id: squadId },
       success: ({ data }) => {
-        commit('set', {
+        commit('SET', {
           ...state.list[matchId],
           performances: data
         })
@@ -132,19 +132,19 @@ export const actions = {
 
 // mutations
 export const mutations = {
-  refresh (state, matches) {
+  SET_ALL (state, matches) {
     state.list = matches.reduce((list, match) => {
       list[match.id] = match
       return list
     }, {})
   },
-  set (state, match) {
+  SET (state, match) {
     Vue.set(state.list, match.id, match)
   },
-  remove (state, matchId) {
+  REMOVE (state, matchId) {
     Vue.delete(state.list, matchId)
   },
-  setPerformance (state, performance) {
+  SET_PERFORMANCE (state, performance) {
     let performances = state.list[performance.match_id].performances
     const pIdx = performances.findIndex(p => p.id === performance.id)
     if (pIdx > -1) {

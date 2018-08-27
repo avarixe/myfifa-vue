@@ -9,7 +9,7 @@ export const actions = {
       pathData: { matchId: matchId },
       token: rootState.token,
       success: ({ data }) => {
-        commit('match/set', {
+        commit('match/SET', {
           ...rootState.match.list[matchId],
           performances: data
         }, { root: true })
@@ -31,7 +31,7 @@ export const actions = {
       token: rootState.token,
       data: { performance: performance },
       success: ({ data }) => {
-        commit('match/setPerformance', data, { root: true })
+        commit('match/SET_PERFORMANCE', data, { root: true })
       }
     })
   },
@@ -43,7 +43,7 @@ export const actions = {
       token: rootState.token,
       data: { performance: payload },
       success: ({ data }) => {
-        commit('match/setPerformance', data, { root: true })
+        commit('match/SET_PERFORMANCE', data, { root: true })
       }
     })
   }

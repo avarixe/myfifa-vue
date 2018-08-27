@@ -18,7 +18,7 @@ export const actions = {
       token: rootState.token,
       data: { loan: loan },
       success: ({ data }) => {
-        commit('player/set', data, { root: true })
+        commit('player/SET', data, { root: true })
       }
     })
   },
@@ -30,7 +30,7 @@ export const actions = {
       token: rootState.token,
       data: { loan: payload },
       success: ({ data }) => {
-        commit('player/set', data, { root: true })
+        commit('player/SET', data, { root: true })
       }
     })
   }

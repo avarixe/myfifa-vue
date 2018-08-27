@@ -9,13 +9,13 @@ export const state = () => ({
 
 // actions
 export const actions = {
-  refresh ({ state, commit, rootState }, { teamId }) {
+  getAll ({ state, commit, rootState }, { teamId }) {
     return apiRequest({
       path: myfifa.squads.index,
       pathData: { teamId: teamId },
       token: rootState.token,
       success: function ({ data }) {
-        commit('refresh', data)
+        commit('SET_ALL', data)
       }
     })
   },
@@ -34,7 +34,7 @@ export const actions = {
       token: rootState.token,
       data: { squad: squad },
       success: ({ data }) => {
-        commit('set', data)
+        commit('SET', data)
       }
     })
   },
@@ -46,7 +46,7 @@ export const actions = {
       token: rootState.token,
       data: { squad: payload },
       success: ({ data }) => {
-        commit('set', data)
+        commit('SET', data)
       }
     })
   },
@@ -57,7 +57,7 @@ export const actions = {
       pathData: { squadId: payload },
       token: rootState.token,
       success: ({ data }) => {
-        commit('remove', data.id)
+        commit('REMOVE', data.id)
       }
     })
   }
@@ -65,16 +65,16 @@ export const actions = {
 
 // mutations
 export const mutations = {
-  refresh (state, squads) {
+  SET_ALL (state, squads) {
     state.list = squads.reduce((list, squad) => {
       list[squad.id] = squad
       return list
     }, {})
   },
-  set (state, squad) {
+  SET (state, squad) {
     Vue.set(state.list, squad.id, squad)
   },
-  remove (state, squadId) {
+  REMOVE (state, squadId) {
     Vue.delete(state.list, squadId)
   }
 }

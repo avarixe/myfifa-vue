@@ -9,7 +9,7 @@ export const actions = {
       path: myfifa.users.index,
       data: { user: payload },
       success () {
-        commit('broadcaster/announce', {
+        commit('broadcaster/ANNOUNCE', {
           message: 'Account has been registered!',
           color: 'success'
         }, { root: true })
@@ -23,7 +23,7 @@ export const actions = {
       pathData: { userId: payload.id },
       data: { user: payload },
       success () {
-        commit('broadcaster/announce', {
+        commit('broadcaster/ANNOUNCE', {
           message: 'Account has been updated!',
           color: 'success'
         }, { root: true })

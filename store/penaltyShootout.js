@@ -11,7 +11,7 @@ export const actions = {
       token: rootState.token,
       data: { penalty_shootout: penaltyShootout },
       success: ({ data }) => {
-        commit('match/set', data, { root: true })
+        commit('match/SET', data, { root: true })
       }
     })
   },
@@ -22,7 +22,7 @@ export const actions = {
       pathData: { penaltyShootoutId: penaltyShootoutId },
       token: rootState.token,
       success: ({ data }) => {
-        commit('match/set', data, { root: true })
+        commit('match/SET', data, { root: true })
       }
     })
   }
