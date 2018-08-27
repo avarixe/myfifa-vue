@@ -32,7 +32,7 @@
 
   export default {
     components: {
-      'squad-form': SquadForm
+      SquadForm
     },
     props: {
       squad: {

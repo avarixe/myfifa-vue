@@ -61,7 +61,7 @@
 
   export default {
     components: {
-      'team-form': TeamForm
+      TeamForm
     },
     middleware: 'authenticated',
     data: () => ({

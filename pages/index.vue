@@ -43,8 +43,8 @@
 
   export default {
     components: {
-      'login-form': LoginForm,
-      'user-form': UserForm
+      LoginForm,
+      UserForm
     },
     computed: mapGetters([ 'authenticated' ])
   }

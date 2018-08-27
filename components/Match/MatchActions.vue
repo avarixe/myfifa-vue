@@ -112,12 +112,12 @@
 
   export default {
     components: {
-      'match-form': MatchForm,
-      'performance-form': PerformanceForm,
-      'goal-form': GoalForm,
-      'booking-form': BookingForm,
-      'substitution-form': SubstitutionForm,
-      'penalty-shootout-form': PenaltyShootoutForm
+      MatchForm,
+      PerformanceForm,
+      GoalForm,
+      BookingForm,
+      SubstitutionForm,
+      PenaltyShootoutForm
     },
     mixins: [ TeamAction ],
     props: {

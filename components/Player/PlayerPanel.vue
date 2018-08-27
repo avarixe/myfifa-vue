@@ -97,9 +97,9 @@
 
   export default {
     components: {
-      'player-form': PlayerForm,
-      'player-actions': PlayerActions,
-      'player-mass-update': PlayerMassUpdate
+      PlayerForm,
+      PlayerActions,
+      PlayerMassUpdate
     },
     mixins: [ TeamAction ],
     data () {

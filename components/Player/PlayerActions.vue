@@ -64,11 +64,11 @@
 
   export default {
     components: {
-      'player-form': PlayerForm,
-      'contract-form': ContractForm,
-      'injury-form': InjuryForm,
-      'loan-form': LoanForm,
-      'transfer-form': TransferForm
+      PlayerForm,
+      ContractForm,
+      InjuryForm,
+      LoanForm,
+      TransferForm
     },
     mixins: [ TeamAction ],
     props: {

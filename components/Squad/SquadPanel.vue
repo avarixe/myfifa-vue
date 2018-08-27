@@ -48,8 +48,8 @@
 
   export default {
     components: {
-      'squad-form': SquadForm,
-      'squad-actions': SquadActions
+      SquadForm,
+      SquadActions
     },
     mixins: [ TeamAction ],
     data () {

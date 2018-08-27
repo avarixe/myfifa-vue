@@ -62,7 +62,7 @@
 
   export default {
     components: {
-      'performance-form': PerformanceForm
+      PerformanceForm
     },
     mixins: [ TeamAction ],
     props: {

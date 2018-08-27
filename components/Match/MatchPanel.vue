@@ -69,10 +69,10 @@
 
   export default {
     components: {
-      'match-form': MatchForm,
-      'match-actions': MatchActions,
-      'match-lineup': MatchLineup,
-      'match-events': MatchEvents
+      MatchForm,
+      MatchActions,
+      MatchLineup,
+      MatchEvents
     },
     mixins: [ TeamAction ],
     data () {
