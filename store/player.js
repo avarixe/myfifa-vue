@@ -63,6 +63,7 @@ export const actions = {
       method: 'post',
       path: myfifa.teams.statistics,
       pathData: { teamId: teamId },
+      token: rootState.token,
       data: {
         query: {
           player_ids: playerIds
