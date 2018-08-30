@@ -32,21 +32,16 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
   import TeamAction from '@/mixins/TeamAction'
   import FormBase from '@/mixins/FormBase'
+  import MatchEvent from '@/mixins/MatchEvent'
 
   export default {
     mixins: [
       FormBase,
-      TeamAction
+      TeamAction,
+      MatchEvent
     ],
-    props: {
-      match: {
-        type: Object,
-        required: true
-      }
-    },
     data () {
       return {
         penaltyShootout: {
@@ -56,11 +51,8 @@
       }
     },
     methods: {
-      ...mapActions('penaltyShootout', [
-        'create'
-      ]),
       async submit () {
-        await this.create({
+        await this.$store.dispatch('penaltyShootout/create', {
           matchId: this.match.id,
           penaltyShootout: this.penaltyShootout
         })

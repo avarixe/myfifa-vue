@@ -17,6 +17,13 @@
 
       <player-mass-update></player-mass-update>
 
+      <v-tooltip top>
+        <v-btn slot="activator" icon @click.native="filterActive = !filterActive">
+          <v-icon>check_box{{ filterActive ? '' : '_outline_blank' }}</v-icon>
+        </v-btn>
+        Display {{ filterActive ? 'Active' : 'All' }} Players
+      </v-tooltip>
+
       <!-- Display Menu -->
       <v-tooltip top>
         <v-menu slot="activator" bottom right>
@@ -38,13 +45,6 @@
           </v-list>
         </v-menu>
         Display Mode
-      </v-tooltip>
-
-      <v-tooltip top>
-        <v-btn slot="activator" icon @click.native="filterActive = !filterActive">
-          <v-icon>check_box{{ filterActive ? '' : '_outline_blank' }}</v-icon>
-        </v-btn>
-        Display {{ filterActive ? 'Active' : 'All' }} Players
       </v-tooltip>
 
       <v-spacer></v-spacer>
@@ -136,8 +136,9 @@
       },
       headers () {
         let headers = [
-          { text: 'Name',     value: 'name', align: 'left' },
-          { text: 'Position', value: 'pos',  align: 'center' }
+          { text: 'Name',     value: 'name',   align: 'left' },
+          { text: 'Position', value: 'pos',    align: 'center' },
+          { text: 'Kit No',    value: 'kit_no', align: 'center' }
         ]
 
         switch (this.display) {

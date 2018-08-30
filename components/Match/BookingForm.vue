@@ -25,7 +25,7 @@
         <v-flex xs12>
           <v-select
             v-model="booking.minute"
-            :items="Array.from({ length: 120 }, (v, k) => k + 1)"
+            :items="minutes"
             :rules="$_validate('Minute', ['required'])"
             label="Minute"
             prepend-icon="timer"
@@ -56,47 +56,28 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
   import TeamAction from '@/mixins/TeamAction'
   import FormBase from '@/mixins/FormBase'
+  import MatchEvent from '@/mixins/MatchEvent'
 
   export default {
     mixins: [
       FormBase,
-      TeamAction
+      TeamAction,
+      MatchEvent
     ],
-    props: {
-      match: {
-        type: Object,
-        required: true
-      }
-    },
     data () {
       return {
         booking: {
           minute: null,
           player_id: null,
-          player_name: '',
           red_card: false
         }
       }
     },
-    computed: mapState('player', {
-      players: 'list'
-    }),
-    watch: {
-      'booking.player_id': function (val) {
-        this.booking.player_name = val
-          ? this.players[val].name
-          : ''
-      }
-    },
     methods: {
-      ...mapActions('booking', [
-        'create'
-      ]),
       async submit () {
-        await this.create({
+        await this.$store.dispatch('booking/create', {
           matchId: this.match.id,
           booking: this.booking
         })

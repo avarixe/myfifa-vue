@@ -11,7 +11,7 @@
         <v-flex xs12>
           <v-select
             v-model="substitution.minute"
-            :items="Array.from({ length: 120 }, (v, k) => k + 1)"
+            :items="minutes"
             :rules="$_validate('Minute', ['required'])"
             label="Minute"
             prepend-icon="timer"
@@ -68,37 +68,28 @@
 </template>
 
 <script>
-  import { mapState, mapGetters, mapActions } from 'vuex'
+  import { mapGetters } from 'vuex'
   import TeamAction from '@/mixins/TeamAction'
   import FormBase from '@/mixins/FormBase'
+  import MatchEvent from '@/mixins/MatchEvent'
 
   export default {
     mixins: [
       FormBase,
-      TeamAction
+      TeamAction,
+      MatchEvent
     ],
-    props: {
-      match: {
-        type: Object,
-        required: true
-      }
-    },
     data () {
       return {
         substitution: {
           minute: null,
           player_id: null,
-          player_name: '',
-          replaced_by: '',
           replacement_id: '',
           injury: false
         }
       }
     },
     computed: {
-      ...mapState('player', {
-        players: 'list'
-      }),
       ...mapGetters('player', {
         activePlayers: 'active'
       }),
@@ -107,24 +98,9 @@
         return this.activePlayers.filter(p => selectedIds.indexOf(p.id) < 0)
       }
     },
-    watch: {
-      'substitution.player_id': function (val) {
-        this.substitution.player_name = val
-          ? this.players[val].name
-          : ''
-      },
-      'substitution.replacement_id': function (val) {
-        this.substitution.replaced_by = val
-          ? this.players[val].name
-          : ''
-      }
-    },
     methods: {
-      ...mapActions('substitution', [
-        'create'
-      ]),
       async submit () {
-        await this.create({
+        await this.$store.dispatch('substitution/create', {
           matchId: this.match.id,
           substitution: this.substitution
         })

@@ -57,15 +57,28 @@
               ></v-checkbox>
             </td>
             <td v-text="props.item.name"></td>
-            <td class="text-xs-center" v-text="props.item.pos"></td>
+            <td class="text-xs-center">{{ props.item.pos }}</td>
             <td class="text-xs-center">
-              <v-btn icon @click.native="props.item.ovr--">
-                <v-icon>remove</v-icon>
-              </v-btn>
-              {{ props.item.ovr }}
-              <v-btn icon @click.native="props.item.ovr++">
-                <v-icon>add</v-icon>
-              </v-btn>
+              <v-select
+                v-model="props.item.kit_no"
+                :items="Array.from({ length: 98 }, (v, k) => k + 1)"
+                single-line
+                width="48px"
+              ></v-select>
+            </td>
+            <td class="text-xs-center">
+              <v-select
+                v-model="props.item.ovr"
+                :items="Array.from({ length: 61 }, (v, k) => k + 40)"
+                single-line
+              ></v-select>
+              <!-- <v-btn icon @click.native="props.item.ovr--"> -->
+                <!-- <v-icon>remove</v-icon> -->
+              <!-- </v-btn> -->
+              <!-- {{ props.item.ovr }} -->
+              <!-- <v-btn icon @click.native="props.item.ovr++"> -->
+                <!-- <v-icon>add</v-icon> -->
+              <!-- </v-btn> -->
             </td>
             <td>
               <v-text-field
@@ -74,6 +87,7 @@
                 prefix="$"
                 :hint="$_numberHint(props.item.value)"
                 :rules="$_validate('Value', ['required'])"
+                single-line
                 persistent-hint
               ></v-text-field>
             </td>
@@ -99,10 +113,11 @@
         players: [],
         selected: [],
         headers: [
-          { text: 'Name',     value: 'name',  align: 'left' },
-          { text: 'Position', value: 'pos',   align: 'center' },
-          { text: 'OVR',      value: 'ovr',   align: 'center' },
-          { text: 'Value',    value: 'value', align: 'center' }
+          { text: 'Name',     value: 'name',   align: 'left' },
+          { text: 'Position', value: 'pos',    align: 'center' },
+          { text: 'Kit No',   value: 'kit_no', align: 'center' },
+          { text: 'OVR',      value: 'ovr',    align: 'center' },
+          { text: 'Value',    value: 'value',  align: 'center' }
         ],
         search: ''
       }
