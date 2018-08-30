@@ -24,31 +24,18 @@
       v-if="active"
       :player="player"
     ></loan-form>
-    <v-tooltip bottom color="black">
-      <v-btn icon slot="activator" @click.native="promptDeletion = true">
-        <v-icon color="black">remove_circle</v-icon>
-      </v-btn>
-      Remove
-    </v-tooltip>
-
-    <v-snackbar
-      color="black"
-      v-model="promptDeletion">
-      Remove Player: {{ player.name }}?
-      <v-btn dark flat @click.native="remove(player.id)">Yes</v-btn>
-      <v-btn dark flat @click.native="promptDeletion = false">No</v-btn>
-    </v-snackbar>
+    <player-remove :player="player"></player-remove>
   </v-card-text>
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
   import TeamAction from '@/mixins/TeamAction'
   import PlayerForm from '@/components/Player/PlayerForm'
   import ContractForm from '@/components/Player/ContractForm'
   import InjuryForm from '@/components/Player/InjuryForm'
   import LoanForm from '@/components/Player/LoanForm'
   import TransferForm from '@/components/Player/TransferForm'
+  import PlayerRemove from '@/components/Player/PlayerRemove'
 
   export default {
     components: {
@@ -56,7 +43,8 @@
       ContractForm,
       InjuryForm,
       LoanForm,
-      TransferForm
+      TransferForm,
+      PlayerRemove
     },
     mixins: [ TeamAction ],
     props: {
@@ -66,7 +54,6 @@
       }
     },
     data: () => ({
-      promptDeletion: false
     }),
     computed: {
       active () {
@@ -75,9 +62,6 @@
       transferOut () {
         return this.active
       }
-    },
-    methods: mapActions('player', [
-      'remove'
-    ])
+    }
   }
 </script>

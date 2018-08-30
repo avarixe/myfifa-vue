@@ -41,6 +41,9 @@
                 <loan-form v-if="active" :player="player">
                   <v-btn color="indigo" dark>Loan</v-btn>
                 </loan-form>
+                <player-remove :player="player">
+                  <v-btn dark>Remove</v-btn>
+                </player-remove>
               </v-flex>
             </v-layout>
           </v-card-text>
@@ -163,6 +166,7 @@
   import InjuryForm from '@/components/Player/InjuryForm'
   import LoanForm from '@/components/Player/LoanForm'
   import TransferForm from '@/components/Player/TransferForm'
+  import PlayerRemove from '@/components/Player/PlayerRemove'
   import PlayerTimeline from '@/components/Player/Timeline'
   import TeamAction from '@/mixins/TeamAction'
 
@@ -174,6 +178,7 @@
       InjuryForm,
       LoanForm,
       TransferForm,
+      PlayerRemove,
       PlayerTimeline
     },
     middleware: 'authenticated',
@@ -235,6 +240,11 @@
       this.setLoans()
       this.setInjuries()
       this.setTransfers()
+    },
+    watch: {
+      player (val) {
+        !val && this.$router.push('/teams/' + this.$route.params.teamId)
+      }
     },
     methods: {
       ...mapActions({
