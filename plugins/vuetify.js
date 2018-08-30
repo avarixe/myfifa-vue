@@ -34,8 +34,9 @@ import {
   VCombobox,
   VExpansionPanel,
   VSubheader,
-  VJumbotron,
+  // VResponsive,
   VProgressCircular,
+  VRating,
   transitions
 } from 'vuetify'
 
@@ -74,8 +75,9 @@ Vue.use(Vuetify, {
     VCombobox,
     VExpansionPanel,
     VSubheader,
-    VJumbotron,
+    // VResponsive,
     VProgressCircular,
+    VRating,
     transitions
   }
 })

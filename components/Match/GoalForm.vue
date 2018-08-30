@@ -25,7 +25,7 @@
         <v-flex xs12>
           <v-select
             v-model="goal.minute"
-            :items="Array.from({ length: 120 }, (v, k) => k + 1)"
+            :items="minutes"
             :rules="$_validate('Minute', ['required'])"
             label="Minute"
             prepend-icon="timer"
@@ -118,21 +118,16 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
   import TeamAction from '@/mixins/TeamAction'
   import FormBase from '@/mixins/FormBase'
+  import MatchEvent from '@/mixins/MatchEvent'
 
   export default {
     mixins: [
       FormBase,
-      TeamAction
+      TeamAction,
+      MatchEvent
     ],
-    props: {
-      match: {
-        type: Object,
-        required: true
-      }
-    },
     data () {
       return {
         goal: {
@@ -148,9 +143,6 @@
       }
     },
     computed: {
-      ...mapState('player', {
-        players: 'list'
-      }),
       scoredTeam () {
         return this.home ? this.match.home : this.match.away
       },
@@ -160,44 +152,30 @@
     },
     watch: {
       'goal.home': function (val) {
-        if (val) {
-          this.goal.player_name = ''
-          this.goal.assisted_by = ''
-        } else {
-          this.goal.player_id = null
-          this.goal.assist_id = null
-        }
-      },
-      'goal.player_id': function (val) {
-        this.goal.player_name = val
-          ? this.players[val].name
-          : ''
-      },
-      'goal.assist_id': function (val) {
-        this.goal.assisted_by = val
-          ? this.players[val].name
-          : ''
+        this.clearPlayerName()
+        this.clearAssistedBy()
       },
       'goal.penalty': function (val) {
-        if (val) {
-          this.goal.assist_id = null
-        }
+        this.clearAssistedBy()
       },
       'goal.own_goal': function (val) {
-        if (val) {
-          this.goal.assist_id = null
-        }
+        this.clearAssistedBy()
       }
     },
     methods: {
-      ...mapActions('goal', [
-        'create'
-      ]),
       async submit () {
-        await this.create({
+        await this.$store.dispatch('goal/create', {
           matchId: this.match.id,
           goal: this.goal
         })
+      },
+      clearPlayerName () {
+        this.goal.player_name = ''
+        this.goal.assisted_by = ''
+      },
+      clearAssistedBy () {
+        this.goal.assist_id = null
+        this.goal.assisted_by = null
       }
     }
   }
