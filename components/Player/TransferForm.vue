@@ -3,18 +3,17 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
-    :color="color">
-    <v-tooltip
-      slot="activator"
-      bottom
-      :color="color">
-      <v-btn slot="activator" icon>
-        <v-icon :color="color">
-          flight_{{ transferOut ? 'takeoff' : 'land' }}
-        </v-icon>
-      </v-btn>
-      Transfer {{ transferOut ? 'Out' : 'In' }}
-    </v-tooltip>
+    :color="transferOut ? 'red' : 'green'">
+    <slot slot="activator">
+      <v-tooltip bottom :color="transferOut ? 'red' : 'green'">
+        <v-btn slot="activator" icon>
+          <v-icon :color="transferOut ? 'red' : 'green'">
+            flight_{{ transferOut ? 'takeoff' : 'land' }}
+          </v-icon>
+        </v-btn>
+        Transfer {{ transferOut ? 'Out' : 'In' }}
+      </v-tooltip>
+    </slot>
     <v-container slot="form">
       <v-layout wrap>
 

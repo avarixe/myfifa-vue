@@ -128,10 +128,11 @@
         if (this.initialPlayer) {
           await this.update(this.player)
         } else {
-          await this.create({
+          const { data } = await this.create({
             teamId: this.team.id,
             player: this.player
           })
+          this.$router.push({ path: this.$route.path + '/players/' + data.id })
         }
       }
     }

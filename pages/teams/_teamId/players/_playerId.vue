@@ -25,6 +25,23 @@
                 <div class="display-1">{{ player.status || '-' }}</div>
                 <div class="subheading">Current State</div>
               </v-flex>
+              <v-flex xs12>
+                <player-form :initial-player="player" color="orange">
+                  <v-btn color="orange" dark>Edit</v-btn>
+                </player-form>
+                <transfer-form :player="player">
+                  <v-btn :color="active ? 'red' : 'green'" dark>Transfer</v-btn>
+                </transfer-form>
+                <contract-form :player="player">
+                  <v-btn color="blue" dark>Contract</v-btn>
+                </contract-form>
+                <injury-form v-if="active" :player="player">
+                  <v-btn color="pink" dark>Injury</v-btn>
+                </injury-form>
+                <loan-form v-if="active" :player="player">
+                  <v-btn color="indigo" dark>Loan</v-btn>
+                </loan-form>
+              </v-flex>
             </v-layout>
           </v-card-text>
         </v-card>
@@ -141,11 +158,22 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
+  import PlayerForm from '@/components/Player/PlayerForm'
+  import ContractForm from '@/components/Player/ContractForm'
+  import InjuryForm from '@/components/Player/InjuryForm'
+  import LoanForm from '@/components/Player/LoanForm'
+  import TransferForm from '@/components/Player/TransferForm'
   import PlayerTimeline from '@/components/Player/Timeline'
   import TeamAction from '@/mixins/TeamAction'
 
   export default {
+    layout: 'team',
     components: {
+      PlayerForm,
+      ContractForm,
+      InjuryForm,
+      LoanForm,
+      TransferForm,
       PlayerTimeline
     },
     middleware: 'authenticated',
@@ -177,6 +205,9 @@
       }),
       player () {
         return this.players[this.$route.params.playerId]
+      },
+      active () {
+        return this.player.status && this.player.status.length > 0
       },
       histories () {
         return this.player.player_histories

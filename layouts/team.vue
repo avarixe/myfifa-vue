@@ -3,20 +3,33 @@
     <app-bar></app-bar>
     <v-content>
       <app-broadcaster></app-broadcaster>
-      <nuxt />
+      <div class="pt-5">
+        <team-toolbar :team="team"></team-toolbar>
+        <nuxt />
+      </div>
     </v-content>
   </v-app>
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   import AppBar from '@/components/AppBar'
+  import TeamToolbar from '@/components/Team/TeamToolbar'
   import AppBroadcaster from '@/components/AppBroadcaster'
 
   export default {
     name: 'App',
     components: {
       AppBar,
+      TeamToolbar,
       AppBroadcaster
+    },
+    computed: {
+      ...mapState('team', { teams: 'list' }),
+      team () {
+        return this.$route.params.teamId &&
+          this.teams[this.$route.params.teamId]
+      }
     }
   }
 </script>

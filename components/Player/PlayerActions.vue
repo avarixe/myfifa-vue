@@ -14,27 +14,15 @@
         Edit
       </v-tooltip>
     </player-form>
-    <transfer-form
-      :player="player"
-      :color="transferOut ? 'red' : 'green'"
-      dark
-    ></transfer-form>
-    <contract-form
-      :player="player"
-      color="blue"
-      dark
-    ></contract-form>
+    <transfer-form :player="player"></transfer-form>
+    <contract-form :player="player"></contract-form>
     <injury-form
       v-if="active"
       :player="player"
-      color="pink"
-      dark
     ></injury-form>
     <loan-form
       v-if="active"
       :player="player"
-      color="indigo"
-      dark
     ></loan-form>
     <v-tooltip bottom color="black">
       <v-btn icon slot="activator" @click.native="promptDeletion = true">

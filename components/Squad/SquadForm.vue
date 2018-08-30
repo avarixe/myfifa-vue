@@ -29,8 +29,6 @@
             label="Position"
             prepend-icon="directions_run"
             hide-details
-            auto
-            offset-y
           ></v-select>
         </v-flex>
         <v-flex xs8>
@@ -41,9 +39,7 @@
             item-text="name"
             label="Player"
             prepend-icon="person"
-            hide-details
-            auto
-            offset-y>
+            hide-details>
             <template slot="item" slot-scope="data">
               <v-list-tile-action>
                 <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>

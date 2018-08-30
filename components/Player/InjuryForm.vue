@@ -3,14 +3,15 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
-    :color="color">
-    <slot slot="activator"></slot>
-    <v-tooltip slot="activator" bottom :color="color">
-      <v-btn slot="activator" icon>
-        <v-icon :color="color">local_hospital</v-icon>
-      </v-btn>
-      {{ title }}
-    </v-tooltip>
+    color="pink">
+    <slot slot="activator">
+      <v-tooltip bottom color="pink">
+        <v-btn slot="activator" icon>
+          <v-icon color="pink">local_hospital</v-icon>
+        </v-btn>
+        {{ title }}
+      </v-tooltip>
+    </slot>
     <v-container slot="form">
       <v-layout wrap>
         <v-flex xs12>
