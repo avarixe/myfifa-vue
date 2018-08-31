@@ -30,7 +30,10 @@
     middleware: 'authenticated',
     mixins: [ TeamAction ],
     async fetch ({ store, params }) {
-      await store.dispatch('team/get', { teamId: params.teamId, activate: true })
+      await store.dispatch('team/get', {
+        teamId: params.id,
+        activate: true
+      })
     }
   }
 </script>

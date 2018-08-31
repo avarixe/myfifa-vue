@@ -4,7 +4,10 @@
     <v-content>
       <app-broadcaster></app-broadcaster>
       <div class="pt-5">
-        <team-toolbar :team="team"></team-toolbar>
+        <team-toolbar
+          v-if="team"
+          :team="team"
+        ></team-toolbar>
         <nuxt />
       </div>
     </v-content>
@@ -12,7 +15,7 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import { mapGetters } from 'vuex'
   import AppBar from '@/components/AppBar'
   import TeamToolbar from '@/components/Team/TeamToolbar'
   import AppBroadcaster from '@/components/AppBroadcaster'
@@ -24,13 +27,9 @@
       TeamToolbar,
       AppBroadcaster
     },
-    computed: {
-      ...mapState('team', { teams: 'list' }),
-      team () {
-        return this.$route.params.teamId &&
-          this.teams[this.$route.params.teamId]
-      }
-    }
+    computed: mapGetters({
+      team: 'team/current'
+    })
   }
 </script>
 

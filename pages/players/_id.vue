@@ -209,7 +209,7 @@
         players: 'list'
       }),
       player () {
-        return this.players[this.$route.params.playerId]
+        return this.players[this.$route.params.id]
       },
       active () {
         return this.player.status && this.player.status.length > 0
@@ -228,11 +228,11 @@
       }
     },
     async fetch ({ store, params }) {
-      await store.dispatch('team/get', { teamId: params.teamId, activate: true })
-      await store.dispatch('player/get', { playerId: params.playerId })
+      const { data } = await store.dispatch('player/get', { playerId: params.id })
+      await store.dispatch('team/get', { teamId: data.team_id, activate: true })
     },
     mounted () {
-      this.analyzeStatistics({
+      this.getStatistics({
         teamId: this.team.id,
         playerIds: [ this.player.id ]
       })
@@ -243,12 +243,12 @@
     },
     watch: {
       player (val) {
-        !val && this.$router.push('/teams/' + this.$route.params.teamId)
+        !val && this.$router.push({ name: 'index' })
       }
     },
     methods: {
       ...mapActions({
-        analyzeStatistics: 'player/analyze',
+        getStatistics: 'player/analyze',
         getContracts: 'contract/getAll',
         getLoans: 'loan/getAll',
         getInjuries: 'injury/getAll',
@@ -256,25 +256,25 @@
       }),
       async setContracts () {
         const { data } = await this.getContracts({
-          playerId: this.$route.params.playerId
+          playerId: this.player.id
         })
         this.contracts = data
       },
       async setLoans () {
         const { data } = await this.getLoans({
-          playerId: this.$route.params.playerId
+          playerId: this.player.id
         })
         this.loans = data
       },
       async setInjuries () {
         const { data } = await this.getInjuries({
-          playerId: this.$route.params.playerId
+          playerId: this.player.id
         })
         this.injuries = data
       },
       async setTransfers () {
         const { data } = await this.getTransfers({
-          playerId: this.$route.params.playerId
+          playerId: this.player.id
         })
         this.transfers = data
       }

@@ -132,7 +132,10 @@
             teamId: this.team.id,
             player: this.player
           })
-          this.$router.push({ path: this.$route.path + '/players/' + data.id })
+          this.$router.push({
+            name: 'players-id',
+            params: { id: data.id }
+          })
         }
       }
     }

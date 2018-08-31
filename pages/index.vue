@@ -1,21 +1,12 @@
 <template>
-  <v-container fluid fill-height>
-    <v-layout justify-center>
+  <v-container grid-list-lg>
+    <v-layout row wrap>
       <v-flex xs12>
         <v-card>
           <v-card-text>
             <h3 class="display-3">Welcome to MyFIFA Manager</h3>
             <v-divider class="my-3"></v-divider>
-            <v-btn
-              v-if="authenticated"
-              class="mx-0"
-              color="primary"
-              large
-              nuxt
-              to="/teams">
-              Teams
-            </v-btn>
-            <div v-else>
+            <div v-if="!authenticated">
               <login-form
                 color="blue"
               ></login-form>
@@ -30,6 +21,9 @@
           </v-card-text>
         </v-card>
       </v-flex>
+      <v-flex xs12>
+        <team-panel v-if="authenticated"></team-panel>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -38,11 +32,14 @@
   import { mapGetters } from 'vuex'
   import LoginForm from '@/components/LoginForm'
   import UserForm from '@/components/UserForm'
+  import TeamPanel from '@/components/Team/TeamPanel'
 
   export default {
+    layout: 'default',
     components: {
       LoginForm,
-      UserForm
+      UserForm,
+      TeamPanel
     },
     computed: mapGetters([ 'authenticated' ])
   }

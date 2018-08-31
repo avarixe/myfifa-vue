@@ -3,7 +3,7 @@
     <v-btn
       icon
       nuxt
-      :to="$route.path + '/players/' + player.id">
+      :to="{ name: 'players-id', params: { id: player.id } }">
       <v-icon color="primary">arrow_forward</v-icon>
     </v-btn>
     <player-form :initial-player="player" color="orange">
