@@ -27,7 +27,8 @@ module.exports = {
     '~/plugins/chartkick.js'
   ],
   css: [
-    '~/assets/style/app.styl'
+    '~/assets/style/app.styl',
+    '~/css/main.css'
   ],
 
   /*
