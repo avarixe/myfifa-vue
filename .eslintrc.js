@@ -18,6 +18,7 @@ module.exports = {
   // add your custom rules here
   rules: {
     'no-multi-spaces': 'off',
+    'camelcase': 'warn',
     // allow async-await
     'generator-star-spacing': 'off',
     // allow debugger during development

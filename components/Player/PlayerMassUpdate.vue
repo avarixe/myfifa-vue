@@ -153,8 +153,8 @@
         // Format selected player data
         let data = {}
         for (let i in this.selected) {
-          const { id, ovr, value } = this.selected[i]
-          data[id] = { ovr, value }
+          const { id, ovr, value, kit_no } = this.selected[i]
+          data[id] = { ovr, value, kit_no }
         }
 
         await this.updateMultiple({

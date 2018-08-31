@@ -111,6 +111,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.players.update_multiple,
       pathData: { teamId: teamId },
+      token: rootState.token,
       data: { players: players },
       success: ({ data }) => {
         commit('SET_ALL', data)
