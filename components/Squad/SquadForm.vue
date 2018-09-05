@@ -13,6 +13,10 @@
             :rules="$_validate('Name', ['required'])"
             label="Name"
             prepend-icon="people_outline"
+            spellcheck="false"
+            autocapitalize="words"
+            autocomplete="off"
+            autocorrect="off"
           ></v-text-field>
         </v-flex>
       </v-layout>

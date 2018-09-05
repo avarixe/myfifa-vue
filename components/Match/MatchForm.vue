@@ -14,6 +14,10 @@
             :rules="$_validate('Competition', ['required'])"
             label="Competition"
             prepend-icon="whatshot"
+            spellcheck="false"
+            autocapitalize="words"
+            autocomplete="off"
+            autocorrect="off"
           ></v-combobox>
         </v-flex>
         <v-flex xs12>
@@ -22,7 +26,11 @@
             :items="teams"
             :rules="$_validate('Home Team', ['required'])"
             label="Home Team"
-            prepend-icon="people">
+            prepend-icon="people"
+            spellcheck="false"
+            autocapitalize="words"
+            autocomplete="off"
+            autocorrect="off">
             <v-tooltip slot="append" bottom>
               <v-icon slot="activator" @click.stop="setHome">arrow_back</v-icon>
               Home Match for {{ team.title }}
@@ -35,7 +43,11 @@
             :items="teams"
             :rules="$_validate('Away Team', ['required'])"
             label="Away Team"
-            prepend-icon="people">
+            prepend-icon="people"
+            spellcheck="false"
+            autocapitalize="words"
+            autocomplete="off"
+            autocorrect="off">
             <v-tooltip slot="append" bottom>
               <v-icon slot="activator" @click.stop="setAway">arrow_back</v-icon>
               Away Match for {{ team.title }}
