@@ -1,9 +1,9 @@
 <template>
-  <div class="d-inline-block" @click="snackbar = true">
+  <div class="d-inline-block" @click.stop="snackbar = true">
     <slot>
       <v-tooltip bottom color="black">
-        <v-btn icon slot="activator">
-          <v-icon color="black">remove_circle</v-icon>
+        <v-btn slot="activator" fab small dark>
+          <v-icon>remove</v-icon>
         </v-btn>
         Remove
       </v-tooltip>
