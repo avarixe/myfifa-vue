@@ -26,7 +26,7 @@
         disable-initial-sort
         no-data-text="No Teams Recorded">
         <template slot="items" slot-scope="props">
-          <tr @click="$router.push({ name: 'teams-id', params: { id: props.item.id }})">
+          <tr>
             <td class="text-xs-center">{{ props.item.title }}</td>
             <td class="text-xs-center">{{ $_format($_parse(props.item.start_date), 'MMM DD, YYYY') }}</td>
             <td class="text-xs-center">{{ $_format($_parse(props.item.current_date), 'MMM DD, YYYY') }}</td>

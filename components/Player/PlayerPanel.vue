@@ -15,8 +15,6 @@
         </v-tooltip>
       </player-form>
 
-      <player-mass-update></player-mass-update>
-
       <v-tooltip top>
         <v-btn slot="activator" icon @click.native="filterActive = !filterActive">
           <v-icon>check_box{{ filterActive ? '' : '_outline_blank' }}</v-icon>
@@ -70,17 +68,10 @@
         disable-initial-sort
         no-data-text="No Players Recorded">
         <template slot="items" slot-scope="props">
-          <tr @click="props.expanded = !props.expanded">
-            <td
-              v-for="(header, i) in headers"
-              :key="i"
-              :class="'text-xs-' + header.align">
-              {{ getProperty(props.item, header.value, header.format) }}
-            </td>
-          </tr>
-        </template>
-        <template slot="expand" slot-scope="props">
-          <player-actions :player="props.item"></player-actions>
+          <player-row
+            :player="props.item"
+            :headers="headers"
+          ></player-row>
         </template>
       </v-data-table>
     </v-card-text>
@@ -89,17 +80,14 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import get from 'lodash.get'
   import TeamAction from '@/mixins/TeamAction'
   import PlayerForm from '@/components/Player/PlayerForm'
-  import PlayerActions from '@/components/Player/PlayerActions'
-  import PlayerMassUpdate from '@/components/Player/PlayerMassUpdate'
+  import PlayerRow from '@/components/Player/PlayerRow'
 
   export default {
     components: {
       PlayerForm,
-      PlayerActions,
-      PlayerMassUpdate
+      PlayerRow
     },
     mixins: [ TeamAction ],
     data () {
@@ -136,9 +124,10 @@
       },
       headers () {
         let headers = [
+          { text: 'Actions', value: '', align: 'center', format: 'actions', sortable: false },
           { text: 'Name',     value: 'name',   align: 'left' },
-          { text: 'Position', value: 'pos',    align: 'center' },
-          { text: 'Kit No',    value: 'kit_no', align: 'center' }
+          { text: 'Kit No',   value: 'kit_no', align: 'center', editable: true },
+          { text: 'Position', value: 'pos',    align: 'center' }
         ]
 
         switch (this.display) {
@@ -146,7 +135,6 @@
             return headers.concat([
               { text: 'Value',          value: 'value',                           align: 'center', format: 'money' },
               { text: 'Wage',           value: 'current_contract.wage',           align: 'center', format: 'money' },
-              { text: 'Effective Date', value: 'current_contract.effective_date', align: 'center', format: 'date' },
               { text: 'End Date',       value: 'current_contract.end_date',       align: 'center', format: 'date' }
             ])
           case 'analytics':
@@ -159,9 +147,9 @@
           default: // Status
             return headers.concat([
               { text: '2nd Position(s)', value: 'sec_pos', align: 'center', format: 'array' },
-              { text: 'OVR',             value: 'ovr',     align: 'center' },
-              { text: 'Value',           value: 'value',   align: 'center', format: 'money' },
-              { text: 'Status',          value: 'status',  align: 'center', format: 'status' }
+              { text: 'OVR',             value: 'ovr',     align: 'center', editable: true },
+              { text: 'Value',           value: 'value',   align: 'center', format: 'money', editable: true },
+              { text: 'Status',          value: 'status',  align: 'center' }
             ])
         }
       },
@@ -187,24 +175,6 @@
         'getAll',
         'analyze'
       ]),
-      getProperty (player, property, outputFormat) {
-        let value = get(player, property, '')
-
-        if (!value) return '-'
-
-        switch (outputFormat) {
-          case 'money':
-            return this.team.currency + value.toLocaleString()
-          case 'array':
-            return value.toString()
-          case 'date':
-            return this.$_format(this.$_parse(value), 'MMM D, YYYY')
-          case 'years':
-            return value + ' Years'
-          default:
-            return value
-        }
-      },
       async reloadTable () {
         this.loading = true
 
@@ -228,5 +198,9 @@
   >>> table.v-table tbody td {
     padding: 8px 16px;
     height: auto;
+  }
+
+  >>> .v-small-dialog a {
+    width: 100%;
   }
 </style>

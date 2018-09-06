@@ -15,6 +15,7 @@
             prepend-icon="people"
             spellcheck="false"
             autocapitalize="words"
+            autocomplete="off"
             autocorrect="off"
           ></v-text-field>
         </v-flex>

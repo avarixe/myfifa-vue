@@ -1,5 +1,5 @@
 <template>
-  <v-flex xs12 sm6>
+  <v-flex xs12 md6>
     <v-list dense>
       <v-subheader>Match Log</v-subheader>
 

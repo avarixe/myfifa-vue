@@ -6,8 +6,8 @@
     color="blue">
     <slot slot="activator">
       <v-tooltip bottom color="blue">
-        <v-btn slot="activator" icon>
-          <v-icon color="blue">description</v-icon>
+        <v-btn slot="activator" fab small dark color="blue">
+          <v-icon>description</v-icon>
         </v-btn>
         {{ title }}
       </v-tooltip>

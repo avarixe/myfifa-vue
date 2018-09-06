@@ -6,8 +6,8 @@
     color="indigo">
     <slot slot="activator">
       <v-tooltip bottom color="indigo">
-        <v-btn slot="activator" icon>
-          <v-icon color="indigo">transfer_within_a_station</v-icon>
+        <v-btn slot="activator" fab small color="indigo" dark>
+          <v-icon>transfer_within_a_station</v-icon>
         </v-btn>
         {{ title }}
       </v-tooltip>

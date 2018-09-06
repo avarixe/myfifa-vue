@@ -21,7 +21,7 @@ import {
   VTooltip,
   VMenu,
   VDatePicker,
-  // VSpeedDial,
+  VSpeedDial,
   VSnackbar,
   VDataTable,
   // VPagination,
@@ -37,6 +37,7 @@ import {
   // VResponsive,
   VProgressCircular,
   VRating,
+  VInput,
   transitions
 } from 'vuetify'
 
@@ -62,7 +63,7 @@ Vue.use(Vuetify, {
     VTooltip,
     VMenu,
     VDatePicker,
-    // VSpeedDial,
+    VSpeedDial,
     VSnackbar,
     VDataTable,
     // VPagination,
@@ -78,6 +79,7 @@ Vue.use(Vuetify, {
     // VResponsive,
     VProgressCircular,
     VRating,
+    VInput,
     transitions
   }
 })
