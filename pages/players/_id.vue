@@ -26,19 +26,32 @@
                 <div class="subheading">Current State</div>
               </v-flex>
               <v-flex xs12>
-                <player-form :initial-player="player" color="orange">
+                <player-form
+                  :initial-player="player"
+                  :submit-cb="() => { refreshPlayer() && getStatistics() }"
+                  color="orange">
                   <v-btn color="orange" dark>Edit</v-btn>
                 </player-form>
-                <transfer-form :player="player">
+                <transfer-form
+                  :player="player"
+                  :submit-cb="() => { refreshPlayer() && setTransfers() }">
                   <v-btn :color="active ? 'red' : 'green'" dark>Transfer</v-btn>
                 </transfer-form>
-                <contract-form :player="player">
+                <contract-form
+                  :player="player"
+                  :submit-cb="() => { refreshPlayer() && setContracts() }">
                   <v-btn color="blue" dark>Contract</v-btn>
                 </contract-form>
-                <injury-form v-if="active" :player="player">
+                <injury-form
+                  v-if="active"
+                  :player="player"
+                  :submit-cb="() => { refreshPlayer() && setInjuries() }">
                   <v-btn color="pink" dark>Injury</v-btn>
                 </injury-form>
-                <loan-form v-if="active" :player="player">
+                <loan-form
+                  v-if="active"
+                  :player="player"
+                  :submit-cb="() => { refreshPlayer() && setLoans() }">
                   <v-btn color="indigo" dark>Loan</v-btn>
                 </loan-form>
                 <player-remove :player="player">
@@ -215,7 +228,7 @@
         return this.player.status && this.player.status.length > 0
       },
       histories () {
-        return this.player.player_histories
+        return this.player.player_histories || []
       },
       ovrGrowth () {
         return this.histories.map(h => [ h.datestamp, h.ovr ])
@@ -248,12 +261,20 @@
     },
     methods: {
       ...mapActions({
+        getPlayer: 'player/get',
         getStatistics: 'player/analyze',
         getContracts: 'contract/getAll',
         getLoans: 'loan/getAll',
         getInjuries: 'injury/getAll',
         getTransfers: 'transfer/getAll'
       }),
+      async refreshPlayer () {
+        await this.getPlayer({ playerId: this.player.id })
+        this.getStatistics({
+          teamId: this.team.id,
+          playerIds: [ this.player.id ]
+        })
+      },
       async setContracts () {
         const { data } = await this.getContracts({
           playerId: this.player.id

@@ -3,6 +3,7 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
+    :submit-cb="submitCb"
     color="pink">
     <slot slot="activator">
       <v-tooltip bottom color="pink">
@@ -45,6 +46,9 @@
       FormBase,
       PlayerAction
     ],
+    props: {
+      submitCb: Function
+    },
     data () {
       return {
         injury: {

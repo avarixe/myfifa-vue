@@ -56,15 +56,10 @@
         type: Function,
         required: true
       },
-      title: {
-        type: String
-      },
-      titleIcon: {
-        type: String
-      },
-      color: {
-        type: String
-      },
+      submitCb: Function,
+      title: String,
+      titleIcon: String,
+      color: String,
       fullWidth: {
         type: Boolean,
         default: false
@@ -100,6 +95,7 @@
           try {
             await this.submit()
             this.dialog = false
+            this.submitCb && this.submitCb()
           } catch (e) {
             this.errorMessage = e.message
           }

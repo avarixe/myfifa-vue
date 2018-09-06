@@ -3,6 +3,7 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
+    :submit-cb="submitCb"
     color="indigo">
     <slot slot="activator">
       <v-tooltip bottom color="indigo">
@@ -49,6 +50,9 @@
       FormBase,
       PlayerAction
     ],
+    props: {
+      submitCb: Function
+    },
     data () {
       return {
         loan: {

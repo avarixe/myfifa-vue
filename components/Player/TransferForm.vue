@@ -3,6 +3,7 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
+    :submit-cb="submitCb"
     :color="transferOut ? 'red' : 'green'">
     <slot slot="activator">
       <v-tooltip bottom :color="transferOut ? 'red' : 'green'">
@@ -111,6 +112,9 @@
       PlayerAction,
       TeamAction
     ],
+    props: {
+      submitCb: Function
+    },
     data: () => ({
       menu: false,
       transfer: {

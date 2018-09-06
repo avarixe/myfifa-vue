@@ -3,6 +3,7 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
+    :submit-cb="submitCb"
     :color="color">
     <slot slot="activator"></slot>
     <v-container slot="form">
@@ -92,9 +93,8 @@
       TeamAction
     ],
     props: {
-      initialPlayer: {
-        type: Object
-      }
+      initialPlayer: Object,
+      submitCb: Function
     },
     data () {
       return {

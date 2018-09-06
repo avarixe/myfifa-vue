@@ -3,6 +3,7 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
+    :submit-cb="submitCb"
     color="blue">
     <slot slot="activator">
       <v-tooltip bottom color="blue">
@@ -151,6 +152,9 @@
       PlayerAction,
       TeamAction
     ],
+    props: {
+      submitCb: Function
+    },
     data () {
       return {
         valid: false,
