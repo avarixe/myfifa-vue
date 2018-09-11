@@ -17,6 +17,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "actioncable": "^5.2.1",
     "axios": "^0.18.0",
     "chart.js": "^2.7.2",
     "cookieparser": "^0.1.0",
@@ -26,6 +27,7 @@
     "nuxt": "^1.0.0",
     "vue-chartkick": "^0.4.0",
     "vue-cute-timeline": "^1.2.5",
+    "vue-native-websocket": "^2.0.9",
     "vuetify": "^1.0.0"
   },
   "devDependencies": {

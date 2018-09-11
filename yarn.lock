@@ -45,6 +45,10 @@ acorn@^5.0.0, acorn@^5.3.0, acorn@^5.5.0:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.1.tgz#f095829297706a7c9776958c0afc8930a9b9d9d8"
 
+actioncable@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/actioncable/-/actioncable-5.2.1.tgz#615428a8a302cec55117d9049f0fd7952011c962"
+
 ajv-keywords@^2.1.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-2.1.1.tgz#617997fc5f60576894c435f940d819e135b80762"
@@ -5920,6 +5924,10 @@ vue-meta@^1.4.3:
     deepmerge "^2.0.0"
     lodash.isplainobject "^4.0.6"
     object-assign "^4.1.1"
+
+vue-native-websocket@^2.0.9:
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/vue-native-websocket/-/vue-native-websocket-2.0.9.tgz#2f94730fc0584b92aca6663a94e2bf05c7e93a00"
 
 vue-router@^3.0.1:
   version "3.0.1"
