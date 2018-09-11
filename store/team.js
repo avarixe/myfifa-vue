@@ -33,7 +33,7 @@ export const getters = {
 
 // actions
 export const actions = {
-  getAll ({ state, commit, rootState }) {
+  getAll ({ commit, rootState }) {
     return apiRequest({
       path: myfifa.teams.index,
       token: rootState.token,

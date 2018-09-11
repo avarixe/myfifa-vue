@@ -3,7 +3,7 @@ import myfifa from '@/api/myfifa'
 
 // actions
 export const actions = {
-  getAll ({ state, commit, rootState }, { matchId }) {
+  getAll ({ commit, rootState }, { matchId }) {
     return apiRequest({
       path: myfifa.performances.index,
       pathData: { matchId: matchId },

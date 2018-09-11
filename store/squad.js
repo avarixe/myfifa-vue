@@ -9,7 +9,7 @@ export const state = () => ({
 
 // actions
 export const actions = {
-  getAll ({ state, commit, rootState }, { teamId }) {
+  getAll ({ commit, rootState }, { teamId }) {
     return apiRequest({
       path: myfifa.squads.index,
       pathData: { teamId: teamId },

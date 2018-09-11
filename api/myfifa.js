@@ -1,5 +1,12 @@
-export default {
+const domain = 'api.myfifa.joondev.com'
 
+export const baseURL = 'https://${domain}'
+export const cableURL = `ws://${domain}/cable`
+
+// export const baseURL = `http://${domain}:3000`
+// export const cableURL = `ws://${domain}:3000/cable`
+
+export default {
   teams: {
     index: 'teams',
     record: 'teams/{{ teamId }}',
