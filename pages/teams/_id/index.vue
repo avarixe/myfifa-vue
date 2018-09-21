@@ -1,5 +1,6 @@
 <template>
   <v-container fluid grid-list-lg>
+    <team-socket-listener></team-socket-listener>
     <v-layout row wrap>
       <v-flex xs12>
         <player-panel></player-panel>
@@ -15,14 +16,16 @@
 </template>
 
 <script>
-  import TeamAction from '@/mixins/TeamAction'
+  import TeamSocketListener from '@/components/Team/TeamSocketListener'
   import PlayerPanel from '@/components/Player/PlayerPanel'
   import MatchPanel from '@/components/Match/MatchPanel'
   import SquadPanel from '@/components/Squad/SquadPanel'
+  import TeamAction from '@/mixins/TeamAction'
 
   export default {
     layout: 'team',
     components: {
+      TeamSocketListener,
       PlayerPanel,
       MatchPanel,
       SquadPanel

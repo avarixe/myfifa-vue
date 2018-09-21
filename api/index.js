@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { baseURL } from '@/api/myfifa'
+import { baseURL } from './myfifa'
 
 function urlFor (path, pathData) {
   const matches = path.match(/\{\{(.+)\}\}/g) || []
