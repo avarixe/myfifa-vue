@@ -86,7 +86,7 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import TeamAction from '@/mixins/TeamAction'
+  import TeamAccessible from '@/mixins/TeamAccessible'
   import PlayerForm from '@/components/Player/PlayerForm'
   import PlayerRow from '@/components/Player/PlayerRow'
 
@@ -97,7 +97,7 @@
       PlayerForm,
       PlayerRow
     },
-    mixins: [ TeamAction ],
+    mixins: [ TeamAccessible ],
     async fetch ({ store, params }) {
       await store.dispatch('team/get', {
         teamId: params.id,

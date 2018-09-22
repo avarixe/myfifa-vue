@@ -71,7 +71,7 @@
   import MatchActions from '@/components/Match/MatchActions'
   import MatchLineup from '@/components/Match/MatchLineup'
   import MatchEvents from '@/components/Match/MatchEvents'
-  import TeamAction from '@/mixins/TeamAction'
+  import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
     layout: 'team',
@@ -82,7 +82,7 @@
       MatchLineup,
       MatchEvents
     },
-    mixins: [ TeamAction ],
+    mixins: [ TeamAccessible ],
     async fetch ({ store, params }) {
       await store.dispatch('team/get', {
         teamId: params.id,

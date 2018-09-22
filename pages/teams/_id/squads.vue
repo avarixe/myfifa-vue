@@ -47,7 +47,7 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import TeamAction from '@/mixins/TeamAction'
+  import TeamAccessible from '@/mixins/TeamAccessible'
   import SquadForm from '@/components/Squad/SquadForm'
   import SquadActions from '@/components/Squad/SquadActions'
 
@@ -67,7 +67,7 @@
       SquadForm,
       SquadActions
     },
-    mixins: [ TeamAction ],
+    mixins: [ TeamAccessible ],
     data () {
       return {
         headers: [

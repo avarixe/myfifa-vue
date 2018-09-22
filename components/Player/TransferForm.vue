@@ -102,17 +102,21 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import TeamAction from '@/mixins/TeamAction'
-  import FormBase from '@/mixins/FormBase'
-  import PlayerAction from '@/mixins/PlayerAction'
+  import TeamAccessible from '@/mixins/TeamAccessible'
+  import DialogFormable from '@/mixins/DialogFormable'
 
   export default {
     mixins: [
-      FormBase,
-      PlayerAction,
-      TeamAction
+      DialogFormable,
+      TeamAccessible
     ],
     props: {
+      player: {
+        type: Object,
+        required: true
+      },
+      color: String,
+      dark: Boolean,
       submitCb: Function
     },
     data: () => ({

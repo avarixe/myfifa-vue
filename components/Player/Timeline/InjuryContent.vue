@@ -8,12 +8,10 @@
 
 <script>
   import { distanceInWords } from 'date-fns'
-  import TeamAction from '@/mixins/TeamAction'
+  import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
-    mixins: [
-      TeamAction
-    ],
+    mixins: [ TeamAccessible ],
     props: {
       item: {
         type: Object,

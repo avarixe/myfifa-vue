@@ -36,12 +36,10 @@
 
 <script>
   import Cookie from 'js-cookie'
-  import FormBase from '@/mixins/FormBase'
+  import DialogFormable from '@/mixins/DialogFormable'
 
   export default {
-    mixins: [
-      FormBase
-    ],
+    mixins: [ DialogFormable ],
     data: () => ({
       visible: false,
       credentials: {

@@ -84,13 +84,13 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import FormBase from '@/mixins/FormBase'
-  import TeamAction from '@/mixins/TeamAction'
+  import DialogFormable from '@/mixins/DialogFormable'
+  import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
     mixins: [
-      FormBase,
-      TeamAction
+      DialogFormable,
+      TeamAccessible
     ],
     props: {
       initialPlayer: Object,

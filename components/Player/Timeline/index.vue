@@ -26,10 +26,10 @@
 <script>
   import { Timeline, TimelineItem, TimelineTitle } from 'vue-cute-timeline'
   import TimelineItemContent from '@/components/Player/Timeline/ItemContent'
-  import TeamAction from '@/mixins/TeamAction'
+  import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
-    mixins: [ TeamAction ],
+    mixins: [ TeamAccessible ],
     components: {
       Timeline,
       TimelineItem,

@@ -61,13 +61,13 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
-  import TeamAction from '@/mixins/TeamAction'
-  import FormBase from '@/mixins/FormBase'
+  import TeamAccessible from '@/mixins/TeamAccessible'
+  import DialogFormable from '@/mixins/DialogFormable'
 
   export default {
     mixins: [
-      FormBase,
-      TeamAction
+      DialogFormable,
+      TeamAccessible
     ],
     props: {
       initialMatch: {

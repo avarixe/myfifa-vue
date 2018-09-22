@@ -18,10 +18,10 @@
       </v-tooltip>
     </performance-form>
 
-    <v-tooltip bottom>
+    <v-tooltip bottom color="cyan">
       <v-menu slot="activator" offset-y>
         <v-btn slot="activator" icon>
-          <v-icon>people_outline</v-icon>
+          <v-icon color="cyan">assignment</v-icon>
         </v-btn>
         <v-list>
           <v-list-tile
@@ -102,7 +102,7 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import TeamAction from '@/mixins/TeamAction'
+  import TeamAccessible from '@/mixins/TeamAccessible'
   import MatchForm from '@/components/Match/MatchForm'
   import PerformanceForm from '@/components/Match/PerformanceForm'
   import GoalForm from '@/components/Match/GoalForm'
@@ -119,7 +119,7 @@
       SubstitutionForm,
       PenaltyShootoutForm
     },
-    mixins: [ TeamAction ],
+    mixins: [ TeamAccessible ],
     props: {
       match: {
         type: Object,

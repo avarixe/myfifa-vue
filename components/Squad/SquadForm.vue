@@ -12,7 +12,7 @@
             v-model="squad.name"
             :rules="$_validate('Name', ['required'])"
             label="Name"
-            prepend-icon="people_outline"
+            prepend-icon="assignment"
             spellcheck="false"
             autocapitalize="words"
             autocomplete="off"
@@ -61,13 +61,13 @@
 
 <script>
   import { mapState, mapGetters, mapActions } from 'vuex'
-  import TeamAction from '@/mixins/TeamAction'
-  import FormBase from '@/mixins/FormBase'
+  import TeamAccessible from '@/mixins/TeamAccessible'
+  import DialogFormable from '@/mixins/DialogFormable'
 
   export default {
     mixins: [
-      FormBase,
-      TeamAction
+      DialogFormable,
+      TeamAccessible
     ],
     props: {
       initialSquad: {

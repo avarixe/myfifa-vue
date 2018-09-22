@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import TeamAction from '@/mixins/TeamAction'
+  import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
     layout: 'team',
@@ -27,6 +27,6 @@
         activate: true
       })
     },
-    mixins: [ TeamAction ]
+    mixins: [ TeamAccessible ]
   }
 </script>

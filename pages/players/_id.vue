@@ -181,7 +181,7 @@
   import TransferForm from '@/components/Player/TransferForm'
   import PlayerRemove from '@/components/Player/PlayerRemove'
   import PlayerTimeline from '@/components/Player/Timeline'
-  import TeamAction from '@/mixins/TeamAction'
+  import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
     layout: 'team',
@@ -195,7 +195,7 @@
       PlayerTimeline
     },
     middleware: 'authenticated',
-    mixins: [ TeamAction ],
+    mixins: [ TeamAccessible ],
     data () {
       return {
         historyHeaders: [

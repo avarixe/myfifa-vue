@@ -89,7 +89,7 @@
   import { mapActions } from 'vuex'
   import get from 'lodash.get'
 
-  import TeamAction from '@/mixins/TeamAction'
+  import TeamAccessible from '@/mixins/TeamAccessible'
   import PlayerForm from '@/components/Player/PlayerForm'
   import ContractForm from '@/components/Player/ContractForm'
   import InjuryForm from '@/components/Player/InjuryForm'
@@ -106,7 +106,7 @@
       TransferForm,
       PlayerRemove
     },
-    mixins: [ TeamAction ],
+    mixins: [ TeamAccessible ],
     props: {
       player: {
         type: Object,
