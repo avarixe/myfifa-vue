@@ -103,6 +103,9 @@
         teamId: params.id,
         activate: true
       })
+      await store.dispatch('player/getAll', {
+        teamId: params.id
+      })
     },
     data () {
       return {
@@ -179,10 +182,12 @@
       },
       filterActive () {
         this.pagination.page = 1
+      },
+      display (val) {
+        if (val === 'analytics') {
+          this.reloadAnalytics()
+        }
       }
-    },
-    mounted () {
-      this.reloadTable()
     },
     methods: {
       ...mapActions('player', [
@@ -194,6 +199,16 @@
 
         try {
           await this.getAll({ teamId: this.team.id })
+        } catch (e) {
+          alert(e.message)
+        } finally {
+          this.loading = false
+        }
+      },
+      async reloadAnalytics () {
+        this.loading = true
+
+        try {
           await this.analyze({
             teamId: this.team.id,
             playerIds: Object.keys(this.players)

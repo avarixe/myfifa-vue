@@ -88,6 +88,9 @@
         teamId: params.id,
         activate: true
       })
+      await store.dispatch('match/getAll', {
+        teamId: params.id
+      })
     },
     data () {
       return {
@@ -115,10 +118,11 @@
       }
     },
     mounted () {
-      this.reloadTable()
+      this.getPlayers({ teamId: this.team.id })
     },
     methods: {
       ...mapActions({
+        getPlayers: 'player/getAll',
         getMatches: 'match/getAll',
         getEvents: 'match/getEvents',
         getPerformances: 'performance/getAll'

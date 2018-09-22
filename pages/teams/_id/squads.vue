@@ -59,6 +59,9 @@
         teamId: params.id,
         activate: true
       })
+      await store.dispatch('squad/getAll', {
+        teamId: params.id
+      })
     },
     components: {
       SquadForm,
@@ -84,11 +87,12 @@
       }
     },
     mounted () {
-      this.reloadTable()
+      this.getPlayers({ teamId: this.team.id })
     },
     methods: {
-      ...mapActions('squad', {
-        getSquads: 'getAll'
+      ...mapActions({
+        getPlayers: 'player/getAll',
+        getSquads: 'squad/getAll'
       }),
       async reloadTable () {
         this.loading = true
