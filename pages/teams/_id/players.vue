@@ -1,81 +1,87 @@
 <template>
-  <v-card>
-    <v-card-title primary-title>
-      <div class="title">
-        // PLAYERS
-      </div>
+  <v-container fluid grid-list-lg>
+    <v-layout row wrap>
+      <v-flex xs12>
+        <v-card>
+          <v-card-title primary-title>
+            <div class="title">
+              // PLAYERS
+            </div>
 
-      <!-- New Player Form -->
-      <player-form>
-        <v-tooltip top>
-          <v-btn slot="activator" flat icon>
-            <v-icon>add_circle</v-icon>
-          </v-btn>
-          Add Player
-        </v-tooltip>
-      </player-form>
+            <!-- New Player Form -->
+            <player-form>
+              <v-tooltip top>
+                <v-btn slot="activator" flat icon>
+                  <v-icon>add_circle</v-icon>
+                </v-btn>
+                Add Player
+              </v-tooltip>
+            </player-form>
 
-      <v-tooltip top>
-        <v-btn slot="activator" icon @click.native="filterActive = !filterActive">
-          <v-icon>check_box{{ filterActive ? '' : '_outline_blank' }}</v-icon>
-        </v-btn>
-        Display {{ filterActive ? 'Active' : 'All' }} Players
-      </v-tooltip>
+            <v-tooltip top>
+              <v-btn slot="activator" icon @click.native="filterActive = !filterActive">
+                <v-icon>check_box{{ filterActive ? '' : '_outline_blank' }}</v-icon>
+              </v-btn>
+              Display {{ filterActive ? 'Active' : 'All' }} Players
+            </v-tooltip>
 
-      <!-- Display Menu -->
-      <v-tooltip top>
-        <v-menu slot="activator" bottom right>
-          <v-btn slot="activator" icon>
-            <v-icon :color="currentMode.color">
-              {{ currentMode.icon }}
-            </v-icon>
-          </v-btn>
-          <v-list>
-            <v-list-tile
-              v-for="(mode, key) in modes"
-              :key="key"
-              @click="display = key">
-              <v-list-tile-avatar>
-                <v-icon :color="mode.color">{{ mode.icon }}</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-title>{{ mode.text }}</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
-        Display Mode
-      </v-tooltip>
+            <!-- Display Menu -->
+            <v-tooltip top>
+              <v-menu slot="activator" bottom right>
+                <v-btn slot="activator" icon>
+                  <v-icon :color="currentMode.color">
+                    {{ currentMode.icon }}
+                  </v-icon>
+                </v-btn>
+                <v-list>
+                  <v-list-tile
+                    v-for="(mode, key) in modes"
+                    :key="key"
+                    @click="display = key">
+                    <v-list-tile-avatar>
+                      <v-icon :color="mode.color">{{ mode.icon }}</v-icon>
+                    </v-list-tile-avatar>
+                    <v-list-tile-title>{{ mode.text }}</v-list-tile-title>
+                  </v-list-tile>
+                </v-list>
+              </v-menu>
+              Display Mode
+            </v-tooltip>
 
-      <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
 
-      <!-- Player Search -->
-      <v-text-field
-        v-model="search"
-        label="Search"
-        append-icon="search"
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-card-text>
+            <!-- Player Search -->
+            <v-text-field
+              v-model="search"
+              label="Search"
+              append-icon="search"
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-card-text>
 
-      <!-- Player Information Grid -->
-      <v-data-table
-        :headers="headers"
-        :items="rows"
-        :loading="loading"
-        :pagination.sync="pagination"
-        :search="search"
-        item-key="id"
-        disable-initial-sort
-        no-data-text="No Players Recorded">
-        <template slot="items" slot-scope="props">
-          <player-row
-            :player="props.item"
-            :headers="headers"
-          ></player-row>
-        </template>
-      </v-data-table>
-    </v-card-text>
-  </v-card>
+            <!-- Player Information Grid -->
+            <v-data-table
+              :headers="headers"
+              :items="rows"
+              :loading="loading"
+              :pagination.sync="pagination"
+              :search="search"
+              item-key="id"
+              disable-initial-sort
+              no-data-text="No Players Recorded">
+              <template slot="items" slot-scope="props">
+                <player-row
+                  :player="props.item"
+                  :headers="headers"
+                ></player-row>
+              </template>
+            </v-data-table>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -85,11 +91,19 @@
   import PlayerRow from '@/components/Player/PlayerRow'
 
   export default {
+    layout: 'team',
+    middleware: 'authenticated',
     components: {
       PlayerForm,
       PlayerRow
     },
     mixins: [ TeamAction ],
+    async fetch ({ store, params }) {
+      await store.dispatch('team/get', {
+        teamId: params.id,
+        activate: true
+      })
+    },
     data () {
       return {
         display: 'status',
