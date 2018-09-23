@@ -1,10 +1,12 @@
 const domain = 'api.myfifa.joondev.com'
 
-// export const baseURL = `https://${domain}`
-// export const cableURL = `ws://${domain}/cable`
+export const baseURL = process.env.NODE_ENV === 'production'
+  ? `https://${domain}`
+  : `http://${domain}:3000`
 
-export const baseURL = `http://${domain}:3000`
-export const cableURL = `ws://${domain}:3000/cable`
+export const cableURL = process.env.NODE_ENV === 'production'
+  ? `ws://${domain}/cable`
+  : `ws://${domain}:3000/cable`
 
 export default {
   teams: {
