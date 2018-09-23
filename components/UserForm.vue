@@ -39,12 +39,10 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import FormBase from '@/mixins/FormBase'
+  import DialogFormable from '@/mixins/DialogFormable'
 
   export default {
-    mixins: [
-      FormBase
-    ],
+    mixins: [ DialogFormable ],
     props: {
       initialUser: Object
     },

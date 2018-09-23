@@ -43,12 +43,10 @@
 
 <script>
   import { mapState, mapGetters, mapActions } from 'vuex'
-  import FormBase from '@/mixins/FormBase'
+  import DialogFormable from '@/mixins/DialogFormable'
 
   export default {
-    mixins: [
-      FormBase
-    ],
+    mixins: [ DialogFormable ],
     props: {
       performanceId: {
         type: Number

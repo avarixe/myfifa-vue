@@ -16,12 +16,10 @@
 </template>
 
 <script>
-  import TeamAction from '@/mixins/TeamAction'
+  import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
-    mixins: [
-      TeamAction
-    ],
+    mixins: [ TeamAccessible ],
     props: {
       item: {
         type: Object,
@@ -30,7 +28,6 @@
     },
     computed: {
       contract () {
-        console.log(this)
         return this.item.data
       }
     }

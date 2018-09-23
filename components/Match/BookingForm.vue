@@ -56,15 +56,15 @@
 </template>
 
 <script>
-  import TeamAction from '@/mixins/TeamAction'
-  import FormBase from '@/mixins/FormBase'
-  import MatchEvent from '@/mixins/MatchEvent'
+  import TeamAccessible from '@/mixins/TeamAccessible'
+  import DialogFormable from '@/mixins/DialogFormable'
+  import MatchAccessible from '@/mixins/MatchAccessible'
 
   export default {
     mixins: [
-      FormBase,
-      TeamAction,
-      MatchEvent
+      DialogFormable,
+      TeamAccessible,
+      MatchAccessible
     ],
     data () {
       return {

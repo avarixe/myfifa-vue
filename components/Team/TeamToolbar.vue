@@ -1,6 +1,5 @@
 <template>
   <v-toolbar fixed dense>
-    <v-icon>people</v-icon>
     <v-toolbar-title class="body-2">
       {{ team.title }}
     </v-toolbar-title>
@@ -25,6 +24,52 @@
         fixed
       ></v-date-picker>
     </v-menu>
+
+    <v-tooltip bottom>
+      <v-btn
+        slot="activator"
+        @click="$router.push({ name: 'teams-id', params: { id: team.id }})"
+        nuxt
+        exact
+        icon>
+        <v-icon>dashboard</v-icon>
+      </v-btn>
+      Dashboard
+    </v-tooltip>
+    <v-tooltip bottom>
+      <v-btn
+        slot="activator"
+        :to="{ name: 'teams-id-players', params: { id: this.team.id } }"
+        nuxt
+        exact
+        icon>
+        <v-icon>people</v-icon>
+      </v-btn>
+      Players
+    </v-tooltip>
+    <v-tooltip bottom>
+      <v-btn
+        slot="activator"
+        :to="{ name: 'teams-id-matches', params: { id: this.team.id } }"
+        nuxt
+        exact
+        icon>
+        <v-icon>games</v-icon>
+      </v-btn>
+      Matches
+    </v-tooltip>
+    <v-tooltip bottom>
+      <v-btn
+        slot="activator"
+        :to="{ name: 'teams-id-squads', params: { id: this.team.id } }"
+        nuxt
+        exact
+        icon>
+        <v-icon>assignment</v-icon>
+      </v-btn>
+      Squads
+    </v-tooltip>
+
   </v-toolbar>
 </template>
 

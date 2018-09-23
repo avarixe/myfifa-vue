@@ -9,10 +9,7 @@ export const actions = {
       path: myfifa.substitutions.index,
       pathData: { matchId: matchId },
       token: rootState.token,
-      data: { substitution: substitution },
-      success: ({ data }) => {
-        commit('match/SET', data, { root: true })
-      }
+      data: { substitution: substitution }
     })
   },
   remove ({ commit, rootState }, substitutionId) {
@@ -20,10 +17,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.substitutions.record,
       pathData: { substitutionId: substitutionId },
-      token: rootState.token,
-      success: ({ data }) => {
-        commit('match/SET', data, { root: true })
-      }
+      token: rootState.token
     })
   }
 }

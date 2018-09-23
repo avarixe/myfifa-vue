@@ -15,11 +15,11 @@
 
 <script>
   import { mapState } from 'vuex'
-  import TeamAction from '@/mixins/TeamAction'
+  import TeamAccessible from '@/mixins/TeamAccessible'
   import MatchPerformance from '@/components/Match/MatchPerformance'
 
   export default {
-    mixins: [ TeamAction ],
+    mixins: [ TeamAccessible ],
     components: {
       MatchPerformance
     },

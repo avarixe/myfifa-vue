@@ -32,10 +32,7 @@ export const actions = {
       path: myfifa.squads.index,
       pathData: { teamId: teamId },
       token: rootState.token,
-      data: { squad: squad },
-      success: ({ data }) => {
-        commit('SET', data)
-      }
+      data: { squad: squad }
     })
   },
   update ({ commit, rootState }, payload) {
@@ -44,10 +41,7 @@ export const actions = {
       path: myfifa.squads.record,
       pathData: { squadId: payload.id },
       token: rootState.token,
-      data: { squad: payload },
-      success: ({ data }) => {
-        commit('SET', data)
-      }
+      data: { squad: payload }
     })
   },
   remove ({ commit, rootState }, payload) {
@@ -55,10 +49,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.squads.record,
       pathData: { squadId: payload },
-      token: rootState.token,
-      success: ({ data }) => {
-        commit('REMOVE', data.id)
-      }
+      token: rootState.token
     })
   }
 }

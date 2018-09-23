@@ -38,15 +38,17 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import FormBase from '@/mixins/FormBase'
-  import PlayerAction from '@/mixins/PlayerAction'
+  import DialogFormable from '@/mixins/DialogFormable'
 
   export default {
-    mixins: [
-      FormBase,
-      PlayerAction
-    ],
+    mixins: [ DialogFormable ],
     props: {
+      player: {
+        type: Object,
+        required: true
+      },
+      color: String,
+      dark: Boolean,
       submitCb: Function
     },
     data () {

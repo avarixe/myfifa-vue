@@ -59,10 +59,10 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import TeamAction from '@/mixins/TeamAction'
+  import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
-    mixins: [ TeamAction ],
+    mixins: [ TeamAccessible ],
     props: {
       match: {
         type: Object,
