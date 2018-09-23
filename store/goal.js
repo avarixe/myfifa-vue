@@ -9,10 +9,7 @@ export const actions = {
       path: myfifa.goals.index,
       pathData: { matchId: matchId },
       token: rootState.token,
-      data: { goal: goal },
-      success: ({ data }) => {
-        commit('match/SET', data, { root: true })
-      }
+      data: { goal: goal }
     })
   },
   remove ({ commit, rootState }, goalId) {
@@ -20,10 +17,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.goals.record,
       pathData: { goalId: goalId },
-      token: rootState.token,
-      success: ({ data }) => {
-        commit('match/SET', data, { root: true })
-      }
+      token: rootState.token
     })
   }
 }

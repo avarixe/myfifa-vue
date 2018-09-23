@@ -55,13 +55,10 @@
     layout: 'team',
     middleware: 'authenticated',
     async fetch ({ store, params }) {
-      await store.dispatch('team/get', {
-        teamId: params.id,
-        activate: true
-      })
-      await store.dispatch('squad/getAll', {
-        teamId: params.id
-      })
+      await Promise.all([
+        store.dispatch('team/get', { teamId: params.id, activate: true }),
+        store.dispatch('squad/getAll', { teamId: params.id })
+      ])
     },
     components: {
       SquadForm,

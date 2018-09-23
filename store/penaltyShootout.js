@@ -9,10 +9,7 @@ export const actions = {
       path: myfifa.penaltyShootouts.index,
       pathData: { matchId: matchId },
       token: rootState.token,
-      data: { penalty_shootout: penaltyShootout },
-      success: ({ data }) => {
-        commit('match/SET', data, { root: true })
-      }
+      data: { penalty_shootout: penaltyShootout }
     })
   },
   remove ({ commit, rootState }, penaltyShootoutId) {
@@ -20,10 +17,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.penaltyShootouts.record,
       pathData: { penaltyShootoutId: penaltyShootoutId },
-      token: rootState.token,
-      success: ({ data }) => {
-        commit('match/SET', data, { root: true })
-      }
+      token: rootState.token
     })
   }
 }

@@ -71,10 +71,7 @@ export const actions = {
       path: myfifa.matches.index,
       pathData: { teamId: teamId },
       token: rootState.token,
-      data: { match: match },
-      success: ({ data }) => {
-        commit('SET', data)
-      }
+      data: { match: match }
     })
   },
   update ({ commit, rootState }, payload) {
@@ -83,10 +80,7 @@ export const actions = {
       path: myfifa.matches.record,
       pathData: { matchId: payload.id },
       token: rootState.token,
-      data: { match: payload },
-      success: ({ data }) => {
-        commit('SET', data)
-      }
+      data: { match: payload }
     })
   },
   remove ({ commit, rootState }, payload) {
@@ -94,10 +88,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.matches.record,
       pathData: { matchId: payload },
-      token: rootState.token,
-      success: ({ data }) => {
-        commit('REMOVE', data.id)
-      }
+      token: rootState.token
     })
   },
   getEvents ({ state, commit, rootState }, { matchId }) {
@@ -119,13 +110,7 @@ export const actions = {
       path: myfifa.matches.applySquad,
       pathData: { matchId: matchId },
       token: rootState.token,
-      data: { squad_id: squadId },
-      success: ({ data }) => {
-        commit('SET', {
-          ...state.list[matchId],
-          performances: data
-        })
-      }
+      data: { squad_id: squadId }
     })
   }
 }
@@ -143,15 +128,5 @@ export const mutations = {
   },
   REMOVE (state, matchId) {
     Vue.delete(state.list, matchId)
-  },
-  SET_PERFORMANCE (state, performance) {
-    let performances = state.list[performance.match_id].performances
-    const pIdx = performances.findIndex(p => p.id === performance.id)
-    if (pIdx > -1) {
-      performances.splice(pIdx, 1, performance)
-    } else {
-      performances.push(performance)
-    }
-    state.list[performance.match_id].performances = performances
   }
 }

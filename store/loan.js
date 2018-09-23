@@ -3,11 +3,17 @@ import myfifa from '@/api/myfifa'
 
 // actions
 export const actions = {
-  getAll ({ rootState }, { playerId }) {
+  getAll ({ commit, rootState }, { playerId }) {
     return apiRequest({
       path: myfifa.loans.index,
       pathData: { playerId: playerId },
-      token: rootState.token
+      token: rootState.token,
+      success: ({ data }) => {
+        commit('player/SET', {
+          ...rootState.player.list[playerId],
+          loans: data
+        }, { root: true })
+      }
     })
   },
   create ({ commit, rootState }, { playerId, loan }) {
@@ -16,10 +22,7 @@ export const actions = {
       path: myfifa.loans.index,
       pathData: { playerId: playerId },
       token: rootState.token,
-      data: { loan: loan },
-      success: ({ data }) => {
-        commit('player/SET', data, { root: true })
-      }
+      data: { loan: loan }
     })
   },
   update ({ commit, rootState }, payload) {
@@ -28,10 +31,7 @@ export const actions = {
       path: myfifa.loans.record,
       pathData: { loanId: payload.id },
       token: rootState.token,
-      data: { loan: payload },
-      success: ({ data }) => {
-        commit('player/SET', data, { root: true })
-      }
+      data: { loan: payload }
     })
   }
 }

@@ -29,10 +29,7 @@ export const actions = {
       path: myfifa.performances.index,
       pathData: { matchId: matchId },
       token: rootState.token,
-      data: { performance: performance },
-      success: ({ data }) => {
-        commit('match/SET_PERFORMANCE', data, { root: true })
-      }
+      data: { performance: performance }
     })
   },
   update ({ commit, rootState }, payload) {
@@ -41,10 +38,7 @@ export const actions = {
       path: myfifa.performances.record,
       pathData: { performanceId: payload.id },
       token: rootState.token,
-      data: { performance: payload },
-      success: ({ data }) => {
-        commit('match/SET_PERFORMANCE', data, { root: true })
-      }
+      data: { performance: payload }
     })
   }
 }

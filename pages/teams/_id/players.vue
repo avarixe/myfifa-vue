@@ -99,13 +99,10 @@
     },
     mixins: [ TeamAccessible ],
     async fetch ({ store, params }) {
-      await store.dispatch('team/get', {
-        teamId: params.id,
-        activate: true
-      })
-      await store.dispatch('player/getAll', {
-        teamId: params.id
-      })
+      await Promise.all([
+        store.dispatch('team/get', { teamId: params.id, activate: true }),
+        store.dispatch('player/getAll', { teamId: params.id })
+      ])
     },
     data () {
       return {

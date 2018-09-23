@@ -13,11 +13,17 @@ export const state = () => ({
 
 // actions
 export const actions = {
-  getAll ({ rootState }, { playerId }) {
+  getAll ({ commit, rootState }, { playerId }) {
     return apiRequest({
       path: myfifa.contracts.index,
       pathData: { playerId: playerId },
-      token: rootState.token
+      token: rootState.token,
+      success: ({ data }) => {
+        commit('player/SET', {
+          ...rootState.player[playerId],
+          contracts: data
+        }, { root: true })
+      }
     })
   },
   create ({ commit, rootState }, { playerId, contract }) {
@@ -26,10 +32,7 @@ export const actions = {
       path: myfifa.contracts.index,
       pathData: { playerId: playerId },
       token: rootState.token,
-      data: { contract: contract },
-      success: ({ data }) => {
-        commit('player/SET', data, { root: true })
-      }
+      data: { contract: contract }
     })
   },
   update ({ commit, rootState }, payload) {
@@ -38,10 +41,7 @@ export const actions = {
       path: myfifa.contracts.record,
       pathData: { contractId: payload.id },
       token: rootState.token,
-      data: { contract: payload },
-      success: ({ data }) => {
-        commit('player/SET', data, { root: true })
-      }
+      data: { contract: payload }
     })
   }
 }

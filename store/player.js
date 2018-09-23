@@ -88,10 +88,7 @@ export const actions = {
       path: myfifa.players.index,
       pathData: { teamId: teamId },
       token: rootState.token,
-      data: { player: player },
-      success: ({ data }) => {
-        commit('SET', data)
-      }
+      data: { player: player }
     })
   },
   update ({ commit, rootState }, payload) {
@@ -100,22 +97,7 @@ export const actions = {
       path: myfifa.players.record,
       pathData: { playerId: payload.id },
       token: rootState.token,
-      data: { player: payload },
-      success: ({ data }) => {
-        commit('SET', data)
-      }
-    })
-  },
-  updateMultiple ({ commit, rootState }, { teamId, players }) {
-    return apiRequest({
-      method: 'patch',
-      path: myfifa.players.update_multiple,
-      pathData: { teamId: teamId },
-      token: rootState.token,
-      data: { players: players },
-      success: ({ data }) => {
-        commit('SET_ALL', data)
-      }
+      data: { player: payload }
     })
   },
   remove ({ commit, rootState }, payload) {
@@ -123,10 +105,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.players.record,
       pathData: { playerId: payload },
-      token: rootState.token,
-      success: ({ data }) => {
-        commit('REMOVE', data.id)
-      }
+      token: rootState.token
     })
   },
   getCurrentInjury ({ rootState }, { playerId }) {

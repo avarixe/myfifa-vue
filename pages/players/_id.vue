@@ -210,11 +210,7 @@
           'Loan': { icon: 'transfer_within_a_station', color: 'indigo' },
           'Transfer': { icon: 'flight_takeoff', color: 'green' }
         },
-        timelineFilter: 'All',
-        contracts: [],
-        loans: [],
-        injuries: [],
-        transfers: []
+        timelineFilter: 'All'
       }
     },
     computed: {
@@ -226,6 +222,18 @@
       },
       active () {
         return this.player.status && this.player.status.length > 0
+      },
+      contracts () {
+        return this.player.contracts || []
+      },
+      loans () {
+        return this.player.loans || []
+      },
+      injuries () {
+        return this.player.injuries || []
+      },
+      transfers () {
+        return this.player.transfers || []
       },
       histories () {
         return this.player.player_histories || []
@@ -275,29 +283,17 @@
           playerIds: [ this.player.id ]
         })
       },
-      async setContracts () {
-        const { data } = await this.getContracts({
-          playerId: this.player.id
-        })
-        this.contracts = data
+      setContracts () {
+        this.getContracts({ playerId: this.player.id })
       },
-      async setLoans () {
-        const { data } = await this.getLoans({
-          playerId: this.player.id
-        })
-        this.loans = data
+      setLoans () {
+        this.getLoans({ playerId: this.player.id })
       },
-      async setInjuries () {
-        const { data } = await this.getInjuries({
-          playerId: this.player.id
-        })
-        this.injuries = data
+      setInjuries () {
+        this.getInjuries({ playerId: this.player.id })
       },
-      async setTransfers () {
-        const { data } = await this.getTransfers({
-          playerId: this.player.id
-        })
-        this.transfers = data
+      setTransfers () {
+        this.getTransfers({ playerId: this.player.id })
       }
     }
   }

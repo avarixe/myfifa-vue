@@ -9,10 +9,7 @@ export const actions = {
       path: myfifa.bookings.index,
       pathData: { matchId: matchId },
       token: rootState.token,
-      data: { booking: booking },
-      success: ({ data }) => {
-        commit('match/SET', data, { root: true })
-      }
+      data: { booking: booking }
     })
   },
   remove ({ commit, rootState }, bookingId) {
@@ -20,10 +17,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.bookings.record,
       pathData: { bookingId: bookingId },
-      token: rootState.token,
-      success: ({ data }) => {
-        commit('match/SET', data, { root: true })
-      }
+      token: rootState.token
     })
   }
 }
