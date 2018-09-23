@@ -32,7 +32,7 @@
         id: this.team.id
       }, {
         received: ({ type, data, destroyed }) => {
-          // console.log(data)
+          // console.log(type, data, destroyed)
           if (destroyed) {
             switch (type) {
               case 'Player':
