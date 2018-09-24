@@ -74,7 +74,7 @@
     },
     computed: {
       events () {
-        return this.match.events.slice().sort()
+        return [ ...this.match.events ]
       },
       penaltyShootoutEvent () {
         return this.match.penalty_shootout
