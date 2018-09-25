@@ -124,7 +124,9 @@
           }
         },
         loading: false,
-        pagination: {},
+        pagination: {
+          rowsPerPage: 10
+        },
         filterActive: true,
         search: ''
       }
