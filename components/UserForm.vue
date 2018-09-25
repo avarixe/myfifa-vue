@@ -71,7 +71,7 @@
           let save = this.user.id ? this.update : this.create
           await save(this.user)
         } catch (e) {
-          this.$store.commit('broadcaster/announce', {
+          this.$store.commit('broadcaster/ANNOUNCE', {
             message: 'Could not save Account',
             color: 'error'
           })

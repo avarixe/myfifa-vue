@@ -26,7 +26,7 @@
         this.snackbar = val.length > 0
       },
       snackbar (val) {
-        !val && this.$store.commit('broadcaster/clear')
+        !val && this.$store.commit('broadcaster/CLEAR')
       }
     }
   }

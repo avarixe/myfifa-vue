@@ -20,7 +20,7 @@ export const actions = {
       token: rootState.token,
       success: ({ data }) => {
         commit('player/SET', {
-          ...rootState.player[playerId],
+          ...rootState.player.list[playerId],
           contracts: data
         }, { root: true })
       }

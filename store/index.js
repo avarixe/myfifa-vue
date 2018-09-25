@@ -36,6 +36,10 @@ export const actions = {
       data: payload,
       success: ({ data }) => {
         commit('SET_TOKEN', data.access_token)
+        commit('broadcaster/ANNOUNCE', {
+          message: 'You have successfully logged in!',
+          color: 'success'
+        }, { root: true })
       }
     })
   },
@@ -46,6 +50,10 @@ export const actions = {
       data: { token: state.token },
       success: ({ data }) => {
         commit('SET_TOKEN', null)
+        commit('broadcaster/ANNOUNCE', {
+          message: 'You have successfully logged out!',
+          color: 'danger'
+        }, { root: true })
       }
     })
   }
