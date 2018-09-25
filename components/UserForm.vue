@@ -46,16 +46,18 @@
     props: {
       initialUser: Object
     },
-    data: () => ({
-      visible1: false,
-      visible2: false,
-      user: Object.assign({
-        full_name: '',
-        email: '',
-        password: '',
-        password_confirmation: ''
-      }, this.initialUser)
-    }),
+    data () {
+      return {
+        visible1: false,
+        visible2: false,
+        user: Object.assign({
+          full_name: '',
+          email: '',
+          password: '',
+          password_confirmation: ''
+        }, this.initialUser)
+      }
+    },
     computed: {
       title () {
         return this.user.id ? 'Edit Account' : 'New Account'

@@ -1,7 +1,9 @@
-const nodeExternals = require('webpack-node-externals')
-const resolve = (dir) => require('path').join(__dirname, dir)
+import pkg from './package'
+import nodeExternals from 'webpack-node-externals'
 
-module.exports = {
+export default {
+  mode: 'universal',
+
   /*
   ** Headers of the page
   */
@@ -10,7 +12,7 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Nuxt.js + Vuetify.js project' }
+      { hid: 'description', name: 'description', content: pkg.description }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -20,21 +22,30 @@ module.exports = {
       { src: 'https://www.gstatic.com/charts/loader.js' }
     ]
   },
-  plugins: [
-    '~/plugins/vuetify.js',
-    '~/plugins/custom.js',
-    '~/plugins/date-fns.js',
-    '~/plugins/chartkick.js'
-  ],
+
+  /*
+  ** Global CSS
+  */
   css: [
-    '~/assets/style/app.styl',
-    '~/css/main.css'
+    'vuetify/src/stylus/main.styl',
+    '@/css/main.css'
   ],
 
   /*
   ** Customize the progress bar color
   */
   loading: '~/components/AppLoadingOverlay.vue', // { color: '#3B8070' },
+
+  /*
+  ** Plugins to load before mounting the App
+  */
+  plugins: [
+    '@/plugins/vuetify.js',
+    '@/plugins/custom.js',
+    '@/plugins/date-fns.js',
+    '@/plugins/chartkick.js'
+  ],
+
   /*
   ** Build configuration
   */
@@ -50,28 +61,20 @@ module.exports = {
         }]
       ]
     },
-    vendor: [
-      '~/plugins/vuetify.js'
-    ],
     extractCSS: true,
+    transpile: [/^vuetify/],
     /*
     ** Run ESLint on save
     */
-    extend (config, ctx) {
-      if (ctx.isDev && ctx.isClient) {
+    extend (config, { isDev, isServer }) {
+      // Run ESLint on save
+      if (isDev && process.client) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
           exclude: /(node_modules)/
         })
-      }
-      if (ctx.isServer) {
-        config.externals = [
-          nodeExternals({
-            whitelist: [/^vuetify/]
-          })
-        ]
       }
     }
   }

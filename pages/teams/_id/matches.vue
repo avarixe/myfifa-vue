@@ -38,7 +38,8 @@
               :loading="loading"
               :search="search"
               item-key="id"
-              no-data-text="No Matches Recorded">
+              no-data-text="No Matches Recorded"
+              expand>
               <template slot="items" slot-scope="props">
                 <tr @click="viewMatch(props)">
                   <td class="text-xs-center">{{ props.item.competition }}</td>
@@ -94,6 +95,7 @@
       return {
         pagination: {
           sortBy: 'date_played',
+          rowsPerPage: 10,
           descending: true
         },
         headers: [
