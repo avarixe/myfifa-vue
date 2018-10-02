@@ -172,7 +172,7 @@
 </script>
 
 <style scoped>
-  >>> table.v-table tbody td {
+  >>> table.v-table tbody tr td {
     padding: 8px 16px;
     height: auto;
   }

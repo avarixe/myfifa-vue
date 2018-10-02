@@ -68,17 +68,6 @@
         </v-list>
       </v-menu>
     </v-list-tile-content>
-
-    <v-list-tile-action v-if="performance.rating || !readonly">
-        <v-rating
-          :value="performance.rating"
-          :readonly="readonly"
-          :color="ratingColor"
-          @input="setRating"
-          small
-          dense
-        ></v-rating>
-    </v-list-tile-action>
   </v-list-tile>
 </template>
 
@@ -132,15 +121,6 @@
             event.player_id === this.performance.player_id &&
             event.injury
           )).length > 0
-      },
-      ratingColor () {
-        switch (this.performance.rating) {
-          case 1: return 'red'
-          case 2: return 'orange'
-          case 3: return 'amber'
-          case 4: return 'light-green'
-          case 5: return 'green'
-        }
       }
     },
     methods: {
@@ -157,12 +137,6 @@
         this.update({
           ...this.performance,
           player_id: playerId
-        })
-      },
-      setRating (rating) {
-        this.update({
-          ...this.performance,
-          rating: rating
         })
       }
     }

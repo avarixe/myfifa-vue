@@ -5,7 +5,7 @@ export const baseURL = process.env.NODE_ENV === 'production'
   : `http://${domain}:3000`
 
 export const cableURL = process.env.NODE_ENV === 'production'
-  ? `ws://${domain}/cable`
+  ? `wss://${domain}/cable`
   : `ws://${domain}:3000/cable`
 
 export default {
