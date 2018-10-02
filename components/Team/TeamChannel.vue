@@ -16,7 +16,8 @@
     computed: {
       ...mapState([ 'token' ]),
       ...mapState('player', { players: 'list' }),
-      ...mapState('match', { matches: 'list' })
+      ...mapState('match', { matches: 'list' }),
+      ...mapState('squad', { squads: 'list' })
     },
     mounted () {
       if (!this.cable && this.token) {
