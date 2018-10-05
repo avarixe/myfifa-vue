@@ -1,9 +1,10 @@
 <template>
-  <v-layout row wrap>
-    <v-flex xs12>
-      Loaned for {{ length }}
-    </v-flex>
-  </v-layout>
+  <table>
+    <tr>
+      <td class="font-weight-bold">Duration</td>
+      <td class="pl-1">Injured for {{ length }}</td>
+    </tr>
+  </table>
 </template>
 
 <script>

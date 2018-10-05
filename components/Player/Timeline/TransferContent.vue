@@ -1,22 +1,29 @@
 <template>
-  <v-layout row wrap>
-    <v-flex xs12>
-      Origin: {{ transfer.origin }}
-    </v-flex>
-    <v-flex xs12>
-      Destination: {{ transfer.destination }}
-      <span v-if="transfer.loan"> (Loan)</span>
-    </v-flex>
-    <v-flex xs12>
-      Transfer Fee: {{ $_formatMoney(transfer.fee) }}
-    </v-flex>
-    <v-flex v-if="transfer.traded_player" xs12>
-      Traded Player: {{ transfer.traded_player }}
-    </v-flex>
-    <v-flex v-if="transfer.addon_clause" xs12>
-      Add-On Clause: {{ transfer.addon_clause }}%
-    </v-flex>
-  </v-layout>
+  <table>
+    <tr>
+      <td class="font-weight-bold">Origin</td>
+      <td class="pl-1">{{ transfer.origin }}</td>
+    </tr>
+    <tr>
+      <td class="font-weight-bold">Destination</td>
+      <td class="pl-1">
+        {{ transfer.destination }}
+        <span v-if="transfer.loan"> (Loan)</span>
+      </td>
+    </tr>
+    <tr>
+      <td class="font-weight-bold">Transfer Fee</td>
+      <td class="pl-1">{{ $_formatMoney(transfer.fee) }}</td>
+    </tr>
+    <tr v-if="transfer.traded_player">
+      <td class="font-weight-bold">Traded Player</td>
+      <td class="pl-1">{{ transfer.traded_player }}</td>
+    </tr>
+    <tr v-if="transfer.addon_clause">
+      <td class="font-weight-bold">Add-On Clause</td>
+      <td class="pl-1">{{ transfer.addon_clause }}%</td>
+    </tr>
+  </table>
 </template>
 
 <script>

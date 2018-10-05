@@ -95,7 +95,7 @@
           <v-divider></v-divider>
           <v-card-text>
             <v-layout class="text-xs-center" row wrap>
-              <v-flex sm6>
+              <v-flex xs12 md6>
                 <div class="display-1">{{ player.ovr }}</div>
                 <div class="subheading">OVR</div>
                 <line-chart
@@ -106,7 +106,7 @@
                   class="g-chart"
                 ></line-chart>
               </v-flex>
-              <v-flex sm6>
+              <v-flex xs12 md6>
                 <div class="display-1">{{ $_formatMoney(player.value) }}</div>
                 <div class="subheading">Value</div>
                 <line-chart

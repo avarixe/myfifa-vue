@@ -38,6 +38,7 @@ import {
   VProgressCircular,
   VRating,
   VInput,
+  VTimeline,
   transitions
 } from 'vuetify'
 
@@ -80,6 +81,7 @@ Vue.use(Vuetify, {
     VProgressCircular,
     VRating,
     VInput,
+    VTimeline,
     transitions
   }
 })

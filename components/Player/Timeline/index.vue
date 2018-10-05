@@ -1,40 +1,46 @@
 <template>
-  <timeline timeline-theme="slategray">
-    <timeline-item
+  <v-timeline :dense="dense">
+    <v-timeline-item
       v-for="(item, i) in sortedItems"
-      :key="i">
-      {{ item.dateRange }}
-      <v-expansion-panel popout>
-        <v-expansion-panel-content>
-          <div slot="header">
-            <v-icon left small :color="item.color">
-              {{ item.icon }}
-            </v-icon>
-            {{ item.title || item.type }}
-          </div>
-          <v-card>
-            <v-card-text>
-              <timeline-item-content :item="item"></timeline-item-content>
-            </v-card-text>
-          </v-card>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </timeline-item>
-  </timeline>
+      :key="i"
+      :icon="item.icon"
+      :color="item.color"
+      fill-dot
+      right>
+      <template slot="opposite">
+        <span :class="`headline font-weight-bold ${item.color}--text`">
+          {{ item.title || item.type }}
+        </span>
+        <h4 :class="`headline font-weight-light mb-3 ${item.color}--text`">
+          {{ item.dateRange }}
+        </h4>
+      </template>
+
+      <v-card dense>
+        <v-card-title v-if="dense" :class="`${item.color} lighten-2`">
+          <span class="font-weight-bold pr-1 white--text">{{ item.title || item.type }}</span>
+          <span class="font-weight-light pl-1 white--text">{{ item.dateRange }}</span>
+        </v-card-title>
+        <v-container>
+          <v-layout>
+            <v-flex xs12>
+              <timeline-content :item="item"></timeline-content>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-card>
+    </v-timeline-item>
+  </v-timeline>
 </template>
 
 <script>
-  import { Timeline, TimelineItem, TimelineTitle } from 'vue-cute-timeline'
-  import TimelineItemContent from '@/components/Player/Timeline/ItemContent'
+  import TimelineContent from '@/components/Player/Timeline/TimelineContent'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
     mixins: [ TeamAccessible ],
     components: {
-      Timeline,
-      TimelineItem,
-      TimelineTitle,
-      TimelineItemContent
+      TimelineContent
     },
     props: {
       filter: {
@@ -107,6 +113,15 @@
       },
       sortedItems () {
         return this.filteredItems.sort((a, b) => a.date < b.date)
+      },
+      dense () {
+        switch (this.$vuetify.breakpoint.name) {
+          case 'xs':
+          case 'sm':
+            return true
+          default:
+            return false
+        }
       }
     }
   }
