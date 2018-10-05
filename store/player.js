@@ -4,6 +4,7 @@ import myfifa from '@/api/myfifa'
 
 // initial state
 export const state = () => ({
+  loaded: false,
   list: {},
   positions: [
     'GK',
@@ -38,27 +39,33 @@ export const getters = {
 
 // actions
 export const actions = {
-  getAll ({ commit, rootState }, { teamId }) {
-    return apiRequest({
-      path: myfifa.players.index,
-      pathData: { teamId: teamId },
-      token: rootState.token,
-      success: function ({ data }) {
-        commit('SET_ALL', data)
-      }
-    })
+  getAll ({ state, commit, rootState }, { teamId }) {
+    if (!state.loaded) {
+      return apiRequest({
+        path: myfifa.players.index,
+        pathData: { teamId: teamId },
+        token: rootState.token,
+        success: function ({ data }) {
+          commit('SET_ALL', data)
+        }
+      })
+    }
   },
-  get ({ commit, rootState }, { playerId }) {
-    return apiRequest({
-      path: myfifa.players.record,
-      pathData: { playerId: playerId },
-      token: rootState.token,
-      success: ({ data }) => {
-        commit('SET', data)
-      }
-    })
+  get ({ state, commit, rootState }, { playerId }) {
+    if (playerId in state.list) {
+      return { data: state.list[playerId] }
+    } else {
+      return apiRequest({
+        path: myfifa.players.record,
+        pathData: { playerId: playerId },
+        token: rootState.token,
+        success: ({ data }) => {
+          commit('SET', data)
+        }
+      })
+    }
   },
-  analyze ({ commit, state, rootState }, { teamId, playerIds }) {
+  getStatistics ({ commit, state, rootState }, { teamId, playerIds }) {
     return apiRequest({
       method: 'post',
       path: myfifa.teams.statistics,
@@ -108,6 +115,19 @@ export const actions = {
       token: rootState.token
     })
   },
+  getHistory ({ state, commit, rootState }, { playerId }) {
+    return apiRequest({
+      path: myfifa.players.history,
+      pathData: { playerId: playerId },
+      token: rootState.token,
+      success: function ({ data }) {
+        commit('SET', {
+          ...state.list[playerId],
+          player_histories: data
+        })
+      }
+    })
+  },
   getCurrentInjury ({ rootState }, { playerId }) {
     return apiRequest({
       path: myfifa.players.current_injury,
@@ -131,6 +151,7 @@ export const mutations = {
       list[player.id] = player
       return list
     }, {})
+    state.loaded = true
   },
   SET (state, player) {
     Vue.set(state.list, player.id, player)

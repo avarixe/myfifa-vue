@@ -143,9 +143,12 @@
       }
     },
     watch: {
-      player (val) {
-        const { value } = this.player
-        this.playerData = { value }
+      player: {
+        immediate: true,
+        handler: function (val) {
+          const { value } = this.player
+          this.playerData = { value }
+        }
       }
     },
     methods: {

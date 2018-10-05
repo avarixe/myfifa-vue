@@ -83,20 +83,7 @@
       </v-tooltip>
     </penalty-shootout-form>
 
-    <v-tooltip bottom color="black">
-      <v-btn icon slot="activator" @click.native="promptDeletion = true">
-        <v-icon color="black">remove_circle</v-icon>
-      </v-btn>
-      Remove
-    </v-tooltip>
-
-    <v-snackbar
-      color="black"
-      v-model="promptDeletion">
-      Remove Match: {{ match.home }} v {{ match.away }}?
-      <v-btn dark flat @click.native="remove(match.id)">Yes</v-btn>
-      <v-btn dark flat @click.native="promptDeletion = false">No</v-btn>
-    </v-snackbar>
+    <match-remove :match="match"></match-remove>
   </div>
 </template>
 
@@ -109,6 +96,7 @@
   import BookingForm from '@/components/Match/BookingForm'
   import SubstitutionForm from '@/components/Match/SubstitutionForm'
   import PenaltyShootoutForm from '@/components/Match/PenaltyShootoutForm'
+  import MatchRemove from '@/components/Match/MatchRemove'
 
   export default {
     components: {
@@ -117,7 +105,8 @@
       GoalForm,
       BookingForm,
       SubstitutionForm,
-      PenaltyShootoutForm
+      PenaltyShootoutForm,
+      MatchRemove
     },
     mixins: [ TeamAccessible ],
     props: {
@@ -126,9 +115,7 @@
         required: true
       }
     },
-    data: () => ({
-      promptDeletion: false
-    }),
+    data: () => ({}),
     computed: {
       ...mapState('squad', {
         squads: 'list'

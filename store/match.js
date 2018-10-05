@@ -4,6 +4,7 @@ import myfifa from '@/api/myfifa'
 
 // initial state
 export const state = () => ({
+  loaded: false,
   list: {},
   positions: [
     'GK',
@@ -48,22 +49,31 @@ export const getters = {
 
 // actions
 export const actions = {
-  getAll ({ commit, rootState }, { teamId }) {
-    return apiRequest({
-      path: myfifa.matches.index,
-      pathData: { teamId: teamId },
-      token: rootState.token,
-      success: function ({ data }) {
-        commit('SET_ALL', data)
-      }
-    })
+  getAll ({ state, commit, rootState }, { teamId }) {
+    if (!state.loaded) {
+      return apiRequest({
+        path: myfifa.matches.index,
+        pathData: { teamId: teamId },
+        token: rootState.token,
+        success: function ({ data }) {
+          commit('SET_ALL', data)
+        }
+      })
+    }
   },
-  get ({ rootState }, { matchId }) {
-    return apiRequest({
-      path: myfifa.matches.record,
-      pathData: { matchId: matchId },
-      token: rootState.token
-    })
+  get ({ state, commit, rootState }, { matchId }) {
+    if (matchId in state.list) {
+      return { data: state.list[matchId] }
+    } else {
+      return apiRequest({
+        path: myfifa.matches.record,
+        pathData: { matchId: matchId },
+        token: rootState.token,
+        success: function ({ data }) {
+          commit('SET', data)
+        }
+      })
+    }
   },
   create ({ commit, rootState }, { teamId, match }) {
     return apiRequest({
@@ -122,6 +132,7 @@ export const mutations = {
       list[match.id] = match
       return list
     }, {})
+    state.loaded = true
   },
   SET (state, match) {
     Vue.set(state.list, match.id, match)

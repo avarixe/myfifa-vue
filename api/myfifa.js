@@ -19,6 +19,7 @@ export default {
     index: 'teams/{{ teamId }}/players',
     update_multiple: 'teams/{{ teamId }}/players/update_multiple',
     record: 'players/{{ playerId }}',
+    history: 'players/{{ playerId }}/history',
     current_injury: 'players/{{ playerId }}/current_injury',
     current_loan: 'players/{{ playerId }}/current_loan'
   },

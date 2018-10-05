@@ -184,14 +184,14 @@
       },
       display (val) {
         if (val === 'analytics') {
-          this.reloadAnalytics()
+          this.reloadStatistics()
         }
       }
     },
     methods: {
       ...mapActions('player', [
         'getAll',
-        'analyze'
+        'getStatistics'
       ]),
       async reloadTable () {
         this.loading = true
@@ -204,11 +204,11 @@
           this.loading = false
         }
       },
-      async reloadAnalytics () {
+      async reloadStatistics () {
         this.loading = true
 
         try {
-          await this.analyze({
+          await this.getStatistics({
             teamId: this.team.id,
             playerIds: Object.keys(this.players)
           })

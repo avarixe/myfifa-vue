@@ -1,16 +1,14 @@
 <template>
-  <v-flex xs12 sm6>
-    <v-list dense>
-      <v-subheader>Lineup</v-subheader>
-      <match-performance
-        v-for="(performance, i) in sortedPerformances"
-        :key="i"
-        :performance="performance"
-        :match="match"
-        :readonly="team.current_date !== match.date_played"
-      ></match-performance>
-    </v-list>
-  </v-flex>
+  <v-list dense>
+    <v-subheader>Lineup</v-subheader>
+    <match-performance
+      v-for="(performance, i) in sortedPerformances"
+      :key="i"
+      :performance="performance"
+      :match="match"
+      :readonly="team.current_date !== match.date_played"
+    ></match-performance>
+  </v-list>
 </template>
 
 <script>
@@ -46,3 +44,7 @@
     }
   }
 </script>
+
+<style scoped>
+  .v-list { background-color: transparent; }
+</style>

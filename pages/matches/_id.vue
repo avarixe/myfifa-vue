@@ -1,0 +1,97 @@
+<template>
+  <v-container fluid grid-list-lg>
+    <v-layout row wrap>
+      <v-flex xs12>
+        <v-card>
+          <v-card-text>
+            <v-layout class="text-xs-center" row wrap>
+              <v-flex xs12>
+                <div class="display-1">{{ match.competition }}</div>
+                <div class="subheading">{{ $_formatDate(match.date_played) }}</div>
+              </v-flex>
+              <v-flex xs12>
+                <div class="display-2">{{ match.home }} v {{ match.away }}</div>
+                <div class="display-1">{{ match.score }}</div>
+              </v-flex>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+
+      <v-flex xs12>
+        <v-card>
+          <v-card-title primary-title>
+            <div class="headline">Match Details</div>
+            <match-actions v-if="match.date_played === team.current_date" :match="match"></match-actions>
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-layout row wrap>
+              <v-flex xs12 sm6>
+                <match-events :match="match"></match-events>
+              </v-flex>
+              <v-flex xs12 sm6>
+                <match-lineup :match="match" v-if="match.team_result"></match-lineup>
+              </v-flex>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
+</template>
+
+<script>
+  import { mapState, mapActions } from 'vuex'
+  import MatchActions from '@/components/Match/MatchActions'
+  import MatchLineup from '@/components/Match/MatchLineup'
+  import MatchEvents from '@/components/Match/MatchEvents'
+  import TeamAccessible from '@/mixins/TeamAccessible'
+
+  export default {
+    layout: 'team',
+    components: {
+      MatchActions,
+      MatchLineup,
+      MatchEvents
+    },
+    middleware: 'authenticated',
+    mixins: [ TeamAccessible ],
+    data () {
+      return {
+      }
+    },
+    computed: {
+      ...mapState('player', {
+        players: 'list'
+      }),
+      ...mapState('match', { matches: 'list' }),
+      match () {
+        return this.matches[this.$route.params.id]
+      }
+    },
+    async fetch ({ store, params }) {
+      const { data } = await store.dispatch('match/get', { matchId: params.id })
+      await Promise.all([
+        store.dispatch('team/get', { teamId: data.team_id, activate: true }),
+        store.dispatch('performance/getAll', { matchId: params.id }),
+        store.dispatch('match/getEvents', { matchId: params.id })
+      ])
+    },
+    mounted () {
+      this.getPlayers({ teamId: this.team.id })
+      this.getSquads({ teamId: this.team.id })
+    },
+    watch: {
+      match (val) {
+        !val && this.$router.push({ name: 'index' })
+      }
+    },
+    methods: {
+      ...mapActions({
+        getPlayers: 'player/getAll',
+        getSquads: 'squad/getAll',
+      })
+    }
+  }
+</script>

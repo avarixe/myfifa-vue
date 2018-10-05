@@ -28,30 +28,25 @@
               <v-flex xs12>
                 <player-form
                   :initial-player="player"
-                  :submit-cb="() => { refreshPlayer() && getStatistics() }"
                   color="orange">
                   <v-btn color="orange" dark>Edit</v-btn>
                 </player-form>
                 <transfer-form
                   :player="player"
-                  :submit-cb="() => { refreshPlayer() && setTransfers() }">
                   <v-btn :color="active ? 'red' : 'green'" dark>Transfer</v-btn>
                 </transfer-form>
                 <contract-form
                   :player="player"
-                  :submit-cb="() => { refreshPlayer() && setContracts() }">
                   <v-btn color="blue" dark>Contract</v-btn>
                 </contract-form>
                 <injury-form
                   v-if="active"
                   :player="player"
-                  :submit-cb="() => { refreshPlayer() && setInjuries() }">
                   <v-btn color="pink" dark>Injury</v-btn>
                 </injury-form>
                 <loan-form
                   v-if="active"
                   :player="player"
-                  :submit-cb="() => { refreshPlayer() && setLoans() }">
                   <v-btn color="indigo" dark>Loan</v-btn>
                 </loan-form>
                 <player-remove :player="player">
@@ -253,14 +248,12 @@
       await store.dispatch('team/get', { teamId: data.team_id, activate: true })
     },
     mounted () {
-      this.getStatistics({
-        teamId: this.team.id,
-        playerIds: [ this.player.id ]
-      })
-      this.setContracts()
-      this.setLoans()
-      this.setInjuries()
-      this.setTransfers()
+      this.getStatistics({ teamId: this.team.id, playerIds: [this.player.id] })
+      this.getHistory({ playerId: this.player.id })
+      this.getContracts({ playerId: this.player.id })
+      this.getLoans({ playerId: this.player.id })
+      this.getInjuries({ playerId: this.player.id })
+      this.getTransfers({ playerId: this.player.id })
     },
     watch: {
       player (val) {
@@ -270,31 +263,13 @@
     methods: {
       ...mapActions({
         getPlayer: 'player/get',
-        getStatistics: 'player/analyze',
+        getStatistics: 'player/getStatistics',
+        getHistory: 'player/getHistory',
         getContracts: 'contract/getAll',
         getLoans: 'loan/getAll',
         getInjuries: 'injury/getAll',
         getTransfers: 'transfer/getAll'
-      }),
-      async refreshPlayer () {
-        await this.getPlayer({ playerId: this.player.id })
-        this.getStatistics({
-          teamId: this.team.id,
-          playerIds: [ this.player.id ]
-        })
-      },
-      setContracts () {
-        this.getContracts({ playerId: this.player.id })
-      },
-      setLoans () {
-        this.getLoans({ playerId: this.player.id })
-      },
-      setInjuries () {
-        this.getInjuries({ playerId: this.player.id })
-      },
-      setTransfers () {
-        this.getTransfers({ playerId: this.player.id })
-      }
+      })
     }
   }
 </script>

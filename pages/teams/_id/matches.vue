@@ -38,25 +38,24 @@
               :loading="loading"
               :search="search"
               item-key="id"
-              no-data-text="No Matches Recorded"
-              expand>
+              no-data-text="No Matches Recorded">
               <template slot="items" slot-scope="props">
-                <tr @click="viewMatch(props)">
-                  <td class="text-xs-center">{{ props.item.competition }}</td>
-                  <td class="text-xs-right">{{ props.item.home }}</td>
-                  <td :class="resultColor(props.item.team_result) + '--text text-xs-center'">{{ props.item.score }}</td>
-                  <td class="text-xs-left">{{ props.item.away }}</td>
-                  <td class="text-xs-center">{{ $_format($_parse(props.item.date_played), 'MMM DD, YYYY') }}</td>
-                </tr>
-              </template>
-              <template slot="expand" slot-scope="props">
-                <div class="pa-0">
-                  <match-actions v-if="props.item.date_played === team.current_date" :match="props.item"></match-actions>
-                  <v-layout row wrap class="mx-0">
-                    <match-events :match="props.item"></match-events>
-                    <match-lineup :match="props.item" v-if="props.item.team_result"></match-lineup>
-                  </v-layout>
-                </div>
+                <td class="text-xs-center">{{ props.item.competition }}</td>
+                <td class="text-xs-right">{{ props.item.home }}</td>
+                <td :class="resultColor(props.item.team_result) + '--text text-xs-center'">{{ props.item.score }}</td>
+                <td class="text-xs-left">{{ props.item.away }}</td>
+                <td class="text-xs-center">{{ $_format($_parse(props.item.date_played), 'MMM DD, YYYY') }}</td>
+                <td>
+                  <v-tooltip bottom color="blue darken-2">
+                    <v-btn
+                      slot="activator"
+                      :to="{ name: 'matches-id', params: { id: props.item.id } }"
+                      icon>
+                      <v-icon color="blue darken-2">arrow_forward</v-icon>
+                    </v-btn>
+                    View Match
+                  </v-tooltip>
+                </td>
               </template>
             </v-data-table>
           </v-card-text>
@@ -72,6 +71,7 @@
   import MatchActions from '@/components/Match/MatchActions'
   import MatchLineup from '@/components/Match/MatchLineup'
   import MatchEvents from '@/components/Match/MatchEvents'
+  import MatchRemove from '@/components/Match/MatchRemove'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
@@ -81,7 +81,8 @@
       MatchForm,
       MatchActions,
       MatchLineup,
-      MatchEvents
+      MatchEvents,
+      MatchRemove
     },
     mixins: [ TeamAccessible ],
     async fetch ({ store, params }) {
@@ -100,10 +101,11 @@
         },
         headers: [
           { text: 'Competition', value: 'competition', align: 'center' },
-          { text: 'Home',        value: 'home',        align: 'right' },
-          { text: 'Score',       value: 'score',       align: 'center', sortable: false },
-          { text: 'Away',        value: 'away',        align: 'left' },
-          { text: 'Date Played', value: 'date_played', align: 'center' }
+          { text: 'Home', value: 'home', align: 'right' },
+          { text: 'Score', value: 'score', align: 'center', sortable: false },
+          { text: 'Away', value: 'away', align: 'left' },
+          { text: 'Date Played', value: 'date_played', align: 'center' },
+          { text: '', value: null, sortable: false }
         ],
         loading: false,
         search: ''
@@ -154,6 +156,12 @@
 
           props.expanded = true
         }
+      },
+      viewMatch (match) {
+        this.$router.push({
+          name: 'matches-id',
+          params: { id: match.id }
+        })
       },
       resultColor (result) {
         switch (result) {

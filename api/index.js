@@ -41,6 +41,8 @@ async function apiRequest ({
         throw new Error(res.errors[0])
       }
     } else {
+      console.error(e)
+      console.trace(e)
       throw new Error('An Error occurred. Please try again.')
     }
   }
