@@ -28,7 +28,7 @@
           <v-card-text>
             <v-layout row wrap>
               <v-flex xs12 sm6>
-                <match-events :match="match"></match-events>
+                <match-timeline :match="match"></match-timeline>
               </v-flex>
               <v-flex xs12 sm6>
                 <match-lineup :match="match" v-if="match.team_result"></match-lineup>
@@ -45,7 +45,8 @@
   import { mapState, mapActions } from 'vuex'
   import MatchActions from '@/components/Match/MatchActions'
   import MatchLineup from '@/components/Match/MatchLineup'
-  import MatchEvents from '@/components/Match/MatchEvents'
+  // import MatchEvents from '@/components/Match/MatchEvents'
+  import MatchTimeline from '@/components/Match/Timeline'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
@@ -53,7 +54,7 @@
     components: {
       MatchActions,
       MatchLineup,
-      MatchEvents
+      MatchTimeline
     },
     middleware: 'authenticated',
     mixins: [ TeamAccessible ],
