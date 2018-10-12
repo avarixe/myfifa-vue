@@ -1,9 +1,11 @@
 <template>
   <table>
-    <tr>
-      <td class="font-weight-bold">Duration</td>
-      <td class="pl-1">Injured for {{ length }}</td>
-    </tr>
+    <tbody>
+      <tr>
+        <td class="font-weight-bold">Duration</td>
+        <td class="pl-1">Injured for {{ length }}</td>
+      </tr>
+    </tbody>
   </table>
 </template>
 
