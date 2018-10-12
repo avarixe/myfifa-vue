@@ -2,6 +2,14 @@
   <v-container fluid grid-list-lg>
     <v-layout row wrap>
       <v-flex xs12>
+        <match-form>
+          <v-btn>
+            <v-icon left>add</v-icon>
+            Match
+          </v-btn>
+        </match-form>
+      </v-flex>
+      <v-flex xs12>
         <v-card>
           <v-card-text>
             <v-layout class="text-xs-center" row wrap>
@@ -43,6 +51,7 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
+  import MatchForm from '@/components/Match/MatchForm'
   import MatchActions from '@/components/Match/MatchActions'
   import MatchLineup from '@/components/Match/MatchLineup'
   // import MatchEvents from '@/components/Match/MatchEvents'
@@ -52,6 +61,7 @@
   export default {
     layout: 'team',
     components: {
+      MatchForm,
       MatchActions,
       MatchLineup,
       MatchTimeline
