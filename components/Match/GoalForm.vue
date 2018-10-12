@@ -36,7 +36,7 @@
             v-if="teamGoal"
             v-model="goal.player_id"
             :rules="$_validate('Goal Scorer', ['required'])"
-            :items="match.performances"
+            :items="sortedPerformances"
             item-value="player_id"
             item-text="name"
             label="Goal Scorer"
@@ -66,7 +66,7 @@
           <v-select
             v-if="teamGoal"
             v-model="goal.assist_id"
-            :items="match.performances"
+            :items="sortedPerformances"
             item-value="player_id"
             item-text="name"
             label="Assisted By"
