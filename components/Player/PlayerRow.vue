@@ -87,8 +87,6 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import get from 'lodash.get'
-
   import TeamAccessible from '@/mixins/TeamAccessible'
   import PlayerForm from '@/components/Player/PlayerForm'
   import ContractForm from '@/components/Player/ContractForm'
@@ -156,7 +154,7 @@
         'update'
       ]),
       getProperty (property, outputFormat) {
-        const value = get(this.player, property, '')
+        const value = this.$_get(this.player, property, '')
 
         if (!value) return '-'
 
