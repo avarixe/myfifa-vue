@@ -70,7 +70,6 @@
   import MatchForm from '@/components/Match/MatchForm'
   import MatchActions from '@/components/Match/MatchActions'
   import MatchLineup from '@/components/Match/MatchLineup'
-  import MatchEvents from '@/components/Match/MatchEvents'
   import MatchRemove from '@/components/Match/MatchRemove'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
@@ -81,7 +80,6 @@
       MatchForm,
       MatchActions,
       MatchLineup,
-      MatchEvents,
       MatchRemove
     },
     mixins: [ TeamAccessible ],

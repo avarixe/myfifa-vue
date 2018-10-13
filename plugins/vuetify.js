@@ -9,7 +9,7 @@ import {
   VIcon,
   VGrid,
   VToolbar,
-  // VCarousel,
+  VCarousel,
   VDialog,
   VCard,
   VTextField,
@@ -24,6 +24,7 @@ import {
   VSpeedDial,
   VSnackbar,
   VDataTable,
+  VDataIterator,
   // VPagination,
   VBreadcrumbs,
   VSelect,
@@ -38,6 +39,8 @@ import {
   VProgressCircular,
   VRating,
   VInput,
+  VTimeline,
+  // VWindow,
   transitions
 } from 'vuetify'
 
@@ -51,7 +54,7 @@ Vue.use(Vuetify, {
     VIcon,
     VGrid,
     VToolbar,
-    // VCarousel,
+    VCarousel,
     VDialog,
     VCard,
     VTextField,
@@ -66,6 +69,7 @@ Vue.use(Vuetify, {
     VSpeedDial,
     VSnackbar,
     VDataTable,
+    VDataIterator,
     // VPagination,
     VBreadcrumbs,
     VSelect,
@@ -80,6 +84,8 @@ Vue.use(Vuetify, {
     VProgressCircular,
     VRating,
     VInput,
+    VTimeline,
+    // VWindow,
     transitions
   }
 })

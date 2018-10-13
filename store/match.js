@@ -28,7 +28,9 @@ export const state = () => ({
     'RAM',
     'LW',
     'CF',
+    'LS',
     'ST',
+    'RS',
     'RW'
   ]
 })

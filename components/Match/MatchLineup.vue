@@ -1,46 +1,33 @@
 <template>
   <v-list dense>
     <v-subheader>Lineup</v-subheader>
-    <match-performance
-      v-for="(performance, i) in sortedPerformances"
-      :key="i"
-      :performance="performance"
-      :match="match"
-      :readonly="team.current_date !== match.date_played"
-    ></match-performance>
+    <formation-view :formation="sortedPerformances">
+      <template slot="item" slot-scope="{ player }">
+        <match-performance
+          :performance="player"
+          :match="match"
+          :readonly="team.current_date !== match.date_played"
+        ></match-performance>
+      </template>
+    </formation-view>
   </v-list>
 </template>
 
 <script>
   import { mapState } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
+  import MatchAccessible from '@/mixins/MatchAccessible'
   import MatchPerformance from '@/components/Match/MatchPerformance'
+  import FormationView from '@/components/FormationView'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible,
+      MatchAccessible
+    ],
     components: {
-      MatchPerformance
-    },
-    props: {
-      match: {
-        type: Object,
-        required: true
-      }
-    },
-    data () {
-      return {}
-    },
-    computed: {
-      ...mapState('match', [
-        'positions'
-      ]),
-      sortedPerformances () {
-        return this.match.performances.slice().sort((a, b) => {
-          let aPos = this.positions.indexOf(a.pos)
-          let bPos = this.positions.indexOf(b.pos)
-          return aPos - bPos || a.start - b.start
-        })
-      }
+      MatchPerformance,
+      FormationView
     }
   }
 </script>

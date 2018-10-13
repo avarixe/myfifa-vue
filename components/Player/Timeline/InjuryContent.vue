@@ -1,9 +1,12 @@
 <template>
-  <v-layout row wrap>
-    <v-flex xs12>
-      Injured for {{ length }}
-    </v-flex>
-  </v-layout>
+  <table>
+    <tbody>
+      <tr>
+        <td class="font-weight-bold">Duration</td>
+        <td class="pl-1">Injured for {{ length }}</td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script>

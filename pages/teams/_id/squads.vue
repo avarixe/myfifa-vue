@@ -22,22 +22,20 @@
           <v-card-text>
 
             <!-- Squads Grid -->
-            <v-data-table
-              :headers="headers"
+            <v-data-iterator
               :items="rows"
               :loading="loading"
-              item-key="id"
-              disable-initial-sort
+              content-tag="v-layout"
+              row
+              wrap
               no-data-text="No Squads Recorded">
-              <template slot="items" slot-scope="props">
-                <tr @click="props.expanded = !props.expanded">
-                  <td class="text-xs-center">{{ props.item.name }}</td>
-                  <td class="text-xs-right">
-                    <squad-actions :squad="props.item"></squad-actions>
-                  </td>
-                </tr>
+              <template slot="item" slot-scope="props">
+                <v-flex xs12 md6>
+                  <squad-item :squad="props.item"></squad-item>
+                </v-flex>
               </template>
-            </v-data-table>
+            </v-data-iterator>
+
           </v-card-text>
         </v-card>
       </v-flex>
@@ -49,7 +47,8 @@
   import { mapState, mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import SquadForm from '@/components/Squad/SquadForm'
-  import SquadActions from '@/components/Squad/SquadActions'
+  import SquadItem from '@/components/Squad/SquadItem'
+  // import SquadActions from '@/components/Squad/SquadActions'
 
   export default {
     layout: 'team',
@@ -62,7 +61,8 @@
     },
     components: {
       SquadForm,
-      SquadActions
+      // SquadActions
+      SquadItem
     },
     mixins: [ TeamAccessible ],
     data () {

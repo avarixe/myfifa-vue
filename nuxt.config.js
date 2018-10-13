@@ -41,6 +41,7 @@ export default {
   */
   plugins: [
     '@/plugins/vuetify.js',
+    '@/plugins/lodash.js',
     '@/plugins/custom.js',
     '@/plugins/date-fns.js',
     '@/plugins/chartkick.js'
