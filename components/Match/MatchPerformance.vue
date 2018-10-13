@@ -1,58 +1,16 @@
 <template>
-  <v-list-tile>
-    <v-list-tile-action>
-      <v-menu
-        :disabled="readonly"
-        max-height="200px"
-        offset-y
-        offset-overflow
-        lazy>
-        <v-list-tile-action-text slot="activator">
-          {{ performance.pos }}
-        </v-list-tile-action-text>
-        <v-list>
-          <v-list-tile
-            v-for="pos in positions"
-            :key="pos"
-            @click="setPosition(pos)">
-            <v-list-tile-title>{{ pos }}</v-list-tile-title>
-          </v-list-tile>
-        </v-list>
-      </v-menu>
-    </v-list-tile-action>
-
-    <v-list-tile-avatar>
-      <v-icon small color="green" v-if="parseInt(performance.start) > 0">subdirectory_arrow_right</v-icon>
-      <v-icon small color="red" v-if="performance.subbed_out">subdirectory_arrow_left</v-icon>
-    </v-list-tile-avatar>
-
-    <v-list-tile-content>
+  <div>
+    <div class="body-2">
       <v-menu
         :disabled="readonly || performance.start > 0"
         max-height="200px"
         offset-y
         offset-overflow
         lazy>
-        <v-list-tile-title slot="activator">
+        <span slot="activator">
           {{ performance.name }}
-          <v-icon
-            v-for="index in numGoals"
-            :key="index"
-            color="blue"
-            small
-          >camera</v-icon>
-          <v-icon
-            v-for="(color, i) in bookings"
-            :key="i"
-            :color="color"
-            small
-          >book</v-icon>
-          <v-icon
-            v-if="injured"
-            color="pink"
-            small
-          >local_hospital</v-icon>
-        </v-list-tile-title>
+        </span>
+
         <v-list>
           <v-list-tile
             v-for="player in players"
@@ -67,8 +25,57 @@
           </v-list-tile>
         </v-list>
       </v-menu>
-    </v-list-tile-content>
-  </v-list-tile>
+    </div>
+    <div class="body-1">
+      <v-menu
+        :disabled="readonly"
+        max-height="200px"
+        offset-y
+        offset-overflow
+        lazy>
+        <span slot="activator">
+          {{ performance.pos }}
+        </span>
+        <v-list>
+          <v-list-tile
+            v-for="pos in positions"
+            :key="pos"
+            @click="setPosition(pos)">
+            <v-list-tile-title>{{ pos }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+    </div>
+    <div>
+      <v-icon
+        v-if="parseInt(performance.start) > 0"
+        color="green"
+        small
+      >subdirectory_arrow_right</v-icon>
+      <v-icon
+        v-for="index in numGoals"
+        :key="index"
+        color="blue"
+        small
+      >camera</v-icon>
+      <v-icon
+        v-for="(color, i) in bookings"
+        :key="i"
+        :color="color"
+        small
+      >book</v-icon>
+      <v-icon
+        v-if="injured"
+        color="pink"
+        small
+      >local_hospital</v-icon>
+      <v-icon
+        v-if="performance.subbed_out"
+        color="red"
+        small
+      >subdirectory_arrow_left</v-icon>
+    </div>
+  </div>
 </template>
 
 <script>

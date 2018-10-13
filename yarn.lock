@@ -4118,6 +4118,11 @@ lodash.clonedeep@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
   integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
 
+lodash.compact@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/lodash.compact/-/lodash.compact-3.0.1.tgz#540ce3837745975807471e16b4a2ba21e7256ca5"
+  integrity sha1-VAzjg3dFl1gHRx4WtKK6IeclbKU=
+
 lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
@@ -4132,6 +4137,11 @@ lodash.get@^4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
   integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
+
+lodash.groupby@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/lodash.groupby/-/lodash.groupby-4.6.0.tgz#0b08a1dcf68397c397855c3239783832df7403d1"
+  integrity sha1-Cwih3PaDl8OXhVwyOXg4Mt90A9E=
 
 lodash.isplainobject@^4.0.6:
   version "4.0.6"
@@ -7186,9 +7196,9 @@ vue@^2.5.17:
   integrity sha512-mFbcWoDIJi0w0Za4emyLiW72Jae0yjANHbCVquMKijcavBGypqlF7zHRgMa5k4sesdv7hv2rB4JPdZfR+TPfhQ==
 
 vuetify@^1.3.0-alpha.1:
-  version "1.3.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.3.0-alpha.2.tgz#d287d1b32528da0e4e2bb7d717fd711281c711a2"
-  integrity sha512-sXIF0iK6saKwQoFXPFwy3jUxuBa7bqRMNhEPJlAI7S0kmUO6eqSMfA0AfkPNJmRQwOnR8A4SpBfifIcFtTxq/g==
+  version "1.3.0-beta.0"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.3.0-beta.0.tgz#7083e2136297c98f0480fd1c83d215b60d6e16c0"
+  integrity sha512-8aseqxw1nGbhEQOJg/an8ZFLgToR8Jo6GnURaAPaNw2orwtzRjsrZ2krxHQ9K5nklKuNBzY+aVFy0Jt5H7tx0A==
 
 vuex@^3.0.1:
   version "3.0.1"

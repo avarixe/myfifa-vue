@@ -1,13 +1,15 @@
 <template>
   <v-list dense>
     <v-subheader>Lineup</v-subheader>
-    <match-performance
-      v-for="(performance, i) in sortedPerformances"
-      :key="i"
-      :performance="performance"
-      :match="match"
-      :readonly="team.current_date !== match.date_played"
-    ></match-performance>
+    <formation-view :formation="sortedPerformances">
+      <template slot="item" slot-scope="{ player }">
+        <match-performance
+          :performance="player"
+          :match="match"
+          :readonly="team.current_date !== match.date_played"
+        ></match-performance>
+      </template>
+    </formation-view>
   </v-list>
 </template>
 
@@ -16,6 +18,7 @@
   import TeamAccessible from '@/mixins/TeamAccessible'
   import MatchAccessible from '@/mixins/MatchAccessible'
   import MatchPerformance from '@/components/Match/MatchPerformance'
+  import FormationView from '@/components/FormationView'
 
   export default {
     mixins: [
@@ -23,7 +26,8 @@
       MatchAccessible
     ],
     components: {
-      MatchPerformance
+      MatchPerformance,
+      FormationView
     }
   }
 </script>
