@@ -57,7 +57,7 @@
         ]
       },
       posDEF () {
-        return ['RWB', 'RB', 'RCB', 'CB', 'LCB', 'LB', 'LWB' ]
+        return ['LWB', 'LB', 'LCB', 'CB', 'RCB', 'RB', 'RWB' ]
           .map(pos => this.groupedPlayers[pos])
       },
       posDEFMID () {
