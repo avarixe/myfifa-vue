@@ -118,7 +118,7 @@
         if (this.initialMatch) {
           await this.update(this.match)
         } else {
-          await this.create({
+          const { data } = await this.create({
             teamId: this.team.id,
             match: this.match
           })

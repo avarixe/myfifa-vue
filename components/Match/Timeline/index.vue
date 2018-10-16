@@ -96,7 +96,7 @@
       },
       penaltyShootoutEvent () {
         return this.match.penalty_shootout
-          ? { id: this.match.penalty_shootout.id, event_type: 'PenaltyShootout' }
+          ? { ...this.match.penalty_shootout, event_type: 'PenaltyShootout' }
           : {}
       },
       dense () {
