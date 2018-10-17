@@ -10,9 +10,12 @@
       ></match-performance>
     </formation-view>
 
-    <v-layout row wrap>
+    <v-layout
+      v-if="substitutes.length > 0"
+      row
+      wrap>
       <v-flex xs12>
-        <v-list dense>
+        <v-list id="substitutes" dense>
           <v-subheader>Substitutes</v-subheader>
           <substitute-performance
             v-for="(player, i) in substitutes"
@@ -59,5 +62,5 @@
 </script>
 
 <style scoped>
-  .v-list { background-color: transparent; }
+  .v-list#substitutes { background-color: transparent; }
 </style>

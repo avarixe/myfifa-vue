@@ -39,7 +39,10 @@
                 <match-timeline :match="match"></match-timeline>
               </v-flex>
               <v-flex xs12 sm6>
-                <match-lineup :match="match" v-if="match.team_result"></match-lineup>
+                <match-lineup
+                  v-if="match.performances.length > 0"
+                  :match="match"
+                ></match-lineup>
               </v-flex>
             </v-layout>
           </v-card-text>

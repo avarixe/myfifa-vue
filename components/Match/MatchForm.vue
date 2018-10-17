@@ -123,7 +123,7 @@
             match: this.match
           })
           this.$router.push({
-            name: 'match-id',
+            name: 'matches-id',
             params: { id: data.id }
           })
         }
