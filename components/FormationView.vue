@@ -1,34 +1,22 @@
 <template>
-  <v-container flat>
-    <v-layout row wrap>
-      <v-flex
-        v-for="(positions, i) in [posATT, posATTMID, posDEFMID, posDEF, posGK]"
-        :key="i"
-        xs12>
-        <v-layout>
-          <v-flex
-            v-for="(players, j) in $_compact(positions)"
-            :key="j"
-            class="text-xs-center">
-            <v-carousel
-              hide-delimiters
-              :hide-controls="players.length === 1"
-              height="auto"
-              :cycle="false">
-              <v-carousel-item
-                v-for="(player, k) in players"
-                :key="k">
-                <slot name="item" :player="player">
-                  <div class="body-2">{{ nameOf(player.player_id) }}</div>
-                  <div class="body-1">{{ player.pos }}</div>
-                </slot>
-              </v-carousel-item>
-            </v-carousel>
-          </v-flex>
-        </v-layout>
-      </v-flex>
-    </v-layout>
-  </v-container>
+  <v-layout row wrap>
+    <v-flex
+      v-for="(positions, i) in [posATT, posATTMID, posDEFMID, posDEF, posGK]"
+      :key="i"
+      xs12>
+      <v-layout>
+        <v-flex
+          v-for="(player, j) in $_compact(positions)"
+          :key="j"
+          class="text-xs-center">
+          <slot name="item" :player="player">
+            <div class="body-2">{{ nameOf(player.player_id) }}</div>
+            <div class="body-1">{{ player.pos }}</div>
+          </slot>
+        </v-flex>
+      </v-layout>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -48,29 +36,31 @@
     computed: {
       ...mapState('player', { players: 'list' }),
       ...mapState('match', ['positions']),
-      groupedPlayers () {
-        return this.$_groupBy(this.formation, 'pos')
+      startingEleven () {
+        return this.formation
+          .filter(p => !('start' in p) || p.start === 0)
+          .sort((a, b) => this.positions.indexOf(a) < this.positions.indexOf(b))
       },
       posGK () {
         return [
-          this.groupedPlayers['GK']
+          this.startingEleven.find(p => p.pos === 'GK')
         ]
       },
       posDEF () {
-        return ['LWB', 'LB', 'LCB', 'CB', 'RCB', 'RB', 'RWB' ]
-          .map(pos => this.groupedPlayers[pos])
+        return ['LWB', 'LB', 'LCB', 'CB', 'RCB', 'RB', 'RWB']
+          .map(pos => this.retrievePos(pos))
       },
       posDEFMID () {
         return ['LM', 'LDM', 'LCM', 'CDM', 'CM', 'RCM', 'RDM', 'RM']
-          .map(pos => this.groupedPlayers[pos])
+          .map(pos => this.retrievePos(pos))
       },
       posATTMID () {
         return ['LAM', 'CAM', 'RAM']
-          .map(pos => this.groupedPlayers[pos])
+          .map(pos => this.retrievePos(pos))
       },
       posATT () {
         return ['LW', 'CF', 'ST', 'RW']
-          .map(pos => this.groupedPlayers[pos])
+          .map(pos => this.retrievePos(pos))
       }
     },
     created () {
@@ -79,6 +69,9 @@
       })
     },
     methods: {
+      retrievePos (pos) {
+        return this.startingEleven.find(p => p.pos === pos)
+      },
       nameOf (playerId) {
         return playerId in this.players
           ? this.players[playerId].name
@@ -87,12 +80,3 @@
     }
   }
 </script>
-
-<style scoped>
-  >>> .v-carousel { box-shadow: 0 0 transparent; }
-  >>> .v-carousel__next .v-icon,
-  >>> .v-carousel__prev .v-icon  {
-    color: #333;
-    font-size: 24px !important;
-  }
-</style>

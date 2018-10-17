@@ -1,24 +1,39 @@
 <template>
-  <v-list dense>
-    <v-subheader>Lineup</v-subheader>
+  <v-container>
     <formation-view :formation="sortedPerformances">
-      <template slot="item" slot-scope="{ player }">
-        <match-performance
-          :performance="player"
-          :match="match"
-          :readonly="team.current_date !== match.date_played"
-        ></match-performance>
-      </template>
+      <match-performance
+        slot="item"
+        slot-scope="{ player }"
+        :performance="player"
+        :match="match"
+        :readonly="readonly"
+      ></match-performance>
     </formation-view>
-  </v-list>
+
+    <v-layout row wrap>
+      <v-flex xs12>
+        <v-list dense>
+          <v-subheader>Substitutes</v-subheader>
+          <substitute-performance
+            v-for="(player, i) in substitutes"
+            :key="i"
+            :performance="player"
+            :match="match"
+            :readonly="readonly"
+          ></substitute-performance>
+        </v-list>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
   import { mapState } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import MatchAccessible from '@/mixins/MatchAccessible'
-  import MatchPerformance from '@/components/Match/MatchPerformance'
   import FormationView from '@/components/FormationView'
+  import MatchPerformance from '@/components/Match/MatchPerformance'
+  import SubstitutePerformance from '@/components/Match/SubstitutePerformance'
 
   export default {
     mixins: [
@@ -26,8 +41,19 @@
       MatchAccessible
     ],
     components: {
+      FormationView,
       MatchPerformance,
-      FormationView
+      SubstitutePerformance
+    },
+    computed: {
+      readonly () {
+        return this.team.current_date !== this.match.date_played
+      },
+      substitutes () {
+        return this.sortedPerformances
+          .filter(p => 'start' in p && p.start > 0)
+          .sort((a, b) => this.positions.indexOf(a) < this.positions.indexOf(b))
+      }
     }
   }
 </script>
