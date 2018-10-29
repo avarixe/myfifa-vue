@@ -9,7 +9,7 @@
       <v-tooltip bottom :color="transferOut ? 'red' : 'green'">
         <v-btn slot="activator" fab small :color="transferOut ? 'red' : 'green'" dark>
           <v-icon>
-            flight_{{ transferOut ? 'takeoff' : 'land' }}
+            mdi-airplane-{{ transferOut ? 'takeoff' : 'landing' }}
           </v-icon>
         </v-btn>
         Transfer {{ transferOut ? 'Out' : 'In' }}
@@ -30,7 +30,7 @@
             <v-text-field
               slot="activator"
               label="Effective Date"
-              prepend-icon="calendar_today"
+              prepend-icon="mdi-calendar-today"
               v-model="transfer.effective_date"
               required
               readonly
@@ -47,7 +47,7 @@
             v-model="transfer.origin"
             :rules="$_validate('Origin', ['required'])"
             label="Origin"
-            prepend-icon="flight_takeoff"
+            prepend-icon="mdi-airplane-takeoff"
             :disabled="transferOut"
             spellcheck="false"
             autocapitalize="words"
@@ -60,7 +60,7 @@
             v-model="transfer.destination"
             :rules="$_validate('Destination', ['required'])"
             label="Destination"
-            prepend-icon="flight_land"
+            prepend-icon="mdi-airplane-landing"
             :disabled="!transferOut"
             spellcheck="false"
             autocapitalize="words"

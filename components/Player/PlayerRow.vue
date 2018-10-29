@@ -13,8 +13,8 @@
           v-model="fab"
           fab
           small>
-          <v-icon>person</v-icon>
-          <v-icon>close</v-icon>
+          <v-icon>mdi-account</v-icon>
+          <v-icon>mdi-close</v-icon>
         </v-btn>
         <v-btn
           color="primary"
@@ -22,12 +22,12 @@
           nuxt
           :to="{ name: 'players-id', params: { id: player.id } }">
           {{ player.name }}
-          <v-icon right>arrow_forward</v-icon>
+          <v-icon right>mdi-arrow-right</v-icon>
         </v-btn>
         <player-form :initial-player="player" color="orange">
           <v-tooltip bottom color="orange">
             <v-btn slot="activator" fab small color="orange" dark>
-              <v-icon>edit</v-icon>
+              <v-icon>mdi-pencil</v-icon>
             </v-btn>
             Edit
           </v-tooltip>

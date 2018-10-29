@@ -9,7 +9,7 @@
       <team-form>
         <v-tooltip top>
           <v-btn slot="activator" flat icon>
-            <v-icon>add_circle</v-icon>
+            <v-icon>mdi-plus-circle-outline</v-icon>
           </v-btn>
           Add Team
         </v-tooltip>

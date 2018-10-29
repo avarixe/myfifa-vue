@@ -10,7 +10,7 @@
       <span class="white--text" slot="icon">{{ event.minute }}'</span>
       <v-card>
         <v-card-title :class="`${eventColor(event)} lighten-2 py-1`">
-          <v-icon dark class="mr-3">{{ eventIcon(event) }}</v-icon>
+          <v-icon dark class="mr-3">mdi-{{ eventIcon(event) }}</v-icon>
           <span class="font-weight-bold pr-1 white--text text-uppercase">{{ event.event_type }}</span>
 
           <v-spacer></v-spacer>
@@ -21,7 +21,7 @@
               icon
               class="ma-0"
               @click="removeEvent(event)">
-              <v-icon dark>remove_circle</v-icon>
+              <v-icon dark>mdi-minus-circle</v-icon>
             </v-btn>
             Remove
           </v-tooltip>
@@ -38,12 +38,12 @@
 
     <v-timeline-item
       v-if="match.penalty_shootout"
-      icon="accessibility_new"
+      icon="mdi-human"
       color="indigo"
       fill-dot>
       <v-card>
         <v-card-title class="indigo lighten-2 py-1">
-          <v-icon dark clas="mr-3">accessibility_new</v-icon>
+          <v-icon dark clas="mr-3">mdi-human</v-icon>
           <span class="font-weight-bold pr-1 white--text text-uppercase">Penalty Shootout</span>
 
           <v-spacer></v-spacer>
@@ -144,13 +144,13 @@
       eventIcon (event) {
         switch (event.event_type) {
           case 'Goal':
-            return event.penalty ? 'filter_tilt_shift' : 'camera'
+            return event.penalty ? 'alpha-p-box' : 'soccer'
           case 'Booking':
             return 'book'
           case 'Substitution':
-            return event.injury ? 'local_hospital' : 'repeat'
+            return event.injury ? 'hospital' : 'repeat'
           case 'PenaltyShootout':
-            return 'accessibility_new'
+            return 'human'
         }
       }
     }

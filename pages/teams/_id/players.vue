@@ -4,7 +4,7 @@
       <v-flex xs12>
         <player-form>
           <v-btn>
-            <v-icon left>add</v-icon>
+            <v-icon left>mdi-plus-circle-outline</v-icon>
             Player
           </v-btn>
         </player-form>
@@ -18,7 +18,7 @@
 
             <v-tooltip top>
               <v-btn slot="activator" icon @click.native="filterActive = !filterActive">
-                <v-icon>check_box{{ filterActive ? '' : '_outline_blank' }}</v-icon>
+                <v-icon>mdi-checkbox-{{ filterActive ? 'marked' : 'blank-outline' }}</v-icon>
               </v-btn>
               Display {{ filterActive ? 'All' : 'Active' }} Players
             </v-tooltip>
@@ -52,7 +52,7 @@
             <v-text-field
               v-model="search"
               label="Search"
-              append-icon="search"
+              append-icon="mdi-magnify"
               hide-details
             ></v-text-field>
           </v-card-title>
@@ -108,16 +108,16 @@
         modes: {
           status: {
             text: 'Status',
-            icon: 'filter_list'
+            icon: 'mdi-filter-variant'
           },
           contract: {
             text: 'Contract',
-            icon: 'description',
+            icon: 'mdi-file-document-outline',
             color: 'blue'
           },
           analytics: {
             text: 'Analytics',
-            icon: 'trending_up',
+            icon: 'mdi-trending-up',
             color: 'green'
           }
         },

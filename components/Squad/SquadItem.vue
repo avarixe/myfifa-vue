@@ -6,7 +6,7 @@
       <squad-form :initial-squad="squad">
         <v-tooltip bottom color="orange">
           <v-btn slot="activator" flat icon>
-            <v-icon color="orange">edit</v-icon>
+            <v-icon color="orange">mdi-pencil</v-icon>
           </v-btn>
           Edit
         </v-tooltip>

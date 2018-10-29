@@ -4,7 +4,7 @@
       <v-flex xs12>
         <squad-form>
           <v-btn>
-            <v-icon left>add</v-icon>
+            <v-icon left>mdi-plus-circle-outline</v-icon>
             Squad
           </v-btn>
         </squad-form>

@@ -24,7 +24,7 @@
             v-model="credentials.password"
             label="Password"
             :type="visible ? 'text' : 'password'"
-            :append-icon="visible ? 'visibility_off' : 'visibility'"
+            :append-icon="`mdi-eye${visible ? '-off' : ''}`"
             @click:append="visible = !visible"
           ></v-text-field>
         </v-flex>

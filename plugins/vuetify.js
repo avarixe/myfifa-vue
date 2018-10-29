@@ -45,6 +45,7 @@ import {
 } from 'vuetify'
 
 Vue.use(Vuetify, {
+  iconfont: 'mdi',
   components: {
     VApp,
     VNavigationDrawer,

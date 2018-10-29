@@ -1,7 +1,7 @@
 <template>
   <dialog-form
     v-model="dialog"
-    title-icon="camera"
+    title-icon="mdi-book"
     title="Record Booking"
     :submit="submit"
     :color="color">
@@ -28,7 +28,7 @@
             :items="minutes"
             :rules="$_validate('Minute', ['required'])"
             label="Minute"
-            prepend-icon="timer"
+            prepend-icon="mdi-timer"
           ></v-select>
         </v-flex>
         <v-flex xs12>
@@ -39,7 +39,7 @@
             item-value="player_id"
             item-text="name"
             label="Player"
-            prepend-icon="person">
+            prepend-icon="mdi-account">
             <template slot="item" slot-scope="data">
               <v-list-tile-action>
                 <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>

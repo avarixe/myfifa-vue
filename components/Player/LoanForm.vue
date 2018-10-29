@@ -8,7 +8,7 @@
     <slot slot="activator">
       <v-tooltip bottom color="indigo">
         <v-btn slot="activator" fab small color="indigo" dark>
-          <v-icon>transfer_within_a_station</v-icon>
+          <v-icon>mdi-transit-transfer</v-icon>
         </v-btn>
         {{ title }}
       </v-tooltip>
@@ -20,7 +20,7 @@
             v-model="loan.destination"
             :rules="$_validate('Destination', ['required'])"
             label="Destination"
-            prepend-icon="transfer_within_a_station"
+            prepend-icon="mdi-transit-transfer"
             spellcheck="false"
             autocapitalize="words"
             autocomplete="off"

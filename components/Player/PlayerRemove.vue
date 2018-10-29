@@ -3,7 +3,7 @@
     <slot>
       <v-tooltip bottom color="black">
         <v-btn slot="activator" fab small dark>
-          <v-icon>remove</v-icon>
+          <v-icon>mdi-minus</v-icon>
         </v-btn>
         Remove
       </v-tooltip>

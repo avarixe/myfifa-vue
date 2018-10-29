@@ -3,7 +3,7 @@
     <slot>
       <v-tooltip bottom color="black">
         <v-btn icon slot="activator">
-          <v-icon color="black">remove_circle</v-icon>
+          <v-icon color="black">mdi-minus-circle</v-icon>
         </v-btn>
         Remove
       </v-tooltip>

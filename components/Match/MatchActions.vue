@@ -3,7 +3,7 @@
     <match-form :initial-match="match" color="orange">
       <v-tooltip bottom color="orange">
         <v-btn icon slot="activator">
-          <v-icon color="orange">edit</v-icon>
+          <v-icon color="orange">mdi-pencil</v-icon>
         </v-btn>
         Edit
       </v-tooltip>
@@ -12,7 +12,7 @@
     <performance-form :match="match" v-if="match.performances.length < 11">
       <v-tooltip bottom>
         <v-btn icon slot="activator">
-          <v-icon>add_circle_outline</v-icon>
+          <v-icon>mdi-plus-circle-outline</v-icon>
         </v-btn>
         Add Player
       </v-tooltip>
@@ -21,7 +21,7 @@
     <v-tooltip bottom color="cyan">
       <v-menu slot="activator" offset-y>
         <v-btn slot="activator" icon>
-          <v-icon color="cyan">assignment</v-icon>
+          <v-icon color="cyan">mdi-clipboard-text</v-icon>
         </v-btn>
         <v-list>
           <v-list-tile
@@ -41,7 +41,7 @@
       color="green">
       <v-tooltip bottom color="green">
         <v-btn icon slot="activator">
-          <v-icon color="green">repeat</v-icon>
+          <v-icon color="green">mdi-repeat</v-icon>
         </v-btn>
         Substitution
       </v-tooltip>
@@ -53,7 +53,7 @@
       color="blue">
       <v-tooltip bottom color="blue">
         <v-btn icon slot="activator">
-          <v-icon color="blue">camera</v-icon>
+          <v-icon color="blue">mdi-soccer</v-icon>
         </v-btn>
         Goal
       </v-tooltip>
@@ -65,7 +65,7 @@
       color="red">
       <v-tooltip bottom color="red">
         <v-btn icon slot="activator">
-          <v-icon color="red">book</v-icon>
+          <v-icon color="red">mdi-book</v-icon>
         </v-btn>
         Booking
       </v-tooltip>
@@ -77,7 +77,7 @@
       color="indigo">
       <v-tooltip bottom color="indigo">
         <v-btn icon slot="activator">
-          <v-icon color="indigo">accessibility_new</v-icon>
+          <v-icon color="indigo">mdi-human</v-icon>
         </v-btn>
         Penalty Shootout
       </v-tooltip>

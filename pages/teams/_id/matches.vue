@@ -4,7 +4,7 @@
       <v-flex xs12>
         <match-form>
           <v-btn>
-            <v-icon left>add</v-icon>
+            <v-icon left>mdi-plus-circle-outline</v-icon>
             Match
           </v-btn>
         </match-form>
@@ -22,7 +22,7 @@
             <v-text-field
               v-model="search"
               label="Search"
-              append-icon="search"
+              append-icon="mdi-magnify"
               hide-details
             ></v-text-field>
           </v-card-title>
@@ -49,7 +49,7 @@
                       slot="activator"
                       :to="{ name: 'matches-id', params: { id: props.item.id } }"
                       icon>
-                      <v-icon color="blue darken-2">arrow_forward</v-icon>
+                      <v-icon color="blue darken-2">mdi-arrow-right</v-icon>
                     </v-btn>
                     View Match
                   </v-tooltip>

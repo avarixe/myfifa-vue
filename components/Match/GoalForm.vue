@@ -1,7 +1,7 @@
 <template>
   <dialog-form
     v-model="dialog"
-    title-icon="camera"
+    title-icon="mdi-soccer"
     title="Record Goal"
     :submit="submit"
     :color="color">
@@ -28,7 +28,7 @@
             :items="minutes"
             :rules="$_validate('Minute', ['required'])"
             label="Minute"
-            prepend-icon="timer"
+            prepend-icon="mdi-timer"
           ></v-select>
         </v-flex>
         <v-flex xs12>
@@ -40,7 +40,7 @@
             item-value="player_id"
             item-text="name"
             label="Goal Scorer"
-            prepend-icon="person">
+            prepend-icon="mdi-account">
             <template slot="item" slot-scope="data">
               <v-list-tile-action>
                 <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -55,7 +55,7 @@
             v-model="goal.player_name"
             :rules="$_validate('Goal Scorer', ['required'])"
             label="Goal Scorer"
-            prepend-icon="person"
+            prepend-icon="mdi-account"
             spellcheck="false"
             autocapitalize="words"
             autocomplete="off"
@@ -70,7 +70,7 @@
             item-value="player_id"
             item-text="name"
             label="Assisted By"
-            prepend-icon="person_outline"
+            prepend-icon="mdi-account-outline"
             :disabled="goal.penalty || goal.own_goal"
             clearable
             hide-details>
@@ -87,7 +87,7 @@
             v-else
             v-model="goal.assisted_by"
             label="Assisted By"
-            prepend-icon="person_outline"
+            prepend-icon="mdi-account-outline"
             :disabled="goal.penalty || goal.own_goal"
             hide-details
             spellcheck="false"

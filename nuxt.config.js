@@ -16,7 +16,7 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700' }
     ],
     script: [
       { src: 'https://www.gstatic.com/charts/loader.js' }
@@ -28,6 +28,7 @@ export default {
   */
   css: [
     'vuetify/src/stylus/main.styl',
+    '@mdi/font/css/materialdesignicons.css',
     '@/css/main.css'
   ],
 

@@ -12,47 +12,13 @@
             v-model="match.competition"
             :items="competitions"
             :rules="$_validate('Competition', ['required'])"
-            label="Competition"
-            prepend-icon="mdi-trophy"
+            label="Name"
+            prepend-icon="whatshot"
             spellcheck="false"
             autocapitalize="words"
             autocomplete="off"
             autocorrect="off"
           ></v-combobox>
-        </v-flex>
-        <v-flex xs12>
-          <v-combobox
-            v-model="match.home"
-            :items="teams"
-            :rules="$_validate('Home Team', ['required'])"
-            label="Home Team"
-            prepend-icon="mdi-account-multiple"
-            spellcheck="false"
-            autocapitalize="words"
-            autocomplete="off"
-            autocorrect="off">
-            <v-tooltip slot="append" bottom>
-              <v-icon slot="activator" @click.stop="setHome">mdi-arrow-left</v-icon>
-              Home Match for {{ team.title }}
-            </v-tooltip>
-          </v-combobox>
-        </v-flex>
-        <v-flex xs12>
-          <v-combobox
-            v-model="match.away"
-            :items="teams"
-            :rules="$_validate('Away Team', ['required'])"
-            label="Away Team"
-            prepend-icon="mdi-account-multiple"
-            spellcheck="false"
-            autocapitalize="words"
-            autocomplete="off"
-            autocorrect="off">
-            <v-tooltip slot="append" bottom>
-              <v-icon slot="activator" @click.stop="setAway">mdi-arrow-left</v-icon>
-              Away Match for {{ team.title }}
-            </v-tooltip>
-          </v-combobox>
         </v-flex>
       </v-layout>
     </v-container>
@@ -70,16 +36,15 @@
       TeamAccessible
     ],
     props: {
-      initialMatch: Object
+      initialCompetition: Object
     },
     data () {
       return {
-        valid: !!this.initialMatch,
+        valid: !!this.initialCompetition,
         match: Object.assign({
-          competition: '',
-          home: '',
-          away: ''
-        }, this.initialMatch)
+          name: '',
+          season: 0
+        }, this.initialCompetition)
       }
     },
     computed: {
@@ -113,7 +78,7 @@
         }
       },
       async submit () {
-        if (this.initialMatch) {
+        if (this.initialCompetition) {
           await this.update(this.match)
         } else {
           const { data } = await this.create({

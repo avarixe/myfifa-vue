@@ -8,7 +8,7 @@
     <slot slot="activator">
       <v-tooltip bottom color="pink">
         <v-btn slot="activator" fab small color="pink" dark>
-          <v-icon>local_hospital</v-icon>
+          <v-icon>mdi-hospital</v-icon>
         </v-btn>
         {{ title }}
       </v-tooltip>
@@ -20,7 +20,7 @@
             v-model="injury.description"
             :rules="$_validate('Description', ['required'])"
             label="Description"
-            prepend-icon="local_hospital"
+            prepend-icon="mdi-hospital"
           ></v-text-field>
         </v-flex>
 

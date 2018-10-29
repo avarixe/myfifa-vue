@@ -28,29 +28,29 @@
           v-if="parseInt(performance.start) > 0"
           color="green"
           small
-        >subdirectory_arrow_right</v-icon>
+        >mdi-subdirectory-arrow-right</v-icon>
         <v-icon
           v-for="index in numGoals"
           :key="index"
           color="blue"
           small
-        >camera</v-icon>
+        >mdi-soccer</v-icon>
         <v-icon
           v-for="(color, i) in bookings"
           :key="i"
           :color="color"
           small
-        >book</v-icon>
+        >mdi-book</v-icon>
         <v-icon
           v-if="injured"
           color="pink"
           small
-        >local_hospital</v-icon>
+        >mdi-hospital</v-icon>
         <v-icon
           v-if="performance.subbed_out"
           color="red"
           small
-        >subdirectory_arrow_left</v-icon>
+        >mdi-subdirectory-arrow-left</v-icon>
       </v-list-tile-title>
     </v-list-tile-content>
   </v-list-tile>

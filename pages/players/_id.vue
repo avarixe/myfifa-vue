@@ -130,7 +130,7 @@
               <v-menu slot="activator" bottom right>
                 <v-btn slot="activator" icon>
                   <v-icon :color="currentFilter.color">
-                    {{ currentFilter.icon }}
+                    mdi-{{ currentFilter.icon }}
                   </v-icon>
                 </v-btn>
                 <v-list>
@@ -139,7 +139,7 @@
                     :key="key"
                     @click="timelineFilter = key">
                     <v-list-tile-avatar>
-                      <v-icon :color="event.color">{{ event.icon }}</v-icon>
+                      <v-icon :color="event.color">mdi-{{ event.icon }}</v-icon>
                     </v-list-tile-avatar>
                     <v-list-tile-title>{{ key }}</v-list-tile-title>
                   </v-list-tile>
@@ -197,11 +197,11 @@
           { text: 'Value', value: 'value',    align: 'center' }
         ],
         filterOptions: {
-          'All': { icon: 'filter_list' },
-          'Contract': { icon: 'description', color: 'blue' },
-          'Injury': { icon: 'local_hospital', color: 'pink' },
-          'Loan': { icon: 'transfer_within_a_station', color: 'indigo' },
-          'Transfer': { icon: 'flight_takeoff', color: 'green' }
+          'All': { icon: 'filter-variant' },
+          'Contract': { icon: 'file-document', color: 'blue' },
+          'Injury': { icon: 'hospital', color: 'pink' },
+          'Loan': { icon: 'transit-transfer', color: 'indigo' },
+          'Transfer': { icon: 'airplane-takeoff', color: 'green' }
         },
         timelineFilter: 'All'
       }

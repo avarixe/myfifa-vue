@@ -32,7 +32,7 @@
         nuxt
         exact
         icon>
-        <v-icon>dashboard</v-icon>
+        <v-icon>mdi-view-dashboard</v-icon>
       </v-btn>
       Dashboard
     </v-tooltip>
@@ -43,7 +43,7 @@
         nuxt
         exact
         icon>
-        <v-icon>people</v-icon>
+        <v-icon>mdi-account</v-icon>
       </v-btn>
       Players
     </v-tooltip>
@@ -54,7 +54,7 @@
         nuxt
         exact
         icon>
-        <v-icon>games</v-icon>
+        <v-icon>mdi-soccer-field</v-icon>
       </v-btn>
       Matches
     </v-tooltip>
@@ -65,7 +65,7 @@
         nuxt
         exact
         icon>
-        <v-icon>assignment</v-icon>
+        <v-icon>mdi-clipboard-text</v-icon>
       </v-btn>
       Squads
     </v-tooltip>

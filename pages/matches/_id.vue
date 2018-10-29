@@ -4,7 +4,7 @@
       <v-flex xs12>
         <match-form>
           <v-btn>
-            <v-icon left>add</v-icon>
+            <v-icon left>mdi-plus-circle-outline</v-icon>
             Match
           </v-btn>
         </match-form>

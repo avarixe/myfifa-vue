@@ -13,7 +13,7 @@
             :items="positions"
             :rules="$_validate('Position', ['required'])"
             label="Position"
-            prepend-icon="directions_run"
+            prepend-icon="mdi-run"
           ></v-select>
         </v-flex>
         <v-flex xs12>
@@ -25,7 +25,7 @@
             :rules="$_validate('Player', ['required'])"
             :disabled="performance.start > 0"
             label="Player"
-            prepend-icon="person">
+            prepend-icon="mdi-account">
             <template slot="item" slot-scope="data">
               <v-list-tile-action>
                 <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>

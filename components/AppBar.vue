@@ -8,13 +8,13 @@
       <v-list>
         <v-list-tile nuxt to="/">
           <v-list-tile-avatar>
-            <v-icon>home</v-icon>
+            <v-icon>mdi-home</v-icon>
           </v-list-tile-avatar>
           Home
         </v-list-tile>
         <v-list-tile @click="logout">
           <v-list-tile-avatar>
-            <v-icon>exit_to_app</v-icon>
+            <v-icon>mdi-exit-to-app</v-icon>
           </v-list-tile-avatar>
           Log Out
         </v-list-tile>
