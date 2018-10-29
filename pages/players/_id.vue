@@ -31,22 +31,20 @@
                   color="orange">
                   <v-btn color="orange" dark>Edit</v-btn>
                 </player-form>
-                <transfer-form
-                  :player="player"
+                <transfer-form :player="player">
                   <v-btn :color="active ? 'red' : 'green'" dark>Transfer</v-btn>
                 </transfer-form>
-                <contract-form
-                  :player="player"
+                <contract-form :player="player">
                   <v-btn color="blue" dark>Contract</v-btn>
                 </contract-form>
                 <injury-form
                   v-if="active"
-                  :player="player"
+                  :player="player">
                   <v-btn color="pink" dark>Injury</v-btn>
                 </injury-form>
                 <loan-form
                   v-if="active"
-                  :player="player"
+                  :player="player">
                   <v-btn color="indigo" dark>Loan</v-btn>
                 </loan-form>
                 <player-remove :player="player">
