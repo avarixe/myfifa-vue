@@ -12,11 +12,17 @@ export const state = () => ({
 // getters
 export const getters = {
   current: state => state.list[state.currentId],
+  season: (state, getters) => {
+    if (state.currentId !== null) {
+      const date = parse(getters.current.start_date)
+      const currentDate = parse(getters.current.current_date)
+      return parseInt((currentDate - date) / (525600 * 60 * 1000))
+    }
+  },
   seasonStart: (state, getters) => {
     if (state.currentId !== null) {
       let date = parse(getters.current.start_date)
-      let currentDate = parse(getters.current.current_date)
-      let yearDiff = parseInt((currentDate - date) / (525600 * 60 * 1000))
+      const yearDiff = getters.season
       date = addYears(date, yearDiff)
       return format(date, 'YYYY-MM-DD')
     }

@@ -21,6 +21,10 @@
             :rules="$_validate('Description', ['required'])"
             label="Description"
             prepend-icon="mdi-hospital"
+            spellcheck="false"
+            autocapitalize="words"
+            autocomplete="off"
+            autocorrect="off"
           ></v-text-field>
         </v-flex>
 

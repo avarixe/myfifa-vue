@@ -48,7 +48,8 @@
         v-else-if="header.editable && editOptions[header.value].type === 'select'"
         max-height="200px"
         offset-y
-        offset-overflow>
+        offset-overflow
+        lazy>
         <span slot="activator">
           {{ getProperty(header.value, header.format) }}
         </span>
