@@ -82,6 +82,26 @@ export default {
     record: 'performances/{{ performanceId }}'
   },
 
+  competitions: {
+    index: 'teams/{{ teamId }}/competitions',
+    record: 'competitions/{{ competitionId }}'
+  },
+
+  stages: {
+    index: 'competitions/{{ competitionId }}/stages',
+    record: 'stages/{{ stageId }}'
+  },
+
+  tableRows: {
+    index: 'stages/{{ stageId }}/table_rows',
+    record: 'table_rows/{{ rowId }}'
+  },
+
+  fixtures: {
+    index: 'stages/{{ stageId }}/fixtures',
+    record: 'fixtures/{{ fixtureId }}'
+  },
+
   users: {
     index: 'users.json'
   },

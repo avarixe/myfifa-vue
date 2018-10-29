@@ -114,6 +114,9 @@
               case 'Squad':
                 this.removeSquad(data.id)
                 break
+              case 'Competition':
+                this.remoteCompetition(data.id)
+                break
             }
           } else {
             switch (type) {
@@ -214,6 +217,8 @@
               case 'Squad':
                 this.setSquad({ ...this.squads[data.id], ...data })
                 break
+              case 'Competition':
+                this.setCompetition({ ...this.competitions[data.id], ...data })
             }
           }
         },
@@ -232,9 +237,11 @@
         setPlayer: 'player/SET',
         setMatch: 'match/SET',
         setSquad: 'squad/SET',
+        setCompetition: 'competition/SET',
         removePlayer: 'player/REMOVE',
         removeMatch: 'match/REMOVE',
-        removeSquad: 'squad/REMOVE'
+        removeSquad: 'squad/REMOVE',
+        removeCompetition: 'competition/REMOVE'
       })
     }
   }
