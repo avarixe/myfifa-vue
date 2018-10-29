@@ -8,12 +8,20 @@
     <v-container slot="form">
       <v-layout wrap>
         <v-flex xs12>
+          <v-text-field
+            :value="seasonLabel(season)"
+            label="Season"
+            prepend-icon="mdi-calendar-text"
+            disabled
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12>
           <v-combobox
-            v-model="match.competition"
+            v-model="competition.name"
             :items="competitions"
-            :rules="$_validate('Competition', ['required'])"
+            :rules="$_validate('Name', ['required'])"
             label="Name"
-            prepend-icon="whatshot"
+            prepend-icon="mdi-trophy"
             spellcheck="false"
             autocapitalize="words"
             autocomplete="off"
@@ -26,6 +34,7 @@
 </template>
 
 <script>
+  import { addYears } from 'date-fns'
   import { mapGetters, mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import DialogFormable from '@/mixins/DialogFormable'
@@ -41,52 +50,41 @@
     data () {
       return {
         valid: !!this.initialCompetition,
-        match: Object.assign({
+        competition: Object.assign({
           name: '',
           season: 0
         }, this.initialCompetition)
       }
     },
     computed: {
-      ...mapGetters('match', [
-        'competitions',
-        'teams'
-      ]),
+      ...mapGetters({
+        season: 'team/season',
+        competitions: 'competition/names'
+      }),
       title () {
-        return this.match.id ? 'Edit Match' : 'New Match'
-      },
-      isTeamGame () {
-        return this.match.home === this.team.title ||
-               this.match.away === this.team.title
+        return this.competition.id
+          ? 'Edit Competition'
+          : 'New Competition'
       }
     },
+    mounted () {
+      this.competition.season = this.season
+    },
     methods: {
-      ...mapActions('match', [
+      ...mapActions('competition', [
         'create',
         'update'
       ]),
-      setHome () {
-        this.match.home = this.team.title
-        if (this.match.away === this.team.title) {
-          this.match.away = ''
-        }
-      },
-      setAway () {
-        this.match.away = this.team.title
-        if (this.match.home === this.team.title) {
-          this.match.home = ''
-        }
-      },
       async submit () {
         if (this.initialCompetition) {
-          await this.update(this.match)
+          await this.update(this.competition)
         } else {
           const { data } = await this.create({
             teamId: this.team.id,
-            match: this.match
+            competition: this.competition
           })
           this.$router.push({
-            name: 'matches-id',
+            name: 'competition-id',
             params: { id: data.id }
           })
         }

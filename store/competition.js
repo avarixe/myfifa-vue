@@ -10,6 +10,8 @@ export const state = () => ({
 
 // getters
 export const getters = {
+  array: state => Object.values(state.list),
+  names: (state, getters) => [ ...new Set(getters.array.map(c => c.name)) ]
 }
 
 // actions
