@@ -98,7 +98,10 @@
     },
     watch: {
       match (val) {
-        !val && this.$router.push({ name: 'index' })
+        !val && this.$router.push({
+          name: 'teams-id-matches',
+          id: this.team.id
+        })
       }
     },
     methods: {

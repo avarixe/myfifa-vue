@@ -255,7 +255,10 @@
     },
     watch: {
       player (val) {
-        !val && this.$router.push({ name: 'index' })
+        !val && this.$router.push({
+          name: 'teams-id-players',
+          id: this.team.id
+        })
       }
     },
     methods: {

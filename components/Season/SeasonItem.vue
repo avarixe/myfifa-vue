@@ -4,21 +4,16 @@
       {{ seasonLabel(season) }}
     </v-card-title>
     <v-card-text>
-      <v-list>
+      <v-list dense>
         <v-list-tile
           v-for="(competition, i) in competitions"
-          :key="i">
-          <v-list-tile-content>{{ competition.name }}</v-list-tile-content>
-          <v-list-tile-action>
-            <competition-form :initial-competition="competition">
-              <v-tooltip bottom color="orange">
-                <v-btn slot="activator" flat icon>
-                  <v-icon color="orange">mdi-pencil</v-icon>
-                </v-btn>
-                Edit
-              </v-tooltip>
-            </competition-form>
-          </v-list-tile-action>
+          :key="i"
+          :to="{ name: 'competitions-id', params: { id: competition.id } }"
+          class="elevation-1">
+          <v-list-tile-title>{{ competition.name }}</v-list-tile-title>
+          <v-list-tile-avatar v-if="competition.champion === team.name">
+            <v-icon color="yellow darken-2">mdi-trophy</v-icon>
+          </v-list-tile-avatar>
         </v-list-tile>
       </v-list>
     </v-card-text>
