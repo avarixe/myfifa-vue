@@ -2,22 +2,19 @@
   <v-container fluid grid-list-lg>
     <v-layout row wrap>
       <v-flex xs12>
+        <squad-form>
+          <v-btn>
+            <v-icon left>add</v-icon>
+            Squad
+          </v-btn>
+        </squad-form>
+      </v-flex>
+      <v-flex xs12>
         <v-card>
           <v-card-title primary-title>
             <div class="title">
               // SQUADS
             </div>
-
-            <!-- New Squad Form -->
-            <squad-form :team-id="team.id">
-              <v-tooltip top>
-                <v-btn slot="activator" flat icon>
-                  <v-icon>add_circle</v-icon>
-                </v-btn>
-                Add Squad
-              </v-tooltip>
-            </squad-form>
-
           </v-card-title>
           <v-card-text>
 

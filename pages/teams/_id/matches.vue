@@ -2,21 +2,19 @@
   <v-container fluid grid-list-lg>
     <v-layout row wrap>
       <v-flex xs12>
+        <match-form>
+          <v-btn>
+            <v-icon left>add</v-icon>
+            Match
+          </v-btn>
+        </match-form>
+      </v-flex>
+      <v-flex xs12>
         <v-card>
           <v-card-title primary-title>
             <div class="title">
               // MATCHES
             </div>
-
-            <!-- New Match Form -->
-            <match-form>
-              <v-tooltip top>
-                <v-btn slot="activator" flat icon>
-                  <v-icon>add_circle</v-icon>
-                </v-btn>
-                Record Match
-              </v-tooltip>
-            </match-form>
 
             <v-spacer></v-spacer>
 

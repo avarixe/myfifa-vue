@@ -82,5 +82,9 @@ export const mutations = {
   },
   REMOVE (state, competitionId) {
     Vue.delete(state.list, competitionId)
+  },
+  RESET (state) {
+    state.loaded = false
+    state.list = {}
   }
 }

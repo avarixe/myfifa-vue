@@ -2,27 +2,25 @@
   <v-container fluid grid-list-lg>
     <v-layout row wrap>
       <v-flex xs12>
+        <player-form>
+          <v-btn>
+            <v-icon left>add</v-icon>
+            Player
+          </v-btn>
+        </player-form>
+      </v-flex>
+      <v-flex xs12>
         <v-card>
           <v-card-title primary-title>
             <div class="title">
               // PLAYERS
             </div>
 
-            <!-- New Player Form -->
-            <player-form>
-              <v-tooltip top>
-                <v-btn slot="activator" flat icon>
-                  <v-icon>add_circle</v-icon>
-                </v-btn>
-                Add Player
-              </v-tooltip>
-            </player-form>
-
             <v-tooltip top>
               <v-btn slot="activator" icon @click.native="filterActive = !filterActive">
                 <v-icon>check_box{{ filterActive ? '' : '_outline_blank' }}</v-icon>
               </v-btn>
-              Display {{ filterActive ? 'Active' : 'All' }} Players
+              Display {{ filterActive ? 'All' : 'Active' }} Players
             </v-tooltip>
 
             <!-- Display Menu -->

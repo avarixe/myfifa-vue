@@ -22,23 +22,7 @@
     </v-menu>
     <v-toolbar-title>MyFIFA Manager</v-toolbar-title>
     <v-toolbar-items class="hidden-xs-only">
-      <v-breadcrumbs
-        v-if="!!team"
-        large>
-        <v-breadcrumbs-item
-          nuxt
-          :to="teamLink"
-          exact>
-          {{ team.title }}
-        </v-breadcrumbs-item>
-        <v-breadcrumbs-item
-          v-if="!!player"
-          nuxt
-          :to="playerLink"
-          exact>
-          {{ player.name }}
-        </v-breadcrumbs-item>
-      </v-breadcrumbs>
+      <v-breadcrumbs :items="items" large></v-breadcrumbs>
     </v-toolbar-items>
   </v-toolbar>
 </template>
@@ -53,10 +37,17 @@
     }),
     computed: {
       ...mapState('player', { players: 'list' }),
+      ...mapState('team', { teamId: 'currentId' }),
       ...mapGetters({
         authenticated: 'authenticated',
         team: 'team/current'
       }),
+      items () {
+        let items = []
+        this.team && items.push({ text: this.team.title })
+        this.player && items.push({ text: this.player.name })
+        return items
+      },
       player () {
         return this.$route.name === 'players-id' &&
           this.players[this.$route.params.id]
@@ -77,6 +68,12 @@
     watch: {
       authenticated (val) {
         !val && this.$router.push({ name: 'index' })
+      },
+      teamId (val) {
+        this.$store.commit('match/RESET')
+        this.$store.commit('player/RESET')
+        this.$store.commit('squad/RESET')
+        this.$store.commit('competition/RESET')
       }
     },
     methods: {
