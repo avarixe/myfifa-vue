@@ -16,7 +16,7 @@
         <template slot="item" slot-scope="props">
           <v-flex xs12 sm6 md4 lg3>
             <season-item
-              :season="props.item[0]"
+              :season="parseInt(props.item[0])"
               :competitions="props.item[1]"
             ></season-item>
           </v-flex>

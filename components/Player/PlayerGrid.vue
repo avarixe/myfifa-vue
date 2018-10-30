@@ -114,8 +114,8 @@
       },
       headers () {
         let headers = [
-          { text: 'Actions', value: '', align: 'center', format: 'actions', sortable: false },
           { text: 'Name',     value: 'name',   align: 'left' },
+          { text: 'Age',      value: 'age',    align: 'center' },
           { text: 'Kit No',   value: 'kit_no', align: 'center', editable: true },
           { text: 'Position', value: 'pos',    align: 'center' }
         ]

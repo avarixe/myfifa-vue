@@ -37,8 +37,9 @@
               <v-btn
                 slot="activator"
                 :to="{ name: 'matches-id', params: { id: props.item.id } }"
+                small
                 icon>
-                <v-icon color="blue darken-2">mdi-arrow-right</v-icon>
+                <v-icon small color="blue darken-2">mdi-arrow-right</v-icon>
               </v-btn>
               View Match
             </v-tooltip>

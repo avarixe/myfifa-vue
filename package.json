@@ -17,7 +17,6 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "@mdi/font": "^3.0.39",
     "actioncable": "^5.2.1",
     "axios": "^0.18.0",
     "cookieparser": "^0.1.0",

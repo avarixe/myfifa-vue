@@ -2,8 +2,8 @@
   <div class="d-inline-block" @click.stop="snackbar = true">
     <slot>
       <v-tooltip bottom color="black">
-        <v-btn slot="activator" fab small dark>
-          <v-icon>mdi-minus</v-icon>
+        <v-btn slot="activator" icon>
+          <v-icon>mdi-minus-circle</v-icon>
         </v-btn>
         Remove
       </v-tooltip>

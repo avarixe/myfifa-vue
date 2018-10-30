@@ -7,8 +7,8 @@
     color="indigo">
     <slot slot="activator">
       <v-tooltip bottom color="indigo">
-        <v-btn slot="activator" fab small color="indigo" dark>
-          <v-icon>mdi-transit-transfer</v-icon>
+        <v-btn slot="activator" icon>
+          <v-icon color="indigo">mdi-transit-transfer</v-icon>
         </v-btn>
         {{ title }}
       </v-tooltip>

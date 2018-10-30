@@ -17,7 +17,8 @@
       ...mapState([ 'token' ]),
       ...mapState('player', { players: 'list' }),
       ...mapState('match', { matches: 'list' }),
-      ...mapState('squad', { squads: 'list' })
+      ...mapState('squad', { squads: 'list' }),
+      ...mapState('competition', { competitions: 'list' })
     },
     mounted () {
       if (!this.cable && this.token) {
@@ -116,6 +117,16 @@
                 break
               case 'Competition':
                 this.remoteCompetition(data.id)
+                break
+              case 'Stage':
+                if (data.competition_id in this.competitions &&
+                    'stages' in this.competitions[data.competition_id]) {
+                  const competition = this.competitions[data.competition_id]
+                  this.setCompetition({
+                    ...competition,
+                    stages: competition.stages.filter(s => s.id !== data.id)
+                  })
+                }
                 break
             }
           } else {
@@ -219,6 +230,20 @@
                 break
               case 'Competition':
                 this.setCompetition({ ...this.competitions[data.id], ...data })
+                break
+              case 'Stage':
+                if (data.competition_id in this.competitions) {
+                  let competition = { ...this.competitions[data.competition_id] }
+                  let stages = [ ...competition.stages ]
+                  const sIdx = stages.findIndex(s => s.id === data.id)
+                  if (sIdx > -1) {
+                    stages.splice(sIdx, 1, data)
+                  } else {
+                    stages.push(data)
+                  }
+                  this.setCompetition({ ...competition, stages })
+                }
+                break
             }
           }
         },

@@ -7,8 +7,8 @@
     color="pink">
     <slot slot="activator">
       <v-tooltip bottom color="pink">
-        <v-btn slot="activator" fab small color="pink" dark>
-          <v-icon>mdi-hospital</v-icon>
+        <v-btn slot="activator" icon>
+          <v-icon color="pink">mdi-hospital</v-icon>
         </v-btn>
         {{ title }}
       </v-tooltip>

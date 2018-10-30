@@ -4,48 +4,8 @@
       v-for="(header, i) in headers"
       :key="i"
       :class="'text-xs-' + header.align">
-      <v-speed-dial
-        v-if="header.text === 'Actions'"
-        v-model="fab"
-        direction="right">
-        <v-btn
-          slot="activator"
-          v-model="fab"
-          fab
-          small>
-          <v-icon>mdi-account</v-icon>
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-btn
-          color="primary"
-          dark
-          nuxt
-          :to="{ name: 'players-id', params: { id: player.id } }">
-          {{ player.name }}
-          <v-icon right>mdi-arrow-right</v-icon>
-        </v-btn>
-        <player-form :initial-player="player" color="orange">
-          <v-tooltip bottom color="orange">
-            <v-btn slot="activator" fab small color="orange" dark>
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            Edit
-          </v-tooltip>
-        </player-form>
-        <transfer-form :player="player"></transfer-form>
-        <contract-form :player="player"></contract-form>
-        <injury-form
-          v-if="active"
-          :player="player"
-        ></injury-form>
-        <loan-form
-          v-if="active"
-          :player="player"
-        ></loan-form>
-        <player-remove :player="player"></player-remove>
-      </v-speed-dial>
       <v-menu
-        v-else-if="header.editable && editOptions[header.value].type === 'select'"
+        v-if="header.editable && editOptions[header.value].type === 'select'"
         max-height="200px"
         offset-y
         offset-overflow
@@ -81,6 +41,20 @@
       </v-edit-dialog>
       <span v-else>
         {{ getProperty(header.value, header.format) }}
+        <v-tooltip
+          v-if="header.value === 'name'"
+          color="primary"
+          bottom>
+          <v-btn
+            slot="activator"
+            :to="{ name: 'players-id', params: { id: player.id } }"
+            nuxt
+            small
+            icon>
+            <v-icon color="primary" small>mdi-arrow-right</v-icon>
+          </v-btn>
+          View Match
+        </v-tooltip>
       </span>
     </td>
   </tr>

@@ -7,8 +7,8 @@
     :color="transferOut ? 'red' : 'green'">
     <slot slot="activator">
       <v-tooltip bottom :color="transferOut ? 'red' : 'green'">
-        <v-btn slot="activator" fab small :color="transferOut ? 'red' : 'green'" dark>
-          <v-icon>
+        <v-btn slot="activator" icon>
+          <v-icon :color="transferOut ? 'red' : 'green'">
             mdi-airplane-{{ transferOut ? 'takeoff' : 'landing' }}
           </v-icon>
         </v-btn>

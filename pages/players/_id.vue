@@ -5,6 +5,26 @@
         <v-card>
           <v-card-title primary-title>
             <div class="display-2">{{ player.name }}</div>
+
+            <player-form :initial-player="player" color="orange">
+              <v-tooltip bottom color="orange">
+                <v-btn slot="activator" icon>
+                  <v-icon color="orange">mdi-pencil</v-icon>
+                </v-btn>
+                Edit
+              </v-tooltip>
+            </player-form>
+            <transfer-form :player="player"></transfer-form>
+            <contract-form :player="player"></contract-form>
+            <injury-form
+              v-if="active"
+              :player="player"
+            ></injury-form>
+            <loan-form
+              v-if="active"
+              :player="player"
+            ></loan-form>
+            <player-remove :player="player"></player-remove>
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
@@ -24,32 +44,6 @@
               <v-flex xs12 sm3>
                 <div class="display-1">{{ player.status || '-' }}</div>
                 <div class="subheading">Current State</div>
-              </v-flex>
-              <v-flex xs12>
-                <player-form
-                  :initial-player="player"
-                  color="orange">
-                  <v-btn color="orange" dark>Edit</v-btn>
-                </player-form>
-                <transfer-form :player="player">
-                  <v-btn :color="active ? 'red' : 'green'" dark>Transfer</v-btn>
-                </transfer-form>
-                <contract-form :player="player">
-                  <v-btn color="blue" dark>Contract</v-btn>
-                </contract-form>
-                <injury-form
-                  v-if="active"
-                  :player="player">
-                  <v-btn color="pink" dark>Injury</v-btn>
-                </injury-form>
-                <loan-form
-                  v-if="active"
-                  :player="player">
-                  <v-btn color="indigo" dark>Loan</v-btn>
-                </loan-form>
-                <player-remove :player="player">
-                  <v-btn dark>Remove</v-btn>
-                </player-remove>
               </v-flex>
             </v-layout>
           </v-card-text>
