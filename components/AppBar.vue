@@ -1,12 +1,15 @@
 <template>
-  <v-toolbar fixed dense app>
+  <v-toolbar fixed dense app color="primary" dark>
     <v-menu
       v-if="authenticated"
       v-model="menu"
       offset-y>
       <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>
-      <v-list>
-        <v-list-tile nuxt to="/">
+      <v-list class="primary" dark>
+        <v-list-tile
+          active-class=""
+          to="/"
+          nuxt>
           <v-list-tile-avatar>
             <v-icon>mdi-home</v-icon>
           </v-list-tile-avatar>
@@ -22,7 +25,11 @@
     </v-menu>
     <v-toolbar-title>MyFIFA Manager</v-toolbar-title>
     <v-toolbar-items class="hidden-xs-only">
-      <v-breadcrumbs :items="items" large></v-breadcrumbs>
+      <v-breadcrumbs
+        :items="items"
+        class="white--text"
+        large
+      ></v-breadcrumbs>
     </v-toolbar-items>
   </v-toolbar>
 </template>

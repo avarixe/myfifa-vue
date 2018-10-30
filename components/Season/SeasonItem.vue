@@ -5,6 +5,7 @@
     </v-card-title>
     <v-card-text>
       <v-list dense>
+        <v-subheader>Competitions</v-subheader>
         <v-list-tile
           v-for="(competition, i) in competitions"
           :key="i"
@@ -46,7 +47,8 @@
 </script>
 
 <style scoped>
-  #app .v-card {
+  #app .v-card,
+  #app .v-list {
     background-color: rgba(255, 255, 255, 0.5);
   }
 </style>

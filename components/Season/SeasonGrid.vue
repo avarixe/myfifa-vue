@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title primary-title>
       <div class="title">
-        // COMPETITIONS
+        // SEASONS
       </div>
     </v-card-title>
     <v-card-text>
