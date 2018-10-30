@@ -1,5 +1,7 @@
-import apiRequest from '@/api'
+import Vue from 'vue'
+import $_http from '@/api'
 import myfifa from '@/api/myfifa'
+import objectify from '@/plugins/objectify'
 
 // initial state
 export const state = () => ({
@@ -14,20 +16,20 @@ export const state = () => ({
 // actions
 export const actions = {
   getAll ({ commit, rootState }, { playerId }) {
-    return apiRequest({
+    return $_http({
       path: myfifa.contracts.index,
       pathData: { playerId: playerId },
       token: rootState.token,
       success: ({ data }) => {
         commit('player/SET', {
           ...rootState.player.list[playerId],
-          contracts: data
+          contracts: objectify(data)
         }, { root: true })
       }
     })
   },
   create ({ commit, rootState }, { playerId, contract }) {
-    return apiRequest({
+    return $_http({
       method: 'post',
       path: myfifa.contracts.index,
       pathData: { playerId: playerId },
@@ -36,7 +38,7 @@ export const actions = {
     })
   },
   update ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'patch',
       path: myfifa.contracts.record,
       pathData: { contractId: payload.id },

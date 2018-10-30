@@ -5,7 +5,6 @@
     :submit="authenticate">
     <v-btn
       slot="activator"
-      class="mx-0"
       color="primary"
       large
     >Log In</v-btn>

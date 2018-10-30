@@ -87,7 +87,7 @@
       },
       stages () {
         return 'stages' in this.competition
-          ? this.competition.stages
+          ? Object.values(this.competition.stages)
           : []
       },
       tables () {

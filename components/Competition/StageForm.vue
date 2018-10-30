@@ -79,9 +79,8 @@
     computed: {
     },
     methods: {
-      ...mapActions('stage', ['create']),
       async submit () {
-        await this.create({
+        await this.$store.dispatch('stage/create', {
           competitionId: this.competition.id,
           stage: this.stage
         })

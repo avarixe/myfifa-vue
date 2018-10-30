@@ -9,7 +9,7 @@
       </v-tooltip>
     </match-form>
 
-    <performance-form :match="match" v-if="match.performances.length < 11">
+    <performance-form :match="match" v-if="numPlayers < 11">
       <v-tooltip bottom>
         <v-btn icon slot="activator">
           <v-icon>mdi-plus-circle-outline</v-icon>
@@ -124,10 +124,13 @@
         return this.match.status && this.match.status.length > 0
       },
       validMatch () {
-        return !this.match.team_result || this.match.performances.length >= 11
+        return !this.match.team_result || this.numPlayers >= 11
       },
       matchDraw () {
         return this.match.home_score === this.match.away_score
+      },
+      numPlayers () {
+        return Object.values(this.match.performances || {}).length
       }
     },
     methods: {

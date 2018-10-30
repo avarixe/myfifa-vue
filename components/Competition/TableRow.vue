@@ -29,6 +29,8 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
+
   export default {
     props: {
       rowData: {
@@ -50,8 +52,11 @@
     },
     watch: {
       edit (val) {
-        if (!val) return
-        this.row = { ...this.rowData }
+        if (val) {
+          this.row = { ...this.rowData }
+        } else {
+          this.$store.dispatch('tableRow/update', this.row)
+        }
       }
     }
   }

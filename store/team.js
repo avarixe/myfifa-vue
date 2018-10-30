@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { format, parse, addYears } from 'date-fns'
-import apiRequest from '@/api'
+import $_http from '@/api'
 import myfifa from '@/api/myfifa'
 
 // initial state
@@ -40,7 +40,7 @@ export const getters = {
 // actions
 export const actions = {
   getAll ({ commit, rootState }) {
-    return apiRequest({
+    return $_http({
       path: myfifa.teams.index,
       token: rootState.token,
       success: ({ data }) => {
@@ -49,7 +49,7 @@ export const actions = {
     })
   },
   get ({ commit, rootState }, { teamId, activate }) {
-    return apiRequest({
+    return $_http({
       path: myfifa.teams.record,
       pathData: { teamId: teamId },
       token: rootState.token,
@@ -62,7 +62,7 @@ export const actions = {
     })
   },
   create ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'post',
       path: myfifa.teams.index,
       token: rootState.token,
@@ -73,7 +73,7 @@ export const actions = {
     })
   },
   update ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'patch',
       path: myfifa.teams.record,
       pathData: { teamId: payload.id },
@@ -86,7 +86,7 @@ export const actions = {
     })
   },
   remove ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'delete',
       path: myfifa.teams.record,
       pathData: { teamId: payload },

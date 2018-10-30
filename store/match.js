@@ -1,6 +1,7 @@
 import Vue from 'vue'
-import apiRequest from '@/api'
+import $_http from '@/api'
 import myfifa from '@/api/myfifa'
+import objectify from '@/plugins/objectify'
 
 // initial state
 export const state = () => ({
@@ -53,7 +54,7 @@ export const getters = {
 export const actions = {
   getAll ({ state, commit, rootState }, { teamId }) {
     if (!state.loaded) {
-      return apiRequest({
+      return $_http({
         path: myfifa.matches.index,
         pathData: { teamId: teamId },
         token: rootState.token,
@@ -67,7 +68,7 @@ export const actions = {
     if (matchId in state.list) {
       return { data: state.list[matchId] }
     } else {
-      return apiRequest({
+      return $_http({
         path: myfifa.matches.record,
         pathData: { matchId: matchId },
         token: rootState.token,
@@ -78,7 +79,7 @@ export const actions = {
     }
   },
   create ({ commit, rootState }, { teamId, match }) {
-    return apiRequest({
+    return $_http({
       method: 'post',
       path: myfifa.matches.index,
       pathData: { teamId: teamId },
@@ -87,7 +88,7 @@ export const actions = {
     })
   },
   update ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'patch',
       path: myfifa.matches.record,
       pathData: { matchId: payload.id },
@@ -96,7 +97,7 @@ export const actions = {
     })
   },
   remove ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'delete',
       path: myfifa.matches.record,
       pathData: { matchId: payload },
@@ -104,7 +105,7 @@ export const actions = {
     })
   },
   getEvents ({ state, commit, rootState }, { matchId }) {
-    return apiRequest({
+    return $_http({
       path: myfifa.matches.events,
       pathData: { matchId: matchId },
       token: rootState.token,
@@ -117,7 +118,7 @@ export const actions = {
     })
   },
   applySquad ({ state, commit, rootState }, { matchId, squadId }) {
-    return apiRequest({
+    return $_http({
       method: 'post',
       path: myfifa.matches.applySquad,
       pathData: { matchId: matchId },
@@ -130,10 +131,7 @@ export const actions = {
 // mutations
 export const mutations = {
   SET_ALL (state, matches) {
-    state.list = matches.reduce((list, match) => {
-      list[match.id] = match
-      return list
-    }, {})
+    state.list = objectify(matches)
     state.loaded = true
   },
   SET (state, match) {

@@ -27,11 +27,6 @@
         item-key="id"
         no-data-text="No Matches Recorded">
         <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.item.competition }}</td>
-          <td class="text-xs-right">{{ props.item.home }}</td>
-          <td :class="resultColor(props.item.team_result) + '--text text-xs-center'">{{ props.item.score }}</td>
-          <td class="text-xs-left">{{ props.item.away }}</td>
-          <td class="text-xs-center">{{ $_format($_parse(props.item.date_played), 'MMM DD, YYYY') }}</td>
           <td>
             <v-tooltip bottom color="blue darken-2">
               <v-btn
@@ -44,6 +39,11 @@
               View Match
             </v-tooltip>
           </td>
+          <td class="text-xs-center">{{ props.item.competition }}</td>
+          <td class="text-xs-right">{{ props.item.home }}</td>
+          <td :class="resultColor(props.item.team_result) + '--text text-xs-center'">{{ props.item.score }}</td>
+          <td class="text-xs-left">{{ props.item.away }}</td>
+          <td class="text-xs-center">{{ $_format($_parse(props.item.date_played), 'MMM DD, YYYY') }}</td>
         </template>
       </v-data-table>
     </v-card-text>
@@ -74,12 +74,12 @@
           descending: true
         },
         headers: [
+          { text: '', value: null, sortable: false, width: '40px' },
           { text: 'Competition', value: 'competition', align: 'center' },
           { text: 'Home', value: 'home', align: 'right' },
           { text: 'Score', value: 'score', align: 'center', sortable: false },
           { text: 'Away', value: 'away', align: 'left' },
-          { text: 'Date Played', value: 'date_played', align: 'center' },
-          { text: '', value: null, sortable: false }
+          { text: 'Date Played', value: 'date_played', align: 'center' }
         ],
         loading: false,
         search: ''

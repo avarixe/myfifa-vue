@@ -1,6 +1,7 @@
 import Vue from 'vue'
-import apiRequest from '@/api'
+import $_http from '@/api'
 import myfifa from '@/api/myfifa'
+import objectify from '@/plugins/objectify'
 
 // initial state
 export const state = () => ({
@@ -18,7 +19,7 @@ export const getters = {
 export const actions = {
   getAll ({ state, commit, rootState }, { teamId }) {
     if (!state.loaded) {
-      return apiRequest({
+      return $_http({
         path: myfifa.competitions.index,
         pathData: { teamId: teamId },
         token: rootState.token,
@@ -32,7 +33,7 @@ export const actions = {
     if (competitionId in state.list) {
       return { data: state.list[competitionId] }
     } else {
-      return apiRequest({
+      return $_http({
         path: myfifa.competitions.record,
         pathData: { competitionId: competitionId },
         token: rootState.token,
@@ -43,7 +44,7 @@ export const actions = {
     }
   },
   create ({ commit, rootState }, { teamId, competition }) {
-    return apiRequest({
+    return $_http({
       method: 'post',
       path: myfifa.competitions.index,
       pathData: { teamId: teamId },
@@ -52,7 +53,7 @@ export const actions = {
     })
   },
   update ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'patch',
       path: myfifa.competitions.record,
       pathData: { competitionId: payload.id },
@@ -61,7 +62,7 @@ export const actions = {
     })
   },
   remove ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'delete',
       path: myfifa.competitions.record,
       pathData: { competitionId: payload },
@@ -73,10 +74,7 @@ export const actions = {
 // mutations
 export const mutations = {
   SET_ALL (state, competitions) {
-    state.list = competitions.reduce((list, competition) => {
-      list[competition.id] = competition
-      return list
-    }, {})
+    state.list = objectify(competitions)
     state.loaded = true
   },
   SET (state, competition) {

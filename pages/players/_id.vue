@@ -211,19 +211,19 @@
         return this.player.status && this.player.status.length > 0
       },
       contracts () {
-        return this.player.contracts || []
+        return Object.values(this.player.contracts || {})
       },
       loans () {
-        return this.player.loans || []
+        return Object.values(this.player.loans || {})
       },
       injuries () {
-        return this.player.injuries || []
+        return Object.values(this.player.injuries || {})
       },
       transfers () {
-        return this.player.transfers || []
+        return Object.values(this.player.transfers || {})
       },
       histories () {
-        return this.player.player_histories || []
+        return Object.values(this.player.player_histories || {})
       },
       ovrGrowth () {
         return this.histories.map(h => [ h.datestamp, h.ovr ])

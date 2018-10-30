@@ -11,7 +11,7 @@ function urlFor (path, pathData) {
   return path
 }
 
-async function apiRequest ({
+async function sendRequest ({
   method,
   path,
   pathData,
@@ -49,4 +49,4 @@ async function apiRequest ({
   }
 }
 
-export default apiRequest
+export default sendRequest

@@ -94,7 +94,7 @@
         activePlayers: 'active'
       }),
       availablePlayers () {
-        const selectedIds = this.match.performances.map(p => p.player_id)
+        const selectedIds = this.sortedPerformances.map(p => p.player_id)
         return this.activePlayers.filter(p => selectedIds.indexOf(p.id) < 0)
       }
     },

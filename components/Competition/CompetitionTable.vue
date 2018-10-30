@@ -33,6 +33,7 @@
     data () {
       return {
         headers: [
+          { text: '', value: null, sortable: false, width: '40px' },
           { text: 'Team', value: 'name', type: 'text', align: 'left' },
           { text: 'W', value: 'wins', type: 'number', align: 'center' },
           { text: 'D', value: 'draws', type: 'number', align: 'center' },
@@ -40,8 +41,7 @@
           { text: 'GF', value: 'goals_for', type: 'number', align: 'center' },
           { text: 'GA', value: 'goals_against', type: 'number', align: 'center' },
           { text: 'GD', value: 'goal_difference', type: null, align: 'center' },
-          { text: 'PTS', value: 'points', type: null, align: 'center' },
-          { text: '', value: null, align: 'right', sortable: false }
+          { text: 'PTS', value: 'points', type: null, align: 'center' }
         ],
         pagination: {
           rowsPerPage: -1,
@@ -52,7 +52,7 @@
     },
     computed: {
       items () {
-        return this.table.table_rows || []
+        return Object.values(this.table.table_rows) || []
       }
     }
   }

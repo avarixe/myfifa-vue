@@ -1,19 +1,7 @@
 <template>
   <v-card>
     <v-card-title primary-title>
-      <div class="title">
-        // TEAMS
-      </div>
-
-      <!-- New Tean Form -->
-      <team-form>
-        <v-tooltip top>
-          <v-btn slot="activator" flat icon>
-            <v-icon>mdi-plus-circle-outline</v-icon>
-          </v-btn>
-          Add Team
-        </v-tooltip>
-      </team-form>
+      <div class="title">// TEAMS</div>
     </v-card-title>
     <v-card-text>
 

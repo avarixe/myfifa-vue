@@ -6,6 +6,7 @@
   import { mapState, mapMutations } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import { cableURL } from '@/api/myfifa'
+  import { formatter as stageFormatter } from '@/api/modules/stage'
 
   export default {
     mixins: [ TeamAccessible ],
@@ -41,57 +42,16 @@
                 this.removePlayer(data.id)
                 break
               case 'Contract':
-                if (data.player_id in this.players &&
-                    'contracts' in this.players[data.player_id]) {
-                  const player = this.players[data.player_id]
-                  this.setPlayer({
-                    ...player,
-                    contracts: player.contracts.filter(c => c.id !== data.id)
-                  })
-                }
-                break
               case 'Loan':
-                if (data.player_id in this.players &&
-                    'loans' in this.players[data.player_id]) {
-                  const player = this.players[data.player_id]
-                  this.setPlayer({
-                    ...player,
-                    loans: player.loans.filter(l => l.id !== data.id)
-                  })
-                }
-                break
               case 'Injury':
-                if (data.player_id in this.players &&
-                    'injuries' in this.players[data.player_id]) {
-                  const player = this.players[data.player_id]
-                  this.setPlayer({
-                    ...player,
-                    injuries: player.injuries.filter(c => c.id !== data.id)
-                  })
-                }
-                break
               case 'Transfer':
-                if (data.player_id in this.players &&
-                    'transfers' in this.players[data.player_id]) {
-                  const player = this.players[data.player_id]
-                  this.setPlayer({
-                    ...player,
-                    transfers: player.transfers.filter(c => c.id !== data.id)
-                  })
-                }
+                this.removeNestedRecord('Player', type, data)
                 break
               case 'Match':
                 this.removeMatch(data.id)
                 break
               case 'Performance':
-                if (data.match_id in this.matches &&
-                    'performances' in this.matches[data.match_id]) {
-                  const match = this.matches[data.match_id]
-                  this.setMatch({
-                    ...match,
-                    performances: match.performances.filter(p => p.id !== data.id)
-                  })
-                }
+                this.removeNestedRecord('Match', type, data)
                 break
               case 'Goal':
               case 'Substitution':
@@ -106,27 +66,16 @@
                 }
                 break
               case 'PenaltyShootout':
-                if (data.match_id in this.matches) {
-                  const match = { ...this.matches[data.match_id] }
-                  delete match.penalty_shootout
-                  this.setMatch(match)
-                }
+                this.removeNestedRecord('Match', type, data, { singular: true })
                 break
               case 'Squad':
                 this.removeSquad(data.id)
                 break
               case 'Competition':
-                this.remoteCompetition(data.id)
+                this.removeCompetition(data.id)
                 break
               case 'Stage':
-                if (data.competition_id in this.competitions &&
-                    'stages' in this.competitions[data.competition_id]) {
-                  const competition = this.competitions[data.competition_id]
-                  this.setCompetition({
-                    ...competition,
-                    stages: competition.stages.filter(s => s.id !== data.id)
-                  })
-                }
+                this.removeNestedRecord('Competition', type, data)
                 break
             }
           } else {
@@ -134,73 +83,18 @@
               case 'Player':
                 this.setPlayer({ ...this.players[data.id], ...data })
                 break
+              case 'PlayerHistory':
               case 'Contract':
-                if (data.player_id in this.players) {
-                  let player = { ...this.players[data.player_id] }
-                  let contracts = [ ...player.contracts ]
-                  const index = contracts.findIndex(x => x.id === data.id)
-                  if (index > -1) {
-                    contracts.splice(index, 1, data)
-                  } else {
-                    contracts.push(data)
-                  }
-                  this.setPlayer({ ...player, contracts })
-                }
-                break
               case 'Loan':
-                if (data.player_id in this.players) {
-                  let player = { ...this.players[data.player_id] }
-                  let loans = [ ...player.loans ]
-                  const index = loans.findIndex(x => x.id === data.id)
-                  if (index > -1) {
-                    loans.splice(index, 1, data)
-                  } else {
-                    loans.push(data)
-                  }
-                  this.setPlayer({ ...player, loans })
-                }
-                break
               case 'Injury':
-                if (data.player_id in this.players) {
-                  let player = { ...this.players[data.player_id] }
-                  let injuries = [ ...player.injuries ]
-                  const index = injuries.findIndex(x => x.id === data.id)
-                  if (index > -1) {
-                    injuries.splice(index, 1, data)
-                  } else {
-                    injuries.push(data)
-                  }
-                  this.setPlayer({ ...player, injuries })
-                }
-                break
               case 'Transfer':
-                if (data.player_id in this.players) {
-                  let player = { ...this.players[data.player_id] }
-                  let transfers = [ ...player.transfers ]
-                  const index = transfers.findIndex(x => x.id === data.id)
-                  if (index > -1) {
-                    transfers.splice(index, 1, data)
-                  } else {
-                    transfers.push(data)
-                  }
-                  this.setPlayer({ ...player, transfers })
-                }
+                this.setNestedRecord('Player', type, data)
                 break
               case 'Match':
                 this.setMatch({ ...this.matches[data.id], ...data })
                 break
               case 'Performance':
-                if (data.match_id in this.matches) {
-                  let match = { ...this.matches[data.match_id] }
-                  let performances = [ ...match.performances ]
-                  const pIdx = performances.findIndex(p => p.id === data.id)
-                  if (pIdx > -1) {
-                    performances.splice(pIdx, 1, data)
-                  } else {
-                    performances.push(data)
-                  }
-                  this.setMatch({ ...match, performances })
-                }
+                this.setNestedRecord('Match', type, data)
                 break
               case 'Goal':
               case 'Substitution':
@@ -218,12 +112,7 @@
                 }
                 break
               case 'PenaltyShootout':
-                if (data.match_id in this.matches) {
-                  this.setMatch({
-                    ...this.matches[data.match_id],
-                    penalty_shootout: data
-                  })
-                }
+                this.setNestedRecord('Match', type, data, { singular: true })
                 break
               case 'Squad':
                 this.setSquad({ ...this.squads[data.id], ...data })
@@ -232,17 +121,7 @@
                 this.setCompetition({ ...this.competitions[data.id], ...data })
                 break
               case 'Stage':
-                if (data.competition_id in this.competitions) {
-                  let competition = { ...this.competitions[data.competition_id] }
-                  let stages = [ ...competition.stages ]
-                  const sIdx = stages.findIndex(s => s.id === data.id)
-                  if (sIdx > -1) {
-                    stages.splice(sIdx, 1, data)
-                  } else {
-                    stages.push(data)
-                  }
-                  this.setCompetition({ ...competition, stages })
-                }
+                this.setNestedRecord('Competition', type, data, { formatter: stageFormatter })
                 break
             }
           }
@@ -267,7 +146,54 @@
         removeMatch: 'match/REMOVE',
         removeSquad: 'squad/REMOVE',
         removeCompetition: 'competition/REMOVE'
-      })
+      }),
+      removeNestedRecord(parentType, associationType, data, options = {}) {
+        const attr = this.attributize(associationType)
+        const parentId = `${parentType.toLowerCase()}_id`
+        const parentRecords = this[this.pluralize(parentType.toLowerCase())]
+        const setParent = this[`set${parentType}`]
+
+        if (data[parentId] in parentRecords &&
+            attr in parentRecords[data[parentId]]) {
+          let parent = parentRecords[parentId]
+          if (options.singular) {
+            delete parent[attr]
+            setParent(parent)
+          } else {
+            let records = { ...parent[attr] }
+            delete records[data.id]
+            setParent({ ...parent, [attr]: records })
+          }
+        }
+      },
+      setNestedRecord(parentType, associationType, data, options = {}) {
+        const formatter = options.formatter || function (x) { return x }
+
+        const attr = this.attributize(associationType)
+        const parentId = `${parentType.toLowerCase()}_id`
+        const parentRecords = this[this.pluralize(parentType.toLowerCase())]
+        const setParent = this[`set${parentType}`]
+
+        if (data[parentId] in parentRecords) {
+          const parent = parentRecords[parentId]
+          if (options.singular) {
+            setParent({ ...parent, [attr]: data })
+          } else {
+            let records = { ...parent[attr] }
+            records[data.id] = formatter(data)
+            setParent({ ...parent, [attr]: records })
+          }
+        }
+      },
+      attributize (x) {
+        switch (x) {
+          case 'PlayerHistory': return 'player_histories'
+          case 'PenaltyShootout': return 'penalty_shootout'
+          case 'Injury': return 'injuries'
+          case 'Match': return 'matches'
+          default: return `${x.toLowerCase()}s`
+        }
+      }
     }
   }
 </script>

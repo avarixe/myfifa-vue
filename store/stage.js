@@ -1,26 +1,28 @@
 import Vue from 'vue'
-import apiRequest from '@/api'
+import $_http from '@/api'
 import myfifa from '@/api/myfifa'
+import objectify from '@/plugins/objectify'
+import { formatter } from '@/api/modules/stage'
 
 // actions
 export const actions = {
   getAll ({ state, commit, rootState }, { competitionId }) {
-    if (!state.loaded) {
-      return apiRequest({
-        path: myfifa.stages.index,
-        pathData: { competitionId: competitionId },
-        token: rootState.token,
-        success: function ({ data }) {
-          commit('competition/SET', {
-            ...rootState.competition.list[competitionId],
-            stages: data
-          }, { root: true })
-        }
-      })
-    }
+    return $_http({
+      path: myfifa.stages.index,
+      pathData: { competitionId: competitionId },
+      token: rootState.token,
+      success: function ({ data }) {
+        commit('competition/SET', {
+          ...rootState.competition.list[competitionId],
+          stages: objectify(data, {
+            itemFormatter: formatter
+          })
+        }, { root: true })
+      }
+    })
   },
   create ({ commit, rootState }, { competitionId, stage }) {
-    return apiRequest({
+    return $_http({
       method: 'post',
       path: myfifa.stages.index,
       pathData: { competitionId: competitionId },
@@ -29,7 +31,7 @@ export const actions = {
     })
   },
   update ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'patch',
       path: myfifa.stages.record,
       pathData: { stageId: payload.id },
@@ -38,32 +40,11 @@ export const actions = {
     })
   },
   remove ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'delete',
       path: myfifa.stages.record,
       pathData: { stageId: payload },
       token: rootState.token
     })
-  }
-}
-
-// mutations
-export const mutations = {
-  SET_ALL (state, competitions) {
-    state.list = competitions.reduce((list, competition) => {
-      list[competition.id] = competition
-      return list
-    }, {})
-    state.loaded = true
-  },
-  SET (state, competition) {
-    Vue.set(state.list, competition.id, competition)
-  },
-  REMOVE (state, competitionId) {
-    Vue.delete(state.list, competitionId)
-  },
-  RESET (state) {
-    state.loaded = false
-    state.list = {}
   }
 }

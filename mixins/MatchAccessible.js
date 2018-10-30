@@ -12,7 +12,7 @@ export default {
       'positions'
     ]),
     sortedPerformances () {
-      return this.match.performances.slice().sort((a, b) => {
+      return Object.values(this.match.performances).sort((a, b) => {
         let aPos = this.positions.indexOf(a.pos)
         let bPos = this.positions.indexOf(b.pos)
         return aPos - bPos || a.start - b.start
