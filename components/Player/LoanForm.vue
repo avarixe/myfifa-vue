@@ -27,14 +27,14 @@
             autocorrect="off"
           ></v-text-field>
         </v-flex>
-
-        <v-flex xs12>
-          <v-checkbox
-            v-model="loan.returned"
-            v-if="loan.id"
-            label="Player Returned"
-          ></v-checkbox>
-        </v-flex>
+        <v-scroll-y-transition mode="out-in">
+          <v-flex v-if="loan.id" xs12>
+            <v-checkbox
+              v-model="loan.returned"
+              label="Player Returned"
+            ></v-checkbox>
+          </v-flex>
+        </v-scroll-y-transition>
       </v-layout>
     </v-container>
   </dialog-form>

@@ -27,14 +27,14 @@
             autocorrect="off"
           ></v-text-field>
         </v-flex>
-
-        <v-flex xs12>
-          <v-checkbox
-            v-model="injury.recovered"
-            v-if="injury.id"
-            label="Player Recovered"
-          ></v-checkbox>
-        </v-flex>
+        <v-scroll-y-transition mode="out-in">
+          <v-flex v-if="injury.id" xs12>
+            <v-checkbox
+              v-model="injury.recovered"
+              label="Player Recovered"
+            ></v-checkbox>
+          </v-flex>
+        </v-scroll-y-transition>
       </v-layout>
     </v-container>
   </dialog-form>

@@ -116,23 +116,27 @@
           ></v-text-field>
         </v-flex>
 
-        <v-flex xs12 sm6>
-          <v-text-field
-            v-model="contract.bonus_req"
-            label="Bonus Req."
-            type="number"
-            prefix="if"
-          ></v-text-field>
-        </v-flex>
+        <v-scroll-y-transition mode="out-in">
+          <v-flex v-if="contract.performance_bonus" xs12 sm6>
+            <v-text-field
+              v-model="contract.bonus_req"
+              label="Bonus Req."
+              type="number"
+              prefix="if"
+            ></v-text-field>
+          </v-flex>
+        </v-scroll-y-transition>
 
-        <v-flex xs12 sm6>
-          <v-select
-            v-model="contract.bonus_req_type"
-            label="Bonus Req. Type"
-            :items="bonusRequirementTypes"
-            clearable
-          ></v-select>
-        </v-flex>
+        <v-scroll-y-transition mode="out-in">
+          <v-flex v-if="contract.performance_bonus" xs12 sm6>
+            <v-select
+              v-model="contract.bonus_req_type"
+              label="Bonus Req. Type"
+              :items="bonusRequirementTypes"
+              clearable
+            ></v-select>
+          </v-flex>
+        </v-scroll-y-transition>
       </v-layout>
     </v-container>
   </dialog-form>
