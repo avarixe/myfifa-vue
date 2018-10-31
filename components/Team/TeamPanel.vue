@@ -55,7 +55,7 @@
         teams: 'list'
       }),
       rows () {
-        return Object.values(this.teams).sort((a, b) => b.id - a.id)
+        return this.$_orderBy(Object.values(this.teams), ['id'], ['desc'])
       }
     },
     mounted () {

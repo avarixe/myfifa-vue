@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import orderBy from 'lodash.orderby'
 import $_http from '@/api'
 import myfifa from '@/api/myfifa'
 import objectify from '@/plugins/objectify'
@@ -29,9 +30,11 @@ export const state = () => ({
 // getters
 export const getters = {
   contracted: state => (
-    Object.values(state.list)
-      .filter(player => player.status)
-      .sort((a, b) => a.pos_idx - b.pos_idx || b.ovr - a.ovr)
+    orderBy(
+      Object.values(state.list).filter(player => player.status),
+      ['pos_idx', 'ovr'],
+      ['asc', 'desc']
+    )
   ),
   active: (state, getters) => (
     getters.contracted.filter(player => player.status === 'Active')

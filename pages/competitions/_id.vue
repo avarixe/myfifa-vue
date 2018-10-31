@@ -103,7 +103,7 @@
         return this.stages.filter(stage => !stage.table)
       },
       readonly () {
-        return this.competition.season === this.season
+        return this.competition.season !== this.season
       }
     },
     async fetch ({ store, params }) {

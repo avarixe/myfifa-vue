@@ -112,7 +112,7 @@
           : this.items
       },
       sortedItems () {
-        return this.filteredItems.sort((a, b) => a.date < b.date)
+        return this.$_orderBy(this.filteredItems, ['date'], ['desc'])
       },
       dense () {
         switch (this.$vuetify.breakpoint.name) {

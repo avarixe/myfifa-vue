@@ -12,11 +12,10 @@ export default {
       'positions'
     ]),
     sortedPerformances () {
-      return Object.values(this.match.performances).sort((a, b) => {
-        let aPos = this.positions.indexOf(a.pos)
-        let bPos = this.positions.indexOf(b.pos)
-        return aPos - bPos || a.start - b.start
-      })
+      return this.$_orderBy(
+        Object.values(this.match.performances),
+        [ p => this.positions.indexOf(p.pos), 'start' ]
+      )
     },
     minutes () {
       return Array.from({ length: 120 }, (v, k) => k + 1)

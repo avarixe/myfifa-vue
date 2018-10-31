@@ -145,9 +145,11 @@
         }
       },
       rows () {
-        return Object.values(this.players)
-          .sort((a, b) => a.pos_idx - b.pos_idx || b.ovr - a.ovr)
-          .filter(player => !this.filterActive || player.status)
+        return this.$_orderBy(
+          Object.values(this.players),
+          ['pos_idx', 'ovr'],
+          ['asc', 'desc']
+        ).filter(player => !this.filterActive || player.status)
       }
     },
     mounted () {
