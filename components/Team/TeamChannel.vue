@@ -124,16 +124,18 @@
                 this.setNestedRecord('Competition', type, data, { formatter: stageFormatter })
                 break
               case 'TableRow':
+              case 'Fixture':
                 if (data.competition_id in this.competitions) {
                   const competition = this.competitions[data.competition_id]
                   if ('stages' in competition && data.stage_id in competition.stages) {
                     const stage = competition.stages[data.stage_id]
-                    let rows = { ...stage.table_rows, [data.id]: data }
+                    const attr = this.attributize(type)
+                    let records = { ...stage[attr], [data.id]: data }
                     this.setCompetition({
                       ...competition,
                       stages: {
                         ...competition.stages,
-                        [stage.id]: { ...stage, table_rows: rows }
+                        [stage.id]: { ...stage, [attr]: records }
                       }
                     })
                   }
@@ -165,12 +167,12 @@
       }),
       removeNestedRecord(parentType, associationType, data, options = {}) {
         const attr = this.attributize(associationType)
-        const parentId = `${parentType.toLowerCase()}_id`
-        const parentRecords = this[this.pluralize(parentType.toLowerCase())]
+        const parentId = data[`${parentType.toLowerCase()}_id`]
+        const parentRecords = this[this.attributize(parentType)]
         const setParent = this[`set${parentType}`]
 
-        if (data[parentId] in parentRecords &&
-            attr in parentRecords[data[parentId]]) {
+        if (parentId in parentRecords &&
+            attr in parentRecords[parentId]) {
           let parent = parentRecords[parentId]
           if (options.singular) {
             delete parent[attr]
@@ -184,13 +186,12 @@
       },
       setNestedRecord(parentType, associationType, data, options = {}) {
         const formatter = options.formatter || function (x) { return x }
-
         const attr = this.attributize(associationType)
-        const parentId = `${parentType.toLowerCase()}_id`
-        const parentRecords = this[this.pluralize(parentType.toLowerCase())]
+        const parentId = data[`${parentType.toLowerCase()}_id`]
+        const parentRecords = this[this.attributize(parentType)]
         const setParent = this[`set${parentType}`]
 
-        if (data[parentId] in parentRecords) {
+        if (parentId in parentRecords) {
           const parent = parentRecords[parentId]
           if (options.singular) {
             setParent({ ...parent, [attr]: data })
@@ -207,6 +208,7 @@
           case 'PenaltyShootout': return 'penalty_shootout'
           case 'Injury': return 'injuries'
           case 'Match': return 'matches'
+          case 'TableRow': return 'table_rows'
           default: return `${x.toLowerCase()}s`
         }
       }

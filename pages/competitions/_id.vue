@@ -9,7 +9,7 @@
                 <div class="subheading">{{ seasonLabel(competition.season) }}</div>
                 <div class="display-1">{{ competition.name }}</div>
               </v-flex>
-              <v-flex xs12>
+              <v-flex v-if="!readonly" xs12>
                 <competition-form
                   :initial-competition="competition"
                   color="orange">
@@ -29,27 +29,39 @@
 
       <!-- Table Stages -->
       <v-flex v-if="tables.length > 0" xs12>
-        <competition-table
-          v-for="(table, i) in tables"
-          :key="i"
-          :table="table"
-        ></competition-table>
+        <v-card>
+          <v-card-text>
+            <v-expansion-panel v-model="stage" popout>
+              <competition-table
+                v-for="(table, i) in tables"
+                :key="i"
+                :table="table"
+                :readonly="readonly"
+              ></competition-table>
+            </v-expansion-panel>
+          </v-card-text>
+        </v-card>
       </v-flex>
 
       <!-- Elimination Round Stages -->
       <v-flex v-if="rounds.length > 0" xs12>
-        <competition-round
-          v-for="(round, i) in rounds"
-          :key="i"
-          :round="round"
-        ></competition-round>
+        <v-card>
+          <v-card-text>
+            <competition-round
+              v-for="(round, i) in rounds"
+              :key="i"
+              :round="round"
+              :readonly="readonly"
+            ></competition-round>
+          </v-card-text>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import { mapState, mapGetters } from 'vuex'
   import CompetitionForm from '@/components/Competition/CompetitionForm'
   import CompetitionTable from '@/components/Competition/CompetitionTable'
   import CompetitionRound from '@/components/Competition/CompetitionRound'
@@ -70,10 +82,12 @@
     },
     data () {
       return {
+        stage: 0
       }
     },
     computed: {
       ...mapState('competition', { competitions: 'list' }),
+      ...mapGetters('team', ['season']),
       competition () {
         return this.competitions[this.$route.params.id]
       },
@@ -87,6 +101,9 @@
       },
       rounds () {
         return this.stages.filter(stage => !stage.table)
+      },
+      readonly () {
+        return this.competition.season === this.season
       }
     },
     async fetch ({ store, params }) {

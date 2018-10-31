@@ -124,7 +124,7 @@ export const actions = {
       success: function ({ data }) {
         commit('SET', {
           ...state.list[playerId],
-          player_histories: data
+          player_histories: objectify(data)
         })
       }
     })

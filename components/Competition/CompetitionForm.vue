@@ -84,7 +84,7 @@
             competition: this.competition
           })
           this.$router.push({
-            name: 'competition-id',
+            name: 'competitions-id',
             params: { id: data.id }
           })
         }

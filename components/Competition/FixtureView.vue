@@ -7,14 +7,14 @@
       <template v-if="header.value">
         <template v-if="edit && header.type">
           <v-text-field
-            v-model="row[header.value]"
+            v-model="fixture[header.value]"
             :type="header.type"
             :label="header.text"
             :autofocus="i === 0"
           ></v-text-field>
         </template>
         <template v-else>
-          {{ rowData[header.value] }}
+          {{ fixtureData[header.value] }}
         </template>
       </template>
       <template v-else>
@@ -32,7 +32,7 @@
 <script>
   export default {
     props: {
-      rowData: {
+      fixtureData: {
         type: Object,
         required: true
       },
@@ -43,14 +43,14 @@
     },
     data: () => ({
       edit: false,
-      row: {}
+      fixture: {}
     }),
     watch: {
       edit (val) {
         if (val) {
-          this.row = { ...this.rowData }
+          this.fixture = { ...this.fixtureData }
         } else {
-          this.$store.dispatch('tableRow/update', this.row)
+          this.$store.dispatch('fixture/update', this.fixture)
         }
       }
     }
