@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-btn-toggle>
     <v-tooltip bottom color="blue darken-2">
       <v-btn
         slot="activator"
@@ -41,7 +41,7 @@
       <v-btn dark flat @click.stop="this.$store.dispatch('team/remove', team.id)">Yes</v-btn>
       <v-btn dark flat @click.stop="snackbar = false">No</v-btn>
     </v-snackbar>
-  </div>
+  </v-btn-toggle>
 </template>
 
 <script>

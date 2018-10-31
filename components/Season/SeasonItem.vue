@@ -11,7 +11,10 @@
           :key="i"
           :to="{ name: 'competitions-id', params: { id: competition.id } }"
           class="elevation-1">
-          <v-list-tile-title>{{ competition.name }}</v-list-tile-title>
+          <v-list-tile-title>
+            <v-icon color="blue" small left>mdi-arrow-right</v-icon>
+            {{ competition.name }}
+          </v-list-tile-title>
           <v-list-tile-avatar v-if="competition.champion === team.name">
             <v-icon color="yellow darken-2">mdi-trophy</v-icon>
           </v-list-tile-avatar>

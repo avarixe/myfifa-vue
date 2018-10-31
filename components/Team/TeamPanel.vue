@@ -44,7 +44,7 @@
           { text: 'Team Name',    value: 'title',        align: 'center' },
           { text: 'Start Date',   value: 'start_date',   align: 'center' },
           { text: 'Current Date', value: 'current_date', align: 'center' },
-          { text: 'Actions',      value: 'actions',      align: 'right',  sortable: false }
+          { text: 'Actions',      value: 'actions',      align: 'right',  sortable: false, width: '120px' }
         ],
         loading: false,
         search: ''
@@ -83,5 +83,8 @@
   >>> table.v-table tbody td {
     padding: 8px 16px;
     height: auto;
+  }
+  >>> .v-btn-toggle .v-btn {
+    opacity: 1;
   }
 </style>

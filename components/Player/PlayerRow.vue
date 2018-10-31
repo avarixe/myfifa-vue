@@ -39,10 +39,11 @@
           autofocus
         ></v-text-field>
       </v-edit-dialog>
-      <span v-else>
+      <template v-else-if="header.value">
         {{ getProperty(header.value, header.format) }}
+      </template>
+      <template v-else>
         <v-tooltip
-          v-if="header.value === 'name'"
           color="primary"
           bottom>
           <v-btn
@@ -53,9 +54,9 @@
             icon>
             <v-icon color="primary" small>mdi-arrow-right</v-icon>
           </v-btn>
-          View Match
+          View Player
         </v-tooltip>
-      </span>
+      </template>
     </td>
   </tr>
 </template>

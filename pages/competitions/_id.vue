@@ -29,28 +29,20 @@
 
       <!-- Table Stages -->
       <v-flex v-if="tables.length > 0" xs12>
-        <v-card>
-          <v-card-text>
-            <competition-table
-              v-for="(table, i) in tables"
-              :key="i"
-              :table="table"
-            ></competition-table>
-          </v-card-text>
-        </v-card>
+        <competition-table
+          v-for="(table, i) in tables"
+          :key="i"
+          :table="table"
+        ></competition-table>
       </v-flex>
 
       <!-- Elimination Round Stages -->
       <v-flex v-if="rounds.length > 0" xs12>
-        <v-card>
-          <v-card-text>
-            <competition-round
-              v-for="(round, i) in rounds"
-              :key="i"
-              :round="round"
-            ></competition-round>
-          </v-card-text>
-        </v-card>
+        <competition-round
+          v-for="(round, i) in rounds"
+          :key="i"
+          :round="round"
+        ></competition-round>
       </v-flex>
     </v-layout>
   </v-container>

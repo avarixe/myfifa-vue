@@ -9,10 +9,12 @@
       <v-data-iterator
         :items="rows"
         :loading="loading"
+        :pagination-sync="pagination"
+        no-data-text="No Seasons Recorded"
+        hide-actions
         content-tag="v-layout"
         row
-        wrap
-        no-data-text="No Seasons Recorded">
+        wrap>
         <template slot="item" slot-scope="props">
           <v-flex xs12 sm6 md4 lg3>
             <season-item
@@ -38,7 +40,10 @@
     },
     data () {
       return {
-        loading: false
+        loading: false,
+        pagination: {
+          rowsPerPage: -1
+        }
       }
     },
     computed: {

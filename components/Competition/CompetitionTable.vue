@@ -1,9 +1,10 @@
 <template>
-  <div>
-    <v-subheader>
-      {{ table.name }}
+  <v-card>
+    <v-card-title>
+      <div class="title">{{ table.name }}</div>
       <stage-remove :stage="table"></stage-remove>
-    </v-subheader>
+    </v-card-title>
+    <v-card-text>
     <v-data-table
       :headers="headers"
       :items="items"
@@ -17,7 +18,8 @@
         ></table-row>
       </template>
     </v-data-table>
-  </div>
+  </v-card-text>
+  </v-card>
 </template>
 
 <script>

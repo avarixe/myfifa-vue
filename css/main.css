@@ -58,6 +58,7 @@
 }
 
 #app .v-datatable__actions,
+#app .v-btn-toggle,
 #app .v-expansion-panel__container {
   background-color: transparent;
 }

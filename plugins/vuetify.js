@@ -40,7 +40,7 @@ import {
   VRating,
   VInput,
   VTimeline,
-  // VWindow,
+  VBtnToggle,
   transitions
 } from 'vuetify'
 
@@ -86,7 +86,7 @@ Vue.use(Vuetify, {
     VRating,
     VInput,
     VTimeline,
-    // VWindow,
+    VBtnToggle,
     transitions
   }
 })
