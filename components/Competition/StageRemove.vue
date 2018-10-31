@@ -11,8 +11,8 @@
     <v-snackbar
       v-model="snackbar"
       color="black">
-      Remove Match: {{ match.home }} v {{ match.away }}?
-      <v-btn dark flat @click="$store.dispatch('match/remove', match.id)">Yes</v-btn>
+      Remove {{ stage.name }}?
+      <v-btn dark flat @click="$store.dispatch('stage/remove', stage.id)">Yes</v-btn>
       <v-btn dark flat @click.stop="snackbar = false">No</v-btn>
     </v-snackbar>
   </div>
@@ -21,7 +21,7 @@
 <script>
   export default {
     props: {
-      match: {
+      stage: {
         type: Object,
         required: true
       }

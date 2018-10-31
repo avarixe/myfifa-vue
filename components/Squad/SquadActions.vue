@@ -20,14 +20,13 @@
       color="black"
       v-model="promptDeletion">
       Remove Squad: {{ squad.name }}?
-      <v-btn dark flat @click.native="remove(squad.id)">Yes</v-btn>
+      <v-btn dark flat @click.native="$store.dispatch('squad/remove', squad.id)">Yes</v-btn>
       <v-btn dark flat @click.native="promptDeletion = false">No</v-btn>
     </v-snackbar>
   </div>
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
   import SquadForm from '@/components/Squad/SquadForm'
 
   export default {
@@ -40,15 +39,8 @@
         required: true
       }
     },
-    data () {
-      return {
-        promptDeletion: false
-      }
-    },
-    methods: {
-      ...mapActions('squad', [
-        'remove'
-      ])
-    }
+    data: () => ({
+      promptDeletion: false
+    })
   }
 </script>

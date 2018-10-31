@@ -12,14 +12,13 @@
       v-model="snackbar"
       color="black">
       Remove {{ seasonLabel(competition.season) }} {{ competition.name }}?
-      <v-btn dark flat @click="remove(match.id)">Yes</v-btn>
+      <v-btn dark flat @click="$store.dispatch('competition/remove', competition.id)">Yes</v-btn>
       <v-btn dark flat @click.stop="snackbar = false">No</v-btn>
     </v-snackbar>
   </div>
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
@@ -30,13 +29,8 @@
         required: true
       }
     },
-    data () {
-      return {
-        snackbar: false
-      }
-    },
-    methods: mapActions('competition', [
-      'remove'
-    ])
+    data: () => ({
+      snackbar: false
+    })
   }
 </script>

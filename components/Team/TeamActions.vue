@@ -59,12 +59,6 @@
     },
     data: () => ({
       snackbar: false
-    }),
-    methods: {
-      preventAccess () {
-        alert('Can not access!')
-        return false
-      }
-    }
+    })
   }
 </script>

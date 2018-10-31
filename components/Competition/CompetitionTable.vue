@@ -1,6 +1,9 @@
 <template>
   <div>
-    <v-subheader>{{ table.name }}</v-subheader>
+    <v-subheader>
+      {{ table.name }}
+      <stage-remove :stage="table"></stage-remove>
+    </v-subheader>
     <v-data-table
       :headers="headers"
       :items="items"
@@ -18,10 +21,12 @@
 </template>
 
 <script>
+  import StageRemove from '@/components/Competition/StageRemove'
   import TableRow from '@/components/Competition/TableRow'
 
   export default {
     components: {
+      StageRemove,
       TableRow
     },
     props: {

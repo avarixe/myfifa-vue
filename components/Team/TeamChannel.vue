@@ -123,6 +123,22 @@
               case 'Stage':
                 this.setNestedRecord('Competition', type, data, { formatter: stageFormatter })
                 break
+              case 'TableRow':
+                if (data.competition_id in this.competitions) {
+                  const competition = this.competitions[data.competition_id]
+                  if ('stages' in competition && data.stage_id in competition.stages) {
+                    const stage = competition.stages[data.stage_id]
+                    let rows = { ...stage.table_rows, [data.id]: data }
+                    this.setCompetition({
+                      ...competition,
+                      stages: {
+                        ...competition.stages,
+                        [stage.id]: { ...stage, table_rows: rows }
+                      }
+                    })
+                  }
+                }
+                break
             }
           }
         },
