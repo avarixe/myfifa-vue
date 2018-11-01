@@ -6,7 +6,18 @@
       :class="`text-xs-${header.align} ${cellClass(header)}`">
       <template v-if="header.value">
         <template v-if="edit">
+          <v-combobox
+            v-if="header.value.includes('team')"
+            v-model="fixture[header.value]"
+            :items="competitionTeams"
+            :label="header.text"
+            spellcheck="false"
+            autocapitalize="words"
+            autocomplete="off"
+            autocorrect="off"
+          ></v-combobox>
           <v-text-field
+            v-else
             v-model="fixture[header.value]"
             :label="header.text"
           ></v-text-field>

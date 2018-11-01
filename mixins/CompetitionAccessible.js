@@ -1,5 +1,6 @@
 import { mapState } from 'vuex'
 import TeamAccessible from '@/mixins/TeamAccessible'
+import { teamOptions } from '@/api/modules/competition'
 
 export default {
   mixins: [ TeamAccessible ],
@@ -7,6 +8,9 @@ export default {
     ...mapState('competition', { competitions: 'list' }),
     competition () {
       return this.competitions[this.$route.params.id]
+    },
+    competitionTeams () {
+      return teamOptions(this.competition)
     }
   },
   methods: {
