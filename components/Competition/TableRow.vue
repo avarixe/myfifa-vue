@@ -14,7 +14,9 @@
           ></v-text-field>
         </template>
         <template v-else>
-          {{ rowData[header.value] }}
+          <span :class="teamClass(rowData.name)">
+            {{ rowData[header.value] }}
+          </span>
         </template>
       </template>
       <template v-else>
@@ -30,7 +32,10 @@
 </template>
 
 <script>
+  import CompetitionAccessible from '@/mixins/CompetitionAccessible'
+
   export default {
+    mixins: [ CompetitionAccessible ],
     props: {
       rowData: {
         type: Object,
