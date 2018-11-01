@@ -9,6 +9,13 @@
                 <div class="subheading">{{ seasonLabel(competition.season) }}</div>
                 <div class="display-1">{{ competition.name }}</div>
               </v-flex>
+              <v-flex v-if="competition.champion" xs12>
+                <div class="title">
+                  <v-icon color="yellow darken-2" left>mdi-crown</v-icon>
+                  {{ competition.champion }}
+                  <v-icon color="yellow darken-2" right>mdi-crown</v-icon>
+                </div>
+              </v-flex>
               <v-flex v-if="!readonly" xs12>
                 <edit-competition-form
                   :competition-data="competition"

@@ -78,7 +78,7 @@
     methods: {
       ...mapActions('competition', [ 'update' ]),
       async submit () {
-        await this.update(competition)
+        await this.update(this.competition)
       }
     }
   }

@@ -8,7 +8,7 @@
         <v-tooltip color="primary" bottom>
           <v-btn
             slot="activator"
-            :to="{ name: 'players-id', params: { id: player.id } }"
+            :to="{ name: 'players-id', params: { id: playerData.id } }"
             nuxt
             small
             icon>
@@ -102,7 +102,7 @@
     }),
     computed: {
       active () {
-        return this.player.status && this.player.status.length > 0
+        return this.playerData.status && this.playerData.status.length > 0
       },
       transferOut () {
         return this.active
