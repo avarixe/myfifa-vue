@@ -4,48 +4,8 @@
       v-for="(header, i) in headers"
       :key="i"
       :class="'text-xs-' + header.align">
-      <v-menu
-        v-if="header.editable && editOptions[header.value].type === 'select'"
-        max-height="200px"
-        offset-y
-        offset-overflow
-        lazy>
-        <span slot="activator">
-          {{ getProperty(header.value, header.format) }}
-        </span>
-        <v-list>
-          <v-list-tile
-            v-for="item in editOptions[header.value].items"
-            :key="item"
-            @click="updatePlayer(header.value, item)">
-            {{ item }}
-          </v-list-tile>
-        </v-list>
-      </v-menu>
-      <v-edit-dialog
-        v-else-if="header.editable && editOptions[header.value].type === 'money'"
-        @save="updatePlayer(header.value, playerData[header.value])"
-        large
-        persistent
-        lazy>
-        <span :class="'text-xs-' + header.align">
-          {{ getProperty(header.value, header.format) }}
-        </span>
-        <v-text-field
-          slot="input"
-          v-model="playerData[header.value]"
-          type="number"
-          single-line
-          autofocus
-        ></v-text-field>
-      </v-edit-dialog>
-      <template v-else-if="header.value">
-        {{ getProperty(header.value, header.format) }}
-      </template>
-      <template v-else>
-        <v-tooltip
-          color="primary"
-          bottom>
+      <template v-if="header.value === 'action'">
+        <v-tooltip color="primary" bottom>
           <v-btn
             slot="activator"
             :to="{ name: 'players-id', params: { id: player.id } }"
@@ -56,13 +16,43 @@
           </v-btn>
           View Player
         </v-tooltip>
+        <v-btn
+          v-if="header.width > 40"
+          @click="edit = !edit"
+          small
+          icon>
+          <v-icon
+            :color="edit ? 'green' : 'orange'"
+            small
+          >mdi-{{ edit ? 'content-save' : 'pencil' }}</v-icon>
+        </v-btn>
+      </template>
+      <template v-else-if="header.editable && edit">
+        <v-select
+          v-if="editOptions[header.value].type === 'select'"
+          v-model="player[header.value]"
+          :items="editOptions[header.value].items"
+          :label="header.text"
+          menu-props="auto"
+        ></v-select>
+        <v-text-field
+          v-else-if="editOptions[header.value].type === 'money'"
+          v-model="player[header.value]"
+          :label="header.text"
+          :hint="$_formatMoney(playerData[header.value])"
+          :prefix="team.currency"
+          persistent-hint
+          type="number"
+        ></v-text-field>
+      </template>
+      <template v-else>
+        {{ getProperty(header.value, header.format) }}
       </template>
     </td>
   </tr>
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import PlayerForm from '@/components/Player/PlayerForm'
   import ContractForm from '@/components/Player/ContractForm'
@@ -82,16 +72,18 @@
     },
     mixins: [ TeamAccessible ],
     props: {
-      player: {
+      playerData: {
         type: Object,
         required: true
       },
       headers: {
         type: Array,
         required: true
-      }
+      },
+      actionWidth: Number
     },
     data: () => ({
+      edit: false,
       editOptions: {
         kit_no: {
           type: 'select',
@@ -106,7 +98,7 @@
         }
       },
       fab: false,
-      playerData: {}
+      player: {}
     }),
     computed: {
       active () {
@@ -117,20 +109,25 @@
       }
     },
     watch: {
-      player: {
-        immediate: true,
-        handler: function (val) {
-          const { value } = this.player
-          this.playerData = { value }
+      actionWidth (val) {
+        if (val < 125) {
+          this.edit = false
+        }
+      },
+      edit (val) {
+        const { id, value, kit_no, ovr } = this.playerData
+        if (val) {
+          this.player = { id, value, kit_no, ovr }
+        } else if (value !== this.player.value ||
+                   kit_no !== this.player.kit_no ||
+                   ovr !== this.player.ovr) {
+          this.$store.dispatch('player/update', this.player)
         }
       }
     },
     methods: {
-      ...mapActions('player', [
-        'update'
-      ]),
       getProperty (property, outputFormat) {
-        const value = this.$_get(this.player, property, '')
+        const value = this.$_get(this.playerData, property, '')
 
         if (!value) return '-'
 
@@ -148,12 +145,6 @@
           default:
             return value
         }
-      },
-      updatePlayer (property, value) {
-        this.update({
-          id: this.player.id,
-          [property]: value
-        })
       }
     }
   }

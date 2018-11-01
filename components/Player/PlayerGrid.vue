@@ -59,8 +59,9 @@
         no-data-text="No Players Recorded">
         <template slot="items" slot-scope="props">
           <player-row
-            :player="props.item"
+            :player-data="props.item"
             :headers="headers"
+            :action-width="actionWidth"
           ></player-row>
         </template>
       </v-data-table>
@@ -112,9 +113,12 @@
       currentMode () {
         return this.modes[this.display]
       },
+      actionWidth () {
+        return this.display === 'status' ? 125 : 40
+      },
       headers () {
         let headers = [
-          { text: '',         value: null,     align: 'left', sortable: false, width: '40px' },
+          { text: '',         value: 'action', align: 'center', sortable: false, width: this.actionWidth },
           { text: 'Name',     value: 'name',   align: 'left' },
           { text: 'Age',      value: 'age',    align: 'center' },
           { text: 'Kit No',   value: 'kit_no', align: 'center', editable: true },

@@ -84,6 +84,7 @@
     padding: 8px 16px;
     height: auto;
   }
+
   >>> .v-btn-toggle .v-btn {
     opacity: 1;
   }

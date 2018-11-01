@@ -32,14 +32,6 @@
   color: silver;
 }
 
-/*#app .v-content {
-  background: url(https://joondev.com/images/stadium.jpeg) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}*/
-
 #app .v-card,
 #app .v-expansion-panel__container,
 #app .v-small-dialog__content {
