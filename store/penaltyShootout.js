@@ -1,10 +1,10 @@
-import apiRequest from '@/api'
+import Vue from 'vue'
 import myfifa from '@/api/myfifa'
 
 // actions
 export const actions = {
   create ({ commit, rootState }, { matchId, penaltyShootout }) {
-    return apiRequest({
+    return $_http({
       method: 'post',
       path: myfifa.penaltyShootouts.index,
       pathData: { matchId: matchId },
@@ -13,7 +13,7 @@ export const actions = {
     })
   },
   remove ({ commit, rootState }, penaltyShootoutId) {
-    return apiRequest({
+    return $_http({
       method: 'delete',
       path: myfifa.penaltyShootouts.record,
       pathData: { penaltyShootoutId: penaltyShootoutId },

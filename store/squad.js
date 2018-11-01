@@ -1,6 +1,7 @@
 import Vue from 'vue'
-import apiRequest from '@/api'
+import $_http from '@/api'
 import myfifa from '@/api/myfifa'
+import objectify from '@/plugins/objectify'
 
 // initial state
 export const state = () => ({
@@ -12,7 +13,7 @@ export const state = () => ({
 export const actions = {
   getAll ({ state, commit, rootState }, { teamId }) {
     if (!state.loaded) {
-      return apiRequest({
+      return $_http({
         path: myfifa.squads.index,
         pathData: { teamId: teamId },
         token: rootState.token,
@@ -26,7 +27,7 @@ export const actions = {
     if (squadId in state.list) {
       return { data: state.list[squadId] }
     } else {
-      return apiRequest({
+      return $_http({
         path: myfifa.squads.record,
         pathData: { squadId: squadId },
         token: rootState.token,
@@ -37,7 +38,7 @@ export const actions = {
     }
   },
   create ({ commit, rootState }, { teamId, squad }) {
-    return apiRequest({
+    return $_http({
       method: 'post',
       path: myfifa.squads.index,
       pathData: { teamId: teamId },
@@ -46,7 +47,7 @@ export const actions = {
     })
   },
   update ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'patch',
       path: myfifa.squads.record,
       pathData: { squadId: payload.id },
@@ -55,7 +56,7 @@ export const actions = {
     })
   },
   remove ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'delete',
       path: myfifa.squads.record,
       pathData: { squadId: payload },
@@ -67,10 +68,7 @@ export const actions = {
 // mutations
 export const mutations = {
   SET_ALL (state, squads) {
-    state.list = squads.reduce((list, squad) => {
-      list[squad.id] = squad
-      return list
-    }, {})
+    state.list = objectify(squads)
     state.loaded = true
   },
   SET (state, squad) {
@@ -78,5 +76,9 @@ export const mutations = {
   },
   REMOVE (state, squadId) {
     Vue.delete(state.list, squadId)
+  },
+  RESET (state) {
+    state.loaded = false
+    state.list = {}
   }
 }

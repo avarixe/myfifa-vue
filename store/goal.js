@@ -1,10 +1,10 @@
-import apiRequest from '@/api'
+import $_http from '@/api'
 import myfifa from '@/api/myfifa'
 
 // actions
 export const actions = {
   create ({ commit, rootState }, { matchId, goal }) {
-    return apiRequest({
+    return $_http({
       method: 'post',
       path: myfifa.goals.index,
       pathData: { matchId: matchId },
@@ -13,7 +13,7 @@ export const actions = {
     })
   },
   remove ({ commit, rootState }, goalId) {
-    return apiRequest({
+    return $_http({
       method: 'delete',
       path: myfifa.goals.record,
       pathData: { goalId: goalId },

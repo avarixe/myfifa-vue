@@ -12,7 +12,7 @@
             v-model="team.title"
             :rules="$_validate('Team', ['required'])"
             label="Team"
-            prepend-icon="people"
+            prepend-icon="mdi-account-multiple"
             spellcheck="false"
             autocapitalize="words"
             autocomplete="off"
@@ -31,7 +31,7 @@
             <v-text-field
               slot="activator"
               label="Start Date"
-              prepend-icon="calendar_today"
+              prepend-icon="mdi-calendar-today"
               v-model="team.start_date"
               :rules="$_validate('Start Date', ['required', 'date'])"
               readonly

@@ -3,7 +3,7 @@
     <slot>
       <v-tooltip bottom color="black">
         <v-btn icon slot="activator">
-          <v-icon color="black">remove_circle</v-icon>
+          <v-icon color="black">mdi-minus-circle</v-icon>
         </v-btn>
         Remove
       </v-tooltip>
@@ -12,15 +12,13 @@
       v-model="snackbar"
       color="black">
       Remove Match: {{ match.home }} v {{ match.away }}?
-      <v-btn dark flat @click="remove(match.id)">Yes</v-btn>
+      <v-btn dark flat @click="$store.dispatch('match/remove', match.id)">Yes</v-btn>
       <v-btn dark flat @click.stop="snackbar = false">No</v-btn>
     </v-snackbar>
   </div>
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-
   export default {
     props: {
       match: {
@@ -28,13 +26,8 @@
         required: true
       }
     },
-    data () {
-      return {
-        snackbar: false
-      }
-    },
-    methods: mapActions('match', [
-      'remove'
-    ])
+    data: () => ({
+      snackbar: false
+    })
   }
 </script>

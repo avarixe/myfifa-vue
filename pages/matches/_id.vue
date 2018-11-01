@@ -4,7 +4,7 @@
       <v-flex xs12>
         <match-form>
           <v-btn>
-            <v-icon left>add</v-icon>
+            <v-icon left>mdi-plus-circle-outline</v-icon>
             Match
           </v-btn>
         </match-form>
@@ -39,10 +39,7 @@
                 <match-timeline :match="match"></match-timeline>
               </v-flex>
               <v-flex xs12 sm6>
-                <match-lineup
-                  v-if="match.performances.length > 0"
-                  :match="match"
-                ></match-lineup>
+                <match-lineup :match="match"></match-lineup>
               </v-flex>
             </v-layout>
           </v-card-text>
@@ -71,14 +68,8 @@
     },
     middleware: 'authenticated',
     mixins: [ TeamAccessible ],
-    data () {
-      return {
-      }
-    },
     computed: {
-      ...mapState('player', {
-        players: 'list'
-      }),
+      ...mapState('player', { players: 'list' }),
       ...mapState('match', { matches: 'list' }),
       match () {
         return this.matches[this.$route.params.id]
@@ -98,7 +89,10 @@
     },
     watch: {
       match (val) {
-        !val && this.$router.push({ name: 'index' })
+        !val && this.$router.push({
+          name: 'teams-id-matches',
+          id: this.team.id
+        })
       }
     },
     methods: {

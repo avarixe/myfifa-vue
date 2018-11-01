@@ -5,6 +5,26 @@
         <v-card>
           <v-card-title primary-title>
             <div class="display-2">{{ player.name }}</div>
+
+            <player-form :initial-player="player" color="orange">
+              <v-tooltip bottom color="orange">
+                <v-btn slot="activator" icon>
+                  <v-icon color="orange">mdi-pencil</v-icon>
+                </v-btn>
+                Edit
+              </v-tooltip>
+            </player-form>
+            <transfer-form :player="player"></transfer-form>
+            <contract-form :player="player"></contract-form>
+            <injury-form
+              v-if="active"
+              :player="player"
+            ></injury-form>
+            <loan-form
+              v-if="active"
+              :player="player"
+            ></loan-form>
+            <player-remove :player="player"></player-remove>
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
@@ -24,32 +44,6 @@
               <v-flex xs12 sm3>
                 <div class="display-1">{{ player.status || '-' }}</div>
                 <div class="subheading">Current State</div>
-              </v-flex>
-              <v-flex xs12>
-                <player-form
-                  :initial-player="player"
-                  color="orange">
-                  <v-btn color="orange" dark>Edit</v-btn>
-                </player-form>
-                <transfer-form :player="player">
-                  <v-btn :color="active ? 'red' : 'green'" dark>Transfer</v-btn>
-                </transfer-form>
-                <contract-form :player="player">
-                  <v-btn color="blue" dark>Contract</v-btn>
-                </contract-form>
-                <injury-form
-                  v-if="active"
-                  :player="player">
-                  <v-btn color="pink" dark>Injury</v-btn>
-                </injury-form>
-                <loan-form
-                  v-if="active"
-                  :player="player">
-                  <v-btn color="indigo" dark>Loan</v-btn>
-                </loan-form>
-                <player-remove :player="player">
-                  <v-btn dark>Remove</v-btn>
-                </player-remove>
               </v-flex>
             </v-layout>
           </v-card-text>
@@ -130,7 +124,7 @@
               <v-menu slot="activator" bottom right>
                 <v-btn slot="activator" icon>
                   <v-icon :color="currentFilter.color">
-                    {{ currentFilter.icon }}
+                    mdi-{{ currentFilter.icon }}
                   </v-icon>
                 </v-btn>
                 <v-list>
@@ -139,7 +133,7 @@
                     :key="key"
                     @click="timelineFilter = key">
                     <v-list-tile-avatar>
-                      <v-icon :color="event.color">{{ event.icon }}</v-icon>
+                      <v-icon :color="event.color">mdi-{{ event.icon }}</v-icon>
                     </v-list-tile-avatar>
                     <v-list-tile-title>{{ key }}</v-list-tile-title>
                   </v-list-tile>
@@ -197,11 +191,11 @@
           { text: 'Value', value: 'value',    align: 'center' }
         ],
         filterOptions: {
-          'All': { icon: 'filter_list' },
-          'Contract': { icon: 'description', color: 'blue' },
-          'Injury': { icon: 'local_hospital', color: 'pink' },
-          'Loan': { icon: 'transfer_within_a_station', color: 'indigo' },
-          'Transfer': { icon: 'flight_takeoff', color: 'green' }
+          'All': { icon: 'filter-variant' },
+          'Contract': { icon: 'file-document', color: 'blue' },
+          'Injury': { icon: 'hospital', color: 'pink' },
+          'Loan': { icon: 'transit-transfer', color: 'indigo' },
+          'Transfer': { icon: 'airplane-takeoff', color: 'green' }
         },
         timelineFilter: 'All'
       }
@@ -217,19 +211,19 @@
         return this.player.status && this.player.status.length > 0
       },
       contracts () {
-        return this.player.contracts || []
+        return Object.values(this.player.contracts || {})
       },
       loans () {
-        return this.player.loans || []
+        return Object.values(this.player.loans || {})
       },
       injuries () {
-        return this.player.injuries || []
+        return Object.values(this.player.injuries || {})
       },
       transfers () {
-        return this.player.transfers || []
+        return Object.values(this.player.transfers || {})
       },
       histories () {
-        return this.player.player_histories || []
+        return Object.values(this.player.player_histories || {})
       },
       ovrGrowth () {
         return this.histories.map(h => [ h.datestamp, h.ovr ])
@@ -255,7 +249,10 @@
     },
     watch: {
       player (val) {
-        !val && this.$router.push({ name: 'index' })
+        !val && this.$router.push({
+          name: 'teams-id-players',
+          id: this.team.id
+        })
       }
     },
     methods: {

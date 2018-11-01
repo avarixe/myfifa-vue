@@ -28,44 +28,48 @@
     <v-tooltip bottom>
       <v-btn
         slot="activator"
-        @click="$router.push({ name: 'teams-id', params: { id: team.id }})"
+        :to="{ name: 'teams-id', params: { id: team.id } }"
+        active-class="primary--text"
         nuxt
         exact
         icon>
-        <v-icon>dashboard</v-icon>
+        <v-icon>mdi-trophy</v-icon>
       </v-btn>
       Dashboard
     </v-tooltip>
     <v-tooltip bottom>
       <v-btn
         slot="activator"
-        :to="{ name: 'teams-id-players', params: { id: this.team.id } }"
+        :to="{ name: 'teams-id-players', params: { id: team.id } }"
+        active-class="primary--text"
         nuxt
         exact
         icon>
-        <v-icon>people</v-icon>
+        <v-icon>mdi-account</v-icon>
       </v-btn>
       Players
     </v-tooltip>
     <v-tooltip bottom>
       <v-btn
         slot="activator"
-        :to="{ name: 'teams-id-matches', params: { id: this.team.id } }"
+        :to="{ name: 'teams-id-matches', params: { id: team.id } }"
+        active-class="primary--text"
         nuxt
         exact
         icon>
-        <v-icon>games</v-icon>
+        <v-icon>mdi-soccer-field</v-icon>
       </v-btn>
       Matches
     </v-tooltip>
     <v-tooltip bottom>
       <v-btn
         slot="activator"
-        :to="{ name: 'teams-id-squads', params: { id: this.team.id } }"
+        :to="{ name: 'teams-id-squads', params: { id: team.id } }"
+        active-class="primary--text"
         nuxt
         exact
         icon>
-        <v-icon>assignment</v-icon>
+        <v-icon>mdi-clipboard-text</v-icon>
       </v-btn>
       Squads
     </v-tooltip>

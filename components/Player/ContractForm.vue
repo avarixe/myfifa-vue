@@ -7,8 +7,8 @@
     color="blue">
     <slot slot="activator">
       <v-tooltip bottom color="blue">
-        <v-btn slot="activator" fab small dark color="blue">
-          <v-icon>description</v-icon>
+        <v-btn slot="activator" icon>
+          <v-icon color="blue">mdi-file-document-outline</v-icon>
         </v-btn>
         {{ title }}
       </v-tooltip>
@@ -27,7 +27,7 @@
             <v-text-field
               slot="activator"
               label="Effective Date"
-              prepend-icon="calendar_today"
+              prepend-icon="mdi-calendar-today"
               v-model="contract.effective_date"
               :rules="$_validate('Effective Date', ['required', 'date'])"
               readonly
@@ -55,7 +55,7 @@
             <v-text-field
               slot="activator"
               label="End Date"
-              prepend-icon="calendar_today"
+              prepend-icon="mdi-calendar"
               v-model="contract.end_date"
               :rules="$_validate('End Date', ['required', 'date'])"
               readonly
@@ -116,23 +116,27 @@
           ></v-text-field>
         </v-flex>
 
-        <v-flex xs12 sm6>
-          <v-text-field
-            v-model="contract.bonus_req"
-            label="Bonus Req."
-            type="number"
-            prefix="if"
-          ></v-text-field>
-        </v-flex>
+        <v-scroll-y-transition mode="out-in">
+          <v-flex v-if="contract.performance_bonus" xs12 sm6>
+            <v-text-field
+              v-model="contract.bonus_req"
+              label="Bonus Req."
+              type="number"
+              prefix="if"
+            ></v-text-field>
+          </v-flex>
+        </v-scroll-y-transition>
 
-        <v-flex xs12 sm6>
-          <v-select
-            v-model="contract.bonus_req_type"
-            label="Bonus Req. Type"
-            :items="bonusRequirementTypes"
-            clearable
-          ></v-select>
-        </v-flex>
+        <v-scroll-y-transition mode="out-in">
+          <v-flex v-if="contract.performance_bonus" xs12 sm6>
+            <v-select
+              v-model="contract.bonus_req_type"
+              label="Bonus Req. Type"
+              :items="bonusRequirementTypes"
+              clearable
+            ></v-select>
+          </v-flex>
+        </v-scroll-y-transition>
       </v-layout>
     </v-container>
   </dialog-form>

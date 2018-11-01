@@ -13,7 +13,7 @@
             :items="competitions"
             :rules="$_validate('Competition', ['required'])"
             label="Competition"
-            prepend-icon="whatshot"
+            prepend-icon="mdi-trophy"
             spellcheck="false"
             autocapitalize="words"
             autocomplete="off"
@@ -26,13 +26,13 @@
             :items="teams"
             :rules="$_validate('Home Team', ['required'])"
             label="Home Team"
-            prepend-icon="people"
+            prepend-icon="mdi-account-multiple"
             spellcheck="false"
             autocapitalize="words"
             autocomplete="off"
             autocorrect="off">
             <v-tooltip slot="append" bottom>
-              <v-icon slot="activator" @click.stop="setHome">arrow_back</v-icon>
+              <v-icon slot="activator" @click.stop="setHome">mdi-arrow-left</v-icon>
               Home Match for {{ team.title }}
             </v-tooltip>
           </v-combobox>
@@ -43,13 +43,13 @@
             :items="teams"
             :rules="$_validate('Away Team', ['required'])"
             label="Away Team"
-            prepend-icon="people"
+            prepend-icon="mdi-account-multiple"
             spellcheck="false"
             autocapitalize="words"
             autocomplete="off"
             autocorrect="off">
             <v-tooltip slot="append" bottom>
-              <v-icon slot="activator" @click.stop="setAway">arrow_back</v-icon>
+              <v-icon slot="activator" @click.stop="setAway">mdi-arrow-left</v-icon>
               Away Match for {{ team.title }}
             </v-tooltip>
           </v-combobox>
@@ -70,9 +70,7 @@
       TeamAccessible
     ],
     props: {
-      initialMatch: {
-        type: Object
-      }
+      initialMatch: Object
     },
     data () {
       return {

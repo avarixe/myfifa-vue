@@ -1,7 +1,7 @@
 <template>
   <dialog-form
     v-model="dialog"
-    title-icon="accessibility_new"
+    title-icon="mdi-human"
     title="Record Penalty Shootout"
     :submit="submit"
     :color="color">
@@ -14,7 +14,7 @@
             :rules="$_validate('Home Score', ['required'])"
             type="number"
             :label="match.home"
-            prepend-icon="filter_tilt_shift"
+            prepend-icon="mdi-soccer"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -23,7 +23,7 @@
             :rules="$_validate('Away Score', ['required'])"
             type="number"
             :label="match.away"
-            prepend-icon="filter_tilt_shift"
+            prepend-icon="mdi-soccer"
           ></v-text-field>
         </v-flex>
       </v-layout>

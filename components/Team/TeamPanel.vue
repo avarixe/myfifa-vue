@@ -1,19 +1,7 @@
 <template>
   <v-card>
     <v-card-title primary-title>
-      <div class="title">
-        // TEAMS
-      </div>
-
-      <!-- New Tean Form -->
-      <team-form>
-        <v-tooltip top>
-          <v-btn slot="activator" flat icon>
-            <v-icon>add_circle</v-icon>
-          </v-btn>
-          Add Team
-        </v-tooltip>
-      </team-form>
+      <div class="title">// TEAMS</div>
     </v-card-title>
     <v-card-text>
 
@@ -56,7 +44,7 @@
           { text: 'Team Name',    value: 'title',        align: 'center' },
           { text: 'Start Date',   value: 'start_date',   align: 'center' },
           { text: 'Current Date', value: 'current_date', align: 'center' },
-          { text: 'Actions',      value: 'actions',      align: 'right',  sortable: false }
+          { text: 'Actions',      value: 'actions',      align: 'right',  sortable: false, width: '120px' }
         ],
         loading: false,
         search: ''
@@ -67,7 +55,7 @@
         teams: 'list'
       }),
       rows () {
-        return Object.values(this.teams).sort((a, b) => b.id - a.id)
+        return this.$_orderBy(Object.values(this.teams), ['id'], ['desc'])
       }
     },
     mounted () {
@@ -95,5 +83,9 @@
   >>> table.v-table tbody td {
     padding: 8px 16px;
     height: auto;
+  }
+
+  >>> .v-btn-toggle .v-btn {
+    opacity: 1;
   }
 </style>

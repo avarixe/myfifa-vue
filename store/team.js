@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { format, parse, addYears } from 'date-fns'
-import apiRequest from '@/api'
+import $_http from '@/api'
 import myfifa from '@/api/myfifa'
 
 // initial state
@@ -12,11 +12,17 @@ export const state = () => ({
 // getters
 export const getters = {
   current: state => state.list[state.currentId],
+  season: (state, getters) => {
+    if (state.currentId !== null) {
+      const date = parse(getters.current.start_date)
+      const currentDate = parse(getters.current.current_date)
+      return parseInt((currentDate - date) / (525600 * 60 * 1000))
+    }
+  },
   seasonStart: (state, getters) => {
     if (state.currentId !== null) {
       let date = parse(getters.current.start_date)
-      let currentDate = parse(getters.current.current_date)
-      let yearDiff = parseInt((currentDate - date) / (525600 * 60 * 1000))
+      const yearDiff = getters.season
       date = addYears(date, yearDiff)
       return format(date, 'YYYY-MM-DD')
     }
@@ -34,7 +40,7 @@ export const getters = {
 // actions
 export const actions = {
   getAll ({ commit, rootState }) {
-    return apiRequest({
+    return $_http({
       path: myfifa.teams.index,
       token: rootState.token,
       success: ({ data }) => {
@@ -43,7 +49,7 @@ export const actions = {
     })
   },
   get ({ commit, rootState }, { teamId, activate }) {
-    return apiRequest({
+    return $_http({
       path: myfifa.teams.record,
       pathData: { teamId: teamId },
       token: rootState.token,
@@ -56,7 +62,7 @@ export const actions = {
     })
   },
   create ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'post',
       path: myfifa.teams.index,
       token: rootState.token,
@@ -67,7 +73,7 @@ export const actions = {
     })
   },
   update ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'patch',
       path: myfifa.teams.record,
       pathData: { teamId: payload.id },
@@ -80,7 +86,7 @@ export const actions = {
     })
   },
   remove ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'delete',
       path: myfifa.teams.record,
       pathData: { teamId: payload },

@@ -1,7 +1,7 @@
 <template>
   <dialog-form
     v-model="dialog"
-    title-icon="repeat"
+    title-icon="mdi-repeat"
     title="Record Substitution"
     :submit="submit"
     :color="color">
@@ -14,7 +14,7 @@
             :items="minutes"
             :rules="$_validate('Minute', ['required'])"
             label="Minute"
-            prepend-icon="timer"
+            prepend-icon="mdi-timer"
           ></v-select>
         </v-flex>
         <v-flex xs12>
@@ -25,7 +25,7 @@
             item-value="player_id"
             item-text="name"
             label="Player"
-            prepend-icon="subdirectory_arrow_left">
+            prepend-icon="mdi-subdirectory-arrow-left">
             <template slot="item" slot-scope="data">
               <v-list-tile-action>
                 <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -44,7 +44,7 @@
             item-value="id"
             item-text="name"
             label="Replaced By"
-            prepend-icon="subdirectory_arrow_right">
+            prepend-icon="mdi-subdirectory-arrow-right">
             <template slot="item" slot-scope="data">
               <v-list-tile-action>
                 <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
@@ -94,7 +94,7 @@
         activePlayers: 'active'
       }),
       availablePlayers () {
-        const selectedIds = this.match.performances.map(p => p.player_id)
+        const selectedIds = this.sortedPerformances.map(p => p.player_id)
         return this.activePlayers.filter(p => selectedIds.indexOf(p.id) < 0)
       }
     },

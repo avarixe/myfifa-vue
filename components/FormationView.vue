@@ -37,9 +37,10 @@
       ...mapState('player', { players: 'list' }),
       ...mapState('match', ['positions']),
       startingEleven () {
-        return this.formation
-          .filter(p => !('start' in p) || p.start === 0)
-          .sort((a, b) => this.positions.indexOf(a) < this.positions.indexOf(b))
+        return this.$_orderBy(
+          this.formation.filter(p => !('start' in p) || p.start === 0),
+          p => this.positions.indexOf(p)
+        )
       },
       posGK () {
         return [

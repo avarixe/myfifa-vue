@@ -40,11 +40,12 @@ import {
   VRating,
   VInput,
   VTimeline,
-  // VWindow,
+  VBtnToggle,
   transitions
 } from 'vuetify'
 
 Vue.use(Vuetify, {
+  iconfont: 'mdi',
   components: {
     VApp,
     VNavigationDrawer,
@@ -85,7 +86,7 @@ Vue.use(Vuetify, {
     VRating,
     VInput,
     VTimeline,
-    // VWindow,
+    VBtnToggle,
     transitions
   }
 })

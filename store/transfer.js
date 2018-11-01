@@ -1,22 +1,23 @@
-import apiRequest from '@/api'
+import $_http from '@/api'
 import myfifa from '@/api/myfifa'
+import objectify from '@/plugins/objectify'
 
 export const actions = {
   getAll ({ commit, rootState }, { playerId }) {
-    return apiRequest({
+    return $_http({
       path: myfifa.transfers.index,
       pathData: { playerId: playerId },
       token: rootState.token,
       success: ({ data }) => {
         commit('player/SET', {
           ...rootState.player.list[playerId],
-          transfers: data
+          transfers: objectify(data)
         }, { root: true })
       }
     })
   },
   create ({ commit, rootState }, { playerId, transfer }) {
-    return apiRequest({
+    return $_http({
       method: 'post',
       path: myfifa.transfers.index,
       pathData: { playerId: playerId },

@@ -7,8 +7,8 @@
     color="indigo">
     <slot slot="activator">
       <v-tooltip bottom color="indigo">
-        <v-btn slot="activator" fab small color="indigo" dark>
-          <v-icon>transfer_within_a_station</v-icon>
+        <v-btn slot="activator" icon>
+          <v-icon color="indigo">mdi-transit-transfer</v-icon>
         </v-btn>
         {{ title }}
       </v-tooltip>
@@ -20,21 +20,21 @@
             v-model="loan.destination"
             :rules="$_validate('Destination', ['required'])"
             label="Destination"
-            prepend-icon="transfer_within_a_station"
+            prepend-icon="mdi-transit-transfer"
             spellcheck="false"
             autocapitalize="words"
             autocomplete="off"
             autocorrect="off"
           ></v-text-field>
         </v-flex>
-
-        <v-flex xs12>
-          <v-checkbox
-            v-model="loan.returned"
-            v-if="loan.id"
-            label="Player Returned"
-          ></v-checkbox>
-        </v-flex>
+        <v-scroll-y-transition mode="out-in">
+          <v-flex v-if="loan.id" xs12>
+            <v-checkbox
+              v-model="loan.returned"
+              label="Player Returned"
+            ></v-checkbox>
+          </v-flex>
+        </v-scroll-y-transition>
       </v-layout>
     </v-container>
   </dialog-form>

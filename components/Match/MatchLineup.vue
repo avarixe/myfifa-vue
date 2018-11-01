@@ -53,9 +53,7 @@
         return this.team.current_date !== this.match.date_played
       },
       substitutes () {
-        return this.sortedPerformances
-          .filter(p => 'start' in p && p.start > 0)
-          .sort((a, b) => this.positions.indexOf(a) < this.positions.indexOf(b))
+        return this.sortedPerformances.filter(p => 'start' in p && p.start > 0)
       }
     }
   }

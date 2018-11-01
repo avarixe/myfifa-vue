@@ -3,7 +3,7 @@
     <v-timeline-item
       v-for="(item, i) in sortedItems"
       :key="i"
-      :icon="item.icon"
+      :icon="`mdi-${item.icon}`"
       :color="item.color"
       fill-dot
       right>
@@ -70,7 +70,7 @@
           ...this.contracts.map(contract => ({
             type: 'Contract',
             color: 'blue',
-            icon: 'description',
+            icon: 'file-document',
             date: contract.effective_date,
             dateRange: `${this.$_formatDate(contract.effective_date)} - ${this.$_formatDate(contract.end_date)}`,
             data: contract
@@ -78,7 +78,7 @@
           ...this.injuries.map(injury => ({
             type: 'Injury',
             color: 'pink',
-            icon: 'local_hospital',
+            icon: 'hospital',
             date: injury.start_date,
             dateRange: `${this.$_formatDate(injury.start_date)} - ${this.$_formatDate(injury.end_date)}`,
             title: `${injury.description} Injury`,
@@ -87,7 +87,7 @@
           ...this.loans.map(loan => ({
             type: 'Loan',
             color: 'indigo',
-            icon: 'transfer_within_a_station',
+            icon: 'transit-transfer',
             date: loan.start_date,
             dateRange: `${this.$_formatDate(loan.start_date)} - ${this.$_formatDate(loan.end_date)}`,
             title: `On Loan at ${loan.destination}`,
@@ -98,7 +98,7 @@
             return {
               type: 'Transfer',
               color: transferOut ? 'red' : 'green',
-              icon: `flight_${transferOut ? 'takeoff' : 'land'}`,
+              icon: `airplane-${transferOut ? 'takeoff' : 'landing'}`,
               date: transfer.effective_date,
               dateRange: this.$_formatDate(transfer.effective_date),
               data: transfer
@@ -112,7 +112,7 @@
           : this.items
       },
       sortedItems () {
-        return this.filteredItems.sort((a, b) => a.date < b.date)
+        return this.$_orderBy(this.filteredItems, ['date'], ['desc'])
       },
       dense () {
         switch (this.$vuetify.breakpoint.name) {

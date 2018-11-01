@@ -13,7 +13,7 @@
             v-model="player.name"
             :rules="$_validate('Name', ['required'])"
             label="Name"
-            prepend-icon="person"
+            prepend-icon="mdi-account"
             spellcheck="false"
             autocapitalize="words"
             autocomplete="off"
@@ -26,7 +26,7 @@
             :rules="$_validate('Position', ['required'])"
             :items="positions"
             label="Position"
-            prepend-icon="directions_run"
+            prepend-icon="mdi-run"
           ></v-select>
         </v-flex>
         <v-flex xs12>
@@ -34,7 +34,7 @@
             v-model="player.sec_pos"
             :items="positions"
             label="Secondary Position(s)"
-            prepend-icon="directions_walk"
+            prepend-icon="mdi-walk"
             multiple
             chips
             deletable-chips
@@ -44,7 +44,7 @@
           <v-text-field
             v-model="player.birth_year"
             label="Birth Year"
-            prepend-icon="date_range"
+            prepend-icon="mdi-calendar"
             mask="####"
             :rules="$_validate('Birth Year', ['required'])"
           ></v-text-field>
@@ -55,7 +55,7 @@
             :items="Array.from({ length: 61 }, (v, k) => k + 40)"
             :rules="$_validate('OVR', ['required'])"
             label="OVR"
-            prepend-icon="trending_up"
+            prepend-icon="mdi-trending-up"
           ></v-select>
         </v-flex>
         <v-flex xs12>

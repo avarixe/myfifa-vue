@@ -11,7 +11,7 @@ function urlFor (path, pathData) {
   return path
 }
 
-async function apiRequest ({
+async function sendRequest ({
   method,
   path,
   pathData,
@@ -33,7 +33,8 @@ async function apiRequest ({
     success && success(res)
     return res
   } catch (e) {
-    if (e.response && e.response.data) {
+    if (e.response && e.response.data &&
+        typeof e.response.data === 'Object') {
       const res = e.response.data
       if ('error_description' in res) {
         throw new Error(res.error_description)
@@ -41,11 +42,11 @@ async function apiRequest ({
         throw new Error(res.errors[0])
       }
     } else {
-      console.error(e)
-      console.trace(e)
+      // console.error(e)
+      // console.trace(e)
       throw new Error('An Error occurred. Please try again.')
     }
   }
 }
 
-export default apiRequest
+export default sendRequest

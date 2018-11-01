@@ -1,10 +1,10 @@
-import apiRequest from '@/api'
+import $_http from '@/api'
 import myfifa from '@/api/myfifa'
 
 // actions
 export const actions = {
   create ({ commit }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'post',
       path: myfifa.users.index,
       data: { user: payload },
@@ -17,7 +17,7 @@ export const actions = {
     })
   },
   update ({ commit }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'patch',
       path: myfifa.users.record,
       pathData: { userId: payload.id },

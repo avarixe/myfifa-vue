@@ -1,6 +1,8 @@
 import Vue from 'vue'
-import apiRequest from '@/api'
+import orderBy from 'lodash.orderby'
+import $_http from '@/api'
 import myfifa from '@/api/myfifa'
+import objectify from '@/plugins/objectify'
 
 // initial state
 export const state = () => ({
@@ -28,9 +30,11 @@ export const state = () => ({
 // getters
 export const getters = {
   contracted: state => (
-    Object.values(state.list)
-      .filter(player => player.status)
-      .sort((a, b) => a.pos_idx - b.pos_idx || b.ovr - a.ovr)
+    orderBy(
+      Object.values(state.list).filter(player => player.status),
+      ['pos_idx', 'ovr'],
+      ['asc', 'desc']
+    )
   ),
   active: (state, getters) => (
     getters.contracted.filter(player => player.status === 'Active')
@@ -41,7 +45,7 @@ export const getters = {
 export const actions = {
   getAll ({ state, commit, rootState }, { teamId }) {
     if (!state.loaded) {
-      return apiRequest({
+      return $_http({
         path: myfifa.players.index,
         pathData: { teamId: teamId },
         token: rootState.token,
@@ -55,7 +59,7 @@ export const actions = {
     if (playerId in state.list) {
       return { data: state.list[playerId] }
     } else {
-      return apiRequest({
+      return $_http({
         path: myfifa.players.record,
         pathData: { playerId: playerId },
         token: rootState.token,
@@ -66,7 +70,7 @@ export const actions = {
     }
   },
   getStatistics ({ commit, state, rootState }, { teamId, playerIds }) {
-    return apiRequest({
+    return $_http({
       method: 'post',
       path: myfifa.teams.statistics,
       pathData: { teamId: teamId },
@@ -90,7 +94,7 @@ export const actions = {
     })
   },
   create ({ commit, rootState }, { teamId, player }) {
-    return apiRequest({
+    return $_http({
       method: 'post',
       path: myfifa.players.index,
       pathData: { teamId: teamId },
@@ -99,7 +103,7 @@ export const actions = {
     })
   },
   update ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'patch',
       path: myfifa.players.record,
       pathData: { playerId: payload.id },
@@ -108,7 +112,7 @@ export const actions = {
     })
   },
   remove ({ commit, rootState }, payload) {
-    return apiRequest({
+    return $_http({
       method: 'delete',
       path: myfifa.players.record,
       pathData: { playerId: payload },
@@ -116,27 +120,27 @@ export const actions = {
     })
   },
   getHistory ({ state, commit, rootState }, { playerId }) {
-    return apiRequest({
+    return $_http({
       path: myfifa.players.history,
       pathData: { playerId: playerId },
       token: rootState.token,
       success: function ({ data }) {
         commit('SET', {
           ...state.list[playerId],
-          player_histories: data
+          player_histories: objectify(data)
         })
       }
     })
   },
   getCurrentInjury ({ rootState }, { playerId }) {
-    return apiRequest({
+    return $_http({
       path: myfifa.players.current_injury,
       pathData: { playerId: playerId },
       token: rootState.token
     })
   },
   getCurrentLoan ({ rootState }, { playerId }) {
-    return apiRequest({
+    return $_http({
       path: myfifa.players.current_loan,
       pathData: { playerId: playerId },
       token: rootState.token
@@ -147,10 +151,7 @@ export const actions = {
 // mutations
 export const mutations = {
   SET_ALL (state, players) {
-    state.list = players.reduce((list, player) => {
-      list[player.id] = player
-      return list
-    }, {})
+    state.list = objectify(players)
     state.loaded = true
   },
   SET (state, player) {
@@ -158,5 +159,9 @@ export const mutations = {
   },
   REMOVE (state, playerId) {
     Vue.delete(state.list, playerId)
+  },
+  RESET (state) {
+    state.loaded = false
+    state.list = {}
   }
 }

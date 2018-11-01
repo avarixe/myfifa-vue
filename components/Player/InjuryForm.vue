@@ -7,8 +7,8 @@
     color="pink">
     <slot slot="activator">
       <v-tooltip bottom color="pink">
-        <v-btn slot="activator" fab small color="pink" dark>
-          <v-icon>local_hospital</v-icon>
+        <v-btn slot="activator" icon>
+          <v-icon color="pink">mdi-hospital</v-icon>
         </v-btn>
         {{ title }}
       </v-tooltip>
@@ -20,17 +20,21 @@
             v-model="injury.description"
             :rules="$_validate('Description', ['required'])"
             label="Description"
-            prepend-icon="local_hospital"
+            prepend-icon="mdi-hospital"
+            spellcheck="false"
+            autocapitalize="words"
+            autocomplete="off"
+            autocorrect="off"
           ></v-text-field>
         </v-flex>
-
-        <v-flex xs12>
-          <v-checkbox
-            v-model="injury.recovered"
-            v-if="injury.id"
-            label="Player Recovered"
-          ></v-checkbox>
-        </v-flex>
+        <v-scroll-y-transition mode="out-in">
+          <v-flex v-if="injury.id" xs12>
+            <v-checkbox
+              v-model="injury.recovered"
+              label="Player Recovered"
+            ></v-checkbox>
+          </v-flex>
+        </v-scroll-y-transition>
       </v-layout>
     </v-container>
   </dialog-form>

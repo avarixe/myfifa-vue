@@ -12,7 +12,7 @@
             v-model="squad.name"
             :rules="$_validate('Name', ['required'])"
             label="Name"
-            prepend-icon="assignment"
+            prepend-icon="mdi-clipboard-text"
             spellcheck="false"
             autocapitalize="words"
             autocomplete="off"
@@ -31,7 +31,7 @@
             v-model="squad.positions_list[i]"
             :items="positions"
             label="Position"
-            prepend-icon="directions_run"
+            prepend-icon="mdi-run"
             hide-details
           ></v-select>
         </v-flex>
@@ -42,7 +42,7 @@
             item-value="id"
             item-text="name"
             label="Player"
-            prepend-icon="person"
+            prepend-icon="mdi-account"
             hide-details>
             <template slot="item" slot-scope="data">
               <v-list-tile-action>
@@ -70,9 +70,7 @@
       TeamAccessible
     ],
     props: {
-      initialSquad: {
-        type: Object
-      }
+      initialSquad: Object
     },
     data () {
       return {

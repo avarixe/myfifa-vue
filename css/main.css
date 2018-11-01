@@ -1,3 +1,9 @@
+@keyframes sway {
+  0%   { background-position: 0% 0%; }
+  50%  { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
 #app .v-dialog--active .v-card > .v-card__text {
   max-height: 60vh;
   overflow-y: auto;
@@ -8,16 +14,27 @@
 }
 
 #app .v-content {
-  background: url(https://joondev.com/images/stadium.jpeg) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+  background-image: linear-gradient(
+    300deg,
+    slategray,
+    darkslategray,
+    slategray,
+    darkslategray,
+    slategray,
+    darkslategray,
+    slategray
+  );
+  background-size: 400% 400%;
+  animation: sway 60s ease infinite;
+}
+
+#app .v-breadcrumbs__item {
+  color: silver;
 }
 
 #app .v-card,
-#app .v-small-dialog__content,
-#app .v-expansion-panel__container--active > .v-expansion-panel__header {
+#app .v-expansion-panel__container,
+#app .v-small-dialog__content {
   background-color: rgba(255, 255, 255, 0.9);
 }
 
@@ -33,6 +50,9 @@
 }
 
 #app .v-datatable__actions,
-#app .v-expansion-panel__container {
+#app .v-btn-toggle,
+#app .v-card .v-card,
+#app .v-expansion-panel__container .v-card,
+#app .v-card .v-expansion-panel__container {
   background-color: transparent;
 }

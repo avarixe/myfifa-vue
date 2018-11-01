@@ -20,7 +20,7 @@
         v-model="user.password"
         label="Password"
         :type="visible1 ? 'text' : 'password'"
-        :append-icon="visible1 ? 'visibility_off' : 'visibility'"
+        :append-icon="`mdi-eye${visible1 ? '-off' : ''}`"
         @click:append="visible1 = !visible1"
         :rules="$_validate('Password', ['required'])"
       ></v-text-field>
@@ -28,7 +28,7 @@
         v-model="user.password_confirmation"
         label="Confirm Password"
         :type="visible2 ? 'text' : 'password'"
-        :append-icon="visible2 ? 'visibility_off' : 'visibility'"
+        :append-icon="`mdi-eye${visible2 ? '-off' : ''}`"
         @click:append="visible2 = !visible2"
         :rules="$_validate('Password Confirmation', ['required'])"
       ></v-text-field>

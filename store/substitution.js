@@ -1,10 +1,11 @@
-import apiRequest from '@/api'
+import Vue from 'vue'
+import $_http from '@/api'
 import myfifa from '@/api/myfifa'
 
 // actions
 export const actions = {
   create ({ commit, rootState }, { matchId, substitution }) {
-    return apiRequest({
+    return $_http({
       method: 'post',
       path: myfifa.substitutions.index,
       pathData: { matchId: matchId },
@@ -13,7 +14,7 @@ export const actions = {
     })
   },
   remove ({ commit, rootState }, substitutionId) {
-    return apiRequest({
+    return $_http({
       method: 'delete',
       path: myfifa.substitutions.record,
       pathData: { substitutionId: substitutionId },
