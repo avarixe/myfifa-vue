@@ -6,7 +6,18 @@
       :class="`text-xs-${header.align}`">
       <template v-if="header.value">
         <template v-if="edit && header.type">
+          <v-combobox
+            v-if="header.value === 'name'"
+            v-model="row.name"
+            :items="competitionTeams"
+            label="Name"
+            spellcheck="false"
+            autocapitalize="words"
+            autocomplete="off"
+            autocorrect="off"
+          ></v-combobox>
           <v-text-field
+            v-else
             v-model="row[header.value]"
             :type="header.type"
             :label="header.text"
@@ -14,7 +25,9 @@
           ></v-text-field>
         </template>
         <template v-else>
-          {{ rowData[header.value] }}
+          <span :class="teamClass(rowData.name)">
+            {{ rowData[header.value] }}
+          </span>
         </template>
       </template>
       <template v-else>
@@ -30,7 +43,10 @@
 </template>
 
 <script>
+  import CompetitionAccessible from '@/mixins/CompetitionAccessible'
+
   export default {
+    mixins: [ CompetitionAccessible ],
     props: {
       rowData: {
         type: Object,

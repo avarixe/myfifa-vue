@@ -15,7 +15,7 @@
             <v-icon color="blue" small left>mdi-arrow-right</v-icon>
             {{ competition.name }}
           </v-list-tile-title>
-          <v-list-tile-avatar v-if="competition.champion === team.name">
+          <v-list-tile-avatar v-if="competition.champion === team.title">
             <v-icon color="yellow darken-2">mdi-trophy</v-icon>
           </v-list-tile-avatar>
         </v-list-tile>

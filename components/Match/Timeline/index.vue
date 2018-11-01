@@ -10,7 +10,7 @@
       <span class="white--text" slot="icon">{{ event.minute }}'</span>
       <v-card>
         <v-card-title :class="`${eventColor(event)} lighten-2 py-1`">
-          <v-icon dark class="mr-3">{{ eventIcon(event) }}</v-icon>
+          <v-icon dark class="mr-3">mdi-{{ eventIcon(event) }}</v-icon>
           <span class="font-weight-bold pr-1 white--text text-uppercase">{{ eventTitle(event) }}</span>
 
           <v-spacer></v-spacer>
