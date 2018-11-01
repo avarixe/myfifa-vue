@@ -5,12 +5,10 @@
       :key="i"
       :class="`text-xs-${header.align}`">
       <template v-if="header.value">
-        <template v-if="edit && header.type">
+        <template v-if="edit">
           <v-text-field
             v-model="fixture[header.value]"
-            :type="header.type"
             :label="header.text"
-            :autofocus="i === 0"
           ></v-text-field>
         </template>
         <template v-else>

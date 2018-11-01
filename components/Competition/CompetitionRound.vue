@@ -60,10 +60,10 @@
     computed: {
       headers () {
         let headers = [
-          { text: 'Home Team', value: 'home_team', sortable: false, type: 'text', align: 'right' },
-          { text: 'Home Score', value: 'home_score', sortable: false, type: 'number', align: 'right' },
-          { text: 'Away Score', value: 'away_score', sortable: false, type: 'number', align: 'left' },
-          { text: 'Away Team', value: 'away_team', sortable: false, type: 'text', align: 'left' }
+          { text: 'Home Team', value: 'home_team', sortable: false, align: 'right' },
+          { text: 'Home Score', value: 'home_score', sortable: false, align: 'right' },
+          { text: 'Away Score', value: 'away_score', sortable: false, align: 'left' },
+          { text: 'Away Team', value: 'away_team', sortable: false, align: 'left' }
         ]
         !this.readonly && headers.unshift({ text: '', value: null, sortable: false, width: '40px' })
         return headers
