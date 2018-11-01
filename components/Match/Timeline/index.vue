@@ -10,8 +10,8 @@
       <span class="white--text" slot="icon">{{ event.minute }}'</span>
       <v-card>
         <v-card-title :class="`${eventColor(event)} lighten-2 py-1`">
-          <v-icon dark class="mr-3">mdi-{{ eventIcon(event) }}</v-icon>
-          <span class="font-weight-bold pr-1 white--text text-uppercase">{{ event.event_type }}</span>
+          <v-icon dark class="mr-3">{{ eventIcon(event) }}</v-icon>
+          <span class="font-weight-bold pr-1 white--text text-uppercase">{{ eventTitle(event) }}</span>
 
           <v-spacer></v-spacer>
 
@@ -132,7 +132,7 @@
       eventColor (event) {
         switch (event.event_type) {
           case 'Goal':
-            return event.own_goal ? 'gray' : 'blue'
+            return event.own_goal ? 'light-blue' : 'blue'
           case 'Booking':
             return event.red_card ? 'red' : 'yellow darken-2'
           case 'Substitution':
@@ -151,6 +151,18 @@
             return event.injury ? 'hospital' : 'repeat'
           case 'PenaltyShootout':
             return 'human'
+        }
+      },
+      eventTitle (event) {
+        switch (event.event_type) {
+          case 'Goal':
+            if (event.own_goal) {
+              return 'Own Goal'
+            } else if (event.penalty) {
+              return 'Penalty'
+            }
+          default:
+            return event.event_type
         }
       }
     }
