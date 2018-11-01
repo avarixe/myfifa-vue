@@ -27,13 +27,9 @@
 <script>
   import { addYears } from 'date-fns'
   import TeamAccessible from '@/mixins/TeamAccessible'
-  import CompetitionForm from '@/components/Competition/CompetitionForm'
 
   export default {
     mixins: [ TeamAccessible ],
-    components: {
-      CompetitionForm
-    },
     props: {
       season: {
         type: Number,

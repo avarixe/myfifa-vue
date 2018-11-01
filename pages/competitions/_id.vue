@@ -10,11 +10,11 @@
                 <div class="display-1">{{ competition.name }}</div>
               </v-flex>
               <v-flex v-if="!readonly" xs12>
-                <competition-form
-                  :initial-competition="competition"
+                <edit-competition-form
+                  :competition-data="competition"
                   color="orange">
                   <v-btn dark color="orange">Edit</v-btn>
-                </competition-form>
+                </edit-competition-form>
                 <stage-form :competition="competition" color="teal">
                   <v-btn dark color="teal">Add Stage</v-btn>
                 </stage-form>
@@ -62,7 +62,7 @@
 
 <script>
   import { mapState, mapGetters } from 'vuex'
-  import CompetitionForm from '@/components/Competition/CompetitionForm'
+  import EditCompetitionForm from '@/components/Competition/EditCompetitionForm'
   import CompetitionTable from '@/components/Competition/CompetitionTable'
   import CompetitionRound from '@/components/Competition/CompetitionRound'
   import CompetitionRemove from '@/components/Competition/CompetitionRemove'
@@ -74,7 +74,7 @@
     middleware: 'authenticated',
     mixins: [ TeamAccessible ],
     components: {
-      CompetitionForm,
+      EditCompetitionForm,
       CompetitionTable,
       CompetitionRound,
       CompetitionRemove,
@@ -122,8 +122,6 @@
           id: this.team.id
         })
       }
-    },
-    methods: {
     }
   }
 </script>

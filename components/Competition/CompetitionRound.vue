@@ -2,6 +2,17 @@
   <v-card>
     <v-card-title>
       <div class="title">{{ round.name }}</div>
+
+      <v-tooltip bottom>
+        <v-btn
+          slot="activator"
+          @click="addFixture"
+          icon>
+          <v-icon>mdi-plus-circle</v-icon>
+        </v-btn>
+        Add Fixture
+      </v-tooltip>
+
       <stage-remove
         v-if="!readonly"
         :stage="round"
@@ -59,6 +70,14 @@
       },
       items () {
         return Object.values(this.round.fixtures) || []
+      }
+    },
+    methods: {
+      addFixture () {
+        this.$store.dispatch('fixture/create', {
+          stageId: this.round.id,
+          fixture: { home_team: '', away_team: '' }
+        })
       }
     }
   }

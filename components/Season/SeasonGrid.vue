@@ -49,10 +49,14 @@
     computed: {
       ...mapState('competition', { competitions: 'list' }),
       rows () {
-        return Object.entries(this.$_groupBy(
-          Object.values(this.competitions),
-          competition => competition.season
-        ))
+        return this.$_orderBy(
+          Object.entries(this.$_groupBy(
+            Object.values(this.competitions),
+            competition => competition.season
+          )),
+          season => season[0],
+          'desc'
+        )
       }
     },
     mounted () {

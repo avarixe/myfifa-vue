@@ -1,7 +1,7 @@
 <template>
   <dialog-form
     v-model="dialog"
-    :title="title"
+    title="New Competition"
     :submit="submit"
     :color="color">
     <slot slot="activator"></slot>
@@ -96,56 +96,45 @@
       DialogFormable,
       TeamAccessible
     ],
-    props: {
-      initialCompetition: Object
-    },
     data () {
       return {
-        valid: !!this.initialCompetition,
+        valid: false,
         presetFormats: [
           'League',
           'Knockout',
           'Group + Knockout'
         ],
-        competition: Object.assign({
+        competition: {
           name: '',
           season: 0,
-          preset_format: null
-        }, this.initialCompetition)
+          preset_format: null,
+          num_teams: null,
+          num_teams_per_group: null,
+          num_advances_from_group: null,
+          num_matches_per_fixture: null
+        }
       }
     },
     computed: {
       ...mapGetters({
         season: 'team/season',
         competitions: 'competition/names'
-      }),
-      title () {
-        return this.competition.id
-          ? 'Edit Competition'
-          : 'New Competition'
-      }
+      })
     },
     mounted () {
       this.competition.season = this.season
     },
     methods: {
-      ...mapActions('competition', [
-        'create',
-        'update'
-      ]),
+      ...mapActions('competition', [ 'create' ]),
       async submit () {
-        if (this.initialCompetition) {
-          await this.update(this.competition)
-        } else {
-          const { data } = await this.create({
-            teamId: this.team.id,
-            competition: this.competition
-          })
-          this.$router.push({
-            name: 'competitions-id',
-            params: { id: data.id }
-          })
-        }
+        const { data } = await this.create({
+          teamId: this.team.id,
+          competition: this.competition
+        })
+        this.$router.push({
+          name: 'competitions-id',
+          params: { id: data.id }
+        })
       }
     }
   }

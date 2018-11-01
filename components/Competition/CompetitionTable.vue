@@ -13,6 +13,7 @@
           :headers="headers"
           :items="items"
           :pagination.sync="pagination"
+          disable-initial-sort
           hide-actions>
           <template slot="items" slot-scope="props">
             <table-row
@@ -44,9 +45,7 @@
     },
     data: () => ({
       pagination: {
-        rowsPerPage: -1,
-        descending: true,
-        sortBy: 'points'
+        rowsPerPage: -1
       }
     }),
     computed: {
@@ -65,7 +64,11 @@
         return headers
       },
       items () {
-        return Object.values(this.table.table_rows) || []
+        return this.$_orderBy(
+          Object.values(this.table.table_rows || {}),
+          ['points', 'goal_difference', 'goals_for', 'goals_against'],
+          ['desc', 'desc', 'desc', 'desc']
+        )
       }
     }
   }
