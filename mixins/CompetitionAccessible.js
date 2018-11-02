@@ -19,7 +19,7 @@ export default {
         case this.team.title:
           return 'primary--text'
         case this.competition.champion:
-          return 'red--text'
+          return name ? 'red--text' : ''
         default:
           return ''
       }

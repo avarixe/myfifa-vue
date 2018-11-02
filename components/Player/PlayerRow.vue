@@ -39,7 +39,7 @@
           v-else-if="editOptions[header.value].type === 'money'"
           v-model="player[header.value]"
           :label="header.text"
-          :hint="$_formatMoney(playerData[header.value])"
+          :hint="$_formatMoney(player[header.value])"
           :prefix="team.currency"
           persistent-hint
           type="number"
@@ -149,9 +149,3 @@
     }
   }
 </script>
-
-<style scoped>
-  >>> .v-speed-dial__list {
-    z-index: 1;
-  }
-</style>
