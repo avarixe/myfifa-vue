@@ -7,7 +7,7 @@ export const actions = {
   getAll ({ commit, rootState }, { matchId }) {
     return $_http({
       path: myfifa.performances.index,
-      pathData: { matchId: matchId },
+      pathData: { matchId },
       token: rootState.token,
       success: ({ data }) => {
         commit('match/SET', {
@@ -20,7 +20,7 @@ export const actions = {
   get ({ rootState }, { performanceId }) {
     return $_http({
       path: myfifa.performances.record,
-      pathData: { performanceId: performanceId },
+      pathData: { performanceId },
       token: rootState.token
     })
   },
@@ -28,18 +28,18 @@ export const actions = {
     return $_http({
       method: 'post',
       path: myfifa.performances.index,
-      pathData: { matchId: matchId },
+      pathData: { matchId },
       token: rootState.token,
-      data: { performance: performance }
+      data: { performance }
     })
   },
-  update ({ commit, rootState }, payload) {
+  update ({ commit, rootState }, performance) {
     return $_http({
       method: 'patch',
       path: myfifa.performances.record,
-      pathData: { performanceId: payload.id },
+      pathData: { performanceId: performance.id },
       token: rootState.token,
-      data: { performance: payload }
+      data: { performance }
     })
   }
 }

@@ -3,13 +3,13 @@ import myfifa from '@/api/myfifa'
 
 // actions
 export const actions = {
-  update ({ commit, rootState }, payload) {
+  update ({ commit, rootState }, tableRow) {
     return $_http({
       method: 'patch',
       path: myfifa.tableRows.record,
-      pathData: { rowId: payload.id },
+      pathData: { rowId: tableRow.id },
       token: rootState.token,
-      data: { table_row: payload }
+      data: { table_row: tableRow }
     })
   }
 }
