@@ -9,7 +9,7 @@ export const actions = {
   getAll ({ state, commit, rootState }, { competitionId }) {
     return $_http({
       path: myfifa.stages.index,
-      pathData: { competitionId: competitionId },
+      pathData: { competitionId },
       token: rootState.token,
       success: function ({ data }) {
         commit('competition/SET', {
@@ -25,25 +25,25 @@ export const actions = {
     return $_http({
       method: 'post',
       path: myfifa.stages.index,
-      pathData: { competitionId: competitionId },
+      pathData: { competitionId },
       token: rootState.token,
-      data: { stage: stage }
+      data: { stage }
     })
   },
-  update ({ commit, rootState }, payload) {
+  update ({ commit, rootState }, stage) {
     return $_http({
       method: 'patch',
       path: myfifa.stages.record,
-      pathData: { stageId: payload.id },
+      pathData: { stageId: stage.id },
       token: rootState.token,
-      data: { stage: payload }
+      data: { stage }
     })
   },
-  remove ({ commit, rootState }, payload) {
+  remove ({ commit, rootState }, stageId) {
     return $_http({
       method: 'delete',
       path: myfifa.stages.record,
-      pathData: { stageId: payload },
+      pathData: { stageId },
       token: rootState.token
     })
   }

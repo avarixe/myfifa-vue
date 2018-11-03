@@ -1,7 +1,13 @@
 <template>
   <v-card>
-    <v-card-title class="title">
+    <v-card-title class="headline">
       {{ seasonLabel(season) }}
+      <v-tooltip color="primary" bottom>
+        <v-btn slot="activator" small icon>
+          <v-icon color="primary">mdi-arrow-right</v-icon>
+        </v-btn>
+        View Season
+      </v-tooltip>
     </v-card-title>
     <v-card-text>
       <v-list dense>

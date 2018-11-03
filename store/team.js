@@ -51,7 +51,7 @@ export const actions = {
   get ({ commit, rootState }, { teamId, activate }) {
     return $_http({
       path: myfifa.teams.record,
-      pathData: { teamId: teamId },
+      pathData: { teamId },
       token: rootState.token,
       success: ({ data }) => {
         if (activate) {
@@ -61,35 +61,35 @@ export const actions = {
       }
     })
   },
-  create ({ commit, rootState }, payload) {
+  create ({ commit, rootState }, team) {
     return $_http({
       method: 'post',
       path: myfifa.teams.index,
       token: rootState.token,
-      data: { team: payload },
+      data: { team },
       success: ({ data }) => {
         commit('SET', data)
       }
     })
   },
-  update ({ commit, rootState }, payload) {
+  update ({ commit, rootState }, team) {
     return $_http({
       method: 'patch',
       path: myfifa.teams.record,
-      pathData: { teamId: payload.id },
+      pathData: { teamId: team.id },
       token: rootState.token,
-      data: { team: payload },
+      data: { team },
       success: ({ data }) => {
         commit('SET', data)
         commit('SELECT', data.id)
       }
     })
   },
-  remove ({ commit, rootState }, payload) {
+  remove ({ commit, rootState }, teamId) {
     return $_http({
       method: 'delete',
       path: myfifa.teams.record,
-      pathData: { teamId: payload },
+      pathData: { teamId },
       token: rootState.token,
       success: ({ data }) => {
         commit('REMOVE', data)

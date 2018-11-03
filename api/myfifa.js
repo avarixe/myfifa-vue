@@ -17,11 +17,12 @@ export default {
 
   players: {
     index: 'teams/{{ teamId }}/players',
-    update_multiple: 'teams/{{ teamId }}/players/update_multiple',
     record: 'players/{{ playerId }}',
     history: 'players/{{ playerId }}/history',
-    current_injury: 'players/{{ playerId }}/current_injury',
-    current_loan: 'players/{{ playerId }}/current_loan'
+    currentInjury: 'players/{{ playerId }}/current_injury',
+    currentLoan: 'players/{{ playerId }}/current_loan',
+    retire: 'players/{{ playerId }}/retire',
+    release: 'players/{{ playerId }}/release'
   },
 
   transfers: {

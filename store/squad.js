@@ -15,7 +15,7 @@ export const actions = {
     if (!state.loaded) {
       return $_http({
         path: myfifa.squads.index,
-        pathData: { teamId: teamId },
+        pathData: { teamId },
         token: rootState.token,
         success: function ({ data }) {
           commit('SET_ALL', data)
@@ -29,7 +29,7 @@ export const actions = {
     } else {
       return $_http({
         path: myfifa.squads.record,
-        pathData: { squadId: squadId },
+        pathData: { squadId },
         token: rootState.token,
         success: function ({ data }) {
           commit('SET', data)
@@ -41,25 +41,25 @@ export const actions = {
     return $_http({
       method: 'post',
       path: myfifa.squads.index,
-      pathData: { teamId: teamId },
+      pathData: { teamId },
       token: rootState.token,
-      data: { squad: squad }
+      data: { squad }
     })
   },
-  update ({ commit, rootState }, payload) {
+  update ({ commit, rootState }, squad) {
     return $_http({
       method: 'patch',
       path: myfifa.squads.record,
-      pathData: { squadId: payload.id },
+      pathData: { squadId: squad.id },
       token: rootState.token,
-      data: { squad: payload }
+      data: { squad }
     })
   },
-  remove ({ commit, rootState }, payload) {
+  remove ({ commit, rootState }, squadId) {
     return $_http({
       method: 'delete',
       path: myfifa.squads.record,
-      pathData: { squadId: payload },
+      pathData: { squadId },
       token: rootState.token
     })
   }

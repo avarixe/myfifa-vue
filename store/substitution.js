@@ -8,16 +8,16 @@ export const actions = {
     return $_http({
       method: 'post',
       path: myfifa.substitutions.index,
-      pathData: { matchId: matchId },
+      pathData: { matchId },
       token: rootState.token,
-      data: { substitution: substitution }
+      data: { substitution }
     })
   },
   remove ({ commit, rootState }, substitutionId) {
     return $_http({
       method: 'delete',
       path: myfifa.substitutions.record,
-      pathData: { substitutionId: substitutionId },
+      pathData: { substitutionId },
       token: rootState.token
     })
   }

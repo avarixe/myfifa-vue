@@ -56,7 +56,7 @@ export const actions = {
     if (!state.loaded) {
       return $_http({
         path: myfifa.matches.index,
-        pathData: { teamId: teamId },
+        pathData: { teamId },
         token: rootState.token,
         success: function ({ data }) {
           commit('SET_ALL', data)
@@ -70,7 +70,7 @@ export const actions = {
     } else {
       return $_http({
         path: myfifa.matches.record,
-        pathData: { matchId: matchId },
+        pathData: { matchId },
         token: rootState.token,
         success: function ({ data }) {
           commit('SET', data)
@@ -82,32 +82,32 @@ export const actions = {
     return $_http({
       method: 'post',
       path: myfifa.matches.index,
-      pathData: { teamId: teamId },
+      pathData: { teamId },
       token: rootState.token,
-      data: { match: match }
+      data: { match }
     })
   },
-  update ({ commit, rootState }, payload) {
+  update ({ commit, rootState }, match) {
     return $_http({
       method: 'patch',
       path: myfifa.matches.record,
-      pathData: { matchId: payload.id },
+      pathData: { matchId: match.id },
       token: rootState.token,
-      data: { match: payload }
+      data: { match }
     })
   },
-  remove ({ commit, rootState }, payload) {
+  remove ({ commit, rootState }, matchId) {
     return $_http({
       method: 'delete',
       path: myfifa.matches.record,
-      pathData: { matchId: payload },
+      pathData: { matchId },
       token: rootState.token
     })
   },
   getEvents ({ state, commit, rootState }, { matchId }) {
     return $_http({
       path: myfifa.matches.events,
-      pathData: { matchId: matchId },
+      pathData: { matchId },
       token: rootState.token,
       success: ({ data }) => {
         commit('SET', {
@@ -121,7 +121,7 @@ export const actions = {
     return $_http({
       method: 'post',
       path: myfifa.matches.applySquad,
-      pathData: { matchId: matchId },
+      pathData: { matchId },
       token: rootState.token,
       data: { squad_id: squadId }
     })

@@ -7,7 +7,7 @@ export const actions = {
     return $_http({
       method: 'post',
       path: myfifa.penaltyShootouts.index,
-      pathData: { matchId: matchId },
+      pathData: { matchId },
       token: rootState.token,
       data: { penalty_shootout: penaltyShootout }
     })
@@ -16,7 +16,7 @@ export const actions = {
     return $_http({
       method: 'delete',
       path: myfifa.penaltyShootouts.record,
-      pathData: { penaltyShootoutId: penaltyShootoutId },
+      pathData: { penaltyShootoutId },
       token: rootState.token
     })
   }

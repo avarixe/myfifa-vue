@@ -47,7 +47,7 @@ export const actions = {
     if (!state.loaded) {
       return $_http({
         path: myfifa.players.index,
-        pathData: { teamId: teamId },
+        pathData: { teamId },
         token: rootState.token,
         success: function ({ data }) {
           commit('SET_ALL', data)
@@ -61,7 +61,7 @@ export const actions = {
     } else {
       return $_http({
         path: myfifa.players.record,
-        pathData: { playerId: playerId },
+        pathData: { playerId },
         token: rootState.token,
         success: ({ data }) => {
           commit('SET', data)
@@ -73,7 +73,7 @@ export const actions = {
     return $_http({
       method: 'post',
       path: myfifa.teams.statistics,
-      pathData: { teamId: teamId },
+      pathData: { teamId },
       token: rootState.token,
       data: {
         query: {
@@ -97,32 +97,48 @@ export const actions = {
     return $_http({
       method: 'post',
       path: myfifa.players.index,
-      pathData: { teamId: teamId },
+      pathData: { teamId },
       token: rootState.token,
-      data: { player: player }
+      data: { player }
     })
   },
-  update ({ commit, rootState }, payload) {
+  update ({ commit, rootState }, player) {
     return $_http({
       method: 'patch',
       path: myfifa.players.record,
-      pathData: { playerId: payload.id },
+      pathData: { playerId: player.id },
       token: rootState.token,
-      data: { player: payload }
+      data: { player }
     })
   },
-  remove ({ commit, rootState }, payload) {
+  remove ({ commit, rootState }, playerId) {
     return $_http({
       method: 'delete',
       path: myfifa.players.record,
-      pathData: { playerId: payload },
+      pathData: { playerId },
+      token: rootState.token
+    })
+  },
+  retire ({ commit, rootState }, playerId) {
+    return $_http({
+      method: 'post',
+      path: myfifa.players.retire,
+      pathData: { playerId },
+      token: rootState.token
+    })
+  },
+  release ({ commit, rootState }, playerId) {
+    return $_http({
+      method: 'post',
+      path: myfifa.players.release,
+      pathData: { playerId },
       token: rootState.token
     })
   },
   getHistory ({ state, commit, rootState }, { playerId }) {
     return $_http({
       path: myfifa.players.history,
-      pathData: { playerId: playerId },
+      pathData: { playerId },
       token: rootState.token,
       success: function ({ data }) {
         commit('SET', {
@@ -134,15 +150,15 @@ export const actions = {
   },
   getCurrentInjury ({ rootState }, { playerId }) {
     return $_http({
-      path: myfifa.players.current_injury,
-      pathData: { playerId: playerId },
+      path: myfifa.players.currentInjury,
+      pathData: { playerId },
       token: rootState.token
     })
   },
   getCurrentLoan ({ rootState }, { playerId }) {
     return $_http({
-      path: myfifa.players.current_loan,
-      pathData: { playerId: playerId },
+      path: myfifa.players.currentLoan,
+      pathData: { playerId },
       token: rootState.token
     })
   }

@@ -12,13 +12,13 @@ export const actions = {
       data: { fixture }
     })
   },
-  update ({ commit, rootState }, payload) {
+  update ({ commit, rootState }, fixture) {
     return $_http({
       method: 'patch',
       path: myfifa.fixtures.record,
-      pathData: { fixtureId: payload.id },
+      pathData: { fixtureId: fixture.id },
       token: rootState.token,
-      data: { fixture: payload }
+      data: { fixture }
     })
   }
 }

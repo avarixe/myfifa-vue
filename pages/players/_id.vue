@@ -24,6 +24,14 @@
               v-if="active"
               :player="player"
             ></loan-form>
+            <player-retire
+              v-if="active"
+              :player="player"
+            ></player-retire>
+            <player-release
+              v-if="active"
+              :player="player"
+            ></player-release>
             <player-remove :player="player"></player-remove>
           </v-card-title>
           <v-divider></v-divider>
@@ -166,6 +174,8 @@
   import InjuryForm from '@/components/Player/InjuryForm'
   import LoanForm from '@/components/Player/LoanForm'
   import TransferForm from '@/components/Player/TransferForm'
+  import PlayerRetire from '@/components/Player/PlayerRetire'
+  import PlayerRelease from '@/components/Player/PlayerRelease'
   import PlayerRemove from '@/components/Player/PlayerRemove'
   import PlayerTimeline from '@/components/Player/Timeline'
   import TeamAccessible from '@/mixins/TeamAccessible'
@@ -178,6 +188,8 @@
       InjuryForm,
       LoanForm,
       TransferForm,
+      PlayerRetire,
+      PlayerRelease,
       PlayerRemove,
       PlayerTimeline
     },

@@ -6,7 +6,7 @@ export const actions = {
   getAll ({ commit, rootState }, { playerId }) {
     return $_http({
       path: myfifa.transfers.index,
-      pathData: { playerId: playerId },
+      pathData: { playerId },
       token: rootState.token,
       success: ({ data }) => {
         commit('player/SET', {
@@ -20,9 +20,9 @@ export const actions = {
     return $_http({
       method: 'post',
       path: myfifa.transfers.index,
-      pathData: { playerId: playerId },
+      pathData: { playerId },
       token: rootState.token,
-      data: { transfer: transfer }
+      data: { transfer }
     })
   }
 }

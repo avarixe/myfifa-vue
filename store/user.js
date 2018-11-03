@@ -3,11 +3,11 @@ import myfifa from '@/api/myfifa'
 
 // actions
 export const actions = {
-  create ({ commit }, payload) {
+  create ({ commit }, user) {
     return $_http({
       method: 'post',
       path: myfifa.users.index,
-      data: { user: payload },
+      data: { user },
       success () {
         commit('broadcaster/ANNOUNCE', {
           message: 'Account has been registered!',
@@ -16,12 +16,12 @@ export const actions = {
       }
     })
   },
-  update ({ commit }, payload) {
+  update ({ commit }, user) {
     return $_http({
       method: 'patch',
       path: myfifa.users.record,
-      pathData: { userId: payload.id },
-      data: { user: payload },
+      pathData: { userId: user.id },
+      data: { user },
       success () {
         commit('broadcaster/ANNOUNCE', {
           message: 'Account has been updated!',

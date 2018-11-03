@@ -7,16 +7,16 @@ export const actions = {
     return $_http({
       method: 'post',
       path: myfifa.bookings.index,
-      pathData: { matchId: matchId },
+      pathData: { matchId },
       token: rootState.token,
-      data: { booking: booking }
+      data: { booking }
     })
   },
   remove ({ commit, rootState }, bookingId) {
     return $_http({
       method: 'delete',
       path: myfifa.bookings.record,
-      pathData: { bookingId: bookingId },
+      pathData: { bookingId },
       token: rootState.token
     })
   }
