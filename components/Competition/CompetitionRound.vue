@@ -3,20 +3,19 @@
     <v-card-title>
       <div class="title">{{ round.name }}</div>
 
-      <v-tooltip bottom>
-        <v-btn
-          slot="activator"
-          @click="addFixture"
-          icon>
-          <v-icon>mdi-plus-circle</v-icon>
-        </v-btn>
-        Add Fixture
-      </v-tooltip>
+      <template v-if="!readonly">
+        <v-tooltip bottom>
+          <v-btn
+            slot="activator"
+            @click="addFixture"
+            icon>
+            <v-icon>mdi-plus-circle</v-icon>
+          </v-btn>
+          Add Fixture
+        </v-tooltip>
 
-      <stage-remove
-        v-if="!readonly"
-        :stage="round"
-      ></stage-remove>
+        <stage-remove :stage="round"></stage-remove>
+      </template>
     </v-card-title>
     <v-card-text>
       <v-data-table
