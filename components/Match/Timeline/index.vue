@@ -18,10 +18,12 @@
           <v-tooltip v-if="team.current_date === match.date_played" bottom>
             <v-btn
               slot="activator"
-              icon
+              :color="`${eventColor(event)} lighten-2`"
+              @click="removeEvent(event)"
               class="ma-0"
-              @click="removeEvent(event)">
-              <v-icon dark>mdi-minus-circle</v-icon>
+              icon
+              dark>
+              <v-icon dark>mdi-close</v-icon>
             </v-btn>
             Remove
           </v-tooltip>
@@ -51,10 +53,12 @@
           <v-tooltip v-if="team.current_date === match.date_played" bottom>
             <v-btn
               slot="activator"
-              icon
+              @click="removeEvent(penaltyShootoutEvent)"
+              color="white"
               class="ma-0"
-              @click="removeEvent(penaltyShootoutEvent)">
-              <v-icon dark>remove_circle</v-icon>
+              icon
+              dark>
+              <v-icon dark>mdi-close</v-icon>
             </v-btn>
             Remove
           </v-tooltip>

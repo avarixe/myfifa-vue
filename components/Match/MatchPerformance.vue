@@ -53,9 +53,14 @@
         small
       >mdi-subdirectory-arrow-right</v-icon>
       <v-icon
-        v-for="index in numGoals"
+        v-for="index in goals"
         :key="index"
         color="blue"
+        small
+      >mdi-soccer</v-icon>
+      <v-icon
+        v-for="index in assists"
+        :key="index"
         small
       >mdi-soccer</v-icon>
       <v-icon
@@ -109,11 +114,17 @@
       events () {
         return this.match.events.slice().sort()
       },
-      numGoals () {
+      goals () {
         return this.events.filter(event => (
           event.event_type === 'Goal' &&
           event.player_id === this.performance.player_id &&
           !event.own_goal
+        )).length
+      },
+      assists () {
+        return this.events.filter(event => (
+          event.event_type === 'Goal' &&
+          event.assist_id === this.performance.player_id
         )).length
       },
       bookings () {
