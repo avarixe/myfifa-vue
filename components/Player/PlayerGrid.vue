@@ -83,21 +83,22 @@
     },
     data () {
       return {
-        display: 'status',
+        display: 'rating',
         modes: {
-          status: {
-            text: 'Status',
-            icon: 'mdi-filter-variant'
+          rating: {
+            text: 'Rating',
+            icon: 'mdi-trending-up',
+            color: 'green'
           },
           contract: {
             text: 'Contract',
             icon: 'mdi-file-document-outline',
             color: 'blue'
           },
-          analytics: {
-            text: 'Analytics',
-            icon: 'mdi-trending-up',
-            color: 'green'
+          statistics: {
+            text: 'Statistics',
+            icon: 'mdi-numeric',
+            color: 'red'
           }
         },
         loading: false,
@@ -114,37 +115,37 @@
         return this.modes[this.display]
       },
       actionWidth () {
-        return this.display === 'status' ? 125 : 40
+        return this.display === 'rating' ? 125 : 40
       },
       headers () {
         let headers = [
           { text: '',         value: 'action', align: 'center', sortable: false, width: this.actionWidth },
           { text: 'Name',     value: 'name',   align: 'left' },
+          { text: 'Status',   value: 'status', align: 'left', width: '40px' },
           { text: 'Age',      value: 'age',    align: 'center' },
-          { text: 'Kit No',   value: 'kit_no', align: 'center', editable: true },
-          { text: 'Position', value: 'pos',    align: 'center' }
+          { text: 'Position', value: 'pos',    align: 'center' },
+          { text: 'Kit No',   value: 'kit_no', align: 'center', editable: true }
         ]
 
         switch (this.display) {
           case 'contract':
             return headers.concat([
-              { text: 'Value',          value: 'value',                           align: 'center', format: 'money' },
-              { text: 'Wage',           value: 'current_contract.wage',           align: 'center', format: 'money' },
-              { text: 'End Date',       value: 'current_contract.end_date',       align: 'center', format: 'date' }
+              { text: 'Value',    value: 'value',                     align: 'right', format: 'money' },
+              { text: 'Wage',     value: 'current_contract.wage',     align: 'right', format: 'money' },
+              { text: 'End Date', value: 'current_contract.end_date', align: 'right', format: 'date' }
             ])
-          case 'analytics':
+          case 'statistics':
             return headers.concat([
               { text: 'Games Played', value: 'num_games',   align: 'center' },
               { text: 'Goals',        value: 'num_goals',   align: 'center' },
               { text: 'Assists',      value: 'num_assists', align: 'center' },
               { text: 'Clean Sheets', value: 'num_cs',      align: 'center' }
             ])
-          default: // Status
+          default: // Rating
             return headers.concat([
               { text: '2nd Position(s)', value: 'sec_pos', align: 'center', format: 'array' },
               { text: 'OVR',             value: 'ovr',     align: 'center', editable: true },
-              { text: 'Value',           value: 'value',   align: 'center', format: 'money', editable: true },
-              { text: 'Status',          value: 'status',  align: 'center' }
+              { text: 'Value',           value: 'value',   align: 'right',  format: 'money', editable: true }
             ])
         }
       },
@@ -164,7 +165,7 @@
         this.pagination.page = 1
       },
       display (val) {
-        if (val === 'analytics') {
+        if (val === 'statistics') {
           this.reloadStatistics()
         }
       }
@@ -207,9 +208,5 @@
   >>> table.v-table tbody tr td {
     padding: 8px 16px;
     height: auto;
-  }
-
-  >>> .v-small-dialog a {
-    width: 100%;
   }
 </style>

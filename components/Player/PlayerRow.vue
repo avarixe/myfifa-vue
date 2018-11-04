@@ -27,6 +27,11 @@
           >mdi-{{ edit ? 'content-save' : 'pencil' }}</v-icon>
         </v-btn>
       </template>
+      <template v-else-if="header.value === 'status' && playerData.status">
+        <v-icon :color="statusColor">
+          mdi-{{ statusIcon }}
+        </v-icon>
+      </template>
       <template v-else-if="header.editable && edit">
         <v-select
           v-if="editOptions[header.value].type === 'select'"
@@ -104,8 +109,25 @@
       active () {
         return this.playerData.status && this.playerData.status.length > 0
       },
-      transferOut () {
-        return this.active
+      statusColor () {
+        switch (this.playerData.status) {
+          case 'Active':
+            return 'light-green'
+          case 'Loaned':
+            return 'indigo'
+          case 'Injured':
+            return 'pink'
+        }
+      },
+      statusIcon () {
+        switch (this.playerData.status) {
+          case 'Active':
+            return 'account-check'
+          case 'Loaned':
+            return 'transit-transfer'
+          case 'Injured':
+            return 'hospital'
+        }
       }
     },
     watch: {
