@@ -1,5 +1,7 @@
 <template>
-  <v-timeline :dense="dense">
+  <v-timeline
+    v-if="events.length > 0"
+    :dense="dense">
     <v-timeline-item
       v-for="(event, i) in events"
       :key="i"
@@ -172,3 +174,9 @@
     }
   }
 </script>
+
+<style scoped>
+  .v-card > .container {
+    padding: 8px;
+  }
+</style>
