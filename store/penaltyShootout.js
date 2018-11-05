@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import $_http from '@/api'
 import myfifa from '@/api/myfifa'
 
 // actions

@@ -20,8 +20,8 @@
           <v-tooltip v-if="team.current_date === match.date_played" bottom>
             <v-btn
               slot="activator"
-              :color="`${eventColor(event)} lighten-2`"
               @click="removeEvent(event)"
+              :color="`${eventColor(event)} lighten-2`"
               class="ma-0"
               icon
               dark>
@@ -47,7 +47,7 @@
       fill-dot>
       <v-card>
         <v-card-title class="indigo lighten-2 py-1">
-          <v-icon dark clas="mr-3">mdi-human</v-icon>
+          <v-icon dark class="mr-3">mdi-human</v-icon>
           <span class="font-weight-bold pr-1 white--text text-uppercase">Penalty Shootout</span>
 
           <v-spacer></v-spacer>
@@ -56,7 +56,7 @@
             <v-btn
               slot="activator"
               @click="removeEvent(penaltyShootoutEvent)"
-              color="white"
+              color="indigo lighten-2"
               class="ma-0"
               icon
               dark>
