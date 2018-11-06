@@ -24,7 +24,7 @@
     layout: 'team',
     middleware: 'authenticated',
     async fetch ({ store, params }) {
-      if (!store.state.team.currentId) {
+      if (store.state.team.currentId !== params.id) {
         await store.dispatch('team/get', { teamId: params.id, activate: true })
       }
     },

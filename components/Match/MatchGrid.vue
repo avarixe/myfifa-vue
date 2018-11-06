@@ -31,7 +31,7 @@
             <v-tooltip bottom color="blue darken-2">
               <v-btn
                 slot="activator"
-                :to="{ name: 'matches-id', params: { id: props.item.id } }"
+                :to="matchLink(props.item)"
                 small
                 icon>
                 <v-icon small color="blue darken-2">mdi-arrow-right</v-icon>
@@ -146,6 +146,15 @@
             return 'red'
           default:
             return ''
+        }
+      },
+      matchLink (match) {
+        return {
+          name: 'teams-id-matches-matchId',
+          params: {
+            id: this.team.id,
+            matchId: match.id
+          }
         }
       }
     }

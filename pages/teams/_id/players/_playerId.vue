@@ -217,7 +217,7 @@
         players: 'list'
       }),
       player () {
-        return this.players[this.$route.params.id]
+        return this.players[this.$route.params.playerId]
       },
       active () {
         return this.player.status && this.player.status.length > 0
@@ -248,8 +248,16 @@
       }
     },
     async fetch ({ store, params }) {
-      const { data } = await store.dispatch('player/get', { playerId: params.id })
-      await store.dispatch('team/get', { teamId: data.team_id, activate: true })
+      await Promise.all([
+        (async () => {
+          store.state.team.currentId !== params.id &&
+          await store.dispatch('team/get', { teamId: params.id, activate: true })
+        })(),
+        (async () => {
+          !(params.playerId in store.state.player.list) &&
+          await store.dispatch('player/get', { playerId: params.playerId })  
+        })()
+      ])
     },
     mounted () {
       this.getStatistics({ teamId: this.team.id, playerIds: [this.player.id] })

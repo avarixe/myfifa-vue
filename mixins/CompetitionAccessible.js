@@ -7,7 +7,7 @@ export default {
   computed: {
     ...mapState('competition', { competitions: 'list' }),
     competition () {
-      return this.competitions[this.$route.params.id]
+      return this.competitions[this.$route.params.competitionId]
     },
     competitionTeams () {
       return teamOptions(this.competition)

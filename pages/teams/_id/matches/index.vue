@@ -2,35 +2,35 @@
   <v-container fluid grid-list-lg>
     <v-layout row wrap>
       <v-flex xs12>
-        <player-form>
+        <match-form>
           <v-btn>
             <v-icon left>mdi-plus-circle-outline</v-icon>
-            Player
+            Match
           </v-btn>
-        </player-form>
+        </match-form>
       </v-flex>
       <v-flex xs12>
-        <player-grid></player-grid>
+        <match-grid></match-grid>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
-  import PlayerForm from '@/components/Player/PlayerForm'
-  import PlayerGrid from '@/components/Player/PlayerGrid'
+  import MatchForm from '@/components/Match/MatchForm'
+  import MatchGrid from '@/components/Match/MatchGrid'
 
   export default {
     layout: 'team',
+    middleware: 'authenticated',
     async fetch ({ store, params }) {
-      if (!store.state.team.currentId) {
+      if (store.state.team.currentId !== params.id) {
         await store.dispatch('team/get', { teamId: params.id, activate: true })
       }
     },
     components: {
-      PlayerForm,
-      PlayerGrid
+      MatchForm,
+      MatchGrid
     }
   }
 </script>

@@ -96,7 +96,7 @@
       ...mapState('competition', { competitions: 'list' }),
       ...mapGetters('team', ['season']),
       competition () {
-        return this.competitions[this.$route.params.id]
+        return this.competitions[this.$route.params.competitionId]
       },
       stages () {
         return 'stages' in this.competition
@@ -114,10 +114,16 @@
       }
     },
     async fetch ({ store, params }) {
-      const { data } = await store.dispatch('competition/get', { competitionId: params.id })
       await Promise.all([
-        store.dispatch('team/get', { teamId: data.team_id, activate: true }),
-        store.dispatch('stage/getAll', { competitionId: data.id })
+        (async () => {
+          store.state.team.currentId !== params.id &&
+          await store.dispatch('team/get', { teamId: params.id, activate: true })
+        })(),
+        (async () => {
+          !(params.competitionId in store.state.competition.list) &&
+          await store.dispatch('competition/get', { competitionId: params.competitionId })
+          await store.dispatch('stage/getAll', { competitionId: params.competitionId })
+        })(),
       ])
     },
     mounted () {

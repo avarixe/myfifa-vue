@@ -72,15 +72,21 @@
       ...mapState('player', { players: 'list' }),
       ...mapState('match', { matches: 'list' }),
       match () {
-        return this.matches[this.$route.params.id]
+        return this.matches[this.$route.params.matchId]
       }
     },
     async fetch ({ store, params }) {
-      const { data } = await store.dispatch('match/get', { matchId: params.id })
       await Promise.all([
-        store.dispatch('team/get', { teamId: data.team_id, activate: true }),
-        store.dispatch('performance/getAll', { matchId: params.id }),
-        store.dispatch('match/getEvents', { matchId: params.id })
+        (async () => {
+          store.state.team.currentId !== params.id &&
+          await store.dispatch('team/get', { teamId: params.id, activate: true })
+        })(),
+        (async () => {
+          !(params.matchId in store.state.match.list) &&
+          await store.dispatch('match/get', { matchId: params.matchId })  
+        })(),
+        store.dispatch('performance/getAll', { matchId: params.matchId }),
+        store.dispatch('match/getEvents', { matchId: params.matchId })
       ])
     },
     mounted () {
