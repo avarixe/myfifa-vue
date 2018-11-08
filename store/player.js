@@ -10,20 +10,20 @@ export const state = () => ({
   list: {},
   positions: [
     'GK',
+    'RB',
+    'RWB',
     'CB',
     'LB',
     'LWB',
-    'RB',
-    'RWB',
+    'RM',
     'CDM',
     'CM',
     'CAM',
     'LM',
-    'LW',
-    'RM',
     'RW',
     'CF',
-    'ST'
+    'ST',
+    'LW'
   ]
 })
 
