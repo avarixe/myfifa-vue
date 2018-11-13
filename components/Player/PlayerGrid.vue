@@ -173,7 +173,7 @@
     methods: {
       ...mapActions('player', [
         'getAll',
-        'getStatistics'
+        'analyze'
       ]),
       async reloadGrid () {
         this.loading = true
@@ -190,7 +190,7 @@
         this.loading = true
 
         try {
-          await this.getStatistics({
+          await this.analyze({
             teamId: this.team.id,
             playerIds: Object.keys(this.players)
           })

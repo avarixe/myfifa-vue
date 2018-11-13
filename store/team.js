@@ -34,7 +34,6 @@ export const getters = {
       return format(date, 'YYYY-MM-DD')
     }
   }
-
 }
 
 // actions
@@ -59,6 +58,14 @@ export const actions = {
           commit('SELECT', data.id)
         }
       }
+    })
+  },
+  analyzeSeason ({ rootState }, { teamId, season }) {
+    return $_http({
+      method: 'post',
+      path: myfifa.analyze.season,
+      pathData: { teamId, season },
+      token: rootState.token
     })
   },
   create ({ commit, rootState }, team) {

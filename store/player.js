@@ -69,10 +69,10 @@ export const actions = {
       })
     }
   },
-  getStatistics ({ commit, state, rootState }, { teamId, playerIds }) {
+  analyze ({ commit, state, rootState }, { teamId, playerIds }) {
     return $_http({
       method: 'post',
-      path: myfifa.teams.statistics,
+      path: myfifa.analyze.players,
       pathData: { teamId },
       token: rootState.token,
       data: {
