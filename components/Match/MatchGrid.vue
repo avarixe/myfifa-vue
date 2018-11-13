@@ -112,24 +112,6 @@
           this.loading = false
         }
       },
-      async viewMatch (props) {
-        if (props.expanded) {
-          props.expanded = false
-        } else {
-          if (!('events' in props.item)) {
-            try {
-              this.loading = true
-              await this.getPerformances({ matchId: props.item.id })
-              await this.getEvents({ matchId: props.item.id })
-              this.loading = false
-            } catch (e) {
-              alert(e.message)
-            }
-          }
-
-          props.expanded = true
-        }
-      },
       viewMatch (match) {
         this.$router.push({
           name: 'matches-id',

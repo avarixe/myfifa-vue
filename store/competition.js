@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import $_http from '@/api'
+import http from '@/api'
 import myfifa from '@/api/myfifa'
 import objectify from '@/plugins/objectify'
 
@@ -19,7 +19,7 @@ export const getters = {
 export const actions = {
   getAll ({ state, commit, rootState }, { teamId }) {
     if (!state.loaded) {
-      return $_http({
+      return http({
         path: myfifa.competitions.index,
         pathData: { teamId },
         token: rootState.token,
@@ -33,7 +33,7 @@ export const actions = {
     if (competitionId in state.list) {
       return { data: state.list[competitionId] }
     } else {
-      return $_http({
+      return http({
         path: myfifa.competitions.record,
         pathData: { competitionId },
         token: rootState.token,
@@ -44,7 +44,7 @@ export const actions = {
     }
   },
   create ({ commit, rootState }, { teamId, competition }) {
-    return $_http({
+    return http({
       method: 'post',
       path: myfifa.competitions.index,
       pathData: { teamId },
@@ -53,7 +53,7 @@ export const actions = {
     })
   },
   update ({ commit, rootState }, competition) {
-    return $_http({
+    return http({
       method: 'patch',
       path: myfifa.competitions.record,
       pathData: { competitionId: competition.id },
@@ -62,7 +62,7 @@ export const actions = {
     })
   },
   remove ({ commit, rootState }, competitionId) {
-    return $_http({
+    return http({
       method: 'delete',
       path: myfifa.competitions.record,
       pathData: { competitionId },

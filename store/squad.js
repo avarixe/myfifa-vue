@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import $_http from '@/api'
+import http from '@/api'
 import myfifa from '@/api/myfifa'
 import objectify from '@/plugins/objectify'
 
@@ -13,7 +13,7 @@ export const state = () => ({
 export const actions = {
   getAll ({ state, commit, rootState }, { teamId }) {
     if (!state.loaded) {
-      return $_http({
+      return http({
         path: myfifa.squads.index,
         pathData: { teamId },
         token: rootState.token,
@@ -27,7 +27,7 @@ export const actions = {
     if (squadId in state.list) {
       return { data: state.list[squadId] }
     } else {
-      return $_http({
+      return http({
         path: myfifa.squads.record,
         pathData: { squadId },
         token: rootState.token,
@@ -38,7 +38,7 @@ export const actions = {
     }
   },
   create ({ commit, rootState }, { teamId, squad }) {
-    return $_http({
+    return http({
       method: 'post',
       path: myfifa.squads.index,
       pathData: { teamId },
@@ -47,7 +47,7 @@ export const actions = {
     })
   },
   update ({ commit, rootState }, squad) {
-    return $_http({
+    return http({
       method: 'patch',
       path: myfifa.squads.record,
       pathData: { squadId: squad.id },
@@ -56,7 +56,7 @@ export const actions = {
     })
   },
   remove ({ commit, rootState }, squadId) {
-    return $_http({
+    return http({
       method: 'delete',
       path: myfifa.squads.record,
       pathData: { squadId },

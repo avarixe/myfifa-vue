@@ -146,11 +146,11 @@
         }
       },
       edit (val) {
-        const { id, value, kit_no, ovr } = this.playerData
+        const { id, value, kit_no: kitNo, ovr } = this.playerData
         if (val) {
-          this.player = { id, value, kit_no, ovr }
+          this.player = { id, value, kitNo, ovr }
         } else if (value !== this.player.value ||
-                   kit_no !== this.player.kit_no ||
+                   kitNo !== this.player.kit_no ||
                    ovr !== this.player.ovr) {
           this.$store.dispatch('player/update', this.player)
         }

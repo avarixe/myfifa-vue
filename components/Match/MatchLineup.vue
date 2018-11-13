@@ -31,7 +31,6 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import MatchAccessible from '@/mixins/MatchAccessible'
   import FormationView from '@/components/FormationView'

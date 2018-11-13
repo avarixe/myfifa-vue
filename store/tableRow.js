@@ -1,10 +1,10 @@
-import $_http from '@/api'
+import http from '@/api'
 import myfifa from '@/api/myfifa'
 
 // actions
 export const actions = {
   update ({ commit, rootState }, tableRow) {
-    return $_http({
+    return http({
       method: 'patch',
       path: myfifa.tableRows.record,
       pathData: { rowId: tableRow.id },

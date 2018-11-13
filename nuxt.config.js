@@ -1,5 +1,6 @@
 import pkg from './package'
 import nodeExternals from 'webpack-node-externals'
+import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin'
 
 export default {
   mode: 'universal',
@@ -53,30 +54,27 @@ export default {
   */
   build: {
     // analyze: true,
-    babel: {
-      plugins: [
-        ["transform-imports", {
-          "vuetify": {
-            "transform": "vuetify/es5/components/${member}",
-            "preventFullImport": true
-          }
-        }]
-      ]
-    },
-    extractCSS: true,
     transpile: [/^vuetify/],
-    /*
-    ** Run ESLint on save
-    */
-    extend (config, { isDev, isServer }) {
+    plugins: [
+      new VuetifyLoaderPlugin()
+    ],
+    extractCSS: true,
+    extend (config, { isDev, isClient }) {
       // Run ESLint on save
-      if (isDev && process.client) {
+      if (isDev && isClient) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
           exclude: /(node_modules)/
         })
+      }
+      if (process.server) {
+        config.externals = [
+          nodeExternals({
+            whitelist: [/^vuetify/]
+          })
+        ]
       }
     }
   }

@@ -1,4 +1,4 @@
-import $_http from '@/api'
+import http from '@/api'
 import myfifa from '@/api/myfifa'
 import objectify from '@/plugins/objectify'
 
@@ -15,7 +15,7 @@ export const state = () => ({
 // actions
 export const actions = {
   getAll ({ commit, rootState }, { playerId }) {
-    return $_http({
+    return http({
       path: myfifa.contracts.index,
       pathData: { playerId },
       token: rootState.token,
@@ -28,7 +28,7 @@ export const actions = {
     })
   },
   create ({ commit, rootState }, { playerId, contract }) {
-    return $_http({
+    return http({
       method: 'post',
       path: myfifa.contracts.index,
       pathData: { playerId },
@@ -37,7 +37,7 @@ export const actions = {
     })
   },
   update ({ commit, rootState }, contract) {
-    return $_http({
+    return http({
       method: 'patch',
       path: myfifa.contracts.record,
       pathData: { contractId: contract.id },

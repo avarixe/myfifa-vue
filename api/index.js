@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { baseURL } from './myfifa'
 
-function urlFor (path, pathData) {
+function urlFor (path, pathData = {}) {
   return Object.entries(pathData)
     .reduce((url, data) => {
       const regex = `{{\\s*${data[0]}\\s*}}`
@@ -35,7 +35,7 @@ async function sendRequest ({
     return res
   } catch (e) {
     if (e.response && e.response.data &&
-        typeof e.response.data === 'Object') {
+        typeof e.response.data === 'object') {
       const res = e.response.data
       if ('error_description' in res) {
         throw new Error(res.error_description)

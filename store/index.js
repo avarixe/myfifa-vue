@@ -1,5 +1,5 @@
 import cookieparser from 'cookieparser'
-import $_http from '@/api'
+import http from '@/api'
 import myfifa from '@/api/myfifa'
 
 // initial state
@@ -30,7 +30,7 @@ export const actions = {
     commit('SET_TOKEN', accessToken)
   },
   login ({ commit }, payload) {
-    return $_http({
+    return http({
       method: 'post',
       path: myfifa.token.get,
       data: payload,
@@ -44,7 +44,7 @@ export const actions = {
     })
   },
   logout ({ commit, state }) {
-    return $_http({
+    return http({
       method: 'post',
       path: myfifa.token.revoke,
       data: { token: state.token },

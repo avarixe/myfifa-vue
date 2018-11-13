@@ -166,6 +166,8 @@
               return 'Own Goal'
             } else if (event.penalty) {
               return 'Penalty'
+            } else {
+              return 'Goal'
             }
           default:
             return event.event_type

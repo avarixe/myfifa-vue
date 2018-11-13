@@ -83,7 +83,7 @@
         })(),
         (async () => {
           !(params.matchId in store.state.match.list) &&
-          await store.dispatch('match/get', { matchId: params.matchId })  
+          await store.dispatch('match/get', { matchId: params.matchId })
         })(),
         store.dispatch('performance/getAll', { matchId: params.matchId }),
         store.dispatch('match/getEvents', { matchId: params.matchId })
@@ -104,7 +104,7 @@
     methods: {
       ...mapActions({
         getPlayers: 'player/getAll',
-        getSquads: 'squad/getAll',
+        getSquads: 'squad/getAll'
       })
     }
   }

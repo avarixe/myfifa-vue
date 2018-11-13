@@ -1,10 +1,10 @@
-import $_http from '@/api'
+import http from '@/api'
 import myfifa from '@/api/myfifa'
 
 // actions
 export const actions = {
   create ({ commit, rootState }, { matchId, substitution }) {
-    return $_http({
+    return http({
       method: 'post',
       path: myfifa.substitutions.index,
       pathData: { matchId },
@@ -13,7 +13,7 @@ export const actions = {
     })
   },
   remove ({ commit, rootState }, substitutionId) {
-    return $_http({
+    return http({
       method: 'delete',
       path: myfifa.substitutions.record,
       pathData: { substitutionId },

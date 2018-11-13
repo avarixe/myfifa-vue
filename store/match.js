@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import $_http from '@/api'
+import http from '@/api'
 import myfifa from '@/api/myfifa'
 import objectify from '@/plugins/objectify'
 
@@ -54,7 +54,7 @@ export const getters = {
 export const actions = {
   getAll ({ state, commit, rootState }, { teamId }) {
     if (!state.loaded) {
-      return $_http({
+      return http({
         path: myfifa.matches.index,
         pathData: { teamId },
         token: rootState.token,
@@ -68,7 +68,7 @@ export const actions = {
     if (matchId in state.list) {
       return { data: state.list[matchId] }
     } else {
-      return $_http({
+      return http({
         path: myfifa.matches.record,
         pathData: { matchId },
         token: rootState.token,
@@ -79,7 +79,7 @@ export const actions = {
     }
   },
   create ({ commit, rootState }, { teamId, match }) {
-    return $_http({
+    return http({
       method: 'post',
       path: myfifa.matches.index,
       pathData: { teamId },
@@ -88,7 +88,7 @@ export const actions = {
     })
   },
   update ({ commit, rootState }, match) {
-    return $_http({
+    return http({
       method: 'patch',
       path: myfifa.matches.record,
       pathData: { matchId: match.id },
@@ -97,7 +97,7 @@ export const actions = {
     })
   },
   remove ({ commit, rootState }, matchId) {
-    return $_http({
+    return http({
       method: 'delete',
       path: myfifa.matches.record,
       pathData: { matchId },
@@ -105,7 +105,7 @@ export const actions = {
     })
   },
   getEvents ({ state, commit, rootState }, { matchId }) {
-    return $_http({
+    return http({
       path: myfifa.matches.events,
       pathData: { matchId },
       token: rootState.token,
@@ -118,7 +118,7 @@ export const actions = {
     })
   },
   applySquad ({ state, commit, rootState }, { matchId, squadId }) {
-    return $_http({
+    return http({
       method: 'post',
       path: myfifa.matches.applySquad,
       pathData: { matchId },

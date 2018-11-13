@@ -255,7 +255,7 @@
         })(),
         (async () => {
           !(params.playerId in store.state.player.list) &&
-          await store.dispatch('player/get', { playerId: params.playerId })  
+          await store.dispatch('player/get', { playerId: params.playerId })
         })()
       ])
     },

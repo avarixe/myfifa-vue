@@ -17,20 +17,19 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
   import PlayerForm from '@/components/Player/PlayerForm'
   import PlayerGrid from '@/components/Player/PlayerGrid'
 
   export default {
     layout: 'team',
+    components: {
+      PlayerForm,
+      PlayerGrid
+    },
     async fetch ({ store, params }) {
       if (store.state.team.currentId !== params.id) {
         await store.dispatch('team/get', { teamId: params.id, activate: true })
       }
-    },
-    components: {
-      PlayerForm,
-      PlayerGrid
     }
   }
 </script>

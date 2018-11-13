@@ -36,7 +36,6 @@
 </template>
 
 <script>
-  import { addYears } from 'date-fns'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
@@ -68,8 +67,9 @@
           name: 'teams-id-competitions-competitionId',
           params: {
             id: this.team.id,
-            competitionId: competition.id }
+            competitionId: competition.id
           }
+        }
       }
     }
   }

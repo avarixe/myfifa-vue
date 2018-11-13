@@ -123,7 +123,7 @@
           !(params.competitionId in store.state.competition.list) &&
           await store.dispatch('competition/get', { competitionId: params.competitionId })
           await store.dispatch('stage/getAll', { competitionId: params.competitionId })
-        })(),
+        })()
       ])
     },
     mounted () {
