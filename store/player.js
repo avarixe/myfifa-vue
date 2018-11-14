@@ -43,11 +43,12 @@ export const getters = {
 
 // actions
 export const actions = {
-  getAll ({ state, commit, rootState }, { teamId }) {
+  getAll ({ state, commit, rootState }, { teamId, playerIds }) {
     if (!state.loaded) {
       return http({
         path: myfifa.players.index,
         pathData: { teamId },
+        data: { player_ids: playerIds },
         token: rootState.token,
         success: function ({ data }) {
           commit('SET_ALL', data)

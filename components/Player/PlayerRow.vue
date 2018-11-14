@@ -59,22 +59,8 @@
 
 <script>
   import TeamAccessible from '@/mixins/TeamAccessible'
-  import PlayerForm from '@/components/Player/PlayerForm'
-  import ContractForm from '@/components/Player/ContractForm'
-  import InjuryForm from '@/components/Player/InjuryForm'
-  import LoanForm from '@/components/Player/LoanForm'
-  import TransferForm from '@/components/Player/TransferForm'
-  import PlayerRemove from '@/components/Player/PlayerRemove'
 
   export default {
-    components: {
-      PlayerForm,
-      ContractForm,
-      InjuryForm,
-      LoanForm,
-      TransferForm,
-      PlayerRemove
-    },
     mixins: [ TeamAccessible ],
     props: {
       playerData: {
@@ -171,6 +157,8 @@
             return this.$_format(this.$_parse(value), 'MMM D, YYYY')
           case 'years':
             return value + ' Years'
+          case 'fixed':
+            return value.toFixed(2)
           case 'actions':
             return ''
           default:
