@@ -3,7 +3,8 @@
     <v-menu
       v-if="authenticated"
       v-model="menu"
-      offset-y>
+      offset-y
+      class="hidden-sm-and-up">
       <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>
       <v-list class="primary" dark>
         <v-list-tile
@@ -31,6 +32,33 @@
         large
       ></v-breadcrumbs>
     </v-toolbar-items>
+
+    <v-spacer></v-spacer>
+
+    <template v-if="authenticated">
+      <v-tooltip color="blue" class="hidden-xs-only" bottom>
+        <v-btn
+          slot="activator"
+          nuxt
+          to="/"
+          active-class=""
+          icon>
+          <v-icon>mdi-home</v-icon>
+        </v-btn>
+        Home
+      </v-tooltip>
+
+      <v-tooltip color="blue" class="hidden-xs-only" bottom>
+        <v-btn
+          slot="activator"
+          @click="logout"
+          icon>
+          <v-icon>mdi-exit-to-app</v-icon>
+        </v-btn>
+        Log Out
+      </v-tooltip>
+    </template>
+
   </v-toolbar>
 </template>
 
@@ -43,7 +71,6 @@
       menu: false
     }),
     computed: {
-      ...mapState('player', { players: 'list' }),
       ...mapState('team', { teamId: 'currentId' }),
       ...mapGetters({
         authenticated: 'authenticated',
@@ -52,23 +79,12 @@
       items () {
         let items = []
         this.team && items.push({ text: this.team.title })
-        this.player && items.push({ text: this.player.name })
         return items
-      },
-      player () {
-        return this.$route.name === 'players-id' &&
-          this.players[this.$route.params.id]
       },
       teamLink () {
         return {
           name: 'teams-id',
           params: { id: this.team.id }
-        }
-      },
-      playerLink () {
-        return {
-          name: 'players-id',
-          params: { id: this.player.id }
         }
       }
     },

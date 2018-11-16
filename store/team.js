@@ -22,8 +22,7 @@ export const getters = {
   seasonStart: (state, getters) => {
     if (state.currentId !== null) {
       let date = parse(getters.current.start_date)
-      const yearDiff = getters.season
-      date = addYears(date, yearDiff)
+      date = addYears(date, getters.season)
       return format(date, 'YYYY-MM-DD')
     }
   },

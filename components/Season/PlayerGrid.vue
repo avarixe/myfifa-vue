@@ -5,28 +5,21 @@
         // PLAYERS
       </div>
 
-      <!-- Display Menu -->
-      <v-tooltip top>
-        <v-menu slot="activator" bottom right>
-          <v-btn slot="activator" icon>
-            <v-icon :color="currentMode.color">
-              {{ currentMode.icon }}
-            </v-icon>
-          </v-btn>
-          <v-list>
-            <v-list-tile
-              v-for="(mode, key) in modes"
-              :key="key"
-              @click="display = key">
-              <v-list-tile-avatar>
-                <v-icon :color="mode.color">{{ mode.icon }}</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-title>{{ mode.text }}</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
-        Display Mode
-      </v-tooltip>
+      <v-btn-toggle
+        v-model="mode"
+        mandatory
+        class="mx-3">
+        <v-btn
+          v-for="(opt, i) in modes"
+          :key="i"
+          flat>
+          <v-icon :color="opt.color">{{ opt.icon }}</v-icon>
+        </v-btn>
+      </v-btn-toggle>
+
+      <div :class="`subheading ${currentMode.color}--text`">
+        {{ currentMode.text }}
+      </div>
 
       <v-spacer></v-spacer>
 
@@ -48,12 +41,13 @@
         :pagination.sync="pagination"
         :search="search"
         item-key="id"
-        disable-initial-sort
+        must-sort
         no-data-text="No Players Recorded">
         <template slot="items" slot-scope="props">
           <player-row
-            :player-data="props.item"
-            :headers="headers"
+            :season="season"
+            :player="props.item"
+            :mode="mode"
           ></player-row>
         </template>
       </v-data-table>
@@ -62,10 +56,11 @@
 </template>
 
 <script>
+  import { addYears } from 'date-fns'
   import Vue from 'vue'
   import { mapState, mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
-  import PlayerRow from '@/components/Player/PlayerRow'
+  import PlayerRow from '@/components/Season/PlayerRow'
 
   export default {
     components: {
@@ -79,88 +74,118 @@
       }
     },
     data: () => ({
-      display: 'growth',
-      modes: {
-        growth: {
-          text: 'Growth',
-          icon: 'mdi-trending-up',
-          color: 'green'
-        },
-        statistics: {
-          text: 'Statistics',
-          icon: 'mdi-numeric',
-          color: 'red'
-        },
-        percentage: {
-          text: 'Percentage',
-          icon: 'mdi-percent',
-          color: 'blue'
-        }
-      },
+      mode: 0,
+      modes: [
+        { text: 'Growth',     color: 'green', icon: 'mdi-trending-up' },
+        { text: 'Statistics', color: 'red',   icon: 'mdi-numeric' }
+      ],
       loading: false,
       pagination: {
-        rowsPerPage: 10
+        rowsPerPage: 10,
+        sortBy: 'pos_idx'
       },
       filterActive: true,
       search: '',
-      seasonStats: {}
+      seasonData: {}
     }),
     computed: {
       ...mapState('player', { players: 'list' }),
       currentMode () {
-        return this.modes[this.display]
+        return this.modes[this.mode]
       },
       headers () {
         let headers = [
-          { text: 'Name',         value: 'name',       align: 'left' },
-          { text: 'Position',     value: 'pos',        align: 'center' },
-          { text: 'Games Played', value: 'numGames',   align: 'center' },
-          { text: 'Goals',        value: 'numGoals',   align: 'center' },
-          { text: 'Goals per 90 Min', value: 'numGoalsPer90', align: 'center', format: 'fixed' },
-          { text: 'Assists',      value: 'numAssists', align: 'center' },
-          { text: 'Assists per 90 Min', value: 'numAssistsPer90', align: 'center', format: 'fixed' },
-          { text: 'Clean Sheets', value: 'numCs',      align: 'center' }
+          { text: 'Name',     value: 'name',    align: 'left' },
+          { text: 'Position', value: 'pos_idx', align: 'center' },
+          { text: 'Age',      value: 'age',     align: 'center' }
         ]
-        return headers
+
+        switch (this.mode) {
+          case 0: // Growth
+            return headers.concat([
+              { text: 'OVR',          value: 'endOvr',      align: 'center' },
+              { text: 'OVR Change',   value: 'ovrChange',   align: 'center' },
+              { text: 'Value',        value: 'endValue',    align: 'right' },
+              { text: 'Value Change', value: 'valueChange', align: 'right' }
+            ])
+          case 1: // Statistics
+            return headers.concat([
+              { text: 'Games Played', value: 'numGames',   align: 'right' },
+              { text: 'Goals',        value: 'numGoals',   align: 'right' },
+              { text: 'Assists',      value: 'numAssists', align: 'right' },
+              { text: 'Clean Sheets', value: 'numCs',      align: 'right' }
+            ])
+        }
       },
       rows () {
-        return Object.values(this.seasonStats)
+        return this.$_orderBy(
+          Object.values(this.seasonData),
+          ['pos_idx', 'numMinutes'],
+          ['asc', 'desc']
+        )
+      },
+      seasonStart () {
+        let date = this.$_parse(this.team.start_date)
+        date = addYears(date, parseInt(this.season))
+        return this.$_format(date)
+      },
+      seasonEnd () {
+        let date = this.$_parse(this.team.start_date)
+        date = addYears(date, parseInt(this.season) + 1)
+        return this.$_format(date)
       }
     },
     watch: {
       season: {
         immediate: true,
         handler: async function (val) {
-          this.seasonStats = {}
+          this.seasonData = {}
+          let data = null
 
-          const { data } = await this.analyze({
-            teamId: this.team.id,
-            season: val
-          })
-          await this.getPlayers({
-            teamId: this.team.id,
-            playerIds: data.player_ids
-          })
+          await Promise.all([
+            (async () => {
+              const res = await this.analyze({
+                teamId: this.team.id,
+                season: val
+              })
+              data = res.data
+            })(),
+            this.getPlayers({ teamId: this.team.id })
+          ])
+
           for (let playerId of data.player_ids) {
-            const numGames = data.num_games[playerId] || 0
-            const numMinutes = data.num_minutes[playerId] || 1
-            const numGoals = data.num_goals[playerId] || 0
-            const numAssists = data.num_assists[playerId] || 0
-            const numCs = data.num_cs[playerId] || 0
-            const numGoalsPer90 = numGoals / numMinutes * 90
-            const numAssistsPer90 = numAssists / numMinutes * 90
+            const playerRecords = data.records[playerId]
 
-            Vue.set(this.seasonStats, playerId, {
+            const age = parseInt(this.seasonEnd) - this.players[playerId].birth_year
+
+            const firstRecord = this.firstSeasonRecord(playerRecords)
+            const lastRecord = this.lastSeasonRecord(playerRecords)
+
+            const startOvr = firstRecord.ovr
+            const startValue = firstRecord.value
+            const endOvr = lastRecord.ovr
+            const endValue = lastRecord.value
+
+            const ovrChange = endOvr - startOvr
+            const valueChange = (endValue - startValue) / startValue * 100
+
+            Vue.set(this.seasonData, playerId, {
               name: this.players[playerId].name,
               pos: this.players[playerId].pos,
-              pos_index: this.players[playerId].pos_idx,
-              numGames,
-              numMinutes,
-              numGoals,
-              numAssists,
-              numCs,
-              numGoalsPer90,
-              numAssistsPer90
+              pos_idx: this.players[playerId].pos_idx,
+              age,
+
+              numGames: data.num_games[playerId] || 0,
+              numSubs: data.num_subs[playerId] || 0,
+              numMinutes: data.num_minutes[playerId] || 0,
+              numGoals: data.num_goals[playerId] || 0,
+              numAssists: data.num_assists[playerId] || 0,
+              numCs: data.num_cs[playerId] || 0,
+
+              endOvr,
+              endValue,
+              ovrChange,
+              valueChange
             })
           }
         }
@@ -170,7 +195,23 @@
       ...mapActions({
         getPlayers: 'player/getAll',
         analyze: 'team/analyzeSeason'
-      })
+      }),
+      closestRecord (records, date) {
+        return this.$_orderBy(
+          records,
+          rec => {
+            const date1 = rec.datestamp.replace(/[^0-9]/g, '')
+            const date2 = date.replace(/[^0-9]/g, '')
+            return Math.abs(date1 - date2)
+          }
+        )[0]
+      },
+      firstSeasonRecord (records) {
+        return this.closestRecord(records, this.seasonStart)
+      },
+      lastSeasonRecord (records) {
+        return this.closestRecord(records, this.seasonEnd)
+      }
     }
   }
 </script>

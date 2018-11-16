@@ -51,7 +51,7 @@
         ></v-text-field>
       </template>
       <template v-else>
-        {{ getProperty(header.value, header.format) }}
+        {{ getProperty(header.view || header.value, header.format) }}
       </template>
     </td>
   </tr>

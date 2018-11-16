@@ -12,28 +12,21 @@
         Display {{ filterActive ? 'All' : 'Active' }} Players
       </v-tooltip>
 
-      <!-- Display Menu -->
-      <v-tooltip top>
-        <v-menu slot="activator" bottom right>
-          <v-btn slot="activator" icon>
-            <v-icon :color="currentMode.color">
-              {{ currentMode.icon }}
-            </v-icon>
-          </v-btn>
-          <v-list>
-            <v-list-tile
-              v-for="(mode, key) in modes"
-              :key="key"
-              @click="display = key">
-              <v-list-tile-avatar>
-                <v-icon :color="mode.color">{{ mode.icon }}</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-title>{{ mode.text }}</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
-        Display Mode
-      </v-tooltip>
+      <v-btn-toggle
+        v-model="mode"
+        mandatory
+        class="mx-3">
+        <v-btn
+          v-for="(opt, i) in modes"
+          :key="i"
+          flat>
+          <v-icon :color="opt.color">{{ opt.icon }}</v-icon>
+        </v-btn>
+      </v-btn-toggle>
+
+      <div :class="`subheading ${currentMode.color}--text`">
+        {{ currentMode.text }}
+      </div>
 
       <v-spacer></v-spacer>
 
@@ -55,7 +48,7 @@
         :pagination.sync="pagination"
         :search="search"
         item-key="id"
-        disable-initial-sort
+        must-sort
         no-data-text="No Players Recorded">
         <template slot="items" slot-scope="props">
           <player-row
@@ -83,27 +76,16 @@
     },
     data () {
       return {
-        display: 'rating',
-        modes: {
-          rating: {
-            text: 'Rating',
-            icon: 'mdi-trending-up',
-            color: 'green'
-          },
-          contract: {
-            text: 'Contract',
-            icon: 'mdi-file-document-outline',
-            color: 'blue'
-          },
-          statistics: {
-            text: 'Statistics',
-            icon: 'mdi-numeric',
-            color: 'red'
-          }
-        },
+        mode: 0,
+        modes: [
+          { text: 'Overall',    color: 'green', icon: 'mdi-trending-up' },
+          { text: 'Contract',   color: 'blue',  icon: 'mdi-file-document-outline' },
+          { text: 'Statistics', color: 'red',   icon: 'mdi-numeric' }
+        ],
         loading: false,
         pagination: {
-          rowsPerPage: 10
+          rowsPerPage: 10,
+          sortBy: 'pos_idx'
         },
         filterActive: true,
         search: ''
@@ -112,49 +94,46 @@
     computed: {
       ...mapState('player', { players: 'list' }),
       currentMode () {
-        return this.modes[this.display]
+        return this.modes[this.mode]
       },
       actionWidth () {
-        return this.display === 'rating' ? 125 : 40
+        return this.mode === 0 ? 125 : 40
       },
       headers () {
         let headers = [
-          { text: '',         value: 'action', align: 'center', sortable: false, width: this.actionWidth },
-          { text: 'Name',     value: 'name',   align: 'left' },
-          { text: 'Status',   value: 'status', align: 'left', width: '40px' },
-          { text: 'Age',      value: 'age',    align: 'center' },
-          { text: 'Position', value: 'pos',    align: 'center' },
-          { text: 'Kit No',   value: 'kit_no', align: 'center', editable: true }
+          { text: '',         value: 'action',  align: 'center', sortable: false, width: this.actionWidth },
+          { text: 'Name',     value: 'name',    align: 'left' },
+          { text: 'Status',   value: 'status',  align: 'left', width: '40px' },
+          { text: 'Age',      value: 'age',     align: 'center' },
+          { text: 'Position', value: 'pos_idx', align: 'center', view: 'pos' },
+          { text: 'Kit No',   value: 'kit_no',  align: 'center', editable: true }
         ]
 
-        switch (this.display) {
-          case 'contract':
+        switch (this.mode) {
+          case 0: // Overall
+            return headers.concat([
+              { text: '2nd Position(s)', value: 'sec_pos', align: 'center', format: 'array' },
+              { text: 'OVR',             value: 'ovr',     align: 'center', editable: true },
+              { text: 'Value',           value: 'value',   align: 'right',  format: 'money', editable: true }
+            ])
+          case 1: // Contract
             return headers.concat([
               { text: 'Value',    value: 'value',                     align: 'right', format: 'money' },
               { text: 'Wage',     value: 'current_contract.wage',     align: 'right', format: 'money' },
               { text: 'End Date', value: 'current_contract.end_date', align: 'right', format: 'date' }
             ])
-          case 'statistics':
+          case 2: // Statistics
             return headers.concat([
               { text: 'Games Played', value: 'num_games',   align: 'center' },
               { text: 'Goals',        value: 'num_goals',   align: 'center' },
               { text: 'Assists',      value: 'num_assists', align: 'center' },
               { text: 'Clean Sheets', value: 'num_cs',      align: 'center' }
             ])
-          default: // Rating
-            return headers.concat([
-              { text: '2nd Position(s)', value: 'sec_pos', align: 'center', format: 'array' },
-              { text: 'OVR',             value: 'ovr',     align: 'center', editable: true },
-              { text: 'Value',           value: 'value',   align: 'right',  format: 'money', editable: true }
-            ])
         }
       },
       rows () {
-        return this.$_orderBy(
-          Object.values(this.players),
-          ['pos_idx', 'ovr'],
-          ['asc', 'desc']
-        ).filter(player => !this.filterActive || player.status)
+        return Object.values(this.players)
+          .filter(player => !this.filterActive || player.status)
       }
     },
     mounted () {
@@ -164,8 +143,8 @@
       filterActive () {
         this.pagination.page = 1
       },
-      display (val) {
-        if (val === 'statistics') {
+      mode (val) {
+        if (val === 2) {
           this.reloadStatistics()
         }
       }

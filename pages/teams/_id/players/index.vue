@@ -27,9 +27,8 @@
       PlayerGrid
     },
     async fetch ({ store, params }) {
-      if (store.state.team.currentId !== params.id) {
-        await store.dispatch('team/get', { teamId: params.id, activate: true })
-      }
+      store.state.team.currentId !== params.id &&
+      await store.dispatch('team/get', { teamId: params.id, activate: true })
     }
   }
 </script>

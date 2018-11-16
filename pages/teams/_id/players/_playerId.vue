@@ -278,7 +278,7 @@
     methods: {
       ...mapActions({
         getPlayer: 'player/get',
-        getStatistics: 'player/getStatistics',
+        getStatistics: 'player/analyze',
         getHistory: 'player/getHistory',
         getContracts: 'contract/getAll',
         getLoans: 'loan/getAll',

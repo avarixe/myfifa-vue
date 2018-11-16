@@ -4,7 +4,7 @@
       <v-flex xs12>
         <v-card>
           <v-card-title>
-            <div class="display-1">{{ seasonLabel(season) }}</div>
+            <div class="display-1">{{ seasonLabel(season) }} Season</div>
           </v-card-title>
         </v-card>
       </v-flex>
@@ -33,9 +33,8 @@
       }
     },
     async fetch ({ store, params }) {
-      if (store.state.team.currentId !== params.id) {
-        await store.dispatch('team/get', { teamId: params.id, activate: true })
-      }
+      store.state.team.currentId !== params.id &&
+      await store.dispatch('team/get', { teamId: params.id, activate: true })
     }
   }
 </script>
