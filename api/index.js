@@ -1,14 +1,15 @@
 import axios from 'axios'
 import { baseURL } from './myfifa'
 
-function urlFor (path, pathData) {
-  const matches = path.match(/\{\{(.+)\}\}/g) || []
-  for (var i = 0; i < matches.length; i++) {
-    let prop = matches[i].replace(/[{}\s]/g, '')
-    path = path.replace(matches[i], pathData[prop])
-  }
-
-  return path
+function urlFor (path, pathData = {}) {
+  return Object.entries(pathData)
+    .reduce((url, data) => {
+      const regex = `{{\\s*${data[0]}\\s*}}`
+      const escapedData = data[1]
+        .toString()
+        .replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')
+      return url.replace(new RegExp(regex, 'g'), escapedData)
+    }, path)
 }
 
 async function sendRequest ({
@@ -34,7 +35,7 @@ async function sendRequest ({
     return res
   } catch (e) {
     if (e.response && e.response.data &&
-        typeof e.response.data === 'Object') {
+        typeof e.response.data === 'object') {
       const res = e.response.data
       if ('error_description' in res) {
         throw new Error(res.error_description)

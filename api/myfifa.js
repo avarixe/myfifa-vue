@@ -11,8 +11,12 @@ export const cableURL = process.env.NODE_ENV === 'production'
 export default {
   teams: {
     index: 'teams',
-    record: 'teams/{{ teamId }}',
-    statistics: 'teams/{{ teamId }}/statistics'
+    record: 'teams/{{ teamId }}'
+  },
+
+  analyze: {
+    players: 'teams/{{ teamId }}/analyze/players',
+    season: 'teams/{{ teamId }}/analyze/season/{{ season }}'
   },
 
   players: {

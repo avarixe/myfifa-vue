@@ -8,21 +8,19 @@
       ></stage-remove>
     </div>
     <v-card>
-      <v-card-text>
-        <v-data-table
-          :headers="headers"
-          :items="items"
-          :pagination.sync="pagination"
-          disable-initial-sort
-          hide-actions>
-          <template slot="items" slot-scope="props">
-            <table-row
-              :headers="headers"
-              :row-data="props.item"
-            ></table-row>
-          </template>
-        </v-data-table>
-      </v-card-text>
+      <v-data-table
+        :headers="headers"
+        :items="items"
+        :pagination.sync="pagination"
+        disable-initial-sort
+        hide-actions>
+        <template slot="items" slot-scope="props">
+          <table-row
+            :headers="headers"
+            :row-data="props.item"
+          ></table-row>
+        </template>
+      </v-data-table>
     </v-card>
   </v-expansion-panel-content>
 </template>

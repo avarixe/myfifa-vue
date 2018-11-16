@@ -1,15 +1,14 @@
 import Vue from 'vue'
-import {
-  Vuetify,
+import Vuetify, {
   VApp,
-  VNavigationDrawer,
+  // VNavigationDrawer,
   // VFooter,
   VList,
   VBtn,
   VIcon,
-  VGrid,
+  // VGrid,
   VToolbar,
-  VCarousel,
+  // VCarousel,
   VDialog,
   VCard,
   VTextField,
@@ -21,7 +20,7 @@ import {
   VTooltip,
   VMenu,
   VDatePicker,
-  VSpeedDial,
+  // VSpeedDial,
   VSnackbar,
   VDataTable,
   VDataIterator,
@@ -37,25 +36,27 @@ import {
   VSubheader,
   // VResponsive,
   VProgressCircular,
-  VRating,
+  // VRating,
   VInput,
   VTimeline,
-  VBtnToggle,
-  transitions
-} from 'vuetify'
+  VBtnToggle
+  // transitions
+} from 'vuetify/lib'
+import VGrid from 'vuetify/lib/components/VGrid'
+import transitions from 'vuetify/lib/components/transitions'
 
 Vue.use(Vuetify, {
   iconfont: 'mdi',
   components: {
     VApp,
-    VNavigationDrawer,
+    // VNavigationDrawer,
     // VFooter,
     VList,
     VBtn,
     VIcon,
     VGrid,
     VToolbar,
-    VCarousel,
+    // VCarousel,
     VDialog,
     VCard,
     VTextField,
@@ -67,7 +68,7 @@ Vue.use(Vuetify, {
     VTooltip,
     VMenu,
     VDatePicker,
-    VSpeedDial,
+    // VSpeedDial,
     VSnackbar,
     VDataTable,
     VDataIterator,
@@ -83,7 +84,7 @@ Vue.use(Vuetify, {
     VSubheader,
     // VResponsive,
     VProgressCircular,
-    VRating,
+    // VRating,
     VInput,
     VTimeline,
     VBtnToggle,

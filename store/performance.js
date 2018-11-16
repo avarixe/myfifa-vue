@@ -1,11 +1,11 @@
-import $_http from '@/api'
+import http from '@/api'
 import myfifa from '@/api/myfifa'
 import objectify from '@/plugins/objectify'
 
 // actions
 export const actions = {
   getAll ({ commit, rootState }, { matchId }) {
-    return $_http({
+    return http({
       path: myfifa.performances.index,
       pathData: { matchId },
       token: rootState.token,
@@ -18,14 +18,14 @@ export const actions = {
     })
   },
   get ({ rootState }, { performanceId }) {
-    return $_http({
+    return http({
       path: myfifa.performances.record,
       pathData: { performanceId },
       token: rootState.token
     })
   },
   create ({ commit, rootState }, { matchId, performance }) {
-    return $_http({
+    return http({
       method: 'post',
       path: myfifa.performances.index,
       pathData: { matchId },
@@ -34,7 +34,7 @@ export const actions = {
     })
   },
   update ({ commit, rootState }, performance) {
-    return $_http({
+    return http({
       method: 'patch',
       path: myfifa.performances.record,
       pathData: { performanceId: performance.id },

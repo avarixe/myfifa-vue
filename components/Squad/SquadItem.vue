@@ -19,7 +19,6 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
   import SquadForm from '@/components/Squad/SquadForm'
   import FormationView from '@/components/FormationView'
 

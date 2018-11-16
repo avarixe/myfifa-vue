@@ -3,7 +3,12 @@
     <v-card-title class="headline">
       {{ seasonLabel(season) }}
       <v-tooltip color="primary" bottom>
-        <v-btn slot="activator" small icon>
+        <v-btn
+          slot="activator"
+          :to="seasonLink"
+          nuxt
+          small
+          icon>
           <v-icon color="primary">mdi-arrow-right</v-icon>
         </v-btn>
         View Season
@@ -15,7 +20,7 @@
         <v-list-tile
           v-for="(competition, i) in competitions"
           :key="i"
-          :to="{ name: 'competitions-id', params: { id: competition.id } }"
+          :to="competitionLink(competition)"
           class="elevation-1">
           <v-list-tile-title>
             <v-icon color="blue" small left>mdi-arrow-right</v-icon>
@@ -31,7 +36,6 @@
 </template>
 
 <script>
-  import { addYears } from 'date-fns'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
@@ -47,6 +51,26 @@
       }
     },
     computed: {
+      seasonLink () {
+        return {
+          name: 'teams-id-seasons-seasonId',
+          params: {
+            id: this.team.id,
+            seasonId: this.season
+          }
+        }
+      }
+    },
+    methods: {
+      competitionLink (competition) {
+        return {
+          name: 'teams-id-competitions-competitionId',
+          params: {
+            id: this.team.id,
+            competitionId: competition.id
+          }
+        }
+      }
     }
   }
 </script>

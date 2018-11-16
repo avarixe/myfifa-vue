@@ -8,7 +8,7 @@
         <v-tooltip color="primary" bottom>
           <v-btn
             slot="activator"
-            :to="{ name: 'players-id', params: { id: playerData.id } }"
+            :to="playerLink"
             nuxt
             small
             icon>
@@ -51,7 +51,7 @@
         ></v-text-field>
       </template>
       <template v-else>
-        {{ getProperty(header.value, header.format) }}
+        {{ getProperty(header.view || header.value, header.format) }}
       </template>
     </td>
   </tr>
@@ -59,22 +59,8 @@
 
 <script>
   import TeamAccessible from '@/mixins/TeamAccessible'
-  import PlayerForm from '@/components/Player/PlayerForm'
-  import ContractForm from '@/components/Player/ContractForm'
-  import InjuryForm from '@/components/Player/InjuryForm'
-  import LoanForm from '@/components/Player/LoanForm'
-  import TransferForm from '@/components/Player/TransferForm'
-  import PlayerRemove from '@/components/Player/PlayerRemove'
 
   export default {
-    components: {
-      PlayerForm,
-      ContractForm,
-      InjuryForm,
-      LoanForm,
-      TransferForm,
-      PlayerRemove
-    },
     mixins: [ TeamAccessible ],
     props: {
       playerData: {
@@ -106,6 +92,15 @@
       player: {}
     }),
     computed: {
+      playerLink () {
+        return {
+          name: 'teams-id-players-playerId',
+          params: {
+            id: this.team.id,
+            playerId: this.playerData.id
+          }
+        }
+      },
       active () {
         return this.playerData.status && this.playerData.status.length > 0
       },
@@ -137,11 +132,11 @@
         }
       },
       edit (val) {
-        const { id, value, kit_no, ovr } = this.playerData
+        const { id, value, kit_no: kitNo, ovr } = this.playerData
         if (val) {
-          this.player = { id, value, kit_no, ovr }
+          this.player = { id, value, kitNo, ovr }
         } else if (value !== this.player.value ||
-                   kit_no !== this.player.kit_no ||
+                   kitNo !== this.player.kit_no ||
                    ovr !== this.player.ovr) {
           this.$store.dispatch('player/update', this.player)
         }
@@ -162,6 +157,8 @@
             return this.$_format(this.$_parse(value), 'MMM D, YYYY')
           case 'years':
             return value + ' Years'
+          case 'fixed':
+            return value.toFixed(2)
           case 'actions':
             return ''
           default:

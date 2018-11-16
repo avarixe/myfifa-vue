@@ -165,7 +165,7 @@
         removeSquad: 'squad/REMOVE',
         removeCompetition: 'competition/REMOVE'
       }),
-      removeNestedRecord(parentType, associationType, data, options = {}) {
+      removeNestedRecord (parentType, associationType, data, options = {}) {
         const attr = this.attributize(associationType)
         const parentId = data[`${parentType.toLowerCase()}_id`]
         const parentRecords = this[this.attributize(parentType)]
@@ -184,7 +184,7 @@
           }
         }
       },
-      setNestedRecord(parentType, associationType, data, options = {}) {
+      setNestedRecord (parentType, associationType, data, options = {}) {
         const formatter = options.formatter || function (x) { return x }
         const attr = this.attributize(associationType)
         const parentId = data[`${parentType.toLowerCase()}_id`]
