@@ -133,8 +133,11 @@
             player: this.player
           })
           this.$router.push({
-            name: 'players-id',
-            params: { id: data.id }
+            name: 'teams-id-players-playerId',
+            params: {
+              id: this.team.id,
+              playerId: data.id
+            }
           })
         }
       }

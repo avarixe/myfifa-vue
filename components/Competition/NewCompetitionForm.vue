@@ -131,8 +131,11 @@
           competition: this.competition
         })
         this.$router.push({
-          name: 'competitions-id',
-          params: { id: data.id }
+          name: 'teams-id-competitions-competitionId',
+          params: {
+            id: this.team.id,
+            competitionId: data.id
+          }
         })
       }
     }

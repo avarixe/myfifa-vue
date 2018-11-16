@@ -121,8 +121,11 @@
             match: this.match
           })
           this.$router.push({
-            name: 'matches-id',
-            params: { id: data.id }
+          name: 'teams-id-matches-matchId',
+            params: {
+              id: this.team.id,
+              matchId: data.id
+            }
           })
         }
       }
