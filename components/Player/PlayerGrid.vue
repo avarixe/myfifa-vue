@@ -38,27 +38,26 @@
         hide-details
       ></v-text-field>
     </v-card-title>
-    <v-card-text>
 
-      <!-- Player Information Grid -->
-      <v-data-table
-        :headers="headers"
-        :items="rows"
-        :loading="loading"
-        :pagination.sync="pagination"
-        :search="search"
-        item-key="id"
-        must-sort
-        no-data-text="No Players Recorded">
-        <template slot="items" slot-scope="props">
-          <player-row
-            :player-data="props.item"
-            :headers="headers"
-            :action-width="actionWidth"
-          ></player-row>
-        </template>
-      </v-data-table>
-    </v-card-text>
+    <!-- Player Information Grid -->
+    <v-data-table
+      :headers="headers"
+      :items="rows"
+      :loading="loading"
+      :pagination.sync="pagination"
+      :search="search"
+      item-key="id"
+      must-sort
+      no-data-text="No Players Recorded">
+      <template slot="items" slot-scope="props">
+        <player-row
+          :player-data="props.item"
+          :headers="headers"
+          :action-width="actionWidth"
+        ></player-row>
+      </template>
+    </v-data-table>
+
   </v-card>
 </template>
 

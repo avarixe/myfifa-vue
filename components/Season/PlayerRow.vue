@@ -53,7 +53,7 @@
         required: true
       },
       mode: {
-        type: String,
+        type: [String, Number],
         required: true
       }
     },

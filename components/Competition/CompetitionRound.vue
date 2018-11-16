@@ -17,21 +17,21 @@
         <stage-remove :stage="round"></stage-remove>
       </template>
     </v-card-title>
-    <v-card-text>
-      <v-data-table
-        :headers="headers"
-        :items="items"
-        :pagination.sync="pagination"
-        disable-initial-sort
-        hide-actions>
-        <template slot="items" slot-scope="props">
-          <fixture-view
-            :headers="headers"
-            :fixture-data="props.item"
-          ></fixture-view>
-        </template>
-      </v-data-table>
-    </v-card-text>
+
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      :pagination.sync="pagination"
+      disable-initial-sort
+      hide-actions>
+      <template slot="items" slot-scope="props">
+        <fixture-view
+          :headers="headers"
+          :fixture-data="props.item"
+        ></fixture-view>
+      </template>
+    </v-data-table>
+
   </v-card>
 </template>
 

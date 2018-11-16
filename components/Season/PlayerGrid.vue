@@ -31,34 +31,33 @@
         hide-details
       ></v-text-field>
     </v-card-title>
-    <v-card-text>
 
-      <!-- Player Information Grid -->
-      <v-data-table
-        :headers="headers"
-        :items="rows"
-        :loading="loading"
-        :pagination.sync="pagination"
-        :search="search"
-        item-key="id"
-        must-sort
-        no-data-text="No Players Recorded">
-        <template slot="items" slot-scope="props">
-          <player-row
-            :season="season"
-            :player="props.item"
-            :mode="mode"
-          ></player-row>
-        </template>
-      </v-data-table>
-    </v-card-text>
+    <!-- Player Information Grid -->
+    <v-data-table
+      :headers="headers"
+      :items="rows"
+      :loading="loading"
+      :pagination.sync="pagination"
+      :search="search"
+      item-key="id"
+      must-sort
+      no-data-text="No Players Recorded">
+      <template slot="items" slot-scope="props">
+        <player-row
+          :season="season"
+          :player="props.item"
+          :mode="mode"
+        ></player-row>
+      </template>
+    </v-data-table>
+
   </v-card>
 </template>
 
 <script>
   import { addYears } from 'date-fns'
   import Vue from 'vue'
-  import { mapState, mapActions } from 'vuex'
+  import { mapState } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import PlayerRow from '@/components/Season/PlayerRow'
 
@@ -70,6 +69,10 @@
     props: {
       season: {
         type: [String, Number],
+        required: true
+      },
+      seasonData: {
+        type: Object,
         required: true
       }
     },
@@ -86,7 +89,7 @@
       },
       filterActive: true,
       search: '',
-      seasonData: {}
+      playerData: {}
     }),
     computed: {
       ...mapState('player', { players: 'list' }),
@@ -119,7 +122,7 @@
       },
       rows () {
         return this.$_orderBy(
-          Object.values(this.seasonData),
+          Object.values(this.playerData),
           ['pos_idx', 'numMinutes'],
           ['asc', 'desc']
         )
@@ -135,67 +138,46 @@
         return this.$_format(date)
       }
     },
-    watch: {
-      season: {
-        immediate: true,
-        handler: async function (val) {
-          this.seasonData = {}
-          let data = null
+    async mounted () {
+      await this.$store.dispatch('player/getAll', { teamId: this.team.id })
 
-          await Promise.all([
-            (async () => {
-              const res = await this.analyze({
-                teamId: this.team.id,
-                season: val
-              })
-              data = res.data
-            })(),
-            this.getPlayers({ teamId: this.team.id })
-          ])
+      for (let playerId of this.seasonData.player_ids) {
+        const playerRecords = this.seasonData.records[playerId]
 
-          for (let playerId of data.player_ids) {
-            const playerRecords = data.records[playerId]
+        const age = parseInt(this.seasonEnd) - this.players[playerId].birth_year
 
-            const age = parseInt(this.seasonEnd) - this.players[playerId].birth_year
+        const firstRecord = this.firstSeasonRecord(playerRecords)
+        const lastRecord = this.lastSeasonRecord(playerRecords)
 
-            const firstRecord = this.firstSeasonRecord(playerRecords)
-            const lastRecord = this.lastSeasonRecord(playerRecords)
+        const startOvr = firstRecord.ovr
+        const startValue = firstRecord.value
+        const endOvr = lastRecord.ovr
+        const endValue = lastRecord.value
 
-            const startOvr = firstRecord.ovr
-            const startValue = firstRecord.value
-            const endOvr = lastRecord.ovr
-            const endValue = lastRecord.value
+        const ovrChange = endOvr - startOvr
+        const valueChange = (endValue - startValue) / startValue * 100
 
-            const ovrChange = endOvr - startOvr
-            const valueChange = (endValue - startValue) / startValue * 100
+        Vue.set(this.playerData, playerId, {
+          name: this.players[playerId].name,
+          pos: this.players[playerId].pos,
+          pos_idx: this.players[playerId].pos_idx,
+          age,
 
-            Vue.set(this.seasonData, playerId, {
-              name: this.players[playerId].name,
-              pos: this.players[playerId].pos,
-              pos_idx: this.players[playerId].pos_idx,
-              age,
+          numGames: this.seasonData.num_games[playerId] || 0,
+          numSubs: this.seasonData.num_subs[playerId] || 0,
+          numMinutes: this.seasonData.num_minutes[playerId] || 0,
+          numGoals: this.seasonData.num_goals[playerId] || 0,
+          numAssists: this.seasonData.num_assists[playerId] || 0,
+          numCs: this.seasonData.num_cs[playerId] || 0,
 
-              numGames: data.num_games[playerId] || 0,
-              numSubs: data.num_subs[playerId] || 0,
-              numMinutes: data.num_minutes[playerId] || 0,
-              numGoals: data.num_goals[playerId] || 0,
-              numAssists: data.num_assists[playerId] || 0,
-              numCs: data.num_cs[playerId] || 0,
-
-              endOvr,
-              endValue,
-              ovrChange,
-              valueChange
-            })
-          }
-        }
+          endOvr,
+          endValue,
+          ovrChange,
+          valueChange
+        })
       }
     },
     methods: {
-      ...mapActions({
-        getPlayers: 'player/getAll',
-        analyze: 'team/analyzeSeason'
-      }),
       closestRecord (records, date) {
         return this.$_orderBy(
           records,

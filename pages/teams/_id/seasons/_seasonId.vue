@@ -10,13 +10,23 @@
       </v-flex>
 
       <v-flex xs12>
-        <player-grid :season="season"></player-grid>
+        <match-results
+          :season-data="seasonData"
+        ></match-results>
+      </v-flex>
+
+      <v-flex xs12>
+        <player-grid
+          :season="season"
+          :season-data="seasonData"
+        ></player-grid>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+  import MatchResults from '@/components/Season/MatchResults'
   import PlayerGrid from '@/components/Season/PlayerGrid'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
@@ -24,6 +34,7 @@
     layout: 'team',
     middleware: 'authenticated',
     components: {
+      MatchResults,
       PlayerGrid
     },
     mixins: [ TeamAccessible ],
@@ -31,6 +42,13 @@
       season () {
         return this.$route.params.seasonId
       }
+    },
+    async asyncData ({ store, params }) {
+      const { data } = await store.dispatch('team/analyzeSeason', {
+        teamId: params.id,
+        season: params.seasonId
+      })
+      return { seasonData: data }
     },
     async fetch ({ store, params }) {
       store.state.team.currentId !== params.id &&
