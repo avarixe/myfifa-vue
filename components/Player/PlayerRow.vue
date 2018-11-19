@@ -16,16 +16,22 @@
           </v-btn>
           View Player
         </v-tooltip>
-        <v-btn
+        <v-tooltip
           v-if="header.width > 40"
-          @click="edit = !edit"
-          small
-          icon>
-          <v-icon
-            :color="edit ? 'green' : 'orange'"
+          :color="editButton.color"
+          bottom>
+          <v-btn
+            slot="activator"
+            @click="edit = !edit"
             small
-          >mdi-{{ edit ? 'content-save' : 'pencil' }}</v-icon>
-        </v-btn>
+            icon>
+            <v-icon
+              :color="editButton.color"
+              small
+            >mdi-{{ editButton.icon }}</v-icon>
+          </v-btn>
+          {{ editButton.text }}
+        </v-tooltip>
       </template>
       <template v-else-if="header.value === 'status' && playerData.status">
         <v-icon :color="statusColor">
@@ -123,6 +129,21 @@
           case 'Injured':
             return 'hospital'
         }
+      },
+      playerChanged () {
+        const { value, kit_no: kitNo, ovr } = this.playerData
+        return value !== this.player.value ||
+               kitNo !== this.player.kit_no ||
+               ovr !== this.player.ovr
+      },
+      editButton () {
+        if (!this.edit) {
+          return { text: 'Edit', icon: 'pencil', color: 'orange' }
+        } else if (this.playerChanged) {
+          return { text: 'Save', icon: 'content-save', color: 'green' }
+        } else {
+          return { text: 'Cancel', icon: 'close', color: 'black' }
+        }
       }
     },
     watch: {
@@ -132,12 +153,11 @@
         }
       },
       edit (val) {
-        const { id, value, kit_no: kitNo, ovr } = this.playerData
         if (val) {
-          this.player = { id, value, kitNo, ovr }
-        } else if (value !== this.player.value ||
-                   kitNo !== this.player.kit_no ||
-                   ovr !== this.player.ovr) {
+          // eslint-disable-next-line camelcase
+          const { id, value, kit_no, ovr } = this.playerData
+          this.player = { id, value, kit_no, ovr }
+        } else if (this.playerChanged) {
           this.$store.dispatch('player/update', this.player)
         }
       }
