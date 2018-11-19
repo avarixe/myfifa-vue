@@ -12,7 +12,7 @@
       v-model="snackbar"
       color="black">
       Remove Match: {{ match.home }} v {{ match.away }}?
-      <v-btn dark flat @click="$store.dispatch('match/remove', match.id)">Yes</v-btn>
+      <v-btn dark flat @click="removeMatch">Yes</v-btn>
       <v-btn dark flat @click.stop="snackbar = false">No</v-btn>
     </v-snackbar>
   </div>
@@ -28,6 +28,15 @@
     },
     data: () => ({
       snackbar: false
-    })
+    }),
+    methods: {
+      removeMatch () {
+        this.$store.dispatch('match/remove', this.match.id)
+        this.$router.push({
+          name: 'teams-id-matches',
+          params: { id: this.match.team_id }
+        })
+      }
+    }
   }
 </script>
