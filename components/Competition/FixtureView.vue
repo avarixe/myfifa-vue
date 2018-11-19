@@ -31,6 +31,7 @@
           :mode="edit"
           :changed="fixtureChanged"
           v-on:toggle-mode="edit = !edit"
+          dir="right"
         ></edit-mode-button>
       </template>
     </td>
@@ -54,7 +55,8 @@
       headers: {
         type: Array,
         required: true
-      }
+      },
+      override: Boolean
     },
     data: () => ({
       edit: false,
@@ -74,6 +76,9 @@
         } else if (this.fixtureChanged) {
           this.$store.dispatch('fixture/update', this.fixture)
         }
+      },
+      override (val) {
+        this.edit = true
       }
     },
     methods: {

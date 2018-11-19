@@ -42,10 +42,31 @@
       :pagination.sync="pagination"
       disable-initial-sort
       hide-actions>
+      <template slot="headers" slot-scope="props">
+        <th
+          v-for="(header, i) in headers"
+          :key="i"
+          :class="`text-xs-${header.align}`"
+          :width="header.width">
+          <template v-if="header.value">
+            {{ header.text }}
+          </template>
+          <v-tooltip v-else right>
+            <v-btn
+              slot="activator"
+              @click="override = !override"
+              icon>
+              <v-icon>mdi-playlist-edit</v-icon>
+            </v-btn>
+            Edit All
+          </v-tooltip>
+        </th>
+      </template>
       <template slot="items" slot-scope="props">
         <fixture-view
           :headers="headers"
           :fixture-data="props.item"
+          :override="override"
         ></fixture-view>
       </template>
     </v-data-table>
@@ -54,13 +75,11 @@
 </template>
 
 <script>
-  import EditModeButton from '@/components/EditModeButton'
   import StageRemove from '@/components/Competition/StageRemove'
   import FixtureView from '@/components/Competition/FixtureView'
 
   export default {
     components: {
-      EditModeButton,
       StageRemove,
       FixtureView
     },
@@ -74,6 +93,7 @@
     data: () => ({
       stage: {},
       edit: false,
+      override: false,
       pagination: {
         rowsPerPage: -1
       }

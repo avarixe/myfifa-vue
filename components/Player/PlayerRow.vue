@@ -5,7 +5,7 @@
       :key="i"
       :class="'text-xs-' + header.align">
       <template v-if="header.value === 'action'">
-        <v-tooltip color="primary" bottom>
+        <v-tooltip color="primary" right>
           <v-btn
             slot="activator"
             :to="playerLink"
@@ -21,6 +21,7 @@
           :mode="edit"
           :changed="playerChanged"
           v-on:toggle-mode="edit = !edit"
+          dir="right"
         ></edit-mode-button>
       </template>
       <template v-else-if="header.value === 'status' && playerData.status">

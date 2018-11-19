@@ -29,10 +29,31 @@
         :pagination.sync="pagination"
         disable-initial-sort
         hide-actions>
+        <template slot="headers" slot-scope="props">
+          <th
+            v-for="(header, i) in headers"
+            :key="i"
+            :class="`text-xs-${header.align}`"
+            :width="header.width">
+            <template v-if="header.value">
+              {{ header.text }}
+            </template>
+            <v-tooltip v-else right>
+              <v-btn
+                slot="activator"
+                @click="override = !override"
+                icon>
+                <v-icon>mdi-playlist-edit</v-icon>
+              </v-btn>
+              Edit All
+            </v-tooltip>
+          </th>
+        </template>
         <template slot="items" slot-scope="props">
           <table-row
             :headers="headers"
             :row-data="props.item"
+            :override="override"
           ></table-row>
         </template>
       </v-data-table>
@@ -61,6 +82,7 @@
     data: () => ({
       stage: {},
       edit: false,
+      override: false,
       pagination: {
         rowsPerPage: -1
       }

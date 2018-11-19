@@ -27,7 +27,7 @@
       no-data-text="No Matches Recorded">
       <template slot="items" slot-scope="props">
         <td>
-          <v-tooltip bottom color="blue darken-2">
+          <v-tooltip right color="blue darken-2">
             <v-btn
               slot="activator"
               :to="matchLink(props.item)"

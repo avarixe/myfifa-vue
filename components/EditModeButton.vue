@@ -1,5 +1,10 @@
 <template>
-  <v-tooltip :color="color" bottom>
+  <v-tooltip
+    :color="color"
+    :right="dir === 'right'"
+    :left="dir === 'left'"
+    :top="dir === 'top'"
+    :bottom="dir === 'bottom'">
     <v-btn
       slot="activator"
       @click.stop="$emit('toggle-mode')"
@@ -20,6 +25,10 @@
       mode: {
         type: Boolean,
         required: true
+      },
+      dir: {
+        type: String,
+        default: 'bottom'
       },
       changed: Boolean
     },

@@ -41,6 +41,7 @@
           :mode="edit"
           :changed="rowChanged"
           v-on:toggle-mode="edit = !edit"
+          dir="right"
         ></edit-mode-button>
       </template>
     </td>
@@ -64,7 +65,8 @@
       headers: {
         type: Array,
         required: true
-      }
+      },
+      override: Boolean
     },
     data: () => ({
       edit: false,
@@ -84,6 +86,9 @@
         } else if (this.rowChanged) {
           this.$store.dispatch('tableRow/update', this.row)
         }
+      },
+      override (val) {
+        this.edit = true
       }
     }
   }
