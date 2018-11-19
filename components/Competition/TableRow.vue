@@ -17,9 +17,15 @@
             autocorrect="off"
           ></v-combobox>
           <v-text-field
+            v-else-if="header.type === 'number'"
+            v-model.number="row[header.value]"
+            type="number"
+            :label="header.text"
+            :autofocus="i === 0"
+          ></v-text-field>
+          <v-text-field
             v-else
             v-model="row[header.value]"
-            :type="header.type"
             :label="header.text"
             :autofocus="i === 0"
           ></v-text-field>
@@ -31,21 +37,24 @@
         </template>
       </template>
       <template v-else>
-        <v-btn @click="edit = !edit" small icon>
-          <v-icon
-            :color="edit ? 'primary' : 'orange'"
-            small
-          >mdi-{{ edit ? 'content-save' : 'pencil' }}</v-icon>
-        </v-btn>
+        <edit-mode-button
+          :mode="edit"
+          :changed="rowChanged"
+          v-on:toggle-mode="edit = !edit"
+        ></edit-mode-button>
       </template>
     </td>
   </tr>
 </template>
 
 <script>
+  import EditModeButton from '@/components/EditModeButton'
   import CompetitionAccessible from '@/mixins/CompetitionAccessible'
 
   export default {
+    components: {
+      EditModeButton
+    },
     mixins: [ CompetitionAccessible ],
     props: {
       rowData: {
@@ -61,11 +70,18 @@
       edit: false,
       row: {}
     }),
+    computed: {
+      rowChanged () {
+        return this.headers.some(header =>
+          this.row[header.value] !== this.rowData[header.value]
+        )
+      }
+    },
     watch: {
       edit (val) {
         if (val) {
           this.row = { ...this.rowData }
-        } else {
+        } else if (this.rowChanged) {
           this.$store.dispatch('tableRow/update', this.row)
         }
       }

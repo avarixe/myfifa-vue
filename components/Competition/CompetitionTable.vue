@@ -1,11 +1,26 @@
 <template>
   <v-expansion-panel-content class="elevation-1">
     <div slot="header">
-      {{ table.name }}
-      <stage-remove
-        v-if="!readonly"
-        :stage="table"
-      ></stage-remove>
+      <template v-if="edit">
+        <v-text-field
+          v-model="stage.name"
+          :rules="$_validate('Stage Name', ['required'])"
+          class="d-inline-block"
+          @click.stop
+        ></v-text-field>
+      </template>
+      <template v-else>
+        {{ table.name }}
+      </template>
+
+      <template v-if="!readonly">
+        <edit-mode-button
+          :mode="edit"
+          :changed="stageChanged"
+          v-on:toggle-mode="edit = !edit"
+        ></edit-mode-button>
+        <stage-remove :stage="table"></stage-remove>
+      </template>
     </div>
     <v-card>
       <v-data-table
@@ -26,11 +41,13 @@
 </template>
 
 <script>
+  import EditModeButton from '@/components/EditModeButton'
   import StageRemove from '@/components/Competition/StageRemove'
   import TableRow from '@/components/Competition/TableRow'
 
   export default {
     components: {
+      EditModeButton,
       StageRemove,
       TableRow
     },
@@ -42,6 +59,8 @@
       readonly: Boolean
     },
     data: () => ({
+      stage: {},
+      edit: false,
       pagination: {
         rowsPerPage: -1
       }
@@ -67,6 +86,19 @@
           ['points', 'goal_difference', 'goals_for', 'goals_against'],
           ['desc', 'desc', 'desc', 'desc']
         )
+      },
+      stageChanged () {
+        return this.stage.name !== this.table.name
+      }
+    },
+    watch: {
+      edit (val) {
+        if (val) {
+          const { id, name } = this.table
+          this.stage = { id, name }
+        } else if (this.stageChanged) {
+          this.$store.dispatch('stage/update', this.stage)
+        }
       }
     }
   }

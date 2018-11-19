@@ -1,9 +1,27 @@
 <template>
   <v-card>
     <v-card-title>
-      <div class="title">{{ round.name }}</div>
+      <div class="title">
+        <template v-if="edit">
+          <v-text-field
+            v-model="stage.name"
+            :rules="$_validate('Stage Name', ['required'])"
+            class="d-inline-block"
+            @click.stop
+          ></v-text-field>
+        </template>
+        <template v-else>
+          {{ round.name }}
+        </template>
+      </div>
 
       <template v-if="!readonly">
+        <edit-mode-button
+          :mode="edit"
+          :changed="stageChanged"
+          v-on:toggle-mode="edit = !edit"
+        ></edit-mode-button>
+
         <v-tooltip bottom>
           <v-btn
             slot="activator"
@@ -36,11 +54,13 @@
 </template>
 
 <script>
+  import EditModeButton from '@/components/EditModeButton'
   import StageRemove from '@/components/Competition/StageRemove'
   import FixtureView from '@/components/Competition/FixtureView'
 
   export default {
     components: {
+      EditModeButton,
       StageRemove,
       FixtureView
     },
@@ -52,6 +72,8 @@
       readonly: Boolean
     },
     data: () => ({
+      stage: {},
+      edit: false,
       pagination: {
         rowsPerPage: -1
       }
@@ -69,6 +91,19 @@
       },
       items () {
         return Object.values(this.round.fixtures) || []
+      },
+      stageChanged () {
+        return this.stage.name !== this.round.name
+      }
+    },
+    watch: {
+      edit (val) {
+        if (val) {
+          const { id, name } = this.round
+          this.stage = { id, name }
+        } else if (this.stageChanged) {
+          this.$store.dispatch('stage/update', this.stage)
+        }
       }
     },
     methods: {

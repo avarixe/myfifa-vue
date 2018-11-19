@@ -16,22 +16,12 @@
           </v-btn>
           View Player
         </v-tooltip>
-        <v-tooltip
+        <edit-mode-button
           v-if="header.width > 40"
-          :color="editButton.color"
-          bottom>
-          <v-btn
-            slot="activator"
-            @click="edit = !edit"
-            small
-            icon>
-            <v-icon
-              :color="editButton.color"
-              small
-            >mdi-{{ editButton.icon }}</v-icon>
-          </v-btn>
-          {{ editButton.text }}
-        </v-tooltip>
+          :mode="edit"
+          :changed="playerChanged"
+          v-on:toggle-mode="edit = !edit"
+        ></edit-mode-button>
       </template>
       <template v-else-if="header.value === 'status' && playerData.status">
         <v-icon :color="statusColor">
@@ -64,9 +54,13 @@
 </template>
 
 <script>
+  import EditModeButton from '@/components/EditModeButton'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
+    components: {
+      EditModeButton
+    },
     mixins: [ TeamAccessible ],
     props: {
       playerData: {
@@ -135,15 +129,6 @@
         return value !== this.player.value ||
                kitNo !== this.player.kit_no ||
                ovr !== this.player.ovr
-      },
-      editButton () {
-        if (!this.edit) {
-          return { text: 'Edit', icon: 'pencil', color: 'orange' }
-        } else if (this.playerChanged) {
-          return { text: 'Save', icon: 'content-save', color: 'green' }
-        } else {
-          return { text: 'Cancel', icon: 'close', color: 'black' }
-        }
       }
     },
     watch: {
