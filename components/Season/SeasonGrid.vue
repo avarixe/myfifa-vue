@@ -31,7 +31,7 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
-  import SeasonItem from '@/components/Season/SeasonItem'
+  import SeasonItem from './SeasonItem'
 
   export default {
     mixins: [ TeamAccessible ],

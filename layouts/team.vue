@@ -5,10 +5,7 @@
       <app-broadcaster></app-broadcaster>
       <div class="pt-5">
         <team-channel></team-channel>
-        <team-toolbar
-          v-if="team"
-          :team="team"
-        ></team-toolbar>
+        <team-bar v-if="team" :team="team"></team-bar>
         <nuxt />
       </div>
     </v-content>
@@ -17,9 +14,9 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import AppBar from '@/components/AppBar'
-  import AppBroadcaster from '@/components/AppBroadcaster'
-  import TeamToolbar from '@/components/Team/TeamToolbar'
+  import AppBar from '@/components/App/AppBar'
+  import AppBroadcaster from '@/components/App/AppBroadcaster'
+  import TeamBar from '@/components/Team/TeamBar'
   import TeamChannel from '@/components/Team/TeamChannel'
 
   export default {
@@ -27,7 +24,7 @@
     components: {
       AppBar,
       AppBroadcaster,
-      TeamToolbar,
+      TeamBar,
       TeamChannel
     },
     computed: mapGetters({

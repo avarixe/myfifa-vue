@@ -33,9 +33,9 @@
 <script>
   import TeamAccessible from '@/mixins/TeamAccessible'
   import MatchAccessible from '@/mixins/MatchAccessible'
-  import FormationView from '@/components/FormationView'
-  import MatchCap from '@/components/Match/MatchCap'
-  import SubstituteCap from '@/components/Match/SubstituteCap'
+  import FormationView from '@/components/Squad/FormationView'
+  import MatchCap from './MatchCap'
+  import SubstituteCap from './SubstituteCap'
 
   export default {
     mixins: [

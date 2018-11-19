@@ -9,8 +9,8 @@
 </template>
 
 <script>
-  import AppBar from '@/components/AppBar'
-  import AppBroadcaster from '@/components/AppBroadcaster'
+  import AppBar from '@/components/App/AppBar'
+  import AppBroadcaster from '@/components/App/AppBroadcaster'
 
   export default {
     name: 'App',

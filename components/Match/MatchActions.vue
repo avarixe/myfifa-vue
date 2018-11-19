@@ -90,13 +90,13 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
-  import MatchForm from '@/components/Match/MatchForm'
-  import CapForm from '@/components/Match/CapForm'
-  import GoalForm from '@/components/Match/GoalForm'
-  import BookingForm from '@/components/Match/BookingForm'
-  import SubstitutionForm from '@/components/Match/SubstitutionForm'
-  import PenaltyShootoutForm from '@/components/Match/PenaltyShootoutForm'
-  import MatchRemove from '@/components/Match/MatchRemove'
+  import MatchForm from './MatchForm'
+  import CapForm from './CapForm'
+  import GoalForm from './GoalForm'
+  import BookingForm from './BookingForm'
+  import SubstitutionForm from './SubstitutionForm'
+  import PenaltyShootoutForm from './PenaltyShootoutForm'
+  import MatchRemove from './MatchRemove'
 
   export default {
     components: {

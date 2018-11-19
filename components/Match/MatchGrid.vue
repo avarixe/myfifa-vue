@@ -51,10 +51,10 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import MatchForm from '@/components/Match/MatchForm'
-  import MatchActions from '@/components/Match/MatchActions'
-  import MatchLineup from '@/components/Match/MatchLineup'
-  import MatchRemove from '@/components/Match/MatchRemove'
+  import MatchForm from './MatchForm'
+  import MatchActions from './MatchActions'
+  import MatchLineup from './MatchLineup'
+  import MatchRemove from './MatchRemove'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {

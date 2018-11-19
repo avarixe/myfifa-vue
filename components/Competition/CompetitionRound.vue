@@ -75,8 +75,8 @@
 </template>
 
 <script>
-  import StageRemove from '@/components/Competition/StageRemove'
-  import FixtureView from '@/components/Competition/FixtureView'
+  import StageRemove from './StageRemove'
+  import FixtureView from './FixtureView'
 
   export default {
     components: {

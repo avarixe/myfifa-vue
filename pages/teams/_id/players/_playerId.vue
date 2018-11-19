@@ -216,36 +216,18 @@
       ...mapState('player', {
         players: 'list'
       }),
-      player () {
-        return this.players[this.$route.params.playerId]
-      },
-      active () {
-        return this.player.status && this.player.status.length > 0
-      },
-      contracts () {
-        return Object.values(this.player.contracts || {})
-      },
-      loans () {
-        return Object.values(this.player.loans || {})
-      },
-      injuries () {
-        return Object.values(this.player.injuries || {})
-      },
-      transfers () {
-        return Object.values(this.player.transfers || {})
-      },
-      histories () {
-        return Object.values(this.player.player_histories || {})
-      },
-      ovrGrowth () {
-        return this.histories.map(h => [ h.datestamp, h.ovr ])
-      },
-      valueGrowth () {
-        return this.histories.map(h => [ h.datestamp, h.value ])
-      },
-      currentFilter () {
-        return this.filterOptions[this.timelineFilter]
-      }
+      player () { return this.players[this.$route.params.playerId] },
+      active () { return this.player.status && this.player.status.length > 0 },
+
+      contracts () { return Object.values(this.player.contracts || {}) },
+      loans () { return Object.values(this.player.loans || {}) },
+      injuries () { return Object.values(this.player.injuries || {}) },
+      transfers () { return Object.values(this.player.transfers || {}) },
+      histories () { return Object.values(this.player.player_histories || {}) },
+
+      ovrGrowth () { return this.histories.map(h => [ h.datestamp, h.ovr ]) },
+      valueGrowth () { return this.histories.map(h => [ h.datestamp, h.value ]) },
+      currentFilter () { return this.filterOptions[this.timelineFilter] }
     },
     async fetch ({ store, params }) {
       await Promise.all([

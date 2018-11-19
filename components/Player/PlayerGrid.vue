@@ -64,8 +64,8 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
-  import PlayerForm from '@/components/Player/PlayerForm'
-  import PlayerRow from '@/components/Player/PlayerRow'
+  import PlayerForm from './PlayerForm'
+  import PlayerRow from './PlayerRow'
 
   export default {
     mixins: [ TeamAccessible ],

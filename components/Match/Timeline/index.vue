@@ -78,7 +78,7 @@
 </template>
 
 <script>
-  import TimelineContent from '@/components/Match/Timeline/TimelineContent'
+  import TimelineContent from './TimelineContent'
   import { mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
 

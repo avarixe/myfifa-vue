@@ -63,8 +63,8 @@
 
 <script>
   import EditModeButton from '@/components/EditModeButton'
-  import StageRemove from '@/components/Competition/StageRemove'
-  import TableRow from '@/components/Competition/TableRow'
+  import StageRemove from './StageRemove'
+  import TableRow from './TableRow'
 
   export default {
     components: {

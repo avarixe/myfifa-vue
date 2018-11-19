@@ -54,7 +54,6 @@
   import MatchForm from '@/components/Match/MatchForm'
   import MatchActions from '@/components/Match/MatchActions'
   import MatchLineup from '@/components/Match/MatchLineup'
-  // import MatchEvents from '@/components/Match/MatchEvents'
   import MatchTimeline from '@/components/Match/Timeline'
   import TeamAccessible from '@/mixins/TeamAccessible'
 

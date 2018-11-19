@@ -19,8 +19,8 @@
 </template>
 
 <script>
-  import SquadForm from '@/components/Squad/SquadForm'
-  import FormationView from '@/components/FormationView'
+  import SquadForm from './SquadForm'
+  import FormationView from './FormationView'
 
   export default {
     components: {

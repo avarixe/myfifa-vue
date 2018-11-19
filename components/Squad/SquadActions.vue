@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import SquadForm from '@/components/Squad/SquadForm'
+  import SquadForm from './SquadForm'
 
   export default {
     components: {

@@ -34,7 +34,7 @@
 </template>
 
 <script>
-  import TimelineContent from '@/components/Player/Timeline/TimelineContent'
+  import TimelineContent from './TimelineContent'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {

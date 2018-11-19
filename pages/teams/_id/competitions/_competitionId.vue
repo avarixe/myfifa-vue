@@ -87,11 +87,9 @@
       CompetitionRemove,
       StageForm
     },
-    data () {
-      return {
-        stage: 0
-      }
-    },
+    data: () => ({
+      stage: 0
+    }),
     computed: {
       ...mapState('competition', { competitions: 'list' }),
       ...mapGetters('team', ['season']),
@@ -103,15 +101,9 @@
           ? Object.values(this.competition.stages)
           : []
       },
-      tables () {
-        return this.stages.filter(stage => stage.table)
-      },
-      rounds () {
-        return this.stages.filter(stage => !stage.table)
-      },
-      readonly () {
-        return this.competition.season !== this.season
-      }
+      tables () { return this.stages.filter(stage => stage.table) },
+      rounds () { return this.stages.filter(stage => !stage.table) },
+      readonly () { return this.competition.season !== this.season }
     },
     async fetch ({ store, params }) {
       await Promise.all([
