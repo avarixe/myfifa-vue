@@ -11,10 +11,10 @@ export default {
     ...mapState('match', [
       'positions'
     ]),
-    sortedPerformances () {
+    sortedCaps () {
       return this.$_orderBy(
-        Object.values(this.match.performances),
-        [ p => this.positions.indexOf(p.pos), 'start' ]
+        Object.values(this.match.caps),
+        [ c => this.positions.indexOf(c.pos), 'start' ]
       )
     },
     minutes () {

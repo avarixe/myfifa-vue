@@ -8,7 +8,7 @@
         offset-overflow
         lazy>
         <span slot="activator" class="body-1">
-          {{ performance.pos }}
+          {{ cap.pos }}
         </span>
         <v-list>
           <v-list-tile
@@ -23,9 +23,9 @@
 
     <v-list-tile-content>
       <v-list-tile-title>
-        <span class="body-2">{{ performance.name }}</span>
+        <span class="body-2">{{ cap.name }}</span>
         <v-icon
-          v-if="parseInt(performance.start) > 0"
+          v-if="parseInt(cap.start) > 0"
           color="green"
           small
         >mdi-subdirectory-arrow-right</v-icon>
@@ -52,7 +52,7 @@
           small
         >mdi-hospital</v-icon>
         <v-icon
-          v-if="performance.subbed_out"
+          v-if="cap.subbed_out"
           color="red"
           small
         >mdi-subdirectory-arrow-left</v-icon>
@@ -66,7 +66,7 @@
 
   export default {
     props: {
-      performance: {
+      cap: {
         type: Object,
         required: true
       },
@@ -92,37 +92,37 @@
       goals () {
         return this.events.filter(event => (
           event.event_type === 'Goal' &&
-          event.player_id === this.performance.player_id &&
+          event.player_id === this.cap.player_id &&
           !event.own_goal
         )).length
       },
       assists () {
         return this.events.filter(event => (
           event.event_type === 'Goal' &&
-          event.assist_id === this.performance.player_id
+          event.assist_id === this.cap.player_id
         )).length
       },
       bookings () {
         return this.events
-          .filter(event => event.event_type === 'Booking' && event.player_id === this.performance.player_id)
+          .filter(event => event.event_type === 'Booking' && event.player_id === this.cap.player_id)
           .map(booking => booking.red_card ? 'red' : 'yellow darken-2')
       },
       injured () {
         return this.events
           .filter(event => (
             event.event_type === 'Substitution' &&
-            event.player_id === this.performance.player_id &&
+            event.player_id === this.cap.player_id &&
             event.injury
           )).length > 0
       }
     },
     methods: {
-      ...mapActions('performance', [
+      ...mapActions('cap', [
         'update'
       ]),
       setPosition (position) {
         this.update({
-          ...this.performance,
+          ...this.cap,
           pos: position
         })
       }

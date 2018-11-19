@@ -9,7 +9,7 @@
       <v-layout wrap>
         <v-flex xs12>
           <v-select
-            v-model="performance.pos"
+            v-model="cap.pos"
             :items="positions"
             :rules="$_validate('Position', ['required'])"
             label="Position"
@@ -18,12 +18,12 @@
         </v-flex>
         <v-flex xs12>
           <v-select
-            v-model="performance.player_id"
+            v-model="cap.player_id"
             :items="players"
             item-text="name"
             item-value="id"
             :rules="$_validate('Player', ['required'])"
-            :disabled="performance.start > 0"
+            :disabled="cap.start > 0"
             label="Player"
             prepend-icon="mdi-account">
             <template slot="item" slot-scope="data">
@@ -48,7 +48,7 @@
   export default {
     mixins: [ DialogFormable ],
     props: {
-      performanceId: {
+      capId: {
         type: Number
       },
       match: {
@@ -58,7 +58,7 @@
     },
     data () {
       return {
-        performance: {
+        cap: {
           player_id: null,
           pos: ''
         }
@@ -72,17 +72,17 @@
         players: 'active'
       }),
       title () {
-        return this.performance.id ? 'Edit Position' : 'Add Position'
+        return this.cap.id ? 'Edit Position' : 'Add Position'
       }
     },
     watch: {
       async dialog (val) {
-        if (val && this.performanceId) {
+        if (val && this.capId) {
           try {
             const { data } = await this.get({
-              performanceId: this.performanceId
+              capId: this.capId
             })
-            this.performance = data
+            this.cap = data
           } catch (e) {
             alert(e.message)
             this.dialog = false
@@ -91,18 +91,18 @@
       }
     },
     methods: {
-      ...mapActions('performance', [
+      ...mapActions('cap', [
         'get',
         'create',
         'update'
       ]),
       async submit () {
-        if (this.performanceId) {
-          await this.update(this.performance)
+        if (this.capId) {
+          await this.update(this.cap)
         } else {
           await this.create({
             matchId: this.match.id,
-            performance: this.performance
+            cap: this.cap
           })
         }
       }

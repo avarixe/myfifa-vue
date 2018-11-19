@@ -9,14 +9,14 @@
       </v-tooltip>
     </match-form>
 
-    <performance-form :match="match" v-if="numPlayers < 11">
+    <cap-form :match="match" v-if="numPlayers < 11">
       <v-tooltip bottom>
         <v-btn icon slot="activator">
           <v-icon>mdi-plus-circle-outline</v-icon>
         </v-btn>
         Add Player
       </v-tooltip>
-    </performance-form>
+    </cap-form>
 
     <v-tooltip bottom color="cyan">
       <v-menu slot="activator" offset-y>
@@ -91,7 +91,7 @@
   import { mapState, mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import MatchForm from '@/components/Match/MatchForm'
-  import PerformanceForm from '@/components/Match/PerformanceForm'
+  import CapForm from '@/components/Match/CapForm'
   import GoalForm from '@/components/Match/GoalForm'
   import BookingForm from '@/components/Match/BookingForm'
   import SubstitutionForm from '@/components/Match/SubstitutionForm'
@@ -101,7 +101,7 @@
   export default {
     components: {
       MatchForm,
-      PerformanceForm,
+      CapForm,
       GoalForm,
       BookingForm,
       SubstitutionForm,
@@ -130,7 +130,7 @@
         return this.match.home_score === this.match.away_score
       },
       numPlayers () {
-        return Object.values(this.match.performances || {}).length
+        return Object.values(this.match.caps || {}).length
       }
     },
     methods: {

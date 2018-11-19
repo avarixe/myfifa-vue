@@ -6,40 +6,40 @@ import objectify from '@/plugins/objectify'
 export const actions = {
   getAll ({ commit, rootState }, { matchId }) {
     return http({
-      path: myfifa.performances.index,
+      path: myfifa.caps.index,
       pathData: { matchId },
       token: rootState.token,
       success: ({ data }) => {
         commit('match/SET', {
           ...rootState.match.list[matchId],
-          performances: objectify(data)
+          caps: objectify(data)
         }, { root: true })
       }
     })
   },
-  get ({ rootState }, { performanceId }) {
+  get ({ rootState }, { capId }) {
     return http({
-      path: myfifa.performances.record,
-      pathData: { performanceId },
+      path: myfifa.caps.record,
+      pathData: { capId },
       token: rootState.token
     })
   },
-  create ({ commit, rootState }, { matchId, performance }) {
+  create ({ commit, rootState }, { matchId, cap }) {
     return http({
       method: 'post',
-      path: myfifa.performances.index,
+      path: myfifa.caps.index,
       pathData: { matchId },
       token: rootState.token,
-      data: { performance }
+      data: { cap }
     })
   },
-  update ({ commit, rootState }, performance) {
+  update ({ commit, rootState }, cap) {
     return http({
       method: 'patch',
-      path: myfifa.performances.record,
-      pathData: { performanceId: performance.id },
+      path: myfifa.caps.record,
+      pathData: { capId: cap.id },
       token: rootState.token,
-      data: { performance }
+      data: { cap }
     })
   }
 }

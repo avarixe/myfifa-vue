@@ -85,7 +85,7 @@
           !(params.matchId in store.state.match.list) &&
           await store.dispatch('match/get', { matchId: params.matchId })
         })(),
-        store.dispatch('performance/getAll', { matchId: params.matchId }),
+        store.dispatch('cap/getAll', { matchId: params.matchId }),
         store.dispatch('match/getEvents', { matchId: params.matchId })
       ])
     },

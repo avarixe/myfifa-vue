@@ -99,7 +99,7 @@
       ...mapActions({
         getMatches: 'match/getAll',
         getEvents: 'match/getEvents',
-        getPerformances: 'performance/getAll'
+        getCaps: 'cap/getAll'
       }),
       async reloadGrid () {
         this.loading = true

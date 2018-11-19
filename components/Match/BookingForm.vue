@@ -35,7 +35,7 @@
           <v-select
             v-model="booking.player_id"
             :rules="$_validate('Player', ['required'])"
-            :items="sortedPerformances"
+            :items="sortedCaps"
             item-value="player_id"
             item-text="name"
             label="Player"

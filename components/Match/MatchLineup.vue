@@ -1,13 +1,13 @@
 <template>
   <v-container>
-    <formation-view :formation="sortedPerformances">
-      <match-performance
+    <formation-view :formation="sortedCaps">
+      <match-cap
         slot="item"
         slot-scope="{ player }"
-        :performance="player"
+        :cap="player"
         :match="match"
         :readonly="readonly"
-      ></match-performance>
+      ></match-cap>
     </formation-view>
 
     <v-layout
@@ -17,13 +17,13 @@
       <v-flex xs12>
         <v-list id="substitutes" dense>
           <v-subheader>Substitutes</v-subheader>
-          <substitute-performance
-            v-for="(player, i) in substitutes"
+          <substitute-cap
+            v-for="(cap, i) in substitutes"
             :key="i"
-            :performance="player"
+            :cap="cap"
             :match="match"
             :readonly="readonly"
-          ></substitute-performance>
+          ></substitute-cap>
         </v-list>
       </v-flex>
     </v-layout>
@@ -34,8 +34,8 @@
   import TeamAccessible from '@/mixins/TeamAccessible'
   import MatchAccessible from '@/mixins/MatchAccessible'
   import FormationView from '@/components/FormationView'
-  import MatchPerformance from '@/components/Match/MatchPerformance'
-  import SubstitutePerformance from '@/components/Match/SubstitutePerformance'
+  import MatchCap from '@/components/Match/MatchCap'
+  import SubstituteCap from '@/components/Match/SubstituteCap'
 
   export default {
     mixins: [
@@ -44,15 +44,15 @@
     ],
     components: {
       FormationView,
-      MatchPerformance,
-      SubstitutePerformance
+      MatchCap,
+      SubstituteCap
     },
     computed: {
       readonly () {
         return this.team.current_date !== this.match.date_played
       },
       substitutes () {
-        return this.sortedPerformances.filter(p => 'start' in p && p.start > 0)
+        return this.sortedCaps.filter(c => 'start' in c && c.start > 0)
       }
     }
   }

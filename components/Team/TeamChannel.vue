@@ -50,7 +50,7 @@
               case 'Match':
                 this.removeMatch(data.id)
                 break
-              case 'Performance':
+              case 'Cap':
                 this.removeNestedRecord('Match', type, data)
                 break
               case 'Goal':
@@ -93,7 +93,7 @@
               case 'Match':
                 this.setMatch({ ...this.matches[data.id], ...data })
                 break
-              case 'Performance':
+              case 'Cap':
                 this.setNestedRecord('Match', type, data)
                 break
               case 'Goal':
