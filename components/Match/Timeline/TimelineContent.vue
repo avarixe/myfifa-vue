@@ -1,8 +1,8 @@
 <script>
-  import GoalContent from '@/components/Match/Timeline/GoalContent'
-  import BookingContent from '@/components/Match/Timeline/BookingContent'
-  import SubstitutionContent from '@/components/Match/Timeline/SubstitutionContent'
-  import PenaltyShootoutContent from '@/components/Match/Timeline/PenaltyShootoutContent'
+  import GoalContent from './GoalContent'
+  import BookingContent from './BookingContent'
+  import SubstitutionContent from './SubstitutionContent'
+  import PenaltyShootoutContent from './PenaltyShootoutContent'
 
   export default {
     functional: true,

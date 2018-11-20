@@ -19,7 +19,10 @@
               </v-flex>
               <v-flex xs12>
                 <div class="display-2">{{ match.home }} v {{ match.away }}</div>
-                <div class="display-1">{{ match.score }}</div>
+                <div class="display-1">
+                  {{ match.score }}
+                  {{ match.extra_time && !match.penalty_shootout ? '(AET)' : '' }}
+                </div>
               </v-flex>
             </v-layout>
           </v-card-text>
@@ -54,7 +57,6 @@
   import MatchForm from '@/components/Match/MatchForm'
   import MatchActions from '@/components/Match/MatchActions'
   import MatchLineup from '@/components/Match/MatchLineup'
-  // import MatchEvents from '@/components/Match/MatchEvents'
   import MatchTimeline from '@/components/Match/Timeline'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
@@ -85,7 +87,7 @@
           !(params.matchId in store.state.match.list) &&
           await store.dispatch('match/get', { matchId: params.matchId })
         })(),
-        store.dispatch('performance/getAll', { matchId: params.matchId }),
+        store.dispatch('cap/getAll', { matchId: params.matchId }),
         store.dispatch('match/getEvents', { matchId: params.matchId })
       ])
     },

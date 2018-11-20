@@ -27,7 +27,7 @@
       no-data-text="No Matches Recorded">
       <template slot="items" slot-scope="props">
         <td>
-          <v-tooltip bottom color="blue darken-2">
+          <v-tooltip right color="blue darken-2">
             <v-btn
               slot="activator"
               :to="matchLink(props.item)"
@@ -51,10 +51,10 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import MatchForm from '@/components/Match/MatchForm'
-  import MatchActions from '@/components/Match/MatchActions'
-  import MatchLineup from '@/components/Match/MatchLineup'
-  import MatchRemove from '@/components/Match/MatchRemove'
+  import MatchForm from './MatchForm'
+  import MatchActions from './MatchActions'
+  import MatchLineup from './MatchLineup'
+  import MatchRemove from './MatchRemove'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
@@ -99,7 +99,7 @@
       ...mapActions({
         getMatches: 'match/getAll',
         getEvents: 'match/getEvents',
-        getPerformances: 'performance/getAll'
+        getCaps: 'cap/getAll'
       }),
       async reloadGrid () {
         this.loading = true

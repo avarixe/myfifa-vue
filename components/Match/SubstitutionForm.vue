@@ -21,7 +21,7 @@
           <v-select
             v-model="substitution.player_id"
             :rules="$_validate('Player', ['required'])"
-            :items="sortedPerformances"
+            :items="sortedCaps"
             item-value="player_id"
             item-text="name"
             label="Player"
@@ -94,7 +94,7 @@
         activePlayers: 'active'
       }),
       availablePlayers () {
-        const selectedIds = this.sortedPerformances.map(p => p.player_id)
+        const selectedIds = this.sortedCaps.map(c => c.player_id)
         return this.activePlayers.filter(p => selectedIds.indexOf(p.id) < 0)
       }
     },

@@ -12,6 +12,10 @@ function urlFor (path, pathData = {}) {
     }, path)
 }
 
+function capitalize (word) {
+  return `${word[0].toUpperCase()}${word.slice(1)}`
+}
+
 async function sendRequest ({
   method,
   path,
@@ -37,14 +41,20 @@ async function sendRequest ({
     if (e.response && e.response.data &&
         typeof e.response.data === 'object') {
       const res = e.response.data
-      if ('error_description' in res) {
+      if ('errors' in res) {
+        if (Array.isArray(res.errors)) {
+          throw new Error(res.errors[0])
+        } else {
+          const key = Object.keys(res.errors)[0]
+          const attr = key.split('_').map(w => capitalize(w)).join(' ')
+          throw new Error(`${attr} ${res.errors[key]}`)
+        }
+      } else if ('error_description' in res) {
         throw new Error(res.error_description)
-      } else if ('errors' in res) {
-        throw new Error(res.errors[0])
       }
     } else {
-      // console.error(e)
-      // console.trace(e)
+      console.error(e)
+      console.trace(e)
       throw new Error('An Error occurred. Please try again.')
     }
   }

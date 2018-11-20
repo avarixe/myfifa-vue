@@ -26,14 +26,12 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
-  import SquadForm from '@/components/Squad/SquadForm'
-  import SquadItem from '@/components/Squad/SquadItem'
-  // import SquadActions from '@/components/Squad/SquadActions'
+  import SquadForm from './SquadForm'
+  import SquadItem from './SquadItem'
 
   export default {
     components: {
       SquadForm,
-      // SquadActions
       SquadItem
     },
     mixins: [ TeamAccessible ],

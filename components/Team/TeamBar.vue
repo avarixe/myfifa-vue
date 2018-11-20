@@ -24,7 +24,6 @@
     <v-menu
       v-model="calendar"
       :close-on-content-click="false"
-      open-on-hover
       transition="scale-transition"
       origin="top left">
       <v-btn
@@ -37,7 +36,7 @@
         color="accent"
         :min="seasonStart"
         :max="seasonEnd"
-        fixed
+        @input="calendar = false"
       ></v-date-picker>
     </v-menu>
 

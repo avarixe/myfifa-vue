@@ -27,21 +27,25 @@
         </template>
       </template>
       <template v-else>
-        <v-btn @click="edit = !edit" small icon>
-          <v-icon
-            :color="edit ? 'primary' : 'orange'"
-            small
-          >mdi-{{ edit ? 'content-save' : 'pencil' }}</v-icon>
-        </v-btn>
+        <edit-mode-button
+          :mode="edit"
+          :changed="fixtureChanged"
+          v-on:toggle-mode="edit = !edit"
+          dir="right"
+        ></edit-mode-button>
       </template>
     </td>
   </tr>
 </template>
 
 <script>
+  import EditModeButton from '@/components/EditModeButton'
   import CompetitionAccessible from '@/mixins/CompetitionAccessible'
 
   export default {
+    components: {
+      EditModeButton
+    },
     mixins: [ CompetitionAccessible ],
     props: {
       fixtureData: {
@@ -51,19 +55,30 @@
       headers: {
         type: Array,
         required: true
-      }
+      },
+      override: Boolean
     },
     data: () => ({
       edit: false,
       fixture: {}
     }),
+    computed: {
+      fixtureChanged () {
+        return this.headers.some(header =>
+          this.fixture[header.value] !== this.fixtureData[header.value]
+        )
+      }
+    },
     watch: {
       edit (val) {
         if (val) {
           this.fixture = { ...this.fixtureData }
-        } else {
+        } else if (this.fixtureChanged) {
           this.$store.dispatch('fixture/update', this.fixture)
         }
+      },
+      override (val) {
+        this.edit = true
       }
     },
     methods: {

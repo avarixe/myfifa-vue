@@ -26,6 +26,7 @@
     "lodash.get": "^4.4.2",
     "lodash.groupby": "^4.6.0",
     "lodash.orderby": "^4.6.0",
+    "lodash.pick": "^4.4.0",
     "nuxt": "^2.2.0",
     "vue": "^2.5.17",
     "vue-chartkick": "^0.4.0",

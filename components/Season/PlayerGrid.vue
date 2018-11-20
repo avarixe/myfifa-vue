@@ -59,7 +59,7 @@
   import Vue from 'vue'
   import { mapState } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
-  import PlayerRow from '@/components/Season/PlayerRow'
+  import PlayerRow from './PlayerRow'
 
   export default {
     components: {

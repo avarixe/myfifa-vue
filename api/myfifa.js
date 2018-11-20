@@ -82,9 +82,9 @@ export default {
     record: 'penalty_shootouts/{{ penaltyShootoutId }}'
   },
 
-  performances: {
-    index: 'matches/{{ matchId }}/performances',
-    record: 'performances/{{ performanceId }}'
+  caps: {
+    index: 'matches/{{ matchId }}/caps',
+    record: 'caps/{{ capId }}'
   },
 
   competitions: {
@@ -108,7 +108,8 @@ export default {
   },
 
   users: {
-    index: 'users.json'
+    record: 'users.json',
+    sync: 'users/sync'
   },
 
   token: {

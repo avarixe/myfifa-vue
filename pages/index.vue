@@ -30,8 +30,8 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import LoginForm from '@/components/LoginForm'
-  import UserForm from '@/components/UserForm'
+  import LoginForm from '@/components/App/LoginForm'
+  import UserForm from '@/components/App/UserForm'
   import TeamForm from '@/components/Team/TeamForm'
   import TeamPanel from '@/components/Team/TeamPanel'
 

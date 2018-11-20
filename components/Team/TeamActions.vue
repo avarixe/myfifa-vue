@@ -9,18 +9,7 @@
       </v-btn>
       Dashboard
     </v-tooltip>
-<!--
-    <v-tooltip bottom color="green darken-2">
-      <v-btn
-        slot="activator"
-        :to="{ name: 'teams-id-archives', params: { id: team.id } }"
-        icon>
-        <v-icon color="green darken-2">history</v-icon>
-      </v-btn>
-      Archives
-    </v-tooltip>
- -->
-    <team-form :initial-team="team" color="orange">
+    <team-form :team-data="team" color="orange">
       <v-tooltip bottom color="orange darken-2">
         <v-btn icon slot="activator">
           <v-icon color="orange darken-2">mdi-pencil</v-icon>
@@ -45,7 +34,7 @@
 </template>
 
 <script>
-  import TeamForm from '@/components/Team/TeamForm'
+  import TeamForm from './TeamForm'
 
   export default {
     components: {

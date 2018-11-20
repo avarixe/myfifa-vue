@@ -93,22 +93,18 @@
       TeamAccessible
     ],
     props: {
-      initialPlayer: Object,
+      playerData: {
+        type: Object,
+        default: () => ({})
+      },
       submitCb: Function
     },
     data () {
       return {
-        valid: !!this.initialPlayer,
-        player: Object.assign({
-          id: '',
-          name: '',
-          pos: '',
-          sec_pos: [],
-          ovr: null,
-          value: null,
-          age: 16,
-          youth: false
-        }, this.initialPlayer)
+        valid: !!this.playerData,
+        player: this.$_pick(this.playerData, [
+          'id', 'name', 'pos', 'sec_pos', 'ovr', 'value', 'age', 'youth'
+        ])
       }
     },
     computed: {
@@ -125,7 +121,7 @@
         'update'
       ]),
       async submit () {
-        if (this.initialPlayer) {
+        if (this.playerData) {
           await this.update(this.player)
         } else {
           const { data } = await this.create({

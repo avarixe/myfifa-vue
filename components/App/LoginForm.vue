@@ -12,9 +12,8 @@
       <v-layout wrap>
         <v-flex xs12>
           <v-text-field
-            v-model="credentials.email"
-            label="Email"
-            type="email"
+            v-model="credentials.username"
+            label="Username"
             autofocus
           ></v-text-field>
         </v-flex>
@@ -42,7 +41,7 @@
     data: () => ({
       visible: false,
       credentials: {
-        email: '',
+        username: '',
         password: '',
         grant_type: 'password'
       }

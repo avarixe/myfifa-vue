@@ -5,15 +5,11 @@ export default {
     'dialog-form': DialogForm
   },
   props: {
-    color: {
-      type: String
-    }
+    color: String
   },
-  data () {
-    return {
-      dialog: false
-    }
-  },
+  data: () => ({
+    dialog: false
+  }),
   watch: {
     dialog (val) {
       if (!val) {

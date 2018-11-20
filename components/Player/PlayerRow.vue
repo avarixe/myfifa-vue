@@ -5,7 +5,7 @@
       :key="i"
       :class="'text-xs-' + header.align">
       <template v-if="header.value === 'action'">
-        <v-tooltip color="primary" bottom>
+        <v-tooltip color="primary" right>
           <v-btn
             slot="activator"
             :to="playerLink"
@@ -16,16 +16,13 @@
           </v-btn>
           View Player
         </v-tooltip>
-        <v-btn
+        <edit-mode-button
           v-if="header.width > 40"
-          @click="edit = !edit"
-          small
-          icon>
-          <v-icon
-            :color="edit ? 'green' : 'orange'"
-            small
-          >mdi-{{ edit ? 'content-save' : 'pencil' }}</v-icon>
-        </v-btn>
+          :mode="edit"
+          :changed="playerChanged"
+          v-on:toggle-mode="edit = !edit"
+          dir="right"
+        ></edit-mode-button>
       </template>
       <template v-else-if="header.value === 'status' && playerData.status">
         <v-icon :color="statusColor">
@@ -58,9 +55,13 @@
 </template>
 
 <script>
+  import EditModeButton from '@/components/EditModeButton'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
+    components: {
+      EditModeButton
+    },
     mixins: [ TeamAccessible ],
     props: {
       playerData: {
@@ -112,6 +113,8 @@
             return 'indigo'
           case 'Injured':
             return 'pink'
+          case 'Pending':
+            return 'deep-orange'
         }
       },
       statusIcon () {
@@ -122,7 +125,15 @@
             return 'transit-transfer'
           case 'Injured':
             return 'hospital'
+          case 'Pending':
+            return 'lock-clock'
         }
+      },
+      playerChanged () {
+        const { value, kit_no: kitNo, ovr } = this.playerData
+        return value !== this.player.value ||
+               kitNo !== this.player.kit_no ||
+               ovr !== this.player.ovr
       }
     },
     watch: {
@@ -132,12 +143,11 @@
         }
       },
       edit (val) {
-        const { id, value, kit_no: kitNo, ovr } = this.playerData
         if (val) {
-          this.player = { id, value, kitNo, ovr }
-        } else if (value !== this.player.value ||
-                   kitNo !== this.player.kit_no ||
-                   ovr !== this.player.ovr) {
+          // eslint-disable-next-line camelcase
+          const { id, value, kit_no, ovr } = this.playerData
+          this.player = { id, value, kit_no, ovr }
+        } else if (this.playerChanged) {
           this.$store.dispatch('player/update', this.player)
         }
       }

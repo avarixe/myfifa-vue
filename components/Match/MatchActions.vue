@@ -1,6 +1,6 @@
 <template>
   <div class="text-xs-center">
-    <match-form :initial-match="match" color="orange">
+    <match-form :match-data="match" color="orange">
       <v-tooltip bottom color="orange">
         <v-btn icon slot="activator">
           <v-icon color="orange">mdi-pencil</v-icon>
@@ -9,14 +9,14 @@
       </v-tooltip>
     </match-form>
 
-    <performance-form :match="match" v-if="numPlayers < 11">
+    <cap-form :match="match" v-if="numPlayers < 11">
       <v-tooltip bottom>
         <v-btn icon slot="activator">
           <v-icon>mdi-plus-circle-outline</v-icon>
         </v-btn>
         Add Player
       </v-tooltip>
-    </performance-form>
+    </cap-form>
 
     <v-tooltip bottom color="cyan">
       <v-menu slot="activator" offset-y>
@@ -90,18 +90,18 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
-  import MatchForm from '@/components/Match/MatchForm'
-  import PerformanceForm from '@/components/Match/PerformanceForm'
-  import GoalForm from '@/components/Match/GoalForm'
-  import BookingForm from '@/components/Match/BookingForm'
-  import SubstitutionForm from '@/components/Match/SubstitutionForm'
-  import PenaltyShootoutForm from '@/components/Match/PenaltyShootoutForm'
-  import MatchRemove from '@/components/Match/MatchRemove'
+  import MatchForm from './MatchForm'
+  import CapForm from './CapForm'
+  import GoalForm from './GoalForm'
+  import BookingForm from './BookingForm'
+  import SubstitutionForm from './SubstitutionForm'
+  import PenaltyShootoutForm from './PenaltyShootoutForm'
+  import MatchRemove from './MatchRemove'
 
   export default {
     components: {
       MatchForm,
-      PerformanceForm,
+      CapForm,
       GoalForm,
       BookingForm,
       SubstitutionForm,
@@ -130,7 +130,7 @@
         return this.match.home_score === this.match.away_score
       },
       numPlayers () {
-        return Object.values(this.match.performances || {}).length
+        return Object.values(this.match.caps || {}).length
       }
     },
     methods: {

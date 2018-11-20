@@ -1,11 +1,26 @@
 <template>
   <v-expansion-panel-content class="elevation-1">
     <div slot="header">
-      {{ table.name }}
-      <stage-remove
-        v-if="!readonly"
-        :stage="table"
-      ></stage-remove>
+      <template v-if="edit">
+        <v-text-field
+          v-model="stage.name"
+          :rules="$_validate('Stage Name', ['required'])"
+          class="d-inline-block"
+          @click.stop
+        ></v-text-field>
+      </template>
+      <template v-else>
+        {{ table.name }}
+      </template>
+
+      <template v-if="!readonly">
+        <edit-mode-button
+          :mode="edit"
+          :changed="stageChanged"
+          v-on:toggle-mode="edit = !edit"
+        ></edit-mode-button>
+        <stage-remove :stage="table"></stage-remove>
+      </template>
     </div>
     <v-card>
       <v-data-table
@@ -14,10 +29,31 @@
         :pagination.sync="pagination"
         disable-initial-sort
         hide-actions>
+        <template slot="headers" slot-scope="props">
+          <th
+            v-for="(header, i) in headers"
+            :key="i"
+            :class="`text-xs-${header.align}`"
+            :width="header.width">
+            <template v-if="header.value">
+              {{ header.text }}
+            </template>
+            <v-tooltip v-else right>
+              <v-btn
+                slot="activator"
+                @click="override = !override"
+                icon>
+                <v-icon>mdi-playlist-edit</v-icon>
+              </v-btn>
+              Edit All
+            </v-tooltip>
+          </th>
+        </template>
         <template slot="items" slot-scope="props">
           <table-row
             :headers="headers"
             :row-data="props.item"
+            :override="override"
           ></table-row>
         </template>
       </v-data-table>
@@ -26,11 +62,13 @@
 </template>
 
 <script>
-  import StageRemove from '@/components/Competition/StageRemove'
-  import TableRow from '@/components/Competition/TableRow'
+  import EditModeButton from '@/components/EditModeButton'
+  import StageRemove from './StageRemove'
+  import TableRow from './TableRow'
 
   export default {
     components: {
+      EditModeButton,
       StageRemove,
       TableRow
     },
@@ -42,6 +80,9 @@
       readonly: Boolean
     },
     data: () => ({
+      stage: {},
+      edit: false,
+      override: false,
       pagination: {
         rowsPerPage: -1
       }
@@ -67,6 +108,19 @@
           ['points', 'goal_difference', 'goals_for', 'goals_against'],
           ['desc', 'desc', 'desc', 'desc']
         )
+      },
+      stageChanged () {
+        return this.stage.name !== this.table.name
+      }
+    },
+    watch: {
+      edit (val) {
+        if (val) {
+          const { id, name } = this.table
+          this.stage = { id, name }
+        } else if (this.stageChanged) {
+          this.$store.dispatch('stage/update', this.stage)
+        }
       }
     }
   }

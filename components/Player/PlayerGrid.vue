@@ -5,11 +5,27 @@
         // PLAYERS
       </div>
 
-      <v-tooltip top>
-        <v-btn slot="activator" icon @click.native="filterActive = !filterActive">
-          <v-icon>mdi-checkbox-{{ filterActive ? 'marked' : 'blank-outline' }}</v-icon>
-        </v-btn>
-        Display {{ filterActive ? 'All' : 'Active' }} Players
+      <!-- Display Menu -->
+      <v-tooltip bottom :color="currentFilter.color">
+        <v-menu slot="activator" bottom right>
+          <v-btn slot="activator" icon>
+            <v-icon :color="currentFilter.color">
+              mdi-{{ currentFilter.icon }}
+            </v-icon>
+          </v-btn>
+          <v-list>
+            <v-list-tile
+              v-for="(opt, i) in filters"
+              :key="i"
+              @click="filter = i">
+              <v-list-tile-avatar>
+                <v-icon :color="opt.color">mdi-{{ opt.icon }}</v-icon>
+              </v-list-tile-avatar>
+              <v-list-tile-title>{{ opt.text }}</v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-menu>
+        Display {{ currentFilter.text }} Players
       </v-tooltip>
 
       <v-btn-toggle
@@ -20,7 +36,7 @@
           v-for="(opt, i) in modes"
           :key="i"
           flat>
-          <v-icon :color="opt.color">{{ opt.icon }}</v-icon>
+          <v-icon :color="opt.color">mdi-{{ opt.icon }}</v-icon>
         </v-btn>
       </v-btn-toggle>
 
@@ -48,7 +64,7 @@
       :search="search"
       item-key="id"
       must-sort
-      no-data-text="No Players Recorded">
+      no-data-text="No Players Found">
       <template slot="items" slot-scope="props">
         <player-row
           :player-data="props.item"
@@ -64,8 +80,8 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
-  import PlayerForm from '@/components/Player/PlayerForm'
-  import PlayerRow from '@/components/Player/PlayerRow'
+  import PlayerForm from './PlayerForm'
+  import PlayerRow from './PlayerRow'
 
   export default {
     mixins: [ TeamAccessible ],
@@ -77,27 +93,32 @@
       return {
         mode: 0,
         modes: [
-          { text: 'Overall',    color: 'green', icon: 'mdi-trending-up' },
-          { text: 'Contract',   color: 'blue',  icon: 'mdi-file-document-outline' },
-          { text: 'Statistics', color: 'red',   icon: 'mdi-numeric' }
+          { text: 'Overall',    color: 'green', icon: 'trending-up' },
+          { text: 'Contract',   color: 'blue',  icon: 'file-document-outline' },
+          { text: 'Statistics', color: 'red',   icon: 'numeric' }
         ],
         loading: false,
         pagination: {
           rowsPerPage: 10,
           sortBy: 'pos_idx'
         },
-        filterActive: true,
+        filter: 2,
+        filters: [
+          { text: 'All', color: 'blue', icon: 'earth' },
+          { text: 'Youth', color: 'cyan', icon: 'school' },
+          { text: 'Active', color: 'bluegrey', icon: 'clipboard-account' },
+          { text: 'Injured', color: 'pink', icon: 'hospital' },
+          { text: 'Loaned', color: 'indigo', icon: 'transit-transfer' },
+          { text: 'Pending', color: 'deep-orange', icon: 'lock-clock' }
+        ],
         search: ''
       }
     },
     computed: {
       ...mapState('player', { players: 'list' }),
-      currentMode () {
-        return this.modes[this.mode]
-      },
-      actionWidth () {
-        return this.mode === 0 ? 125 : 40
-      },
+      currentMode () { return this.modes[this.mode] },
+      currentFilter () { return this.filters[this.filter] },
+      actionWidth () { return this.mode === 0 ? 125 : 40 },
       headers () {
         let headers = [
           { text: '',         value: 'action',  align: 'center', sortable: false, width: this.actionWidth },
@@ -132,7 +153,20 @@
       },
       rows () {
         return Object.values(this.players)
-          .filter(player => !this.filterActive || player.status)
+          .filter(player => {
+            switch (this.filter) {
+              case 0: // All
+                return true
+              case 1: // Youth
+                return player.youth
+              case 2: // Active
+                return player.status
+              case 3: // Injured
+              case 4: // Loaned
+              case 5: // Pending
+                return player.status === this.currentFilter.text
+            }
+          })
       }
     },
     mounted () {

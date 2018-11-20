@@ -1,8 +1,8 @@
 <script>
-  import ContractContent from '@/components/Player/Timeline/ContractContent'
-  import InjuryContent from '@/components/Player/Timeline/InjuryContent'
-  import LoanContent from '@/components/Player/Timeline/LoanContent'
-  import TransferContent from '@/components/Player/Timeline/TransferContent'
+  import ContractContent from './ContractContent'
+  import InjuryContent from './InjuryContent'
+  import LoanContent from './LoanContent'
+  import TransferContent from './TransferContent'
 
   export default {
     functional: true,

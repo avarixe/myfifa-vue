@@ -39,9 +39,7 @@
     },
     mixins: [ TeamAccessible ],
     computed: {
-      season () {
-        return this.$route.params.seasonId
-      }
+      season () { return this.$route.params.seasonId }
     },
     async asyncData ({ store, params }) {
       const { data } = await store.dispatch('team/analyzeSeason', {

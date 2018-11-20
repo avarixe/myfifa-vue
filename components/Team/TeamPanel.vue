@@ -30,8 +30,8 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import TeamForm from '@/components/Team/TeamForm'
-  import TeamActions from '@/components/Team/TeamActions'
+  import TeamForm from './TeamForm'
+  import TeamActions from './TeamActions'
 
   export default {
     components: {

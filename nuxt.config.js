@@ -36,7 +36,7 @@ export default {
   /*
   ** Customize the progress bar color
   */
-  loading: '~/components/AppLoadingOverlay.vue', // { color: '#3B8070' },
+  loading: '~/components/App/AppLoadingOverlay.vue', // { color: '#3B8070' },
 
   /*
   ** Plugins to load before mounting the App

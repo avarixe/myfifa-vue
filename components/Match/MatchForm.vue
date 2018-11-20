@@ -54,6 +54,12 @@
             </v-tooltip>
           </v-combobox>
         </v-flex>
+        <v-flex xs12>
+          <v-checkbox
+            v-model="match.extra_time"
+            label="Extra Time Required"
+          ></v-checkbox>
+        </v-flex>
       </v-layout>
     </v-container>
   </dialog-form>
@@ -70,16 +76,17 @@
       TeamAccessible
     ],
     props: {
-      initialMatch: Object
+      matchData: {
+        type: Object,
+        default: () => ({})
+      }
     },
     data () {
       return {
-        valid: !!this.initialMatch,
-        match: Object.assign({
-          competition: '',
-          home: '',
-          away: ''
-        }, this.initialMatch)
+        valid: !!this.matchData,
+        match: this.$_pick(this.matchData, [
+          'id', 'competition', 'home', 'away', 'extra_time'
+        ])
       }
     },
     computed: {
@@ -113,7 +120,7 @@
         }
       },
       async submit () {
-        if (this.initialMatch) {
+        if (this.matchData) {
           await this.update(this.match)
         } else {
           const { data } = await this.create({
@@ -121,7 +128,7 @@
             match: this.match
           })
           this.$router.push({
-          name: 'teams-id-matches-matchId',
+            name: 'teams-id-matches-matchId',
             params: {
               id: this.team.id,
               matchId: data.id

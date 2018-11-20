@@ -1,9 +1,27 @@
 <template>
   <v-card>
     <v-card-title>
-      <div class="title">{{ round.name }}</div>
+      <div class="title">
+        <template v-if="edit">
+          <v-text-field
+            v-model="stage.name"
+            :rules="$_validate('Stage Name', ['required'])"
+            class="d-inline-block"
+            @click.stop
+          ></v-text-field>
+        </template>
+        <template v-else>
+          {{ round.name }}
+        </template>
+      </div>
 
       <template v-if="!readonly">
+        <edit-mode-button
+          :mode="edit"
+          :changed="stageChanged"
+          v-on:toggle-mode="edit = !edit"
+        ></edit-mode-button>
+
         <v-tooltip bottom>
           <v-btn
             slot="activator"
@@ -24,10 +42,31 @@
       :pagination.sync="pagination"
       disable-initial-sort
       hide-actions>
+      <template slot="headers" slot-scope="props">
+        <th
+          v-for="(header, i) in headers"
+          :key="i"
+          :class="`text-xs-${header.align}`"
+          :width="header.width">
+          <template v-if="header.value">
+            {{ header.text }}
+          </template>
+          <v-tooltip v-else right>
+            <v-btn
+              slot="activator"
+              @click="override = !override"
+              icon>
+              <v-icon>mdi-playlist-edit</v-icon>
+            </v-btn>
+            Edit All
+          </v-tooltip>
+        </th>
+      </template>
       <template slot="items" slot-scope="props">
         <fixture-view
           :headers="headers"
           :fixture-data="props.item"
+          :override="override"
         ></fixture-view>
       </template>
     </v-data-table>
@@ -36,8 +75,8 @@
 </template>
 
 <script>
-  import StageRemove from '@/components/Competition/StageRemove'
-  import FixtureView from '@/components/Competition/FixtureView'
+  import StageRemove from './StageRemove'
+  import FixtureView from './FixtureView'
 
   export default {
     components: {
@@ -52,6 +91,9 @@
       readonly: Boolean
     },
     data: () => ({
+      stage: {},
+      edit: false,
+      override: false,
       pagination: {
         rowsPerPage: -1
       }
@@ -69,6 +111,19 @@
       },
       items () {
         return Object.values(this.round.fixtures) || []
+      },
+      stageChanged () {
+        return this.stage.name !== this.round.name
+      }
+    },
+    watch: {
+      edit (val) {
+        if (val) {
+          const { id, name } = this.round
+          this.stage = { id, name }
+        } else if (this.stageChanged) {
+          this.$store.dispatch('stage/update', this.stage)
+        }
       }
     },
     methods: {

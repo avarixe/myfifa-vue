@@ -1,6 +1,6 @@
 <template>
   <v-timeline
-    v-if="events.length > 0"
+    v-if="events.length > 0 || match.penalty_shootout"
     :dense="dense">
     <v-timeline-item
       v-for="(event, i) in events"
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-  import TimelineContent from '@/components/Match/Timeline/TimelineContent'
+  import TimelineContent from './TimelineContent'
   import { mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
