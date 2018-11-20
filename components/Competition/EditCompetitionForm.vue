@@ -60,10 +60,11 @@
       }
     },
     data () {
-      const { id, name, champion } = this.competitionData
       return {
         valid: true,
-        competition: { id, name, champion }
+        competition: this.$_pick(this.competitionData, [
+          'id', 'name', 'champion'
+        ])
       }
     },
     computed: {

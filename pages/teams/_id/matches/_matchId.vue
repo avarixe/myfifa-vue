@@ -19,7 +19,10 @@
               </v-flex>
               <v-flex xs12>
                 <div class="display-2">{{ match.home }} v {{ match.away }}</div>
-                <div class="display-1">{{ match.score }}</div>
+                <div class="display-1">
+                  {{ match.score }}
+                  {{ match.extra_time && !match.penalty_shootout ? '(AET)' : '' }}
+                </div>
               </v-flex>
             </v-layout>
           </v-card-text>

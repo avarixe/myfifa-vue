@@ -70,19 +70,19 @@
       TeamAccessible
     ],
     props: {
-      initialSquad: Object
+      squadData: Object
     },
     data () {
       return {
-        valid: !!this.initialSquad,
+        valid: !!this.squadData,
         squad: Object.assign({
           name: '',
           players_list: [],
           positions_list: []
         }, {
-          ...this.initialSquad,
-          players_list: ((this.initialSquad || {}).players_list || []).map(p => parseInt(p)),
-          positions_list: ((this.initialSquad || {}).positions_list || []).slice()
+          ...this.squadData,
+          players_list: ((this.squadData || {}).players_list || []).map(p => parseInt(p)),
+          positions_list: ((this.squadData || {}).positions_list || []).slice()
         })
       }
     },
@@ -118,7 +118,7 @@
         'update'
       ]),
       async submit () {
-        if (this.initialSquad) {
+        if (this.squadData) {
           await this.update(this.squad)
         } else {
           await this.create({

@@ -1,6 +1,6 @@
 <template>
   <v-timeline
-    v-if="events.length > 0"
+    v-if="events.length > 0 || match.penalty_shootout"
     :dense="dense">
     <v-timeline-item
       v-for="(event, i) in events"

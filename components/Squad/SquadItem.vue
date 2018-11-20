@@ -3,14 +3,7 @@
     <v-card-title class="title">
       {{ squad.name }}
 
-      <squad-form :initial-squad="squad">
-        <v-tooltip bottom color="orange">
-          <v-btn slot="activator" flat icon>
-            <v-icon color="orange">mdi-pencil</v-icon>
-          </v-btn>
-          Edit
-        </v-tooltip>
-      </squad-form>
+      <squad-actions :squad="squad"></squad-actions>
     </v-card-title>
     <formation-view
       :formation="squadPlayers"
@@ -19,12 +12,12 @@
 </template>
 
 <script>
-  import SquadForm from './SquadForm'
+  import SquadActions from './SquadActions'
   import FormationView from './FormationView'
 
   export default {
     components: {
-      SquadForm,
+      SquadActions,
       FormationView
     },
     props: {

@@ -1,6 +1,6 @@
 <template>
   <div class="text-xs-center">
-    <match-form :initial-match="match" color="orange">
+    <match-form :match-data="match" color="orange">
       <v-tooltip bottom color="orange">
         <v-btn icon slot="activator">
           <v-icon color="orange">mdi-pencil</v-icon>

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <squad-form :initial-squad="squad" color="orange">
-      <v-tooltip bottom>
-        <v-btn slot="activator" icon>
-          <v-icon color="orange">edit</v-icon>
+    <squad-form :squad-data="squad">
+      <v-tooltip bottom color="orange">
+        <v-btn slot="activator" flat icon>
+          <v-icon color="orange">mdi-pencil</v-icon>
         </v-btn>
         Edit
       </v-tooltip>
@@ -11,7 +11,7 @@
 
     <v-tooltip bottom>
       <v-btn slot="activator" icon @click="promptDeletion = true">
-        <v-icon color="black">remove_circle</v-icon>
+        <v-icon color="black">mdi-minus-circle</v-icon>
       </v-btn>
       Remove
     </v-tooltip>

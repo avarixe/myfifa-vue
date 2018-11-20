@@ -6,7 +6,7 @@
           <v-card-title primary-title>
             <div class="display-2">{{ player.name }}</div>
 
-            <player-form :initial-player="player" color="orange">
+            <player-form :player-data="player" color="orange">
               <v-tooltip bottom color="orange">
                 <v-btn slot="activator" icon>
                   <v-icon color="orange">mdi-pencil</v-icon>

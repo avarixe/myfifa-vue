@@ -9,7 +9,7 @@
       </v-btn>
       Dashboard
     </v-tooltip>
-    <team-form :initial-team="team" color="orange">
+    <team-form :team-data="team" color="orange">
       <v-tooltip bottom color="orange darken-2">
         <v-btn icon slot="activator">
           <v-icon color="orange darken-2">mdi-pencil</v-icon>

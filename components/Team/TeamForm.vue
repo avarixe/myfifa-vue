@@ -62,22 +62,22 @@
   export default {
     mixins: [ DialogFormable ],
     props: {
-      initialTeam: Object
+      teamData: {
+        type: Object,
+        default: () => ({})
+      }
     },
     data () {
       return {
-        team: Object.assign({
-          id: '',
-          title: '',
-          start_date: this.$_format(new Date()),
-          currency: '$'
-        }, this.initialTeam),
-        menu: false
+        menu: false,
+        team: this.$_pick(this.teamData, [
+          'id', 'title', 'start_date', 'currency'
+        ])
       }
     },
     computed: {
       title () {
-        return this.initialTeam ? 'Edit ' + this.team.title : 'New Team'
+        return this.teamData ? 'Edit ' + this.team.title : 'New Team'
       }
     },
     methods: {
