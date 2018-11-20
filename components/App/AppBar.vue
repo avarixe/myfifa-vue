@@ -16,6 +16,16 @@
           </v-list-tile-avatar>
           Home
         </v-list-tile>
+
+        <user-form>
+          <v-list-tile>
+            <v-list-tile-avatar>
+              <v-icon>mdi-account</v-icon>
+            </v-list-tile-avatar>
+            Account
+          </v-list-tile>
+        </user-form>
+
         <v-list-tile @click="logout">
           <v-list-tile-avatar>
             <v-icon>mdi-exit-to-app</v-icon>
@@ -48,6 +58,15 @@
         Home
       </v-tooltip>
 
+      <user-form>
+        <v-tooltip color="blue" class="hidden-xs-only" bottom>
+          <v-btn slot="activator" icon>
+            <v-icon>mdi-account</v-icon>
+          </v-btn>
+          Account
+        </v-tooltip>
+      </user-form>
+
       <v-tooltip color="blue" class="hidden-xs-only" bottom>
         <v-btn
           slot="activator"
@@ -63,10 +82,14 @@
 </template>
 
 <script>
+  import UserForm from './UserForm'
   import { mapState, mapGetters } from 'vuex'
   import Cookie from 'js-cookie'
 
   export default {
+    components: {
+      UserForm
+    },
     data: () => ({
       menu: false
     }),

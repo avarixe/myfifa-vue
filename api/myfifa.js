@@ -108,7 +108,8 @@ export default {
   },
 
   users: {
-    index: 'users.json'
+    record: 'users.json',
+    sync: 'users/sync'
   },
 
   token: {
