@@ -113,6 +113,8 @@
             return 'indigo'
           case 'Injured':
             return 'pink'
+          case 'Pending':
+            return 'deep-orange'
         }
       },
       statusIcon () {
@@ -123,6 +125,8 @@
             return 'transit-transfer'
           case 'Injured':
             return 'hospital'
+          case 'Pending':
+            return 'lock-clock'
         }
       },
       playerChanged () {
