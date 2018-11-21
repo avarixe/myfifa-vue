@@ -81,14 +81,15 @@
         default: () => ({})
       }
     },
-    data () {
-      return {
-        valid: !!this.matchData,
-        match: this.$_pick(this.matchData, [
-          'id', 'competition', 'home', 'away', 'extra_time'
-        ])
+    data: () => ({
+      valid: false,
+      match: {
+        competition: '',
+        home: '',
+        away: '',
+        extra_time: false
       }
-    },
+    }),
     computed: {
       ...mapGetters('match', [
         'competitions',
@@ -100,6 +101,19 @@
       isTeamGame () {
         return this.match.home === this.team.title ||
                this.match.away === this.team.title
+      }
+    },
+    watch: {
+      matchData: {
+        immediate: true,
+        handler (val) {
+          this.valid = !!val
+          if (val) {
+            Object.assign(this.match, this.$_pick(val, [
+              'id', 'competition', 'home', 'away', 'extra_time'
+            ]))
+          }
+        }
       }
     },
     methods: {
@@ -120,7 +134,7 @@
         }
       },
       async submit () {
-        if (this.matchData) {
+        if ('id' in this.match) {
           await this.update(this.match)
         } else {
           const { data } = await this.create({

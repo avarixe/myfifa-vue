@@ -101,10 +101,16 @@
     },
     data () {
       return {
-        valid: !!this.playerData,
-        player: this.$_pick(this.playerData, [
-          'id', 'name', 'pos', 'sec_pos', 'ovr', 'value', 'age', 'youth'
-        ])
+        valid: false,
+        player: {
+          name: '',
+          pos: '',
+          sec_pos: [],
+          ovr: 60,
+          value: '',
+          age: 16,
+          youth: false
+        }
       }
     },
     computed: {
@@ -115,13 +121,26 @@
         return this.player.id ? 'Edit ' + this.player.name : 'New Player'
       }
     },
+    watch: {
+      playerData: {
+        immediate: true,
+        handler (val) {
+          this.valid = !!val
+          if (val) {
+            Object.assign(this.player, this.$_pick(val, [
+              'id', 'name', 'pos', 'sec_pos', 'ovr', 'value', 'age', 'youth'
+            ]))
+          }
+        }
+      }
+    },
     methods: {
       ...mapActions('player', [
         'create',
         'update'
       ]),
       async submit () {
-        if (this.playerData) {
+        if ('id' in this.player) {
           await this.update(this.player)
         } else {
           const { data } = await this.create({

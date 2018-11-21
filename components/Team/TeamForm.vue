@@ -70,14 +70,28 @@
     data () {
       return {
         menu: false,
-        team: this.$_pick(this.teamData, [
-          'id', 'title', 'start_date', 'currency'
-        ])
+        team: {
+          title: '',
+          start_date: this.$_format(new Date()),
+          currency: '$'
+        }
       }
     },
     computed: {
       title () {
         return this.teamData ? 'Edit ' + this.team.title : 'New Team'
+      }
+    },
+    watch: {
+      teamData: {
+        immediate: true,
+        handler (val) {
+          if (val) {
+            Object.assign(this.team, this.$_pick(val, [
+              'id', 'title', 'start_date', 'currency'
+            ]))
+          }
+        }
       }
     },
     methods: {
@@ -86,7 +100,7 @@
         'update'
       ]),
       async submit () {
-        const save = this.team.id ? this.update : this.create
+        const save = 'id' in this.team ? this.update : this.create
         await save(this.team)
       }
     }

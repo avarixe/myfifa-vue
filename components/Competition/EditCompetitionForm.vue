@@ -62,9 +62,10 @@
     data () {
       return {
         valid: true,
-        competition: this.$_pick(this.competitionData, [
-          'id', 'name', 'champion'
-        ])
+        competition: {
+          name: '',
+          champion: ''
+        }
       }
     },
     computed: {
@@ -73,6 +74,18 @@
       }),
       teams () {
         return teamOptions(this.competitionData)
+      }
+    },
+    watch: {
+      competitionData: {
+        immediate: true,
+        handler (val) {
+          if (val) {
+            this.competition = this.$_pick(this.competitionData, [
+              'id', 'name', 'champion'
+            ])
+          }
+        }
       }
     },
     methods: {
