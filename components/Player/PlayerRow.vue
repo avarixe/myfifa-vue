@@ -20,7 +20,7 @@
           v-if="header.width > 40"
           :mode="edit"
           :changed="playerChanged"
-          v-on:toggle-mode="edit = !edit"
+          @toggle-mode="edit = !edit"
           dir="right"
         ></edit-mode-button>
       </template>

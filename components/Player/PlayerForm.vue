@@ -108,7 +108,7 @@
           sec_pos: [],
           ovr: 60,
           value: '',
-          age: 16,
+          birth_year: 16,
           youth: false
         }
       }
@@ -128,7 +128,7 @@
           this.valid = !!val
           if (val) {
             Object.assign(this.player, this.$_pick(val, [
-              'id', 'name', 'pos', 'sec_pos', 'ovr', 'value', 'age', 'youth'
+              'id', 'name', 'pos', 'sec_pos', 'ovr', 'value', 'birth_year', 'youth'
             ]))
           }
         }

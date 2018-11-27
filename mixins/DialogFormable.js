@@ -2,7 +2,7 @@ import DialogForm from '@/components/DialogForm'
 
 export default {
   components: {
-    'dialog-form': DialogForm
+    DialogForm
   },
   props: {
     color: String

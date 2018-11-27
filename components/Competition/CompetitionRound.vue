@@ -19,7 +19,7 @@
         <edit-mode-button
           :mode="edit"
           :changed="stageChanged"
-          v-on:toggle-mode="edit = !edit"
+          @toggle-mode="edit = !edit"
         ></edit-mode-button>
 
         <v-tooltip bottom>

@@ -17,7 +17,7 @@
         <edit-mode-button
           :mode="edit"
           :changed="stageChanged"
-          v-on:toggle-mode="edit = !edit"
+          @toggle-mode="edit = !edit"
         ></edit-mode-button>
         <stage-remove :stage="table"></stage-remove>
       </template>
