@@ -730,6 +730,11 @@
     source-map "^0.5.6"
     vue-template-es2015-compiler "^1.6.0"
 
+"@vuex-orm/core@^0.30.0":
+  version "0.30.0"
+  resolved "https://registry.yarnpkg.com/@vuex-orm/core/-/core-0.30.0.tgz#336d127e925f1ce7bd7afc1a8f50c3e1a9280f5b"
+  integrity sha512-2NrhcE1LDCRxhr1WUv2whcrTRuQtnzidJewDJh6PMpmdfh848DM9AYqk8JBCfyIxH+fYmLKhAu0IAEQ/l1oRYg==
+
 "@webassemblyjs/ast@1.7.11":
   version "1.7.11"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.7.11.tgz#b988582cafbb2b095e8b556526f30c90d057cace"
