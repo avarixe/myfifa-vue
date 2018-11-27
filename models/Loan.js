@@ -7,14 +7,14 @@ export default class Loan extends Model {
   static fields () {
     return {
       // Primary/Foreign keys
-      id: this.attr(null),
-      player_id: this.attr(null),
+      id: this.number(null),
+      player_id: this.number(null),
 
       // Database fields
-      start_date: this.attr(null),
-      end_date: this.attr(null),
-      destination: this.attr(''),
-      returned: this.attr(false)
+      start_date: this.string(''),
+      end_date: this.string(''),
+      destination: this.string(''),
+      returned: this.boolean(false)
 
       // Associations
       player: this.belongsTo(Player, 'player_id')

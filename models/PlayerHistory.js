@@ -7,14 +7,14 @@ export default class PlayerHistory extends Model {
   static fields () {
     return {
       // Primary/Foreign keys
-      id: this.attr(null),
-      player_id: this.attr(null),
+      id: this.number(0),
+      player_id: this.number(0),
 
       // Database fields
-      datestamp: this.attr(null),
-      ovr: this.attr(null),
-      value: this.attr(null),
-      kit_no: this.attr(null)
+      datestamp: this.string(''),
+      ovr: this.number(60),
+      value: this.number(0),
+      kit_no: this.number(0).nullable()
 
       // Associations
       player: this.belongsTo(Player, 'player_id')

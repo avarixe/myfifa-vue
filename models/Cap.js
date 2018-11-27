@@ -8,18 +8,18 @@ export default class Cap extends Model {
   static fields () {
     return {
       // Primary/Foreign keys
-      id: this.attr(null),
-      match_id: this.attr(null),
-      player_id: this.attr(null),
+      id: this.number(0),
+      match_id: this.number(0),
+      player_id: this.number(0),
 
       // Database fields
-      pos: this.attr(''),
-      start: this.attr(0),
-      stop: this.attr(90),
-      subbed_out: this.attr(false),
+      pos: this.string(''),
+      start: this.number(0),
+      stop: this.number(90),
+      subbed_out: this.boolean(false),
 
       // Calculated fields
-      name: this.attr(''),
+      name: this.string(''),
 
       // Associations
       match: this.belongsTo(Match, 'match_id'),

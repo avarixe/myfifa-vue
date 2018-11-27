@@ -7,14 +7,14 @@ export default class Injury extends Model {
   static fields () {
     return {
       // Primary/Foreign keys
-      id: this.attr(null),
-      player_id: this.attr(null),
+      id: this.number(0),
+      player_id: this.number(0),
 
       // Database fields
-      start_date: this.attr(null),
-      end_date: this.attr(null),
-      description: this.attr(''),
-      recovered: this.attr(false)
+      start_date: this.string(''),
+      end_date: this.string(''),
+      description: this.string(''),
+      recovered: this.boolean(false)
 
       // Associations
       player: this.belongsTo(Player, 'player_id')

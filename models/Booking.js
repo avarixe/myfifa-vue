@@ -8,18 +8,18 @@ export default class Booking extends Model {
   static fields () {
     return {
       // Primary/Foreign keys
-      id: this.attr(null),
-      match_id: this.attr(null),
-      player_id: this.attr(null),
+      id: this.number(0),
+      match_id: this.number(0),
+      player_id: this.number(0),
 
       // Database fields
-      player_name: this.attr(''),
-      minute: this.attr(null),
-      red_card: this.attr(false),
+      player_name: this.string(''),
+      minute: this.string(0),
+      red_card: this.boolean(false),
       
       // Calculated fields
-      event_type: this.attr('Booking'),
-      home: this.attr(true),
+      event_type: this.string('Booking'),
+      home: this.boolean(true),
 
       // Associations
       match: this.belongsTo(Match, 'match_id'),

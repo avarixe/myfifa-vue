@@ -7,19 +7,19 @@ export default class Contract extends Model {
   static fields () {
     return {
       // Primary/Foreign keys
-      id: this.attr(null),
-      player_id: this.attr(null),
+      id: this.number(0),
+      player_id: this.number(0),
 
       // Database fields
-      signed_date: this.attr(null),
-      wage: this.attr(null),
-      signing_bonus: this.attr(null),
-      release_clause: this.attr(null),
-      performance_bonus: this.attr(null),
-      bonus_req: this.attr(null),
-      bonus_req_type: this.attr(null),
-      end_date: this.attr(null),
-      effective_date: this.attr(null),
+      signed_date: this.string(''),
+      wage: this.number(null).nullable(),
+      signing_bonus: this.number(null).nullable(),
+      release_clause: this.number(null).nullable(),
+      performance_bonus: this.number(null).nullable(),
+      bonus_req: this.number(null).nullable(),
+      bonus_req_type: this.number(null).nullable(),
+      end_date: this.string(''),
+      effective_date: this.string(''),
 
       // Associations
       player: this.belongsTo(Player, 'player_id')

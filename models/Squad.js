@@ -7,11 +7,11 @@ export default class Squad extends Model {
   static fields () {
     return {
       // Primary/Foreign keys
-      id: this.attr(null),
-      team_id: this.attr(null),
+      id: this.number(0),
+      team_id: this.number(0),
 
       // Database fields
-      name: this.attr(''),
+      name: this.string(''),
       players_list: this.attr([]),
       positions_list: this.attr([]),
 

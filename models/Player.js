@@ -17,23 +17,23 @@ export default class Player extends Model {
   static fields () {
     return {
       // Primary/Foreign keys
-      id: this.attr(null),
-      team_id: this.attr(null),
+      id: this.number(0),
+      team_id: this.number(0),
 
       // Database fields
-      name: this.attr(''),
-      pos: this.attr(null),
+      name: this.string(''),
+      pos: this.string(''),
       sec_pos: this.attr([]),
-      ovr: this.attr(60),
-      value: this.attr(null),
-      birth_year: this.attr(null),
-      status: this.attr(null),
-      youth: this.attr(false),
-      kit_no: this.attr(null),
+      ovr: this.number(60),
+      value: this.number(null).nullable(),
+      birth_year: this.number(null).nullable(),
+      status: this.string(null).nullable(),
+      youth: this.boolean(false),
+      kit_no: this.number(null).nullable(),
 
       // Calculated fields
-      age: this.attr(null),
-      pos_idx: this.attr(null),
+      age: this.number(16),
+      pos_idx: this.number(0),
 
       // Associations
       team: this.belongsTo(Team, 'team_id'),

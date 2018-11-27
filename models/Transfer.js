@@ -7,18 +7,18 @@ export default class Transfer extends Model {
   static fields () {
     return {
       // Primary/Foreign keys
-      id: this.attr(null),
-      player_id: this.attr(null),
+      id: this.number(0),
+      player_id: this.number(0),
 
       // Database fields
-      signed_date: this.attr(null),
-      effective_date: this.attr(null),
-      origin: this.attr(''),
-      destination: this.attr(''),
-      fee: this.attr(null),
-      traded_player: this.attr(null),
-      addon_clause: this.attr(null),
-      loan: this.attr(false),
+      signed_date: this.string(''),
+      effective_date: this.string(''),
+      origin: this.string(''),
+      destination: this.string(''),
+      fee: this.number(null).nullable(),
+      traded_player: this.string(null).nullable(),
+      addon_clause: this.number(null).nullable(),
+      loan: this.boolean(false),
 
       // Associations
       player: this.belongsTo(Player, 'player_id')

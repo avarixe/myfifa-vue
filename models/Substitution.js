@@ -8,20 +8,20 @@ export default class Substitution extends Model {
   static fields () {
     return {
       // Primary/Foreign keys
-      id: this.attr(null),
-      match_id: this.attr(null),
-      player_id: this.attr(null),
-      replacement_id: this.attr(null),
+      id: this.number(0),
+      match_id: this.number(0),
+      player_id: this.number(0),
+      replacement_id: this.number(0),
 
       // Database fields
-      player_name: this.attr(''),
-      replaced_by: this.attr(''),
-      minute: this.attr(null),
-      injury: this.attr(false),
+      player_name: this.string(''),
+      replaced_by: this.string(''),
+      minute: this.number(0),
+      injury: this.boolean(false),
       
       // Calculated fields
-      event_type: this.attr('Substitution'),
-      home: this.attr(true),
+      event_type: this.string('Substitution'),
+      home: this.boolean(true),
 
       // Associations
       match: this.belongsTo(Match, 'match_id'),

@@ -13,20 +13,20 @@ export default class Match extends Model {
   static fields () {
     return {
       // Primary/Foreign keys
-      id: this.attr(null),
-      team_id: this.attr(null),
+      id: this.number(0),
+      team_id: this.number(0),
 
       // Database fields
-      home: this.attr(''),
-      away: this.attr(''),
-      competition: this.attr(null),
-      date_played: this.attr(null),
-      extra_time: this.attr(false),
-      home_score: this.attr(null),
-      away_score: this.attr(null),
+      home: this.string(''),
+      away: this.string(''),
+      competition: this.string(''),
+      date_played: this.string(''),
+      extra_time: this.boolean(false),
+      home_score: this.number(0),
+      away_score: this.number(0),
 
       // Calculated fields
-      score: this.attr(''),
+      score: this.string(''),
       team_result: this.attr(null),
 
       // Associations

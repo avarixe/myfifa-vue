@@ -9,14 +9,14 @@ export default class Fixture extends Model {
   static fields () {
     return {
       // Primary/Foreign keys
-      id: this.attr(null),
-      competition_id: this.attr(null),
+      id: this.number(0),
+      competition_id: this.number(0),
 
       // Database fields
-      name: this.attr(''),
-      num_teams: this.attr(null),
-      num_fixtures: this.attr(null),
-      table: this.attr(false),
+      name: this.string(''),
+      num_teams: this.number(0),
+      num_fixtures: this.number(0),
+      table: this.boolean(false),
 
       // Associations
       competition: this.belongsTo(Competition, 'competition_id'),

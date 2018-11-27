@@ -8,18 +8,18 @@ export default class Competition extends Model {
   static fields () {
     return {
       // Primary/Foreign keys
-      id: this.attr(null),
-      team_id: this.attr(null),
+      id: this.number(0),
+      team_id: this.number(0),
 
       // Database fields
-      season: this.attr(null),
-      name: this.attr(''),
-      champion: this.attr(null),
+      season: this.number(0),
+      name: this.string(''),
+      champion: this.string(null).nullable(),
       preset_format: this.attr(null),
-      num_teams: this.attr(null),
-      num_teams_per_group: this.attr(null),
-      num_advances_from_group: this.attr(null),
-      num_matches_per_fixture: this.attr(null),
+      num_teams: this.number(null).nullable(),
+      num_teams_per_group: this.number(null).nullable(),
+      num_advances_from_group: this.number(null).nullable(),
+      num_matches_per_fixture: this.number(null).nullable(),
 
       // Associations
       team: this.belongsTo(Team, 'team_id'),

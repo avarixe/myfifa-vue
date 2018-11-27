@@ -8,12 +8,12 @@ export default class PenaltyShootout extends Model {
   static fields () {
     return {
       // Primary/Foreign keys
-      id: this.attr(null),
-      match_id: this.attr(null),
+      id: this.number(0),
+      match_id: this.number(0),
 
       // Database fields
-      home_score: this.attr(0),
-      away_score: this.attr(0),
+      home_score: this.number(0),
+      away_score: this.number(0),
 
       // Associations
       match: this.belongsTo(Match, 'match_id'),

@@ -10,17 +10,17 @@ export default class Team extends Model {
   static fields () {
     return {
       // Primary/Foreign keys
-      id: this.attr(null),
+      id: this.number(0),
 
       // Database fields
-      title: this.attr(''),
-      start_date: this.attr(null),
-      current_date: this.attr(null),
-      active: this.attr(true),
-      currency: this.attr('$'),
+      title: this.string(''),
+      start_date: this.string(''),
+      current_date: this.string(''),
+      active: this.boolean(true),
+      currency: this.string('$'),
 
       // Calculated fields
-      time_period: this.attr(null),
+      time_period: this.string(''),
 
       // Associations
       players: this.hasMany(Player, 'team_id'),

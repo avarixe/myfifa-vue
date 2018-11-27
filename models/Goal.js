@@ -8,20 +8,20 @@ export default class Goal extends Model {
   static fields () {
     return {
       // Primary/Foreign keys
-      id: this.attr(null),
-      match_id: this.attr(null),
-      player_id: this.attr(null),
-      assist_id: this.attr(null),
+      id: this.number(0),
+      match_id: this.number(0),
+      player_id: this.number(null).nullable(),
+      assist_id: this.number(null).nullable(),
 
       // Database fields
-      player_name: this.attr(''),
-      assisted_by: this.attr(''),
-      home: this.attr(true),
-      own_goal: this.attr(false),
-      penalty: this.attr(false),
+      player_name: this.string(''),
+      assisted_by: this.string(''),
+      home: this.boolean(true),
+      own_goal: this.boolean(false),
+      penalty: this.boolean(false),
       
       // Calculated fields
-      event_type: this.attr('Goal'),
+      event_type: this.string('Goal'),
 
       // Associations
       match: this.belongsTo(Match, 'match_id'),
