@@ -70,6 +70,11 @@
     },
     middleware: 'authenticated',
     mixins: [ TeamAccessible ],
+    head () {
+      return {
+        title: `${this.match.home} vs ${this.match.away}`
+      }
+    },
     computed: {
       ...mapState('player', { players: 'list' }),
       ...mapState('match', { matches: 'list' }),
