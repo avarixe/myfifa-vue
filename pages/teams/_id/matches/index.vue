@@ -23,6 +23,11 @@
   export default {
     layout: 'team',
     middleware: 'authenticated',
+    head () {
+      return {
+        title: `${this.$store.getters['team/current'].title} - Matches`
+      }
+    },
     async fetch ({ store, params }) {
       store.state.team.currentId !== params.id &&
       await store.dispatch('team/get', { teamId: params.id, activate: true })

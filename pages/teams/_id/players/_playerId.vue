@@ -212,6 +212,11 @@
         timelineFilter: 'All'
       }
     },
+    head () {
+      return {
+        title: this.player.name
+      }
+    },
     computed: {
       ...mapState('player', {
         players: 'list'

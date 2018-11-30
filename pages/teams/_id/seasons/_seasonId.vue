@@ -38,15 +38,20 @@
       PlayerGrid
     },
     mixins: [ TeamAccessible ],
-    computed: {
-      season () { return this.$route.params.seasonId }
-    },
     async asyncData ({ store, params }) {
       const { data } = await store.dispatch('team/analyzeSeason', {
         teamId: params.id,
         season: params.seasonId
       })
       return { seasonData: data }
+    },
+    head () {
+      return {
+        title: `${this.seasonLabel(this.season)} Season`
+      }
+    },
+    computed: {
+      season () { return this.$route.params.seasonId }
     },
     async fetch ({ store, params }) {
       store.state.team.currentId !== params.id &&
