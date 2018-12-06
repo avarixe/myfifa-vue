@@ -151,22 +151,27 @@
             ])
         }
       },
+
       rows () {
-        return Object.values(this.players)
-          .filter(player => {
-            switch (this.filter) {
-              case 0: // All
-                return true
-              case 1: // Youth
-                return player.youth
-              case 2: // Active
-                return player.status
-              case 3: // Injured
-              case 4: // Loaned
-              case 5: // Pending
-                return player.status === this.currentFilter.text
-            }
-          })
+        return this.$_orderBy(
+          Object.values(this.players)
+            .filter(player => {
+              switch (this.filter) {
+                case 0: // All
+                  return true
+                case 1: // Youth
+                  return player.youth
+                case 2: // Active
+                  return player.status
+                case 3: // Injured
+                case 4: // Loaned
+                case 5: // Pending
+                  return player.status === this.currentFilter.text
+              }
+            }),
+          ['ovr'],
+          ['desc']
+        )
       }
     },
     mounted () {
