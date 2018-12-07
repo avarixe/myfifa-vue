@@ -14,7 +14,7 @@ export default class Injury extends Model {
       start_date: this.string(''),
       end_date: this.string(''),
       description: this.string(''),
-      recovered: this.boolean(false)
+      recovered: this.boolean(false),
 
       // Associations
       player: this.belongsTo(Player, 'player_id')

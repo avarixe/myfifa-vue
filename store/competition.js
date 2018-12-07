@@ -22,7 +22,7 @@ export const actions = {
       return http({
         path: myfifa.competitions.index,
         pathData: { teamId },
-        token: rootState.token,
+        token: rootState.session.token,
         success: function ({ data }) {
           commit('SET_ALL', data)
         }
@@ -36,7 +36,7 @@ export const actions = {
       return http({
         path: myfifa.competitions.record,
         pathData: { competitionId },
-        token: rootState.token,
+        token: rootState.session.token,
         success: function ({ data }) {
           commit('SET', data)
         }
@@ -48,7 +48,7 @@ export const actions = {
       method: 'post',
       path: myfifa.competitions.index,
       pathData: { teamId },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { competition }
     })
   },
@@ -57,7 +57,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.competitions.record,
       pathData: { competitionId: competition.id },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { competition }
     })
   },
@@ -66,7 +66,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.competitions.record,
       pathData: { competitionId },
-      token: rootState.token
+      token: rootState.session.token
     })
   }
 }

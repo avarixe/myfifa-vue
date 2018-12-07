@@ -8,7 +8,7 @@ export const actions = {
       method: 'post',
       path: myfifa.goals.index,
       pathData: { matchId },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { goal }
     })
   },
@@ -17,7 +17,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.goals.record,
       pathData: { goalId },
-      token: rootState.token
+      token: rootState.session.token
     })
   }
 }

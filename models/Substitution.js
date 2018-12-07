@@ -18,7 +18,7 @@ export default class Substitution extends Model {
       replaced_by: this.string(''),
       minute: this.number(0),
       injury: this.boolean(false),
-      
+
       // Calculated fields
       event_type: this.string('Substitution'),
       home: this.boolean(true),

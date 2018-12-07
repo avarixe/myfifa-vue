@@ -29,7 +29,8 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import Team from '@/models/Team'
+  import { mapActions } from 'vuex'
   import TeamForm from './TeamForm'
   import TeamActions from './TeamActions'
 
@@ -51,19 +52,19 @@
       }
     },
     computed: {
-      ...mapState('team', {
-        teams: 'list'
-      }),
+      teams () {
+        return Team.all()
+      },
       rows () {
-        return this.$_orderBy(Object.values(this.teams), ['id'], ['desc'])
+        return this.$_orderBy(this.teams, ['id'], ['desc'])
       }
     },
     mounted () {
       this.reloadTable()
     },
     methods: {
-      ...mapActions('team', {
-        getTeams: 'getAll'
+      ...mapActions('entities/teams', {
+        getTeams: 'FETCH'
       }),
       async reloadTable () {
         this.loading = true

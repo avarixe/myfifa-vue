@@ -91,7 +91,7 @@
       }
     },
     computed: {
-      ...mapGetters('team', [
+      ...mapGetters('teams', [
         'seasonStart',
         'seasonEnd'
       ])
@@ -104,7 +104,7 @@
         }
       }
     },
-    methods: mapActions('team', [ 'update' ])
+    methods: mapActions('teams', [ 'update' ])
   }
 </script>
 

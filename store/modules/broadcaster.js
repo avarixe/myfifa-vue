@@ -1,11 +1,11 @@
 // initial state
-export const state = () => ({
+const state = () => ({
   message: '',
   color: ''
 })
 
 // mutations
-export const mutations = {
+const mutations = {
   ANNOUNCE (state, { message, color }) {
     state.color = color
     state.message = message || ''
@@ -14,4 +14,10 @@ export const mutations = {
     state.message = ''
     state.color = ''
   }
+}
+
+export default {
+  namespaced: true,
+  state,
+  mutations
 }

@@ -48,7 +48,7 @@ export const actions = {
       return http({
         path: myfifa.players.index,
         pathData: { teamId },
-        token: rootState.token,
+        token: rootState.session.token,
         success: function ({ data }) {
           commit('SET_ALL', data)
         }
@@ -62,7 +62,7 @@ export const actions = {
       return http({
         path: myfifa.players.record,
         pathData: { playerId },
-        token: rootState.token,
+        token: rootState.session.token,
         success: ({ data }) => {
           commit('SET', data)
         }
@@ -74,7 +74,7 @@ export const actions = {
       method: 'post',
       path: myfifa.analyze.players,
       pathData: { teamId },
-      token: rootState.token,
+      token: rootState.session.token,
       data: {
         query: {
           player_ids: playerIds
@@ -98,7 +98,7 @@ export const actions = {
       method: 'post',
       path: myfifa.players.index,
       pathData: { teamId },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { player }
     })
   },
@@ -107,7 +107,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.players.record,
       pathData: { playerId: player.id },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { player }
     })
   },
@@ -116,7 +116,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.players.record,
       pathData: { playerId },
-      token: rootState.token
+      token: rootState.session.token
     })
   },
   retire ({ commit, rootState }, playerId) {
@@ -124,7 +124,7 @@ export const actions = {
       method: 'post',
       path: myfifa.players.retire,
       pathData: { playerId },
-      token: rootState.token
+      token: rootState.session.token
     })
   },
   release ({ commit, rootState }, playerId) {
@@ -132,14 +132,14 @@ export const actions = {
       method: 'post',
       path: myfifa.players.release,
       pathData: { playerId },
-      token: rootState.token
+      token: rootState.session.token
     })
   },
   getHistory ({ state, commit, rootState }, { playerId }) {
     return http({
       path: myfifa.players.history,
       pathData: { playerId },
-      token: rootState.token,
+      token: rootState.session.token,
       success: function ({ data }) {
         commit('SET', {
           ...state.list[playerId],
@@ -152,14 +152,14 @@ export const actions = {
     return http({
       path: myfifa.players.currentInjury,
       pathData: { playerId },
-      token: rootState.token
+      token: rootState.session.token
     })
   },
   getCurrentLoan ({ rootState }, { playerId }) {
     return http({
       path: myfifa.players.currentLoan,
       pathData: { playerId },
-      token: rootState.token
+      token: rootState.session.token
     })
   }
 }

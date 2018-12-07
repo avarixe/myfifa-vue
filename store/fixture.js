@@ -8,7 +8,7 @@ export const actions = {
       method: 'post',
       path: myfifa.fixtures.index,
       pathData: { stageId },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { fixture }
     })
   },
@@ -17,7 +17,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.fixtures.record,
       pathData: { fixtureId: fixture.id },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { fixture }
     })
   }

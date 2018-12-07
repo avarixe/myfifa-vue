@@ -3,7 +3,7 @@ import Competition from './Competition'
 import Fixture from './Fixture'
 import TableRow from './TableRow'
 
-export default class Fixture extends Model {
+export default class Stage extends Model {
   static entity = 'fixtures'
 
   static fields () {
@@ -20,8 +20,8 @@ export default class Fixture extends Model {
 
       // Associations
       competition: this.belongsTo(Competition, 'competition_id'),
-      fixtures: this.hasMany(Fixture, 'stage_id')
-      tableRows: this.hasMany(TableRow, 'stage_id'),
+      fixtures: this.hasMany(Fixture, 'stage_id'),
+      tableRows: this.hasMany(TableRow, 'stage_id')
     }
   }
 }

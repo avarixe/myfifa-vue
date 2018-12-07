@@ -8,7 +8,7 @@ export const actions = {
     return http({
       path: myfifa.loans.index,
       pathData: { playerId },
-      token: rootState.token,
+      token: rootState.session.token,
       success: ({ data }) => {
         commit('player/SET', {
           ...rootState.player.list[playerId],
@@ -22,7 +22,7 @@ export const actions = {
       method: 'post',
       path: myfifa.loans.index,
       pathData: { playerId },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { loan }
     })
   },
@@ -31,7 +31,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.loans.record,
       pathData: { loanId: loan.id },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { loan }
     })
   }

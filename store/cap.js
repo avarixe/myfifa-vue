@@ -8,7 +8,7 @@ export const actions = {
     return http({
       path: myfifa.caps.index,
       pathData: { matchId },
-      token: rootState.token,
+      token: rootState.session.token,
       success: ({ data }) => {
         commit('match/SET', {
           ...rootState.match.list[matchId],
@@ -21,7 +21,7 @@ export const actions = {
     return http({
       path: myfifa.caps.record,
       pathData: { capId },
-      token: rootState.token
+      token: rootState.session.token
     })
   },
   create ({ commit, rootState }, { matchId, cap }) {
@@ -29,7 +29,7 @@ export const actions = {
       method: 'post',
       path: myfifa.caps.index,
       pathData: { matchId },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { cap }
     })
   },
@@ -38,7 +38,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.caps.record,
       pathData: { capId: cap.id },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { cap }
     })
   }

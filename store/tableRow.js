@@ -8,7 +8,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.tableRows.record,
       pathData: { rowId: tableRow.id },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { table_row: tableRow }
     })
   }

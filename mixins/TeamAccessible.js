@@ -3,7 +3,7 @@ import { addYears } from 'date-fns'
 
 export default {
   computed: mapGetters({
-    team: 'team/current'
+    team: 'teams/current'
   }),
   methods: {
     seasonLabel (season) {

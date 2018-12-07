@@ -19,7 +19,7 @@
       AppBroadcaster
     },
     mounted () {
-      this.$store.commit('team/CLEAR')
+      this.$store.commit('entities/teams/CLEAR')
     }
   }
 </script>

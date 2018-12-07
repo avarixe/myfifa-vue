@@ -57,15 +57,13 @@
 
 <script>
   import { mapActions } from 'vuex'
+  import Team from '@/models/Team'
   import DialogFormable from '@/mixins/DialogFormable'
 
   export default {
     mixins: [ DialogFormable ],
     props: {
-      teamData: {
-        type: Object,
-        default: () => ({})
-      }
+      teamId: [String, Number]
     },
     data () {
       return {
@@ -83,22 +81,25 @@
       }
     },
     watch: {
-      teamData: {
+      dialog: {
         immediate: true,
         handler (val) {
-          if (val) {
-            Object.assign(this.team, this.$_pick(val, [
-              'id', 'title', 'start_date', 'currency'
-            ]))
+          if (val && this.teamId) {
+            Object.assign(
+              this.team,
+              this.$_pick(Team.find(this.teamId), [
+                'id', 'title', 'start_date', 'currency'
+              ])
+            )
           }
         }
       }
     },
     methods: {
-      ...mapActions('team', [
-        'create',
-        'update'
-      ]),
+      ...mapActions('entities/teams', {
+        create: 'CREATE',
+        update: 'UPDATE'
+      }),
       async submit () {
         const save = 'id' in this.team ? this.update : this.create
         await save(this.team)

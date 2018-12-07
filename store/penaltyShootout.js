@@ -8,7 +8,7 @@ export const actions = {
       method: 'post',
       path: myfifa.penaltyShootouts.index,
       pathData: { matchId },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { penalty_shootout: penaltyShootout }
     })
   },
@@ -17,7 +17,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.penaltyShootouts.record,
       pathData: { penaltyShootoutId },
-      token: rootState.token
+      token: rootState.session.token
     })
   }
 }

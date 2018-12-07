@@ -8,7 +8,7 @@ export const actions = {
       method: 'post',
       path: myfifa.substitutions.index,
       pathData: { matchId },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { substitution }
     })
   },
@@ -17,7 +17,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.substitutions.record,
       pathData: { substitutionId },
-      token: rootState.token
+      token: rootState.session.token
     })
   }
 }

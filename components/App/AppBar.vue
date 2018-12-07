@@ -94,10 +94,10 @@
       menu: false
     }),
     computed: {
-      ...mapState('team', { teamId: 'currentId' }),
+      ...mapState('entities/teams', { teamId: 'currentId' }),
       ...mapGetters({
         authenticated: 'authenticated',
-        team: 'team/current'
+        team: 'entities/teams/current'
       }),
       items () {
         let items = []

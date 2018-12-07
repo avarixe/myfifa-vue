@@ -7,7 +7,7 @@ export const actions = {
     return http({
       path: myfifa.transfers.index,
       pathData: { playerId },
-      token: rootState.token,
+      token: rootState.session.token,
       success: ({ data }) => {
         commit('player/SET', {
           ...rootState.player.list[playerId],
@@ -21,7 +21,7 @@ export const actions = {
       method: 'post',
       path: myfifa.transfers.index,
       pathData: { playerId },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { transfer }
     })
   }

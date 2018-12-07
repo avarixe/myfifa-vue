@@ -8,7 +8,7 @@ export const actions = {
     return http({
       path: myfifa.injuries.index,
       pathData: { playerId },
-      token: rootState.token,
+      token: rootState.session.token,
       success: ({ data }) => {
         commit('player/SET', {
           ...rootState.player.list[playerId],
@@ -22,7 +22,7 @@ export const actions = {
       method: 'post',
       path: myfifa.injuries.index,
       pathData: { playerId },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { injury }
     })
   },
@@ -31,7 +31,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.injuries.record,
       pathData: { injuryId: injury.id },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { injury }
     })
   }

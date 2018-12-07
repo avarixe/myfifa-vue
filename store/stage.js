@@ -9,7 +9,7 @@ export const actions = {
     return http({
       path: myfifa.stages.index,
       pathData: { competitionId },
-      token: rootState.token,
+      token: rootState.session.token,
       success: function ({ data }) {
         commit('competition/SET', {
           ...rootState.competition.list[competitionId],
@@ -25,7 +25,7 @@ export const actions = {
       method: 'post',
       path: myfifa.stages.index,
       pathData: { competitionId },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { stage }
     })
   },
@@ -34,7 +34,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.stages.record,
       pathData: { stageId: stage.id },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { stage }
     })
   },
@@ -43,7 +43,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.stages.record,
       pathData: { stageId },
-      token: rootState.token
+      token: rootState.session.token
     })
   }
 }

@@ -57,7 +57,7 @@ export const actions = {
       return http({
         path: myfifa.matches.index,
         pathData: { teamId },
-        token: rootState.token,
+        token: rootState.session.token,
         success: function ({ data }) {
           commit('SET_ALL', data)
         }
@@ -71,7 +71,7 @@ export const actions = {
       return http({
         path: myfifa.matches.record,
         pathData: { matchId },
-        token: rootState.token,
+        token: rootState.session.token,
         success: function ({ data }) {
           commit('SET', data)
         }
@@ -83,7 +83,7 @@ export const actions = {
       method: 'post',
       path: myfifa.matches.index,
       pathData: { teamId },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { match }
     })
   },
@@ -92,7 +92,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.matches.record,
       pathData: { matchId: match.id },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { match }
     })
   },
@@ -101,14 +101,14 @@ export const actions = {
       method: 'delete',
       path: myfifa.matches.record,
       pathData: { matchId },
-      token: rootState.token
+      token: rootState.session.token
     })
   },
   getEvents ({ state, commit, rootState }, { matchId }) {
     return http({
       path: myfifa.matches.events,
       pathData: { matchId },
-      token: rootState.token,
+      token: rootState.session.token,
       success: ({ data }) => {
         commit('SET', {
           ...state.list[matchId],
@@ -122,7 +122,7 @@ export const actions = {
       method: 'post',
       path: myfifa.matches.applySquad,
       pathData: { matchId },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { squad_id: squadId }
     })
   }

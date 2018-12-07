@@ -8,7 +8,6 @@ import Transfer from './Transfer'
 import Cap from './Cap'
 import Match from './Match'
 import Goal from './Goal'
-import Assist from './Assist'
 import Booking from './Booking'
 
 export default class Player extends Model {

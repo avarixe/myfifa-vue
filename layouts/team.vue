@@ -28,7 +28,7 @@
       TeamChannel
     },
     computed: mapGetters({
-      team: 'team/current'
+      team: 'entities/team/current'
     })
   }
 </script>

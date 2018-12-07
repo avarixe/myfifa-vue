@@ -43,6 +43,10 @@
       TeamForm,
       TeamPanel
     },
-    computed: mapGetters([ 'authenticated' ])
+    computed: mapGetters([ 'authenticated' ]),
+    fetch ({ store }) {
+      console.log('STATE:', store.state)
+      console.log('GETTERS:', store.getters)
+    }
   }
 </script>

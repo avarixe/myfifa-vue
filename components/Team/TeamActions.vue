@@ -9,7 +9,7 @@
       </v-btn>
       Dashboard
     </v-tooltip>
-    <team-form :team-data="team" color="orange">
+    <team-form :team-id="team.id" color="orange">
       <v-tooltip bottom color="orange darken-2">
         <v-btn icon slot="activator">
           <v-icon color="orange darken-2">mdi-pencil</v-icon>
@@ -24,11 +24,11 @@
       Remove
     </v-tooltip>
     <v-snackbar
-      color="black"
-      v-model="snackbar">
+      v-model="snackbar"
+      color="black">
       Remove Team: {{ team.title }}?
-      <v-btn dark flat @click.stop="this.$store.dispatch('team/remove', team.id)">Yes</v-btn>
-      <v-btn dark flat @click.stop="snackbar = false">No</v-btn>
+      <v-btn class="white--text" flat @click.stop="$store.dispatch('entities/teams/REMOVE', team.id)">Yes</v-btn>
+      <v-btn class="white--text" flat @click.stop="snackbar = false">No</v-btn>
     </v-snackbar>
   </v-btn-toggle>
 </template>

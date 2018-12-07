@@ -18,7 +18,7 @@ export const actions = {
     return http({
       path: myfifa.contracts.index,
       pathData: { playerId },
-      token: rootState.token,
+      token: rootState.session.token,
       success: ({ data }) => {
         commit('player/SET', {
           ...rootState.player.list[playerId],
@@ -32,7 +32,7 @@ export const actions = {
       method: 'post',
       path: myfifa.contracts.index,
       pathData: { playerId },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { contract }
     })
   },
@@ -41,7 +41,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.contracts.record,
       pathData: { contractId: contract.id },
-      token: rootState.token,
+      token: rootState.session.token,
       data: { contract }
     })
   }
