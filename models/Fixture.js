@@ -1,5 +1,4 @@
 import { Model } from '@vuex-orm/core'
-import Stage from './Stage'
 
 export default class Fixture extends Model {
   static entity = 'fixtures'
@@ -11,13 +10,10 @@ export default class Fixture extends Model {
       stage_id: this.number(0),
 
       // Database fields
-      home_team: this.string(''),
-      away_team: this.string(''),
-      home_score: this.string(''),
-      away_score: this.string(''),
-
-      // Associations
-      stage: this.belongsTo(Stage, 'stage_id')
+      home_team: this.string('').nullable(),
+      away_team: this.string('').nullable(),
+      home_score: this.string('').nullable(),
+      away_score: this.string('').nullable()
     }
   }
 }

@@ -1,5 +1,4 @@
 import { Model } from '@vuex-orm/core'
-import Match from './Match'
 import Player from './Player'
 
 export default class Goal extends Model {
@@ -24,9 +23,7 @@ export default class Goal extends Model {
       event_type: this.string('Goal'),
 
       // Associations
-      match: this.belongsTo(Match, 'match_id'),
-      player: this.belongsTo(Player, 'player_id'),
-      assisting_player: this.belongsTo(Player, 'assist_id')
+      assisting_player: this.belongsTo(Player, 'assist_id', 'id')
     }
   }
 }

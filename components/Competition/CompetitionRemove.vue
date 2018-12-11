@@ -34,7 +34,7 @@
     }),
     methods: {
       removeCompetition () {
-        this.$store.dispatch('competition/remove', this.competition.id)
+        this.$store.dispatch('entities/competitions/REMOVE', this.competition.id)
         this.$router.push({
           name: 'teams-id',
           params: { id: this.competition.team_id }

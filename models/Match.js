@@ -1,5 +1,4 @@
 import { Model } from '@vuex-orm/core'
-import Team from './Team'
 import PenaltyShootout from './PenaltyShootout'
 import Goal from './Goal'
 import Substitution from './Substitution'
@@ -30,8 +29,7 @@ export default class Match extends Model {
       team_result: this.attr(null),
 
       // Associations
-      team: this.belongsTo(Team, 'team_id'),
-      penaltyShootout: this.hasOne(PenaltyShootout, 'match_id'),
+      penalty_shootout: this.hasOne(PenaltyShootout, 'match_id'),
       goals: this.hasMany(Goal, 'match_id'),
       substitutions: this.hasMany(Substitution, 'match_id'),
       bookings: this.hasMany(Booking, 'match_id'),

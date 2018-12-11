@@ -1,5 +1,4 @@
 import { Model } from '@vuex-orm/core'
-import Stage from './Stage'
 
 export default class TableRow extends Model {
   static entity = 'tableRows'
@@ -11,7 +10,7 @@ export default class TableRow extends Model {
       stage_id: this.number(0),
 
       // Database fields
-      name: this.string(''),
+      name: this.string('').nullable(),
       wins: this.number(null).nullable(),
       draws: this.number(null).nullable(),
       losses: this.number(null).nullable(),
@@ -20,10 +19,7 @@ export default class TableRow extends Model {
 
       // Calculated fields
       goal_difference: this.number(null).nullable(),
-      points: this.number(null).nullable(),
-
-      // Associations
-      stage: this.belongsTo(Stage, 'stage_id')
+      points: this.number(null).nullable()
     }
   }
 }

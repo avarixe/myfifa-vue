@@ -24,8 +24,8 @@
     layout: 'team',
     middleware: 'authenticated',
     async fetch ({ store, params }) {
-      store.state.team.currentId !== params.id &&
-      await store.dispatch('team/get', { teamId: params.id, activate: true })
+      store.state.entities.teams.currentId !== params.id &&
+      await store.dispatch('entities/teams/GET', { teamId: params.id, activate: true })
     },
     components: {
       NewCompetitionForm,

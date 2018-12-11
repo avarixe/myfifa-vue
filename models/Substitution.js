@@ -1,5 +1,4 @@
 import { Model } from '@vuex-orm/core'
-import Match from './Match'
 import Player from './Player'
 
 export default class Substitution extends Model {
@@ -24,9 +23,7 @@ export default class Substitution extends Model {
       home: this.boolean(true),
 
       // Associations
-      match: this.belongsTo(Match, 'match_id'),
-      player: this.belongsTo(Player, 'player_id'),
-      replacement: this.belongsTo(Player, 'replacement_id')
+      replacement: this.belongsTo(Player, 'replacement_id', 'id')
     }
   }
 }

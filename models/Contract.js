@@ -1,5 +1,4 @@
 import { Model } from '@vuex-orm/core'
-import Player from './Player'
 
 export default class Contract extends Model {
   static entity = 'contracts'
@@ -19,10 +18,7 @@ export default class Contract extends Model {
       bonus_req: this.number(null).nullable(),
       bonus_req_type: this.number(null).nullable(),
       end_date: this.string(''),
-      effective_date: this.string(''),
-
-      // Associations
-      player: this.belongsTo(Player, 'player_id')
+      effective_date: this.string('')
     }
   }
 }

@@ -1,5 +1,4 @@
 import { Model } from '@vuex-orm/core'
-import Team from './Team'
 import Stage from './Stage'
 
 export default class Competition extends Model {
@@ -22,7 +21,6 @@ export default class Competition extends Model {
       num_matches_per_fixture: this.number(null).nullable(),
 
       // Associations
-      team: this.belongsTo(Team, 'team_id'),
       stages: this.hasMany(Stage, 'competition_id')
     }
   }

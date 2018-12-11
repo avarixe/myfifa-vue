@@ -2,8 +2,8 @@ import http from '@/api'
 import myfifa from '@/api/myfifa'
 
 // actions
-export const actions = {
-  create ({ commit, rootState }, { stageId, fixture }) {
+const actions = {
+  CREATE ({ rootState }, { stageId, fixture }) {
     return http({
       method: 'post',
       path: myfifa.fixtures.index,
@@ -12,7 +12,7 @@ export const actions = {
       data: { fixture }
     })
   },
-  update ({ commit, rootState }, fixture) {
+  UPDATE ({ rootState }, fixture) {
     return http({
       method: 'patch',
       path: myfifa.fixtures.record,
@@ -21,4 +21,9 @@ export const actions = {
       data: { fixture }
     })
   }
+}
+
+export default {
+  namespaced: true,
+  actions
 }

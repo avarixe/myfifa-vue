@@ -1,5 +1,4 @@
 import { Model } from '@vuex-orm/core'
-import Team from './Team'
 import PlayerHistory from './PlayerHistory'
 import Injury from './Injury'
 import Loan from './Loan'
@@ -35,7 +34,6 @@ export default class Player extends Model {
       pos_idx: this.number(0),
 
       // Associations
-      team: this.belongsTo(Team, 'team_id'),
       histories: this.hasMany(PlayerHistory, 'player_id'),
       injuries: this.hasMany(Injury, 'player_id'),
       loans: this.hasMany(Loan, 'player_id'),

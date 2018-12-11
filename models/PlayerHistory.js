@@ -1,5 +1,4 @@
 import { Model } from '@vuex-orm/core'
-import Player from './Player'
 
 export default class PlayerHistory extends Model {
   static entity = 'playerHistories'
@@ -14,10 +13,7 @@ export default class PlayerHistory extends Model {
       datestamp: this.string(''),
       ovr: this.number(60),
       value: this.number(0),
-      kit_no: this.number(0).nullable(),
-
-      // Associations
-      player: this.belongsTo(Player, 'player_id')
+      kit_no: this.number(0).nullable()
     }
   }
 }

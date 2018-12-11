@@ -42,15 +42,17 @@
       season () { return this.$route.params.seasonId }
     },
     async asyncData ({ store, params }) {
-      const { data } = await store.dispatch('team/analyzeSeason', {
+      const { data } = await store.dispatch('entities/teams/ANALYZE_SEASON', {
         teamId: params.id,
         season: params.seasonId
       })
       return { seasonData: data }
     },
     async fetch ({ store, params }) {
-      store.state.team.currentId !== params.id &&
-      await store.dispatch('team/get', { teamId: params.id, activate: true })
+      await store.dispatch('entities/teams/GET', {
+        teamId: params.id,
+        activate: true
+      })
     }
   }
 </script>

@@ -1,13 +1,10 @@
-import Vue from 'vue'
 import orderBy from 'lodash.orderby'
 import http from '@/api'
 import myfifa from '@/api/myfifa'
-import objectify from '@/plugins/objectify'
+import { Player, PlayerHistory } from '@/models'
 
 // initial state
-export const state = () => ({
-  loaded: false,
-  list: {},
+const state = () => ({
   positions: [
     'GK',
     'RB',
@@ -28,10 +25,14 @@ export const state = () => ({
 })
 
 // getters
-export const getters = {
-  contracted: state => (
+const getters = {
+  contracted: (state, getters, rootState) => (
     orderBy(
-      Object.values(state.list).filter(player => player.status),
+      Player
+        .query()
+        .where('team_id', rootState.entities.teams.currentId)
+        .where('status', status => status)
+        .get(),
       ['pos_idx', 'ovr'],
       ['asc', 'desc']
     )
@@ -43,33 +44,28 @@ export const getters = {
 
 // actions
 export const actions = {
-  getAll ({ state, commit, rootState }, { teamId }) {
-    if (!state.loaded) {
-      return http({
-        path: myfifa.players.index,
-        pathData: { teamId },
-        token: rootState.session.token,
-        success: function ({ data }) {
-          commit('SET_ALL', data)
-        }
-      })
-    }
+  FETCH ({ rootState }, { teamId }) {
+    return http({
+      path: myfifa.players.index,
+      pathData: { teamId },
+      token: rootState.session.token,
+      success: function ({ data }) { Player.insert({ data }) }
+    })
   },
-  get ({ state, commit, rootState }, { playerId }) {
-    if (playerId in state.list) {
-      return { data: state.list[playerId] }
+  GET ({ rootState }, { playerId }) {
+    const player = Player.find(playerId)
+    if (player) {
+      return { data: player }
     } else {
       return http({
         path: myfifa.players.record,
         pathData: { playerId },
         token: rootState.session.token,
-        success: ({ data }) => {
-          commit('SET', data)
-        }
+        success: ({ data }) => { Player.insert({ data }) }
       })
     }
   },
-  analyze ({ commit, state, rootState }, { teamId, playerIds }) {
+  ANALYZE ({ rootState }, { teamId, playerIds }) {
     return http({
       method: 'post',
       path: myfifa.analyze.players,
@@ -79,21 +75,21 @@ export const actions = {
         query: {
           player_ids: playerIds
         }
-      },
-      success: ({ data }) => {
-        for (let playerId of data.player_ids) {
-          commit('SET', {
-            ...state.list[playerId],
-            num_games: data.num_games[playerId] || 0,
-            num_goals: data.num_goals[playerId] || 0,
-            num_assists: data.num_assists[playerId] || 0,
-            num_cs: data.num_cs[playerId] || 0
-          })
-        }
       }
+      // success: ({ data }) => {
+      //   for (let playerId of data.player_ids) {
+      //     commit('SET', {
+      //       ...state.list[playerId],
+      //       num_games: data.num_games[playerId] || 0,
+      //       num_goals: data.num_goals[playerId] || 0,
+      //       num_assists: data.num_assists[playerId] || 0,
+      //       num_cs: data.num_cs[playerId] || 0
+      //     })
+      //   }
+      // }
     })
   },
-  create ({ commit, rootState }, { teamId, player }) {
+  CREATE ({ rootState }, { teamId, player }) {
     return http({
       method: 'post',
       path: myfifa.players.index,
@@ -102,7 +98,7 @@ export const actions = {
       data: { player }
     })
   },
-  update ({ commit, rootState }, player) {
+  UPDATE ({ rootState }, player) {
     return http({
       method: 'patch',
       path: myfifa.players.record,
@@ -111,7 +107,7 @@ export const actions = {
       data: { player }
     })
   },
-  remove ({ commit, rootState }, playerId) {
+  REMOVE ({ rootState }, playerId) {
     return http({
       method: 'delete',
       path: myfifa.players.record,
@@ -119,7 +115,7 @@ export const actions = {
       token: rootState.session.token
     })
   },
-  retire ({ commit, rootState }, playerId) {
+  RETIRE ({ rootState }, playerId) {
     return http({
       method: 'post',
       path: myfifa.players.retire,
@@ -127,7 +123,7 @@ export const actions = {
       token: rootState.session.token
     })
   },
-  release ({ commit, rootState }, playerId) {
+  RELEASE ({ rootState }, playerId) {
     return http({
       method: 'post',
       path: myfifa.players.release,
@@ -135,27 +131,22 @@ export const actions = {
       token: rootState.session.token
     })
   },
-  getHistory ({ state, commit, rootState }, { playerId }) {
+  GET_HISTORY ({ rootState }, { playerId }) {
     return http({
       path: myfifa.players.history,
       pathData: { playerId },
       token: rootState.session.token,
-      success: function ({ data }) {
-        commit('SET', {
-          ...state.list[playerId],
-          player_histories: objectify(data)
-        })
-      }
+      success: function ({ data }) { PlayerHistory.insert({ data }) }
     })
   },
-  getCurrentInjury ({ rootState }, { playerId }) {
+  GET_CURRENT_INJURY ({ rootState }, { playerId }) {
     return http({
       path: myfifa.players.currentInjury,
       pathData: { playerId },
       token: rootState.session.token
     })
   },
-  getCurrentLoan ({ rootState }, { playerId }) {
+  GET_CURRENT_LOAN ({ rootState }, { playerId }) {
     return http({
       path: myfifa.players.currentLoan,
       pathData: { playerId },
@@ -164,20 +155,9 @@ export const actions = {
   }
 }
 
-// mutations
-export const mutations = {
-  SET_ALL (state, players) {
-    state.list = objectify(players)
-    state.loaded = true
-  },
-  SET (state, player) {
-    Vue.set(state.list, player.id, player)
-  },
-  REMOVE (state, playerId) {
-    Vue.delete(state.list, playerId)
-  },
-  RESET (state) {
-    state.loaded = false
-    state.list = {}
-  }
+export default {
+  namespaced: true,
+  state,
+  getters,
+  actions
 }

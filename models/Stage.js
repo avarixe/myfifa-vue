@@ -1,10 +1,9 @@
 import { Model } from '@vuex-orm/core'
-import Competition from './Competition'
 import Fixture from './Fixture'
 import TableRow from './TableRow'
 
 export default class Stage extends Model {
-  static entity = 'fixtures'
+  static entity = 'stages'
 
   static fields () {
     return {
@@ -19,9 +18,8 @@ export default class Stage extends Model {
       table: this.boolean(false),
 
       // Associations
-      competition: this.belongsTo(Competition, 'competition_id'),
       fixtures: this.hasMany(Fixture, 'stage_id'),
-      tableRows: this.hasMany(TableRow, 'stage_id')
+      table_rows: this.hasMany(TableRow, 'stage_id')
     }
   }
 }

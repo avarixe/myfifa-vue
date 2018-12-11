@@ -2,8 +2,8 @@ import http from '@/api'
 import myfifa from '@/api/myfifa'
 
 // actions
-export const actions = {
-  update ({ commit, rootState }, tableRow) {
+const actions = {
+  UPDATE ({ rootState }, tableRow) {
     return http({
       method: 'patch',
       path: myfifa.tableRows.record,
@@ -12,4 +12,9 @@ export const actions = {
       data: { table_row: tableRow }
     })
   }
+}
+
+export default {
+  namespaced: true,
+  actions
 }

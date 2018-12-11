@@ -1,8 +1,7 @@
 import { Model } from '@vuex-orm/core'
-import Team from './Team'
 
 export default class Squad extends Model {
-  static entity = 'matches'
+  static entity = 'squads'
 
   static fields () {
     return {
@@ -13,10 +12,7 @@ export default class Squad extends Model {
       // Database fields
       name: this.string(''),
       players_list: this.attr([]),
-      positions_list: this.attr([]),
-
-      // Associations
-      team: this.belongsTo(Team, 'team_id')
+      positions_list: this.attr([])
     }
   }
 }

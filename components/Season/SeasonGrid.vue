@@ -29,7 +29,8 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
+  import { Competition } from '@/models'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import SeasonItem from './SeasonItem'
 
@@ -47,11 +48,16 @@
       }
     },
     computed: {
-      ...mapState('competition', { competitions: 'list' }),
+      competitions () {
+        return Competition
+          .query()
+          .where('team_id', this.team.id)
+          .get()
+      },
       rows () {
         return this.$_orderBy(
           Object.entries(this.$_groupBy(
-            Object.values(this.competitions),
+            this.competitions,
             competition => competition.season
           )),
           season => season[0],
@@ -64,7 +70,7 @@
     },
     methods: {
       ...mapActions({
-        getCompetitions: 'competition/getAll'
+        getCompetitions: 'entities/competitions/FETCH'
       }),
       async reloadGrid () {
         this.loading = true

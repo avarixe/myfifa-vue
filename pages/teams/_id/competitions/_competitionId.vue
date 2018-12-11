@@ -68,7 +68,8 @@
 </template>
 
 <script>
-  import { mapState, mapGetters } from 'vuex'
+  import { mapGetters } from 'vuex'
+  import { Competition } from '@/models'
   import EditCompetitionForm from '@/components/Competition/EditCompetitionForm'
   import CompetitionTable from '@/components/Competition/CompetitionTable'
   import CompetitionRound from '@/components/Competition/CompetitionRound'
@@ -91,15 +92,15 @@
       stage: 0
     }),
     computed: {
-      ...mapState('competition', { competitions: 'list' }),
-      ...mapGetters('team', ['season']),
+      ...mapGetters('entities/teams', ['season']),
       competition () {
-        return this.competitions[this.$route.params.competitionId]
+        return Competition
+          .query()
+          .with('stages.table_rows|fixtures')
+          .find(this.$route.params.competitionId)
       },
       stages () {
-        return 'stages' in this.competition
-          ? Object.values(this.competition.stages)
-          : []
+        return this.competition.stages
       },
       tables () { return this.stages.filter(stage => stage.table) },
       rounds () { return this.stages.filter(stage => !stage.table) },
@@ -107,18 +108,10 @@
     },
     async fetch ({ store, params }) {
       await Promise.all([
-        (async () => {
-          store.state.team.currentId !== params.id &&
-          await store.dispatch('team/get', { teamId: params.id, activate: true })
-        })(),
-        (async () => {
-          !(params.competitionId in store.state.competition.list) &&
-          await store.dispatch('competition/get', { competitionId: params.competitionId })
-          await store.dispatch('stage/getAll', { competitionId: params.competitionId })
-        })()
+        store.dispatch('entities/teams/GET', { teamId: params.id, activate: true }),
+        store.dispatch('entities/competitions/GET', { competitionId: params.competitionId }),
+        store.dispatch('entities/stages/FETCH', { competitionId: params.competitionId })
       ])
-    },
-    mounted () {
     },
     watch: {
       competition (val) {

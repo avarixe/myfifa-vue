@@ -1,7 +1,7 @@
 import { format, parse, addYears } from 'date-fns'
 import http from '@/api'
 import myfifa from '@/api/myfifa'
-import Team from '@/models/Team'
+import { Team } from '@/models'
 
 // initial state
 const state = () => ({

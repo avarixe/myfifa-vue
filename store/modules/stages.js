@@ -1,26 +1,18 @@
 import http from '@/api'
 import myfifa from '@/api/myfifa'
-import objectify from '@/plugins/objectify'
-import { formatter } from '@/api/modules/stage'
+import { Stage } from '@/models'
 
 // actions
-export const actions = {
-  getAll ({ state, commit, rootState }, { competitionId }) {
+const actions = {
+  FETCH ({ rootState }, { competitionId }) {
     return http({
       path: myfifa.stages.index,
       pathData: { competitionId },
       token: rootState.session.token,
-      success: function ({ data }) {
-        commit('competition/SET', {
-          ...rootState.competition.list[competitionId],
-          stages: objectify(data, {
-            itemFormatter: formatter
-          })
-        }, { root: true })
-      }
+      success: function ({ data }) { Stage.insert({ data }) }
     })
   },
-  create ({ commit, rootState }, { competitionId, stage }) {
+  CREATE ({ rootState }, { competitionId, stage }) {
     return http({
       method: 'post',
       path: myfifa.stages.index,
@@ -29,7 +21,7 @@ export const actions = {
       data: { stage }
     })
   },
-  update ({ commit, rootState }, stage) {
+  UPDATE ({ rootState }, stage) {
     return http({
       method: 'patch',
       path: myfifa.stages.record,
@@ -38,7 +30,7 @@ export const actions = {
       data: { stage }
     })
   },
-  remove ({ commit, rootState }, stageId) {
+  REMOVE ({ rootState }, stageId) {
     return http({
       method: 'delete',
       path: myfifa.stages.record,
@@ -46,4 +38,9 @@ export const actions = {
       token: rootState.session.token
     })
   }
+}
+
+export default {
+  namespaced: true,
+  actions
 }

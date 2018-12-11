@@ -1,5 +1,4 @@
 import { Model } from '@vuex-orm/core'
-import Player from './Player'
 
 export default class Loan extends Model {
   static entity = 'loans'
@@ -14,10 +13,7 @@ export default class Loan extends Model {
       start_date: this.string(''),
       end_date: this.string(''),
       destination: this.string(''),
-      returned: this.boolean(false),
-
-      // Associations
-      player: this.belongsTo(Player, 'player_id')
+      returned: this.boolean(false)
     }
   }
 }

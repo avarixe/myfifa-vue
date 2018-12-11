@@ -114,12 +114,6 @@
     watch: {
       authenticated (val) {
         !val && this.$router.push({ name: 'index' })
-      },
-      teamId (val) {
-        this.$store.commit('match/RESET')
-        this.$store.commit('player/RESET')
-        this.$store.commit('squad/RESET')
-        this.$store.commit('competition/RESET')
       }
     },
     methods: {
