@@ -1,12 +1,9 @@
-import Vue from 'vue'
 import http from '@/api'
 import myfifa from '@/api/myfifa'
-import objectify from '@/plugins/objectify'
+import { Match } from '@/models'
 
 // initial state
-export const state = () => ({
-  loaded: false,
-  list: {},
+const state = () => ({
   positions: [
     'GK',
     'LB',
@@ -37,8 +34,14 @@ export const state = () => ({
 })
 
 // getters
-export const getters = {
-  allByRecency: state => Object.values(state.list).reverse(),
+const getters = {
+  allByRecency: (state, getters, rootState) => {
+    return Match
+      .query()
+      .where('team_id', rootState.entities.teams.currentId)
+      .orderBy('date_played', 'desc')
+      .get()
+  },
   competitions: (state, getters) => [
     ...new Set(getters.allByRecency.map(match => match.competition))
   ],
@@ -51,34 +54,29 @@ export const getters = {
 }
 
 // actions
-export const actions = {
-  getAll ({ state, commit, rootState }, { teamId }) {
-    if (!state.loaded) {
-      return http({
-        path: myfifa.matches.index,
-        pathData: { teamId },
-        token: rootState.session.token,
-        success: function ({ data }) {
-          commit('SET_ALL', data)
-        }
-      })
-    }
+const actions = {
+  FETCH ({ rootState }, { teamId }) {
+    return http({
+      path: myfifa.matches.index,
+      pathData: { teamId },
+      token: rootState.session.token,
+      success: function ({ data }) { Match.insert({ data }) }
+    })
   },
-  get ({ state, commit, rootState }, { matchId }) {
-    if (matchId in state.list) {
-      return { data: state.list[matchId] }
+  GET ({ rootState }, { matchId }) {
+    const match = Match.find(matchId)
+    if (match) {
+      return { data: match }
     } else {
       return http({
         path: myfifa.matches.record,
         pathData: { matchId },
         token: rootState.session.token,
-        success: function ({ data }) {
-          commit('SET', data)
-        }
+        success: function ({ data }) { Match.insert({ data }) }
       })
     }
   },
-  create ({ commit, rootState }, { teamId, match }) {
+  CREATE ({ rootState }, { teamId, match }) {
     return http({
       method: 'post',
       path: myfifa.matches.index,
@@ -87,7 +85,7 @@ export const actions = {
       data: { match }
     })
   },
-  update ({ commit, rootState }, match) {
+  UPDATE ({ rootState }, match) {
     return http({
       method: 'patch',
       path: myfifa.matches.record,
@@ -96,7 +94,7 @@ export const actions = {
       data: { match }
     })
   },
-  remove ({ commit, rootState }, matchId) {
+  REMOVE ({ rootState }, matchId) {
     return http({
       method: 'delete',
       path: myfifa.matches.record,
@@ -104,20 +102,14 @@ export const actions = {
       token: rootState.session.token
     })
   },
-  getEvents ({ state, commit, rootState }, { matchId }) {
+  GET_EVENTS ({ rootState }, { matchId }) {
     return http({
       path: myfifa.matches.events,
       pathData: { matchId },
-      token: rootState.session.token,
-      success: ({ data }) => {
-        commit('SET', {
-          ...state.list[matchId],
-          events: data
-        })
-      }
+      token: rootState.session.token
     })
   },
-  applySquad ({ state, commit, rootState }, { matchId, squadId }) {
+  APPLY_SQUAD ({ rootState }, { matchId, squadId }) {
     return http({
       method: 'post',
       path: myfifa.matches.applySquad,
@@ -128,20 +120,9 @@ export const actions = {
   }
 }
 
-// mutations
-export const mutations = {
-  SET_ALL (state, matches) {
-    state.list = objectify(matches)
-    state.loaded = true
-  },
-  SET (state, match) {
-    Vue.set(state.list, match.id, match)
-  },
-  REMOVE (state, matchId) {
-    Vue.delete(state.list, matchId)
-  },
-  RESET (state) {
-    state.loaded = false
-    state.list = {}
-  }
+export default {
+  namespaced: true,
+  state,
+  getters,
+  actions
 }

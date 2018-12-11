@@ -21,8 +21,11 @@
 
 <script>
   import { mapState } from 'vuex'
+  import TeamAccessible from '@/mixins/TeamAccessible'
+  import { Player } from '@/models'
 
   export default {
+    mixins: [ TeamAccessible ],
     props: {
       formation: {
         type: Array,
@@ -34,8 +37,7 @@
       return { windows }
     },
     computed: {
-      ...mapState('player', { players: 'list' }),
-      ...mapState('match', ['positions']),
+      ...mapState('entities/matches', ['positions']),
       startingEleven () {
         return this.$_orderBy(
           this.formation.filter(p => !('start' in p) || p.start === 0),
@@ -74,9 +76,8 @@
         return this.startingEleven.find(p => p.pos === pos)
       },
       nameOf (playerId) {
-        return playerId in this.players
-          ? this.players[playerId].name
-          : ''
+        const player = Player.find(playerId)
+        return player ? player.name : ''
       }
     }
   }

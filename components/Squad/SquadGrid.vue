@@ -24,8 +24,9 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
+  import { Squad } from '@/models'
   import SquadForm from './SquadForm'
   import SquadItem from './SquadItem'
 
@@ -41,11 +42,11 @@
       }
     },
     computed: {
-      ...mapState('squad', {
-        squads: 'list'
-      }),
       rows () {
-        return Object.values(this.squads)
+        return Squad
+          .query()
+          .where('team_id', this.team.id)
+          .get()
       }
     },
     mounted () {
@@ -54,8 +55,8 @@
     },
     methods: {
       ...mapActions({
-        getPlayers: 'player/getAll',
-        getSquads: 'squad/getAll'
+        getPlayers: 'entities/players/FETCH',
+        getSquads: 'entities/squads/FETCH'
       }),
       async reloadGrid () {
         this.loading = true
@@ -65,18 +66,6 @@
           alert(e.message)
         } finally {
           this.loading = false
-        }
-      },
-      resultColor (result) {
-        switch (result) {
-          case 'win':
-            return 'green'
-          case 'draw':
-            return 'grey'
-          case 'loss':
-            return 'red'
-          default:
-            return ''
         }
       }
     }

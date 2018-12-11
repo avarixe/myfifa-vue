@@ -87,10 +87,10 @@
       }
     },
     computed: {
-      ...mapState('match', [
+      ...mapState('entities/matches', [
         'positions'
       ]),
-      ...mapGetters('player', {
+      ...mapGetters('entities/players', {
         players: 'active'
       }),
       title () {
@@ -113,10 +113,10 @@
       }
     },
     methods: {
-      ...mapActions('squad', [
-        'create',
-        'update'
-      ]),
+      ...mapActions('entities/squads', {
+        create: 'CREATE',
+        update: 'UPDATE'
+      }),
       async submit () {
         if (this.squadData) {
           await this.update(this.squad)

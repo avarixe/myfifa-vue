@@ -124,7 +124,7 @@
           ...new Set(
             Competition
               .query()
-              .where('teamId', this.team.id)
+              .where('team_id', this.team.id)
               .get()
               .map(c => c.name)
           )

@@ -6,7 +6,9 @@ import {
   Player,
   Stage,
   Fixture,
-  TableRow
+  TableRow,
+  Squad,
+  Match
 } from '@/models'
 
 import modules from './modules'
@@ -19,10 +21,10 @@ const {
   players,
   stages,
   fixtures,
-  tableRows
+  tableRows,
+  squads,
+  matches
 } = modules
-
-console.log(stages)
 
 database.register(Team, teams)
 database.register(Competition, competitions)
@@ -30,5 +32,7 @@ database.register(Player, players)
 database.register(Stage, stages)
 database.register(Fixture, fixtures)
 database.register(TableRow, tableRows)
+database.register(Squad, squads)
+database.register(Match, matches)
 
 export default database
