@@ -23,6 +23,11 @@
   export default {
     layout: 'team',
     middleware: 'authenticated',
+    head () {
+      return {
+        title: `${this.$store.getters['entities/teams/current'].title} - Seasons`
+      }
+    },
     async fetch ({ store, params }) {
       await store.dispatch('entities/teams/GET', {
         teamId: params.id,

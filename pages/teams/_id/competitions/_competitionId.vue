@@ -91,6 +91,11 @@
     data: () => ({
       stage: 0
     }),
+    head () {
+      return {
+        title: `${this.competition.name} (${this.seasonLabel(this.competition.season)})`
+      }
+    },
     computed: {
       ...mapGetters('entities/teams', ['season']),
       competition () {

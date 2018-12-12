@@ -55,7 +55,7 @@
           <v-tooltip v-if="team.current_date === match.date_played" bottom>
             <v-btn
               slot="activator"
-              @click="removeEvent(penaltyShootoutEvent)"
+              @click="removePS"
               color="indigo lighten-2"
               class="ma-0"
               icon
@@ -132,6 +132,15 @@
         if (confirm('Remove ' + event.event_type + '?')) {
           try {
             await this['remove' + event.event_type](event.id)
+          } catch (e) {
+            alert(e.message)
+          }
+        }
+      },
+      async removePS () {
+        if (confirm('Remove Penalty Shootout?')) {
+          try {
+            await this.removePenaltyShootout(this.match.id)
           } catch (e) {
             alert(e.message)
           }

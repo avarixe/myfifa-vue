@@ -19,6 +19,11 @@
     layout: 'team',
     middleware: 'authenticated',
     mixins: [ TeamAccessible ],
+    head () {
+      return {
+        title: this.team.title
+      }
+    },
     async fetch ({ store, params }) {
       await store.dispatch('entities/teams/GET', {
         teamId: params.id,

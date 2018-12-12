@@ -26,6 +26,11 @@
       PlayerForm,
       PlayerGrid
     },
+    head () {
+      return {
+        title: `${this.$store.getters['entities/teams/current'].title} - Players`
+      }
+    },
     async fetch ({ store, params }) {
       await store.dispatch('entities/teams/GET', {
         teamId: params.id,

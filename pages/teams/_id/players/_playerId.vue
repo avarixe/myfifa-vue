@@ -214,6 +214,11 @@
         statistics: {}
       }
     },
+    head () {
+      return {
+        title: this.player.name
+      }
+    },
     computed: {
       player () {
         return Player

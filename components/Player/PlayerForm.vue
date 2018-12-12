@@ -108,7 +108,7 @@
           sec_pos: [],
           ovr: 60,
           value: '',
-          birth_year: 16,
+          birth_year: null,
           youth: false
         }
       }

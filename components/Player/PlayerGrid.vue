@@ -126,6 +126,7 @@
         return Player
           .query()
           .where('team_id', this.team.id)
+          .orderBy('ovr', 'desc')
           .get()
           .map(player => ({
             ...player,
@@ -170,6 +171,7 @@
             ])
         }
       },
+
       rows () {
         return this.players.filter(player => {
           switch (this.filter) {

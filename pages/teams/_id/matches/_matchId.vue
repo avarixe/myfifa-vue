@@ -71,6 +71,11 @@
     },
     middleware: 'authenticated',
     mixins: [ TeamAccessible ],
+    head () {
+      return {
+        title: `${this.match.home} vs ${this.match.away}`
+      }
+    },
     computed: {
       match () {
         return Match
