@@ -100,9 +100,9 @@
         team: 'entities/teams/current'
       }),
       items () {
-        let items = []
-        this.team && items.push({ text: this.team.title })
-        return items
+        return this.team
+          ? [{ text: this.team.title, nuxt: true, exact: true, to: this.teamLink }]
+          : []
       },
       teamLink () {
         return {

@@ -67,7 +67,7 @@
     },
     data () {
       return {
-        dialog: false,
+        dialog: this.value,
         valid: false,
         errorMessage: ''
       }

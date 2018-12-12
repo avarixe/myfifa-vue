@@ -53,7 +53,8 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
+  import { Match, Player } from '@/models'
   import MatchForm from '@/components/Match/MatchForm'
   import MatchActions from '@/components/Match/MatchActions'
   import MatchLineup from '@/components/Match/MatchLineup'
@@ -71,24 +72,27 @@
     middleware: 'authenticated',
     mixins: [ TeamAccessible ],
     computed: {
-      ...mapState('player', { players: 'list' }),
-      ...mapState('match', { matches: 'list' }),
       match () {
-        return this.matches[this.$route.params.matchId]
+        return Match
+          .query()
+          .withAll()
+          .find(this.$route.params.matchId)
+      },
+      players () {
+        return Player
+          .query()
+          .where('team_id', this.team.id)
+          .get()
       }
     },
     async fetch ({ store, params }) {
       await Promise.all([
-        (async () => {
-          store.state.team.currentId !== params.id &&
-          await store.dispatch('team/get', { teamId: params.id, activate: true })
-        })(),
-        (async () => {
-          !(params.matchId in store.state.match.list) &&
-          await store.dispatch('match/get', { matchId: params.matchId })
-        })(),
-        store.dispatch('cap/getAll', { matchId: params.matchId }),
-        store.dispatch('match/getEvents', { matchId: params.matchId })
+        store.dispatch('entities/teams/GET', { teamId: params.id, activate: true }),
+        store.dispatch('entities/matches/GET', { matchId: params.matchId }),
+        store.dispatch('entities/caps/FETCH', { matchId: params.matchId }),
+        store.dispatch('entities/bookings/FETCH', { matchId: params.matchId }),
+        store.dispatch('entities/goals/FETCH', { matchId: params.matchId }),
+        store.dispatch('entities/substitutions/FETCH', { matchId: params.matchId })
       ])
     },
     mounted () {
@@ -105,8 +109,8 @@
     },
     methods: {
       ...mapActions({
-        getPlayers: 'player/getAll',
-        getSquads: 'squad/getAll'
+        getPlayers: 'entities/players/FETCH',
+        getSquads: 'entities/squads/FETCH'
       })
     }
   }

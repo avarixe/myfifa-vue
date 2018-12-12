@@ -83,11 +83,15 @@
       return {}
     },
     computed: {
-      ...mapState('match', [
+      ...mapState('entities/matches', [
         'positions'
       ]),
       events () {
-        return this.match.events.slice().sort()
+        return [
+          ...this.match.substitutions,
+          ...this.match.goals,
+          ...this.match.bookings
+        ]
       },
       goals () {
         return this.events.filter(event => (
@@ -117,9 +121,9 @@
       }
     },
     methods: {
-      ...mapActions('cap', [
-        'update'
-      ]),
+      ...mapActions('entities/caps', {
+        update: 'UPDATE'
+      }),
       setPosition (position) {
         this.update({
           ...this.cap,

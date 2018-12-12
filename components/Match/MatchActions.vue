@@ -25,9 +25,9 @@
         </v-btn>
         <v-list>
           <v-list-tile
-            v-for="(squad, squadId) in squads"
-            :key="squadId"
-            @click="applySquadToMatch(squadId)">
+            v-for="squad in squads"
+            :key="squad.id"
+            @click="applySquadToMatch(squad.id)">
             {{ squad.name }}
           </v-list-tile>
         </v-list>
@@ -88,8 +88,9 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
+  import { Squad } from '@/models'
   import MatchForm from './MatchForm'
   import CapForm from './CapForm'
   import GoalForm from './GoalForm'
@@ -115,11 +116,13 @@
         required: true
       }
     },
-    data: () => ({}),
     computed: {
-      ...mapState('squad', {
-        squads: 'list'
-      }),
+      squads () {
+        return Squad
+          .query()
+          .where('team_id', this.team.id)
+          .get()
+      },
       active () {
         return this.match.status && this.match.status.length > 0
       },
@@ -130,14 +133,14 @@
         return this.match.home_score === this.match.away_score
       },
       numPlayers () {
-        return Object.values(this.match.caps || {}).length
+        return this.match.caps.length
       }
     },
     methods: {
-      ...mapActions('match', [
-        'applySquad',
-        'remove'
-      ]),
+      ...mapActions('entities/matches', {
+        applySquad: 'APPLY_SQUAD',
+        remove: 'REMOVE'
+      }),
       async applySquadToMatch (squadId) {
         try {
           await this.applySquad({

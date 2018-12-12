@@ -98,11 +98,17 @@
     },
     computed: {
       events () {
-        return [ ...this.match.events ]
+        return this.$_orderBy([
+          ...this.match.bookings,
+          ...this.match.substitutions,
+          ...this.match.goals
+        ],
+        'minute',
+        'asc')
       },
       penaltyShootoutEvent () {
-        return this.match.penalty_shootout
-          ? { ...this.match.penalty_shootout, event_type: 'PenaltyShootout' }
+        return this.match.penaltyShootout
+          ? { ...this.match.penaltyShootout, event_type: 'PenaltyShootout' }
           : {}
       },
       dense () {
@@ -117,10 +123,10 @@
     },
     methods: {
       ...mapActions({
-        removeGoal: 'goal/remove',
-        removeBooking: 'booking/remove',
-        removeSubstitution: 'substitution/remove',
-        removePenaltyShootout: 'penaltyShootout/remove'
+        removeGoal: 'entities/goals/REMOVE',
+        removeBooking: 'entities/bookings/REMOVE',
+        removeSubstitution: 'entities/substitutions/REMOVE',
+        removePenaltyShootout: 'entities/penaltyShootout/REMOVE'
       }),
       async removeEvent (event) {
         if (confirm('Remove ' + event.event_type + '?')) {

@@ -4,7 +4,7 @@
     <v-content>
       <app-broadcaster></app-broadcaster>
       <div class="pt-5">
-        <!-- <team-channel></team-channel> -->
+        <team-channel></team-channel>
         <team-bar v-if="team" :team="team"></team-bar>
         <nuxt />
       </div>

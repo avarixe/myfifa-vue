@@ -91,7 +91,7 @@
       }
     }),
     computed: {
-      ...mapGetters('match', [
+      ...mapGetters('entities/matches', [
         'competitions',
         'teams'
       ]),

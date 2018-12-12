@@ -2,23 +2,23 @@
   <v-container fluid grid-list-lg>
     <v-layout row wrap>
       <v-flex xs12>
-        <match-form>
+        <new-competition-form>
           <v-btn>
             <v-icon left>mdi-plus-circle-outline</v-icon>
-            Match
+            Competition
           </v-btn>
-        </match-form>
+        </new-competition-form>
       </v-flex>
       <v-flex xs12>
-        <match-grid></match-grid>
+        <season-grid></season-grid>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-  import MatchForm from '@/components/Match/MatchForm'
-  import MatchGrid from '@/components/Match/MatchGrid'
+  import SeasonGrid from '@/components/Season/SeasonGrid'
+  import NewCompetitionForm from '@/components/Competition/NewCompetitionForm'
 
   export default {
     layout: 'team',
@@ -30,8 +30,8 @@
       })
     },
     components: {
-      MatchForm,
-      MatchGrid
+      NewCompetitionForm,
+      SeasonGrid
     }
   }
 </script>

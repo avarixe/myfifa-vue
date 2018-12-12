@@ -3,11 +3,11 @@
     <v-tooltip bottom color="blue darken-2">
       <v-btn
         slot="activator"
-        :to="{ name: 'teams-id', params: { id: team.id } }"
+        :to="{ name: 'teams-id-matches', params: { id: team.id } }"
         icon>
-        <v-icon color="blue darken-2">mdi-view-dashboard</v-icon>
+        <v-icon color="blue darken-2">mdi-arrow-right</v-icon>
       </v-btn>
-      Dashboard
+      Access
     </v-tooltip>
     <team-form :team-id="team.id" color="orange">
       <v-tooltip bottom color="orange darken-2">

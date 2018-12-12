@@ -83,7 +83,7 @@
         calendar: false,
         currentDate: this.team && this.team.current_date,
         links: [
-          { text: 'Seasons', icon: 'mdi-trophy',         path: { name: 'teams-id',         params: { id: this.team.id } } },
+          { text: 'Seasons', icon: 'mdi-trophy',         path: { name: 'teams-id-seasons', params: { id: this.team.id } } },
           { text: 'Players', icon: 'mdi-account',        path: { name: 'teams-id-players', params: { id: this.team.id } } },
           { text: 'Matches', icon: 'mdi-soccer-field',   path: { name: 'teams-id-matches', params: { id: this.team.id } } },
           { text: 'Squads',  icon: 'mdi-clipboard-text', path: { name: 'teams-id-squads',  params: { id: this.team.id } } }

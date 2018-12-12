@@ -18,8 +18,8 @@
         <v-list id="substitutes" dense>
           <v-subheader>Substitutes</v-subheader>
           <substitute-cap
-            v-for="(cap, i) in substitutes"
-            :key="i"
+            v-for="cap in substitutes"
+            :key="cap.id"
             :cap="cap"
             :match="match"
             :readonly="readonly"

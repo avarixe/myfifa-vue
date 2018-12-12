@@ -2,34 +2,28 @@
   <v-container fluid grid-list-lg>
     <v-layout row wrap>
       <v-flex xs12>
-        <new-competition-form>
-          <v-btn>
-            <v-icon left>mdi-plus-circle-outline</v-icon>
-            Competition
-          </v-btn>
-        </new-competition-form>
-      </v-flex>
-      <v-flex xs12>
-        <season-grid></season-grid>
+        <v-card>
+          <v-card-title primary-title>
+            <div class="display-2">{{ team.title }}</div>
+          </v-card-title>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-  import SeasonGrid from '@/components/Season/SeasonGrid'
-  import NewCompetitionForm from '@/components/Competition/NewCompetitionForm'
+  import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
     layout: 'team',
     middleware: 'authenticated',
+    mixins: [ TeamAccessible ],
     async fetch ({ store, params }) {
-      store.state.entities.teams.currentId !== params.id &&
-      await store.dispatch('entities/teams/GET', { teamId: params.id, activate: true })
-    },
-    components: {
-      NewCompetitionForm,
-      SeasonGrid
+      await store.dispatch('entities/teams/GET', {
+        teamId: params.id,
+        activate: true
+      })
     }
   }
 </script>

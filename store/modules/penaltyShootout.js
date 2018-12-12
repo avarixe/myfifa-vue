@@ -2,8 +2,8 @@ import http from '@/api'
 import myfifa from '@/api/myfifa'
 
 // actions
-export const actions = {
-  create ({ commit, rootState }, { matchId, penaltyShootout }) {
+const actions = {
+  CREATE ({ rootState }, { matchId, penaltyShootout }) {
     return http({
       method: 'post',
       path: myfifa.matches.penaltyShootout,
@@ -12,7 +12,7 @@ export const actions = {
       data: { penalty_shootout: penaltyShootout }
     })
   },
-  remove ({ commit, rootState }, matchId) {
+  REMOVE ({ rootState }, matchId) {
     return http({
       method: 'delete',
       path: myfifa.matches.penaltyShootout,
@@ -20,4 +20,9 @@ export const actions = {
       token: rootState.session.token
     })
   }
+}
+
+export default {
+  namespaced: true,
+  actions
 }

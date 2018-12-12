@@ -14,7 +14,7 @@ export default class Booking extends Model {
 
       // Database fields
       player_name: this.string(''),
-      minute: this.string(0),
+      minute: this.number(0),
       red_card: this.boolean(false),
 
       // Calculated fields
