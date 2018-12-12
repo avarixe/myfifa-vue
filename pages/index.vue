@@ -20,6 +20,7 @@
 
   export default {
     layout: 'default',
+    middleware: 'home',
     components: {
       LoginForm,
       UserForm

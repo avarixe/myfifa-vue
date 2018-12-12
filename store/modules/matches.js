@@ -102,13 +102,6 @@ const actions = {
       token: rootState.session.token
     })
   },
-  GET_EVENTS ({ rootState }, { matchId }) {
-    return http({
-      path: myfifa.matches.events,
-      pathData: { matchId },
-      token: rootState.session.token
-    })
-  },
   APPLY_SQUAD ({ rootState }, { matchId, squadId }) {
     return http({
       method: 'post',

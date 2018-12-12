@@ -22,7 +22,7 @@
 
   export default {
     layout: 'default',
-    middleware: 'authenticated',
+    middleware: 'home',
     components: {
       TeamForm,
       TeamPanel

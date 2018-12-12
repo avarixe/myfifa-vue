@@ -57,7 +57,6 @@ export default {
   matches: {
     index: 'teams/{{ teamId }}/matches',
     record: 'matches/{{ matchId }}',
-    events: 'matches/{{ matchId }}/events',
     applySquad: 'matches/{{ matchId }}/apply_squad',
     penaltyShootout: 'matches/{{ matchId }}/penalty_shootout'
   },
