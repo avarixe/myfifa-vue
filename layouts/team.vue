@@ -2,12 +2,20 @@
   <v-app>
     <app-bar></app-bar>
     <v-content>
-      <app-broadcaster></app-broadcaster>
-      <div class="pt-5">
-        <team-channel></team-channel>
-        <team-bar v-if="team" :team="team"></team-bar>
-        <nuxt />
-      </div>
+      <template v-if="loaded">
+        <app-broadcaster></app-broadcaster>
+        <div class="pt-5">
+          <team-channel></team-channel>
+          <team-bar v-if="team" :team="team"></team-bar>
+          <nuxt />
+        </div>
+      </template>
+      <template v-else>
+        <team-loader
+          :team="team"
+          @loaded="loaded = true"
+        ></team-loader>
+      </template>
     </v-content>
   </v-app>
 </template>
@@ -18,6 +26,7 @@
   import AppBroadcaster from '@/components/App/AppBroadcaster'
   import TeamBar from '@/components/Team/TeamBar'
   import TeamChannel from '@/components/Team/TeamChannel'
+  import TeamLoader from '@/components/Team/TeamLoader'
 
   export default {
     name: 'App',
@@ -25,8 +34,12 @@
       AppBar,
       AppBroadcaster,
       TeamBar,
-      TeamChannel
+      TeamChannel,
+      TeamLoader
     },
+    data: () => ({
+      loaded: false
+    }),
     computed: mapGetters({
       team: 'entities/teams/current'
     })
