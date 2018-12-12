@@ -13,7 +13,7 @@
       v-model="snackbar"
       color="brown">
       Release Player: {{ player.name }}?
-      <v-btn dark flat @click="$store.dispatch('player/release', player.id)">Yes</v-btn>
+      <v-btn dark flat @click="$store.dispatch('entities/players/RELEASE', player.id)">Yes</v-btn>
       <v-btn dark flat @click.stop="snackbar = false">No</v-btn>
     </v-snackbar>
   </div>

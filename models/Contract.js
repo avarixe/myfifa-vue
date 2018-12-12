@@ -16,7 +16,7 @@ export default class Contract extends Model {
       release_clause: this.number(null).nullable(),
       performance_bonus: this.number(null).nullable(),
       bonus_req: this.number(null).nullable(),
-      bonus_req_type: this.number(null).nullable(),
+      bonus_req_type: this.string(null).nullable(),
       end_date: this.string(''),
       effective_date: this.string('')
     }

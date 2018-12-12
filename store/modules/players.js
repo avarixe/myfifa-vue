@@ -76,17 +76,6 @@ export const actions = {
           player_ids: playerIds
         }
       }
-      // success: ({ data }) => {
-      //   for (let playerId of data.player_ids) {
-      //     commit('SET', {
-      //       ...state.list[playerId],
-      //       num_games: data.num_games[playerId] || 0,
-      //       num_goals: data.num_goals[playerId] || 0,
-      //       num_assists: data.num_assists[playerId] || 0,
-      //       num_cs: data.num_cs[playerId] || 0
-      //     })
-      //   }
-      // }
     })
   },
   CREATE ({ rootState }, { teamId, player }) {

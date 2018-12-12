@@ -31,7 +31,7 @@
     }),
     methods: {
       removePlayer () {
-        this.$store.dispatch('player/remove', this.player.id)
+        this.$store.dispatch('entities/players/REMOVE', this.player.id)
         this.$router.push({
           name: 'teams-id-players',
           params: { id: this.player.team_id }

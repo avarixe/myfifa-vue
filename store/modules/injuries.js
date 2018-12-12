@@ -1,23 +1,18 @@
 import http from '@/api'
 import myfifa from '@/api/myfifa'
-import objectify from '@/plugins/objectify'
+import { Injury } from '@/models'
 
 // actions
-export const actions = {
-  getAll ({ commit, rootState }, { playerId }) {
+const actions = {
+  FETCH ({ rootState }, { playerId }) {
     return http({
       path: myfifa.injuries.index,
       pathData: { playerId },
       token: rootState.session.token,
-      success: ({ data }) => {
-        commit('player/SET', {
-          ...rootState.player.list[playerId],
-          injuries: objectify(data)
-        }, { root: true })
-      }
+      success: ({ data }) => { Injury.insert({ data }) }
     })
   },
-  create ({ commit, rootState }, { playerId, injury }) {
+  CREATE ({ rootState }, { playerId, injury }) {
     return http({
       method: 'post',
       path: myfifa.injuries.index,
@@ -26,7 +21,7 @@ export const actions = {
       data: { injury }
     })
   },
-  update ({ commit, rootState }, injury) {
+  UPDATE ({ rootState }, injury) {
     return http({
       method: 'patch',
       path: myfifa.injuries.record,
@@ -35,4 +30,9 @@ export const actions = {
       data: { injury }
     })
   }
+}
+
+export default {
+  namespaced: true,
+  actions
 }

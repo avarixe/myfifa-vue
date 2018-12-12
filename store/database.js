@@ -8,7 +8,12 @@ import {
   Fixture,
   TableRow,
   Squad,
-  Match
+  Match,
+  Contract,
+  Injury,
+  Loan,
+  Transfer,
+  PlayerHistory
 } from '@/models'
 
 import modules from './modules'
@@ -23,7 +28,11 @@ const {
   fixtures,
   tableRows,
   squads,
-  matches
+  matches,
+  contracts,
+  injuries,
+  loans,
+  transfers
 } = modules
 
 database.register(Team, teams)
@@ -34,5 +43,10 @@ database.register(Fixture, fixtures)
 database.register(TableRow, tableRows)
 database.register(Squad, squads)
 database.register(Match, matches)
+database.register(Contract, contracts)
+database.register(Injury, injuries)
+database.register(Loan, loans)
+database.register(Transfer, transfers)
+database.register(PlayerHistory)
 
 export default database

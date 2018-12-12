@@ -67,19 +67,19 @@
           <v-card-text>
             <v-layout class="text-xs-center" row wrap>
               <v-flex xs12 sm3>
-                <div class="teal--text display-1">{{ player.num_games }}</div>
+                <div class="teal--text display-1">{{ statistics.numGames }}</div>
                 <div class="subheading">Matches</div>
               </v-flex>
               <v-flex xs12 sm3>
-                <div class="blue--text display-1">{{ player.num_goals }}</div>
+                <div class="blue--text display-1">{{ statistics.numGoals }}</div>
                 <div class="subheading">Goals</div>
               </v-flex>
               <v-flex xs12 sm3>
-                <div class="orange--text display-1">{{ player.num_assists }}</div>
+                <div class="orange--text display-1">{{ statistics.numAssists }}</div>
                 <div class="subheading">Assists</div>
               </v-flex>
               <v-flex xs12 sm3>
-                <div class="pink--text display-1">{{ player.num_cs }}</div>
+                <div class="pink--text display-1">{{ statistics.numCs }}</div>
                 <div class="subheading">Clean Sheets</div>
               </v-flex>
             </v-layout>
@@ -168,7 +168,8 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
+  import { Player } from '@/models'
   import PlayerForm from '@/components/Player/PlayerForm'
   import ContractForm from '@/components/Player/ContractForm'
   import InjuryForm from '@/components/Player/InjuryForm'
@@ -209,21 +210,28 @@
           'Loan': { icon: 'transit-transfer', color: 'indigo' },
           'Transfer': { icon: 'airplane-takeoff', color: 'green' }
         },
-        timelineFilter: 'All'
+        timelineFilter: 'All',
+        statistics: {}
       }
     },
     computed: {
-      ...mapState('player', {
-        players: 'list'
-      }),
-      player () { return this.players[this.$route.params.playerId] },
+      player () {
+        return Player
+          .query()
+          .with('contracts')
+          .with('loans')
+          .with('injuries')
+          .with('transfers')
+          .with('histories')
+          .find(this.$route.params.playerId)
+      },
       active () { return this.player.status && this.player.status.length > 0 },
 
-      contracts () { return Object.values(this.player.contracts || {}) },
-      loans () { return Object.values(this.player.loans || {}) },
-      injuries () { return Object.values(this.player.injuries || {}) },
-      transfers () { return Object.values(this.player.transfers || {}) },
-      histories () { return Object.values(this.player.player_histories || {}) },
+      contracts () { return this.player.contracts },
+      loans () { return this.player.loans },
+      injuries () { return this.player.injuries },
+      transfers () { return this.player.transfers },
+      histories () { return this.player.histories },
 
       ovrGrowth () { return this.histories.map(h => [ h.datestamp, h.ovr ]) },
       valueGrowth () { return this.histories.map(h => [ h.datestamp, h.value ]) },
@@ -231,18 +239,12 @@
     },
     async fetch ({ store, params }) {
       await Promise.all([
-        (async () => {
-          store.state.team.currentId !== params.id &&
-          await store.dispatch('team/get', { teamId: params.id, activate: true })
-        })(),
-        (async () => {
-          !(params.playerId in store.state.player.list) &&
-          await store.dispatch('player/get', { playerId: params.playerId })
-        })()
+        store.dispatch('entities/teams/GET', { teamId: params.id, activate: true }),
+        store.dispatch('entities/players/GET', { playerId: params.playerId })
       ])
     },
     mounted () {
-      this.getStatistics({ teamId: this.team.id, playerIds: [this.player.id] })
+      this.getStatistics()
       this.getHistory({ playerId: this.player.id })
       this.getContracts({ playerId: this.player.id })
       this.getLoans({ playerId: this.player.id })
@@ -259,14 +261,26 @@
     },
     methods: {
       ...mapActions({
-        getPlayer: 'player/get',
-        getStatistics: 'player/analyze',
-        getHistory: 'player/getHistory',
-        getContracts: 'contract/getAll',
-        getLoans: 'loan/getAll',
-        getInjuries: 'injury/getAll',
-        getTransfers: 'transfer/getAll'
-      })
+        getPlayer: 'entities/players/GET',
+        analyze: 'entities/players/ANALYZE',
+        getHistory: 'entities/players/GET_HISTORY',
+        getContracts: 'entities/contracts/FETCH',
+        getLoans: 'entities/loans/FETCH',
+        getInjuries: 'entities/injuries/FETCH',
+        getTransfers: 'entities/transfers/FETCH'
+      }),
+      async getStatistics () {
+        const { data } = await this.analyze({
+          teamId: this.team.id,
+          playerIds: [this.player.id]
+        })
+        this.statistics = {
+          numGames: data.num_games[this.player.id] || 0,
+          numGoals: data.num_goals[this.player.id] || 0,
+          numAssists: data.num_assists[this.player.id] || 0,
+          numCs: data.num_cs[this.player.id] || 0
+        }
+      }
     }
   }
 </script>

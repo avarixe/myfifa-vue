@@ -13,7 +13,7 @@
       v-model="snackbar"
       color="purple">
       {{ player.name }} is Retiring End of Season?
-      <v-btn dark flat @click="$store.dispatch('player/retire', player.id)">Yes</v-btn>
+      <v-btn dark flat @click="$store.dispatch('entities/players/RETIRE', player.id)">Yes</v-btn>
       <v-btn dark flat @click.stop="snackbar = false">No</v-btn>
     </v-snackbar>
   </div>

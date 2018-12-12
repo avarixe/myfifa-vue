@@ -1,9 +1,9 @@
 import http from '@/api'
 import myfifa from '@/api/myfifa'
-import objectify from '@/plugins/objectify'
+import { Contract } from '@/models'
 
 // initial state
-export const state = () => ({
+const state = () => ({
   bonusRequirementTypes: [
     'Appearances',
     'Goals',
@@ -13,21 +13,16 @@ export const state = () => ({
 })
 
 // actions
-export const actions = {
-  getAll ({ commit, rootState }, { playerId }) {
+const actions = {
+  FETCH ({ rootState }, { playerId }) {
     return http({
       path: myfifa.contracts.index,
       pathData: { playerId },
       token: rootState.session.token,
-      success: ({ data }) => {
-        commit('player/SET', {
-          ...rootState.player.list[playerId],
-          contracts: objectify(data)
-        }, { root: true })
-      }
+      success: ({ data }) => { Contract.insert({ data }) }
     })
   },
-  create ({ commit, rootState }, { playerId, contract }) {
+  CREATE ({ commit, rootState }, { playerId, contract }) {
     return http({
       method: 'post',
       path: myfifa.contracts.index,
@@ -36,7 +31,7 @@ export const actions = {
       data: { contract }
     })
   },
-  update ({ commit, rootState }, contract) {
+  UPDATE ({ commit, rootState }, contract) {
     return http({
       method: 'patch',
       path: myfifa.contracts.record,
@@ -45,4 +40,10 @@ export const actions = {
       data: { contract }
     })
   }
+}
+
+export default {
+  namespaced: true,
+  state,
+  actions
 }

@@ -148,7 +148,7 @@
           const { id, value, kit_no, ovr } = this.playerData
           this.player = { id, value, kit_no, ovr }
         } else if (this.playerChanged) {
-          this.$store.dispatch('player/update', this.player)
+          this.$store.dispatch('entities/players/UPDATE', this.player)
         }
       }
     },

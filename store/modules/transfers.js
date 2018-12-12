@@ -1,22 +1,17 @@
 import http from '@/api'
 import myfifa from '@/api/myfifa'
-import objectify from '@/plugins/objectify'
+import { Transfer } from '@/models'
 
-export const actions = {
-  getAll ({ commit, rootState }, { playerId }) {
+const actions = {
+  FETCH ({ rootState }, { playerId }) {
     return http({
       path: myfifa.transfers.index,
       pathData: { playerId },
       token: rootState.session.token,
-      success: ({ data }) => {
-        commit('player/SET', {
-          ...rootState.player.list[playerId],
-          transfers: objectify(data)
-        }, { root: true })
-      }
+      success: ({ data }) => { Transfer.insert({ data }) }
     })
   },
-  create ({ commit, rootState }, { playerId, transfer }) {
+  CREATE ({ rootState }, { playerId, transfer }) {
     return http({
       method: 'post',
       path: myfifa.transfers.index,
@@ -25,4 +20,9 @@ export const actions = {
       data: { transfer }
     })
   }
+}
+
+export default {
+  namespaced: true,
+  actions
 }

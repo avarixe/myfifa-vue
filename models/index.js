@@ -1,6 +1,7 @@
 export { default as Booking } from './Booking'
 export { default as Cap } from './Cap'
 export { default as Competition } from './Competition'
+export { default as Contract } from './Contract'
 export { default as Fixture } from './Fixture'
 export { default as Goal } from './Goal'
 export { default as Injury } from './Injury'

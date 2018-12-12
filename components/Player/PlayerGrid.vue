@@ -78,8 +78,9 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
+  import { Player } from '@/models'
   import PlayerForm from './PlayerForm'
   import PlayerRow from './PlayerRow'
 
@@ -111,11 +112,29 @@
           { text: 'Loaned', color: 'indigo', icon: 'transit-transfer' },
           { text: 'Pending', color: 'deep-orange', icon: 'lock-clock' }
         ],
-        search: ''
+        search: '',
+        statistics: {
+          num_games: {},
+          num_goals: {},
+          num_assists: {},
+          num_cs: {}
+        }
       }
     },
     computed: {
-      ...mapState('player', { players: 'list' }),
+      players () {
+        return Player
+          .query()
+          .where('team_id', this.team.id)
+          .get()
+          .map(player => ({
+            ...player,
+            num_games: this.statistics.num_games[player.id],
+            num_goals: this.statistics.num_goals[player.id],
+            num_assists: this.statistics.num_assists[player.id],
+            num_cs: this.statistics.num_cs[player.id]
+          }))
+      },
       currentMode () { return this.modes[this.mode] },
       currentFilter () { return this.filters[this.filter] },
       actionWidth () { return this.mode === 0 ? 125 : 40 },
@@ -152,21 +171,20 @@
         }
       },
       rows () {
-        return Object.values(this.players)
-          .filter(player => {
-            switch (this.filter) {
-              case 0: // All
-                return true
-              case 1: // Youth
-                return player.youth
-              case 2: // Active
-                return player.status
-              case 3: // Injured
-              case 4: // Loaned
-              case 5: // Pending
-                return player.status === this.currentFilter.text
-            }
-          })
+        return this.players.filter(player => {
+          switch (this.filter) {
+            case 0: // All
+              return true
+            case 1: // Youth
+              return player.youth
+            case 2: // Active
+              return player.status
+            case 3: // Injured
+            case 4: // Loaned
+            case 5: // Pending
+              return player.status === this.currentFilter.text
+          }
+        })
       }
     },
     mounted () {
@@ -183,10 +201,10 @@
       }
     },
     methods: {
-      ...mapActions('player', [
-        'getAll',
-        'analyze'
-      ]),
+      ...mapActions('entities/players', {
+        getAll: 'FETCH',
+        analyze: 'ANALYZE'
+      }),
       async reloadGrid () {
         this.loading = true
 
@@ -202,10 +220,11 @@
         this.loading = true
 
         try {
-          await this.analyze({
+          const { data } = await this.analyze({
             teamId: this.team.id,
-            playerIds: Object.keys(this.players)
+            playerIds: this.players.map(player => player.id)
           })
+          this.statistics = data
         } catch (e) {
           alert(e.message)
         } finally {
