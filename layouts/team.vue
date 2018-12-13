@@ -6,7 +6,7 @@
         <app-broadcaster></app-broadcaster>
         <div class="pt-5">
           <team-channel></team-channel>
-          <team-bar v-if="team" :team="team"></team-bar>
+          <team-bar v-if="team"></team-bar>
           <nuxt />
         </div>
       </template>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { Team } from '@/models'
   import AppBar from '@/components/App/AppBar'
   import AppBroadcaster from '@/components/App/AppBroadcaster'
   import TeamBar from '@/components/Team/TeamBar'
@@ -40,8 +40,10 @@
     data: () => ({
       loaded: false
     }),
-    computed: mapGetters({
-      team: 'entities/teams/current'
-    })
+    computed: {
+      team () {
+        return Team.find(this.$route.params.teamId)
+      }
+    }
   }
 </script>

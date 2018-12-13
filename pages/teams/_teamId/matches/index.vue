@@ -17,22 +17,18 @@
 </template>
 
 <script>
+  import TeamAccessible from '@/mixins/TeamAccessible'
   import MatchForm from '@/components/Match/MatchForm'
   import MatchGrid from '@/components/Match/MatchGrid'
 
   export default {
     layout: 'team',
     middleware: 'authenticated',
+    mixins: [ TeamAccessible ],
     head () {
       return {
-        title: `${this.$store.getters['entities/teams/current'].title} - Matches`
+        title: `${this.team.title} - Matches`
       }
-    },
-    async fetch ({ store, params }) {
-      await store.dispatch('entities/teams/GET', {
-        teamId: params.id,
-        activate: true
-      })
     },
     components: {
       MatchForm,

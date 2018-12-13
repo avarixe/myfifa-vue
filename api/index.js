@@ -35,7 +35,7 @@ async function sendRequest ({
       credentials: false,
       headers: token ? { 'Authorization': 'Bearer ' + token } : null
     })
-    success && success(res)
+    success && await success(res)
     return res
   } catch (e) {
     if (e.response && e.response.data &&

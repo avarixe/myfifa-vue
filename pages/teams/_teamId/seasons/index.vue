@@ -17,22 +17,18 @@
 </template>
 
 <script>
+  import TeamAccessible from '@/mixins/TeamAccessible'
   import SeasonGrid from '@/components/Season/SeasonGrid'
   import NewCompetitionForm from '@/components/Competition/NewCompetitionForm'
 
   export default {
     layout: 'team',
     middleware: 'authenticated',
+    mixins: [ TeamAccessible ],
     head () {
       return {
-        title: `${this.$store.getters['entities/teams/current'].title} - Seasons`
+        title: `${this.team.title} - Seasons`
       }
-    },
-    async fetch ({ store, params }) {
-      await store.dispatch('entities/teams/GET', {
-        teamId: params.id,
-        activate: true
-      })
     },
     components: {
       NewCompetitionForm,

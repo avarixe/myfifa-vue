@@ -8,7 +8,6 @@
     <v-card-text>
       <v-data-iterator
         :items="rows"
-        :loading="loading"
         :pagination-sync="pagination"
         no-data-text="No Seasons Recorded"
         hide-actions
@@ -29,7 +28,6 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
   import { Competition } from '@/models'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import SeasonItem from './SeasonItem'
@@ -39,14 +37,11 @@
     components: {
       SeasonItem
     },
-    data () {
-      return {
-        loading: false,
-        pagination: {
-          rowsPerPage: -1
-        }
+    data: () => ({
+      pagination: {
+        rowsPerPage: -1
       }
-    },
+    }),
     computed: {
       competitions () {
         return Competition
@@ -63,24 +58,6 @@
           season => season[0],
           'desc'
         )
-      }
-    },
-    mounted () {
-      this.reloadGrid()
-    },
-    methods: {
-      ...mapActions({
-        getCompetitions: 'entities/competitions/FETCH'
-      }),
-      async reloadGrid () {
-        this.loading = true
-        try {
-          await this.getCompetitions({ teamId: this.team.id })
-        } catch (e) {
-          alert(e.message)
-        } finally {
-          this.loading = false
-        }
       }
     }
   }

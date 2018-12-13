@@ -17,19 +17,18 @@
 </template>
 
 <script>
+  import TeamAccessible from '@/mixins/TeamAccessible'
   import SquadForm from '@/components/Squad/SquadForm'
   import SquadGrid from '@/components/Squad/SquadGrid'
 
   export default {
     layout: 'team',
     middleware: 'authenticated',
+    mixins: [ TeamAccessible ],
     head () {
       return {
-        title: `${this.$store.getters['entities/teams/current'].title} - Squads`
+        title: `${this.team.title} - Squads`
       }
-    },
-    async fetch ({ store, params }) {
-      await store.dispatch('entities/teams/GET', { teamId: params.id, activate: true })
     },
     components: {
       SquadForm,

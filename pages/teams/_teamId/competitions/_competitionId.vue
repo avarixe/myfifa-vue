@@ -68,7 +68,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
   import { Competition } from '@/models'
   import EditCompetitionForm from '@/components/Competition/EditCompetitionForm'
   import CompetitionTable from '@/components/Competition/CompetitionTable'
@@ -97,7 +96,6 @@
       }
     },
     computed: {
-      ...mapGetters('entities/teams', ['season']),
       competition () {
         return Competition
           .query()
@@ -113,16 +111,15 @@
     },
     async fetch ({ store, params }) {
       await Promise.all([
-        store.dispatch('entities/teams/GET', { teamId: params.id, activate: true }),
-        store.dispatch('entities/competitions/GET', { competitionId: params.competitionId }),
-        store.dispatch('entities/stages/FETCH', { competitionId: params.competitionId })
+        store.dispatch('entities/competitions/GET', params),
+        store.dispatch('entities/stages/FETCH', params)
       ])
     },
     watch: {
       competition (val) {
         !val && this.$router.push({
-          name: 'teams-id',
-          id: this.team.id
+          name: 'teams-teamId-seasons',
+          params: { teamId: this.team.id }
         })
       }
     }

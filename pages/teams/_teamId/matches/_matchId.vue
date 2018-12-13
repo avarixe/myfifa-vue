@@ -92,12 +92,11 @@
     },
     async fetch ({ store, params }) {
       await Promise.all([
-        store.dispatch('entities/teams/GET', { teamId: params.id, activate: true }),
-        store.dispatch('entities/matches/GET', { matchId: params.matchId }),
-        store.dispatch('entities/caps/FETCH', { matchId: params.matchId }),
-        store.dispatch('entities/bookings/FETCH', { matchId: params.matchId }),
-        store.dispatch('entities/goals/FETCH', { matchId: params.matchId }),
-        store.dispatch('entities/substitutions/FETCH', { matchId: params.matchId })
+        store.dispatch('entities/matches/GET', params),
+        store.dispatch('entities/caps/FETCH', params),
+        store.dispatch('entities/bookings/FETCH', params),
+        store.dispatch('entities/goals/FETCH', params),
+        store.dispatch('entities/substitutions/FETCH', params)
       ])
     },
     mounted () {
@@ -107,8 +106,8 @@
     watch: {
       match (val) {
         !val && this.$router.push({
-          name: 'teams-id-matches',
-          id: this.team.id
+          name: 'teams-teamId-matches',
+          params: { teamId: this.team.id }
         })
       }
     },

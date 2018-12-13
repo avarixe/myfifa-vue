@@ -23,7 +23,7 @@
 
         const subscription = this.cable.subscriptions.create({
           channel: 'TeamChannel',
-          id: this.$store.state.entities.teams.currentId
+          id: this.$route.params.teamId
         }, {
           received: ({ type, data, destroyed }) => {
             // console.log(type, data, destroyed)

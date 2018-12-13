@@ -95,9 +95,9 @@
     computed: {
       playerLink () {
         return {
-          name: 'teams-id-players-playerId',
+          name: 'teams-teamId-players-playerId',
           params: {
-            id: this.team.id,
+            teamId: this.team.id,
             playerId: this.playerData.id
           }
         }

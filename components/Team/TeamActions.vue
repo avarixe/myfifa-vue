@@ -3,7 +3,7 @@
     <v-tooltip bottom color="blue darken-2">
       <v-btn
         slot="activator"
-        :to="{ name: 'teams-id-matches', params: { id: team.id } }"
+        :to="{ name: 'teams-teamId-matches', params: { teamId: team.id } }"
         icon>
         <v-icon color="blue darken-2">mdi-arrow-right</v-icon>
       </v-btn>

@@ -39,10 +39,7 @@
     },
     mixins: [ TeamAccessible ],
     async asyncData ({ store, params }) {
-      const { data } = await store.dispatch('entities/teams/ANALYZE_SEASON', {
-        teamId: params.id,
-        season: params.seasonId
-      })
+      const { data } = await store.dispatch('entities/teams/ANALYZE_SEASON', params)
       return { seasonData: data }
     },
     head () {
@@ -51,13 +48,7 @@
       }
     },
     computed: {
-      season () { return this.$route.params.seasonId }
-    },
-    async fetch ({ store, params }) {
-      await store.dispatch('entities/teams/GET', {
-        teamId: params.id,
-        activate: true
-      })
+      season () { return this.$route.params.season }
     }
   }
 </script>

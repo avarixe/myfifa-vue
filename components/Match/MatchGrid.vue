@@ -21,7 +21,6 @@
       :headers="headers"
       :items="rows"
       :pagination.sync="pagination"
-      :loading="loading"
       :search="search"
       item-key="id"
       no-data-text="No Matches Recorded">
@@ -76,7 +75,6 @@
           { text: 'Away', value: 'away', align: 'left' },
           { text: 'Date Played', value: 'date_played', align: 'center' }
         ],
-        loading: false,
         search: ''
       }
     },
@@ -88,22 +86,7 @@
           .get()
       }
     },
-    mounted () {
-      this.reloadGrid()
-    },
     methods: {
-      async reloadGrid () {
-        this.loading = true
-        try {
-          await this.$store.dispatch('entities/matches/FETCH', {
-            teamId: this.team.id
-          })
-        } catch (e) {
-          alert(e.message)
-        } finally {
-          this.loading = false
-        }
-      },
       viewMatch (match) {
         this.$router.push({
           name: 'matches-id',
@@ -124,9 +107,9 @@
       },
       matchLink (match) {
         return {
-          name: 'teams-id-matches-matchId',
+          name: 'teams-teamId-matches-matchId',
           params: {
-            id: this.team.id,
+            teamId: this.team.id,
             matchId: match.id
           }
         }

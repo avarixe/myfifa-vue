@@ -8,7 +8,6 @@
     <v-card-text>
       <v-data-iterator
         :items="rows"
-        :loading="loading"
         content-tag="v-layout"
         row
         wrap
@@ -24,7 +23,6 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import { Squad } from '@/models'
   import SquadForm from './SquadForm'
@@ -36,37 +34,12 @@
       SquadItem
     },
     mixins: [ TeamAccessible ],
-    data () {
-      return {
-        loading: false
-      }
-    },
     computed: {
       rows () {
         return Squad
           .query()
           .where('team_id', this.team.id)
           .get()
-      }
-    },
-    mounted () {
-      this.reloadGrid()
-      this.getPlayers({ teamId: this.team.id })
-    },
-    methods: {
-      ...mapActions({
-        getPlayers: 'entities/players/FETCH',
-        getSquads: 'entities/squads/FETCH'
-      }),
-      async reloadGrid () {
-        this.loading = true
-        try {
-          await this.getSquads({ teamId: this.team.id })
-        } catch (e) {
-          alert(e.message)
-        } finally {
-          this.loading = false
-        }
       }
     }
   }

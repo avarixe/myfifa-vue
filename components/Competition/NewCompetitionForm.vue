@@ -86,7 +86,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
   import { Competition } from '@/models'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import DialogFormable from '@/mixins/DialogFormable'
@@ -116,9 +116,6 @@
       }
     },
     computed: {
-      ...mapGetters({
-        season: 'entities/teams/season'
-      }),
       competitions () {
         return [
           ...new Set(
@@ -144,9 +141,9 @@
           competition: this.competition
         })
         this.$router.push({
-          name: 'teams-id-competitions-competitionId',
+          name: 'teams-teamId-competitions-competitionId',
           params: {
-            id: this.team.id,
+            teamId: this.team.id,
             competitionId: data.id
           }
         })

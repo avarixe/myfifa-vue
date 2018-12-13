@@ -53,10 +53,10 @@
     computed: {
       seasonLink () {
         return {
-          name: 'teams-id-seasons-seasonId',
+          name: 'teams-teamId-seasons-season',
           params: {
-            id: this.team.id,
-            seasonId: this.season
+            teamId: this.team.id,
+            season: this.season
           }
         }
       }
@@ -64,9 +64,9 @@
     methods: {
       competitionLink (competition) {
         return {
-          name: 'teams-id-competitions-competitionId',
+          name: 'teams-teamId-competitions-competitionId',
           params: {
-            id: this.team.id,
+            teamId: this.team.id,
             competitionId: competition.id
           }
         }

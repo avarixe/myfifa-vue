@@ -189,9 +189,6 @@
         })
       }
     },
-    mounted () {
-      this.reloadGrid()
-    },
     watch: {
       filterActive () {
         this.pagination.page = 1
@@ -204,20 +201,8 @@
     },
     methods: {
       ...mapActions('entities/players', {
-        getAll: 'FETCH',
         analyze: 'ANALYZE'
       }),
-      async reloadGrid () {
-        this.loading = true
-
-        try {
-          await this.getAll({ teamId: this.team.id })
-        } catch (e) {
-          alert(e.message)
-        } finally {
-          this.loading = false
-        }
-      },
       async reloadStatistics () {
         this.loading = true
 

@@ -69,34 +69,34 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
+  import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
-    props: {
-      team: {
-        type: Object,
-        required: true
-      }
-    },
+    mixins: [ TeamAccessible ],
     data () {
       return {
         calendar: false,
-        currentDate: this.team && this.team.current_date,
-        links: [
-          { text: 'Seasons', icon: 'mdi-trophy',         path: { name: 'teams-id-seasons', params: { id: this.team.id } } },
-          { text: 'Players', icon: 'mdi-account',        path: { name: 'teams-id-players', params: { id: this.team.id } } },
-          { text: 'Matches', icon: 'mdi-soccer-field',   path: { name: 'teams-id-matches', params: { id: this.team.id } } },
-          { text: 'Squads',  icon: 'mdi-clipboard-text', path: { name: 'teams-id-squads',  params: { id: this.team.id } } }
-        ]
+        currentDate: this.$_format(new Date())
       }
     },
     computed: {
-      ...mapGetters('entities/teams', [
-        'seasonStart',
-        'seasonEnd'
-      ])
+      links () {
+        return [
+          { text: 'Seasons', icon: 'mdi-trophy',         path: { name: 'teams-teamId-seasons', params: { teamId: this.team.id } } },
+          { text: 'Players', icon: 'mdi-account',        path: { name: 'teams-teamId-players', params: { teamId: this.team.id } } },
+          { text: 'Matches', icon: 'mdi-soccer-field',   path: { name: 'teams-teamId-matches', params: { teamId: this.team.id } } },
+          { text: 'Squads',  icon: 'mdi-clipboard-text', path: { name: 'teams-teamId-squads',  params: { teamId: this.team.id } } }
+        ]
+      }
     },
     watch: {
+      team: {
+        immediate: true,
+        handler (val) {
+          this.currentDate = this.team.current_date
+        }
+      },
       async currentDate (val, oldVal) {
         if (oldVal) {
           await this.update({ id: this.team.id, current_date: val })

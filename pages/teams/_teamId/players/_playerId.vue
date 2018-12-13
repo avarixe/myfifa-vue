@@ -243,10 +243,7 @@
       currentFilter () { return this.filterOptions[this.timelineFilter] }
     },
     async fetch ({ store, params }) {
-      await Promise.all([
-        store.dispatch('entities/teams/GET', { teamId: params.id, activate: true }),
-        store.dispatch('entities/players/GET', { playerId: params.playerId })
-      ])
+      await store.dispatch('entities/players/GET', params)
     },
     mounted () {
       this.getStatistics()
@@ -259,8 +256,8 @@
     watch: {
       player (val) {
         !val && this.$router.push({
-          name: 'teams-id-players',
-          id: this.team.id
+          name: 'teams-teamId-players',
+          params: { teamId: this.team.id }
         })
       }
     },

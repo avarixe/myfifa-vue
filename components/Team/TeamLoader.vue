@@ -44,10 +44,10 @@
     },
     methods: {
       ...mapActions({
-        getPlayers: 'player/getAll',
-        getMatches: 'match/getAll',
-        getSquads: 'squad/getAll',
-        getCompetitions: 'competition/getAll'
+        getPlayers: 'entities/players/FETCH',
+        getMatches: 'entities/matches/FETCH',
+        getSquads: 'entities/squads/FETCH',
+        getCompetitions: 'entities/competitions/FETCH'
       }),
       async loadData ({ resource, handler }) {
         this.status = `Loading ${resource}...`

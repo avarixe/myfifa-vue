@@ -17,25 +17,22 @@
 </template>
 
 <script>
+  import TeamAccessible from '@/mixins/TeamAccessible'
   import PlayerForm from '@/components/Player/PlayerForm'
   import PlayerGrid from '@/components/Player/PlayerGrid'
 
   export default {
     layout: 'team',
+    middleware: 'authenticated',
+    mixins: [ TeamAccessible ],
     components: {
       PlayerForm,
       PlayerGrid
     },
     head () {
       return {
-        title: `${this.$store.getters['entities/teams/current'].title} - Players`
+        title: `${this.team.title} - Players`
       }
-    },
-    async fetch ({ store, params }) {
-      await store.dispatch('entities/teams/GET', {
-        teamId: params.id,
-        activate: true
-      })
     }
   }
 </script>
