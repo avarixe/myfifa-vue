@@ -4,6 +4,14 @@ import { Loan } from '@/models'
 
 // actions
 const actions = {
+  TEAM_FETCH ({ rootState }, { teamId }) {
+    return http({
+      path: myfifa.loans.teamIndex,
+      pathData: { teamId },
+      token: rootState.session.token,
+      success: ({ data }) => { Loan.insert({ data }) }
+    })
+  },
   FETCH ({ rootState }, { playerId }) {
     return http({
       path: myfifa.loans.index,

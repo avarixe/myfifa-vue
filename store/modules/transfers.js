@@ -3,6 +3,14 @@ import myfifa from '@/api/myfifa'
 import { Transfer } from '@/models'
 
 const actions = {
+  TEAM_FETCH ({ rootState }, { teamId }) {
+    return http({
+      path: myfifa.transfers.teamIndex,
+      pathData: { teamId },
+      token: rootState.session.token,
+      success: ({ data }) => { Transfer.insert({ data }) }
+    })
+  },
   FETCH ({ rootState }, { playerId }) {
     return http({
       path: myfifa.transfers.index,

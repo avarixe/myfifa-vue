@@ -125,16 +125,25 @@
       players () {
         return Player
           .query()
+          .with('contracts')
           .where('team_id', this.team.id)
           .orderBy('ovr', 'desc')
           .get()
-          .map(player => ({
-            ...player,
-            num_games: this.statistics.num_games[player.id],
-            num_goals: this.statistics.num_goals[player.id],
-            num_assists: this.statistics.num_assists[player.id],
-            num_cs: this.statistics.num_cs[player.id]
-          }))
+          .map(player => {
+            const contract = player.contracts.filter(contract =>
+              contract.effective_date <= this.team.current_date &&
+              this.team.current_date < contract.end_date
+            ).pop() || {}
+            return {
+              ...player,
+              wage: contract.wage,
+              end_date: contract.end_date,
+              num_games: this.statistics.num_games[player.id],
+              num_goals: this.statistics.num_goals[player.id],
+              num_assists: this.statistics.num_assists[player.id],
+              num_cs: this.statistics.num_cs[player.id]
+            }
+          })
       },
       currentMode () { return this.modes[this.mode] },
       currentFilter () { return this.filters[this.filter] },
@@ -158,9 +167,9 @@
             ])
           case 1: // Contract
             return headers.concat([
-              { text: 'Value',    value: 'value',                     align: 'right', format: 'money' },
-              { text: 'Wage',     value: 'current_contract.wage',     align: 'right', format: 'money' },
-              { text: 'End Date', value: 'current_contract.end_date', align: 'right', format: 'date' }
+              { text: 'Value',    value: 'value',    align: 'right', format: 'money' },
+              { text: 'Wage',     value: 'wage',     align: 'right', format: 'money' },
+              { text: 'End Date', value: 'end_date', align: 'right', format: 'date' }
             ])
           case 2: // Statistics
             return headers.concat([

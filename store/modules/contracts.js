@@ -14,6 +14,14 @@ const state = () => ({
 
 // actions
 const actions = {
+  TEAM_FETCH ({ rootState }, { teamId }) {
+    return http({
+      path: myfifa.contracts.teamIndex,
+      pathData: { teamId },
+      token: rootState.session.token,
+      success: ({ data }) => { Contract.insert({ data }) }
+    })
+  },
   FETCH ({ rootState }, { playerId }) {
     return http({
       path: myfifa.contracts.index,

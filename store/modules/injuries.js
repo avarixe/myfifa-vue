@@ -4,6 +4,14 @@ import { Injury } from '@/models'
 
 // actions
 const actions = {
+  TEAM_FETCH ({ rootState }, { teamId }) {
+    return http({
+      path: myfifa.injuries.teamIndex,
+      pathData: { teamId },
+      token: rootState.session.token,
+      success: ({ data }) => { Injury.insert({ data }) }
+    })
+  },
   FETCH ({ rootState }, { playerId }) {
     return http({
       path: myfifa.injuries.index,

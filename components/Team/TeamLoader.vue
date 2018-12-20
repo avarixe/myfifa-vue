@@ -25,14 +25,18 @@
     async mounted () {
       const loaders = [
         { resource: 'Players',      handler: this.getPlayers },
+        { resource: 'Contracts',    handler: this.getContracts },
+        { resource: 'Transfers',    handler: this.getTransfers },
+        { resource: 'Loans',        handler: this.getLoans },
+        { resource: 'Injuries',     handler: this.getInjuries },
         { resource: 'Matches',      handler: this.getMatches },
         { resource: 'Squads',       handler: this.getSquads },
         { resource: 'Competitions', handler: this.getCompetitions }
       ]
 
       for (let i = 0; i < loaders.length; i++) {
-        await this.loadData(loaders[i])
         this.value = 100 / loaders.length * (i + 1)
+        await this.loadData(loaders[i])
       }
 
       this.loaded = true
@@ -45,6 +49,10 @@
     methods: {
       ...mapActions({
         getPlayers: 'entities/players/FETCH',
+        getContracts: 'entities/contracts/TEAM_FETCH',
+        getTransfers: 'entities/transfers/TEAM_FETCH',
+        getLoans: 'entities/loans/TEAM_FETCH',
+        getInjuries: 'entities/injuries/TEAM_FETCH',
         getMatches: 'entities/matches/FETCH',
         getSquads: 'entities/squads/FETCH',
         getCompetitions: 'entities/competitions/FETCH'

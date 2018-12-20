@@ -248,10 +248,10 @@
     mounted () {
       this.getStatistics()
       this.getHistory({ playerId: this.player.id })
-      this.getContracts({ playerId: this.player.id })
-      this.getLoans({ playerId: this.player.id })
-      this.getInjuries({ playerId: this.player.id })
-      this.getTransfers({ playerId: this.player.id })
+      // this.getContracts({ playerId: this.player.id })
+      // this.getLoans({ playerId: this.player.id })
+      // this.getInjuries({ playerId: this.player.id })
+      // this.getTransfers({ playerId: this.player.id })
     },
     watch: {
       player (val) {
@@ -265,11 +265,11 @@
       ...mapActions({
         getPlayer: 'entities/players/GET',
         analyze: 'entities/players/ANALYZE',
-        getHistory: 'entities/players/GET_HISTORY',
-        getContracts: 'entities/contracts/FETCH',
-        getLoans: 'entities/loans/FETCH',
-        getInjuries: 'entities/injuries/FETCH',
-        getTransfers: 'entities/transfers/FETCH'
+        getHistory: 'entities/players/GET_HISTORY'
+        // getContracts: 'entities/contracts/FETCH',
+        // getLoans: 'entities/loans/FETCH',
+        // getInjuries: 'entities/injuries/FETCH',
+        // getTransfers: 'entities/transfers/FETCH'
       }),
       async getStatistics () {
         const { data } = await this.analyze({
