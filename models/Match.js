@@ -6,7 +6,7 @@ import Booking from './Booking'
 import Cap from './Cap'
 import Player from './Player'
 
-export default class Match extends Model {
+class Match extends Model {
   static entity = 'matches'
 
   static fields () {
@@ -38,3 +38,27 @@ export default class Match extends Model {
     }
   }
 }
+
+function allByRecency (teamId) {
+  return Match
+    .query()
+    .where('team_id', teamId)
+    .orderBy('date_played', 'desc')
+    .get()
+}
+
+export function competitions (teamId) {
+  return [ ...new Set(allByRecency(teamId).map(match => match.competition)) ]
+}
+
+export function teams (teamId) {
+  const matches = allByRecency(teamId)
+  return [
+    ...new Set([
+      ...matches.map(match => match.home),
+      ...matches.map(match => match.away)
+    ])
+  ]
+}
+
+export default Match

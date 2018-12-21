@@ -42,6 +42,7 @@
 
 <script>
   import { mapActions } from 'vuex'
+  import { Loan } from '@/models'
   import DialogFormable from '@/mixins/DialogFormable'
 
   export default {
@@ -71,26 +72,30 @@
         return this.playerLoaned
           ? 'Update Loan'
           : 'Record New Loan'
+      },
+      currentLoan () {
+        return Loan
+          .query()
+          .where('player_id', this.player.id)
+          .orderBy('start_date')
+          .last()
       }
     },
     watch: {
       async dialog (val) {
-        if (val && this.playerLoaned) {
-          try {
-            const { data } = await this.getCurrentLoan({ playerId: this.player.id })
-            this.loan = data
-          } catch (e) {
-            alert(e)
-            this.dialog = false
-          }
+        if (val) {
+          const { destination } = this.currentLoan
+          Object.assign(this.loan, { destination })
+        } else {
+          Object.assign(this.$data, this.$options.data.apply(this))
+          // this.$refs.form.reset()
         }
       }
     },
     methods: {
-      ...mapActions({
-        getCurrentLoan: 'entities/players/GET_CURRENT_LOAN',
-        create: 'entities/loans/CREATE',
-        update: 'entities/loans/UPDATE'
+      ...mapActions('entities/loans', {
+        create: 'CREATE',
+        update: 'UPDATE'
       }),
       async submit () {
         if ('id' in this.loan) {

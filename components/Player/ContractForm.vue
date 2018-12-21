@@ -1,7 +1,7 @@
 <template>
   <dialog-form
     v-model="dialog"
-    :title="title"
+    title="Sign New Contract"
     :submit="submit"
     :submit-cb="submitCb"
     color="blue">
@@ -143,8 +143,9 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapState } from 'vuex'
   import { addYears } from 'date-fns'
+  import { Contract } from '@/models'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import DialogFormable from '@/mixins/DialogFormable'
 
@@ -185,20 +186,25 @@
       ...mapState('entities/contracts', [
         'bonusRequirementTypes'
       ]),
-      title () {
-        return ('id' in this.contract) ? 'Update Contract' : 'Sign New Contract'
-      },
       maxEndDate () {
         return this.$_format(addYears(this.$_parse(this.contract.effective_date), 6))
+      },
+      currentContract () {
+        return Contract
+          .query()
+          .where('player_id', this.player.id)
+          .where('effective_date', date => date <= this.team.current_date)
+          .where('end_date', date => this.team.current_date < date)
+          .last()
       }
     },
     watch: {
       dialog (val) {
         if (val) {
-          this.contract = {
-            ...this.player.current_contract,
+          Object.assign(this.contract, {
+            ...this.currentContract,
             effective_date: this.team.current_date
-          }
+          })
         } else {
           Object.assign(this.$data, this.$options.data.apply(this))
           // this.$refs.form.reset()
@@ -209,11 +215,8 @@
       }
     },
     methods: {
-      ...mapActions('entities/contract', {
-        create: 'CREATE'
-      }),
       async submit () {
-        await this.create({
+        await this.$store.dispatch('entities/contracts/CREATE', {
           playerId: this.player.id,
           contract: this.contract
         })

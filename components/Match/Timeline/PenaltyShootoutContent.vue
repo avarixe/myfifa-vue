@@ -10,10 +10,7 @@
 </template>
 
 <script>
-  import TeamAccessible from '@/mixins/TeamAccessible'
-
   export default {
-    mixins: [ TeamAccessible ],
     props: {
       item: {
         type: Object,

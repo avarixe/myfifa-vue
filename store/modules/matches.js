@@ -33,26 +33,6 @@ const state = () => ({
   ]
 })
 
-// getters
-const getters = {
-  allByRecency: (state, getters, rootState) => {
-    return Match
-      .query()
-      .where('team_id', rootState.entities.teams.currentId)
-      .orderBy('date_played', 'desc')
-      .get()
-  },
-  competitions: (state, getters) => [
-    ...new Set(getters.allByRecency.map(match => match.competition))
-  ],
-  teams: (state, getters) => [
-    ...new Set([
-      ...getters.allByRecency.map(match => match.home),
-      ...getters.allByRecency.map(match => match.away)
-    ])
-  ]
-}
-
 // actions
 const actions = {
   FETCH ({ rootState }, { teamId }) {
@@ -116,6 +96,5 @@ const actions = {
 export default {
   namespaced: true,
   state,
-  getters,
   actions
 }

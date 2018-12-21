@@ -66,7 +66,8 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
+  import { competitions, teams } from '@/models/Match'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import DialogFormable from '@/mixins/DialogFormable'
 
@@ -91,10 +92,8 @@
       }
     }),
     computed: {
-      ...mapGetters('entities/matches', [
-        'competitions',
-        'teams'
-      ]),
+      teams () { return teams(this.team.id) },
+      competitions () { return competitions(this.team.id) },
       title () {
         return this.match.id ? 'Edit Match' : 'New Match'
       },
@@ -117,10 +116,10 @@
       }
     },
     methods: {
-      ...mapActions('match', [
-        'create',
-        'update'
-      ]),
+      ...mapActions('entities/matches', {
+        create: 'CREATE',
+        update: 'UPDATE'
+      }),
       setHome () {
         this.match.home = this.team.title
         if (this.match.away === this.team.title) {
