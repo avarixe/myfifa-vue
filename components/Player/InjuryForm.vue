@@ -42,6 +42,7 @@
 
 <script>
   import { mapActions } from 'vuex'
+  import { Injury } from '@/models'
   import DialogFormable from '@/mixins/DialogFormable'
 
   export default {
@@ -71,26 +72,30 @@
         return this.playerInjured
           ? 'Update Injury'
           : 'Record New Injury'
+      },
+      currentInjury () {
+        return Injury
+          .query()
+          .where('player_id', this.player.id)
+          .orderBy('start_date')
+          .last()
       }
     },
     watch: {
       async dialog (val) {
-        if (val && this.playerInjured) {
-          try {
-            const { data } = await this.getCurrentInjury({ playerId: this.player.id })
-            this.injury = data
-          } catch (e) {
-            alert(e)
-            this.dialog = false
-          }
+        if (val) {
+          const { description } = this.currentInjury
+          Object.assign(this.injury, { description })
+        } else {
+          Object.assign(this.$data, this.$options.data.apply(this))
+          // this.$refs.form.reset()
         }
       }
     },
     methods: {
-      ...mapActions({
-        getCurrentInjury: 'entities/players/GET_CURRENT_INJURY',
-        create: 'entities/injuries/CREATE',
-        update: 'entities/injuries/UPDATE'
+      ...mapActions('entities/injuries', {
+        create: 'CREATE',
+        update: 'UPDATE'
       }),
       async submit () {
         if ('id' in this.injury) {

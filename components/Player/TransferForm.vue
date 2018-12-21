@@ -101,7 +101,6 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import DialogFormable from '@/mixins/DialogFormable'
 
@@ -151,11 +150,8 @@
       }
     },
     methods: {
-      ...mapActions('entities/transfers', {
-        create: 'CREATE'
-      }),
       async submit () {
-        await this.create({
+        await this.$store.dispatch('entities/transfers/CREATE', {
           playerId: this.player.id,
           transfer: this.transfer
         })

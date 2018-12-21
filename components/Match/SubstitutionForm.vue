@@ -97,7 +97,7 @@
     },
     methods: {
       async submit () {
-        await this.$store.dispatch('substitution/create', {
+        await this.$store.dispatch('entities/substitutions/CREATE', {
           matchId: this.match.id,
           substitution: this.substitution
         })

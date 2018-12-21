@@ -12,7 +12,7 @@
       v-model="snackbar"
       color="black">
       Remove {{ stage.name }}?
-      <v-btn dark flat @click="$store.dispatch('stage/remove', stage.id)">Yes</v-btn>
+      <v-btn dark flat @click="$store.dispatch('entities/stages/REMOVE', stage.id)">Yes</v-btn>
       <v-btn dark flat @click.stop="snackbar = false">No</v-btn>
     </v-snackbar>
   </div>

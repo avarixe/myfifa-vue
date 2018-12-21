@@ -1,7 +1,7 @@
 <template>
   <dialog-form
     v-model="dialog"
-    :title="title"
+    title="Add Cap"
     :submit="submit"
     :color="color">
     <slot slot="activator"></slot>
@@ -42,16 +42,13 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapState } from 'vuex'
   import { activePlayers } from '@/models/Player'
   import DialogFormable from '@/mixins/DialogFormable'
 
   export default {
     mixins: [ DialogFormable ],
     props: {
-      capId: {
-        type: Number
-      },
       match: {
         type: Object,
         required: true
@@ -66,46 +63,19 @@
       }
     },
     computed: {
-      ...mapState('match', [
+      ...mapState('entities/matches', [
         'positions'
       ]),
       players () {
         return activePlayers(parseInt(this.$route.params.teamId))
-      },
-      title () {
-        return this.cap.id ? 'Edit Position' : 'Add Position'
-      }
-    },
-    watch: {
-      async dialog (val) {
-        if (val && this.capId) {
-          try {
-            const { data } = await this.get({
-              capId: this.capId
-            })
-            this.cap = data
-          } catch (e) {
-            alert(e.message)
-            this.dialog = false
-          }
-        }
       }
     },
     methods: {
-      ...mapActions('cap', [
-        'get',
-        'create',
-        'update'
-      ]),
       async submit () {
-        if (this.capId) {
-          await this.update(this.cap)
-        } else {
-          await this.create({
-            matchId: this.match.id,
-            cap: this.cap
-          })
-        }
+        await this.$store.dispatch('entities/caps/CREATE', {
+          matchId: this.match.id,
+          cap: this.cap
+        })
       }
     }
   }

@@ -62,7 +62,7 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapState } from 'vuex'
 
   export default {
     props: {
@@ -121,11 +121,8 @@
       }
     },
     methods: {
-      ...mapActions('entities/caps', {
-        update: 'UPDATE'
-      }),
       setPosition (position) {
-        this.update({
+        this.$store.dispatch('entities/caps/UPDATE', {
           ...this.cap,
           pos: position
         })
