@@ -88,9 +88,9 @@
     },
     methods: {
       ...mapActions({
-        getCurrentLoan: 'player/getCurrentLoan',
-        create: 'loan/create',
-        update: 'loan/update'
+        getCurrentLoan: 'entities/players/GET_CURRENT_LOAN',
+        create: 'entities/loans/CREATE',
+        update: 'entities/loans/UPDATE'
       }),
       async submit () {
         if ('id' in this.loan) {

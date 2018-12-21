@@ -114,7 +114,7 @@
       }
     },
     computed: {
-      ...mapState('player', [
+      ...mapState('entities/players', [
         'positions'
       ]),
       title () {
@@ -135,10 +135,10 @@
       }
     },
     methods: {
-      ...mapActions('player', [
-        'create',
-        'update'
-      ]),
+      ...mapActions('entities/players', {
+        create: 'CREATE',
+        update: 'UPDATE'
+      }),
       async submit () {
         if ('id' in this.player) {
           await this.update(this.player)
@@ -148,9 +148,9 @@
             player: this.player
           })
           this.$router.push({
-            name: 'teams-id-players-playerId',
+            name: 'teams-teamId-players-playerId',
             params: {
-              id: this.team.id,
+              teamId: this.team.id,
               playerId: data.id
             }
           })

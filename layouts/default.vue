@@ -17,9 +17,6 @@
     components: {
       AppBar,
       AppBroadcaster
-    },
-    mounted () {
-      this.$store.commit('team/CLEAR')
     }
   }
 </script>

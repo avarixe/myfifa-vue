@@ -39,6 +39,7 @@
   export default {
     mixins: [ DialogFormable ],
     data: () => ({
+      dialog: true,
       visible: false,
       credentials: {
         username: '',

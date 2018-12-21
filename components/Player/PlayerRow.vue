@@ -95,9 +95,9 @@
     computed: {
       playerLink () {
         return {
-          name: 'teams-id-players-playerId',
+          name: 'teams-teamId-players-playerId',
           params: {
-            id: this.team.id,
+            teamId: this.team.id,
             playerId: this.playerData.id
           }
         }
@@ -148,7 +148,7 @@
           const { id, value, kit_no, ovr } = this.playerData
           this.player = { id, value, kit_no, ovr }
         } else if (this.playerChanged) {
-          this.$store.dispatch('player/update', this.player)
+          this.$store.dispatch('entities/players/UPDATE', this.player)
         }
       }
     },

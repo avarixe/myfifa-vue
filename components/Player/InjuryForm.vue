@@ -88,9 +88,9 @@
     },
     methods: {
       ...mapActions({
-        getCurrentInjury: 'player/getCurrentInjury',
-        create: 'injury/create',
-        update: 'injury/update'
+        getCurrentInjury: 'entities/players/GET_CURRENT_INJURY',
+        create: 'entities/injuries/CREATE',
+        update: 'entities/injuries/UPDATE'
       }),
       async submit () {
         if ('id' in this.injury) {

@@ -77,7 +77,7 @@
     },
     methods: {
       async submit () {
-        await this.$store.dispatch('booking/create', {
+        await this.$store.dispatch('entities/bookings/CREATE', {
           matchId: this.match.id,
           booking: this.booking
         })

@@ -182,7 +182,7 @@
       }
     },
     computed: {
-      ...mapState('contract', [
+      ...mapState('entities/contracts', [
         'bonusRequirementTypes'
       ]),
       title () {
@@ -209,9 +209,9 @@
       }
     },
     methods: {
-      ...mapActions('contract', [
-        'create'
-      ]),
+      ...mapActions('entities/contract', {
+        create: 'CREATE'
+      }),
       async submit () {
         await this.create({
           playerId: this.player.id,

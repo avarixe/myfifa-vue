@@ -57,7 +57,7 @@
 <script>
   import { addYears } from 'date-fns'
   import Vue from 'vue'
-  import { mapState } from 'vuex'
+  import { Player } from '@/models'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import PlayerRow from './PlayerRow'
 
@@ -85,21 +85,20 @@
       loading: false,
       pagination: {
         rowsPerPage: 10,
-        sortBy: 'pos_idx'
+        sortBy: 'posIdx'
       },
       filterActive: true,
       search: '',
       playerData: {}
     }),
     computed: {
-      ...mapState('player', { players: 'list' }),
       currentMode () {
         return this.modes[this.mode]
       },
       headers () {
         let headers = [
           { text: 'Name',     value: 'name',    align: 'left' },
-          { text: 'Position', value: 'pos_idx', align: 'center' },
+          { text: 'Position', value: 'posIdx', align: 'center' },
           { text: 'Age',      value: 'age',     align: 'center' }
         ]
 
@@ -139,12 +138,18 @@
       }
     },
     async mounted () {
-      await this.$store.dispatch('player/getAll', { teamId: this.team.id })
+      await this.$store.dispatch('entities/players/FETCH', { teamId: this.team.id })
 
       for (let playerId of this.seasonData.player_ids) {
+        const {
+          name,
+          pos,
+          pos_idx: posIdx,
+          birth_year: birthYear
+        } = Player.find(playerId)
         const playerRecords = this.seasonData.records[playerId]
 
-        const age = parseInt(this.seasonEnd) - this.players[playerId].birth_year
+        const age = parseInt(this.seasonEnd) - birthYear
 
         const firstRecord = this.firstSeasonRecord(playerRecords)
         const lastRecord = this.lastSeasonRecord(playerRecords)
@@ -158,9 +163,9 @@
         const valueChange = (endValue - startValue) / startValue * 100
 
         Vue.set(this.playerData, playerId, {
-          name: this.players[playerId].name,
-          pos: this.players[playerId].pos,
-          pos_idx: this.players[playerId].pos_idx,
+          name,
+          pos,
+          posIdx,
           age,
 
           numGames: this.seasonData.num_games[playerId] || 0,

@@ -75,11 +75,13 @@
 </template>
 
 <script>
+  import EditModeButton from '@/components/EditModeButton'
   import StageRemove from './StageRemove'
   import FixtureView from './FixtureView'
 
   export default {
     components: {
+      EditModeButton,
       StageRemove,
       FixtureView
     },
@@ -122,13 +124,13 @@
           const { id, name } = this.round
           this.stage = { id, name }
         } else if (this.stageChanged) {
-          this.$store.dispatch('stage/update', this.stage)
+          this.$store.dispatch('entities/stages/UPDATE', this.stage)
         }
       }
     },
     methods: {
       addFixture () {
-        this.$store.dispatch('fixture/create', {
+        this.$store.dispatch('entities/fixtures/CREATE', {
           stageId: this.round.id,
           fixture: { home_team: '', away_team: '' }
         })

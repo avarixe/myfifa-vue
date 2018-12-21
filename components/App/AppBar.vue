@@ -83,8 +83,9 @@
 
 <script>
   import UserForm from './UserForm'
-  import { mapState, mapGetters } from 'vuex'
+  import { mapGetters } from 'vuex'
   import Cookie from 'js-cookie'
+  import { Team } from '@/models'
 
   export default {
     components: {
@@ -94,32 +95,25 @@
       menu: false
     }),
     computed: {
-      ...mapState('team', { teamId: 'currentId' }),
-      ...mapGetters({
-        authenticated: 'authenticated',
-        team: 'team/current'
-      }),
+      ...mapGetters([ 'authenticated' ]),
+      team () {
+        return Team.find(this.$route.params.teamId)
+      },
       items () {
-        let items = []
-        this.team && items.push({ text: this.team.title })
-        return items
+        return this.team
+          ? [{ text: this.team.title, nuxt: true, exact: true, to: this.teamLink }]
+          : []
       },
       teamLink () {
         return {
-          name: 'teams-id',
-          params: { id: this.team.id }
+          name: 'teams-teamId',
+          params: { teamId: this.team.id }
         }
       }
     },
     watch: {
       authenticated (val) {
         !val && this.$router.push({ name: 'index' })
-      },
-      teamId (val) {
-        this.$store.commit('match/RESET')
-        this.$store.commit('player/RESET')
-        this.$store.commit('squad/RESET')
-        this.$store.commit('competition/RESET')
       }
     },
     methods: {

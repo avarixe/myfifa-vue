@@ -75,11 +75,11 @@
       }
     },
     methods: {
-      ...mapActions('user', [
-        'get',
-        'create',
-        'update'
-      ]),
+      ...mapActions('user', {
+        get: 'GET',
+        create: 'CREATE',
+        update: 'UPDATE'
+      }),
       async submit () {
         try {
           let save = this.user.id ? this.update : this.create

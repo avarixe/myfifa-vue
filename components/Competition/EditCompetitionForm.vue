@@ -43,7 +43,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { Competition } from '@/models'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import DialogFormable from '@/mixins/DialogFormable'
   import { teamOptions } from '@/api/modules/competition'
@@ -69,11 +69,19 @@
       }
     },
     computed: {
-      ...mapGetters({
-        competitions: 'competition/names'
-      }),
       teams () {
         return teamOptions(this.competitionData)
+      },
+      competitions () {
+        return [
+          ...new Set(
+            Competition
+              .query()
+              .where('teamId', this.team.id)
+              .get()
+              .map(c => c.name)
+          )
+        ]
       }
     },
     watch: {
@@ -89,9 +97,11 @@
       }
     },
     methods: {
-      ...mapActions('competition', [ 'update' ]),
       async submit () {
-        await this.update(this.competition)
+        await this.$store.dispatch(
+          'entities/competitions/UPDATE',
+          this.competition
+        )
       }
     }
   }

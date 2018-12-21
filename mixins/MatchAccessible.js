@@ -8,12 +8,12 @@ export default {
     }
   },
   computed: {
-    ...mapState('match', [
+    ...mapState('entities/matches', [
       'positions'
     ]),
     sortedCaps () {
       return this.$_orderBy(
-        Object.values(this.match.caps),
+        this.match.caps,
         [ c => this.positions.indexOf(c.pos), 'start' ]
       )
     },

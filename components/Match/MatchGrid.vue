@@ -21,7 +21,6 @@
       :headers="headers"
       :items="rows"
       :pagination.sync="pagination"
-      :loading="loading"
       :search="search"
       item-key="id"
       no-data-text="No Matches Recorded">
@@ -50,10 +49,8 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { Match } from '@/models'
   import MatchForm from './MatchForm'
-  import MatchActions from './MatchActions'
-  import MatchLineup from './MatchLineup'
   import MatchRemove from './MatchRemove'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
@@ -61,8 +58,6 @@
     mixins: [ TeamAccessible ],
     components: {
       MatchForm,
-      MatchActions,
-      MatchLineup,
       MatchRemove
     },
     data () {
@@ -80,37 +75,18 @@
           { text: 'Away', value: 'away', align: 'left' },
           { text: 'Date Played', value: 'date_played', align: 'center' }
         ],
-        loading: false,
         search: ''
       }
     },
     computed: {
-      ...mapState('match', {
-        matches: 'list'
-      }),
       rows () {
-        return Object.values(this.matches)
+        return Match
+          .query()
+          .where('team_id', this.team.id)
+          .get()
       }
     },
-    mounted () {
-      this.reloadGrid()
-    },
     methods: {
-      ...mapActions({
-        getMatches: 'match/getAll',
-        getEvents: 'match/getEvents',
-        getCaps: 'cap/getAll'
-      }),
-      async reloadGrid () {
-        this.loading = true
-        try {
-          await this.getMatches({ teamId: this.team.id })
-        } catch (e) {
-          alert(e.message)
-        } finally {
-          this.loading = false
-        }
-      },
       viewMatch (match) {
         this.$router.push({
           name: 'matches-id',
@@ -131,9 +107,9 @@
       },
       matchLink (match) {
         return {
-          name: 'teams-id-matches-matchId',
+          name: 'teams-teamId-matches-matchId',
           params: {
-            id: this.team.id,
+            teamId: this.team.id,
             matchId: match.id
           }
         }

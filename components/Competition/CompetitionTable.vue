@@ -119,7 +119,7 @@
           const { id, name } = this.table
           this.stage = { id, name }
         } else if (this.stageChanged) {
-          this.$store.dispatch('stage/update', this.stage)
+          this.$store.dispatch('entities/stages/UPDATE', this.stage)
         }
       }
     }

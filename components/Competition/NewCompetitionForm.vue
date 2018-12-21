@@ -86,7 +86,8 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
+  import { Competition } from '@/models'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import DialogFormable from '@/mixins/DialogFormable'
 
@@ -115,25 +116,34 @@
       }
     },
     computed: {
-      ...mapGetters({
-        season: 'team/season',
-        competitions: 'competition/names'
-      })
+      competitions () {
+        return [
+          ...new Set(
+            Competition
+              .query()
+              .where('team_id', this.team.id)
+              .get()
+              .map(c => c.name)
+          )
+        ]
+      }
     },
     mounted () {
       this.competition.season = this.season
     },
     methods: {
-      ...mapActions('competition', [ 'create' ]),
+      ...mapActions('entities/competitions', {
+        create: 'CREATE'
+      }),
       async submit () {
         const { data } = await this.create({
           teamId: this.team.id,
           competition: this.competition
         })
         this.$router.push({
-          name: 'teams-id-competitions-competitionId',
+          name: 'teams-teamId-competitions-competitionId',
           params: {
-            id: this.team.id,
+            teamId: this.team.id,
             competitionId: data.id
           }
         })

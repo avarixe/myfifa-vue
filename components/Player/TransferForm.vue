@@ -151,7 +151,9 @@
       }
     },
     methods: {
-      ...mapActions('transfer', [ 'create' ]),
+      ...mapActions('entities/transfers', {
+        create: 'CREATE'
+      }),
       async submit () {
         await this.create({
           playerId: this.player.id,

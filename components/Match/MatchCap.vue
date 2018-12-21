@@ -54,18 +54,18 @@
       >mdi-subdirectory-arrow-right</v-icon>
       <v-icon
         v-for="index in goals"
-        :key="index"
+        :key="`goal${index}`"
         color="blue"
         small
       >mdi-soccer</v-icon>
       <v-icon
         v-for="index in assists"
-        :key="index"
+        :key="`assist${index}`"
         small
       >mdi-soccer</v-icon>
       <v-icon
         v-for="(color, i) in bookings"
-        :key="i"
+        :key="`booking${i}`"
         :color="color"
         small
       >mdi-book</v-icon>
@@ -105,14 +105,18 @@
       return {}
     },
     computed: {
-      ...mapState('match', [
+      ...mapState('entities/matches', [
         'positions'
       ]),
-      ...mapGetters('player', {
+      ...mapGetters('entities/players', {
         players: 'active'
       }),
       events () {
-        return this.match.events.slice().sort()
+        return [
+          ...this.match.goals,
+          ...this.match.bookings,
+          ...this.match.substitutions
+        ]
       },
       goals () {
         return this.events.filter(event => (
@@ -142,9 +146,9 @@
       }
     },
     methods: {
-      ...mapActions('cap', [
-        'update'
-      ]),
+      ...mapActions('entities/caps', {
+        update: 'UPDATE'
+      }),
       setPosition (position) {
         this.update({
           ...this.cap,

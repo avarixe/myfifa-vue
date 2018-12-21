@@ -30,21 +30,25 @@ export default {
   },
 
   transfers: {
+    teamIndex: 'teams/{{ teamId }}/transfers',
     index: 'players/{{ playerId }}/transfers',
     record: 'transfers/{{ transferId }}'
   },
 
   contracts: {
+    teamIndex: 'teams/{{ teamId }}/contracts',
     index: 'players/{{ playerId }}/contracts',
     record: 'contracts/{{ contractId }}'
   },
 
   injuries: {
+    teamIndex: 'teams/{{ teamId }}/injuries',
     index: 'players/{{ playerId }}/injuries',
     record: 'injuries/{{ injuryId }}'
   },
 
   loans: {
+    teamIndex: 'teams/{{ teamId }}/loans',
     index: 'players/{{ playerId }}/loans',
     record: 'loans/{{ loanId }}'
   },
@@ -57,7 +61,6 @@ export default {
   matches: {
     index: 'teams/{{ teamId }}/matches',
     record: 'matches/{{ matchId }}',
-    events: 'matches/{{ matchId }}/events',
     applySquad: 'matches/{{ matchId }}/apply_squad',
     penaltyShootout: 'matches/{{ matchId }}/penalty_shootout'
   },
@@ -75,11 +78,6 @@ export default {
   bookings: {
     index: 'matches/{{ matchId }}/bookings',
     record: 'bookings/{{ bookingId }}'
-  },
-
-  penaltyShootouts: {
-    index: 'matches/{{ matchId }}/penalty_shootouts',
-    record: 'penalty_shootouts/{{ penaltyShootoutId }}'
   },
 
   caps: {
