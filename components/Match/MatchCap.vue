@@ -84,7 +84,8 @@
 </template>
 
 <script>
-  import { mapState, mapGetters, mapActions } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
+  import { activePlayers } from '@/api/modules/Player'
 
   export default {
     props: {
@@ -108,9 +109,9 @@
       ...mapState('entities/matches', [
         'positions'
       ]),
-      ...mapGetters('entities/players', {
-        players: 'active'
-      }),
+      players () {
+        return activePlayers(parseInt(this.$route.params.teamId))
+      },
       events () {
         return [
           ...this.match.goals,

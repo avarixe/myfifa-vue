@@ -68,7 +68,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { activePlayers } from '@/api/modules/Player'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import DialogFormable from '@/mixins/DialogFormable'
   import MatchAccessible from '@/mixins/MatchAccessible'
@@ -90,12 +90,9 @@
       }
     },
     computed: {
-      ...mapGetters('player', {
-        activePlayers: 'active'
-      }),
       availablePlayers () {
         const selectedIds = this.sortedCaps.map(c => c.player_id)
-        return this.activePlayers.filter(p => selectedIds.indexOf(p.id) < 0)
+        return activePlayers(this.team.id).filter(p => selectedIds.indexOf(p.id) < 0)
       }
     },
     methods: {

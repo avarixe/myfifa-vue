@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title class="headline">
-      {{ seasonLabel(season) }}
+      {{ seasonLabel }}
       <v-tooltip color="primary" bottom>
         <v-btn
           slot="activator"
@@ -36,10 +36,10 @@
 </template>
 
 <script>
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import { addYears } from 'date-fns'
+  import { Team } from '@/models'
 
   export default {
-    mixins: [ TeamAccessible ],
     props: {
       season: {
         type: Number,
@@ -51,6 +51,14 @@
       }
     },
     computed: {
+      team () {
+        return Team.find(this.$route.params.teamId)
+      },
+      seasonLabel () {
+        let start = addYears(this.team.start_date, this.season)
+        const end = addYears(start, 1)
+        return `${this.$_format(start, 'YYYY')} - ${this.$_format(end, 'YYYY')}`
+      },
       seasonLink () {
         return {
           name: 'teams-teamId-seasons-season',

@@ -39,10 +39,9 @@
 </template>
 
 <script>
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import { Team } from '@/models'
 
   export default {
-    mixins: [ TeamAccessible ],
     props: {
       season: {
         type: [String, Number],
@@ -58,6 +57,7 @@
       }
     },
     computed: {
+      team () { return Team.find(this.$route.params.teamId) },
       numGames () { return this.player.numGames },
       numSubs () { return this.player.numSubs },
       numGoals () { return this.player.numGoals },
