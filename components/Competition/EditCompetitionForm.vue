@@ -43,10 +43,9 @@
 </template>
 
 <script>
-  import { Competition } from '@/models'
+  import Competition, { teamOptions } from '@/models/Competition'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import DialogFormable from '@/mixins/DialogFormable'
-  import { teamOptions } from '@/api/modules/Competition'
 
   export default {
     mixins: [

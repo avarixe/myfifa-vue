@@ -85,7 +85,7 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import { activePlayers } from '@/api/modules/Player'
+  import { activePlayers } from '@/models/Player'
 
   export default {
     props: {

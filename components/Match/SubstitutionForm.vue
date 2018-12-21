@@ -68,7 +68,7 @@
 </template>
 
 <script>
-  import { activePlayers } from '@/api/modules/Player'
+  import { activePlayers } from '@/models/Player'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import DialogFormable from '@/mixins/DialogFormable'
   import MatchAccessible from '@/mixins/MatchAccessible'
