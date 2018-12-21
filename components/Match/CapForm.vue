@@ -42,7 +42,8 @@
 </template>
 
 <script>
-  import { mapState, mapGetters, mapActions } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
+  import { activePlayers } from '@/models/Player'
   import DialogFormable from '@/mixins/DialogFormable'
 
   export default {
@@ -68,9 +69,9 @@
       ...mapState('match', [
         'positions'
       ]),
-      ...mapGetters('player', {
-        players: 'active'
-      }),
+      players () {
+        return activePlayers(parseInt(this.$route.params.teamId))
+      },
       title () {
         return this.cap.id ? 'Edit Position' : 'Add Position'
       }

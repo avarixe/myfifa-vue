@@ -60,7 +60,8 @@
 </template>
 
 <script>
-  import { mapState, mapGetters, mapActions } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
+  import { activePlayers } from '@/models/Player'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import DialogFormable from '@/mixins/DialogFormable'
 
@@ -90,11 +91,11 @@
       ...mapState('entities/matches', [
         'positions'
       ]),
-      ...mapGetters('entities/players', {
-        players: 'active'
-      }),
       title () {
         return this.squad.id ? 'Edit Squad' : 'New Squad'
+      },
+      players () {
+        return activePlayers(this.team.id)
       }
     },
     watch: {

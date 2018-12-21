@@ -1,4 +1,3 @@
-import orderBy from 'lodash.orderby'
 import http from '@/api'
 import myfifa from '@/api/myfifa'
 import { Player, PlayerHistory } from '@/models'
@@ -23,24 +22,6 @@ const state = () => ({
     'LW'
   ]
 })
-
-// getters
-const getters = {
-  contracted: (state, getters, rootState) => (
-    orderBy(
-      Player
-        .query()
-        .where('team_id', rootState.entities.teams.currentId)
-        .where('status', status => status)
-        .get(),
-      ['pos_idx', 'ovr'],
-      ['asc', 'desc']
-    )
-  ),
-  active: (state, getters) => (
-    getters.contracted.filter(player => player.status === 'Active')
-  )
-}
 
 // actions
 export const actions = {
@@ -147,6 +128,5 @@ export const actions = {
 export default {
   namespaced: true,
   state,
-  getters,
   actions
 }

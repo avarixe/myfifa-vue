@@ -1,4 +1,5 @@
 import { Model } from '@vuex-orm/core'
+import orderBy from 'lodash.orderby'
 import PlayerHistory from './PlayerHistory'
 import Injury from './Injury'
 import Loan from './Loan'
@@ -9,7 +10,7 @@ import Match from './Match'
 import Goal from './Goal'
 import Booking from './Booking'
 
-export default class Player extends Model {
+class Player extends Model {
   static entity = 'players'
 
   static fields () {
@@ -47,3 +48,22 @@ export default class Player extends Model {
     }
   }
 }
+
+export function contractedPlayers (teamId) {
+  return orderBy(
+    Player
+      .query()
+      .where('team_id', teamId)
+      .where('status', status => status)
+      .get(),
+    ['pos_idx', 'ovr'],
+    ['asc', 'desc']
+  )
+}
+
+export function activePlayers (teamId) {
+  return contractedPlayers(teamId)
+    .filter(player => player.status === 'Active')
+}
+
+export default Player

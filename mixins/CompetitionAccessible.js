@@ -1,6 +1,5 @@
 import TeamAccessible from '@/mixins/TeamAccessible'
-import { teamOptions } from '@/api/modules/competition'
-import { Competition } from '@/models'
+import Competition, { teamOptions } from '@/models/Competition'
 
 export default {
   mixins: [ TeamAccessible ],

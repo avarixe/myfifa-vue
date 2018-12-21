@@ -57,15 +57,13 @@
 <script>
   import { addYears } from 'date-fns'
   import Vue from 'vue'
-  import { Player } from '@/models'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import { Team, Player } from '@/models'
   import PlayerRow from './PlayerRow'
 
   export default {
     components: {
       PlayerRow
     },
-    mixins: [ TeamAccessible ],
     props: {
       season: {
         type: [String, Number],
@@ -92,6 +90,9 @@
       playerData: {}
     }),
     computed: {
+      team () {
+        return Team.find(this.$route.params.teamId)
+      },
       currentMode () {
         return this.modes[this.mode]
       },
