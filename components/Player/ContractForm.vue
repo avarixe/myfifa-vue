@@ -1,7 +1,7 @@
 <template>
   <dialog-form
     v-model="dialog"
-    title="Sign New Contract"
+    :title="title"
     :submit="submit"
     :submit-cb="submitCb"
     color="blue">
@@ -166,6 +166,7 @@
     data () {
       return {
         valid: false,
+        title: 'Sign New Contract',
         contract: {
           effective_date: null,
           end_date: null,
