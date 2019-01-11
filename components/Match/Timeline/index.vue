@@ -107,8 +107,8 @@
         'asc')
       },
       penaltyShootoutEvent () {
-        return this.match.penaltyShootout
-          ? { ...this.match.penaltyShootout, event_type: 'PenaltyShootout' }
+        return this.match.penalty_shootout
+          ? { ...this.match.penalty_shootout, event_type: 'PenaltyShootout' }
           : {}
       },
       dense () {
@@ -126,7 +126,7 @@
         removeGoal: 'entities/goals/REMOVE',
         removeBooking: 'entities/bookings/REMOVE',
         removeSubstitution: 'entities/substitutions/REMOVE',
-        removePenaltyShootout: 'entities/penaltyShootout/REMOVE'
+        removePenaltyShootout: 'entities/penaltyShootouts/REMOVE'
       }),
       async removeEvent (event) {
         if (confirm('Remove ' + event.event_type + '?')) {
