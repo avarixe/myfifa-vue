@@ -26,6 +26,7 @@
           case 'PenaltyShootout':
             return PenaltyShootoutContent
           default:
+            console.log(item)
             throw new Error('Wrong Timeline Item Type!')
         }
       }
