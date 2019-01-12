@@ -11,7 +11,7 @@ export default class Loan extends Model {
 
       // Database fields
       start_date: this.string(''),
-      end_date: this.string(''),
+      end_date: this.string('').nullable(),
       destination: this.string(''),
       returned: this.boolean(false)
     }

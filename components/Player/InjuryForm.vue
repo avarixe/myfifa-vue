@@ -28,7 +28,7 @@
           ></v-text-field>
         </v-flex>
         <v-scroll-y-transition mode="out-in">
-          <v-flex v-if="injury.id" xs12>
+          <v-flex v-if="playerInjured" xs12>
             <v-checkbox
               v-model="injury.recovered"
               label="Player Recovered"
@@ -84,8 +84,8 @@
     watch: {
       async dialog (val) {
         if (val) {
-          const { description } = this.currentInjury
-          Object.assign(this.injury, { description })
+          const { id, description } = this.currentInjury
+          Object.assign(this.injury, { id, description })
         } else {
           Object.assign(this.$data, this.$options.data.apply(this))
           // this.$refs.form.reset()
@@ -98,7 +98,7 @@
         update: 'UPDATE'
       }),
       async submit () {
-        if ('id' in this.injury) {
+        if (this.playerInjured) {
           await this.update(this.injury)
         } else {
           await this.create({
