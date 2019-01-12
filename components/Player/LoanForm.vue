@@ -28,7 +28,7 @@
           ></v-text-field>
         </v-flex>
         <v-scroll-y-transition mode="out-in">
-          <v-flex v-if="loan.id" xs12>
+          <v-flex v-if="playerLoaned" xs12>
             <v-checkbox
               v-model="loan.returned"
               label="Player Returned"
@@ -84,8 +84,8 @@
     watch: {
       async dialog (val) {
         if (val) {
-          const { destination } = this.currentLoan
-          Object.assign(this.loan, { destination })
+          const { id, destination } = this.currentLoan
+          Object.assign(this.loan, { id, destination })
         } else {
           Object.assign(this.$data, this.$options.data.apply(this))
           // this.$refs.form.reset()
@@ -98,7 +98,7 @@
         update: 'UPDATE'
       }),
       async submit () {
-        if ('id' in this.loan) {
+        if (this.playerLoaned) {
           await this.update(this.loan)
         } else {
           await this.create({
