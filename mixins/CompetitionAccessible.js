@@ -5,7 +5,10 @@ export default {
   mixins: [ TeamAccessible ],
   computed: {
     competition () {
-      return Competition.find(this.$route.params.competitionId)
+      return Competition
+        .query()
+        .with('stages.table_rows|fixtures')
+        .find(this.$route.params.competitionId)
     },
     competitionTeams () {
       return teamOptions(this.competition)

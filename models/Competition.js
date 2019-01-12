@@ -27,14 +27,11 @@ class Competition extends Model {
 }
 
 export function teamOptions (competition) {
-  const stages = Object.values(competition.stages)
-  let array = stages.reduce((arr, stage) => {
-    const tableRows = Object.values(stage.table_rows)
-    const fixtures = Object.values(stage.fixtures)
+  let array = competition.stages.reduce((arr, stage) => {
     return [
       ...arr,
-      ...tableRows.map(row => row.name),
-      ...fixtures.reduce((names, fixture) => {
+      ...stage.table_rows.map(row => row.name),
+      ...stage.fixtures.reduce((names, fixture) => {
         return [ ...names, fixture.home_team, fixture.away_team ]
       }, [])
     ]
