@@ -5,7 +5,8 @@ export default {
     DialogForm
   },
   props: {
-    color: String
+    color: String,
+    default: 'tertiary'
   },
   data: () => ({
     dialog: false

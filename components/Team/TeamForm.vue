@@ -40,6 +40,7 @@
               v-model="team.start_date"
               landscape
               @input="$refs.menu.save(team.start_date)"
+              :color="color"
             ></v-date-picker>
           </v-menu>
         </v-flex>

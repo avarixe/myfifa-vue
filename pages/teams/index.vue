@@ -3,7 +3,7 @@
     <v-layout row wrap>
       <v-flex xs12>
         <team-form>
-          <v-btn>
+          <v-btn color="secondary">
             <v-icon left>mdi-plus-circle-outline</v-icon>
             Team
           </v-btn>

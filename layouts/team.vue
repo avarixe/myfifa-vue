@@ -4,7 +4,7 @@
     <v-content>
       <app-broadcaster></app-broadcaster>
       <template v-if="loaded">
-        <div class="pt-5">
+        <div style="padding-top: 70px;">
           <team-channel></team-channel>
           <team-bar v-if="team"></team-bar>
           <nuxt />

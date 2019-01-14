@@ -115,7 +115,7 @@
 
 <style scoped>
   .v-toolbar {
-    top: 48px;
+    top: 70px;
     /*background-color: rgba(255,255,255, 0.75);*/
   }
 

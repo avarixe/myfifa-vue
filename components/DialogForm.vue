@@ -28,9 +28,10 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
+            @click="dialog = false"
+            color="tertiary"
             flat
             large
-            @click="dialog = false"
           >Cancel</v-btn>
           <v-btn
             type="submit"
