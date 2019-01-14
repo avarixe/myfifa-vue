@@ -29,8 +29,8 @@ export default {
   ** Global CSS
   */
   css: [
-    'vuetify/src/stylus/main.styl',
-    '@/css/main.css'
+    'vuetify/dist/vuetify.min.css',
+    '@/styles/index.scss'
   ],
 
   /*

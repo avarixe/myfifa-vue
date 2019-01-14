@@ -1,5 +1,8 @@
 <template>
-  <v-toolbar fixed dense>
+  <v-toolbar
+    fixed
+    dense
+    flat>
     <v-menu bottom class="hidden-sm-and-up">
       <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>
       <v-list>
@@ -113,7 +116,7 @@
 <style scoped>
   .v-toolbar {
     top: 48px;
-    background-color: rgba(255,255,255, 0.75);
+    /*background-color: rgba(255,255,255, 0.75);*/
   }
 
   .v-toolbar__title {

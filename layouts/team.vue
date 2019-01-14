@@ -2,8 +2,8 @@
   <v-app>
     <app-bar></app-bar>
     <v-content>
+      <app-broadcaster></app-broadcaster>
       <template v-if="loaded">
-        <app-broadcaster></app-broadcaster>
         <div class="pt-5">
           <team-channel></team-channel>
           <team-bar v-if="team"></team-bar>

@@ -1,82 +1,45 @@
 <template>
-  <v-toolbar fixed dense app color="primary" dark>
-    <v-menu
-      v-if="authenticated"
-      v-model="menu"
-      offset-y
-      class="hidden-sm-and-up">
-      <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>
-      <v-list class="primary" dark>
-        <v-list-tile
-          active-class=""
-          to="/"
-          nuxt>
-          <v-list-tile-avatar>
-            <v-icon>mdi-home</v-icon>
-          </v-list-tile-avatar>
-          Home
-        </v-list-tile>
-
-        <user-form>
-          <v-list-tile>
-            <v-list-tile-avatar>
-              <v-icon>mdi-account</v-icon>
-            </v-list-tile-avatar>
-            Account
-          </v-list-tile>
-        </user-form>
-
-        <v-list-tile @click="logout">
-          <v-list-tile-avatar>
-            <v-icon>mdi-exit-to-app</v-icon>
-          </v-list-tile-avatar>
-          Log Out
-        </v-list-tile>
-      </v-list>
-    </v-menu>
-    <v-toolbar-title>MyFIFA Manager</v-toolbar-title>
-    <v-toolbar-items class="hidden-xs-only">
-      <v-breadcrumbs
-        :items="items"
-        class="white--text"
-        large
-      ></v-breadcrumbs>
-    </v-toolbar-items>
+  <v-toolbar
+    fixed
+    dense
+    app
+    flat
+    prominent
+    style="background: #eee;">
+    <v-toolbar-title
+      class="tertiary--text font-weight-light"
+    >MyFIFA Manager</v-toolbar-title>
 
     <v-spacer></v-spacer>
 
-    <template v-if="authenticated">
-      <v-tooltip color="blue" class="hidden-xs-only" bottom>
-        <v-btn
-          slot="activator"
-          nuxt
+    <v-toolbar-items v-if="authenticated">
+      <v-flex
+        align-center
+        layout
+        py-2>
+        <nuxt-link
+          v-ripple
           to="/"
-          active-class=""
-          icon>
-          <v-icon>mdi-home</v-icon>
-        </v-btn>
-        Home
-      </v-tooltip>
+          class="toolbar-items">
+          <v-icon color="tertiary">mdi-home</v-icon>
+        </nuxt-link>
 
-      <user-form>
-        <v-tooltip color="blue" class="hidden-xs-only" bottom>
-          <v-btn slot="activator" icon>
-            <v-icon>mdi-account</v-icon>
-          </v-btn>
-          Account
-        </v-tooltip>
-      </user-form>
+        <user-form>
+          <a
+            v-ripple
+            class="toolbar-items">
+            <v-icon color="tertiary">mdi-account</v-icon>
+          </a>
+        </user-form>
 
-      <v-tooltip color="blue" class="hidden-xs-only" bottom>
-        <v-btn
-          slot="activator"
+        <a
+          v-ripple
           @click="logout"
-          icon>
-          <v-icon>mdi-exit-to-app</v-icon>
-        </v-btn>
-        Log Out
-      </v-tooltip>
-    </template>
+          class="toolbar-items">
+          <v-icon color="tertiary">mdi-exit-to-app</v-icon>
+        </a>
+      </v-flex>
+    </v-toolbar-items>
 
   </v-toolbar>
 </template>
@@ -85,7 +48,6 @@
   import UserForm from './UserForm'
   import { mapGetters } from 'vuex'
   import Cookie from 'js-cookie'
-  import { Team } from '@/models'
 
   export default {
     components: {
@@ -94,23 +56,9 @@
     data: () => ({
       menu: false
     }),
-    computed: {
-      ...mapGetters([ 'authenticated' ]),
-      team () {
-        return Team.find(this.$route.params.teamId)
-      },
-      items () {
-        return this.team
-          ? [{ text: this.team.title, nuxt: true, exact: true, to: this.teamLink }]
-          : []
-      },
-      teamLink () {
-        return {
-          name: 'teams-teamId',
-          params: { teamId: this.team.id }
-        }
-      }
-    },
+    computed: mapGetters([
+      'authenticated'
+    ]),
     watch: {
       authenticated (val) {
         !val && this.$router.push({ name: 'index' })

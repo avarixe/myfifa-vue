@@ -1,6 +1,6 @@
 {
   "name": "nuxt-myfifa",
-  "version": "0.18.3",
+  "version": "1.0.0",
   "description": "JoonDEV | MyFIFA Manager",
   "author": "Joon Lee <joon.lee@ucla.edu>",
   "private": true,
@@ -49,6 +49,8 @@
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2"
   }
