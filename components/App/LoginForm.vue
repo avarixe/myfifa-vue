@@ -1,15 +1,10 @@
 <template>
-  <dialog-form
-    v-model="dialog"
-    title="Log In"
-    :submit="authenticate">
-    <v-btn
-      slot="activator"
-      color="primary"
-      large
-    >Log In</v-btn>
-    <v-container slot="form">
-      <v-layout wrap>
+  <v-form ref="form" @submit.prevent="authenticate">
+    <v-card>
+      <v-card-title>
+        MyFIFA Manager
+      </v-card-title>
+      <v-card-text>
         <v-flex xs12>
           <v-text-field
             v-model="credentials.username"
@@ -26,20 +21,37 @@
             @click:append="visible = !visible"
           ></v-text-field>
         </v-flex>
-      </v-layout>
-    </v-container>
-  </dialog-form>
-</template>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <user-form>
+          <v-btn
+            color="orange"
+            flat
+            large
+          >Register</v-btn>
+        </user-form>
 
+        <v-btn
+          type="submit"
+          color="primary"
+          flat
+          large
+        >Log In</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-form>
+</template>
 
 <script>
   import Cookie from 'js-cookie'
-  import DialogFormable from '@/mixins/DialogFormable'
+  import UserForm from '@/components/App/UserForm'
 
   export default {
-    mixins: [ DialogFormable ],
+    components: {
+      UserForm
+    },
     data: () => ({
-      dialog: true,
       visible: false,
       credentials: {
         username: '',

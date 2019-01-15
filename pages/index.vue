@@ -1,13 +1,8 @@
 <template>
-  <v-container grid-list-lg>
-    <v-layout row wrap>
-      <v-flex xs12>
-        <login-form color="blue"></login-form>
-      </v-flex>
-      <v-flex xs12>
-        <user-form>
-          <v-btn color="orange" dark large>Register</v-btn>
-        </user-form>
+  <v-container fluid fill-height>
+    <v-layout align-center justify-center>
+      <v-flex xs12 sm8 md4>
+        <login-form></login-form>
       </v-flex>
     </v-layout>
   </v-container>
@@ -16,15 +11,16 @@
 <script>
   import { mapGetters } from 'vuex'
   import LoginForm from '@/components/App/LoginForm'
-  import UserForm from '@/components/App/UserForm'
 
   export default {
     layout: 'default',
     middleware: 'home',
     components: {
-      LoginForm,
-      UserForm
+      LoginForm
     },
+    data: () => ({
+      mode: 'login'
+    }),
     computed: mapGetters(['authenticated']),
     watch: {
       authenticated: {
