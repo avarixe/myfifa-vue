@@ -1,16 +1,10 @@
 <template>
-  <table>
-    <tbody>
-      <tr>
-        <td class="font-weight-bold">Scorer</td>
-        <td class="pl-1">{{ item.player_name }}</td>
-      </tr>
-      <tr v-if="item.assisted_by">
-        <td class="font-weight-bold">Assisted By</td>
-        <td class="pl-1">{{ item.assisted_by }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    {{ goalType }} scored by <span class="font-weight-bold">{{ item.player_name }}</span>
+    <span v-if="item.assisted_by">
+      (assisted by <span class="font-weight-bold">{{ item.assisted_by }}</span>)
+    </span>
+  </div>
 </template>
 
 <script>
@@ -19,6 +13,17 @@
       item: {
         type: Object,
         required: true
+      }
+    },
+    computed: {
+      goalType () {
+        if (this.item.penalty) {
+          return 'Penalty'
+        } else if (this.item.own_goal) {
+          return 'Own Goal'
+        } else {
+          return 'Goal'
+        }
       }
     }
   }

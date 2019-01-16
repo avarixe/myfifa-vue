@@ -2,16 +2,17 @@ import http from '@/api'
 import myfifa from '@/api/myfifa'
 import { Team } from '@/models'
 
+function saveTeam ({ data }) {
+  Team.insert({ data })
+}
+
 // actions
 const actions = {
   FETCH ({ commit, rootState }) {
     return http({
       path: myfifa.teams.index,
       token: rootState.session.token,
-      success: ({ data }) => {
-        Team.insert({ data })
-        console.log('inserted Team')
-      }
+      success: saveTeam
     })
   },
   GET ({ commit, rootState }, { teamId }) {
@@ -19,7 +20,7 @@ const actions = {
       path: myfifa.teams.record,
       pathData: { teamId },
       token: rootState.session.token,
-      success: ({ data }) => { Team.insert({ data }) }
+      success: saveTeam
     })
   },
   ANALYZE_SEASON ({ rootState }, { teamId, season }) {
@@ -36,9 +37,7 @@ const actions = {
       path: myfifa.teams.index,
       token: rootState.session.token,
       data: { team },
-      success: ({ data }) => {
-        Team.insert({ data })
-      }
+      success: saveTeam
     })
   },
   UPDATE ({ commit, rootState }, team) {
@@ -48,7 +47,7 @@ const actions = {
       pathData: { teamId: team.id },
       token: rootState.session.token,
       data: { team },
-      success: ({ data }) => { Team.insert({ data }) }
+      success: saveTeam
     })
   },
   REMOVE ({ commit, rootState }, teamId) {
@@ -57,7 +56,9 @@ const actions = {
       path: myfifa.teams.record,
       pathData: { teamId },
       token: rootState.session.token,
-      success: ({ data }) => { Team.delete(data.id) }
+      success: ({ data }) => {
+        Team.delete(data.id)
+      }
     })
   }
 }

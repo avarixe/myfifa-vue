@@ -115,6 +115,9 @@
         store.dispatch('entities/stages/FETCH', params)
       ])
     },
+    mounted () {
+      this.$store.commit('app/SET_TITLE', this.team.title)
+    },
     watch: {
       competition (val) {
         !val && this.$router.push({

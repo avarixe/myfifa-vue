@@ -17,9 +17,9 @@
       & > .v-list__tile {
         padding: $padding-small $padding-general;
 
-        &:hover,
-        &:focus,
-        &:active {
+        &:hover {
+        // &:focus,
+        // &:active {
           background-color: $list-item-hover;
         }
 

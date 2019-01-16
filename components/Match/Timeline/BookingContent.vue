@@ -1,12 +1,8 @@
 <template>
-  <table>
-    <tbody>
-      <tr>
-        <td class="font-weight-bold">Player</td>
-        <td class="pl-1">{{ item.player_name }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <span class="font-weight-bold">{{ item.player_name }}</span>
+    has received a {{ bookingType }}
+  </div>
 </template>
 
 <script>
@@ -15,6 +11,13 @@
       item: {
         type: Object,
         required: true
+      }
+    },
+    computed: {
+      bookingType () {
+        return this.item.red_card
+          ? 'Red Card'
+          : 'Yellow Card'
       }
     }
   }

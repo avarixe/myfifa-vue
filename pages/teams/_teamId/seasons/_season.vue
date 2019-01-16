@@ -44,11 +44,19 @@
     },
     head () {
       return {
-        title: `${this.seasonLabel(this.season)} Season`
+        title: this.title
       }
     },
     computed: {
-      season () { return this.$route.params.season }
+      title () {
+        return `${this.seasonLabel(this.season)} Season`
+      },
+      season () {
+        return this.$route.params.season
+      }
+    },
+    mounted () {
+      this.$store.commit('app/SET_TITLE', this.title)
     }
   }
 </script>

@@ -1,41 +1,60 @@
 <template>
-  <v-card>
-    <v-card-title primary-title>
-      <div class="title">// TEAMS</div>
-    </v-card-title>
-    <v-card-text>
+  <material-card>
+    <template slot="header">
+      <span
+        v-text="'Teams'"
+        class="title font-weight-light mb-2"
+      />
+      <team-form>
+        <v-tooltip bottom>
+          <v-btn slot="activator" flat>
+            <v-icon left>mdi-plus-circle-outline</v-icon>
+          </v-btn>
+          New Team
+        </v-tooltip>
+      </team-form>
+    </template>
 
-      <!-- Squads Grid -->
-      <v-data-table
-        :headers="headers"
-        :items="rows"
-        :loading="loading"
-        item-key="id"
-        disable-initial-sort
-        no-data-text="No Teams Recorded">
-        <template slot="items" slot-scope="props">
-          <tr>
-            <td class="text-xs-center">{{ props.item.title }}</td>
-            <td class="text-xs-center">{{ $_format($_parse(props.item.start_date), 'MMM DD, YYYY') }}</td>
-            <td class="text-xs-center">{{ $_format($_parse(props.item.current_date), 'MMM DD, YYYY') }}</td>
-            <td class="text-xs-right">
-              <team-actions :team="props.item"></team-actions>
-            </td>
-          </tr>
-        </template>
-      </v-data-table>
-    </v-card-text>
-  </v-card>
+    <v-data-table
+      :headers="headers"
+      :items="rows"
+      :loading="loading"
+      item-key="id"
+      disable-initial-sort
+      no-data-text="No Teams Recorded">
+      <template
+        slot="headerCell"
+        slot-scope="{ header }">
+        <span
+          class="subheading font-weight-light text-success text--darken-3"
+          v-text="header.text"
+        />
+      </template>
+      <template slot="items" slot-scope="props">
+        <tr>
+          <td class="text-xs-center">{{ props.item.title }}</td>
+          <td class="text-xs-center">{{ $_format($_parse(props.item.start_date), 'MMM DD, YYYY') }}</td>
+          <td class="text-xs-center">{{ $_format($_parse(props.item.current_date), 'MMM DD, YYYY') }}</td>
+          <td class="text-xs-right">
+            <team-actions :team="props.item"></team-actions>
+          </td>
+        </tr>
+      </template>
+    </v-data-table>
+
+  </material-card>
 </template>
 
 <script>
   import Team from '@/models/Team'
   import { mapActions } from 'vuex'
+  import MaterialCard from '@/components/theme/Card'
   import TeamForm from './TeamForm'
   import TeamActions from './TeamActions'
 
   export default {
     components: {
+      MaterialCard,
       TeamForm,
       TeamActions
     },

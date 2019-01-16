@@ -3,12 +3,10 @@
     <app-bar></app-bar>
     <v-content>
       <app-broadcaster></app-broadcaster>
+      <app-drawer></app-drawer>
       <template v-if="loaded">
-        <div style="padding-top: 70px;">
-          <team-channel></team-channel>
-          <team-bar v-if="team"></team-bar>
-          <nuxt />
-        </div>
+        <team-channel></team-channel>
+        <nuxt />
       </template>
       <template v-else>
         <team-loader
@@ -21,10 +19,12 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   import { Team } from '@/models'
   import AppBar from '@/components/App/AppBar'
   import AppBroadcaster from '@/components/App/AppBroadcaster'
-  import TeamBar from '@/components/Team/TeamBar'
+  import AppDrawer from '@/components/App/AppDrawer'
+  // import TeamBar from '@/components/Team/TeamBar'
   import TeamChannel from '@/components/Team/TeamChannel'
   import TeamLoader from '@/components/Team/TeamLoader'
 
@@ -33,7 +33,8 @@
     components: {
       AppBar,
       AppBroadcaster,
-      TeamBar,
+      AppDrawer,
+      // TeamBar,
       TeamChannel,
       TeamLoader
     },
@@ -41,6 +42,9 @@
       loaded: false
     }),
     computed: {
+      ...mapState('app', [
+        'drawer'
+      ]),
       team () {
         return Team.find(this.$route.params.teamId)
       }

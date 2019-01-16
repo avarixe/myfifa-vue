@@ -29,6 +29,9 @@
           val && this.$router.push({ name: 'teams' })
         }
       }
+    },
+    mounted () {
+      this.$store.commit('app/SET_TITLE', '')
     }
   }
 </script>

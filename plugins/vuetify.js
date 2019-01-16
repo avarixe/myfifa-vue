@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuetify, {
   VApp,
-  // VNavigationDrawer,
+  VNavigationDrawer,
   // VFooter,
   VList,
   VBtn,
@@ -50,7 +50,7 @@ Vue.use(Vuetify, {
   },
   components: {
     VApp,
-    // VNavigationDrawer,
+    VNavigationDrawer,
     // VFooter,
     VList,
     VBtn,

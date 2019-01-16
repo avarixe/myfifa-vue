@@ -23,6 +23,9 @@
       return {
         title: this.team.title
       }
+    },
+    mounted () {
+      this.$store.commit('app/SET_TITLE', this.team.title)
     }
   }
 </script>

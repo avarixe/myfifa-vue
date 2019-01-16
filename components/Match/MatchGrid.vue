@@ -1,12 +1,22 @@
 <template>
-  <v-card>
-    <v-card-title primary-title>
-      <div class="title">
-        // MATCHES
-      </div>
+  <material-card>
+    <template slot="header">
+      <span
+        v-text="'Matches'"
+        class="title font-weight-light mb-2"
+      />
 
-      <v-spacer></v-spacer>
+      <match-form>
+        <v-tooltip bottom>
+          <v-btn slot="activator" flat>
+            <v-icon>mdi-plus-circle-outline</v-icon>
+          </v-btn>
+          New Match
+        </v-tooltip>
+      </match-form>
+    </template>
 
+    <v-flex xs12>
       <!-- Match Search -->
       <v-text-field
         v-model="search"
@@ -14,7 +24,7 @@
         append-icon="mdi-magnify"
         hide-details
       ></v-text-field>
-    </v-card-title>
+    </v-flex>
 
     <!-- Match History Grid -->
     <v-data-table
@@ -45,20 +55,22 @@
       </template>
     </v-data-table>
 
-  </v-card>
+  </material-card>
 </template>
 
 <script>
   import { Match } from '@/models'
   import MatchForm from './MatchForm'
   import MatchRemove from './MatchRemove'
+  import MaterialCard from '@/components/theme/Card'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
     mixins: [ TeamAccessible ],
     components: {
       MatchForm,
-      MatchRemove
+      MatchRemove,
+      MaterialCard
     },
     data () {
       return {
@@ -96,9 +108,9 @@
       resultColor (result) {
         switch (result) {
           case 'win':
-            return 'green'
+            return 'success'
           case 'draw':
-            return 'grey'
+            return 'warning'
           case 'loss':
             return 'red'
           default:

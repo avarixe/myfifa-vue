@@ -27,12 +27,20 @@
     mixins: [ TeamAccessible ],
     head () {
       return {
-        title: `${this.team.title} - Squads`
+        title: this.title
       }
     },
     components: {
       SquadForm,
       SquadGrid
+    },
+    computed: {
+      title () {
+        return `${this.team.title} - Squads`
+      }
+    },
+    mounted () {
+      this.$store.commit('app/SET_TITLE', this.team.title)
     }
   }
 </script>

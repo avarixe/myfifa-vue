@@ -33,6 +33,9 @@
       return {
         title: `${this.team.title} - Players`
       }
+    },
+    mounted () {
+      this.$store.commit('app/SET_TITLE', this.team.title)
     }
   }
 </script>
