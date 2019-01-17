@@ -46,7 +46,8 @@ export default {
     '@/plugins/lodash.js',
     '@/plugins/custom.js',
     '@/plugins/date-fns.js',
-    '@/plugins/chartkick.js'
+    '@/plugins/chartkick.js',
+    { src: '@/plugins/chartist.js', ssr: false }
   ],
 
   /*

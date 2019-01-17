@@ -56,6 +56,40 @@
         </material-card>
       </v-flex>
 
+      <v-flex xs12 sm6>
+        <material-chart-card
+          :data="ovrChart.data"
+          :options="ovrChart.options"
+          color="green"
+          type="Line"
+        >
+          <h4 class="title font-weight-light">
+            <span class="green--text">{{ player.ovr }}</span>
+            <small>OVR</small>
+          </h4>
+          <p class="category d-inline-flex font-weight-light">
+
+          </p>
+        </material-chart-card>
+      </v-flex>
+
+      <v-flex xs12 sm6>
+        <material-chart-card
+          :data="valueChart.data"
+          :options="valueChart.options"
+          color="info"
+          type="Line"
+        >
+          <h4 class="title font-weight-light">
+            <span class="green--text">{{ $_formatMoney(player.value) }}</span>
+            <small>Value</small>
+          </h4>
+          <p class="category d-inline-flex font-weight-light">
+
+          </p>
+        </material-chart-card>
+      </v-flex>
+
       <v-flex xs12 sm3>
         <material-stats-card
           color="teal"
@@ -64,6 +98,7 @@
           :value="statistics.numGames"
         />
       </v-flex>
+
       <v-flex xs12 sm3>
         <material-stats-card
           color="blue"
@@ -72,6 +107,7 @@
           :value="statistics.numGoals"
         />
       </v-flex>
+
       <v-flex xs12 sm3>
         <material-stats-card
           color="orange"
@@ -80,6 +116,7 @@
           :value="statistics.numAssists"
         />
       </v-flex>
+
       <v-flex xs12 sm3>
         <material-stats-card
           color="pink"
@@ -87,41 +124,6 @@
           title="Clean Sheets"
           :value="statistics.numCs"
         />
-      </v-flex>
-
-      <v-flex xs12>
-        <v-card>
-          <v-card-title>
-            <div class="headline">Player Growth</div>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-layout class="text-xs-center" row wrap>
-              <v-flex xs12 md6>
-                <div class="display-1">{{ player.ovr }}</div>
-                <div class="subheading">OVR</div>
-                <line-chart
-                  :data="ovrGrowth"
-                  label="OVR"
-                  min="40"
-                  :library="{ backgroundColor: 'transparent' }"
-                  class="g-chart"
-                ></line-chart>
-              </v-flex>
-              <v-flex xs12 md6>
-                <div class="display-1">{{ $_formatMoney(player.value) }}</div>
-                <div class="subheading">Value</div>
-                <line-chart
-                  :data="valueGrowth"
-                  label="Value"
-                  thousands=","
-                  :library="{ backgroundColor: 'transparent' }"
-                  class="g-chart"
-                ></line-chart>
-              </v-flex>
-            </v-layout>
-          </v-card-text>
-        </v-card>
       </v-flex>
 
       <v-flex xs12>
@@ -173,6 +175,7 @@
 
 <script>
   import { mapActions } from 'vuex'
+  import { parse } from 'date-fns'
   import { Player } from '@/models'
   import PlayerForm from '@/components/Player/PlayerForm'
   import ContractForm from '@/components/Player/ContractForm'
@@ -184,6 +187,7 @@
   import PlayerRemove from '@/components/Player/PlayerRemove'
   import PlayerTimeline from '@/components/Player/Timeline'
   import MaterialCard from '@/components/theme/Card'
+  import MaterialChartCard from '@/components/theme/ChartCard'
   import MaterialStatsCard from '@/components/theme/StatsCard'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
@@ -200,6 +204,7 @@
       PlayerRemove,
       PlayerTimeline,
       MaterialCard,
+      MaterialChartCard,
       MaterialStatsCard
     },
     middleware: 'authenticated',
@@ -246,9 +251,58 @@
       transfers () { return this.player.transfers },
       histories () { return this.player.histories },
 
-      ovrGrowth () { return this.histories.map(h => [ h.datestamp, h.ovr ]) },
-      valueGrowth () { return this.histories.map(h => [ h.datestamp, h.value ]) },
-      currentFilter () { return this.filterOptions[this.timelineFilter] }
+      ovrChart () {
+        return {
+          data: {
+            labels: this.histories.map(h => parse(h.datestamp)),
+            series: [
+              this.histories.map(h => h.ovr)
+            ]
+          },
+          options: {
+            axisX: {
+              showGrid: false,
+              showLabel: false
+            },
+            low: 40,
+            high: 100,
+            chartPadding: {
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0
+            }
+          }
+        }
+      },
+
+      valueChart () {
+        return {
+          data: {
+            labels: this.histories.map(h => parse(h.datestamp)),
+            series: [
+              this.histories.map(h => h.value)
+            ]
+          },
+          options: {
+            axisX: {
+              showGrid: false,
+              showLabel: false
+            },
+            low: 0,
+            chartPadding: {
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0
+            }
+          }
+        }
+      },
+
+      currentFilter () {
+        return this.filterOptions[this.timelineFilter]
+      }
     },
     async fetch ({ store, params }) {
       await store.dispatch('entities/players/GET', params)

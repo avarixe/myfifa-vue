@@ -46,51 +46,51 @@
 </template>
 
 <script>
-import Card from './Card'
+  import Card from './Card'
 
-export default {
-  inheritAttrs: false,
+  export default {
+    inheritAttrs: false,
 
-  components: {
-    'material-card': Card
-  },
+    components: {
+      'material-card': Card
+    },
 
-  props: {
-    ...Card.props,
-    icon: {
-      type: String,
-      required: true
-    },
-    subIcon: {
-      type: String,
-      default: undefined
-    },
-    subIconColor: {
-      type: String,
-      default: undefined
-    },
-    subTextColor: {
-      type: String,
-      default: undefined
-    },
-    subText: {
-      type: String,
-      default: undefined
-    },
-    title: {
-      type: String,
-      default: undefined
-    },
-    value: {
-      type: String,
-      default: undefined
-    },
-    smallValue: {
-      type: String,
-      default: undefined
+    props: {
+      ...Card.props,
+      icon: {
+        type: String,
+        required: true
+      },
+      subIcon: {
+        type: String,
+        default: undefined
+      },
+      subIconColor: {
+        type: String,
+        default: undefined
+      },
+      subTextColor: {
+        type: String,
+        default: undefined
+      },
+      subText: {
+        type: String,
+        default: undefined
+      },
+      title: {
+        type: String,
+        default: undefined
+      },
+      value: {
+        type: [String, Number],
+        default: undefined
+      },
+      smallValue: {
+        type: [String, Number],
+        default: undefined
+      }
     }
   }
-}
 </script>
 
 <style lang="scss">

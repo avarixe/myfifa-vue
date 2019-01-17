@@ -24,37 +24,43 @@
 </template>
 
 <script>
-export default {
-  inheritAttrs: false,
+  import Card from './Card'
 
-  props: {
-    data: {
-      type: Object,
-      default: () => ({})
+  export default {
+    inheritAttrs: false,
+
+    components: {
+      'material-card': Card
     },
-    eventHandlers: {
-      type: Array,
-      default: () => ([])
-    },
-    options: {
-      type: Object,
-      default: () => ({})
-    },
-    ratio: {
-      type: String,
-      default: undefined
-    },
-    responsiveOptions: {
-      type: Array,
-      default: () => ([])
-    },
-    type: {
-      type: String,
-      required: true,
-      validator: v => ['Bar', 'Line', 'Pie'].includes(v)
+
+    props: {
+      data: {
+        type: Object,
+        default: () => ({})
+      },
+      eventHandlers: {
+        type: Array,
+        default: () => ([])
+      },
+      options: {
+        type: Object,
+        default: () => ({})
+      },
+      ratio: {
+        type: String,
+        default: undefined
+      },
+      responsiveOptions: {
+        type: Array,
+        default: () => ([])
+      },
+      type: {
+        type: String,
+        required: true,
+        validator: v => ['Bar', 'Line', 'Pie'].includes(v)
+      }
     }
   }
-}
 </script>
 
 <style lang="scss">

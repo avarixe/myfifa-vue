@@ -4,7 +4,7 @@
     :close-on-content-click="false"
     transition="scale-transition"
     origin="top left"
-    
+
   >
     <v-list-tile
       v-ripple
@@ -17,10 +17,10 @@
       <v-list-tile-action>
         <v-icon>mdi-calendar</v-icon>
       </v-list-tile-action>
-      <v-list-tile-text>
+      <v-list-tile-title>
         {{ $_format(currentDate, 'MMM DD, YYYY') }}
-      </v-list-tile-text>
-    </v-list-tile>          
+      </v-list-tile-title>
+    </v-list-tile>
 
     <v-date-picker
       v-model="currentDate"
