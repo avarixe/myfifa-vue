@@ -51,6 +51,10 @@ import Card from './Card'
 export default {
   inheritAttrs: false,
 
+  components: {
+    'material-card': Card
+  },
+
   props: {
     ...Card.props,
     icon: {

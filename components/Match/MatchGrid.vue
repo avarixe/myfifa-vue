@@ -34,6 +34,14 @@
       :search="search"
       item-key="id"
       no-data-text="No Matches Recorded">
+      <template
+        slot="headerCell"
+        slot-scope="{ header }">
+        <span
+          class="subheading font-weight-light text-success text--darken-3"
+          v-text="header.text"
+        />
+      </template>
       <template slot="items" slot-scope="props">
         <td>
           <v-tooltip right color="blue darken-2">

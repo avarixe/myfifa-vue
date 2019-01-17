@@ -2,89 +2,91 @@
   <v-container fluid grid-list-lg>
     <v-layout row wrap>
       <v-flex xs12>
-        <v-card>
-          <v-card-title primary-title>
-            <div class="display-2">{{ player.name }}</div>
+        <material-card
+          :title="player.name"
+        >
+          <v-layout class="text-xs-center" row wrap>
+            <v-flex xs12 sm3>
+              <div class="display-1">{{ player.pos }}</div>
+              <div class="subheading">Position</div>
+            </v-flex>
+            <v-flex xs12 sm3>
+              <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
+              <div class="subheading">Secondary Position(s)</div>
+            </v-flex>
+            <v-flex xs12 sm3>
+              <div class="display-1">{{ player.age }}</div>
+              <div class="subheading">Current Age</div>
+            </v-flex>
+            <v-flex xs12 sm3>
+              <div class="display-1">{{ player.status || '-' }}</div>
+              <div class="subheading">Current State</div>
+            </v-flex>
+            <v-flex xs12>
+              <player-form :player-data="player" color="orange">
+                <v-tooltip bottom color="orange">
+                  <v-btn slot="activator" icon>
+                    <v-icon color="orange">mdi-pencil</v-icon>
+                  </v-btn>
+                  Edit
+                </v-tooltip>
+              </player-form>
+              <transfer-form :player="player"></transfer-form>
+              <contract-form :player="player"></contract-form>
+              <injury-form
+                v-if="active"
+                :player="player"
+              ></injury-form>
+              <loan-form
+                v-if="active"
+                :player="player"
+              ></loan-form>
+              <player-retire
+                v-if="active"
+                :player="player"
+              ></player-retire>
+              <player-release
+                v-if="active"
+                :player="player"
+              ></player-release>
+              <player-remove :player="player"></player-remove>
+            </v-flex>
+          </v-layout>
 
-            <player-form :player-data="player" color="orange">
-              <v-tooltip bottom color="orange">
-                <v-btn slot="activator" icon>
-                  <v-icon color="orange">mdi-pencil</v-icon>
-                </v-btn>
-                Edit
-              </v-tooltip>
-            </player-form>
-            <transfer-form :player="player"></transfer-form>
-            <contract-form :player="player"></contract-form>
-            <injury-form
-              v-if="active"
-              :player="player"
-            ></injury-form>
-            <loan-form
-              v-if="active"
-              :player="player"
-            ></loan-form>
-            <player-retire
-              v-if="active"
-              :player="player"
-            ></player-retire>
-            <player-release
-              v-if="active"
-              :player="player"
-            ></player-release>
-            <player-remove :player="player"></player-remove>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-layout class="text-xs-center" row wrap>
-              <v-flex xs12 sm3>
-                <div class="display-1">{{ player.pos }}</div>
-                <div class="subheading">Position</div>
-              </v-flex>
-              <v-flex xs12 sm3>
-                <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
-                <div class="subheading">Secondary Position(s)</div>
-              </v-flex>
-              <v-flex xs12 sm3>
-                <div class="display-1">{{ player.age }}</div>
-                <div class="subheading">Current Age</div>
-              </v-flex>
-              <v-flex xs12 sm3>
-                <div class="display-1">{{ player.status || '-' }}</div>
-                <div class="subheading">Current State</div>
-              </v-flex>
-            </v-layout>
-          </v-card-text>
-        </v-card>
+        </material-card>
       </v-flex>
 
-      <v-flex xs12>
-        <v-card>
-          <v-card-title primary-title>
-            <div class="headline">Match Statistics</div>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-layout class="text-xs-center" row wrap>
-              <v-flex xs12 sm3>
-                <div class="teal--text display-1">{{ statistics.numGames }}</div>
-                <div class="subheading">Matches</div>
-              </v-flex>
-              <v-flex xs12 sm3>
-                <div class="blue--text display-1">{{ statistics.numGoals }}</div>
-                <div class="subheading">Goals</div>
-              </v-flex>
-              <v-flex xs12 sm3>
-                <div class="orange--text display-1">{{ statistics.numAssists }}</div>
-                <div class="subheading">Assists</div>
-              </v-flex>
-              <v-flex xs12 sm3>
-                <div class="pink--text display-1">{{ statistics.numCs }}</div>
-                <div class="subheading">Clean Sheets</div>
-              </v-flex>
-            </v-layout>
-          </v-card-text>
-        </v-card>
+      <v-flex xs12 sm3>
+        <material-stats-card
+          color="teal"
+          icon="mdi-soccer-field"
+          title="Matches"
+          :value="statistics.numGames"
+        />
+      </v-flex>
+      <v-flex xs12 sm3>
+        <material-stats-card
+          color="blue"
+          icon="mdi-soccer"
+          title="Goals"
+          :value="statistics.numGoals"
+        />
+      </v-flex>
+      <v-flex xs12 sm3>
+        <material-stats-card
+          color="orange"
+          icon="mdi-soccer"
+          title="Assists"
+          :value="statistics.numAssists"
+        />
+      </v-flex>
+      <v-flex xs12 sm3>
+        <material-stats-card
+          color="pink"
+          icon="mdi-wall"
+          title="Clean Sheets"
+          :value="statistics.numCs"
+        />
       </v-flex>
 
       <v-flex xs12>
@@ -123,9 +125,14 @@
       </v-flex>
 
       <v-flex xs12>
-        <v-card>
-          <v-card-title>
-            <div class="headline">Timeline</div>
+        <material-card
+          color="tertiary"
+        >
+          <template slot="header">
+            <span
+              v-text="'Timeline'"
+              class="title font-weight-light mb-2"
+            />
 
             <!-- Timeline Filter -->
             <v-tooltip top>
@@ -149,19 +156,16 @@
               </v-menu>
               Filter Timeline
             </v-tooltip>
+          </template>
 
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <player-timeline
-              :contracts="contracts"
-              :filter="timelineFilter"
-              :injuries="injuries"
-              :loans="loans"
-              :transfers="transfers"
-            /></v-card-text>
-          </v-card-text>
-        </v-card>
+          <player-timeline
+            :contracts="contracts"
+            :filter="timelineFilter"
+            :injuries="injuries"
+            :loans="loans"
+            :transfers="transfers"
+          />
+        </material-card>
       </v-flex>
     </v-layout>
   </v-container>
@@ -179,6 +183,8 @@
   import PlayerRelease from '@/components/Player/PlayerRelease'
   import PlayerRemove from '@/components/Player/PlayerRemove'
   import PlayerTimeline from '@/components/Player/Timeline'
+  import MaterialCard from '@/components/theme/Card'
+  import MaterialStatsCard from '@/components/theme/StatsCard'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
   export default {
@@ -192,7 +198,9 @@
       PlayerRetire,
       PlayerRelease,
       PlayerRemove,
-      PlayerTimeline
+      PlayerTimeline,
+      MaterialCard,
+      MaterialStatsCard
     },
     middleware: 'authenticated',
     mixins: [ TeamAccessible ],
