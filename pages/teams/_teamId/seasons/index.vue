@@ -27,20 +27,15 @@
     mixins: [ TeamAccessible ],
     head () {
       return {
-        title: this.title
+        title: `${this.team.title} - Seasons`
       }
     },
     components: {
       NewCompetitionForm,
       SeasonGrid
     },
-    computed: {
-      title () {
-        return `${this.team.title} - Seasons`
-      }
-    },
     mounted () {
-      this.$store.commit('app/SET_TITLE', this.title)
+      this.$store.commit('app/SET_TITLE', this.team.title)
     }
   }
 </script>

@@ -18,16 +18,11 @@
     mixins: [ TeamAccessible ],
     head () {
       return {
-        title: this.title
+        title: `${this.team.title} - Squads`
       }
     },
     components: {
       SquadGrid
-    },
-    computed: {
-      title () {
-        return `${this.team.title} - Squads`
-      }
     },
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)

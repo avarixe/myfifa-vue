@@ -6,19 +6,19 @@
           :title="player.name"
         >
           <v-layout class="text-xs-center" row wrap>
-            <v-flex xs12 sm3>
+            <v-flex xs6 sm3>
               <div class="display-1">{{ player.pos }}</div>
               <div class="subheading">Position</div>
             </v-flex>
-            <v-flex xs12 sm3>
+            <v-flex xs6 sm3>
               <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
               <div class="subheading">Secondary Position(s)</div>
             </v-flex>
-            <v-flex xs12 sm3>
+            <v-flex xs6 sm3>
               <div class="display-1">{{ player.age }}</div>
               <div class="subheading">Current Age</div>
             </v-flex>
-            <v-flex xs12 sm3>
+            <v-flex xs6 sm3>
               <div class="display-1">{{ player.status || '-' }}</div>
               <div class="subheading">Current State</div>
             </v-flex>
@@ -60,6 +60,7 @@
         <material-chart-card
           :data="ovrChart.data"
           :options="ovrChart.options"
+          ratio="ct-major-twelfth"
           color="green"
           type="Line"
         >
@@ -77,6 +78,7 @@
         <material-chart-card
           :data="valueChart.data"
           :options="valueChart.options"
+          ratio="ct-major-twelfth"
           color="info"
           type="Line"
         >
@@ -128,7 +130,7 @@
 
       <v-flex xs12>
         <material-card
-          color="tertiary"
+          color="accent"
         >
           <template slot="header">
             <span

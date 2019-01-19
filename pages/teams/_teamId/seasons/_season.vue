@@ -1,21 +1,27 @@
 <template>
   <v-container fluid grid-list-lg>
     <v-layout row wrap>
-      <v-flex xs12>
-        <v-card>
-          <v-card-title>
-            <div class="display-1">{{ seasonLabel(season) }} Season</div>
-          </v-card-title>
-        </v-card>
-      </v-flex>
 
-      <v-flex xs12>
-        <match-results
+      <v-flex
+        xs12
+      >
+        <season-results-chart
           :season-data="seasonData"
-        ></match-results>
+        />
       </v-flex>
 
-      <v-flex xs12>
+<!--       <v-flex
+        xs12
+        sm6
+      >
+        <season-results-table
+          :season-data="seasonData"
+        />
+      </v-flex> -->
+
+      <v-flex
+        xs12
+      >
         <player-grid
           :season="season"
           :season-data="seasonData"
@@ -26,7 +32,8 @@
 </template>
 
 <script>
-  import MatchResults from '@/components/Season/MatchResults'
+  import SeasonResultsChart from '@/components/Season/SeasonResultsChart'
+  import SeasonResultsTable from '@/components/Season/SeasonResultsTable'
   import PlayerGrid from '@/components/Season/PlayerGrid'
   import TeamAccessible from '@/mixins/TeamAccessible'
 
@@ -34,7 +41,8 @@
     layout: 'team',
     middleware: 'authenticated',
     components: {
-      MatchResults,
+      SeasonResultsChart,
+      SeasonResultsTable,
       PlayerGrid
     },
     mixins: [ TeamAccessible ],

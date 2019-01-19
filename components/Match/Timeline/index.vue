@@ -112,13 +112,14 @@
           : {}
       },
       dense () {
-        switch (this.$vuetify.breakpoint.name) {
-          case 'xs':
-          case 'sm':
-            return true
-          default:
-            return false
-        }
+        // switch (this.$vuetify.breakpoint.name) {
+        //   case 'xs':
+        //   case 'sm':
+        //     return true
+        //   default:
+        //     return false
+        // }
+        return true
       }
     },
     methods: {

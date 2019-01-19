@@ -8,12 +8,16 @@
       <v-btn-toggle
         v-model="mode"
         mandatory
-        class="mx-3">
+        class="mx-3"
+      >
         <v-btn
           v-for="(opt, i) in modes"
           :key="i"
-          flat>
-          <v-icon :color="opt.color">{{ opt.icon }}</v-icon>
+          flat
+        >
+          <v-icon
+            :color="opt.color"
+          >{{ opt.icon }}</v-icon>
         </v-btn>
       </v-btn-toggle>
 
@@ -41,8 +45,21 @@
       :search="search"
       item-key="id"
       must-sort
-      no-data-text="No Players Recorded">
-      <template slot="items" slot-scope="props">
+      no-data-text="No Players Recorded"
+    >
+      <template
+        slot="headerCell"
+        slot-scope="{ header }"
+      >
+        <span
+          class="subheading font-weight-light text-success text--darken-3"
+          v-text="header.text"
+        />
+      </template>
+      <template
+        slot="items"
+        slot-scope="props"
+      >
         <player-row
           :season="season"
           :player="props.item"

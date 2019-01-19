@@ -30,6 +30,7 @@
 
   export default {
     name: 'App',
+    // middleware: 'responsive',
     components: {
       AppBar,
       AppBroadcaster,
