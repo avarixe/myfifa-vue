@@ -3,7 +3,7 @@
     :data="chartData"
     :options="options"
     ratio="ct-major-twelfth"
-    type="Pie"
+    type="Bar"
   >
     <season-results-table
       :season-data="seasonData"
@@ -28,26 +28,38 @@
     },
     data () {
       return {
-        labels: ['Wins', 'Losses', 'Draws'],
         wins: 0,
         losses: 0,
         draws: 0,
         options: {
-          labelInterpolationFnc: this.sliceLabel
         }
       }
     },
     computed: {
+      competitions () {
+        return Object.entries(this.seasonData.results)
+      },
       total () {
         return this.wins + this.losses + this.draws
       },
       chartData () {
+        let labels = ['Total']
+        let series = [
+          [this.wins],
+          [this.draws],
+          [this.losses]
+        ]
+
+        this.competitions.forEach(([competition, data]) => {
+          labels.push(competition)
+          series[0].push(data.wins)
+          series[1].push(data.draws)
+          series[2].push(data.losses)
+        })
+
         return {
-          series: [
-            this.wins,
-            this.losses,
-            this.draws
-          ]
+          labels,
+          series
         }
       }
     },

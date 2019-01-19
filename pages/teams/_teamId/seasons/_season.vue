@@ -10,15 +10,6 @@
         />
       </v-flex>
 
-<!--       <v-flex
-        xs12
-        sm6
-      >
-        <season-results-table
-          :season-data="seasonData"
-        />
-      </v-flex> -->
-
       <v-flex
         xs12
       >

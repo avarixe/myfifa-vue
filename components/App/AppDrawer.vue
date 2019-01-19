@@ -1,8 +1,7 @@
 <template>
   <v-navigation-drawer
     id="app-drawer"
-    :value="$store.state.app.drawer"
-    @input="setDrawer"
+    v-model="drawer"
     app
     dark
     floating
@@ -155,17 +154,16 @@
         }
       }
     },
-    // watch: {
-    //   drawer: {
-    //     get () {
-    //       return this.$store.state.app.drawer
-    //     },
-    //     set (val) {
-    //       console.log('setting drawer')
-    //       this.setDrawer(val)
-    //     }
-    //   }
-    // },
+    watch: {
+      drawer: {
+        get () {
+          return this.$store.state.app.drawer
+        },
+        set (val) {
+          this.setDrawer(val)
+        }
+      }
+    },
     methods: {
       ...mapMutations('app', {
         setDrawer: 'SET_DRAWER'

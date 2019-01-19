@@ -5,74 +5,87 @@
     <v-timeline-item
       v-for="(event, i) in events"
       :key="i"
-      :color="teamColor(event)"
+      :color="eventColor(event)"
       :left="event.home"
       :right="!event.home"
-      fill-dot>
-      <span class="white--text" slot="icon">{{ event.minute }}'</span>
-      <v-card>
-        <v-card-title :class="`${eventColor(event)} lighten-2 py-1`">
-          <v-icon dark class="mr-3">mdi-{{ eventIcon(event) }}</v-icon>
-          <span class="font-weight-bold pr-1 white--text text-uppercase">{{ eventTitle(event) }}</span>
+      :icon="`mdi-${eventIcon(event)}`"
+      fill-dot
+    >
+      <h2
+        :class="`headline font-weight-light my-0 ${eventColor(event)}--text`"
+      >
+        {{ event.minute }}"
 
-          <v-spacer></v-spacer>
+        <span
+          class="caption text-truncate"
+        >{{ event.home ? match.home : match.away }}</span>
 
-          <v-tooltip v-if="team.current_date === match.date_played" bottom>
-            <v-btn
-              slot="activator"
-              @click="removeEvent(event)"
-              :color="`${eventColor(event)} lighten-2`"
-              class="ma-0"
-              icon
-              dark>
-              <v-icon dark>mdi-close</v-icon>
-            </v-btn>
-            Remove
-          </v-tooltip>
-        </v-card-title>
-        <v-container>
-          <v-layout>
-            <v-flex xs12>
-              <timeline-content :item="event"></timeline-content>
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </v-card>
+        <v-tooltip
+          v-if="team.current_date === match.date_played"
+          bottom
+        >
+          <v-btn
+            slot="activator"
+            @click="removeEvent(event)"
+            class="ma-0"
+            icon
+          >
+            <v-icon
+              :color="eventColor(event)"
+            >mdi-close</v-icon>
+          </v-btn>
+          Remove
+        </v-tooltip>
+      </h2>
+
+      <v-divider
+        :class="`ma-0 ${eventColor(event)}--text`"
+        :style="dividerStyle"
+      />
+
+      <timeline-content
+        :item="event"
+      ></timeline-content>
     </v-timeline-item>
 
     <v-timeline-item
       v-if="match.penalty_shootout"
       icon="mdi-human"
       color="indigo"
-      fill-dot>
-      <v-card>
-        <v-card-title class="indigo lighten-2 py-1">
-          <v-icon dark class="mr-3">mdi-human</v-icon>
-          <span class="font-weight-bold pr-1 white--text text-uppercase">Penalty Shootout</span>
+      fill-dot
+    >
+      <h2
+        class="headline font-weight-light my-0 indigo--text"
+      >
+        Penalty Shootout
 
-          <v-spacer></v-spacer>
+        <v-tooltip
+          v-if="team.current_date === match.date_played"
+          bottom
+        >
+          <v-btn
+            slot="activator"
+            @click="removePS"
+            color="indigo lighten-2"
+            class="ma-0"
+            icon
+          >
+            <v-icon
+              color="indigo"
+            >mdi-close</v-icon>
+          </v-btn>
+          Remove
+        </v-tooltip>
+      </h2>
 
-          <v-tooltip v-if="team.current_date === match.date_played" bottom>
-            <v-btn
-              slot="activator"
-              @click="removePS"
-              color="indigo lighten-2"
-              class="ma-0"
-              icon
-              dark>
-              <v-icon dark>mdi-close</v-icon>
-            </v-btn>
-            Remove
-          </v-tooltip>
-        </v-card-title>
-        <v-container>
-          <v-layout>
-            <v-flex xs12>
-              <timeline-content :item="penaltyShootoutEvent"></timeline-content>
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </v-card>
+      <v-divider
+        class="ma-0 indigo--text"
+        :style="dividerStyle"
+      />
+
+      <timeline-content
+        :item="penaltyShootoutEvent"
+      ></timeline-content>
     </v-timeline-item>
   </v-timeline>
 </template>
@@ -94,7 +107,12 @@
       }
     },
     data () {
-      return {}
+      return {
+        dividerStyle: {
+          'border-color': 'inherit',
+          'border-width': 'thin 0 0'
+        }
+      }
     },
     computed: {
       events () {
@@ -112,14 +130,13 @@
           : {}
       },
       dense () {
-        // switch (this.$vuetify.breakpoint.name) {
-        //   case 'xs':
-        //   case 'sm':
-        //     return true
-        //   default:
-        //     return false
-        // }
-        return true
+        switch (this.$vuetify.breakpoint.name) {
+          case 'lg':
+          case 'xl':
+            return false
+          default:
+            return true
+        }
       }
     },
     methods: {
