@@ -1,22 +1,30 @@
 <template>
-  <v-card>
-    <v-card-title class="title">
-      {{ squad.name }}
+  <material-card>
+    <template
+      slot="header"
+    >
+      <span
+        v-text="squad.name"
+        class="title font-weight-light mb-2"
+      />
 
       <squad-actions :squad="squad"></squad-actions>
-    </v-card-title>
+    </template>
+
     <formation-view
       :formation="squadPlayers"
     ></formation-view>
-  </v-card>
+  </material-card>
 </template>
 
 <script>
+  import MaterialCard from '@/components/theme/Card'
   import SquadActions from './SquadActions'
   import FormationView from './FormationView'
 
   export default {
     components: {
+      MaterialCard,
       SquadActions,
       FormationView
     },
