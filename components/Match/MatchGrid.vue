@@ -88,7 +88,7 @@
           descending: true
         },
         headers: [
-          { text: '', value: null, sortable: false, width: '40px' },
+          { text: '', value: null, sortable: false, width: 40 },
           { text: 'Competition', value: 'competition', align: 'center' },
           { text: 'Home', value: 'home', align: 'right' },
           { text: 'Score', value: 'score', align: 'center', sortable: false },

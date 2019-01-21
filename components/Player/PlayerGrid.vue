@@ -29,7 +29,8 @@
         >
           <v-btn
             slot="activator"
-            icon
+            class="px-1"
+            flat
           >
             <v-icon
               :color="currentFilter.color"
@@ -104,8 +105,8 @@
         slot-scope="{ header }"
       >
         <span
-          class="subheading font-weight-light text-success text--darken-3"
           v-text="header.text"
+          class="subheading font-weight-light text-success text--darken-3"
         />
       </template>
       <template
@@ -115,7 +116,7 @@
         <player-row
           :player-data="props.item"
           :headers="headers"
-          :action-width="actionWidth"
+          :mode="mode"
         />
       </template>
     </v-data-table>
@@ -198,9 +199,9 @@
       actionWidth () { return this.mode === 0 ? 125 : 40 },
       headers () {
         let headers = [
-          { text: '',         value: 'action',  align: 'center', sortable: false, width: this.actionWidth },
+          { text: '',         value: 'action',  align: 'center', sortable: false },
           { text: 'Name',     value: 'name',    align: 'left' },
-          { text: 'Status',   value: 'status',  align: 'left', width: '40px' },
+          { text: 'Status',   value: 'status',  align: 'center', width: 40 },
           { text: 'Age',      value: 'age',     align: 'center' },
           { text: 'Position', value: 'pos_idx', align: 'center', view: 'pos' },
           { text: 'Kit No',   value: 'kit_no',  align: 'center', editable: true }
