@@ -95,7 +95,12 @@
 }
 
 .v-btn--active:before,
-.v-btn:focus:before,
-.v-btn:hover:before {
+.v-btn:focus:before {
   background-color: transparent;
+}
+
+.v-btn-toggle {
+  .v-btn {
+    padding: 10px;
+  }
 }

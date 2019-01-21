@@ -1,45 +1,72 @@
 <template>
-  <v-card>
-    <v-card-title class="headline">
-      {{ seasonLabel }}
-      <v-tooltip color="primary" bottom>
+  <material-card>
+    <template
+      slot="header"
+    >
+      <span
+        v-text="seasonLabel"
+        class="title font-weight-light mb-2"
+      />
+
+      <v-tooltip
+        color="white"
+        bottom
+      >
         <v-btn
           slot="activator"
           :to="seasonLink"
           nuxt
           small
-          icon>
-          <v-icon color="primary">mdi-arrow-right</v-icon>
+          icon
+        >
+          <v-icon
+            color="white"
+          >mdi-arrow-right</v-icon>
         </v-btn>
         View Season
       </v-tooltip>
-    </v-card-title>
-    <v-card-text>
-      <v-list dense>
-        <v-subheader>Competitions</v-subheader>
-        <v-list-tile
-          v-for="(competition, i) in competitions"
-          :key="i"
-          :to="competitionLink(competition)"
-          class="elevation-1">
-          <v-list-tile-title>
-            <v-icon color="blue" small left>mdi-arrow-right</v-icon>
-            {{ competition.name }}
-          </v-list-tile-title>
-          <v-list-tile-avatar v-if="competition.champion === team.title">
-            <v-icon color="yellow darken-2">mdi-trophy</v-icon>
-          </v-list-tile-avatar>
-        </v-list-tile>
-      </v-list>
-    </v-card-text>
-  </v-card>
+    </template>
+
+    <v-list
+      dense
+    >
+      <v-subheader>Competitions</v-subheader>
+      <v-list-tile
+        v-for="(competition, i) in competitions"
+        :key="i"
+        :to="competitionLink(competition)"
+        class="elevation-1"
+      >
+        <v-list-tile-title>
+          <v-icon
+            color="blue"
+            small
+            left
+          >mdi-arrow-right</v-icon>
+          {{ competition.name }}
+        </v-list-tile-title>
+        <v-list-tile-avatar
+          v-if="competition.champion === team.title"
+        >
+          <v-icon
+            color="yellow darken-2"
+          >mdi-trophy</v-icon>
+        </v-list-tile-avatar>
+      </v-list-tile>
+    </v-list>
+
+  </material-card>
 </template>
 
 <script>
+  import MaterialCard from '@/components/theme/Card'
   import { addYears } from 'date-fns'
   import { Team } from '@/models'
 
   export default {
+    components: {
+      MaterialCard
+    },
     props: {
       season: {
         type: Number,

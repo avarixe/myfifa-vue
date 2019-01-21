@@ -23,7 +23,7 @@
       <v-flex
         xs12
       >
-        <squad-grid></squad-grid>
+        <squad-grid />
       </v-flex>
     </v-layout>
   </v-container>

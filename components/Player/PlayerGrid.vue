@@ -1,27 +1,55 @@
 <template>
-  <v-card>
-    <v-card-title primary-title>
-      <div class="title">
-        // PLAYERS
-      </div>
+  <material-card>
+    <template slot="header">
+      <span
+        v-text="'Players'"
+        class="title font-weight-light mb-2"
+      />
 
-      <!-- Display Menu -->
-      <v-tooltip bottom :color="currentFilter.color">
-        <v-menu slot="activator" bottom right>
-          <v-btn slot="activator" icon>
-            <v-icon :color="currentFilter.color">
-              mdi-{{ currentFilter.icon }}
-            </v-icon>
+      <player-form>
+        <v-tooltip bottom>
+          <v-btn slot="activator" flat>
+            <v-icon>mdi-plus-circle-outline</v-icon>
           </v-btn>
+          New Player
+        </v-tooltip>
+      </player-form>
+    </template>
+
+    <v-card-title>
+      <!-- Display Menu -->
+      <v-tooltip
+        bottom
+        :color="currentFilter.color"
+      >
+        <v-menu
+          slot="activator"
+          bottom
+          right
+        >
+          <v-btn
+            slot="activator"
+            icon
+          >
+            <v-icon
+              :color="currentFilter.color"
+            >mdi-{{ currentFilter.icon }}</v-icon>
+          </v-btn>
+
           <v-list>
             <v-list-tile
               v-for="(opt, i) in filters"
               :key="i"
-              @click="filter = i">
+              @click="filter = i"
+            >
               <v-list-tile-avatar>
-                <v-icon :color="opt.color">mdi-{{ opt.icon }}</v-icon>
+                <v-icon
+                  :color="opt.color"
+                >mdi-{{ opt.icon }}</v-icon>
               </v-list-tile-avatar>
-              <v-list-tile-title>{{ opt.text }}</v-list-tile-title>
+              <v-list-tile-title
+                v-text="opt.text"
+              />
             </v-list-tile>
           </v-list>
         </v-menu>
@@ -31,20 +59,25 @@
       <v-btn-toggle
         v-model="mode"
         mandatory
-        class="mx-3">
+        class="mx-3"
+      >
         <v-btn
           v-for="(opt, i) in modes"
           :key="i"
-          flat>
-          <v-icon :color="opt.color">mdi-{{ opt.icon }}</v-icon>
+          flat
+        >
+          <v-icon
+            :color="opt.color"
+          >mdi-{{ opt.icon }}</v-icon>
         </v-btn>
       </v-btn-toggle>
 
-      <div :class="`subheading ${currentMode.color}--text`">
-        {{ currentMode.text }}
-      </div>
+      <div
+        v-text="currentMode.text"
+        :class="`subheading ${currentMode.color}--text`"
+      />
 
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <!-- Player Search -->
       <v-text-field
@@ -64,29 +97,44 @@
       :search="search"
       item-key="id"
       must-sort
-      no-data-text="No Players Found">
-      <template slot="items" slot-scope="props">
+      no-data-text="No Players Found"
+    >
+      <template
+        slot="headerCell"
+        slot-scope="{ header }"
+      >
+        <span
+          class="subheading font-weight-light text-success text--darken-3"
+          v-text="header.text"
+        />
+      </template>
+      <template
+        slot="items"
+        slot-scope="props"
+      >
         <player-row
           :player-data="props.item"
           :headers="headers"
           :action-width="actionWidth"
-        ></player-row>
+        />
       </template>
     </v-data-table>
 
-  </v-card>
+  </material-card>
 </template>
 
 <script>
   import { mapActions } from 'vuex'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import { Player } from '@/models'
+  import MaterialCard from '@/components/theme/Card'
   import PlayerForm from './PlayerForm'
   import PlayerRow from './PlayerRow'
 
   export default {
     mixins: [ TeamAccessible ],
     components: {
+      MaterialCard,
       PlayerForm,
       PlayerRow
     },

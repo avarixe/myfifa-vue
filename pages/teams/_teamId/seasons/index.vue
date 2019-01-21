@@ -1,16 +1,29 @@
 <template>
-  <v-container fluid grid-list-lg>
-    <v-layout row wrap>
-      <v-flex xs12>
+  <v-container
+    fluid
+    grid-list-lg
+  >
+    <v-layout
+      row
+      wrap
+    >
+      <v-flex
+        xs12
+      >
         <new-competition-form>
           <v-btn>
-            <v-icon left>mdi-plus-circle-outline</v-icon>
+            <v-icon
+              left
+            >mdi-plus-circle-outline</v-icon>
             Competition
           </v-btn>
         </new-competition-form>
       </v-flex>
-      <v-flex xs12>
-        <season-grid></season-grid>
+
+      <v-flex
+        xs12
+      >
+        <season-grid />
       </v-flex>
     </v-layout>
   </v-container>

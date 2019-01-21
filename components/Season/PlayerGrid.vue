@@ -1,10 +1,9 @@
 <template>
-  <v-card>
-    <v-card-title primary-title>
-      <div class="title">
-        // PLAYERS
-      </div>
-
+  <material-card
+    title="Players"
+    color="accent"
+  >
+    <v-card-title>
       <v-btn-toggle
         v-model="mode"
         mandatory
@@ -52,7 +51,7 @@
         slot-scope="{ header }"
       >
         <span
-          class="subheading font-weight-light text-success text--darken-3"
+          class="subheading font-weight-light accent--text text--darken-3"
           v-text="header.text"
         />
       </template>
@@ -68,17 +67,19 @@
       </template>
     </v-data-table>
 
-  </v-card>
+  </material-card>
 </template>
 
 <script>
   import { addYears } from 'date-fns'
   import Vue from 'vue'
   import { Team, Player } from '@/models'
+  import MaterialCard from '@/components/theme/Card'
   import PlayerRow from './PlayerRow'
 
   export default {
     components: {
+      MaterialCard,
       PlayerRow
     },
     props: {
