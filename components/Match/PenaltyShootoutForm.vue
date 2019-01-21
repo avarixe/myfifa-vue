@@ -4,27 +4,39 @@
     title-icon="mdi-human"
     title="Record Penalty Shootout"
     :submit="submit"
-    :color="color">
-    <slot slot="activator"></slot>
-    <v-container slot="form">
-      <v-layout wrap>
-        <v-flex xs6>
+    :color="color"
+  >
+    <slot
+      slot="activator"
+    />
+
+    <v-container
+      slot="form"
+    >
+      <v-layout
+        wrap
+      >
+        <v-flex
+          xs6
+        >
           <v-text-field
             v-model="penaltyShootout.home_score"
             :rules="$_validate('Home Score', ['required'])"
             type="number"
             :label="match.home"
             prepend-icon="mdi-soccer"
-          ></v-text-field>
+          />
         </v-flex>
-        <v-flex xs6>
+        <v-flex
+          xs6
+        >
           <v-text-field
             v-model="penaltyShootout.away_score"
             :rules="$_validate('Away Score', ['required'])"
             type="number"
             :label="match.away"
             prepend-icon="mdi-soccer"
-          ></v-text-field>
+          />
         </v-flex>
       </v-layout>
     </v-container>
@@ -52,10 +64,13 @@
     },
     methods: {
       async submit () {
-        await this.$store.dispatch('entities/penaltyShootouts/CREATE', {
-          matchId: this.match.id,
-          penaltyShootout: this.penaltyShootout
-        })
+        await this.$store.dispatch(
+          'entities/penaltyShootouts/CREATE',
+          {
+            matchId: this.match.id,
+            penaltyShootout: this.penaltyShootout
+          }
+        )
       }
     }
   }

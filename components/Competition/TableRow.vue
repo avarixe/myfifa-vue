@@ -3,9 +3,14 @@
     <td
       v-for="(header, i) in headers"
       :key="i"
-      :class="`text-xs-${header.align}`">
-      <template v-if="header.value">
-        <template v-if="edit && header.type">
+      :class="`text-xs-${header.align}`"
+    >
+      <template
+        v-if="header.value"
+      >
+        <template
+          v-if="edit && header.type"
+        >
           <v-combobox
             v-if="header.value === 'name'"
             v-model="row.name"
@@ -15,34 +20,40 @@
             autocapitalize="words"
             autocomplete="off"
             autocorrect="off"
-          ></v-combobox>
+          />
           <v-text-field
             v-else-if="header.type === 'number'"
             v-model.number="row[header.value]"
             type="number"
             :label="header.text"
             :autofocus="i === 0"
-          ></v-text-field>
+          />
           <v-text-field
             v-else
             v-model="row[header.value]"
             :label="header.text"
             :autofocus="i === 0"
-          ></v-text-field>
+          />
         </template>
-        <template v-else>
-          <span :class="teamClass(rowData.name)">
-            {{ rowData[header.value] }}
-          </span>
+        <template
+          v-else
+        >
+          <span
+            :class="teamClass(rowData.name)"
+            v-text="rowData[header.value]"
+          />
         </template>
       </template>
-      <template v-else>
+
+      <template
+        v-else
+      >
         <edit-mode-button
           :mode="edit"
           :changed="rowChanged"
           @toggle-mode="edit = !edit"
           dir="right"
-        ></edit-mode-button>
+        />
       </template>
     </td>
   </tr>

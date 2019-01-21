@@ -1,7 +1,16 @@
 <template>
   <span>
-    <span class="font-weight-bold">{{ winner }}</span> wins by Penalty Shootout
-    (<span class="font-weight-bold">{{ score }}</span>)
+    <span
+      class="font-weight-bold"
+      v-text="winner"
+    />
+    wins by Penalty Shootout
+    (
+    <span
+      class="font-weight-bold"
+      v-text="score"
+    />
+    )
   </span>
 </template>
 

@@ -1,39 +1,60 @@
 <template>
   <tr>
-    <td class="text-xs-left">{{ player.name }}</td>
-    <td class="text-xs-center">{{ player.pos }}</td>
-    <td class="text-xs-center">{{ player.age }}</td>
+    <td
+      class="text-xs-left"
+      v-text="player.name"
+    />
+    <td
+      class="text-xs-center"
+      v-text="player.pos"
+    />
+    <td
+      class="text-xs-center"
+      v-text="player.age"
+    />
 
     <!-- Growth -->
-    <template v-if="mode === 0">
-      <td class="text-xs-center">
-        {{ endOvr }}
-      </td>
-      <td :class="`text-xs-center ${ovrColor}`">
-        {{ ovrChange > 0 ? '+' : '' }}{{ ovrChange }}
-      </td>
-      <td class="text-xs-right">
-        {{ team.currency }}{{ endValue.toLocaleString() }}
-      </td>
-      <td :class="`text-xs-right ${valueColor}`">
-        {{ valueChange.toFixed(2) }}%
-      </td>
+    <template
+      v-if="mode === 0"
+    >
+      <td
+        class="text-xs-center"
+        v-text="endOvr"
+      />
+      <td
+        :class="`text-xs-center ${ovrColor}`"
+        v-text="`${ovrChange > 0 ? '+' : ''}${ovrChange}`"
+      />
+      <td
+        class="text-xs-right"
+        v-text="`${team.currency}${endValue.toLocaleString()}`"
+      />
+      <td
+        :class="`text-xs-right ${valueColor}`"
+        v-text="`${valueChange.toFixed(2)}%`"
+      />
     </template>
 
     <!-- Statistics -->
-    <template v-else-if="mode === 1">
-      <td class="text-xs-right">
-        {{ gamesView || '-' }}
-      </td>
-      <td class="text-xs-right">
-        {{ goalsView || '-' }}
-      </td>
-      <td class="text-xs-right">
-        {{ assistsView || '-' }}
-      </td>
-      <td class="text-xs-right">
-        {{ csView || '-' }}
-      </td>
+    <template
+      v-else-if="mode === 1"
+    >
+      <td
+        class="text-xs-right"
+        v-text="gamesView || '-'"
+      />
+      <td
+        class="text-xs-right"
+        v-text="goalsView || '-'"
+      />
+      <td
+        class="text-xs-right"
+        v-text="assistsView || '-'"
+      />
+      <td
+        class="text-xs-right"
+        v-text="csView || '-'"
+      />
     </template>
   </tr>
 </template>

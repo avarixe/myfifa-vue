@@ -3,19 +3,31 @@
     v-model="dialog"
     title="Edit Competition"
     :submit="submit"
-    :color="color">
-    <slot slot="activator"></slot>
-    <v-container slot="form">
-      <v-layout wrap>
-        <v-flex xs12>
+    :color="color"
+  >
+    <slot
+      slot="activator"
+    />
+
+    <v-container
+      slot="form"
+    >
+      <v-layout
+        wrap
+      >
+        <v-flex
+          xs12
+        >
           <v-text-field
             :value="seasonLabel(competitionData.season)"
             label="Season"
             prepend-icon="mdi-calendar-text"
             disabled
-          ></v-text-field>
+          />
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-combobox
             v-model="competition.name"
             :items="competitions"
@@ -26,16 +38,18 @@
             autocapitalize="words"
             autocomplete="off"
             autocorrect="off"
-          ></v-combobox>
+          />
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-select
             v-model="competition.champion"
             :items="teams"
             label="Champion"
             prepend-icon="mdi-crown"
             clearable
-          ></v-select>
+          />
         </v-flex>
       </v-layout>
     </v-container>

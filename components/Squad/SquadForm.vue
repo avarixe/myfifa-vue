@@ -3,11 +3,21 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
-    :color="color">
-    <slot slot="activator"></slot>
-    <v-container slot="form">
-      <v-layout wrap>
-        <v-flex xs12>
+    :color="color"
+  >
+    <slot
+      slot="activator"
+    />
+
+    <v-container
+      slot="form"
+    >
+      <v-layout
+        wrap
+      >
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="squad.name"
             :rules="$_validate('Name', ['required'])"
@@ -17,7 +27,7 @@
             autocapitalize="words"
             autocomplete="off"
             autocorrect="off"
-          ></v-text-field>
+          />
         </v-flex>
       </v-layout>
 
@@ -25,17 +35,23 @@
         v-for="(position, i) in squad.positions_list"
         :key="i"
         row
-        wrap>
-        <v-flex xs4>
+        wrap
+      >
+        <v-flex
+          xs4
+        >
           <v-select
             v-model="squad.positions_list[i]"
             :items="positions"
             label="Position"
             prepend-icon="mdi-run"
             hide-details
-          ></v-select>
+          />
         </v-flex>
-        <v-flex xs8>
+
+        <v-flex
+          xs8
+        >
           <v-select
             v-model="squad.players_list[i]"
             :items="players"
@@ -43,13 +59,21 @@
             item-text="name"
             label="Player"
             prepend-icon="mdi-account"
-            hide-details>
-            <template slot="item" slot-scope="data">
+            hide-details
+          >
+            <template
+              slot="item"
+              slot-scope="data"
+            >
               <v-list-tile-action>
-                <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
+                <v-list-tile-action-text
+                  v-text="data.item.pos"
+                />
               </v-list-tile-action>
               <v-list-tile-content>
-                <v-list-tile-title>{{ data.item.name }}</v-list-tile-title>
+                <v-list-tile-title
+                  v-text="data.item.name"
+                />
               </v-list-tile-content>
             </template>
           </v-select>

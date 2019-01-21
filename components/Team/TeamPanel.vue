@@ -1,14 +1,24 @@
 <template>
   <material-card>
-    <template slot="header">
+    <template
+      slot="header"
+    >
       <span
-        v-text="'Teams'"
         class="title font-weight-light mb-2"
+        v-text="'Teams'"
       />
       <team-form>
-        <v-tooltip bottom>
-          <v-btn slot="activator" flat>
-            <v-icon left>mdi-plus-circle-outline</v-icon>
+        <v-tooltip
+          bottom
+        >
+          <v-btn
+            slot="activator"
+            flat
+          >
+            <v-icon
+              left
+              v-text="'mdi-plus-circle-outline'"
+            />
           </v-btn>
           New Team
         </v-tooltip>
@@ -21,22 +31,40 @@
       :loading="loading"
       item-key="id"
       disable-initial-sort
-      no-data-text="No Teams Recorded">
+      no-data-text="No Teams Recorded"
+    >
       <template
         slot="headerCell"
-        slot-scope="{ header }">
+        slot-scope="{ header }"
+      >
         <span
           class="subheading font-weight-light text-success text--darken-3"
           v-text="header.text"
         />
       </template>
-      <template slot="items" slot-scope="props">
+      <template
+        slot="items"
+        slot-scope="props"
+      >
         <tr>
-          <td class="text-xs-center">{{ props.item.title }}</td>
-          <td class="text-xs-center">{{ $_format($_parse(props.item.start_date), 'MMM DD, YYYY') }}</td>
-          <td class="text-xs-center">{{ $_format($_parse(props.item.current_date), 'MMM DD, YYYY') }}</td>
-          <td class="text-xs-right">
-            <team-actions :team="props.item"></team-actions>
+          <td
+            class="text-xs-center"
+            v-text="props.item.title"
+          />
+          <td
+            class="text-xs-center"
+            v-text="$_format($_parse(props.item.start_date), 'MMM DD, YYYY')"
+          />
+          <td
+            class="text-xs-center"
+            v-text="$_format($_parse(props.item.current_date), 'MMM DD, YYYY')"
+          />
+          <td
+            class="text-xs-right"
+          >
+            <team-actions
+              :team="props.item"
+            />
           </td>
         </tr>
       </template>

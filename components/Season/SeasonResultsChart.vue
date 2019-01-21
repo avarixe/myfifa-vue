@@ -7,7 +7,7 @@
   >
     <season-results-table
       :season-data="seasonData"
-    ></season-results-table>
+    />
   </material-chart-card>
 </template>
 

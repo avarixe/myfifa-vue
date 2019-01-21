@@ -3,15 +3,26 @@
     <v-flex
       v-for="(positions, i) in [posATT, posATTMID, posDEFMID, posDEF, posGK]"
       :key="i"
-      xs12>
+      xs12
+    >
       <v-layout>
         <v-flex
           v-for="(player, j) in $_compact(positions)"
           :key="j"
-          class="text-xs-center">
-          <slot name="item" :player="player">
-            <div class="body-2">{{ nameOf(player.player_id) }}</div>
-            <div class="body-1">{{ player.pos }}</div>
+          class="text-xs-center"
+        >
+          <slot
+            name="item"
+            :player="player"
+          >
+            <div
+              class="body-2"
+              v-text="nameOf(player.player_id)"
+            />
+            <div
+              class="body-1"
+              v-text="player.pos"
+            />
           </slot>
         </v-flex>
       </v-layout>

@@ -1,35 +1,43 @@
 <template>
-  <v-form ref="form" @submit.prevent="authenticate">
+  <v-form
+    ref="form"
+    @submit.prevent="authenticate"
+  >
     <v-card>
-      <v-card-title>
-        MyFIFA Manager
-      </v-card-title>
+      <v-card-title
+        v-text="'MyFIFA Manager'"
+      />
       <v-card-text>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="credentials.username"
             label="Username"
             autofocus
-          ></v-text-field>
+          />
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="credentials.password"
             label="Password"
             :type="visible ? 'text' : 'password'"
             :append-icon="`mdi-eye${visible ? '-off' : ''}`"
             @click:append="visible = !visible"
-          ></v-text-field>
+          />
         </v-flex>
       </v-card-text>
       <v-card-actions>
-        <v-spacer></v-spacer>
+        <v-spacer/>
         <user-form>
           <v-btn
             color="orange"
             flat
             large
-          >Register</v-btn>
+            v-text="'Register'"
+          />
         </user-form>
 
         <v-btn
@@ -37,7 +45,8 @@
           color="primary"
           flat
           large
-        >Log In</v-btn>
+          v-text="'Log In'"
+        />
       </v-card-actions>
     </v-card>
   </v-form>

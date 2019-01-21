@@ -1,13 +1,14 @@
 <template>
   <div>
-    <template v-if="item.injured">
-      <span class="font-weight-bold">{{ item.player_name }}</span> has been injured.
-      Replaced by <span class="font-weight-bold">{{ item.replaced_by }}</span>
-    </template>
-    <template v-else>
-      <span class="font-weight-bold">{{ item.player_name }}</span>
-      replaced by <span class="font-weight-bold">{{ item.replaced_by }}</span>
-    </template>
+    <span
+      class="font-weight-bold"
+      v-text="item.player_name"
+    />
+    {{ action }}
+    <span
+      class="font-weight-bold"
+      v-text="item.replaced_by"
+    />
   </div>
 </template>
 
@@ -17,6 +18,13 @@
       item: {
         type: Object,
         required: true
+      }
+    },
+    computed: {
+      action () {
+        return this.item.injured
+          ? 'has been injured. Replaced by'
+          : 'replaced by'
       }
     }
   }

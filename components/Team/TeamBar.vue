@@ -2,9 +2,15 @@
   <v-toolbar
     dense
     fixed
-    flat>
-    <v-menu bottom class="hidden-sm-and-up">
-      <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>
+    flat
+  >
+    <v-menu
+      bottom
+      class="hidden-sm-and-up"
+    >
+      <v-toolbar-side-icon
+        slot="activator"
+      />
       <v-list>
         <v-list-tile
           v-for="(link, i) in links"
@@ -13,61 +19,71 @@
           nuxt
           exact>
           <v-list-tile-avatar>
-            <v-icon>{{ link.icon }}</v-icon>
+            <v-icon
+              v-text="link.icon"
+            />
           </v-list-tile-avatar>
-          <v-list-tile-title>{{ link.text }}</v-list-tile-title>
+          <v-list-tile-title
+            v-text="link.text"
+          />
         </v-list-tile>
       </v-list>
     </v-menu>
 
-    <v-toolbar-title class="body-2">
-      {{ team.title }}
-    </v-toolbar-title>
+    <v-toolbar-title
+      class="body-2"
+      v-text="team.title"
+    />
 
     <v-menu
       v-model="calendar"
       :close-on-content-click="false"
       transition="scale-transition"
-      origin="top left">
+      origin="top left"
+    >
       <v-btn
         slot="activator"
-        color="accent">
-        {{ $_format(currentDate, 'MMM DD, YYYY') }}
-      </v-btn>
+        color="accent"
+        v-text="$_format(currentDate, 'MMM DD, YYYY')"
+      />
       <v-date-picker
         v-model="currentDate"
         color="accent"
         :min="seasonStart"
         :max="seasonEnd"
         @input="calendar = false"
-      ></v-date-picker>
+      />
     </v-menu>
 
     <v-tooltip
       v-for="(link, i) in links"
       :key="i"
       class="hidden-xs-only"
-      bottom>
+      bottom
+    >
       <v-btn
         slot="activator"
         :to="link.path"
         active-class="primary--text"
         nuxt
         exact
-        icon>
-        <v-icon>{{ link.icon }}</v-icon>
+        icon
+      >
+        <v-icon
+          v-text="link.icon"
+        />
       </v-btn>
       {{ link.text }}
     </v-tooltip>
 
-    <v-spacer></v-spacer>
+    <v-spacer />
 
     <v-btn
       class="hidden-xs-only"
       flat
-      @click="$router.back()">
-      Back
-    </v-btn>
+      @click="$router.back()"
+      v-text="'Back'"
+    />
   </v-toolbar>
 </template>
 

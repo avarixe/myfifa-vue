@@ -1,18 +1,28 @@
 <template>
   <v-app>
-    <app-bar></app-bar>
+    <app-bar />
+
     <v-content>
-      <app-broadcaster></app-broadcaster>
-      <app-drawer></app-drawer>
-      <template v-if="loaded">
-        <team-channel></team-channel>
+      <app-broadcaster />
+
+      <app-drawer />
+
+      <template
+        v-if="loaded"
+      >
+        <team-channel />
+
         <nuxt />
+
       </template>
-      <template v-else>
+
+      <template
+        v-else
+      >
         <team-loader
           :team="team"
           @loaded="loaded = true"
-        ></team-loader>
+        />
       </template>
     </v-content>
   </v-app>

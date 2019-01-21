@@ -4,16 +4,19 @@
     :right="dir === 'right'"
     :left="dir === 'left'"
     :top="dir === 'top'"
-    :bottom="dir === 'bottom'">
+    :bottom="dir === 'bottom'"
+  >
     <v-btn
       slot="activator"
-      @click.stop="$emit('toggle-mode')"
       small
-      icon>
+      icon
+      @click.stop="$emit('toggle-mode')"
+    >
       <v-icon
         :color="color"
         small
-      >mdi-{{ icon }}</v-icon>
+        v-text="`mdi-${icon}`"
+      />
     </v-btn>
     {{ text }}
   </v-tooltip>

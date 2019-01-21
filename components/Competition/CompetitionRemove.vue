@@ -1,19 +1,43 @@
 <template>
-  <div class="d-inline-block" @click.stop="snackbar = true">
+  <div
+    class="d-inline-block"
+    @click.stop="snackbar = true"
+  >
     <slot>
-      <v-tooltip bottom color="black">
-        <v-btn icon slot="activator">
-          <v-icon color="black">mdi-minus-circle</v-icon>
+      <v-tooltip
+        color="black"
+        bottom
+      >
+        <v-btn
+          slot="activator"
+          icon
+        >
+          <v-icon
+            v-text="'mdi-minus-circle'"
+            color="black"
+          />
         </v-btn>
         Remove
       </v-tooltip>
     </slot>
+
     <v-snackbar
       v-model="snackbar"
-      color="black">
+      color="black"
+    >
       Remove {{ seasonLabel(competition.season) }} {{ competition.name }}?
-      <v-btn dark flat @click="removeCompetition">Yes</v-btn>
-      <v-btn dark flat @click.stop="snackbar = false">No</v-btn>
+      <v-btn
+        v-text="'Yes'"
+        @click="removeCompetition"
+        dark
+        flat
+      />
+      <v-btn
+        v-text="'No'"
+        @click.stop="snackbar = false"
+        dark
+        flat
+      />
     </v-snackbar>
   </div>
 </template>
@@ -34,7 +58,11 @@
     }),
     methods: {
       removeCompetition () {
-        this.$store.dispatch('entities/competitions/REMOVE', this.competition.id)
+        this.$store.dispatch(
+          'entities/competitions/REMOVE',
+          this.competition.id
+        )
+
         this.$router.push({
           name: 'teams-teamId-seasons',
           params: { teamId: this.competition.team_id }

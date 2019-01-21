@@ -1,5 +1,7 @@
 <template>
-  <div class="loading-page">
+  <div
+    class="loading-page"
+  >
     <v-progress-circular
       :size="200"
       :width="15"

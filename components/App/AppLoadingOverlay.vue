@@ -1,11 +1,14 @@
 <template>
-  <div v-if="loading" class="loading-page">
+  <div
+    v-if="loading"
+    class="loading-page"
+  >
     <v-progress-circular
       :size="100"
       :width="7"
       color="primary"
       indeterminate
-    ></v-progress-circular>
+    />
   </div>
 </template>
 

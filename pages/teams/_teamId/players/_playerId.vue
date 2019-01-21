@@ -1,62 +1,133 @@
 <template>
-  <v-container fluid grid-list-lg>
-    <v-layout row wrap>
-      <v-flex xs12>
+  <v-container
+    fluid
+    grid-list-lg
+  >
+    <v-layout
+      row
+      wrap
+    >
+      <v-flex
+        xs12
+      >
         <material-card
           :title="player.name"
         >
-          <v-layout class="text-xs-center" row wrap>
-            <v-flex xs6 sm3>
-              <div class="display-1">{{ player.pos }}</div>
-              <div class="subheading">Position</div>
+          <v-layout
+            class="text-xs-center"
+            row
+            wrap
+          >
+            <v-flex
+              xs6
+              sm3
+            >
+              <div
+                class="display-1"
+                v-text="player.pos"
+              />
+              <div
+                class="subheading"
+                v-text="'Position'"
+              />
             </v-flex>
-            <v-flex xs6 sm3>
-              <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
-              <div class="subheading">Secondary Position(s)</div>
+            <v-flex
+              xs6
+              sm3
+            >
+              <div
+                class="display-1"
+                v-text="$_listArray(player.sec_pos)"
+              />
+              <div
+                class="subheading"
+                v-text="'Secondary'"
+              />
             </v-flex>
-            <v-flex xs6 sm3>
-              <div class="display-1">{{ player.age }}</div>
-              <div class="subheading">Current Age</div>
+            <v-flex
+              xs6
+              sm3
+            >
+              <div
+                class="display-1"
+                v-text="player.age"
+              />
+              <div
+                class="subheading"
+                v-text="'Current'"
+              />
             </v-flex>
-            <v-flex xs6 sm3>
-              <div class="display-1">{{ player.status || '-' }}</div>
-              <div class="subheading">Current State</div>
+            <v-flex
+              xs6
+              sm3
+            >
+              <div
+                class="display-1"
+                v-text="player.status || '-'"
+              />
+              <div
+                class="subheading"
+                v-text="'Current'"
+              />
             </v-flex>
-            <v-flex xs12>
-              <player-form :player-data="player" color="orange">
-                <v-tooltip bottom color="orange">
-                  <v-btn slot="activator" icon>
-                    <v-icon color="orange">mdi-pencil</v-icon>
+            <v-flex
+              xs12
+            >
+              <player-form
+                :player-data="player"
+                color="orange"
+              >
+                <v-tooltip
+                  bottom
+                  color="orange"
+                >
+                  <v-btn
+                    slot="activator"
+                    icon
+                  >
+                    <v-icon
+                      color="orange"
+                      v-text="'mdi-pencil'"
+                    />
                   </v-btn>
                   Edit
                 </v-tooltip>
               </player-form>
-              <transfer-form :player="player"></transfer-form>
-              <contract-form :player="player"></contract-form>
+              <transfer-form
+                :player="player"
+              />
+              <contract-form
+                :player="player"
+              />
               <injury-form
                 v-if="active"
                 :player="player"
-              ></injury-form>
+              />
               <loan-form
                 v-if="active"
                 :player="player"
-              ></loan-form>
+              />
               <player-retire
                 v-if="active"
                 :player="player"
-              ></player-retire>
+              />
               <player-release
                 v-if="active"
                 :player="player"
-              ></player-release>
-              <player-remove :player="player"></player-remove>
+              />
+              <player-remove
+                :player="player"
+              />
             </v-flex>
           </v-layout>
 
         </material-card>
       </v-flex>
 
-      <v-flex xs12 sm6>
+      <v-flex
+        xs12
+        sm6
+      >
         <material-chart-card
           :data="ovrChart.data"
           :options="ovrChart.options"
@@ -64,17 +135,27 @@
           color="green"
           type="Line"
         >
-          <h4 class="title font-weight-light">
-            <span class="green--text">{{ player.ovr }}</span>
-            <small>OVR</small>
+          <h4
+            class="title font-weight-light"
+          >
+            <span
+              class="green--text"
+              v-text="player.ovr"
+            />
+            <small
+              v-text="'OVR'"
+            />
           </h4>
-          <p class="category d-inline-flex font-weight-light">
-
-          </p>
+          <p
+            class="category d-inline-flex font-weight-light"
+          />
         </material-chart-card>
       </v-flex>
 
-      <v-flex xs12 sm6>
+      <v-flex
+        xs12
+        sm6
+      >
         <material-chart-card
           :data="valueChart.data"
           :options="valueChart.options"
@@ -82,17 +163,27 @@
           color="info"
           type="Line"
         >
-          <h4 class="title font-weight-light">
-            <span class="green--text">{{ $_formatMoney(player.value) }}</span>
-            <small>Value</small>
+          <h4
+            class="title font-weight-light"
+          >
+            <span
+              class="green--text"
+              v-text="$_formatMoney(player.value)"
+            />
+            <small
+              v-text="'Value'"
+            />
           </h4>
-          <p class="category d-inline-flex font-weight-light">
-
-          </p>
+          <p
+            class="category d-inline-flex font-weight-light"
+          />
         </material-chart-card>
       </v-flex>
 
-      <v-flex xs12 sm3>
+      <v-flex
+        xs12
+        sm3
+      >
         <material-stats-card
           color="teal"
           icon="mdi-soccer-field"
@@ -101,7 +192,10 @@
         />
       </v-flex>
 
-      <v-flex xs12 sm3>
+      <v-flex
+        xs12
+        sm3
+      >
         <material-stats-card
           color="blue"
           icon="mdi-soccer"
@@ -110,7 +204,10 @@
         />
       </v-flex>
 
-      <v-flex xs12 sm3>
+      <v-flex
+        xs12
+        sm3
+      >
         <material-stats-card
           color="orange"
           icon="mdi-soccer"
@@ -119,7 +216,10 @@
         />
       </v-flex>
 
-      <v-flex xs12 sm3>
+      <v-flex
+        xs12
+        sm3
+      >
         <material-stats-card
           color="pink"
           icon="mdi-wall"
@@ -128,33 +228,53 @@
         />
       </v-flex>
 
-      <v-flex xs12>
+      <v-flex
+        xs12
+      >
         <material-card
           color="accent"
         >
-          <template slot="header">
+          <template
+            slot="header"
+          >
             <span
-              v-text="'Timeline'"
               class="title font-weight-light mb-2"
+              v-text="'Timeline'"
             />
 
             <!-- Timeline Filter -->
-            <v-tooltip top>
-              <v-menu slot="activator" bottom right>
-                <v-btn slot="activator" icon>
-                  <v-icon :color="currentFilter.color">
-                    mdi-{{ currentFilter.icon }}
-                  </v-icon>
+            <v-tooltip
+              top
+            >
+              <v-menu
+                slot="activator"
+                bottom
+                right
+              >
+                <v-btn
+                  slot="activator"
+                  icon
+                >
+                  <v-icon
+                    :color="currentFilter.color"
+                    v-text="`mdi-${currentFilter.icon}`"
+                  />
                 </v-btn>
                 <v-list>
                   <v-list-tile
                     v-for="(event, key) in filterOptions"
                     :key="key"
-                    @click="timelineFilter = key">
+                    @click="timelineFilter = key"
+                  >
                     <v-list-tile-avatar>
-                      <v-icon :color="event.color">mdi-{{ event.icon }}</v-icon>
+                      <v-icon
+                        :color="event.color"
+                        v-text="`mdi-${event.icon}`"
+                      />
                     </v-list-tile-avatar>
-                    <v-list-tile-title>{{ key }}</v-list-tile-title>
+                    <v-list-tile-title
+                      v-text="key"
+                    />
                   </v-list-tile>
                 </v-list>
               </v-menu>

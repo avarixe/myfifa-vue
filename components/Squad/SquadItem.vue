@@ -8,12 +8,14 @@
         class="title font-weight-light mb-2"
       />
 
-      <squad-actions :squad="squad"></squad-actions>
+      <squad-actions
+        :squad="squad"
+      />
     </template>
 
     <formation-view
       :formation="squadPlayers"
-    ></formation-view>
+    />
   </material-card>
 </template>
 

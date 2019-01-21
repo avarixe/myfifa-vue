@@ -1,29 +1,40 @@
 <template>
   <material-card>
-    <template slot="header">
+    <template
+      slot="header"
+    >
       <span
         v-text="'Matches'"
         class="title font-weight-light mb-2"
       />
 
       <match-form>
-        <v-tooltip bottom>
-          <v-btn slot="activator" flat>
-            <v-icon>mdi-plus-circle-outline</v-icon>
+        <v-tooltip
+          bottom
+        >
+          <v-btn
+            slot="activator"
+            flat
+          >
+            <v-icon
+              v-text="'mdi-plus-circle-outline'"
+            />
           </v-btn>
           New Match
         </v-tooltip>
       </match-form>
     </template>
 
-    <v-flex xs12>
+    <v-flex
+      xs12
+    >
       <!-- Match Search -->
       <v-text-field
         v-model="search"
         label="Search"
         append-icon="mdi-magnify"
         hide-details
-      ></v-text-field>
+      />
     </v-flex>
 
     <!-- Match History Grid -->
@@ -33,7 +44,8 @@
       :pagination.sync="pagination"
       :search="search"
       item-key="id"
-      no-data-text="No Matches Recorded">
+      no-data-text="No Matches Recorded"
+    >
       <template
         slot="headerCell"
         slot-scope="{ header }">
@@ -42,24 +54,50 @@
           v-text="header.text"
         />
       </template>
-      <template slot="items" slot-scope="props">
+      <template
+        slot="items"
+        slot-scope="props"
+      >
         <td>
-          <v-tooltip right color="blue darken-2">
+          <v-tooltip
+            right
+            color="blue darken-2"
+          >
             <v-btn
               slot="activator"
               :to="matchLink(props.item)"
               small
-              icon>
-              <v-icon small color="blue darken-2">mdi-arrow-right</v-icon>
+              icon
+            >
+              <v-icon
+                small
+                color="blue darken-2"
+                v-text="'mdi-arrow-right'"
+              />
             </v-btn>
             View Match
           </v-tooltip>
         </td>
-        <td class="text-xs-center">{{ props.item.competition }}</td>
-        <td class="text-xs-right">{{ props.item.home }}</td>
-        <td :class="resultColor(props.item.team_result) + '--text text-xs-center'">{{ props.item.score }}</td>
-        <td class="text-xs-left">{{ props.item.away }}</td>
-        <td class="text-xs-center">{{ $_format($_parse(props.item.date_played), 'MMM DD, YYYY') }}</td>
+        <td
+          class="text-xs-center"
+          v-text="props.item.competition"
+        />
+        <td
+          class="text-xs-right"
+          v-text="props.item.home"
+        />
+        <td
+          :class="resultColor(props.item.team_result) + '--text text-xs-center'"
+          v-text="props.item.score"
+        />
+        <td
+          class="text-xs-left"
+          v-text="props.item.away"
+        />
+        <td
+          class="text-xs-center"
+          v-text="$_format($_parse(props.item.date_played), 'MMM DD, YYYY')"
+        />
       </template>
     </v-data-table>
 

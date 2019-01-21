@@ -4,11 +4,21 @@
     :title="title"
     :submit="submit"
     :submit-cb="submitCb"
-    :color="color">
-    <slot slot="activator"></slot>
-    <v-container slot="form">
-      <v-layout wrap>
-        <v-flex xs12>
+    :color="color"
+  >
+    <slot
+      slot="activator"
+    />
+
+    <v-container
+      slot="form"
+    >
+      <v-layout
+        wrap
+      >
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="player.name"
             :rules="$_validate('Name', ['required'])"
@@ -18,18 +28,22 @@
             autocapitalize="words"
             autocomplete="off"
             autocorrect="off"
-          ></v-text-field>
+          />
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-select
             v-model="player.pos"
             :rules="$_validate('Position', ['required'])"
             :items="positions"
             label="Position"
             prepend-icon="mdi-run"
-          ></v-select>
+          />
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-select
             v-model="player.sec_pos"
             :items="positions"
@@ -38,27 +52,33 @@
             multiple
             chips
             deletable-chips
-          ></v-select>
+          />
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="player.birth_year"
             label="Birth Year"
             prepend-icon="mdi-calendar"
             mask="####"
             :rules="$_validate('Birth Year', ['required'])"
-          ></v-text-field>
+          />
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-select
             v-model="player.ovr"
             :items="Array.from({ length: 61 }, (v, k) => k + 40)"
             :rules="$_validate('OVR', ['required'])"
             label="OVR"
             prepend-icon="mdi-trending-up"
-          ></v-select>
+          />
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="player.value"
             :rules="$_validate('Value', ['required'])"
@@ -67,15 +87,17 @@
             :prefix="team.currency"
             :hint="$_numberHint(player.value)"
             persistent-hint
-          ></v-text-field>
+          />
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-checkbox
-            label="Youth Player"
             v-model="player.youth"
+            label="Youth Player"
             :disabled="player.id > 0"
             hide-details
-          ></v-checkbox>
+          />
         </v-flex>
       </v-layout>
     </v-container>

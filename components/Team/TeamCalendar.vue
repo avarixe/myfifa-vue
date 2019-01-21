@@ -4,7 +4,6 @@
     :close-on-content-click="false"
     transition="scale-transition"
     origin="top left"
-
   >
     <v-list-tile
       v-ripple
@@ -15,11 +14,13 @@
       style="width: 100%"
     >
       <v-list-tile-action>
-        <v-icon>mdi-calendar</v-icon>
+        <v-icon
+          v-text="'mdi-calendar'"
+        />
       </v-list-tile-action>
-      <v-list-tile-title>
-        {{ $_format(currentDate, 'MMM DD, YYYY') }}
-      </v-list-tile-title>
+      <v-list-tile-title
+        v-text="$_format(currentDate, 'MMM DD, YYYY')"
+      />
     </v-list-tile>
 
     <v-date-picker
@@ -28,7 +29,7 @@
       :min="seasonStart"
       :max="seasonEnd"
       @input="calendar = false"
-    ></v-date-picker>
+    />
   </v-menu>
 </template>
 

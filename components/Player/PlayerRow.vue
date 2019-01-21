@@ -35,8 +35,8 @@
             v-if="mode === 0"
             :mode="edit"
             :changed="playerChanged"
-            @toggle-mode="edit = !edit"
             dir="right"
+            @toggle-mode="edit = !edit"
           />
         </v-flex>
       </template>
@@ -45,7 +45,8 @@
       >
         <v-icon
           :color="statusColor"
-        >mdi-{{ statusIcon }}</v-icon>
+          v-text="`mdi-${statusIcon}`"
+        />
       </template>
       <template
         v-else-if="header.editable && edit"

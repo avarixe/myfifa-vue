@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer
-    id="app-drawer"
     v-model="drawer"
+    id="app-drawer"
     app
     dark
     floating
@@ -18,22 +18,30 @@
         tag="v-list"
         column
       >
-        <v-list-tile avatar>
+        <v-list-tile
+          avatar
+        >
           <v-list-tile-avatar>
             <!--<v-img
               src=""
               height="34"
               contain
             />-->
-            <v-icon color="primary">mdi-soccer</v-icon>
+            <v-icon
+              color="primary"
+              v-text="'mdi-soccer'"
+            />
           </v-list-tile-avatar>
-          <v-list-tile-title class="title">
-            MyFIFA Manager
-          </v-list-tile-title>
+          <v-list-tile-title
+            class="title"
+            v-text="'MyFIFA Manager'"
+          />
         </v-list-tile>
         <v-divider/>
 
-        <template v-if="teamId">
+        <template
+          v-if="teamId"
+        >
           <team-calendar />
 
           <v-list-tile
@@ -45,16 +53,18 @@
             class="v-list-item"
           >
             <v-list-tile-action>
-              <v-icon>{{ link.icon }}</v-icon>
+              <v-icon
+                v-text="link.icon"
+              />
             </v-list-tile-action>
             <v-list-tile-title
               v-text="link.text"
             />
           </v-list-tile>
         </template>
-        <template v-else>
-
-        </template>
+        <template
+          v-else
+        ></template>
       </v-layout>
     </v-img>
   </v-navigation-drawer>

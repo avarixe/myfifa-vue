@@ -3,43 +3,70 @@
     v-model="dialog"
     persistent
     lazy
-    :max-width="fullWidth ? '' : '500px'">
-    <slot name="activator" slot="activator"></slot>
-    <v-form ref="form" v-model="valid" @submit.prevent="submitForm">
+    :max-width="fullWidth ? '' : '500px'"
+  >
+    <slot
+      name="activator"
+      slot="activator"
+    />
+
+    <v-form
+      v-model="valid"
+      ref="form"
+      @submit.prevent="submitForm"
+    >
       <v-card>
-        <v-card-title primary-title :class="formColor">
-          <slot name="header">
-            <div class="headline">
-              <v-icon left>{{ titleIcon }}</v-icon>
+        <v-card-title
+          primary-title
+          :class="formColor"
+        >
+          <slot
+            name="header"
+          >
+            <div
+              class="headline"
+            >
+              <v-icon
+                left
+                v-text="titleIcon"
+              />
               {{ title }}
             </div>
           </slot>
         </v-card-title>
-        <v-divider></v-divider>
+
+        <v-divider />
+
         <v-card-text>
-          <slot name="form"></slot>
+          <slot
+            name="form"
+          />
         </v-card-text>
+
         <v-alert
           type="error"
           v-model="formError"
-          dismissible>
-          {{ errorMessage }}
-        </v-alert>
+          dismissible
+          v-text="errorMessage"
+        />
+
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-btn
-            @click="dialog = false"
             color="tertiary"
             flat
             large
-          >Cancel</v-btn>
+            @click="dialog = false"
+            v-text="'Cancel'"
+          />
           <v-btn
             type="submit"
             :disabled="!valid"
             :color="buttonColor"
             flat
             large
-          >Save</v-btn>
+            v-text="'Save'"
+          />
         </v-card-actions>
       </v-card>
     </v-form>

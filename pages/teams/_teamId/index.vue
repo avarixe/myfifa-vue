@@ -1,10 +1,23 @@
 <template>
-  <v-container fluid grid-list-lg>
-    <v-layout row wrap>
-      <v-flex xs12>
+  <v-container
+    fluid
+    grid-list-lg
+  >
+    <v-layout
+      row
+      wrap
+    >
+      <v-flex
+        xs12
+      >
         <v-card>
-          <v-card-title primary-title>
-            <div class="display-2">{{ team.title }}</div>
+          <v-card-title
+            primary-title
+          >
+            <div
+              class="display-2"
+              v-text="team.title"
+            />
           </v-card-title>
         </v-card>
       </v-flex>

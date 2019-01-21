@@ -3,11 +3,21 @@
     v-model="dialog"
     title="New Stage"
     :submit="submit"
-    :color="color">
-    <slot slot="activator"></slot>
-    <v-container slot="form">
-      <v-layout wrap>
-        <v-flex xs12>
+    :color="color"
+  >
+    <slot
+      slot="activator"
+    />
+
+    <v-container
+      slot="form"
+    >
+      <v-layout
+        wrap
+      >
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="stage.name"
             :rules="$_validate('Name', ['required'])"
@@ -17,18 +27,22 @@
             autocapitalize="words"
             autocomplete="off"
             autocorrect="off"
-          ></v-text-field>
+          />
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="stage.num_teams"
             :rules="$_validate('Number of Teams', ['required'])"
             label="Number of Teams"
             prepend-icon="mdi-account-group"
             type="number"
-          ></v-text-field>
+          />
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="stage.num_fixtures"
             :rules="stage.table ? [] : $_validate('Number of Fixtures', ['required'])"
@@ -36,12 +50,24 @@
             prepend-icon="mdi-sword-cross"
             type="number"
             :disabled="stage.table"
-          ></v-text-field>
+          />
         </v-flex>
-        <v-flex xs12>
-          <v-radio-group v-model="stage.table" hide-details row>
-            <v-radio label="Table" :value="true"></v-radio>
-            <v-radio label="Elimination Round" :value="false"></v-radio>
+        <v-flex
+          xs12
+        >
+          <v-radio-group
+            v-model="stage.table"
+            hide-details
+            row
+          >
+            <v-radio
+              label="Table"
+              :value="true"
+            />
+            <v-radio
+              label="Elimination Round"
+              :value="false"
+            />
           </v-radio-group>
         </v-flex>
       </v-layout>

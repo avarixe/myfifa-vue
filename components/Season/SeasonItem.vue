@@ -21,7 +21,8 @@
         >
           <v-icon
             color="white"
-          >mdi-arrow-right</v-icon>
+            v-text="'mdi-arrow-right'"
+          />
         </v-btn>
         View Season
       </v-tooltip>
@@ -30,7 +31,9 @@
     <v-list
       dense
     >
-      <v-subheader>Competitions</v-subheader>
+      <v-subheader
+        v-text="'Competitions'"
+      />
       <v-list-tile
         v-for="(competition, i) in competitions"
         :key="i"
@@ -42,7 +45,8 @@
             color="blue"
             small
             left
-          >mdi-arrow-right</v-icon>
+            v-text="'mdi-arrow-right'"
+          />
           {{ competition.name }}
         </v-list-tile-title>
         <v-list-tile-avatar
@@ -50,7 +54,8 @@
         >
           <v-icon
             color="yellow darken-2"
-          >mdi-trophy</v-icon>
+            v-text="'mdi-trophy'"
+          />
         </v-list-tile-avatar>
       </v-list-tile>
     </v-list>

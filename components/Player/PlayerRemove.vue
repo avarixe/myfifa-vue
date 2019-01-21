@@ -1,19 +1,42 @@
 <template>
-  <div class="d-inline-block" @click.stop="snackbar = true">
+  <div
+    class="d-inline-block"
+    @click.stop="snackbar = true"
+  >
     <slot>
-      <v-tooltip bottom color="black">
-        <v-btn slot="activator" icon>
-          <v-icon>mdi-minus-circle</v-icon>
+      <v-tooltip
+        bottom
+        color="black"
+      >
+        <v-btn
+          slot="activator"
+          icon
+        >
+          <v-icon
+            v-text="'mdi-minus-circle'"
+          />
         </v-btn>
         Remove
       </v-tooltip>
     </slot>
+
     <v-snackbar
       v-model="snackbar"
-      color="black">
+      color="black"
+    >
       Remove Player: {{ player.name }}?
-      <v-btn dark flat @click="removePlayer">Yes</v-btn>
-      <v-btn dark flat @click.stop="snackbar = false">No</v-btn>
+      <v-btn
+        dark
+        flat
+        @click="removePlayer"
+        v-text="'Yes'"
+      />
+      <v-btn
+        dark
+        flat
+        @click.stop="snackbar = false"
+        v-text="'No'"
+      />
     </v-snackbar>
   </div>
 </template>

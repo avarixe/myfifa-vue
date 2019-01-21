@@ -3,20 +3,32 @@
     v-model="dialog"
     title="Add Cap"
     :submit="submit"
-    :color="color">
-    <slot slot="activator"></slot>
-    <v-container slot="form">
-      <v-layout wrap>
-        <v-flex xs12>
+    :color="color"
+  >
+    <slot
+      slot="activator"
+    />
+
+    <v-container
+      slot="form"
+    >
+      <v-layout
+        wrap
+      >
+        <v-flex
+          xs12
+        >
           <v-select
             v-model="cap.pos"
             :items="positions"
             :rules="$_validate('Position', ['required'])"
             label="Position"
             prepend-icon="mdi-run"
-          ></v-select>
+          />
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-select
             v-model="cap.player_id"
             :items="players"
@@ -25,13 +37,21 @@
             :rules="$_validate('Player', ['required'])"
             :disabled="cap.start > 0"
             label="Player"
-            prepend-icon="mdi-account">
-            <template slot="item" slot-scope="data">
+            prepend-icon="mdi-account"
+          >
+            <template
+              slot="item"
+              slot-scope="data"
+            >
               <v-list-tile-action>
-                <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
+                <v-list-tile-action-text
+                  v-text="data.item.pos"
+                />
               </v-list-tile-action>
               <v-list-tile-content>
-                <v-list-tile-title>{{ data.item.name }}</v-list-tile-title>
+                <v-list-tile-title
+                  v-text="data.item.name"
+                />
               </v-list-tile-content>
             </template>
           </v-select>

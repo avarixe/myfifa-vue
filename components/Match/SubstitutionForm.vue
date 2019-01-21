@@ -4,20 +4,32 @@
     title-icon="mdi-repeat"
     title="Record Substitution"
     :submit="submit"
-    :color="color">
-    <slot slot="activator"></slot>
-    <v-container slot="form">
-      <v-layout wrap>
-        <v-flex xs12>
+    :color="color"
+  >
+    <slot
+      slot="activator"
+    />
+
+    <v-container
+      slot="form"
+    >
+      <v-layout
+        wrap
+      >
+        <v-flex
+          xs12
+        >
           <v-select
             v-model="substitution.minute"
             :items="minutes"
             :rules="$_validate('Minute', ['required'])"
             label="Minute"
             prepend-icon="mdi-timer"
-          ></v-select>
+          />
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-select
             v-model="substitution.player_id"
             :rules="$_validate('Player', ['required'])"
@@ -25,18 +37,28 @@
             item-value="player_id"
             item-text="name"
             label="Player"
-            prepend-icon="mdi-subdirectory-arrow-left">
-            <template slot="item" slot-scope="data">
+            prepend-icon="mdi-subdirectory-arrow-left"
+          >
+            <template
+              slot="item"
+              slot-scope="data"
+            >
               <v-list-tile-action>
-                <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
+                <v-list-tile-action-text
+                  v-text="data.item.pos"
+                />
               </v-list-tile-action>
               <v-list-tile-content>
-                <v-list-tile-title>{{ data.item.name }}</v-list-tile-title>
+                <v-list-tile-title
+                  v-text="data.item.name"
+                />
               </v-list-tile-content>
             </template>
           </v-select>
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-select
             v-model="substitution.replacement_id"
             :rules="$_validate('Replaced By', ['required'])"
@@ -44,23 +66,33 @@
             item-value="id"
             item-text="name"
             label="Replaced By"
-            prepend-icon="mdi-subdirectory-arrow-right">
-            <template slot="item" slot-scope="data">
+            prepend-icon="mdi-subdirectory-arrow-right"
+          >
+            <template
+              slot="item"
+              slot-scope="data"
+            >
               <v-list-tile-action>
-                <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
+                <v-list-tile-action-text
+                  v-text="data.item.pos"
+                />
               </v-list-tile-action>
               <v-list-tile-content>
-                <v-list-tile-title>{{ data.item.name }}</v-list-tile-title>
+                <v-list-tile-title
+                  v-text="data.item.name"
+                />
               </v-list-tile-content>
             </template>
           </v-select>
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-checkbox
             label="Injury"
             v-model="substitution.injury"
             hide-details
-          ></v-checkbox>
+          />
         </v-flex>
       </v-layout>
     </v-container>
@@ -92,7 +124,8 @@
     computed: {
       availablePlayers () {
         const selectedIds = this.sortedCaps.map(c => c.player_id)
-        return activePlayers(this.team.id).filter(p => selectedIds.indexOf(p.id) < 0)
+        return activePlayers(this.team.id)
+          .filter(p => selectedIds.indexOf(p.id) < 0)
       }
     },
     methods: {

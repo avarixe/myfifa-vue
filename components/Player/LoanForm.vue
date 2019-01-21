@@ -4,18 +4,36 @@
     :title="title"
     :submit="submit"
     :submit-cb="submitCb"
-    color="indigo">
-    <slot slot="activator">
-      <v-tooltip bottom color="indigo">
-        <v-btn slot="activator" icon>
-          <v-icon color="indigo">mdi-transit-transfer</v-icon>
+    color="indigo"
+  >
+    <slot
+      slot="activator"
+    >
+      <v-tooltip
+        bottom
+        color="indigo"
+      >
+        <v-btn
+          slot="activator"
+          icon
+        >
+          <v-icon
+            color="indigo"
+            v-text="'mdi-transit-transfer'"
+          />
         </v-btn>
         {{ title }}
       </v-tooltip>
     </slot>
-    <v-container slot="form">
-      <v-layout wrap>
-        <v-flex xs12>
+    <v-container
+      slot="form"
+    >
+      <v-layout
+        wrap
+      >
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="loan.destination"
             :rules="$_validate('Destination', ['required'])"
@@ -25,14 +43,19 @@
             autocapitalize="words"
             autocomplete="off"
             autocorrect="off"
-          ></v-text-field>
+          />
         </v-flex>
-        <v-scroll-y-transition mode="out-in">
-          <v-flex v-if="playerLoaned" xs12>
+        <v-scroll-y-transition
+          mode="out-in"
+        >
+          <v-flex
+            v-if="playerLoaned"
+            xs12
+          >
             <v-checkbox
               v-model="loan.returned"
               label="Player Returned"
-            ></v-checkbox>
+            />
           </v-flex>
         </v-scroll-y-transition>
       </v-layout>

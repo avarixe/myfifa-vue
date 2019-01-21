@@ -2,26 +2,34 @@
   <dialog-form
     v-model="dialog"
     :title="title"
-    :submit="submit">
-    <slot slot="activator"></slot>
-    <v-container slot="form">
+    :submit="submit"
+  >
+    <slot
+      slot="activator"
+    />
+
+    <v-container
+      slot="form"
+    >
       <v-text-field
         v-model="user.full_name"
         label="Name"
         :rules="$_validate('Name', ['required'])"
-      ></v-text-field>
+      />
       <v-text-field
         v-model="user.username"
         label="Username"
         :rules="$_validate('Username', ['required'])"
-      ></v-text-field>
+      />
       <v-text-field
         v-model="user.email"
         label="Email"
         type="email"
         :rules="$_validate('Email', ['required', 'email'])"
-      ></v-text-field>
-      <template v-if="!user.id">
+      />
+      <template
+        v-if="!user.id"
+      >
         <v-text-field
           v-model="user.password"
           label="Password"
@@ -29,7 +37,7 @@
           :append-icon="`mdi-eye${visible1 ? '-off' : ''}`"
           @click:append="visible1 = !visible1"
           :rules="$_validate('Password', ['required'])"
-        ></v-text-field>
+        />
         <v-text-field
           v-model="user.password_confirmation"
           label="Confirm Password"
@@ -37,7 +45,7 @@
           :append-icon="`mdi-eye${visible2 ? '-off' : ''}`"
           @click:append="visible2 = !visible2"
           :rules="$_validate('Password Confirmation', ['required'])"
-        ></v-text-field>
+        />
       </template>
     </v-container>
   </dialog-form>

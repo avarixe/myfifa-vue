@@ -1,15 +1,24 @@
 <template>
   <material-card>
-    <template slot="header">
+    <template
+      slot="header"
+    >
       <span
-        v-text="'Players'"
         class="title font-weight-light mb-2"
+        v-text="'Players'"
       />
 
       <player-form>
-        <v-tooltip bottom>
-          <v-btn slot="activator" flat>
-            <v-icon>mdi-plus-circle-outline</v-icon>
+        <v-tooltip
+          bottom
+        >
+          <v-btn
+            slot="activator"
+            flat
+          >
+            <v-icon
+              v-text="'mdi-plus-circle-outline'"
+            />
           </v-btn>
           New Player
         </v-tooltip>
@@ -34,7 +43,8 @@
           >
             <v-icon
               :color="currentFilter.color"
-            >mdi-{{ currentFilter.icon }}</v-icon>
+              v-text="`mdi-${currentFilter.icon}`"
+            />
           </v-btn>
 
           <v-list>
@@ -46,7 +56,8 @@
               <v-list-tile-avatar>
                 <v-icon
                   :color="opt.color"
-                >mdi-{{ opt.icon }}</v-icon>
+                  v-text="`mdi-${opt.icon}`"
+                />
               </v-list-tile-avatar>
               <v-list-tile-title
                 v-text="opt.text"
@@ -69,13 +80,14 @@
         >
           <v-icon
             :color="opt.color"
-          >mdi-{{ opt.icon }}</v-icon>
+            v-text="`mdi-${opt.icon}`"
+          />
         </v-btn>
       </v-btn-toggle>
 
       <div
-        v-text="currentMode.text"
         :class="`subheading ${currentMode.color}--text`"
+        v-text="currentMode.text"
       />
 
       <v-spacer />
@@ -105,8 +117,8 @@
         slot-scope="{ header }"
       >
         <span
-          v-text="header.text"
           class="subheading font-weight-light text-success text--darken-3"
+          v-text="header.text"
         />
       </template>
       <template

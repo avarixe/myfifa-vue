@@ -1,7 +1,12 @@
 <template>
-  <v-container fluid grid-list-lg>
-    <v-layout row wrap>
-
+  <v-container
+    fluid
+    grid-list-lg
+  >
+    <v-layout
+      row
+      wrap
+    >
       <v-flex
         xs12
       >
@@ -16,7 +21,7 @@
         <player-grid
           :season="season"
           :season-data="seasonData"
-        ></player-grid>
+        />
       </v-flex>
     </v-layout>
   </v-container>

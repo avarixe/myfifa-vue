@@ -1,7 +1,8 @@
 <template>
   <v-timeline
     v-if="events.length > 0 || match.penalty_shootout"
-    :dense="dense">
+    :dense="dense"
+  >
     <v-timeline-item
       v-for="(event, i) in events"
       :key="i"
@@ -18,7 +19,8 @@
 
         <span
           class="caption text-truncate"
-        >{{ event.home ? match.home : match.away }}</span>
+          v-text="event.home ? match.home : match.away"
+        />
 
         <v-tooltip
           v-if="team.current_date === match.date_played"
@@ -26,13 +28,14 @@
         >
           <v-btn
             slot="activator"
-            @click="removeEvent(event)"
             class="ma-0"
             icon
+            @click="removeEvent(event)"
           >
             <v-icon
               :color="eventColor(event)"
-            >mdi-close</v-icon>
+              v-text="'mdi-close'"
+            />
           </v-btn>
           Remove
         </v-tooltip>
@@ -45,7 +48,7 @@
 
       <timeline-content
         :item="event"
-      ></timeline-content>
+      />
     </v-timeline-item>
 
     <v-timeline-item
@@ -65,14 +68,15 @@
         >
           <v-btn
             slot="activator"
-            @click="removePS"
             color="indigo lighten-2"
             class="ma-0"
             icon
+            @click="removePS"
           >
             <v-icon
               color="indigo"
-            >mdi-close</v-icon>
+              v-text="'mdi-close'"
+            />
           </v-btn>
           Remove
         </v-tooltip>
@@ -85,7 +89,7 @@
 
       <timeline-content
         :item="penaltyShootoutEvent"
-      ></timeline-content>
+      />
     </v-timeline-item>
   </v-timeline>
 </template>

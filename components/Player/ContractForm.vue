@@ -4,74 +4,99 @@
     :title="title"
     :submit="submit"
     :submit-cb="submitCb"
-    color="blue">
-    <slot slot="activator">
-      <v-tooltip bottom color="blue">
-        <v-btn slot="activator" icon>
-          <v-icon color="blue">mdi-file-document-outline</v-icon>
+    color="blue"
+  >
+    <slot
+      slot="activator"
+    >
+      <v-tooltip
+        bottom
+        color="blue"
+      >
+        <v-btn
+          slot="activator"
+          icon
+        >
+          <v-icon
+            color="blue"
+            v-text="'mdi-file-document-outline'"
+          />
         </v-btn>
         {{ title }}
       </v-tooltip>
     </slot>
-    <v-container slot="form">
-      <v-layout wrap>
-        <v-flex xs12>
+
+    <v-container
+      slot="form"
+    >
+      <v-layout
+        wrap
+      >
+        <v-flex
+          xs12
+        >
           <v-menu
+            v-model="menus.effective_date"
             ref="menu1"
             :close-on-content-click="false"
-            v-model="menus.effective_date"
             :return-value.sync="contract.effective_date"
             lazy
             transition="scale-transition"
-            full-width>
+            full-width
+          >
             <v-text-field
+              v-model="contract.effective_date"
               slot="activator"
               label="Effective Date"
               prepend-icon="mdi-calendar-today"
-              v-model="contract.effective_date"
               :rules="$_validate('Effective Date', ['required', 'date'])"
               readonly
-            ></v-text-field>
+            />
             <v-date-picker
-              ref="picker1"
               v-model="contract.effective_date"
+              ref="picker1"
               landscape
               :min="team.current_date"
               :max="contract.end_date"
               @input="$refs.menu1.save(contract.effective_date)"
-            ></v-date-picker>
+            />
           </v-menu>
         </v-flex>
 
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-menu
+            v-model="menus.end_date"
             ref="menu2"
             :close-on-content-click="false"
-            v-model="menus.end_date"
             :return-value.sync="contract.end_date"
             lazy
             transition="scale-transition"
-            full-width>
+            full-width
+          >
             <v-text-field
+              v-model="contract.end_date"
               slot="activator"
               label="End Date"
               prepend-icon="mdi-calendar"
-              v-model="contract.end_date"
               :rules="$_validate('End Date', ['required', 'date'])"
               readonly
-            ></v-text-field>
+            />
             <v-date-picker
-              ref="picker2"
               v-model="contract.end_date"
+              ref="picker2"
               landscape
               :min="contract.effective_date"
               :max="maxEndDate"
               @input="$refs.menu2.save(contract.end_date)"
-            ></v-date-picker>
+            />
           </v-menu>
         </v-flex>
 
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="contract.wage"
             :rules="$_validate('Wage', ['required'])"
@@ -80,10 +105,12 @@
             :prefix="team.currency"
             :hint="$_numberHint(contract.wage)"
             persistent-hint
-          ></v-text-field>
+          />
         </v-flex>
 
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="contract.signing_bonus"
             type="number"
@@ -91,10 +118,12 @@
             :prefix="team.currency"
             :hint="$_numberHint(contract.signing_bonus)"
             persistent-hint
-          ></v-text-field>
+          />
         </v-flex>
 
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="contract.release_clause"
             type="number"
@@ -102,10 +131,12 @@
             :prefix="team.currency"
             :hint="$_numberHint(contract.release_clause)"
             persistent-hint
-          ></v-text-field>
+          />
         </v-flex>
 
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="contract.performance_bonus"
             type="number"
@@ -113,28 +144,40 @@
             :prefix="team.currency"
             :hint="$_numberHint(contract.performance_bonus)"
             persistent-hint
-          ></v-text-field>
+          />
         </v-flex>
 
-        <v-scroll-y-transition mode="out-in">
-          <v-flex v-if="contract.performance_bonus" xs12 sm6>
+        <v-scroll-y-transition
+          mode="out-in"
+        >
+          <v-flex
+            v-if="contract.performance_bonus"
+            xs12
+            sm6
+          >
             <v-text-field
               v-model="contract.bonus_req"
               label="Bonus Req."
               type="number"
               prefix="if"
-            ></v-text-field>
+            />
           </v-flex>
         </v-scroll-y-transition>
 
-        <v-scroll-y-transition mode="out-in">
-          <v-flex v-if="contract.performance_bonus" xs12 sm6>
+        <v-scroll-y-transition
+          mode="out-in"
+        >
+          <v-flex
+            v-if="contract.performance_bonus"
+            xs12
+            sm6
+          >
             <v-select
               v-model="contract.bonus_req_type"
               label="Bonus Req. Type"
               :items="bonusRequirementTypes"
               clearable
-            ></v-select>
+            />
           </v-flex>
         </v-scroll-y-transition>
       </v-layout>

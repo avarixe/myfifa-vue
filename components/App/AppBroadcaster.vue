@@ -4,9 +4,12 @@
     :color="color"
     bottom>
     {{ message }}
-    <v-btn dark flat @click="snackbar = false">
-      Close
-    </v-btn>
+    <v-btn
+      dark
+      flat
+      @click="snackbar = false"
+      v-text="'Close'"
+    />
   </v-snackbar>
 </template>
 

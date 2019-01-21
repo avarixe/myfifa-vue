@@ -4,18 +4,37 @@
     :title="title"
     :submit="submit"
     :submit-cb="submitCb"
-    color="pink">
-    <slot slot="activator">
-      <v-tooltip bottom color="pink">
-        <v-btn slot="activator" icon>
-          <v-icon color="pink">mdi-hospital</v-icon>
+    color="pink"
+  >
+    <slot
+      slot="activator"
+    >
+      <v-tooltip
+        bottom
+        color="pink"
+      >
+        <v-btn
+          slot="activator"
+          icon
+        >
+          <v-icon
+            color="pink"
+            v-text="'mdi-hospital'"
+          />
         </v-btn>
         {{ title }}
       </v-tooltip>
     </slot>
-    <v-container slot="form">
-      <v-layout wrap>
-        <v-flex xs12>
+
+    <v-container
+      slot="form"
+    >
+      <v-layout
+        wrap
+      >
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="injury.description"
             :rules="$_validate('Description', ['required'])"
@@ -25,14 +44,19 @@
             autocapitalize="words"
             autocomplete="off"
             autocorrect="off"
-          ></v-text-field>
+          />
         </v-flex>
-        <v-scroll-y-transition mode="out-in">
-          <v-flex v-if="playerInjured" xs12>
+        <v-scroll-y-transition
+          mode="out-in"
+        >
+          <v-flex
+            v-if="playerInjured"
+            xs12
+          >
             <v-checkbox
               v-model="injury.recovered"
               label="Player Recovered"
-            ></v-checkbox>
+            />
           </v-flex>
         </v-scroll-y-transition>
       </v-layout>

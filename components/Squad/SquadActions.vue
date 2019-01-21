@@ -1,5 +1,7 @@
 <template>
-  <div class="d-inline-block">
+  <div
+    class="d-inline-block"
+  >
     <squad-form
       :squad-data="squad"
     >
@@ -14,7 +16,8 @@
         >
           <v-icon
             color="orange"
-          >mdi-pencil</v-icon>
+            v-text="'mdi-pencil'"
+          />
         </v-btn>
         Edit
       </v-tooltip>
@@ -30,7 +33,8 @@
       >
         <v-icon
           color="black"
-        >mdi-minus-circle</v-icon>
+          v-text="'mdi-minus-circle'"
+        />
       </v-btn>
       Remove
     </v-tooltip>
@@ -44,12 +48,14 @@
         dark
         flat
         @click.native="$store.dispatch('entities/squads/REMOVE', squad.id)"
-      >Yes</v-btn>
+        v-text="'Yes'"
+      />
       <v-btn
         dark
         flat
         @click.native="promptDeletion = false"
-      >No</v-btn>
+        v-text="'No'"
+      />
     </v-snackbar>
   </div>
 </template>

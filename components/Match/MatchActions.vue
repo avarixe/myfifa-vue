@@ -1,35 +1,71 @@
 <template>
-  <div class="text-xs-center">
-    <match-form :match-data="match" color="orange">
-      <v-tooltip bottom color="orange">
-        <v-btn icon slot="activator">
-          <v-icon color="orange">mdi-pencil</v-icon>
+  <div
+    class="text-xs-center"
+  >
+    <match-form
+      :match-data="match"
+      color="orange"
+    >
+      <v-tooltip
+        color="orange"
+        bottom
+      >
+        <v-btn
+          slot="activator"
+          icon
+        >
+          <v-icon
+            color="orange"
+            v-text="'mdi-pencil'"
+          />
         </v-btn>
         Edit
       </v-tooltip>
     </match-form>
 
-    <cap-form :match="match" v-if="numPlayers < 11">
-      <v-tooltip bottom>
-        <v-btn icon slot="activator">
-          <v-icon>mdi-plus-circle-outline</v-icon>
+    <cap-form
+      v-if="numPlayers < 11"
+      :match="match"
+    >
+      <v-tooltip
+        bottom
+      >
+        <v-btn
+          slot="activator"
+          icon
+        >
+          <v-icon
+            v-text="'mdi-plus-circle-outline'"
+          />
         </v-btn>
         Add Player
       </v-tooltip>
     </cap-form>
 
-    <v-tooltip bottom color="cyan">
-      <v-menu slot="activator" offset-y>
-        <v-btn slot="activator" icon>
-          <v-icon color="cyan">mdi-clipboard-text</v-icon>
+    <v-tooltip
+      color="cyan"
+      bottom
+    >
+      <v-menu
+        slot="activator"
+        offset-y
+      >
+        <v-btn
+          slot="activator"
+          icon
+        >
+          <v-icon
+            color="cyan"
+            v-text="'mdi-clipboard-text'"
+          />
         </v-btn>
         <v-list>
           <v-list-tile
             v-for="squad in squads"
             :key="squad.id"
-            @click="applySquadToMatch(squad.id)">
-            {{ squad.name }}
-          </v-list-tile>
+            @click="applySquadToMatch(squad.id)"
+            v-text="squad.name"
+          />
         </v-list>
       </v-menu>
       Apply Squad
@@ -38,10 +74,20 @@
     <substitution-form
       v-if="validMatch"
       :match="match"
-      color="green">
-      <v-tooltip bottom color="green">
-        <v-btn icon slot="activator">
-          <v-icon color="green">mdi-repeat</v-icon>
+      color="green"
+    >
+      <v-tooltip
+        bottom
+        color="green"
+      >
+        <v-btn
+          slot="activator"
+          icon
+        >
+          <v-icon
+            color="green"
+            v-text="'mdi-repeat'"
+          />
         </v-btn>
         Substitution
       </v-tooltip>
@@ -50,10 +96,20 @@
     <goal-form
       v-if="validMatch"
       :match="match"
-      color="blue">
-      <v-tooltip bottom color="blue">
-        <v-btn icon slot="activator">
-          <v-icon color="blue">mdi-soccer</v-icon>
+      color="blue"
+    >
+      <v-tooltip
+        bottom
+        color="blue"
+      >
+        <v-btn
+          slot="activator"
+          icon
+        >
+          <v-icon
+            color="blue"
+            v-text="'mdi-soccer'"
+          />
         </v-btn>
         Goal
       </v-tooltip>
@@ -62,10 +118,20 @@
     <booking-form
       v-if="validMatch"
       :match="match"
-      color="red">
-      <v-tooltip bottom color="red">
-        <v-btn icon slot="activator">
-          <v-icon color="red">mdi-book</v-icon>
+      color="red"
+    >
+      <v-tooltip
+        bottom
+        color="red"
+      >
+        <v-btn
+          slot="activator"
+          icon
+        >
+          <v-icon
+            color="red"
+            v-text="'mdi-book'"
+          />
         </v-btn>
         Booking
       </v-tooltip>
@@ -74,16 +140,28 @@
     <penalty-shootout-form
       v-if="validMatch && matchDraw && !match.penalty_shootout"
       :match="match"
-      color="indigo">
-      <v-tooltip bottom color="indigo">
-        <v-btn icon slot="activator">
-          <v-icon color="indigo">mdi-human</v-icon>
+      color="indigo"
+    >
+      <v-tooltip
+        bottom
+        color="indigo"
+      >
+        <v-btn
+          slot="activator"
+          icon
+        >
+          <v-icon
+            color="indigo"
+            v-text="'mdi-human'"
+          />
         </v-btn>
         Penalty Shootout
       </v-tooltip>
     </penalty-shootout-form>
 
-    <match-remove :match="match"></match-remove>
+    <match-remove
+      :match="match"
+    />
   </div>
 </template>
 

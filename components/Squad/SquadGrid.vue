@@ -18,7 +18,7 @@
       >
         <squad-item
           :squad="props.item"
-        ></squad-item>
+        />
       </v-flex>
     </template>
   </v-data-iterator>

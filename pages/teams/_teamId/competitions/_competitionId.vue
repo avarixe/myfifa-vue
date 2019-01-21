@@ -24,10 +24,12 @@
               >
                 <div
                   class="subheading"
-                >{{ seasonLabel(competition.season) }}</div>
+                  v-text="seasonLabel(competition.season)"
+                />
                 <div
                   class="display-1"
-                >{{ competition.name }}</div>
+                  v-text="competition.name"
+                />
               </v-flex>
             </v-layout>
           </template>
@@ -47,12 +49,14 @@
                 <v-icon
                   color="yellow darken-2"
                   left
-                >mdi-crown</v-icon>
+                  v-text="'mdi-crown'"
+                />
                 {{ competition.champion }}
                 <v-icon
                   color="yellow darken-2"
                   right
-                >mdi-crown</v-icon>
+                  v-text="'mdi-crown'"
+                />
               </div>
             </v-flex>
 
@@ -67,7 +71,8 @@
                 <v-btn
                   dark
                   color="orange"
-                >Edit</v-btn>
+                  v-text="'Edit'"
+                />
               </edit-competition-form>
               <stage-form
                 :competition="competition"
@@ -76,14 +81,16 @@
                 <v-btn
                   dark
                   color="teal"
-                >Add Stage</v-btn>
+                  v-text="'Add Stage'"
+                />
               </stage-form>
               <competition-remove
                 :competition="competition"
               >
                 <v-btn
                   dark
-                >Remove</v-btn>
+                  v-text="'Remove'"
+                />
               </competition-remove>
             </v-flex>
           </v-layout>
@@ -105,7 +112,7 @@
             :key="i"
             :table="table"
             :readonly="readonly"
-          ></competition-table>
+          />
         </v-expansion-panel>
       </v-flex>
 
@@ -119,7 +126,7 @@
           :key="i"
           :round="round"
           :readonly="readonly"
-        ></competition-round>
+        />
       </v-flex>
     </v-layout>
   </v-container>

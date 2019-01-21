@@ -1,60 +1,86 @@
 <template>
-  <v-expansion-panel-content class="elevation-1">
-    <div slot="header">
-      <template v-if="edit">
+  <v-expansion-panel-content
+    class="elevation-1"
+  >
+    <template
+      slot="header"
+    >
+      <template
+        v-if="edit"
+      >
         <v-text-field
           v-model="stage.name"
           :rules="$_validate('Stage Name', ['required'])"
           class="d-inline-block"
           @click.stop
-        ></v-text-field>
+        />
       </template>
-      <template v-else>
-        {{ table.name }}
-      </template>
+      <template
+        v-else
+      >{{ table.name }}</template>
 
-      <template v-if="!readonly">
+      <template
+        v-if="!readonly"
+      >
         <edit-mode-button
           :mode="edit"
           :changed="stageChanged"
           @toggle-mode="edit = !edit"
-        ></edit-mode-button>
-        <stage-remove :stage="table"></stage-remove>
+        />
+        <stage-remove
+          :stage="table"
+        ></stage-remove>
       </template>
-    </div>
+    </template>
+
     <v-card>
       <v-data-table
         :headers="headers"
         :items="items"
         :pagination.sync="pagination"
         disable-initial-sort
-        hide-actions>
-        <template slot="headers" slot-scope="props">
+        hide-actions
+      >
+        <template
+          slot="headers"
+          slot-scope="props"
+        >
           <th
             v-for="(header, i) in headers"
             :key="i"
             :class="`text-xs-${header.align}`"
-            :width="header.width">
-            <template v-if="header.value">
-              {{ header.text }}
-            </template>
-            <v-tooltip v-else right>
+            :width="header.width"
+          >
+            <template
+              v-if="header.value"
+            >{{ header.text }}</template>
+            <v-tooltip
+              v-else
+              right
+            >
               <v-btn
                 slot="activator"
+                icon
                 @click="override = !override"
-                icon>
-                <v-icon>mdi-playlist-edit</v-icon>
+              >
+                <v-icon
+                  v-text="'mdi-playlist-edit'"
+                />
               </v-btn>
               Edit All
             </v-tooltip>
           </th>
         </template>
-        <template slot="items" slot-scope="props">
+
+        <template
+          slot="items"
+          slot-scope="props"
+        >
           <table-row
             :headers="headers"
             :row-data="props.item"
             :override="override"
-          ></table-row>
+          />
         </template>
       </v-data-table>
     </v-card>
@@ -99,7 +125,9 @@
           { text: 'GD', value: 'goal_difference', type: null, align: 'center' },
           { text: 'PTS', value: 'points', type: null, align: 'center' }
         ]
-        !this.readonly && headers.unshift({ text: '', value: null, sortable: false, width: '40px' })
+        !this.readonly && headers.unshift({
+          text: '', value: null, sortable: false, width: '40px'
+        })
         return headers
       },
       items () {

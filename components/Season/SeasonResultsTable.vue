@@ -25,9 +25,8 @@
           v-for="(header, i) in headers"
           :key="i"
           :class="`text-xs-${header.align}`"
-        >
-          {{ props.item[header.value] }}
-        </td>
+          v-text="props.item[header.value]"
+        />
       </tr>
     </template>
   </v-data-table>

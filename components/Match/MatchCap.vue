@@ -1,47 +1,62 @@
 <template>
   <div>
-    <div class="body-2">
+    <div
+      class="body-2"
+    >
       <v-menu
         :disabled="readonly || cap.start > 0"
         max-height="200px"
         offset-y
         offset-overflow
-        lazy>
-        <span slot="activator">
-          {{ cap.name }}
-        </span>
+        lazy
+      >
+        <span
+          slot="activator"
+        >{{ cap.name }}</span>
 
         <v-list>
           <v-list-tile
             v-for="player in players"
             :key="player.id"
-            @click="setPlayer(player.id)">
+            @click="setPlayer(player.id)"
+          >
             <v-list-tile-action>
-              <v-list-tile-action-text>{{ player.pos }}</v-list-tile-action-text>
+              <v-list-tile-action-text
+                v-text="player.pos"
+              />
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title>{{ player.name }}</v-list-tile-title>
+              <v-list-tile-title
+                v-text="player.name"
+              />
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-menu>
     </div>
-    <div class="body-1">
+    <div
+      class="body-1"
+    >
       <v-menu
         :disabled="readonly"
         max-height="200px"
         offset-y
         offset-overflow
-        lazy>
-        <span slot="activator">
-          {{ cap.pos }}
-        </span>
+        lazy
+      >
+        <span
+          slot="activator"
+        >{{ cap.pos }}</span>
+
         <v-list>
           <v-list-tile
             v-for="pos in positions"
             :key="pos"
-            @click="setPosition(pos)">
-            <v-list-tile-title>{{ pos }}</v-list-tile-title>
+            @click="setPosition(pos)"
+          >
+            <v-list-tile-title
+              v-text="pos"
+            />
           </v-list-tile>
         </v-list>
       </v-menu>
@@ -51,34 +66,40 @@
         v-if="parseInt(cap.start) > 0"
         color="green"
         small
-      >mdi-subdirectory-arrow-right</v-icon>
+        v-text="'mdi-subdirectory-arrow-right'"
+      />
       <v-icon
         v-for="index in goals"
         :key="`goal${index}`"
         color="blue"
         small
-      >mdi-soccer</v-icon>
+        v-text="'mdi-soccer'"
+      />
       <v-icon
         v-for="index in assists"
         :key="`assist${index}`"
         small
-      >mdi-soccer</v-icon>
+        v-text="'mdi-soccer'"
+      />
       <v-icon
         v-for="(color, i) in bookings"
         :key="`booking${i}`"
         :color="color"
         small
-      >mdi-book</v-icon>
+        v-text="'mdi-book'"
+      />
       <v-icon
         v-if="injured"
         color="pink"
         small
-      >mdi-hospital</v-icon>
+        v-text="'mdi-hospital'"
+      />
       <v-icon
         v-if="cap.subbed_out"
         color="red"
         small
-      >mdi-subdirectory-arrow-left</v-icon>
+        v-text="'mdi-subdirectory-arrow-left'"
+      />
     </div>
   </div>
 </template>
@@ -134,7 +155,10 @@
       },
       bookings () {
         return this.events
-          .filter(event => event.event_type === 'Booking' && event.player_id === this.cap.player_id)
+          .filter(event => {
+            return event.event_type === 'Booking' &&
+              event.player_id === this.cap.player_id
+          })
           .map(booking => booking.red_card ? 'red' : 'yellow darken-2')
       },
       injured () {

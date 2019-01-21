@@ -3,11 +3,21 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
-    :color="color">
-    <slot slot="activator"></slot>
-    <v-container slot="form">
-      <v-layout wrap>
-        <v-flex xs12>
+    :color="color"
+  >
+    <slot
+      slot="activator"
+    />
+
+    <v-container
+      slot="form"
+    >
+      <v-layout
+        wrap
+      >
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="team.title"
             :rules="$_validate('Team', ['required'])"
@@ -17,39 +27,44 @@
             autocapitalize="words"
             autocomplete="off"
             autocorrect="off"
-          ></v-text-field>
+          />
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-menu
+            v-model="menu"
             ref="menu"
             :close-on-content-click="false"
-            v-model="menu"
             :return-value.sync="team.start_date"
             lazy
             transition="scale-transition"
-            full-width>
+            full-width
+          >
             <v-text-field
+              v-model="team.start_date"
               slot="activator"
               label="Start Date"
               prepend-icon="mdi-calendar-today"
-              v-model="team.start_date"
               :rules="$_validate('Start Date', ['required', 'date'])"
               readonly
-            ></v-text-field>
+            />
             <v-date-picker
               v-model="team.start_date"
               landscape
-              @input="$refs.menu.save(team.start_date)"
               :color="color"
-            ></v-date-picker>
+              @input="$refs.menu.save(team.start_date)"
+            />
           </v-menu>
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-text-field
             v-model="team.currency"
             :rules="$_validate('Currency', ['required'])"
             label="Currency"
-          ></v-text-field>
+          />
         </v-flex>
       </v-layout>
     </v-container>

@@ -7,37 +7,51 @@
       row
       wrap
     >
-      <v-flex xs12>
+      <v-flex
+        xs12
+      >
         <match-form>
           <v-btn>
             <v-icon
               left
-            >mdi-plus-circle-outline</v-icon>
+              v-text="'mdi-plus-circle-outline'"
+            />
             Match
           </v-btn>
         </match-form>
       </v-flex>
 
       <v-flex xs12>
-        <material-card :color="resultColor">
-          <template slot="header">
+        <material-card
+          :color="resultColor"
+        >
+          <template
+            slot="header"
+          >
             <v-layout
               class="text-xs-center"
               row
               wrap
             >
-              <v-flex xs12>
+              <v-flex
+                xs12
+              >
                 <div
                   class="display-1"
-                >{{ match.competition }}</div>
+                  v-text="match.competition"
+                />
                 <div
                   class="subheading"
-                >{{ $_formatDate(match.date_played) }}</div>
+                  v-text="$_formatDate(match.date_played)"
+                />
               </v-flex>
-              <v-flex xs12>
+              <v-flex
+                xs12
+              >
                 <div
                   class="display-2"
-                >{{ match.home }} v {{ match.away }}</div>
+                  v-text="`${match.home} v ${match.away}`"
+                />
                 <div class="display-1">
                   {{ match.score }}
                   {{ match.extra_time && !match.penalty_shootout ? '(AET)' : '' }}
@@ -50,11 +64,13 @@
             row
             wrap
           >
-            <v-flex xs12>
+            <v-flex
+              xs12
+            >
               <match-actions
                 v-if="match.date_played === team.current_date"
                 :match="match"
-              ></match-actions>
+              />
             </v-flex>
             <v-flex
               xs12
@@ -62,12 +78,15 @@
             >
               <match-timeline
                 :match="match"
-              ></match-timeline>
+              />
             </v-flex>
-            <v-flex xs12 sm6>
+            <v-flex
+              xs12
+              sm6
+            >
               <match-lineup
                 :match="match"
-              ></match-lineup>
+              />
             </v-flex>
           </v-layout>
         </material-card>

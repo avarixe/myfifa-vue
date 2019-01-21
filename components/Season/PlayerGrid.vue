@@ -16,15 +16,17 @@
         >
           <v-icon
             :color="opt.color"
-          >{{ opt.icon }}</v-icon>
+            v-text="opt.icon"
+          />
         </v-btn>
       </v-btn-toggle>
 
-      <div :class="`subheading ${currentMode.color}--text`">
-        {{ currentMode.text }}
-      </div>
+      <div
+        :class="`subheading ${currentMode.color}--text`"
+        v-text="currentMode.text"
+      />
 
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <!-- Player Search -->
       <v-text-field
@@ -32,7 +34,7 @@
         label="Search"
         append-icon="mdi-magnify"
         hide-details
-      ></v-text-field>
+      />
     </v-card-title>
 
     <!-- Player Information Grid -->
@@ -63,7 +65,7 @@
           :season="season"
           :player="props.item"
           :mode="mode"
-        ></player-row>
+        />
       </template>
     </v-data-table>
 

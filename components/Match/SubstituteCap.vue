@@ -6,16 +6,21 @@
         max-height="200px"
         offset-y
         offset-overflow
-        lazy>
-        <span slot="activator" class="body-1">
-          {{ cap.pos }}
-        </span>
+        lazy
+      >
+        <span
+          slot="activator"
+          class="body-1"
+          v-text="cap.pos"
+        />
         <v-list>
           <v-list-tile
             v-for="pos in positions"
             :key="pos"
             @click="setPosition(pos)">
-            <v-list-tile-title>{{ pos }}</v-list-tile-title>
+            <v-list-tile-title
+              v-text="pos"
+            />
           </v-list-tile>
         </v-list>
       </v-menu>
@@ -23,39 +28,48 @@
 
     <v-list-tile-content>
       <v-list-tile-title>
-        <span class="body-2">{{ cap.name }}</span>
+        <span
+          class="body-2"
+          v-text="cap.name"
+        />
         <v-icon
           v-if="parseInt(cap.start) > 0"
           color="green"
           small
-        >mdi-subdirectory-arrow-right</v-icon>
+          v-text="'mdi-subdirectory-arrow-right'"
+        />
         <v-icon
           v-for="index in goals"
           :key="index"
           color="blue"
           small
-        >mdi-soccer</v-icon>
+          v-text="'mdi-soccer'"
+        />
         <v-icon
           v-for="index in assists"
           :key="index"
           small
-        >mdi-soccer</v-icon>
+          v-text="'mdi-soccer'"
+        />
         <v-icon
           v-for="(color, i) in bookings"
           :key="i"
           :color="color"
           small
-        >mdi-book</v-icon>
+          v-text="'mdi-book'"
+        />
         <v-icon
           v-if="injured"
           color="pink"
           small
-        >mdi-hospital</v-icon>
+          v-text="'mdi-hospital'"
+        />
         <v-icon
           v-if="cap.subbed_out"
           color="red"
           small
-        >mdi-subdirectory-arrow-left</v-icon>
+          v-text="'mdi-subdirectory-arrow-left'"
+        />
       </v-list-tile-title>
     </v-list-tile-content>
   </v-list-tile>

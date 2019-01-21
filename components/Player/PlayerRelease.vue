@@ -1,20 +1,41 @@
 <template>
-  <div>
-    <v-tooltip bottom color="brown">
+  <div
+    class="d-inline-block"
+  >
+    <v-tooltip
+      bottom
+      color="brown"
+    >
       <v-btn
-        @click.stop="snackbar = true"
         slot="activator"
-        icon>
-        <v-icon color="brown">mdi-door-open</v-icon>
+        icon
+        @click.stop="snackbar = true"
+      >
+        <v-icon
+          color="brown"
+          v-text="'mdi-door-open'"
+        />
       </v-btn>
       Release
     </v-tooltip>
+
     <v-snackbar
       v-model="snackbar"
-      color="brown">
+      color="brown"
+    >
       Release Player: {{ player.name }}?
-      <v-btn dark flat @click="$store.dispatch('entities/players/RELEASE', player.id)">Yes</v-btn>
-      <v-btn dark flat @click.stop="snackbar = false">No</v-btn>
+      <v-btn
+        dark
+        flat
+        @click="$store.dispatch('entities/players/RELEASE', player.id)"
+        v-text="'Yes'"
+      />
+      <v-btn
+        dark
+        flat
+        @click.stop="snackbar = false"
+        v-text="'No'"
+      />
     </v-snackbar>
   </div>
 </template>

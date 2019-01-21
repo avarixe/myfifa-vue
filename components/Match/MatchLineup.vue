@@ -1,29 +1,39 @@
 <template>
   <v-container>
-    <formation-view :formation="sortedCaps">
+    <formation-view
+      :formation="sortedCaps"
+    >
       <match-cap
         slot="item"
         slot-scope="{ player }"
         :cap="player"
         :match="match"
         :readonly="readonly"
-      ></match-cap>
+      />
     </formation-view>
 
     <v-layout
       v-if="substitutes.length > 0"
       row
-      wrap>
-      <v-flex xs12>
-        <v-list id="substitutes" dense>
-          <v-subheader>Substitutes</v-subheader>
+      wrap
+    >
+      <v-flex
+        xs12
+      >
+        <v-list
+          id="substitutes"
+          dense
+        >
+          <v-subheader
+            v-text="'Substitutes'"
+          />
           <substitute-cap
             v-for="cap in substitutes"
             :key="cap.id"
             :cap="cap"
             :match="match"
             :readonly="readonly"
-          ></substitute-cap>
+          />
         </v-list>
       </v-flex>
     </v-layout>

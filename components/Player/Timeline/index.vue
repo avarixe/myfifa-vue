@@ -1,30 +1,52 @@
 <template>
-  <v-timeline :dense="dense">
+  <v-timeline
+    :dense="dense"
+  >
     <v-timeline-item
       v-for="(item, i) in sortedItems"
       :key="i"
       :icon="`mdi-${item.icon}`"
       :color="item.color"
       fill-dot
-      right>
-      <template slot="opposite">
-        <span :class="`headline font-weight-bold ${item.color}--text`">
-          {{ item.title || item.type }}
-        </span>
-        <h4 :class="`headline font-weight-light mb-3 ${item.color}--text`">
-          {{ item.dateRange }}
-        </h4>
+      right
+    >
+      <template
+        slot="opposite"
+      >
+        <span
+          :class="`headline font-weight-bold ${item.color}--text`"
+          v-text="item.title || item.type"
+        />
+        <h4
+          :class="`headline font-weight-light mb-3 ${item.color}--text`"
+          v-text="item.dateRange"
+        />
       </template>
 
-      <v-card dense>
-        <v-card-title v-if="dense" :class="`${item.color} lighten-2 py-1`">
-          <span class="font-weight-bold pr-1 white--text">{{ item.title || item.type }}</span>
-          <span class="font-weight-light pl-1 white--text">{{ item.dateRange }}</span>
+      <v-card
+        dense
+      >
+        <v-card-title
+          v-if="dense"
+          :class="`${item.color} lighten-2 py-1`"
+        >
+          <span
+            class="font-weight-bold pr-1 white--text"
+            v-text="item.title || item.type"
+          />
+          <span
+            class="font-weight-light pl-1 white--text"
+            v-text="item.dateRange"
+          />
         </v-card-title>
         <v-container>
           <v-layout>
-            <v-flex xs12>
-              <timeline-content :item="item"></timeline-content>
+            <v-flex
+              xs12
+            >
+              <timeline-content
+                :item="item"
+              />
             </v-flex>
           </v-layout>
         </v-container>

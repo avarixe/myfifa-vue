@@ -3,11 +3,21 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
-    :color="color">
-    <slot slot="activator"></slot>
-    <v-container slot="form">
-      <v-layout wrap>
-        <v-flex xs12>
+    :color="color"
+  >
+    <slot
+      slot="activator"
+    />
+
+    <v-container
+      slot="form"
+    >
+      <v-layout
+        wrap
+      >
+        <v-flex
+          xs12
+        >
           <v-combobox
             v-model="match.competition"
             :items="competitions"
@@ -18,9 +28,11 @@
             autocapitalize="words"
             autocomplete="off"
             autocorrect="off"
-          ></v-combobox>
+          />
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-combobox
             v-model="match.home"
             :items="teams"
@@ -30,14 +42,24 @@
             spellcheck="false"
             autocapitalize="words"
             autocomplete="off"
-            autocorrect="off">
-            <v-tooltip slot="append" bottom>
-              <v-icon slot="activator" @click.stop="setHome">mdi-arrow-left</v-icon>
+            autocorrect="off"
+          >
+            <v-tooltip
+              slot="append"
+              bottom
+            >
+              <v-icon
+                slot="activator"
+                @click.stop="setHome"
+                v-text="'mdi-arrow-left'"
+              />
               Home Match for {{ team.title }}
             </v-tooltip>
           </v-combobox>
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-combobox
             v-model="match.away"
             :items="teams"
@@ -47,18 +69,28 @@
             spellcheck="false"
             autocapitalize="words"
             autocomplete="off"
-            autocorrect="off">
-            <v-tooltip slot="append" bottom>
-              <v-icon slot="activator" @click.stop="setAway">mdi-arrow-left</v-icon>
+            autocorrect="off"
+          >
+            <v-tooltip
+              slot="append"
+              bottom
+            >
+              <v-icon
+                slot="activator"
+                @click.stop="setAway"
+                v-text="'mdi-arrow-left'"
+              />
               Away Match for {{ team.title }}
             </v-tooltip>
           </v-combobox>
         </v-flex>
-        <v-flex xs12>
+        <v-flex
+          xs12
+        >
           <v-checkbox
             v-model="match.extra_time"
             label="Extra Time Required"
-          ></v-checkbox>
+          />
         </v-flex>
       </v-layout>
     </v-container>
