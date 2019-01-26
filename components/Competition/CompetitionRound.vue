@@ -14,9 +14,10 @@
             @click.stop
           />
         </template>
-        <template
+        <span
           v-else
-        >{{ round.name }}</template>
+          v-text="round.name"
+        />
       </div>
 
       <template

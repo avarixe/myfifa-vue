@@ -9,7 +9,6 @@
       />
 
       <v-tooltip
-        color="white"
         bottom
       >
         <v-btn

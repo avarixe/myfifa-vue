@@ -64,8 +64,7 @@
             v-for="squad in squads"
             :key="squad.id"
             @click="applySquadToMatch(squad.id)"
-            v-text="squad.name"
-          />
+          >{{ squad.name }}</v-list-tile>
         </v-list>
       </v-menu>
       Apply Squad

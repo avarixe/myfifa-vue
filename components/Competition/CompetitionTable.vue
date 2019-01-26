@@ -5,32 +5,35 @@
     <template
       slot="header"
     >
-      <template
-        v-if="edit"
-      >
-        <v-text-field
-          v-model="stage.name"
-          :rules="$_validate('Stage Name', ['required'])"
-          class="d-inline-block"
-          @click.stop
+      <div>
+        <template
+          v-if="edit"
+        >
+          <v-text-field
+            v-model="stage.name"
+            :rules="$_validate('Stage Name', ['required'])"
+            class="d-inline-block"
+            @click.stop
+          />
+        </template>
+        <span
+          v-else
+          v-text="table.name"
         />
-      </template>
-      <template
-        v-else
-      >{{ table.name }}</template>
 
-      <template
-        v-if="!readonly"
-      >
-        <edit-mode-button
-          :mode="edit"
-          :changed="stageChanged"
-          @toggle-mode="edit = !edit"
-        />
-        <stage-remove
-          :stage="table"
-        ></stage-remove>
-      </template>
+        <template
+          v-if="!readonly"
+        >
+          <edit-mode-button
+            :mode="edit"
+            :changed="stageChanged"
+            @toggle-mode="edit = !edit"
+          />
+          <stage-remove
+            :stage="table"
+          />
+        </template>
+      </div>
     </template>
 
     <v-card>
