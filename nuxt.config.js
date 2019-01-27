@@ -19,9 +19,6 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700' },
       { rel: 'stylesheet', href: 'https://cdn.materialdesignicons.com/2.8.94/css/materialdesignicons.min.css' }
-    ],
-    script: [
-      { src: 'https://www.gstatic.com/charts/loader.js' }
     ]
   },
 
@@ -46,7 +43,6 @@ export default {
     '@/plugins/lodash.js',
     '@/plugins/custom.js',
     '@/plugins/date-fns.js',
-    '@/plugins/chartkick.js',
     { src: '@/plugins/chartist.js', ssr: false }
   ],
 
