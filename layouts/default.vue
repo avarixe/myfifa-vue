@@ -1,13 +1,15 @@
 <template>
   <v-app>
-    <app-bar />
-
-    <v-content>
-      <app-broadcaster />
+    <no-ssr>
+      <app-bar />
 
       <app-drawer
         v-if="$store.getters.authenticated"
       />
+    </no-ssr>
+
+    <v-content>
+      <app-broadcaster />
 
       <nuxt />
     </v-content>

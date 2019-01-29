@@ -1,6 +1,7 @@
 <template>
   <v-navigation-drawer
-    v-model="drawer"
+    :value="drawer"
+    @input="setDrawer"
     id="app-drawer"
     app
     dark
@@ -72,6 +73,7 @@
 
 <script>
   import {
+    mapState,
     mapMutations
   } from 'vuex'
   import TeamCalendar from '@/components/Team/TeamCalendar'
@@ -81,6 +83,7 @@
       TeamCalendar
     },
     data: () => ({
+      // drawer: false,
       links: [
         {
           to: '/dashboard',
@@ -120,6 +123,9 @@
       ]
     }),
     computed: {
+      ...mapState('app', [
+        'drawer'
+      ]),
       teamId () {
         return this.$route.params.teamId
       },
@@ -164,15 +170,8 @@
         }
       }
     },
-    watch: {
-      drawer: {
-        get () {
-          return this.$store.state.app.drawer
-        },
-        set (val) {
-          this.setDrawer(val)
-        }
-      }
+    mounted () {
+      this.setDrawer(window.innerWidth >= 991)
     },
     methods: {
       ...mapMutations('app', {

@@ -5,7 +5,7 @@
     style="background: #eee;"
   >
     <v-toolbar-side-icon
-      v-show="!drawer"
+      v-show="responsive"
       @click.stop="toggleDrawer"
     />
 
@@ -66,7 +66,6 @@
 <script>
   import UserForm from './UserForm'
   import {
-    mapState,
     mapGetters,
     mapMutations
   } from 'vuex'
@@ -77,20 +76,23 @@
       UserForm
     },
     data: () => ({
-      menu: false
+      menu: false,
+      responsive: false
     }),
-    computed: {
-      ...mapState('app', [
-        'drawer'
-      ]),
-      ...mapGetters([
-        'authenticated'
-      ])
-    },
+    computed: mapGetters([
+      'authenticated'
+    ]),
     watch: {
       authenticated (val) {
         !val && this.$router.push({ name: 'index' })
       }
+    },
+    mounted () {
+      this.updateResponsiveState()
+      window.addEventListener('resize', this.updateResponsiveState)
+    },
+    beforeDestroy () {
+      window.removeEventListener('resize', this.updateResponsiveState)
     },
     methods: {
       ...mapMutations('app', {
@@ -99,6 +101,9 @@
       async logout () {
         await this.$store.dispatch('logout')
         Cookie.remove('token')
+      },
+      updateResponsiveState () {
+        this.responsive = window.innerWidth < 991
       }
     }
   }

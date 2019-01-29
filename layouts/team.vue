@@ -1,11 +1,13 @@
 <template>
   <v-app>
-    <app-bar />
+    <no-ssr>
+      <app-bar />
+
+      <app-drawer />
+    </no-ssr>
 
     <v-content>
       <app-broadcaster />
-
-      <app-drawer />
 
       <template
         v-if="loaded"
