@@ -40,7 +40,7 @@
           xs12
         >
           <v-select
-            v-model="booking.minute"
+            v-model="minute"
             :items="minutes"
             :rules="$_validate('Minute', ['required'])"
             label="Minute"
@@ -53,7 +53,7 @@
           <v-select
             v-model="booking.player_id"
             :rules="$_validate('Player', ['required'])"
-            :items="sortedCaps"
+            :items="unsubbedPlayers"
             item-value="player_id"
             item-text="name"
             label="Player"
@@ -95,7 +95,6 @@
     data () {
       return {
         booking: {
-          minute: null,
           player_id: null,
           red_card: false
         }
@@ -105,7 +104,10 @@
       async submit () {
         await this.$store.dispatch('entities/bookings/CREATE', {
           matchId: this.match.id,
-          booking: this.booking
+          booking: {
+            ...this.booking,
+            minute: this.minute
+          }
         })
       }
     }

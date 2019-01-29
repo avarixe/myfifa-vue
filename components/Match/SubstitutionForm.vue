@@ -20,7 +20,7 @@
           xs12
         >
           <v-select
-            v-model="substitution.minute"
+            v-model="minute"
             :items="minutes"
             :rules="$_validate('Minute', ['required'])"
             label="Minute"
@@ -33,7 +33,7 @@
           <v-select
             v-model="substitution.player_id"
             :rules="$_validate('Player', ['required'])"
-            :items="sortedCaps"
+            :items="unsubbedPlayers"
             item-value="player_id"
             item-text="name"
             label="Player"
@@ -114,7 +114,6 @@
     data () {
       return {
         substitution: {
-          minute: null,
           player_id: null,
           replacement_id: '',
           injury: false
@@ -126,13 +125,19 @@
         const selectedIds = this.sortedCaps.map(c => c.player_id)
         return activePlayers(this.team.id)
           .filter(p => selectedIds.indexOf(p.id) < 0)
+      },
+      unsubbedPlayers () {
+        return this.sortedCaps.filter(c => !c.subbed_out)
       }
     },
     methods: {
       async submit () {
         await this.$store.dispatch('entities/substitutions/CREATE', {
           matchId: this.match.id,
-          substitution: this.substitution
+          substitution: {
+            ...this.substitution,
+            minute: this.minute
+          }
         })
       }
     }

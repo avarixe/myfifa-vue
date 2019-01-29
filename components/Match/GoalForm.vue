@@ -40,7 +40,7 @@
           xs12
         >
           <v-select
-            v-model="goal.minute"
+            v-model="minute"
             :items="minutes"
             :rules="$_validate('Minute', ['required'])"
             label="Minute"
@@ -54,7 +54,7 @@
             v-if="teamGoal"
             v-model="goal.player_id"
             :rules="$_validate('Goal Scorer', ['required'])"
-            :items="sortedCaps"
+            :items="unsubbedPlayers"
             item-value="player_id"
             item-text="name"
             label="Goal Scorer"
@@ -94,7 +94,7 @@
           <v-select
             v-if="teamGoal"
             v-model="goal.assist_id"
-            :items="sortedCaps"
+            :items="unsubbedPlayers"
             item-value="player_id"
             item-text="name"
             label="Assisted By"
@@ -172,7 +172,6 @@
       return {
         goal: {
           home: true, // default to Team side
-          minute: null,
           player_id: null,
           player_name: '',
           assisted_by: '',
@@ -206,7 +205,10 @@
       async submit () {
         await this.$store.dispatch('entities/goals/CREATE', {
           matchId: this.match.id,
-          goal: this.goal
+          goal: {
+            ...this.goal,
+            minute: this.minute
+          }
         })
       },
       clearPlayerName () {
