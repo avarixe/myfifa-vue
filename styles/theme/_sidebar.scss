@@ -78,9 +78,5 @@
     .v-image__image--contain {
       top: $top-dim;
     }
-
-    .v-avatar {
-      @include shadow-big;
-    }
   }
 }

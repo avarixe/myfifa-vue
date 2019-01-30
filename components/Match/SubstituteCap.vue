@@ -48,8 +48,9 @@
         <v-icon
           v-for="index in assists"
           :key="index"
+          color="light-blue accent-1"
           small
-          v-text="'mdi-soccer'"
+          v-text="'mdi-human-greeting'"
         />
         <v-icon
           v-for="(color, i) in bookings"
