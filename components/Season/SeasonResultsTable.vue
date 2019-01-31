@@ -25,14 +25,28 @@
           v-for="(header, i) in headers"
           :key="i"
           :class="`text-xs-${header.align}`"
-          v-text="props.item[header.value]"
-        />
+        >
+          <a
+            v-if="header.value === 'competition'"
+            @click="competitionLink(props.item[header.value])"
+            class="blue-grey--text"
+            v-text="props.item[header.value]"
+          />
+          <span
+            v-else
+            v-text="props.item[header.value]"
+          />
+        </td>
       </tr>
     </template>
   </v-data-table>
 </template>
 
 <script>
+  import {
+    Competition
+  } from '@/models'
+
   export default {
     props: {
       seasonData: {
@@ -61,6 +75,25 @@
             gd: data.gf - data.ga,
             gp: data.wins + data.draws + data.losses
           }))
+      }
+    },
+    methods: {
+      competitionLink (competition) {
+        const record = Competition
+          .query()
+          .where('season', parseInt(this.$route.params.season))
+          .where('name', competition)
+          .get()
+
+        if (record.length > 0) {
+          this.$router.push({
+            name: 'teams-teamId-competitions-competitionId',
+            params: {
+              teamId: this.$route.params.teamId,
+              competitionId: record[0].id
+            }
+          })
+        }
       }
     }
   }

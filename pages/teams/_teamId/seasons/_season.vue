@@ -10,6 +10,21 @@
       <v-flex
         xs12
       >
+        <v-btn
+          v-if="season > 0"
+          :to="previousSeasonLink"
+          nuxt
+          v-text="'Previous Season'"
+        />
+        <v-btn
+          :to="nextSeasonLink"
+          nuxt
+          v-text="'Next Season'"
+        />
+      </v-flex>
+      <v-flex
+        xs12
+      >
         <season-results-chart
           :season-data="seasonData"
         />
@@ -59,6 +74,24 @@
       },
       season () {
         return this.$route.params.season
+      },
+      previousSeasonLink () {
+        return {
+          name: 'teams-teamId-seasons-season',
+          params: {
+            teamId: this.team.id,
+            season: this.season - 1
+          }
+        }
+      },
+      nextSeasonLink () {
+        return {
+          name: 'teams-teamId-seasons-season',
+          params: {
+            teamId: this.team.id,
+            season: this.season + 1
+          }
+        }
       }
     },
     mounted () {

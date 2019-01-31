@@ -254,7 +254,7 @@
             case 0: // All
               return true
             case 1: // Youth
-              return player.youth
+              return player.youth && player.contracts.length === 0
             case 2: // Active
               return player.status
             case 3: // Injured

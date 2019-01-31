@@ -10,6 +10,15 @@
       <v-flex
         xs12
       >
+        <v-btn
+          :to="seasonLink"
+          nuxt
+          v-text="'View Season'"
+        />
+      </v-flex>
+      <v-flex
+        xs12
+      >
         <material-card>
           <template
             slot="header"
@@ -176,9 +185,24 @@
       stages () {
         return this.competition.stages
       },
-      tables () { return this.stages.filter(stage => stage.table) },
-      rounds () { return this.stages.filter(stage => !stage.table) },
-      readonly () { return this.competition.season !== this.season }
+      tables () {
+        return this.stages.filter(stage => stage.table)
+      },
+      rounds () {
+        return this.stages.filter(stage => !stage.table)
+      },
+      readonly () {
+        return this.competition.season !== this.season
+      },
+      seasonLink () {
+        return {
+          name: 'teams-teamId-seasons-season',
+          params: {
+            teamId: this.team.id,
+            season: this.competition.season
+          }
+        }
+      }
     },
     async fetch ({ store, params }) {
       await Promise.all([

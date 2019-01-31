@@ -37,7 +37,7 @@
                 xs12
               >
                 <div
-                  class="display-1"
+                  class="display-2"
                   v-text="match.competition"
                 />
                 <div
@@ -45,13 +45,32 @@
                   v-text="$_formatDate(match.date_played)"
                 />
               </v-flex>
+              <v-layout
+                class="display-1"
+                row
+              >
+                <v-flex
+                  align-self-center
+                  class="font-weight-thin pa-1"
+                  style="flex-basis:0"
+                  v-text="match.home"
+                />
+                <v-flex
+                  align-self-center
+                  class="pa-1"
+                  shrink
+                  v-text="'v'"
+                />
+                <v-flex
+                  align-self-center
+                  class="font-weight-thin pa-1"
+                  style="flex-basis:0"
+                  v-text="match.away"
+                />
+              </v-layout>
               <v-flex
                 xs12
               >
-                <div
-                  class="display-2"
-                  v-text="`${match.home} v ${match.away}`"
-                />
                 <div class="display-1">
                   {{ match.score }}
                   {{ match.extra_time && !match.penalty_shootout ? '(AET)' : '' }}
