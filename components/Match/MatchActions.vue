@@ -165,9 +165,15 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import TeamAccessible from '@/mixins/TeamAccessible'
-  import { Squad } from '@/models'
+  import {
+    mapActions
+  } from 'vuex'
+  import {
+    TeamAccessible
+  } from '@/mixins'
+  import {
+    Squad
+  } from '@/models'
   import MatchForm from './MatchForm'
   import CapForm from './CapForm'
   import GoalForm from './GoalForm'

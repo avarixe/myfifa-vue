@@ -31,7 +31,9 @@
 </template>
 
 <script>
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import {
+    TeamAccessible
+  } from '@/mixins'
   import SquadForm from '@/components/Squad/SquadForm'
   import SquadGrid from '@/components/Squad/SquadGrid'
 

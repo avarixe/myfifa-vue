@@ -16,8 +16,12 @@
 </template>
 
 <script>
-  import { distanceInWords } from 'date-fns'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import {
+    distanceInWords
+  } from 'date-fns'
+  import {
+    TeamAccessible
+  } from '@/mixins'
 
   export default {
     mixins: [ TeamAccessible ],

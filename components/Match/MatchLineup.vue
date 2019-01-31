@@ -41,22 +41,26 @@
 </template>
 
 <script>
-  import TeamAccessible from '@/mixins/TeamAccessible'
-  import MatchAccessible from '@/mixins/MatchAccessible'
-  import FormationView from '@/components/Squad/FormationView'
+  import {
+    TeamAccessible,
+    MatchAccessible
+  } from '@/mixins'
+  import {
+    FormationView
+  } from '@/helpers'
   import MatchCap from './MatchCap'
   import SubstituteCap from './SubstituteCap'
 
   export default {
-    mixins: [
-      TeamAccessible,
-      MatchAccessible
-    ],
     components: {
       FormationView,
       MatchCap,
       SubstituteCap
     },
+    mixins: [
+      TeamAccessible,
+      MatchAccessible
+    ],
     computed: {
       readonly () {
         return this.team.current_date !== this.match.date_played

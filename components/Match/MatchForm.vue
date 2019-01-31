@@ -98,10 +98,17 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import { competitions, teams } from '@/models/Match'
-  import TeamAccessible from '@/mixins/TeamAccessible'
-  import DialogFormable from '@/mixins/DialogFormable'
+  import {
+    mapActions
+  } from 'vuex'
+  import {
+    competitions,
+    teams
+  } from '@/models/Match'
+  import {
+    TeamAccessible,
+    DialogFormable
+  } from '@/mixins'
 
   export default {
     mixins: [

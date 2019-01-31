@@ -65,9 +65,15 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import { Injury } from '@/models'
-  import DialogFormable from '@/mixins/DialogFormable'
+  import {
+    mapActions
+  } from 'vuex'
+  import {
+    Injury
+  } from '@/models'
+  import {
+    DialogFormable
+  } from '@/mixins'
 
   export default {
     mixins: [ DialogFormable ],

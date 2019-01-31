@@ -88,8 +88,12 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import {
+    mapActions
+  } from 'vuex'
+  import {
+    TeamAccessible
+  } from '@/mixins'
 
   export default {
     mixins: [ TeamAccessible ],

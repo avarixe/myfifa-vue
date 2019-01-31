@@ -96,8 +96,12 @@
 
 <script>
   import TimelineContent from './TimelineContent'
-  import { mapActions } from 'vuex'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import {
+    mapActions
+  } from 'vuex'
+  import {
+    TeamAccessible
+  } from '@/mixins'
 
   export default {
     mixins: [ TeamAccessible ],
@@ -177,7 +181,7 @@
           case 'Goal':
             return event.own_goal ? 'light-blue' : 'blue'
           case 'Booking':
-            return event.red_card ? 'red' : 'yellow darken-2'
+            return event.red_card ? 'red' : 'amber'
           case 'Substitution':
             return event.injury ? 'pink' : 'green'
           case 'PenaltyShootout':

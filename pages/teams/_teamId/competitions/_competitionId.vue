@@ -133,14 +133,18 @@
 </template>
 
 <script>
-  import { Competition } from '@/models'
+  import {
+    Competition
+  } from '@/models'
   import MaterialCard from '@/components/theme/Card'
   import EditCompetitionForm from '@/components/Competition/EditCompetitionForm'
   import CompetitionTable from '@/components/Competition/CompetitionTable'
   import CompetitionRound from '@/components/Competition/CompetitionRound'
   import CompetitionRemove from '@/components/Competition/CompetitionRemove'
   import StageForm from '@/components/Competition/StageForm'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import {
+    TeamAccessible
+  } from '@/mixins'
 
   export default {
     layout: 'team',

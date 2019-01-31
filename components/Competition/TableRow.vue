@@ -60,8 +60,12 @@
 </template>
 
 <script>
-  import EditModeButton from '@/components/EditModeButton'
-  import CompetitionAccessible from '@/mixins/CompetitionAccessible'
+  import {
+    EditModeButton
+  } from '@/helpers'
+  import {
+    CompetitionAccessible
+  } from '@/mixins'
 
   export default {
     components: {

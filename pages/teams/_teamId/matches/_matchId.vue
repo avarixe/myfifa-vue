@@ -97,14 +97,21 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import { Match, Player } from '@/models'
+  import {
+    mapActions
+  } from 'vuex'
+  import {
+    Match,
+    Player
+  } from '@/models'
   import MatchForm from '@/components/Match/MatchForm'
   import MatchActions from '@/components/Match/MatchActions'
   import MatchLineup from '@/components/Match/MatchLineup'
   import MatchTimeline from '@/components/Match/Timeline'
   import MaterialCard from '@/components/theme/Card'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import {
+    TeamAccessible
+  } from '@/mixins'
 
   export default {
     layout: 'team',

@@ -44,9 +44,11 @@
 </template>
 
 <script>
-  import TeamAccessible from '@/mixins/TeamAccessible'
-  import DialogFormable from '@/mixins/DialogFormable'
-  import MatchAccessible from '@/mixins/MatchAccessible'
+  import {
+    TeamAccessible,
+    DialogFormable,
+    MatchAccessible
+  } from '@/mixins'
 
   export default {
     mixins: [

@@ -20,9 +20,11 @@
 </template>
 
 <script>
+  import {
+    FormationView
+  } from '@/helpers'
   import MaterialCard from '@/components/theme/Card'
   import SquadActions from './SquadActions'
-  import FormationView from './FormationView'
 
   export default {
     components: {

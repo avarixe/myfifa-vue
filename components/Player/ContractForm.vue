@@ -186,11 +186,19 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
-  import { addYears } from 'date-fns'
-  import { Contract } from '@/models'
-  import TeamAccessible from '@/mixins/TeamAccessible'
-  import DialogFormable from '@/mixins/DialogFormable'
+  import {
+    mapState
+  } from 'vuex'
+  import {
+    addYears
+  } from 'date-fns'
+  import {
+    Contract
+  } from '@/models'
+  import {
+    TeamAccessible,
+    DialogFormable
+  } from '@/mixins'
 
   export default {
     mixins: [

@@ -31,7 +31,9 @@
 </template>
 
 <script>
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import {
+    TeamAccessible
+  } from '@/mixins'
   import SeasonGrid from '@/components/Season/SeasonGrid'
   import NewCompetitionForm from '@/components/Competition/NewCompetitionForm'
 

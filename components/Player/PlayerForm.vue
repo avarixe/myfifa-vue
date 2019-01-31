@@ -105,9 +105,14 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
-  import DialogFormable from '@/mixins/DialogFormable'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import {
+    mapState,
+    mapActions
+  } from 'vuex'
+  import {
+    DialogFormable,
+    TeamAccessible
+  } from '@/mixins'
 
   export default {
     mixins: [

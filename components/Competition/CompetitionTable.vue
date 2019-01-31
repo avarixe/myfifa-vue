@@ -91,7 +91,9 @@
 </template>
 
 <script>
-  import EditModeButton from '@/components/EditModeButton'
+  import {
+    EditModeButton
+  } from '@/helpers'
   import StageRemove from './StageRemove'
   import TableRow from './TableRow'
 

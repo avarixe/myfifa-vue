@@ -137,9 +137,15 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import TeamAccessible from '@/mixins/TeamAccessible'
-  import { Player } from '@/models'
+  import {
+    mapActions
+  } from 'vuex'
+  import {
+    TeamAccessible
+  } from '@/mixins'
+  import {
+    Player
+  } from '@/models'
   import MaterialCard from '@/components/theme/Card'
   import PlayerForm from './PlayerForm'
   import PlayerRow from './PlayerRow'

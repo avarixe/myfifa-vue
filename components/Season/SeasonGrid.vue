@@ -28,8 +28,12 @@
 </template>
 
 <script>
-  import { Competition } from '@/models'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import {
+    Competition
+  } from '@/models'
+  import {
+    TeamAccessible
+  } from '@/mixins'
   import SeasonItem from './SeasonItem'
 
   export default {

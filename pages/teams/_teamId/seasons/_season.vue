@@ -31,7 +31,9 @@
   import SeasonResultsChart from '@/components/Season/SeasonResultsChart'
   import SeasonResultsTable from '@/components/Season/SeasonResultsTable'
   import PlayerGrid from '@/components/Season/PlayerGrid'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import {
+    TeamAccessible
+  } from '@/mixins'
 
   export default {
     layout: 'team',

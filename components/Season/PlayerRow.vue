@@ -60,7 +60,9 @@
 </template>
 
 <script>
-  import { Team } from '@/models'
+  import {
+    Team
+  } from '@/models'
 
   export default {
     props: {

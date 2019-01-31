@@ -62,9 +62,15 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
-  import { activePlayers } from '@/models/Player'
-  import DialogFormable from '@/mixins/DialogFormable'
+  import {
+    mapState
+  } from 'vuex'
+  import {
+    activePlayers
+  } from '@/models/Player'
+  import {
+    DialogFormable
+  } from '@/mixins'
 
   export default {
     mixins: [ DialogFormable ],

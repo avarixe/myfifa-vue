@@ -28,12 +28,6 @@ export default {
       } else {
         return this.sortedCaps.filter(c => !c.subbed_out)
       }
-    },
-    minutes () {
-      return Array.from(
-        { length: this.match.extra_time ? 120 : 90 },
-        (v, k) => k + 1
-      )
     }
   }
 }

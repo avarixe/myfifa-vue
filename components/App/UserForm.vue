@@ -53,8 +53,12 @@
 
 
 <script>
-  import { mapActions } from 'vuex'
-  import DialogFormable from '@/mixins/DialogFormable'
+  import {
+    mapActions
+  } from 'vuex'
+  import {
+    DialogFormable
+  } from '@/mixins'
 
   export default {
     mixins: [ DialogFormable ],

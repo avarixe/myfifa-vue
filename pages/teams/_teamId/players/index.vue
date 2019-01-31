@@ -17,7 +17,9 @@
 </template>
 
 <script>
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import {
+    TeamAccessible
+  } from '@/mixins'
   import PlayerGrid from '@/components/Player/PlayerGrid'
 
   export default {

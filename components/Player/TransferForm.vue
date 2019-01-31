@@ -128,8 +128,10 @@
 </template>
 
 <script>
-  import TeamAccessible from '@/mixins/TeamAccessible'
-  import DialogFormable from '@/mixins/DialogFormable'
+  import {
+    TeamAccessible,
+    DialogFormable
+  } from '@/mixins'
 
   export default {
     mixins: [

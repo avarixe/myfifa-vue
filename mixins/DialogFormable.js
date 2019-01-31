@@ -1,4 +1,4 @@
-import DialogForm from '@/components/DialogForm'
+import DialogForm from '@/helpers/DialogForm'
 
 export default {
   components: {

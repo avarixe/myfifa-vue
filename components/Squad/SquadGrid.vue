@@ -25,9 +25,13 @@
 </template>
 
 <script>
-  import { Squad } from '@/models'
+  import {
+    Squad
+  } from '@/models'
   import SquadItem from './SquadItem'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import {
+    TeamAccessible
+  } from '@/mixins'
 
   export default {
     components: {

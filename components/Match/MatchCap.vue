@@ -106,8 +106,13 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
-  import { activePlayers } from '@/models/Player'
+  import {
+    mapState,
+    mapActions
+  } from 'vuex'
+  import {
+    activePlayers
+  } from '@/models/Player'
 
   export default {
     props: {

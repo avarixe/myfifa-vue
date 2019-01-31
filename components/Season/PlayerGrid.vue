@@ -73,9 +73,14 @@
 </template>
 
 <script>
-  import { addYears } from 'date-fns'
+  import {
+    addYears
+  } from 'date-fns'
   import Vue from 'vue'
-  import { Team, Player } from '@/models'
+  import {
+    Team,
+    Player
+  } from '@/models'
   import MaterialCard from '@/components/theme/Card'
   import PlayerRow from './PlayerRow'
 

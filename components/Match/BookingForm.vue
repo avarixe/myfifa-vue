@@ -39,42 +39,19 @@
         <v-flex
           xs12
         >
-          <v-select
+          <minute-field
             v-model="minute"
-            :items="minutes"
-            :rules="$_validate('Minute', ['required'])"
-            label="Minute"
-            prepend-icon="mdi-timer"
+            :extra-time="match.extra_time"
           />
         </v-flex>
         <v-flex
           xs12
         >
-          <v-select
+          <player-select
             v-model="booking.player_id"
-            :rules="$_validate('Player', ['required'])"
-            :items="unsubbedPlayers"
-            item-value="player_id"
-            item-text="name"
-            label="Player"
-            prepend-icon="mdi-account"
-          >
-            <template
-              slot="item"
-              slot-scope="data"
-            >
-              <v-list-tile-action>
-                <v-list-tile-action-text
-                  v-text="data.item.pos"
-                />
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title
-                  v-text="data.item.name"
-                />
-              </v-list-tile-content>
-            </template>
-          </v-select>
+            :players="unsubbedPlayers"
+            required
+          />
         </v-flex>
       </v-layout>
     </v-container>
@@ -82,11 +59,21 @@
 </template>
 
 <script>
-  import TeamAccessible from '@/mixins/TeamAccessible'
-  import DialogFormable from '@/mixins/DialogFormable'
-  import MatchAccessible from '@/mixins/MatchAccessible'
+  import {
+    MinuteField,
+    PlayerSelect
+  } from '@/helpers'
+  import {
+    TeamAccessible,
+    DialogFormable,
+    MatchAccessible
+  } from '@/mixins'
 
   export default {
+    components: {
+      MinuteField,
+      PlayerSelect
+    },
     mixins: [
       DialogFormable,
       TeamAccessible,

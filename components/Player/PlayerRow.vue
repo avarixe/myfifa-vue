@@ -76,8 +76,12 @@
 </template>
 
 <script>
-  import EditModeButton from '@/components/EditModeButton'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import {
+    EditModeButton
+  } from '@/helpers'
+  import {
+    TeamAccessible
+  } from '@/mixins'
 
   export default {
     components: {

@@ -105,11 +105,15 @@
 </template>
 
 <script>
-  import { Match } from '@/models'
+  import {
+    Match
+  } from '@/models'
   import MatchForm from './MatchForm'
   import MatchRemove from './MatchRemove'
   import MaterialCard from '@/components/theme/Card'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import {
+    TeamAccessible
+  } from '@/mixins'
 
   export default {
     mixins: [ TeamAccessible ],

@@ -19,71 +19,32 @@
         <v-flex
           xs12
         >
-          <v-select
+          <minute-field
             v-model="minute"
-            :items="minutes"
-            :rules="$_validate('Minute', ['required'])"
-            label="Minute"
-            prepend-icon="mdi-timer"
+            :extra-time="match.extra_time"
           />
         </v-flex>
         <v-flex
           xs12
         >
-          <v-select
+          <player-select
             v-model="substitution.player_id"
-            :rules="$_validate('Player', ['required'])"
-            :items="unsubbedPlayers"
-            item-value="player_id"
-            item-text="name"
-            label="Player"
-            prepend-icon="mdi-subdirectory-arrow-left"
-          >
-            <template
-              slot="item"
-              slot-scope="data"
-            >
-              <v-list-tile-action>
-                <v-list-tile-action-text
-                  v-text="data.item.pos"
-                />
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title
-                  v-text="data.item.name"
-                />
-              </v-list-tile-content>
-            </template>
-          </v-select>
+            :players="unsubbedPlayers"
+            icon="mdi-subdirectory-arrow-left"
+            required
+          />
         </v-flex>
         <v-flex
           xs12
         >
-          <v-select
+          <player-select
             v-model="substitution.replacement_id"
-            :rules="$_validate('Replaced By', ['required'])"
-            :items="availablePlayers"
+            :players="availablePlayers"
             item-value="id"
-            item-text="name"
             label="Replaced By"
-            prepend-icon="mdi-subdirectory-arrow-right"
-          >
-            <template
-              slot="item"
-              slot-scope="data"
-            >
-              <v-list-tile-action>
-                <v-list-tile-action-text
-                  v-text="data.item.pos"
-                />
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title
-                  v-text="data.item.name"
-                />
-              </v-list-tile-content>
-            </template>
-          </v-select>
+            icon="mdi-subdirectory-arrow-right"
+            required
+          />
         </v-flex>
         <v-flex
           xs12
@@ -100,12 +61,24 @@
 </template>
 
 <script>
-  import { activePlayers } from '@/models/Player'
-  import TeamAccessible from '@/mixins/TeamAccessible'
-  import DialogFormable from '@/mixins/DialogFormable'
-  import MatchAccessible from '@/mixins/MatchAccessible'
+  import {
+    activePlayers
+  } from '@/models/Player'
+  import {
+    MinuteField,
+    PlayerSelect
+  } from '@/helpers'
+  import {
+    TeamAccessible,
+    DialogFormable,
+    MatchAccessible
+  } from '@/mixins'
 
   export default {
+    components: {
+      MinuteField,
+      PlayerSelect
+    },
     mixins: [
       DialogFormable,
       TeamAccessible,

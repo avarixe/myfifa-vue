@@ -72,9 +72,15 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import Team from '@/models/Team'
-  import DialogFormable from '@/mixins/DialogFormable'
+  import {
+    mapActions
+  } from 'vuex'
+  import {
+    Team
+  } from '@/models'
+  import {
+    DialogFormable
+  } from '@/mixins'
 
   export default {
     mixins: [ DialogFormable ],

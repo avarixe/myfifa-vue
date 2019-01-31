@@ -64,8 +64,12 @@
 
 <script>
   import MaterialCard from '@/components/theme/Card'
-  import { addYears } from 'date-fns'
-  import { Team } from '@/models'
+  import {
+    addYears
+  } from 'date-fns'
+  import {
+    Team
+  } from '@/models'
 
   export default {
     components: {

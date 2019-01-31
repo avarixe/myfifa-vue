@@ -74,8 +74,12 @@
 </template>
 
 <script>
-  import Team from '@/models/Team'
-  import { mapActions } from 'vuex'
+  import {
+    Team
+  } from '@/models'
+  import {
+    mapActions
+  } from 'vuex'
   import MaterialCard from '@/components/theme/Card'
   import TeamForm from './TeamForm'
   import TeamActions from './TeamActions'

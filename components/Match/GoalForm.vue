@@ -39,43 +39,21 @@
         <v-flex
           xs12
         >
-          <v-select
+          <minute-field
             v-model="minute"
-            :items="minutes"
-            :rules="$_validate('Minute', ['required'])"
-            label="Minute"
-            prepend-icon="mdi-timer"
+            :extra-time="match.extra_time"
           />
         </v-flex>
         <v-flex
           xs12
         >
-          <v-select
+          <player-select
             v-if="teamGoal"
             v-model="goal.player_id"
-            :rules="$_validate('Goal Scorer', ['required'])"
-            :items="unsubbedPlayers"
-            item-value="player_id"
-            item-text="name"
+            :players="unsubbedPlayers"
             label="Goal Scorer"
-            prepend-icon="mdi-account"
-          >
-            <template
-              slot="item"
-              slot-scope="data"
-            >
-              <v-list-tile-action>
-                <v-list-tile-action-text
-                  v-text="data.item.pos"
-                />
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title
-                  v-text="data.item.name"
-                />
-              </v-list-tile-content>
-            </template>
-          </v-select>
+            required
+          />
           <v-text-field
             v-else
             v-model="goal.player_name"
@@ -91,39 +69,21 @@
         <v-flex
           xs12
         >
-          <v-select
+          <player-select
             v-if="teamGoal"
             v-model="goal.assist_id"
-            :items="unsubbedPlayers"
-            item-value="player_id"
-            item-text="name"
+            :players="unsubbedPlayers"
             label="Assisted By"
-            prepend-icon="mdi-account-outline"
+            icon="mdi-human-greeting"
             :disabled="goal.penalty || goal.own_goal"
             clearable
             hide-details
-          >
-            <template
-              slot="item"
-              slot-scope="data"
-            >
-              <v-list-tile-action>
-                <v-list-tile-action-text
-                  v-text="data.item.pos"
-                />
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title
-                  v-text="data.item.name"
-                />
-              </v-list-tile-content>
-            </template>
-          </v-select>
+          />
           <v-text-field
             v-else
             v-model="goal.assisted_by"
             label="Assisted By"
-            prepend-icon="mdi-account-outline"
+            prepend-icon="mdi-human-greeting"
             :disabled="goal.penalty || goal.own_goal"
             hide-details
             spellcheck="false"
@@ -158,11 +118,21 @@
 </template>
 
 <script>
-  import TeamAccessible from '@/mixins/TeamAccessible'
-  import DialogFormable from '@/mixins/DialogFormable'
-  import MatchAccessible from '@/mixins/MatchAccessible'
+  import {
+    MinuteField,
+    PlayerSelect
+  } from '@/helpers'
+  import {
+    TeamAccessible,
+    DialogFormable,
+    MatchAccessible
+  } from '@/mixins'
 
   export default {
+    components: {
+      MinuteField,
+      PlayerSelect
+    },
     mixins: [
       DialogFormable,
       TeamAccessible,

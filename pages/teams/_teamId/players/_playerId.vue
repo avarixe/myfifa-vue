@@ -296,9 +296,15 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import { parse } from 'date-fns'
-  import { Player } from '@/models'
+  import {
+    mapActions
+  } from 'vuex'
+  import {
+    parse
+  } from 'date-fns'
+  import {
+    Player
+  } from '@/models'
   import PlayerForm from '@/components/Player/PlayerForm'
   import ContractForm from '@/components/Player/ContractForm'
   import InjuryForm from '@/components/Player/InjuryForm'
@@ -311,7 +317,9 @@
   import MaterialCard from '@/components/theme/Card'
   import MaterialChartCard from '@/components/theme/ChartCard'
   import MaterialStatsCard from '@/components/theme/StatsCard'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import {
+    TeamAccessible
+  } from '@/mixins'
 
   export default {
     layout: 'team',
