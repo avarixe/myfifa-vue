@@ -20,6 +20,7 @@
         v-model="user.username"
         label="Username"
         :rules="$_validate('Username', ['required'])"
+        autocapitalize="off"
       />
       <v-text-field
         v-model="user.email"

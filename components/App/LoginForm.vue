@@ -15,6 +15,7 @@
             v-model="credentials.username"
             label="Username"
             autofocus
+            autocapitalize="off"
           />
         </v-flex>
         <v-flex
