@@ -1,4 +1,4 @@
-const domain = 'api.myfifa.joondev.com'
+const domain = 'myfifa-api.jhyuk.com'
 
 export const baseURL = process.env.NODE_ENV === 'production'
   ? `https://${domain}`
