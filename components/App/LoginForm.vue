@@ -37,8 +37,7 @@
             color="orange"
             flat
             large
-            v-text="'Register'"
-          />
+          >Register</v-btn>
         </user-form>
 
         <v-btn
@@ -46,8 +45,7 @@
           color="primary"
           flat
           large
-          v-text="'Log In'"
-        />
+        >Log In</v-btn>
       </v-card-actions>
     </v-card>
   </v-form>

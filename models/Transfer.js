@@ -1,7 +1,9 @@
 import { Model } from '@vuex-orm/core'
 
 export default class Transfer extends Model {
-  static entity = 'transfers'
+  static get entity () {
+    return 'transfers'
+  }
 
   static fields () {
     return {

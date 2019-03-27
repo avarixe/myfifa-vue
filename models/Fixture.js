@@ -1,8 +1,9 @@
 import { Model } from '@vuex-orm/core'
 
 export default class Fixture extends Model {
-  static entity = 'fixtures'
-
+  static get entity () {
+    return 'fixtures'
+  }
   static fields () {
     return {
       // Primary/Foreign keys

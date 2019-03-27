@@ -1,7 +1,9 @@
 import { Model } from '@vuex-orm/core'
 
 export default class TableRow extends Model {
-  static entity = 'tableRows'
+  static get entity () {
+    return 'tableRows'
+  }
 
   static fields () {
     return {

@@ -1,8 +1,9 @@
 import { Model } from '@vuex-orm/core'
 
 export default class Squad extends Model {
-  static entity = 'squads'
-
+  static get entity () {
+    return 'squads'
+  }
   static fields () {
     return {
       // Primary/Foreign keys

@@ -2,7 +2,9 @@ import { Model } from '@vuex-orm/core'
 import Player from './Player'
 
 export default class Goal extends Model {
-  static entity = 'goals'
+  static get entity () {
+    return 'goals'
+  }
 
   static fields () {
     return {

@@ -7,7 +7,9 @@ import Cap from './Cap'
 import Player from './Player'
 
 class Match extends Model {
-  static entity = 'matches'
+  static get entity () {
+    return 'matches'
+  }
 
   static fields () {
     return {

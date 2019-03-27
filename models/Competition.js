@@ -2,7 +2,9 @@ import { Model } from '@vuex-orm/core'
 import Stage from './Stage'
 
 class Competition extends Model {
-  static entity = 'competitions'
+  static get entity () {
+    return 'competitions'
+  }
 
   static fields () {
     return {

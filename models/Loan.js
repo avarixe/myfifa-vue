@@ -1,7 +1,9 @@
 import { Model } from '@vuex-orm/core'
 
 export default class Loan extends Model {
-  static entity = 'loans'
+  static get entity () {
+    return 'loans'
+  }
 
   static fields () {
     return {

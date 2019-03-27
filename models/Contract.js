@@ -1,7 +1,9 @@
 import { Model } from '@vuex-orm/core'
 
 export default class Contract extends Model {
-  static entity = 'contracts'
+  static get entity () {
+    return 'contracts'
+  }
 
   static fields () {
     return {

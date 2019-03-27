@@ -43,7 +43,7 @@ export default {
     '@/plugins/lodash.js',
     '@/plugins/custom.js',
     '@/plugins/date-fns.js',
-    { src: '@/plugins/chartist.js', ssr: false }
+    '@/plugins/chartist.client.js'
   ],
 
   /*
@@ -51,11 +51,15 @@ export default {
   */
   build: {
     // analyze: true,
+
     transpile: [/^vuetify/],
+
     plugins: [
       new VuetifyLoaderPlugin()
     ],
+
     extractCSS: true,
+
     extend (config, { isDev, isClient }) {
       // Run ESLint on save
       if (isDev && isClient) {

@@ -11,7 +11,9 @@ import Goal from './Goal'
 import Booking from './Booking'
 
 class Player extends Model {
-  static entity = 'players'
+  static get entity () {
+    return 'players'
+  }
 
   static fields () {
     return {
