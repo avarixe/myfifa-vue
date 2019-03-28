@@ -1,7 +1,6 @@
 <template>
   <v-data-iterator
     :items="rows"
-    :pagination-sync="pagination"
     no-data-text="No Squads Recorded"
     hide-actions
     content-tag="v-layout"

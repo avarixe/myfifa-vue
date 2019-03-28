@@ -25,9 +25,30 @@
       </match-form>
     </template>
 
-    <v-flex
-      xs12
-    >
+    <v-card-title>
+      <v-select
+        v-model="seasonFilter"
+        label="Season"
+        :items="seasons"
+        item-text="label"
+        item-value="id"
+        clearable
+        hide-details
+        @click:clear="clearAllFilters"
+      />
+
+      <v-spacer />
+
+      <v-select
+        v-model="competition"
+        label="Competition"
+        :items="competitions"
+        clearable
+        hide-details
+      />
+
+      <v-spacer />
+
       <!-- Match Search -->
       <v-text-field
         v-model="search"
@@ -35,7 +56,7 @@
         append-icon="mdi-magnify"
         hide-details
       />
-    </v-flex>
+    </v-card-title>
 
     <!-- Match History Grid -->
     <v-data-table
@@ -107,6 +128,7 @@
 
 <script>
   import {
+    Competition,
     Match
   } from '@/models'
   import MatchForm from './MatchForm'
@@ -115,6 +137,9 @@
   import {
     TeamAccessible
   } from '@/mixins'
+  import {
+    addYears
+  } from 'date-fns'
 
   export default {
     mixins: [ TeamAccessible ],
@@ -138,18 +163,74 @@
           { text: 'Away', value: 'away', align: 'left' },
           { text: 'Date Played', value: 'date_played', align: 'center' }
         ],
-        search: ''
+        search: '',
+        seasonFilter: null,
+        competition: null
       }
     },
     computed: {
-      rows () {
+      matches () {
         return Match
           .query()
           .where('team_id', this.team.id)
           .get()
+      },
+      rows () {
+        const teamStart = this.$_parse(this.team.start_date)
+
+        return this.matches
+          .filter(match => {
+            if (typeof this.seasonFilter !== 'undefined') {
+              const datePlayed = this.$_parse(match.date_played)
+              const seasonStart = addYears(teamStart, this.seasonFilter)
+              const seasonEnd = addYears(teamStart, this.seasonFilter + 1)
+              return seasonStart <= datePlayed && datePlayed < seasonEnd
+            } else {
+              return true
+            }
+          })
+          .filter(match => {
+            console.log(typeof this.competition)
+            if (typeof this.competition === 'string') {
+              return match.competition === this.competition
+            } else {
+              return true
+            }
+          })
+      },
+      seasons () {
+        let seasons = []
+
+        for (let i = 0; i <= this.season; i++) {
+          seasons.push({
+            id: i,
+            label: this.seasonLabel(i)
+          })
+        }
+
+        return seasons
+      },
+      competitions () {
+        console.log(typeof this.seasonFilter)
+        return Competition
+          .query()
+          .where('team_id', this.team.id)
+          .where(comp => {
+            if (typeof this.seasonFilter === 'number') {
+              return comp.season === this.seasonFilter
+            } else {
+              return true
+            }
+          })
+          .get()
+          .map(comp => comp.name)
       }
     },
     methods: {
+      clearAllFilters () {
+        this.seasonFilter = null
+        this.competition = null
+      },
       viewMatch (match) {
         this.$router.push({
           name: 'matches-id',

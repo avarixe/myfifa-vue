@@ -82,46 +82,6 @@
     components: {
       TeamCalendar
     },
-    data: () => ({
-      // drawer: false,
-      links: [
-        {
-          to: '/dashboard',
-          icon: 'mdi-view-dashboard',
-          text: 'Dashboard'
-        },
-        {
-          to: '/user-profile',
-          icon: 'mdi-account',
-          text: 'User Profile'
-        },
-        {
-          to: '/table-list',
-          icon: 'mdi-clipboard-outline',
-          text: 'Table List'
-        },
-        {
-          to: '/typography',
-          icon: 'mdi-format-font',
-          text: 'Typography'
-        },
-        {
-          to: '/icons',
-          icon: 'mdi-chart-bubble',
-          text: 'Icons'
-        },
-        {
-          to: '/maps',
-          icon: 'mdi-map-marker',
-          text: 'Maps'
-        },
-        {
-          to: '/notifications',
-          icon: 'mdi-bell',
-          text: 'Notifications'
-        }
-      ]
-    }),
     computed: {
       ...mapState('app', [
         'drawer'
@@ -163,6 +123,14 @@
               },
               icon: 'mdi-clipboard-text',
               text: 'Squads'
+            },
+            {
+              to: {
+                name: 'teams-teamId-transfers',
+                params: { teamId: this.teamId }
+              },
+              icon: 'mdi-airplane-takeoff',
+              text: 'Transfers'
             }
           ]
         } else {
