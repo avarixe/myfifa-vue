@@ -68,6 +68,7 @@
               :to="matchLink(props.item)"
               small
               icon
+              class="my-0"
             >
               <v-icon
                 small

@@ -10,7 +10,7 @@
       >
         <v-flex
           layout
-          class="py-0"
+          class="pa-0"
         >
           <v-tooltip
             color="blue"
