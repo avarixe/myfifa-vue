@@ -180,7 +180,7 @@
 
         return this.matches
           .filter(match => {
-            if (typeof this.seasonFilter !== 'undefined') {
+            if (typeof this.seasonFilter === 'number') {
               const datePlayed = this.$_parse(match.date_played)
               const seasonStart = addYears(teamStart, this.seasonFilter)
               const seasonEnd = addYears(teamStart, this.seasonFilter + 1)
