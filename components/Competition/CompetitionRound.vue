@@ -16,8 +16,7 @@
         </template>
         <span
           v-else
-          v-text="round.name"
-        />
+        >{{ round.name }}</span>
       </div>
 
       <template
@@ -37,9 +36,7 @@
             icon
             @click="addFixture"
           >
-            <v-icon
-              v-text="'mdi-plus-circle'"
-            />
+            <v-icon>mdi-plus-circle</v-icon>
           </v-btn>
           Add Fixture
         </v-tooltip>
@@ -79,9 +76,7 @@
               icon
               @click="override = !override"
             >
-              <v-icon
-                v-text="'mdi-playlist-edit'"
-              />
+              <v-icon>mdi-playlist-edit</v-icon>
             </v-btn>
             Edit All
           </v-tooltip>

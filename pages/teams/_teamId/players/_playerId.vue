@@ -24,12 +24,10 @@
             >
               <div
                 class="display-1"
-                v-text="player.pos"
-              />
+              >{{ player.pos }}</div>
               <div
                 class="subheading"
-                v-text="'Position'"
-              />
+              >Position</div>
             </v-flex>
             <v-flex
               xs6
@@ -37,12 +35,10 @@
             >
               <div
                 class="display-1"
-                v-text="$_listArray(player.sec_pos)"
-              />
+              >{{ $_listArray(player.sec_pos) }}</div>
               <div
                 class="subheading"
-                v-text="'Secondary'"
-              />
+              >Secondary Position(s)</div>
             </v-flex>
             <v-flex
               xs6
@@ -50,12 +46,10 @@
             >
               <div
                 class="display-1"
-                v-text="player.age"
-              />
+              >{{ player.age }}</div>
               <div
                 class="subheading"
-                v-text="'Current'"
-              />
+              >Age</div>
             </v-flex>
             <v-flex
               xs6
@@ -63,12 +57,10 @@
             >
               <div
                 class="display-1"
-                v-text="player.status || '-'"
-              />
+              >{{ player.status || '-' }}</div>
               <div
                 class="subheading"
-                v-text="'Current'"
-              />
+              >Status</div>
             </v-flex>
             <v-flex
               xs12
@@ -87,8 +79,7 @@
                   >
                     <v-icon
                       color="orange"
-                      v-text="'mdi-pencil'"
-                    />
+                    >mdi-pencil</v-icon>
                   </v-btn>
                   Edit
                 </v-tooltip>
@@ -140,11 +131,8 @@
           >
             <span
               class="green--text"
-              v-text="player.ovr"
-            />
-            <small
-              v-text="'OVR'"
-            />
+            >{{ player.ovr }}</span>
+            <small>OVR</small>
           </h4>
           <p
             class="category d-inline-flex font-weight-light"
@@ -168,11 +156,8 @@
           >
             <span
               class="green--text"
-              v-text="$_formatMoney(player.value)"
-            />
-            <small
-              v-text="'Value'"
-            />
+            >{{ $_formatMoney(player.value) }}</span>
+            <small>Value</small>
           </h4>
           <p
             class="category d-inline-flex font-weight-light"
@@ -239,8 +224,7 @@
           >
             <span
               class="title font-weight-light mb-2"
-              v-text="'Timeline'"
-            />
+            >Timeline</span>
 
             <!-- Timeline Filter -->
             <v-tooltip
@@ -257,8 +241,7 @@
                 >
                   <v-icon
                     :color="currentFilter.color"
-                    v-text="`mdi-${currentFilter.icon}`"
-                  />
+                  >mdi-{{ currentFilter.icon }}</v-icon>
                 </v-btn>
                 <v-list>
                   <v-list-tile
@@ -269,12 +252,9 @@
                     <v-list-tile-avatar>
                       <v-icon
                         :color="event.color"
-                        v-text="`mdi-${event.icon}`"
-                      />
+                      >mdi-{{ event.icon }}</v-icon>
                     </v-list-tile-avatar>
-                    <v-list-tile-title
-                      v-text="key"
-                    />
+                    <v-list-tile-title>{{ key }}</v-list-tile-title>
                   </v-list-tile>
                 </v-list>
               </v-menu>

@@ -5,8 +5,7 @@
     >
       <span
         class="title font-weight-light mb-2"
-        v-text="'Players'"
-      />
+      >Players</span>
 
       <player-form>
         <v-tooltip
@@ -16,9 +15,7 @@
             slot="activator"
             flat
           >
-            <v-icon
-              v-text="'mdi-plus-circle-outline'"
-            />
+            <v-icon>mdi-plus-circle-outline</v-icon>
           </v-btn>
           New Player
         </v-tooltip>
@@ -43,8 +40,7 @@
           >
             <v-icon
               :color="currentFilter.color"
-              v-text="`mdi-${currentFilter.icon}`"
-            />
+            >mdi-{{ currentFilter.icon }}</v-icon>
           </v-btn>
 
           <v-list>
@@ -56,12 +52,9 @@
               <v-list-tile-avatar>
                 <v-icon
                   :color="opt.color"
-                  v-text="`mdi-${opt.icon}`"
-                />
+                >mdi-{{ opt.icon }}</v-icon>
               </v-list-tile-avatar>
-              <v-list-tile-title
-                v-text="opt.text"
-              />
+              <v-list-tile-title>{{ opt.text }}</v-list-tile-title>
             </v-list-tile>
           </v-list>
         </v-menu>
@@ -80,15 +73,13 @@
         >
           <v-icon
             :color="opt.color"
-            v-text="`mdi-${opt.icon}`"
-          />
+          >mdi-{{ opt.icon }}</v-icon>
         </v-btn>
       </v-btn-toggle>
 
       <div
         :class="`subheading ${currentMode.color}--text`"
-        v-text="currentMode.text"
-      />
+      >{{ currentMode.text }}</div>
 
       <v-spacer />
 
@@ -118,8 +109,7 @@
       >
         <span
           class="subheading font-weight-light text-success text--darken-3"
-          v-text="header.text"
-        />
+        >{{ header.text }}</span>
       </template>
       <template
         slot="items"

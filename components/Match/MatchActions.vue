@@ -16,8 +16,7 @@
         >
           <v-icon
             color="orange"
-            v-text="'mdi-pencil'"
-          />
+          >mdi-pencil</v-icon>
         </v-btn>
         Edit
       </v-tooltip>
@@ -34,9 +33,7 @@
           slot="activator"
           icon
         >
-          <v-icon
-            v-text="'mdi-plus-circle-outline'"
-          />
+          <v-icon>mdi-plus-circle-outline</v-icon>
         </v-btn>
         Add Player
       </v-tooltip>
@@ -56,8 +53,7 @@
         >
           <v-icon
             color="cyan"
-            v-text="'mdi-clipboard-text'"
-          />
+          >mdi-clipboard-text</v-icon>
         </v-btn>
         <v-list>
           <v-list-tile
@@ -85,8 +81,7 @@
         >
           <v-icon
             color="green"
-            v-text="'mdi-repeat'"
-          />
+          >mdi-repeat</v-icon>
         </v-btn>
         Substitution
       </v-tooltip>
@@ -107,8 +102,7 @@
         >
           <v-icon
             color="blue"
-            v-text="'mdi-soccer'"
-          />
+          >mdi-soccer</v-icon>
         </v-btn>
         Goal
       </v-tooltip>
@@ -129,8 +123,7 @@
         >
           <v-icon
             color="red"
-            v-text="'mdi-book'"
-          />
+          >mdi-book</v-icon>
         </v-btn>
         Booking
       </v-tooltip>
@@ -151,8 +144,7 @@
         >
           <v-icon
             color="indigo"
-            v-text="'mdi-human'"
-          />
+          >mdi-human</v-icon>
         </v-btn>
         Penalty Shootout
       </v-tooltip>

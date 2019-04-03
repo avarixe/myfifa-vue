@@ -13,8 +13,7 @@
       >
         <v-icon
           color="brown"
-          v-text="'mdi-door-open'"
-        />
+        >mdi-door-open</v-icon>
       </v-btn>
       Release
     </v-tooltip>
@@ -28,14 +27,12 @@
         dark
         flat
         @click="$store.dispatch('entities/players/RELEASE', player.id)"
-        v-text="'Yes'"
-      />
+      >Yes</v-btn>
       <v-btn
         dark
         flat
         @click.stop="snackbar = false"
-        v-text="'No'"
-      />
+      >No</v-btn>
     </v-snackbar>
   </div>
 </template>

@@ -14,8 +14,7 @@
           <v-btn>
             <v-icon
               left
-              v-text="'mdi-plus-circle-outline'"
-            />
+            >mdi-plus-circle-outline</v-icon>
             Match
           </v-btn>
         </match-form>
@@ -38,12 +37,10 @@
               >
                 <div
                   class="display-2"
-                  v-text="match.competition"
-                />
+                >{{ match.competition }}</div>
                 <div
                   class="subheading"
-                  v-text="$_formatDate(match.date_played)"
-                />
+                >{{ $_formatDate(match.date_played) }}</div>
               </v-flex>
               <v-layout
                 class="display-1"
@@ -53,20 +50,17 @@
                   align-self-center
                   class="font-weight-thin pa-1"
                   style="flex-basis:0"
-                  v-text="match.home"
-                />
+                >{{ match.home }}</v-flex>
                 <v-flex
                   align-self-center
                   class="pa-1"
                   shrink
-                  v-text="'v'"
-                />
+                >v</v-flex>
                 <v-flex
                   align-self-center
                   class="font-weight-thin pa-1"
                   style="flex-basis:0"
-                  v-text="match.away"
-                />
+                >{{ match.away }}</v-flex>
               </v-layout>
               <v-flex
                 xs12

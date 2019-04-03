@@ -2,13 +2,11 @@
   <div>
     <span
       class="font-weight-bold"
-      v-text="item.player_name"
-    />
+    >{{ item.player_name }}</span>
     {{ action }}
     <span
       class="font-weight-bold"
-      v-text="item.replaced_by"
-    />
+    >{{ item.replaced_by }}</span>
   </div>
 </template>
 

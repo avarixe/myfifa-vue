@@ -40,8 +40,7 @@
         >
           <span
             :class="teamClass(rowData.name)"
-            v-text="rowData[header.value]"
-          />
+          >{{ rowData[header.value] }}</span>
         </template>
       </template>
 

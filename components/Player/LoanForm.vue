@@ -19,8 +19,7 @@
         >
           <v-icon
             color="indigo"
-            v-text="'mdi-transit-transfer'"
-          />
+          >mdi-transit-transfer</v-icon>
         </v-btn>
         {{ title }}
       </v-tooltip>

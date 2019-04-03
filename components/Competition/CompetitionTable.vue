@@ -18,8 +18,7 @@
         </template>
         <span
           v-else
-          v-text="table.name"
-        />
+        >{{ table.name }}</span>
 
         <template
           v-if="!readonly"
@@ -66,9 +65,7 @@
                 icon
                 @click="override = !override"
               >
-                <v-icon
-                  v-text="'mdi-playlist-edit'"
-                />
+                <v-icon>mdi-playlist-edit</v-icon>
               </v-btn>
               Edit All
             </v-tooltip>

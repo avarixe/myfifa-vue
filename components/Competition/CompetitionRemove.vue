@@ -13,9 +13,8 @@
           icon
         >
           <v-icon
-            v-text="'mdi-minus-circle'"
             color="black"
-          />
+          >mdi-minus-circle</v-icon>
         </v-btn>
         Remove
       </v-tooltip>
@@ -27,17 +26,15 @@
     >
       Remove {{ seasonLabel(competition.season) }} {{ competition.name }}?
       <v-btn
-        v-text="'Yes'"
         @click="removeCompetition"
         dark
         flat
-      />
+      >Yes</v-btn>
       <v-btn
-        v-text="'No'"
         @click.stop="snackbar = false"
         dark
         flat
-      />
+      >No</v-btn>
     </v-snackbar>
   </div>
 </template>

@@ -3,16 +3,14 @@
     {{ goalType }} scored by
     <span
       class="font-weight-bold"
-      v-text="item.player_name"
-    />
+    >{{ item.player_name }}</span>
     <span
       v-if="item.assisted_by"
     >
       (assisted by
       <span
         class="font-weight-bold"
-        v-text="item.assisted_by"
-      />
+      >{{ item.assisted_by }}</span>
       )
     </span>
   </div>

@@ -39,8 +39,7 @@
         slot-scope="{ header }">
         <span
           class="subheading font-weight-light text-success text--darken-3"
-          v-text="header.text"
-        />
+        >{{ header.text }}</span>
       </template>
       <template
         slot="items"

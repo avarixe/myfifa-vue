@@ -11,8 +11,7 @@
 
     <v-toolbar-title
       class="tertiary--text font-weight-light"
-      v-text="$store.state.app.title"
-    />
+    >{{ $store.state.app.title }}</v-toolbar-title>
 
     <v-spacer />
 
@@ -31,8 +30,7 @@
         >
           <v-icon
             color="tertiary"
-            v-text="'mdi-home'"
-          />
+          >mdi-home</v-icon>
         </nuxt-link>
 
         <user-form>
@@ -42,8 +40,7 @@
           >
             <v-icon
               color="tertiary"
-              v-text="'mdi-account'"
-            />
+            >mdi-account</v-icon>
           </a>
         </user-form>
 
@@ -54,8 +51,7 @@
         >
           <v-icon
             color="tertiary"
-            v-text="'mdi-exit-to-app'"
-          />
+          >mdi-exit-to-app</v-icon>
         </a>
       </v-flex>
     </v-toolbar-items>

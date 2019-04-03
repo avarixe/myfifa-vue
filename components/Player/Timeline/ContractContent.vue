@@ -4,46 +4,38 @@
       <tr>
         <td
           class="font-weight-bold"
-          v-text="'Wage'"
-        />
+        >Wage</td>
         <td
           class="pl-1"
-          v-text="$_formatMoney(contract.wage)"
-        />
+        >{{ $_formatMoney(contract.wage) }}</td>
       </tr>
       <tr>
         <td
           class="font-weight-bold"
-          v-text="'Signing Bonus'"
-        />
+        >Signing Bonus</td>
         <td
           class="pl-1"
-          v-text="$_formatMoney(contract.signing_bonus)"
-        />
+        >{{ $_formatMoney(contract.signing_bonus) }}</td>
       </tr>
       <tr
         v-if="contract.performance_bonus"
       >
         <td
           class="font-weight-bold"
-          v-text="'Performance Bonus'"
-        />
+        >Performance Bonus</td>
         <td
           class="pl-1"
-          v-text="`${$_formatMoney(contract.performance_bonus)} if ${contract.bonus_req} ${contract.bonus_req_type}`"
-        />
+        >{{ $_formatMoney(contract.performance_bonus) }} if {{ contract.bonus_req }} {{contract.bonus_req_type }}</td>
       </tr>
       <tr
         v-if="contract.release_clause"
       >
         <td
           class="font-weight-bold"
-          v-text="'Release Clause'"
-        />
+        >Release Clause</td>
         <td
           class="pl-1"
-          v-text="$_formatMoney(contract.release_clause)"
-        />
+        >{{ $_formatMoney(contract.release_clause) }}</td>
       </tr>
     </tbody>
   </table>

@@ -14,13 +14,11 @@
           v-if="season > 0"
           :to="previousSeasonLink"
           nuxt
-          v-text="'Previous Season'"
-        />
+        >Previous Season</v-btn>
         <v-btn
           :to="nextSeasonLink"
           nuxt
-          v-text="'Next Season'"
-        />
+        >Next Season</v-btn>
       </v-flex>
       <v-flex
         xs12

@@ -13,8 +13,7 @@
         <v-btn
           :to="seasonLink"
           nuxt
-          v-text="'View Season'"
-        />
+        >View Season</v-btn>
       </v-flex>
       <v-flex
         xs12
@@ -33,12 +32,10 @@
               >
                 <div
                   class="subheading"
-                  v-text="seasonLabel(competition.season)"
-                />
+                >{{ seasonLabel(competition.season) }}</div>
                 <div
                   class="display-1"
-                  v-text="competition.name"
-                />
+                >{{ competition.name }}</div>
               </v-flex>
             </v-layout>
           </template>
@@ -58,14 +55,12 @@
                 <v-icon
                   color="yellow darken-2"
                   left
-                  v-text="'mdi-crown'"
-                />
+                >mdi-crown</v-icon>
                 {{ competition.champion }}
                 <v-icon
                   color="yellow darken-2"
                   right
-                  v-text="'mdi-crown'"
-                />
+                >mdi-crown</v-icon>
               </div>
             </v-flex>
 
@@ -80,8 +75,7 @@
                 <v-btn
                   dark
                   color="orange"
-                  v-text="'Edit'"
-                />
+                >Edit</v-btn>
               </edit-competition-form>
               <stage-form
                 :competition="competition"
@@ -90,16 +84,14 @@
                 <v-btn
                   dark
                   color="teal"
-                  v-text="'Add Stage'"
-                />
+                >Add Stage</v-btn>
               </stage-form>
               <competition-remove
                 :competition="competition"
               >
                 <v-btn
                   dark
-                  v-text="'Remove'"
-                />
+                >Remove</v-btn>
               </competition-remove>
             </v-flex>
           </v-layout>

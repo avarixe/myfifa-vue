@@ -19,8 +19,7 @@
 
         <span
           class="caption text-truncate"
-          v-text="event.home ? match.home : match.away"
-        />
+        >{{ event.home ? match.home : match.away }}</span>
 
         <v-tooltip
           v-if="team.current_date === match.date_played"
@@ -34,8 +33,7 @@
           >
             <v-icon
               :color="eventColor(event)"
-              v-text="'mdi-close'"
-            />
+            >mdi-close</v-icon>
           </v-btn>
           Remove
         </v-tooltip>
@@ -75,8 +73,7 @@
           >
             <v-icon
               color="indigo"
-              v-text="'mdi-close'"
-            />
+            >mdi-close</v-icon>
           </v-btn>
           Remove
         </v-tooltip>

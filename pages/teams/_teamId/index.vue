@@ -16,8 +16,7 @@
           >
             <div
               class="display-2"
-              v-text="team.title"
-            />
+            >{{ team.title }}</div>
           </v-card-title>
         </v-card>
       </v-flex>

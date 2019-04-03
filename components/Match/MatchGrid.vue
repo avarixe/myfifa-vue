@@ -16,9 +16,7 @@
             slot="activator"
             flat
           >
-            <v-icon
-              v-text="'mdi-plus-circle-outline'"
-            />
+            <v-icon>mdi-plus-circle-outline</v-icon>
           </v-btn>
           New Match
         </v-tooltip>
@@ -72,8 +70,7 @@
         slot-scope="{ header }">
         <span
           class="subheading font-weight-light text-success text--darken-3"
-          v-text="header.text"
-        />
+        >{{ header.text }}</span>
       </template>
       <template
         slot="items"
@@ -94,32 +91,26 @@
               <v-icon
                 small
                 color="blue darken-2"
-                v-text="'mdi-arrow-right'"
-              />
+              >mdi-arrow-right</v-icon>
             </v-btn>
             View Match
           </v-tooltip>
         </td>
         <td
           class="text-xs-center"
-          v-text="props.item.competition"
-        />
+        >{{ props.item.competition }}</td>
         <td
           class="text-xs-right"
-          v-text="props.item.home"
-        />
+        >{{ props.item.home }}</td>
         <td
           :class="resultColor(props.item.team_result) + '--text text-xs-center'"
-          v-text="props.item.score"
-        />
+        >{{ props.item.score }}</td>
         <td
           class="text-xs-left"
-          v-text="props.item.away"
-        />
+        >{{ props.item.away }}</td>
         <td
           class="text-xs-center"
-          v-text="$_format($_parse(props.item.date_played), 'MMM DD, YYYY')"
-        />
+        >{{ $_format($_parse(props.item.date_played), 'MMM DD, YYYY') }}</td>
       </template>
     </v-data-table>
 

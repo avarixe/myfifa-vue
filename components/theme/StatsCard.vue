@@ -20,10 +20,10 @@
     <div class="text-xs-right">
       <p
         class="category grey--text font-weight-light"
-        v-text="title"
-      />
+      >{{ title }}</p>
       <h3
-        class="title display-1 font-weight-light">
+        class="title display-1 font-weight-light"
+      >
         {{ value }} <small>{{ smallValue }}</small>
       </h3>
     </div>
@@ -33,14 +33,11 @@
         :color="subIconColor"
         size="20"
         class="mr-2"
-      >
-        {{ subIcon }}
-      </v-icon>
+      >{{ subIcon }}</v-icon>
       <span
         :class="subTextColor"
         class="caption font-weight-light"
-        v-text="subText"
-      />
+      >{{ subText }}</span>
     </template>
   </material-card>
 </template>

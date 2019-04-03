@@ -45,8 +45,7 @@
       >
         <v-icon
           :color="statusColor"
-          v-text="`mdi-${statusIcon}`"
-        />
+        >mdi-{{ statusIcon }}</v-icon>
       </template>
       <template
         v-else-if="header.editable && edit"

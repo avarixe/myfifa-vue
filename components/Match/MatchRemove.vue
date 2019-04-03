@@ -14,8 +14,7 @@
         >
           <v-icon
             color="black"
-            v-text="'mdi-minus-circle'"
-          />
+          >mdi-minus-circle</v-icon>
         </v-btn>
         Remove
       </v-tooltip>
@@ -30,14 +29,12 @@
         dark
         flat
         @click="removeMatch"
-        v-text="'Yes'"
-      />
+      >Yes</v-btn>
       <v-btn
         dark
         flat
         @click.stop="snackbar = false"
-        v-text="'No'"
-      />
+      >No</v-btn>
     </v-snackbar>
   </div>
 </template>

@@ -14,8 +14,7 @@
           <v-btn>
             <v-icon
               left
-              v-text="'mdi-plus-circle-outline'"
-            />
+            >mdi-plus-circle-outline</v-icon>
             Squad
           </v-btn>
         </squad-form>

@@ -14,13 +14,9 @@
       style="width: 100%"
     >
       <v-list-tile-action>
-        <v-icon
-          v-text="'mdi-calendar'"
-        />
+        <v-icon>mdi-calendar</v-icon>
       </v-list-tile-action>
-      <v-list-tile-title
-        v-text="$_format(currentDate, 'MMM DD, YYYY')"
-      />
+      <v-list-tile-title>{{ $_format(currentDate, 'MMM DD, YYYY') }}</v-list-tile-title>
     </v-list-tile>
 
     <v-date-picker

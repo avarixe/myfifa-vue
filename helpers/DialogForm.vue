@@ -28,8 +28,7 @@
             >
               <v-icon
                 left
-                v-text="titleIcon"
-              />
+              >{{ titleIcon }}</v-icon>
               {{ title }}
             </div>
           </slot>
@@ -47,8 +46,7 @@
           type="error"
           v-model="formError"
           dismissible
-          v-text="errorMessage"
-        />
+        >{{ errorMessage }}</v-alert>
 
         <v-card-actions>
           <v-spacer />
@@ -57,8 +55,7 @@
             flat
             large
             @click="dialog = false"
-            v-text="'Cancel'"
-          />
+          >Cancel</v-btn>
           <v-btn
             type="submit"
             :disabled="!valid"
@@ -67,8 +64,7 @@
             large
             :loading="loading"
             @click="loading = true"
-            v-text="'Save'"
-          />
+          >Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-form>

@@ -17,12 +17,10 @@
           >
             <div
               class="body-2"
-              v-text="nameOf(player.player_id)"
-            />
+            >{{ nameOf(player.player_id) }}</div>
             <div
               class="body-1"
-              v-text="player.pos"
-            />
+            >{{ player.pos }}</div>
           </slot>
         </v-flex>
       </v-layout>

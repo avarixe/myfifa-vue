@@ -19,8 +19,7 @@
         >
           <v-icon
             :color="transferOut ? 'red' : 'green'"
-            v-text="`mdi-airplane-${transferOut ? 'takeoff' : 'landing' }`"
-          />
+          >mdi-airplane-{{ transferOut ? 'takeoff' : 'landing' }}</v-icon>
         </v-btn>
         Transfer {{ transferOut ? 'Out' : 'In' }}
       </v-tooltip>

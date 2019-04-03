@@ -8,8 +8,7 @@
       dark
       flat
       @click="snackbar = false"
-      v-text="'Close'"
-    />
+    >Close</v-btn>
   </v-snackbar>
 </template>
 

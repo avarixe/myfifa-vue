@@ -2,14 +2,12 @@
   <span>
     <span
       class="font-weight-bold"
-      v-text="winner"
-    />
+    >{{ winner }}</span>
     wins by Penalty Shootout
     (
     <span
       class="font-weight-bold"
-      v-text="score"
-    />
+    >{{ score }}</span>
     )
   </span>
 </template>

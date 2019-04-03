@@ -11,16 +11,13 @@
         <span
           slot="activator"
           class="body-1"
-          v-text="cap.pos"
-        />
+        >{{ cap.pos }}</span>
         <v-list>
           <v-list-tile
             v-for="pos in positions"
             :key="pos"
             @click="setPosition(pos)">
-            <v-list-tile-title
-              v-text="pos"
-            />
+            <v-list-tile-title>{{ pos }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>
@@ -30,47 +27,40 @@
       <v-list-tile-title>
         <span
           class="body-2"
-          v-text="cap.name"
-        />
+        >{{ cap.name }}</span>
         <v-icon
           v-if="parseInt(cap.start) > 0"
           color="green"
           small
-          v-text="'mdi-subdirectory-arrow-right'"
-        />
+        >mdi-subdirectory-arrow-right</v-icon>
         <v-icon
           v-for="index in goals"
           :key="index"
           color="blue"
           small
-          v-text="'mdi-soccer'"
-        />
+        >mdi-soccer</v-icon>
         <v-icon
           v-for="index in assists"
           :key="index"
           color="light-blue accent-1"
           small
-          v-text="'mdi-human-greeting'"
-        />
+        >mdi-human-greeting</v-icon>
         <v-icon
           v-for="(color, i) in bookings"
           :key="i"
           :color="color"
           small
-          v-text="'mdi-book'"
-        />
+        >mdi-book</v-icon>
         <v-icon
           v-if="injured"
           color="pink"
           small
-          v-text="'mdi-hospital'"
-        />
+        >mdi-hospital</v-icon>
         <v-icon
           v-if="cap.subbed_out"
           color="red"
           small
-          v-text="'mdi-subdirectory-arrow-left'"
-        />
+        >mdi-subdirectory-arrow-left</v-icon>
       </v-list-tile-title>
     </v-list-tile-content>
   </v-list-tile>

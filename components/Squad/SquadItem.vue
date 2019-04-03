@@ -4,9 +4,8 @@
       slot="header"
     >
       <span
-        v-text="squad.name"
         class="title font-weight-light mb-2"
-      />
+      >{{ squad.name }}</span>
 
       <squad-actions
         :squad="squad"

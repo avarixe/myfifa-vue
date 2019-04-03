@@ -16,8 +16,7 @@
         >
           <v-icon
             color="orange"
-            v-text="'mdi-pencil'"
-          />
+          >mdi-pencil</v-icon>
         </v-btn>
         Edit
       </v-tooltip>
@@ -33,8 +32,7 @@
       >
         <v-icon
           color="black"
-          v-text="'mdi-minus-circle'"
-        />
+        >mdi-minus-circle</v-icon>
       </v-btn>
       Remove
     </v-tooltip>
@@ -48,14 +46,12 @@
         dark
         flat
         @click.native="$store.dispatch('entities/squads/REMOVE', squad.id)"
-        v-text="'Yes'"
-      />
+      >Yes</v-btn>
       <v-btn
         dark
         flat
         @click.native="promptDeletion = false"
-        v-text="'No'"
-      />
+      >No</v-btn>
     </v-snackbar>
   </div>
 </template>

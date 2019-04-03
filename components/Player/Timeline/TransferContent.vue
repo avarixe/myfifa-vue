@@ -4,61 +4,51 @@
       <tr>
         <td
           class="font-weight-bold"
-          v-text="'Origin'"
-        />
+        >Origin</td>
         <td
           class="pl-1"
-          v-text="transfer.origin"
-        />
+        >{{ transfer.origin }}</td>
       </tr>
       <tr>
         <td
           class="font-weight-bold"
-          v-text="'Destination'"
-        />
+        >Destination</td>
         <td
           class="pl-1"
         >
           {{ transfer.destination }}
           <span
             v-if="transfer.loan"
-            v-text="'(Loan)'"
-          />
+          >(Loan)</span>
         </td>
       </tr>
       <tr>
         <td
           class="font-weight-bold"
-          v-text="'Transfer Fee'"
-        />
+        >Transfer Fee</td>
         <td
           class="pl-1"
-          v-text="$_formatMoney(transfer.fee)"
-        />
+        >{{ $_formatMoney(transfer.fee) }}</td>
       </tr>
       <tr
         v-if="transfer.traded_player"
       >
         <td
           class="font-weight-bold"
-          v-text="'Traded Player'"
-        />
+        >Traded Player</td>
         <td
           class="pl-1"
-          v-text="transfer.traded_player"
-        />
+        >{{ transfer.traded_player }}</td>
       </tr>
       <tr
         v-if="transfer.addon_clause"
       >
         <td
           class="font-weight-bold"
-          v-text="'Add-On Clause'"
-        />
+        >Add-On Clause</td>
         <td
           class="pl-1"
-          v-text="transfer.addon_clause"
-        />
+        >{{ transfer.addon_clause }}</td>
       </tr>
     </tbody>
   </table>

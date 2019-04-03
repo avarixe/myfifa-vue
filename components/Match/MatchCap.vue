@@ -21,14 +21,10 @@
             @click="setPlayer(player.id)"
           >
             <v-list-tile-action>
-              <v-list-tile-action-text
-                v-text="player.pos"
-              />
+              <v-list-tile-action-text>{{ player.pos }}</v-list-tile-action-text>
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title
-                v-text="player.name"
-              />
+              <v-list-tile-title>{{ player.name }}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -54,9 +50,7 @@
             :key="pos"
             @click="setPosition(pos)"
           >
-            <v-list-tile-title
-              v-text="pos"
-            />
+            <v-list-tile-title>{{ pos }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>
@@ -66,41 +60,35 @@
         v-if="parseInt(cap.start) > 0"
         color="green"
         small
-        v-text="'mdi-subdirectory-arrow-right'"
-      />
+      >mdi-subdirectory-arrow-right</v-icon>
       <v-icon
         v-for="index in goals"
         :key="`goal${index}`"
         color="blue"
         small
-        v-text="'mdi-soccer'"
-      />
+      >mdi-soccer</v-icon>
       <v-icon
         v-for="index in assists"
         :key="`assist${index}`"
         color="light-blue accent-1"
         small
-        v-text="'mdi-human-greeting'"
-      />
+      >mdi-human-greeting</v-icon>
       <v-icon
         v-for="(color, i) in bookings"
         :key="`booking${i}`"
         :color="color"
         small
-        v-text="'mdi-book'"
-      />
+      >mdi-book</v-icon>
       <v-icon
         v-if="injured"
         color="pink"
         small
-        v-text="'mdi-hospital'"
-      />
+      >mdi-hospital</v-icon>
       <v-icon
         v-if="cap.subbed_out"
         color="red"
         small
-        v-text="'mdi-subdirectory-arrow-left'"
-      />
+      >mdi-subdirectory-arrow-left</v-icon>
     </div>
   </div>
 </template>

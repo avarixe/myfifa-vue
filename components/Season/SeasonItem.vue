@@ -4,9 +4,8 @@
       slot="header"
     >
       <span
-        v-text="seasonLabel"
         class="title font-weight-light mb-2"
-      />
+      >{{ seasonLabel }}</span>
 
       <v-tooltip
         bottom
@@ -20,8 +19,7 @@
         >
           <v-icon
             color="white"
-            v-text="'mdi-arrow-right'"
-          />
+          >mdi-arrow-right</v-icon>
         </v-btn>
         View Season
       </v-tooltip>
@@ -30,9 +28,7 @@
     <v-list
       dense
     >
-      <v-subheader
-        v-text="'Competitions'"
-      />
+      <v-subheader>Competitions</v-subheader>
       <v-list-tile
         v-for="(competition, i) in competitions"
         :key="i"
@@ -44,8 +40,7 @@
             color="blue"
             small
             left
-            v-text="'mdi-arrow-right'"
-          />
+          >mdi-arrow-right</v-icon>
           {{ competition.name }}
         </v-list-tile-title>
         <v-list-tile-avatar
@@ -53,8 +48,7 @@
         >
           <v-icon
             color="yellow darken-2"
-            v-text="'mdi-trophy'"
-          />
+          >mdi-trophy</v-icon>
         </v-list-tile-avatar>
       </v-list-tile>
     </v-list>

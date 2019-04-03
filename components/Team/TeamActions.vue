@@ -9,8 +9,7 @@
     >
       <v-icon
         color="blue darken-2"
-        v-text="'mdi-arrow-right'"
-      />
+      >mdi-arrow-right</v-icon>
     </v-btn>
 
     <team-form
@@ -22,8 +21,7 @@
       >
         <v-icon
           color="orange darken-2"
-          v-text="'mdi-pencil'"
-        />
+        >mdi-pencil</v-icon>
       </v-btn>
     </team-form>
 
@@ -33,8 +31,7 @@
     >
       <v-icon
         color="black"
-        v-text="'mdi-minus-circle'"
-      />
+      >mdi-minus-circle</v-icon>
     </v-btn>
 
     <v-snackbar
@@ -46,14 +43,12 @@
         class="white--text"
         flat
         @click.stop="$store.dispatch('entities/teams/REMOVE', team.id)"
-        v-text="'Yes'"
-      />
+      >Yes</v-btn>
       <v-btn
         class="white--text"
         flat
         @click.stop="snackbar = false"
-        v-text="'No'"
-      />
+      >No</v-btn>
     </v-snackbar>
   </v-flex>
 </template>

@@ -19,8 +19,7 @@
         >
           <v-icon
             color="pink"
-            v-text="'mdi-hospital'"
-          />
+          >mdi-hospital</v-icon>
         </v-btn>
         {{ title }}
       </v-tooltip>

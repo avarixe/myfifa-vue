@@ -15,8 +15,7 @@
       <v-icon
         :color="color"
         small
-        v-text="`mdi-${icon}`"
-      />
+      >mdi-{{ icon }}</v-icon>
     </v-btn>
     {{ text }}
   </v-tooltip>

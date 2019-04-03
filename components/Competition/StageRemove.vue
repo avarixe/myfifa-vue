@@ -27,17 +27,15 @@
     >
       Remove {{ stage.name }}?
       <v-btn
-        v-text="'Yes'"
         @click="$store.dispatch('entities/stages/REMOVE', stage.id)"
         dark
         flat
-      />
+      >Yes</v-btn>
       <v-btn
-        v-text="'No'"
         @click.stop="snackbar = false"
         dark
         flat
-      />
+      >No</v-btn>
     </v-snackbar>
   </div>
 </template>

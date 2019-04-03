@@ -4,12 +4,10 @@
       <tr>
         <td
           class="font-weight-bold"
-          v-text="'Duration'"
-        />
+        >Duration</td>
         <td
           class="pl-1"
-          v-text="`Away for ${length}`"
-        />
+        >Away for {{ length }}</td>
       </tr>
     </tbody>
   </table>

@@ -19,8 +19,7 @@
         >
           <v-icon
             color="blue"
-            v-text="'mdi-file-document-outline'"
-          />
+          >mdi-file-document-outline</v-icon>
         </v-btn>
         {{ title }}
       </v-tooltip>

@@ -13,8 +13,7 @@
       >
         <v-icon
           color="purple"
-          v-text="'mdi-human-greeting'"
-        />
+        >mdi-human-greeting</v-icon>
       </v-btn>
       Retire
     </v-tooltip>
@@ -28,14 +27,12 @@
         dark
         flat
         @click="$store.dispatch('entities/players/RETIRE', player.id)"
-        v-text="'Yes'"
-      />
+      >Yes</v-btn>
       <v-btn
         dark
         flat
         @click.stop="snackbar = false"
-        v-text="'No'"
-      />
+      >No</v-btn>
     </v-snackbar>
   </div>
 </template>

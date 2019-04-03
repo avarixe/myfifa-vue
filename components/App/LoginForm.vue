@@ -4,9 +4,7 @@
     @submit.prevent="authenticate"
   >
     <v-card>
-      <v-card-title
-        v-text="'MyFIFA Manager'"
-      />
+      <v-card-title>MyFIFA Manager</v-card-title>
       <v-card-text>
         <v-flex
           xs12
@@ -35,8 +33,7 @@
         type="error"
         v-model="formError"
         dismissible
-        v-text="errorMessage"
-      />
+      >{{ errorMessage }}</v-alert>
 
       <v-card-actions>
         <v-spacer/>

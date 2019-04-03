@@ -13,8 +13,7 @@
     >
       <span
         class="subheading font-weight-light text-success text--darken-3"
-        v-text="header.text"
-      />
+      >{{ header.text }}</span>
     </template>
     <template
       slot="items"
@@ -30,12 +29,10 @@
             v-if="header.value === 'competition'"
             @click="competitionLink(props.item[header.value])"
             class="blue-grey--text"
-            v-text="props.item[header.value]"
-          />
+          >{{ props.item[header.value] }}</a>
           <span
             v-else
-            v-text="props.item[header.value]"
-          />
+          >{{ props.item[header.value] }}</span>
         </td>
       </tr>
     </template>

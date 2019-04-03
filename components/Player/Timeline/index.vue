@@ -15,12 +15,10 @@
       >
         <span
           :class="`headline font-weight-bold ${item.color}--text`"
-          v-text="item.title || item.type"
-        />
+        >{{ item.title || item.type }}</span>
         <h4
           :class="`headline font-weight-light mb-3 ${item.color}--text`"
-          v-text="item.dateRange"
-        />
+        >{{ item.dateRange }}</h4>
       </template>
 
       <v-card
@@ -32,12 +30,10 @@
         >
           <span
             class="font-weight-bold pr-1 white--text"
-            v-text="item.title || item.type"
-          />
+          >{{ item.title || item.type }}</span>
           <span
             class="font-weight-light pl-1 white--text"
-            v-text="item.dateRange"
-          />
+          >{{ item.dateRange }}</span>
         </v-card-title>
         <v-container>
           <v-layout>

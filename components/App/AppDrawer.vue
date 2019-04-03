@@ -30,13 +30,11 @@
             />-->
             <v-icon
               color="primary"
-              v-text="'mdi-soccer'"
-            />
+            >mdi-soccer</v-icon>
           </v-list-tile-avatar>
           <v-list-tile-title
             class="title"
-            v-text="'MyFIFA Manager'"
-          />
+          >MyFIFA Manager</v-list-tile-title>
         </v-list-tile>
         <v-divider/>
 
@@ -54,18 +52,11 @@
             class="v-list-item"
           >
             <v-list-tile-action>
-              <v-icon
-                v-text="link.icon"
-              />
+              <v-icon>{{ link.icon }}</v-icon>
             </v-list-tile-action>
-            <v-list-tile-title
-              v-text="link.text"
-            />
+            <v-list-tile-title>{{ link.text }}</v-list-tile-title>
           </v-list-tile>
         </template>
-        <template
-          v-else
-        ></template>
       </v-layout>
     </v-img>
   </v-navigation-drawer>

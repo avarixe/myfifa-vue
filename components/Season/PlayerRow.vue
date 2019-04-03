@@ -2,16 +2,13 @@
   <tr>
     <td
       class="text-xs-left"
-      v-text="player.name"
-    />
+    >{{ player.name }}</td>
     <td
       class="text-xs-center"
-      v-text="player.pos"
-    />
+    >{{ player.pos }}</td>
     <td
       class="text-xs-center"
-      v-text="player.age"
-    />
+    >{{ player.age }}</td>
 
     <!-- Growth -->
     <template
@@ -19,20 +16,16 @@
     >
       <td
         class="text-xs-center"
-        v-text="endOvr"
-      />
+      >{{ endOvr }}</td>
       <td
         :class="`text-xs-center ${ovrColor}`"
-        v-text="`${ovrChange > 0 ? '+' : ''}${ovrChange}`"
-      />
+      >{{ ovrChange > 0 ? '+' : '' }}{{ ovrChange }}</td>
       <td
         class="text-xs-right"
-        v-text="`${team.currency}${endValue.toLocaleString()}`"
-      />
+      >{{ team.currency }}{{ endValue.toLocaleString() }}</td>
       <td
         :class="`text-xs-right ${valueColor}`"
-        v-text="`${valueChange.toFixed(2)}%`"
-      />
+      >{{ valueChange.toFixed(2) }}%</td>
     </template>
 
     <!-- Statistics -->
@@ -41,20 +34,16 @@
     >
       <td
         class="text-xs-right"
-        v-text="gamesView || '-'"
-      />
+      >{{ gamesView || '-' }}</td>
       <td
         class="text-xs-right"
-        v-text="goalsView || '-'"
-      />
+      >{{ goalsView || '-' }}</td>
       <td
         class="text-xs-right"
-        v-text="assistsView || '-'"
-      />
+      >{{ assistsView || '-' }}</td>
       <td
         class="text-xs-right"
-        v-text="csView || '-'"
-      />
+      >{{ csView || '-' }}</td>
     </template>
   </tr>
 </template>

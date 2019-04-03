@@ -24,9 +24,7 @@
           id="substitutes"
           dense
         >
-          <v-subheader
-            v-text="'Substitutes'"
-          />
+          <v-subheader>Substitutes</v-subheader>
           <substitute-cap
             v-for="cap in substitutes"
             :key="cap.id"

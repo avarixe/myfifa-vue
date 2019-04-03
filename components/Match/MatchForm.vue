@@ -51,8 +51,7 @@
               <v-icon
                 slot="activator"
                 @click.stop="setHome"
-                v-text="'mdi-arrow-left'"
-              />
+              >mdi-arrow-left</v-icon>
               Home Match for {{ team.title }}
             </v-tooltip>
           </v-combobox>
@@ -78,8 +77,7 @@
               <v-icon
                 slot="activator"
                 @click.stop="setAway"
-                v-text="'mdi-arrow-left'"
-              />
+              >mdi-arrow-left</v-icon>
               Away Match for {{ team.title }}
             </v-tooltip>
           </v-combobox>

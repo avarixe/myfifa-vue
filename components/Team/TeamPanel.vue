@@ -5,8 +5,7 @@
     >
       <span
         class="title font-weight-light mb-2"
-        v-text="'Teams'"
-      />
+      >Teams</span>
       <team-form>
         <v-tooltip
           bottom
@@ -17,8 +16,7 @@
           >
             <v-icon
               left
-              v-text="'mdi-plus-circle-outline'"
-            />
+            >mdi-plus-circle-outline</v-icon>
           </v-btn>
           New Team
         </v-tooltip>
@@ -39,8 +37,7 @@
       >
         <span
           class="subheading font-weight-light text-success text--darken-3"
-          v-text="header.text"
-        />
+        >{{ header.text }}</span>
       </template>
       <template
         slot="items"
@@ -49,16 +46,13 @@
         <tr>
           <td
             class="text-xs-center"
-            v-text="props.item.title"
-          />
+          >{{ props.item.title }}</td>
           <td
             class="text-xs-center"
-            v-text="$_format($_parse(props.item.start_date), 'MMM DD, YYYY')"
-          />
+          >{{ $_format($_parse(props.item.start_date), 'MMM DD, YYYY') }}</td>
           <td
             class="text-xs-center"
-            v-text="$_format($_parse(props.item.current_date), 'MMM DD, YYYY')"
-          />
+          >{{ $_format($_parse(props.item.current_date), 'MMM DD, YYYY') }}</td>
           <td
             class="text-xs-right"
           >

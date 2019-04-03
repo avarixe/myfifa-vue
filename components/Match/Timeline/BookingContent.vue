@@ -2,8 +2,7 @@
   <div>
     <span
       class="font-weight-bold"
-      v-text="item.player_name"
-    />
+    >{{ item.player_name }}</span>
     has received a {{ bookingType }}
   </div>
 </template>

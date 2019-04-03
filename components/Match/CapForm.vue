@@ -44,14 +44,10 @@
               slot-scope="data"
             >
               <v-list-tile-action>
-                <v-list-tile-action-text
-                  v-text="data.item.pos"
-                />
+                <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
               </v-list-tile-action>
               <v-list-tile-content>
-                <v-list-tile-title
-                  v-text="data.item.name"
-                />
+                <v-list-tile-title>{{ data.item.name }}</v-list-tile-title>
               </v-list-tile-content>
             </template>
           </v-select>

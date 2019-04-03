@@ -12,9 +12,7 @@
           slot="activator"
           icon
         >
-          <v-icon
-            v-text="'mdi-minus-circle'"
-          />
+          <v-icon>mdi-minus-circle</v-icon>
         </v-btn>
         Remove
       </v-tooltip>
@@ -29,14 +27,12 @@
         dark
         flat
         @click="removePlayer"
-        v-text="'Yes'"
-      />
+      >Yes</v-btn>
       <v-btn
         dark
         flat
         @click.stop="snackbar = false"
-        v-text="'No'"
-      />
+      >No</v-btn>
     </v-snackbar>
   </div>
 </template>
