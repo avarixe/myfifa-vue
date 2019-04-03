@@ -30,6 +30,14 @@
           />
         </v-flex>
       </v-card-text>
+
+      <v-alert
+        type="error"
+        v-model="formError"
+        dismissible
+        v-text="errorMessage"
+      />
+
       <v-card-actions>
         <v-spacer/>
         <user-form>
@@ -45,6 +53,8 @@
           color="primary"
           flat
           large
+          :loading="loading"
+          @click="loading = true"
         >Log In</v-btn>
       </v-card-actions>
     </v-card>
@@ -61,16 +71,29 @@
     },
     data: () => ({
       visible: false,
+      loading: false,
+      errorMessage: '',
       credentials: {
         username: '',
         password: '',
         grant_type: 'password'
       }
     }),
+    computed: {
+      formError: {
+        get: function () { return this.errorMessage.length > 0 },
+        set: function (val) { this.errorMessage = val }
+      }
+    },
     methods: {
       async authenticate () {
-        const { data } = await this.$store.dispatch('login', this.credentials)
-        Cookie.set('token', data.access_token, data.expires_in / 86400)
+        try {
+          const { data } = await this.$store.dispatch('login', this.credentials)
+          Cookie.set('token', data.access_token, data.expires_in / 86400)
+        } catch (e) {
+          this.errorMessage = e.message
+          this.loading = false
+        }
       }
     }
   }
