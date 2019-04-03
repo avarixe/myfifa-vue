@@ -65,6 +65,8 @@
             :color="buttonColor"
             flat
             large
+            :loading="loading"
+            @click="loading = true"
             v-text="'Save'"
           />
         </v-card-actions>
@@ -97,6 +99,7 @@
       return {
         dialog: this.value,
         valid: false,
+        loading: false,
         errorMessage: ''
       }
     },
@@ -128,6 +131,7 @@
             console.log(e)
             console.log(e.message)
             this.errorMessage = e.message
+            this.loading = false
           }
         }
       }
