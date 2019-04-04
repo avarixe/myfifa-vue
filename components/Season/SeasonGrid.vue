@@ -19,8 +19,7 @@
         lg3
       >
         <season-item
-          :season="parseInt(props.item[0])"
-          :competitions="props.item[1]"
+          :season="parseInt(props.item)"
         />
       </v-flex>
     </template>
@@ -28,9 +27,6 @@
 </template>
 
 <script>
-  import {
-    Competition
-  } from '@/models'
   import {
     TeamAccessible
   } from '@/mixins'
@@ -47,21 +43,11 @@
       }
     }),
     computed: {
-      competitions () {
-        return Competition
-          .query()
-          .where('team_id', this.team.id)
-          .get()
+      numSeasons () {
+        return this.season > 0 ? this.season + 1 : 1
       },
       rows () {
-        return this.$_orderBy(
-          Object.entries(this.$_groupBy(
-            this.competitions,
-            competition => competition.season
-          )),
-          season => season[0],
-          'desc'
-        )
+        return [...Array(this.numSeasons).keys()].reverse()
       }
     }
   }

@@ -89,6 +89,7 @@
           Cookie.set('token', data.access_token, data.expires_in / 86400)
         } catch (e) {
           this.errorMessage = e.message
+        } finally {
           this.loading = false
         }
       }

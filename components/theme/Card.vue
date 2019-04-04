@@ -25,7 +25,6 @@
           <h4
             class="title font-weight-light mb-2"
           >{{ title }}</h4>
-          />
           <p
             class="category font-weight-thin"
           >{{ text }}</p>

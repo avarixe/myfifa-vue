@@ -62,7 +62,8 @@
     addYears
   } from 'date-fns'
   import {
-    Team
+    Team,
+    Competition
   } from '@/models'
 
   export default {
@@ -73,15 +74,17 @@
       season: {
         type: Number,
         required: true
-      },
-      competitions: {
-        type: Array,
-        required: true
       }
     },
     computed: {
       team () {
         return Team.find(this.$route.params.teamId)
+      },
+      competitions () {
+        return Competition
+          .query()
+          .where('season', this.season)
+          .get()
       },
       seasonLabel () {
         let start = addYears(this.team.start_date, this.season)
