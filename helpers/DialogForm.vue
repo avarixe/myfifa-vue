@@ -127,6 +127,7 @@
             console.log(e)
             console.log(e.message)
             this.errorMessage = e.message
+          } finally {
             this.loading = false
           }
         }
