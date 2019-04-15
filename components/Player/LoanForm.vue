@@ -121,7 +121,7 @@
       }
     },
     methods: {
-      ...mapActions('entities/loans', {
+      ...mapActions('loans', {
         create: 'CREATE',
         update: 'UPDATE'
       }),

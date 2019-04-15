@@ -58,6 +58,8 @@ export default {
       new VuetifyLoaderPlugin()
     ],
 
+    postcss: {},
+
     extractCSS: true,
 
     extend (config, { isDev, isClient }) {

@@ -170,11 +170,11 @@
     },
     async fetch ({ store, params }) {
       await Promise.all([
-        store.dispatch('entities/matches/GET', params),
-        store.dispatch('entities/caps/FETCH', params),
-        store.dispatch('entities/bookings/FETCH', params),
-        store.dispatch('entities/goals/FETCH', params),
-        store.dispatch('entities/substitutions/FETCH', params)
+        store.dispatch('matches/GET', params),
+        store.dispatch('caps/FETCH', params),
+        store.dispatch('bookings/FETCH', params),
+        store.dispatch('goals/FETCH', params),
+        store.dispatch('substitutions/FETCH', params)
       ])
     },
     mounted () {
@@ -192,8 +192,8 @@
     },
     methods: {
       ...mapActions({
-        getPlayers: 'entities/players/FETCH',
-        getSquads: 'entities/squads/FETCH'
+        getPlayers: 'players/FETCH',
+        getSquads: 'squads/FETCH'
       })
     }
   }

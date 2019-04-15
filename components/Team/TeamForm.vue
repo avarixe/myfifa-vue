@@ -118,7 +118,7 @@
       }
     },
     methods: {
-      ...mapActions('entities/teams', {
+      ...mapActions('teams', {
         create: 'CREATE',
         update: 'UPDATE'
       }),

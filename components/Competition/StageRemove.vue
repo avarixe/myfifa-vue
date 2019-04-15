@@ -27,7 +27,7 @@
     >
       Remove {{ stage.name }}?
       <v-btn
-        @click="$store.dispatch('entities/stages/REMOVE', stage.id)"
+        @click="$store.dispatch('stages/REMOVE', stage.id)"
         dark
         flat
       >Yes</v-btn>

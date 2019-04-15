@@ -42,7 +42,7 @@
       <v-btn
         class="white--text"
         flat
-        @click.stop="$store.dispatch('entities/teams/REMOVE', team.id)"
+        @click.stop="$store.dispatch('teams/REMOVE', team.id)"
       >Yes</v-btn>
       <v-btn
         class="white--text"

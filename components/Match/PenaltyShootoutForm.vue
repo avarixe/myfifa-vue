@@ -66,13 +66,10 @@
     },
     methods: {
       async submit () {
-        await this.$store.dispatch(
-          'entities/penaltyShootouts/CREATE',
-          {
-            matchId: this.match.id,
-            penaltyShootout: this.penaltyShootout
-          }
-        )
+        await this.$store.dispatch('penaltyShootout/CREATE', {
+          matchId: this.match.id,
+          penaltyShootout: this.penaltyShootout
+        })
       }
     }
   }

@@ -3,13 +3,13 @@ import myfifa from '@/api/myfifa'
 import { Booking } from '@/models'
 
 // actions
-const actions = {
+export const actions = {
   FETCH ({ rootState }, { matchId }) {
     return http({
       method: 'get',
       path: myfifa.bookings.index,
       pathData: { matchId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: function ({ data }) { Booking.insert({ data }) }
     })
   },
@@ -18,7 +18,7 @@ const actions = {
       method: 'post',
       path: myfifa.bookings.index,
       pathData: { matchId },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { booking }
     })
   },
@@ -27,12 +27,7 @@ const actions = {
       method: 'delete',
       path: myfifa.bookings.record,
       pathData: { bookingId },
-      token: rootState.session.token
+      token: rootState.token
     })
   }
-}
-
-export default {
-  namespaced: true,
-  actions
 }

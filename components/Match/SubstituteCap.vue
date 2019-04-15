@@ -90,7 +90,7 @@
       return {}
     },
     computed: {
-      ...mapState('entities/matches', [
+      ...mapState('matches', [
         'positions'
       ]),
       events () {
@@ -129,7 +129,7 @@
     },
     methods: {
       setPosition (position) {
-        this.$store.dispatch('entities/caps/UPDATE', {
+        this.$store.dispatch('caps/UPDATE', {
           ...this.cap,
           pos: position
         })

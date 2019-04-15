@@ -3,12 +3,12 @@ import myfifa from '@/api/myfifa'
 import { Stage } from '@/models'
 
 // actions
-const actions = {
+export const actions = {
   FETCH ({ rootState }, { competitionId }) {
     return http({
       path: myfifa.stages.index,
       pathData: { competitionId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: function ({ data }) { Stage.insert({ data }) }
     })
   },
@@ -17,7 +17,7 @@ const actions = {
       method: 'post',
       path: myfifa.stages.index,
       pathData: { competitionId },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { stage }
     })
   },
@@ -26,7 +26,7 @@ const actions = {
       method: 'patch',
       path: myfifa.stages.record,
       pathData: { stageId: stage.id },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { stage }
     })
   },
@@ -35,12 +35,7 @@ const actions = {
       method: 'delete',
       path: myfifa.stages.record,
       pathData: { stageId },
-      token: rootState.session.token
+      token: rootState.token
     })
   }
-}
-
-export default {
-  namespaced: true,
-  actions
 }

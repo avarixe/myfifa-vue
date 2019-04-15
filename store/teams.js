@@ -7,11 +7,11 @@ function saveTeam ({ data }) {
 }
 
 // actions
-const actions = {
+export const actions = {
   FETCH ({ commit, rootState }) {
     return http({
       path: myfifa.teams.index,
-      token: rootState.session.token,
+      token: rootState.token,
       success: saveTeam
     })
   },
@@ -19,7 +19,7 @@ const actions = {
     return http({
       path: myfifa.teams.record,
       pathData: { teamId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: saveTeam
     })
   },
@@ -28,14 +28,14 @@ const actions = {
       method: 'post',
       path: myfifa.analyze.season,
       pathData: { teamId, season },
-      token: rootState.session.token
+      token: rootState.token
     })
   },
   CREATE ({ commit, rootState }, team) {
     return http({
       method: 'post',
       path: myfifa.teams.index,
-      token: rootState.session.token,
+      token: rootState.token,
       data: { team },
       success: saveTeam
     })
@@ -45,7 +45,7 @@ const actions = {
       method: 'patch',
       path: myfifa.teams.record,
       pathData: { teamId: team.id },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { team },
       success: saveTeam
     })
@@ -55,15 +55,10 @@ const actions = {
       method: 'delete',
       path: myfifa.teams.record,
       pathData: { teamId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: ({ data }) => {
         Team.delete(data.id)
       }
     })
   }
-}
-
-export default {
-  namespaced: true,
-  actions
 }

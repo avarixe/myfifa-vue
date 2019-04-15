@@ -26,7 +26,7 @@
       <v-btn
         dark
         flat
-        @click="$store.dispatch('entities/players/RETIRE', player.id)"
+        @click="$store.dispatch('players/RETIRE', player.id)"
       >Yes</v-btn>
       <v-btn
         dark

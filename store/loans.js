@@ -3,12 +3,12 @@ import myfifa from '@/api/myfifa'
 import { Loan } from '@/models'
 
 // actions
-const actions = {
+export const actions = {
   TEAM_FETCH ({ rootState }, { teamId }) {
     return http({
       path: myfifa.loans.teamIndex,
       pathData: { teamId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: ({ data }) => { Loan.insert({ data }) }
     })
   },
@@ -16,7 +16,7 @@ const actions = {
     return http({
       path: myfifa.loans.index,
       pathData: { playerId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: ({ data }) => { Loan.insert({ data }) }
     })
   },
@@ -25,7 +25,7 @@ const actions = {
       method: 'post',
       path: myfifa.loans.index,
       pathData: { playerId },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { loan }
     })
   },
@@ -34,13 +34,8 @@ const actions = {
       method: 'patch',
       path: myfifa.loans.record,
       pathData: { loanId: loan.id },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { loan }
     })
   }
-}
-
-export default {
-  namespaced: true,
-  actions
 }

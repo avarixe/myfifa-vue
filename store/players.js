@@ -3,7 +3,7 @@ import myfifa from '@/api/myfifa'
 import { Player, PlayerHistory } from '@/models'
 
 // initial state
-const state = () => ({
+export const state = () => ({
   positions: [
     'GK',
     'RB',
@@ -29,7 +29,7 @@ export const actions = {
     return http({
       path: myfifa.players.index,
       pathData: { teamId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: function ({ data }) { Player.insert({ data }) }
     })
   },
@@ -41,7 +41,7 @@ export const actions = {
       return http({
         path: myfifa.players.record,
         pathData: { playerId },
-        token: rootState.session.token,
+        token: rootState.token,
         success: ({ data }) => { Player.insert({ data }) }
       })
     }
@@ -51,7 +51,7 @@ export const actions = {
       method: 'post',
       path: myfifa.analyze.players,
       pathData: { teamId },
-      token: rootState.session.token,
+      token: rootState.token,
       data: {
         query: {
           player_ids: playerIds
@@ -64,7 +64,7 @@ export const actions = {
       method: 'post',
       path: myfifa.players.index,
       pathData: { teamId },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { player }
     })
   },
@@ -73,7 +73,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.players.record,
       pathData: { playerId: player.id },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { player }
     })
   },
@@ -82,7 +82,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.players.record,
       pathData: { playerId },
-      token: rootState.session.token
+      token: rootState.token
     })
   },
   RETIRE ({ rootState }, playerId) {
@@ -90,7 +90,7 @@ export const actions = {
       method: 'post',
       path: myfifa.players.retire,
       pathData: { playerId },
-      token: rootState.session.token
+      token: rootState.token
     })
   },
   RELEASE ({ rootState }, playerId) {
@@ -98,14 +98,14 @@ export const actions = {
       method: 'post',
       path: myfifa.players.release,
       pathData: { playerId },
-      token: rootState.session.token
+      token: rootState.token
     })
   },
   GET_HISTORY ({ rootState }, { playerId }) {
     return http({
       path: myfifa.players.history,
       pathData: { playerId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: function ({ data }) { PlayerHistory.insert({ data }) }
     })
   },
@@ -113,20 +113,14 @@ export const actions = {
     return http({
       path: myfifa.players.currentInjury,
       pathData: { playerId },
-      token: rootState.session.token
+      token: rootState.token
     })
   },
   GET_CURRENT_LOAN ({ rootState }, { playerId }) {
     return http({
       path: myfifa.players.currentLoan,
       pathData: { playerId },
-      token: rootState.session.token
+      token: rootState.token
     })
   }
-}
-
-export default {
-  namespaced: true,
-  state,
-  actions
 }

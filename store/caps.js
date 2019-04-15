@@ -3,12 +3,12 @@ import myfifa from '@/api/myfifa'
 import { Cap } from '@/models'
 
 // actions
-const actions = {
+export const actions = {
   FETCH ({ rootState }, { matchId }) {
     return http({
       path: myfifa.caps.index,
       pathData: { matchId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: ({ data }) => { Cap.insert({ data }) }
     })
   },
@@ -16,7 +16,7 @@ const actions = {
     return http({
       path: myfifa.caps.record,
       pathData: { capId },
-      token: rootState.session.token
+      token: rootState.token
     })
   },
   CREATE ({ rootState }, { matchId, cap }) {
@@ -24,7 +24,7 @@ const actions = {
       method: 'post',
       path: myfifa.caps.index,
       pathData: { matchId },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { cap }
     })
   },
@@ -33,13 +33,8 @@ const actions = {
       method: 'patch',
       path: myfifa.caps.record,
       pathData: { capId: cap.id },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { cap }
     })
   }
-}
-
-export default {
-  namespaced: true,
-  actions
 }

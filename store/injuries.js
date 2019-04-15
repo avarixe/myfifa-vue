@@ -3,12 +3,12 @@ import myfifa from '@/api/myfifa'
 import { Injury } from '@/models'
 
 // actions
-const actions = {
+export const actions = {
   TEAM_FETCH ({ rootState }, { teamId }) {
     return http({
       path: myfifa.injuries.teamIndex,
       pathData: { teamId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: ({ data }) => { Injury.insert({ data }) }
     })
   },
@@ -16,7 +16,7 @@ const actions = {
     return http({
       path: myfifa.injuries.index,
       pathData: { playerId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: ({ data }) => { Injury.insert({ data }) }
     })
   },
@@ -25,7 +25,7 @@ const actions = {
       method: 'post',
       path: myfifa.injuries.index,
       pathData: { playerId },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { injury }
     })
   },
@@ -34,13 +34,8 @@ const actions = {
       method: 'patch',
       path: myfifa.injuries.record,
       pathData: { injuryId: injury.id },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { injury }
     })
   }
-}
-
-export default {
-  namespaced: true,
-  actions
 }

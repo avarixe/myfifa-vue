@@ -58,7 +58,7 @@
     },
     mixins: [ TeamAccessible ],
     async asyncData ({ store, params }) {
-      const { data } = await store.dispatch('entities/teams/ANALYZE_SEASON', params)
+      const { data } = await store.dispatch('teams/ANALYZE_SEASON', params)
       return { seasonData: data }
     },
     head () {

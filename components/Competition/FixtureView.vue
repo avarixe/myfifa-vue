@@ -84,7 +84,7 @@
         if (val) {
           this.fixture = { ...this.fixtureData }
         } else if (this.fixtureChanged) {
-          this.$store.dispatch('entities/fixtures/UPDATE', this.fixture)
+          this.$store.dispatch('fixtures/UPDATE', this.fixture)
         }
       },
       override (val) {

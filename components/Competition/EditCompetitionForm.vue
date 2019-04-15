@@ -114,7 +114,7 @@
     methods: {
       async submit () {
         await this.$store.dispatch(
-          'entities/competitions/UPDATE',
+          'competitions/UPDATE',
           this.competition
         )
       }

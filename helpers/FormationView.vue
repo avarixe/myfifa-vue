@@ -46,7 +46,9 @@
       return { windows }
     },
     computed: {
-      ...mapState('entities/matches', ['positions']),
+      ...mapState('matches', [
+        'positions'
+      ]),
       startingEleven () {
         return this.$_orderBy(
           this.formation.filter(p => !('start' in p) || p.start === 0),

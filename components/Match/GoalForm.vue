@@ -173,7 +173,7 @@
     },
     methods: {
       async submit () {
-        await this.$store.dispatch('entities/goals/CREATE', {
+        await this.$store.dispatch('goals/CREATE', {
           matchId: this.match.id,
           goal: {
             ...this.goal,

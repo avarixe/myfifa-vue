@@ -169,7 +169,7 @@
       this.competition.season = this.season
     },
     methods: {
-      ...mapActions('entities/competitions', {
+      ...mapActions('competitions', {
         create: 'CREATE'
       }),
       async submit () {

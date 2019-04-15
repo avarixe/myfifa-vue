@@ -115,7 +115,7 @@
       }
     },
     computed: {
-      ...mapState('entities/matches', [
+      ...mapState('matches', [
         'positions'
       ]),
       title () {
@@ -141,7 +141,7 @@
       }
     },
     methods: {
-      ...mapActions('entities/squads', {
+      ...mapActions('squads', {
         create: 'CREATE',
         update: 'UPDATE'
       }),

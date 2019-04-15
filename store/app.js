@@ -1,11 +1,11 @@
 // initial state
-const state = () => ({
+export const state = () => ({
   title: '',
   drawer: false
 })
 
 // mutations
-const mutations = {
+export const mutations = {
   SET_TITLE (state, title) {
     state.title = title
   },
@@ -15,10 +15,4 @@ const mutations = {
   TOGGLE_DRAWER (state) {
     state.drawer = !state.drawer
   }
-}
-
-export default {
-  namespaced: true,
-  state,
-  mutations
 }

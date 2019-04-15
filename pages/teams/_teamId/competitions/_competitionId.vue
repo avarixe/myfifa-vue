@@ -198,8 +198,8 @@
     },
     async fetch ({ store, params }) {
       await Promise.all([
-        store.dispatch('entities/competitions/GET', params),
-        store.dispatch('entities/stages/FETCH', params)
+        store.dispatch('competitions/GET', params),
+        store.dispatch('stages/FETCH', params)
       ])
     },
     mounted () {

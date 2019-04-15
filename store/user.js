@@ -2,11 +2,11 @@ import http from '@/api'
 import myfifa from '@/api/myfifa'
 
 // actions
-const actions = {
+export const actions = {
   GET ({ rootState }) {
     return http({
       path: myfifa.users.sync,
-      token: rootState.session.token
+      token: rootState.token
     })
   },
   CREATE ({ commit }, user) {
@@ -26,7 +26,7 @@ const actions = {
     return http({
       method: 'patch',
       path: myfifa.users.record,
-      token: rootState.session.token,
+      token: rootState.token,
       data: { user },
       success () {
         commit('broadcaster/ANNOUNCE', {
@@ -36,9 +36,4 @@ const actions = {
       }
     })
   }
-}
-
-export default {
-  namespaced: true,
-  actions
 }

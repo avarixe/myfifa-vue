@@ -85,7 +85,7 @@
       }
     },
     computed: {
-      ...mapState('entities/matches', [
+      ...mapState('matches', [
         'positions'
       ]),
       players () {
@@ -94,7 +94,7 @@
     },
     methods: {
       async submit () {
-        await this.$store.dispatch('entities/caps/CREATE', {
+        await this.$store.dispatch('caps/CREATE', {
           matchId: this.match.id,
           cap: this.cap
         })

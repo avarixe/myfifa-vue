@@ -14,7 +14,7 @@
       subscriptions: []
     }),
     mounted () {
-      const token = this.$store.state.session.token
+      const token = this.$store.state.token
 
       if (!this.cable && token) {
         const ActionCable = require('actioncable')

@@ -3,13 +3,13 @@ import myfifa from '@/api/myfifa'
 import { Substitution } from '@/models'
 
 // actions
-const actions = {
+export const actions = {
   FETCH ({ rootState }, { matchId }) {
     return http({
       method: 'get',
       path: myfifa.substitutions.index,
       pathData: { matchId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: function ({ data }) { Substitution.insert({ data }) }
     })
   },
@@ -18,7 +18,7 @@ const actions = {
       method: 'post',
       path: myfifa.substitutions.index,
       pathData: { matchId },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { substitution }
     })
   },
@@ -27,12 +27,7 @@ const actions = {
       method: 'delete',
       path: myfifa.substitutions.record,
       pathData: { substitutionId },
-      token: rootState.session.token
+      token: rootState.token
     })
   }
-}
-
-export default {
-  namespaced: true,
-  actions
 }
