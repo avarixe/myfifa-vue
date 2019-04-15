@@ -2,13 +2,13 @@ import http from '@/api'
 import myfifa from '@/api/myfifa'
 
 // actions
-const actions = {
+export const actions = {
   CREATE ({ rootState }, { matchId, penaltyShootout }) {
     return http({
       method: 'post',
       path: myfifa.matches.penaltyShootout,
       pathData: { matchId },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { penalty_shootout: penaltyShootout }
     })
   },
@@ -17,12 +17,7 @@ const actions = {
       method: 'delete',
       path: myfifa.matches.penaltyShootout,
       pathData: { matchId },
-      token: rootState.session.token
+      token: rootState.token
     })
   }
-}
-
-export default {
-  namespaced: true,
-  actions
 }

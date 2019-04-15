@@ -415,7 +415,7 @@
       }
     },
     async fetch ({ store, params }) {
-      await store.dispatch('entities/players/GET', params)
+      await store.dispatch('players/GET', params)
     },
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
@@ -431,10 +431,10 @@
       }
     },
     methods: {
-      ...mapActions({
-        getPlayer: 'entities/players/GET',
-        analyze: 'entities/players/ANALYZE',
-        getHistory: 'entities/players/GET_HISTORY'
+      ...mapActions('players', {
+        getPlayer: 'GET',
+        analyze: 'ANALYZE',
+        getHistory: 'GET_HISTORY'
       }),
       async getStatistics () {
         const { data } = await this.analyze({

@@ -52,14 +52,14 @@
     },
     methods: {
       ...mapActions({
-        getPlayers: 'entities/players/FETCH',
-        getContracts: 'entities/contracts/TEAM_FETCH',
-        getTransfers: 'entities/transfers/TEAM_FETCH',
-        getLoans: 'entities/loans/TEAM_FETCH',
-        getInjuries: 'entities/injuries/TEAM_FETCH',
-        getMatches: 'entities/matches/FETCH',
-        getSquads: 'entities/squads/FETCH',
-        getCompetitions: 'entities/competitions/FETCH'
+        getPlayers: 'players/FETCH',
+        getContracts: 'contracts/TEAM_FETCH',
+        getTransfers: 'transfers/TEAM_FETCH',
+        getLoans: 'loans/TEAM_FETCH',
+        getInjuries: 'injuries/TEAM_FETCH',
+        getMatches: 'matches/FETCH',
+        getSquads: 'squads/FETCH',
+        getCompetitions: 'competitions/FETCH'
       }),
       async loadData ({ resource, handler }) {
         this.status = `Loading ${resource}...`

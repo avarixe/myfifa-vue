@@ -179,7 +179,7 @@
     },
     methods: {
       async submit () {
-        await this.$store.dispatch('entities/transfers/CREATE', {
+        await this.$store.dispatch('transfers/CREATE', {
           playerId: this.player.id,
           transfer: this.transfer
         })

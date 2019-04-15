@@ -108,13 +108,13 @@
       this.reloadTable()
     },
     methods: {
-      ...mapActions('entities/teams', {
-        getTeams: 'FETCH'
+      ...mapActions('teams', {
+        fetch: 'FETCH'
       }),
       async reloadTable () {
         this.loading = true
         try {
-          await this.getTeams()
+          await this.fetch()
         } catch (e) {
           alert(e.message)
         } finally {

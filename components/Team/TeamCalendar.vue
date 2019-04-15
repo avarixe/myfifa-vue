@@ -51,7 +51,7 @@
       },
       async currentDate (val, oldVal) {
         if (oldVal) {
-          await this.$store.dispatch('entities/teams/UPDATE', {
+          await this.$store.dispatch('teams/UPDATE', {
             id: this.team.id,
             current_date: val
           })

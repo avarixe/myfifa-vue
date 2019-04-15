@@ -58,7 +58,7 @@
     methods: {
       removeCompetition () {
         this.$store.dispatch(
-          'entities/competitions/REMOVE',
+          'competitions/REMOVE',
           this.competition.id
         )
 

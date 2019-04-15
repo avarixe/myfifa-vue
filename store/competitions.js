@@ -3,12 +3,12 @@ import myfifa from '@/api/myfifa'
 import { Competition } from '@/models'
 
 // actions
-const actions = {
+export const actions = {
   FETCH ({ state, commit, rootState }, { teamId }) {
     return http({
       path: myfifa.competitions.index,
       pathData: { teamId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: function ({ data }) { Competition.insert({ data }) }
     })
   },
@@ -20,7 +20,7 @@ const actions = {
       return http({
         path: myfifa.competitions.record,
         pathData: { competitionId },
-        token: rootState.session.token,
+        token: rootState.token,
         success: function ({ data }) { Competition.insert({ data }) }
       })
     }
@@ -30,7 +30,7 @@ const actions = {
       method: 'post',
       path: myfifa.competitions.index,
       pathData: { teamId },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { competition }
     })
   },
@@ -39,7 +39,7 @@ const actions = {
       method: 'patch',
       path: myfifa.competitions.record,
       pathData: { competitionId: competition.id },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { competition }
     })
   },
@@ -48,12 +48,7 @@ const actions = {
       method: 'delete',
       path: myfifa.competitions.record,
       pathData: { competitionId },
-      token: rootState.session.token
+      token: rootState.token
     })
   }
-}
-
-export default {
-  namespaced: true,
-  actions
 }

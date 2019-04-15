@@ -52,7 +52,7 @@
     }),
     methods: {
       removeMatch () {
-        this.$store.dispatch('entities/matches/REMOVE', this.match.id)
+        this.$store.dispatch('matches/REMOVE', this.match.id)
         this.$router.push({
           name: 'teams-teamId-matches',
           params: { teamId: this.match.team_id }

@@ -3,13 +3,13 @@ import myfifa from '@/api/myfifa'
 import { Goal } from '@/models'
 
 // actions
-const actions = {
+export const actions = {
   FETCH ({ rootState }, { matchId }) {
     return http({
       method: 'get',
       path: myfifa.goals.index,
       pathData: { matchId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: function ({ data }) { Goal.insert({ data }) }
     })
   },
@@ -18,7 +18,7 @@ const actions = {
       method: 'post',
       path: myfifa.goals.index,
       pathData: { matchId },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { goal }
     })
   },
@@ -27,12 +27,7 @@ const actions = {
       method: 'delete',
       path: myfifa.goals.record,
       pathData: { goalId },
-      token: rootState.session.token
+      token: rootState.token
     })
   }
-}
-
-export default {
-  namespaced: true,
-  actions
 }

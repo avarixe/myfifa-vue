@@ -122,7 +122,7 @@
       }
     },
     methods: {
-      ...mapActions('entities/injuries', {
+      ...mapActions('injuries', {
         create: 'CREATE',
         update: 'UPDATE'
       }),

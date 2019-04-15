@@ -3,7 +3,7 @@ import myfifa from '@/api/myfifa'
 import { Contract } from '@/models'
 
 // initial state
-const state = () => ({
+export const state = () => ({
   bonusRequirementTypes: [
     'Appearances',
     'Goals',
@@ -13,12 +13,12 @@ const state = () => ({
 })
 
 // actions
-const actions = {
+export const actions = {
   TEAM_FETCH ({ rootState }, { teamId }) {
     return http({
       path: myfifa.contracts.teamIndex,
       pathData: { teamId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: ({ data }) => { Contract.insert({ data }) }
     })
   },
@@ -26,7 +26,7 @@ const actions = {
     return http({
       path: myfifa.contracts.index,
       pathData: { playerId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: ({ data }) => { Contract.insert({ data }) }
     })
   },
@@ -35,7 +35,7 @@ const actions = {
       method: 'post',
       path: myfifa.contracts.index,
       pathData: { playerId },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { contract }
     })
   },
@@ -44,14 +44,8 @@ const actions = {
       method: 'patch',
       path: myfifa.contracts.record,
       pathData: { contractId: contract.id },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { contract }
     })
   }
-}
-
-export default {
-  namespaced: true,
-  state,
-  actions
 }

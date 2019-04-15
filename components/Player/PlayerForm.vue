@@ -141,7 +141,7 @@
       }
     },
     computed: {
-      ...mapState('entities/players', [
+      ...mapState('players', [
         'positions'
       ]),
       title () {
@@ -162,7 +162,7 @@
       }
     },
     methods: {
-      ...mapActions('entities/players', {
+      ...mapActions('players', {
         create: 'CREATE',
         update: 'UPDATE'
       }),

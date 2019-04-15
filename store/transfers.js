@@ -2,12 +2,12 @@ import http from '@/api'
 import myfifa from '@/api/myfifa'
 import { Transfer } from '@/models'
 
-const actions = {
+export const actions = {
   TEAM_FETCH ({ rootState }, { teamId }) {
     return http({
       path: myfifa.transfers.teamIndex,
       pathData: { teamId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: ({ data }) => { Transfer.insert({ data }) }
     })
   },
@@ -15,7 +15,7 @@ const actions = {
     return http({
       path: myfifa.transfers.index,
       pathData: { playerId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: ({ data }) => { Transfer.insert({ data }) }
     })
   },
@@ -24,13 +24,8 @@ const actions = {
       method: 'post',
       path: myfifa.transfers.index,
       pathData: { playerId },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { transfer }
     })
   }
-}
-
-export default {
-  namespaced: true,
-  actions
 }

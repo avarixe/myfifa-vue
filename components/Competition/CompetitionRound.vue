@@ -175,13 +175,13 @@
           const { id, name } = this.round
           this.stage = { id, name }
         } else if (this.stageChanged) {
-          this.$store.dispatch('entities/stages/UPDATE', this.stage)
+          this.$store.dispatch('stages/UPDATE', this.stage)
         }
       }
     },
     methods: {
       addFixture () {
-        this.$store.dispatch('entities/fixtures/CREATE', {
+        this.$store.dispatch('fixtures/CREATE', {
           stageId: this.round.id,
           fixture: { home_team: '', away_team: '' }
         })

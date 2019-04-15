@@ -146,10 +146,10 @@
     },
     methods: {
       ...mapActions({
-        removeGoal: 'entities/goals/REMOVE',
-        removeBooking: 'entities/bookings/REMOVE',
-        removeSubstitution: 'entities/substitutions/REMOVE',
-        removePenaltyShootout: 'entities/penaltyShootouts/REMOVE'
+        removeGoal: 'goals/REMOVE',
+        removeBooking: 'bookings/REMOVE',
+        removeSubstitution: 'substitutions/REMOVE',
+        removePenaltyShootout: 'penaltyShootout/REMOVE'
       }),
       async removeEvent (event) {
         if (confirm('Remove ' + event.event_type + '?')) {

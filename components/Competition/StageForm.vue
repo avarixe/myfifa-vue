@@ -112,7 +112,7 @@
     },
     methods: {
       async submit () {
-        await this.$store.dispatch('entities/stages/CREATE', {
+        await this.$store.dispatch('stages/CREATE', {
           competitionId: this.competition.id,
           stage: this.stage
         })

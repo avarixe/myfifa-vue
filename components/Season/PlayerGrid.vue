@@ -161,7 +161,7 @@
       }
     },
     async mounted () {
-      await this.$store.dispatch('entities/players/FETCH', { teamId: this.team.id })
+      await this.$store.dispatch('players/FETCH', { teamId: this.team.id })
 
       for (let playerId of this.seasonData.player_ids) {
         const {

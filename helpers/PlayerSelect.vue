@@ -66,7 +66,6 @@
     },
     methods: {
       updateValue (value) {
-        console.log(arguments)
         this.$emit('input', value)
       }
     },

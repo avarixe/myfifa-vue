@@ -45,7 +45,7 @@
       <v-btn
         dark
         flat
-        @click.native="$store.dispatch('entities/squads/REMOVE', squad.id)"
+        @click.native="$store.dispatch('squads/REMOVE', squad.id)"
       >Yes</v-btn>
       <v-btn
         dark

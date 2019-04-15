@@ -266,7 +266,7 @@
       }
     },
     methods: {
-      ...mapActions('entities/players', {
+      ...mapActions('players', {
         analyze: 'ANALYZE'
       }),
       async reloadStatistics () {

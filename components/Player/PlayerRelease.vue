@@ -26,7 +26,7 @@
       <v-btn
         dark
         flat
-        @click="$store.dispatch('entities/players/RELEASE', player.id)"
+        @click="$store.dispatch('players/RELEASE', player.id)"
       >Yes</v-btn>
       <v-btn
         dark

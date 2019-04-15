@@ -8,7 +8,7 @@ export const actions = {
     return http({
       path: myfifa.squads.index,
       pathData: { teamId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: function ({ data }) { Squad.insert({ data }) }
     })
   },
@@ -20,7 +20,7 @@ export const actions = {
       return http({
         path: myfifa.squads.record,
         pathData: { squadId },
-        token: rootState.session.token,
+        token: rootState.token,
         success: function ({ data }) { Squad.insert({ data }) }
       })
     }
@@ -30,7 +30,7 @@ export const actions = {
       method: 'post',
       path: myfifa.squads.index,
       pathData: { teamId },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { squad }
     })
   },
@@ -39,7 +39,7 @@ export const actions = {
       method: 'patch',
       path: myfifa.squads.record,
       pathData: { squadId: squad.id },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { squad }
     })
   },
@@ -48,12 +48,7 @@ export const actions = {
       method: 'delete',
       path: myfifa.squads.record,
       pathData: { squadId },
-      token: rootState.session.token
+      token: rootState.token
     })
   }
-}
-
-export default {
-  namespaced: true,
-  actions
 }

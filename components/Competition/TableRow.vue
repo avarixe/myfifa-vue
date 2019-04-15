@@ -98,7 +98,7 @@
         if (val) {
           this.row = { ...this.rowData }
         } else if (this.rowChanged) {
-          this.$store.dispatch('entities/tableRows/UPDATE', this.row)
+          this.$store.dispatch('tableRows/UPDATE', this.row)
         }
       },
       override (val) {

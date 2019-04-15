@@ -234,7 +234,7 @@
       }
     },
     computed: {
-      ...mapState('entities/contracts', [
+      ...mapState('contracts', [
         'bonusRequirementTypes'
       ]),
       maxEndDate () {
@@ -267,7 +267,7 @@
     },
     methods: {
       async submit () {
-        await this.$store.dispatch('entities/contracts/CREATE', {
+        await this.$store.dispatch('contracts/CREATE', {
           playerId: this.player.id,
           contract: this.contract
         })

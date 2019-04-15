@@ -153,7 +153,7 @@
       }
     },
     methods: {
-      ...mapActions('entities/matches', {
+      ...mapActions('matches', {
         create: 'CREATE',
         update: 'UPDATE'
       }),

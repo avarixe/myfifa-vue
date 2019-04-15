@@ -11,7 +11,7 @@ export default {
     minute: 0
   }),
   computed: {
-    ...mapState('entities/matches', [
+    ...mapState('matches', [
       'positions'
     ]),
     sortedCaps () {

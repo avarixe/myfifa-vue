@@ -121,7 +121,7 @@
       return {}
     },
     computed: {
-      ...mapState('entities/matches', [
+      ...mapState('matches', [
         'positions'
       ]),
       players () {
@@ -165,7 +165,7 @@
       }
     },
     methods: {
-      ...mapActions('entities/caps', {
+      ...mapActions('caps', {
         update: 'UPDATE'
       }),
       setPosition (position) {

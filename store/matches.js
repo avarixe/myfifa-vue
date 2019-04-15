@@ -3,7 +3,7 @@ import myfifa from '@/api/myfifa'
 import { Match } from '@/models'
 
 // initial state
-const state = () => ({
+export const state = () => ({
   positions: [
     'GK',
     'LB',
@@ -34,12 +34,12 @@ const state = () => ({
 })
 
 // actions
-const actions = {
+export const actions = {
   FETCH ({ rootState }, { teamId }) {
     return http({
       path: myfifa.matches.index,
       pathData: { teamId },
-      token: rootState.session.token,
+      token: rootState.token,
       success: function ({ data }) { Match.insert({ data }) }
     })
   },
@@ -51,7 +51,7 @@ const actions = {
       return http({
         path: myfifa.matches.record,
         pathData: { matchId },
-        token: rootState.session.token,
+        token: rootState.token,
         success: function ({ data }) { Match.insert({ data }) }
       })
     }
@@ -61,7 +61,7 @@ const actions = {
       method: 'post',
       path: myfifa.matches.index,
       pathData: { teamId },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { match }
     })
   },
@@ -70,7 +70,7 @@ const actions = {
       method: 'patch',
       path: myfifa.matches.record,
       pathData: { matchId: match.id },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { match }
     })
   },
@@ -79,7 +79,7 @@ const actions = {
       method: 'delete',
       path: myfifa.matches.record,
       pathData: { matchId },
-      token: rootState.session.token
+      token: rootState.token
     })
   },
   APPLY_SQUAD ({ rootState }, { matchId, squadId }) {
@@ -87,14 +87,8 @@ const actions = {
       method: 'post',
       path: myfifa.matches.applySquad,
       pathData: { matchId },
-      token: rootState.session.token,
+      token: rootState.token,
       data: { squad_id: squadId }
     })
   }
-}
-
-export default {
-  namespaced: true,
-  state,
-  actions
 }
