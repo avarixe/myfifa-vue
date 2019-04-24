@@ -6,19 +6,11 @@
     :submit-cb="submitCb"
     :color="color"
   >
-    <slot
-      slot="activator"
-    />
+    <slot slot="activator" />
 
-    <v-container
-      slot="form"
-    >
-      <v-layout
-        wrap
-      >
-        <v-flex
-          xs12
-        >
+    <v-container slot="form">
+      <v-layout wrap>
+        <v-flex xs12>
           <v-text-field
             v-model="player.name"
             :rules="$_validate('Name', ['required'])"
@@ -30,9 +22,7 @@
             autocorrect="off"
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-select
             v-model="player.pos"
             :rules="$_validate('Position', ['required'])"
@@ -41,9 +31,7 @@
             prepend-icon="mdi-run"
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-select
             v-model="player.sec_pos"
             :items="positions"
@@ -54,9 +42,7 @@
             deletable-chips
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-text-field
             v-model="player.birth_year"
             label="Birth Year"
@@ -65,9 +51,7 @@
             :rules="$_validate('Birth Year', ['required'])"
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-select
             v-model="player.ovr"
             :items="Array.from({ length: 61 }, (v, k) => k + 40)"
@@ -76,9 +60,7 @@
             prepend-icon="mdi-trending-up"
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-text-field
             v-model="player.value"
             :rules="$_validate('Value', ['required'])"
@@ -89,9 +71,7 @@
             persistent-hint
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-checkbox
             v-model="player.youth"
             label="Youth Player"

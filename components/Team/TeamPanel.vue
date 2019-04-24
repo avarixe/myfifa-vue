@@ -1,22 +1,14 @@
 <template>
   <material-card>
-    <template
-      slot="header"
-    >
-      <span
-        class="title font-weight-light mb-2"
-      >Teams</span>
+    <template slot="header">
+      <span class="title font-weight-light mb-2">Teams</span>
       <team-form>
-        <v-tooltip
-          bottom
-        >
+        <v-tooltip bottom>
           <v-btn
             slot="activator"
             flat
           >
-            <v-icon
-              left
-            >mdi-plus-circle-outline</v-icon>
+            <v-icon left>mdi-plus-circle-outline</v-icon>
           </v-btn>
           New Team
         </v-tooltip>
@@ -31,34 +23,16 @@
       disable-initial-sort
       no-data-text="No Teams Recorded"
     >
-      <template
-        slot="headerCell"
-        slot-scope="{ header }"
-      >
-        <span
-          class="subheading font-weight-light text-success text--darken-3"
-        >{{ header.text }}</span>
+      <template #headerCell="{ header }">
+        <span class="subheading font-weight-light text-success text--darken-3">{{ header.text }}</span>
       </template>
-      <template
-        slot="items"
-        slot-scope="props"
-      >
+      <template #items="{ item }">
         <tr>
-          <td
-            class="text-xs-center"
-          >{{ props.item.title }}</td>
-          <td
-            class="text-xs-center"
-          >{{ $_format($_parse(props.item.start_date), 'MMM DD, YYYY') }}</td>
-          <td
-            class="text-xs-center"
-          >{{ $_format($_parse(props.item.current_date), 'MMM DD, YYYY') }}</td>
-          <td
-            class="text-xs-right"
-          >
-            <team-actions
-              :team="props.item"
-            />
+          <td class="text-xs-center">{{ item.title }}</td>
+          <td class="text-xs-center">{{ $_format($_parse(item.start_date), 'MMM DD, YYYY') }}</td>
+          <td class="text-xs-center">{{ $_format($_parse(item.current_date), 'MMM DD, YYYY') }}</td>
+          <td class="text-xs-right">
+            <team-actions :team="item" />
           </td>
         </tr>
       </template>
@@ -68,12 +42,8 @@
 </template>
 
 <script>
-  import {
-    Team
-  } from '@/models'
-  import {
-    mapActions
-  } from 'vuex'
+  import { Team } from '@/models'
+  import { mapActions } from 'vuex'
   import MaterialCard from '@/components/theme/Card'
   import TeamForm from './TeamForm'
   import TeamActions from './TeamActions'

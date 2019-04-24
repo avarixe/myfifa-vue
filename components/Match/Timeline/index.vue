@@ -12,14 +12,10 @@
       :icon="`mdi-${eventIcon(event)}`"
       fill-dot
     >
-      <h2
-        :class="`headline font-weight-light my-0 ${eventColor(event)}--text`"
-      >
+      <h2 :class="`headline font-weight-light my-0 ${eventColor(event)}--text`">
         {{ event.minute }}"
 
-        <span
-          class="caption text-truncate"
-        >{{ event.home ? match.home : match.away }}</span>
+        <span class="caption text-truncate">{{ event.home ? match.home : match.away }}</span>
 
         <v-tooltip
           v-if="team.current_date === match.date_played"
@@ -31,9 +27,7 @@
             icon
             @click="removeEvent(event)"
           >
-            <v-icon
-              :color="eventColor(event)"
-            >mdi-close</v-icon>
+            <v-icon :color="eventColor(event)">mdi-close</v-icon>
           </v-btn>
           Remove
         </v-tooltip>
@@ -44,9 +38,7 @@
         :style="dividerStyle"
       />
 
-      <timeline-content
-        :item="event"
-      />
+      <timeline-content :item="event" />
     </v-timeline-item>
 
     <v-timeline-item
@@ -55,9 +47,7 @@
       color="indigo"
       fill-dot
     >
-      <h2
-        class="headline font-weight-light my-0 indigo--text"
-      >
+      <h2 class="headline font-weight-light my-0 indigo--text">
         Penalty Shootout
 
         <v-tooltip
@@ -71,9 +61,7 @@
             icon
             @click="removePS"
           >
-            <v-icon
-              color="indigo"
-            >mdi-close</v-icon>
+            <v-icon color="indigo">mdi-close</v-icon>
           </v-btn>
           Remove
         </v-tooltip>
@@ -84,24 +72,20 @@
         :style="dividerStyle"
       />
 
-      <timeline-content
-        :item="penaltyShootoutEvent"
-      />
+      <timeline-content :item="penaltyShootoutEvent" />
     </v-timeline-item>
   </v-timeline>
 </template>
 
 <script>
   import TimelineContent from './TimelineContent'
-  import {
-    mapActions
-  } from 'vuex'
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { mapActions } from 'vuex'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     components: {
       TimelineContent
     },

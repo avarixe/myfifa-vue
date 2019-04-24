@@ -7,12 +7,13 @@
     :bottom="dir === 'bottom'"
   >
     <v-btn
-      slot="activator"
+      #activator="{ on }"
       small
       icon
       @click.stop="$emit('toggle-mode')"
     >
       <v-icon
+        v-on="on"
         :color="color"
         small
       >mdi-{{ icon }}</v-icon>

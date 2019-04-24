@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="d-inline-block"
-  >
+  <div class="d-inline-block">
     <v-tooltip
       bottom
       color="brown"
@@ -11,9 +9,7 @@
         icon
         @click.stop="snackbar = true"
       >
-        <v-icon
-          color="brown"
-        >mdi-door-open</v-icon>
+        <v-icon color="brown">mdi-door-open</v-icon>
       </v-btn>
       Release
     </v-tooltip>

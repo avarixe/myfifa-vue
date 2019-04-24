@@ -5,19 +5,13 @@
     :submit="submit"
     :color="color"
   >
-    <slot
-      slot="activator"
-    />
+    <template #activator="{ on }">
+      <slot :on="on" />
+    </template>
 
-    <v-container
-      slot="form"
-    >
-      <v-layout
-        wrap
-      >
-        <v-flex
-          xs12
-        >
+    <v-container slot="form">
+      <v-layout wrap>
+        <v-flex xs12>
           <v-combobox
             v-model="match.competition"
             :items="competitions"
@@ -30,9 +24,7 @@
             autocorrect="off"
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-combobox
             v-model="match.home"
             :items="teams"
@@ -56,9 +48,7 @@
             </v-tooltip>
           </v-combobox>
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-combobox
             v-model="match.away"
             :items="teams"
@@ -82,9 +72,7 @@
             </v-tooltip>
           </v-combobox>
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-checkbox
             v-model="match.extra_time"
             label="Extra Time Required"
@@ -96,9 +84,7 @@
 </template>
 
 <script>
-  import {
-    mapActions
-  } from 'vuex'
+  import { mapActions } from 'vuex'
   import {
     competitions,
     teams

@@ -5,19 +5,11 @@
     :submit="submit"
     :color="color"
   >
-    <slot
-      slot="activator"
-    />
+    <slot slot="activator" />
 
-    <v-container
-      slot="form"
-    >
-      <v-layout
-        wrap
-      >
-        <v-flex
-          xs12
-        >
+    <v-container slot="form">
+      <v-layout wrap>
+        <v-flex xs12>
           <v-text-field
             v-model="team.title"
             :rules="$_validate('Team', ['required'])"
@@ -29,9 +21,7 @@
             autocorrect="off"
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-menu
             v-model="menu"
             ref="menu"
@@ -57,9 +47,7 @@
             />
           </v-menu>
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-text-field
             v-model="team.currency"
             :rules="$_validate('Currency', ['required'])"
@@ -72,18 +60,14 @@
 </template>
 
 <script>
-  import {
-    mapActions
-  } from 'vuex'
-  import {
-    Team
-  } from '@/models'
-  import {
-    DialogFormable
-  } from '@/mixins'
+  import { mapActions } from 'vuex'
+  import { Team } from '@/models'
+  import { DialogFormable } from '@/mixins'
 
   export default {
-    mixins: [ DialogFormable ],
+    mixins: [
+      DialogFormable
+    ],
     props: {
       teamId: [String, Number]
     },

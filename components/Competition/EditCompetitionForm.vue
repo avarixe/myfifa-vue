@@ -5,19 +5,11 @@
     :submit="submit"
     :color="color"
   >
-    <slot
-      slot="activator"
-    />
+    <slot slot="activator" />
 
-    <v-container
-      slot="form"
-    >
-      <v-layout
-        wrap
-      >
-        <v-flex
-          xs12
-        >
+    <v-container slot="form">
+      <v-layout wrap>
+        <v-flex xs12>
           <v-text-field
             :value="seasonLabel(competitionData.season)"
             label="Season"
@@ -25,9 +17,7 @@
             disabled
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-combobox
             v-model="competition.name"
             :items="competitions"
@@ -40,9 +30,7 @@
             autocorrect="off"
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-select
             v-model="competition.champion"
             :items="teams"

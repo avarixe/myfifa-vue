@@ -1,17 +1,13 @@
 <template>
   <material-card>
-    <template
-      slot="header"
-    >
+    <template slot="header">
       <span
         v-text="'Matches'"
         class="title font-weight-light mb-2"
       />
 
       <match-form>
-        <v-tooltip
-          bottom
-        >
+        <v-tooltip bottom>
           <v-btn
             slot="activator"
             flat
@@ -65,17 +61,10 @@
       item-key="id"
       no-data-text="No Matches Recorded"
     >
-      <template
-        slot="headerCell"
-        slot-scope="{ header }">
-        <span
-          class="subheading font-weight-light text-success text--darken-3"
-        >{{ header.text }}</span>
+      <template #headerCell="{ header }">
+        <span class="subheading font-weight-light text-success text--darken-3">{{ header.text }}</span>
       </template>
-      <template
-        slot="items"
-        slot-scope="props"
-      >
+      <template #items="{ item }">
         <td>
           <v-tooltip
             right
@@ -83,7 +72,7 @@
           >
             <v-btn
               slot="activator"
-              :to="matchLink(props.item)"
+              :to="matchLink(item)"
               small
               icon
               class="my-0"
@@ -96,21 +85,11 @@
             View Match
           </v-tooltip>
         </td>
-        <td
-          class="text-xs-center"
-        >{{ props.item.competition }}</td>
-        <td
-          class="text-xs-right"
-        >{{ props.item.home }}</td>
-        <td
-          :class="resultColor(props.item.team_result) + '--text text-xs-center'"
-        >{{ props.item.score }}</td>
-        <td
-          class="text-xs-left"
-        >{{ props.item.away }}</td>
-        <td
-          class="text-xs-center"
-        >{{ $_format($_parse(props.item.date_played), 'MMM DD, YYYY') }}</td>
+        <td class="text-xs-center">{{ item.competition }}</td>
+        <td class="text-xs-right">{{ item.home }}</td>
+        <td :class="resultColor(item.team_result) + '--text text-xs-center'">{{ item.score }}</td>
+        <td class="text-xs-left">{{ item.away }}</td>
+        <td class="text-xs-center">{{ $_format($_parse(item.date_played), 'MMM DD, YYYY') }}</td>
       </template>
     </v-data-table>
 
@@ -125,15 +104,13 @@
   import MatchForm from './MatchForm'
   import MatchRemove from './MatchRemove'
   import MaterialCard from '@/components/theme/Card'
-  import {
-    TeamAccessible
-  } from '@/mixins'
-  import {
-    addYears
-  } from 'date-fns'
+  import { TeamAccessible } from '@/mixins'
+  import { addYears } from 'date-fns'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     components: {
       MatchForm,
       MatchRemove,

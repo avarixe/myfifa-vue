@@ -6,9 +6,7 @@
     :submit-cb="submitCb"
     color="pink"
   >
-    <slot
-      slot="activator"
-    >
+    <slot slot="activator">
       <v-tooltip
         bottom
         color="pink"
@@ -17,23 +15,15 @@
           slot="activator"
           icon
         >
-          <v-icon
-            color="pink"
-          >mdi-hospital</v-icon>
+          <v-icon color="pink">mdi-hospital</v-icon>
         </v-btn>
         {{ title }}
       </v-tooltip>
     </slot>
 
-    <v-container
-      slot="form"
-    >
-      <v-layout
-        wrap
-      >
-        <v-flex
-          xs12
-        >
+    <v-container slot="form">
+      <v-layout wrap>
+        <v-flex xs12>
           <v-text-field
             v-model="injury.description"
             :rules="$_validate('Description', ['required'])"
@@ -45,9 +35,7 @@
             autocorrect="off"
           />
         </v-flex>
-        <v-scroll-y-transition
-          mode="out-in"
-        >
+        <v-scroll-y-transition mode="out-in">
           <v-flex
             v-if="playerInjured"
             xs12
@@ -64,18 +52,14 @@
 </template>
 
 <script>
-  import {
-    mapActions
-  } from 'vuex'
-  import {
-    Injury
-  } from '@/models'
-  import {
-    DialogFormable
-  } from '@/mixins'
+  import { mapActions } from 'vuex'
+  import { Injury } from '@/models'
+  import { DialogFormable } from '@/mixins'
 
   export default {
-    mixins: [ DialogFormable ],
+    mixins: [
+      DialogFormable
+    ],
     props: {
       player: {
         type: Object,

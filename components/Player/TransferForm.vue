@@ -6,9 +6,7 @@
     :submit-cb="submitCb"
     :color="transferOut ? 'red' : 'green'"
   >
-    <slot
-      slot="activator"
-    >
+    <slot slot="activator">
       <v-tooltip
         bottom
         :color="transferOut ? 'red' : 'green'"
@@ -17,23 +15,15 @@
           slot="activator"
           icon
         >
-          <v-icon
-            :color="transferOut ? 'red' : 'green'"
-          >mdi-airplane-{{ transferOut ? 'takeoff' : 'landing' }}</v-icon>
+          <v-icon :color="transferOut ? 'red' : 'green'">mdi-airplane-{{ transferOut ? 'takeoff' : 'landing' }}</v-icon>
         </v-btn>
         Transfer {{ transferOut ? 'Out' : 'In' }}
       </v-tooltip>
     </slot>
 
-    <v-container
-      slot="form"
-    >
-      <v-layout
-        wrap
-      >
-        <v-flex
-          xs12
-        >
+    <v-container slot="form">
+      <v-layout wrap>
+        <v-flex xs12>
           <v-menu
             v-model="menu"
             ref="menu"
@@ -58,9 +48,7 @@
             />
           </v-menu>
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-text-field
             v-model="transfer.origin"
             :rules="$_validate('Origin', ['required'])"
@@ -73,9 +61,7 @@
             autocorrect="off"
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-text-field
             v-model="transfer.destination"
             :rules="$_validate('Destination', ['required'])"
@@ -88,9 +74,7 @@
             autocorrect="off"
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-text-field
             v-model="transfer.fee"
             type="number"
@@ -100,9 +84,7 @@
             persistent-hint
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-text-field
             v-model="transfer.addon_clause"
             label="Add-On Clause (%)"
@@ -112,9 +94,7 @@
             max="25"
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-checkbox
             v-model="transfer.loan"
             label="Loan"

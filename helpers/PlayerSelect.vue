@@ -12,15 +12,12 @@
     :clearable="clearable"
     :hide-details="hideDetails"
   >
-    <template
-      slot="item"
-      slot-scope="data"
-    >
+    <template #item="{ item }">
       <v-list-tile-action>
-        <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
+        <v-list-tile-action-text>{{ item.pos }}</v-list-tile-action-text>
       </v-list-tile-action>
       <v-list-tile-content>
-        <v-list-tile-title>{{ data.item.name }}</v-list-tile-title>
+        <v-list-tile-title>{{ item.name }}</v-list-tile-title>
       </v-list-tile-content>
     </template>
   </v-select>

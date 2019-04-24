@@ -6,9 +6,7 @@
     :submit-cb="submitCb"
     color="blue"
   >
-    <slot
-      slot="activator"
-    >
+    <slot slot="activator">
       <v-tooltip
         bottom
         color="blue"
@@ -17,23 +15,15 @@
           slot="activator"
           icon
         >
-          <v-icon
-            color="blue"
-          >mdi-file-document-outline</v-icon>
+          <v-icon color="blue">mdi-file-document-outline</v-icon>
         </v-btn>
         {{ title }}
       </v-tooltip>
     </slot>
 
-    <v-container
-      slot="form"
-    >
-      <v-layout
-        wrap
-      >
-        <v-flex
-          xs12
-        >
+    <v-container slot="form">
+      <v-layout wrap>
+        <v-flex xs12>
           <v-menu
             v-model="menus.effective_date"
             ref="menu1"
@@ -62,9 +52,7 @@
           </v-menu>
         </v-flex>
 
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-menu
             v-model="menus.end_date"
             ref="menu2"
@@ -93,9 +81,7 @@
           </v-menu>
         </v-flex>
 
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-text-field
             v-model="contract.wage"
             :rules="$_validate('Wage', ['required'])"
@@ -107,9 +93,7 @@
           />
         </v-flex>
 
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-text-field
             v-model="contract.signing_bonus"
             type="number"
@@ -120,9 +104,7 @@
           />
         </v-flex>
 
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-text-field
             v-model="contract.release_clause"
             type="number"
@@ -133,9 +115,7 @@
           />
         </v-flex>
 
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-text-field
             v-model="contract.performance_bonus"
             type="number"
@@ -146,9 +126,7 @@
           />
         </v-flex>
 
-        <v-scroll-y-transition
-          mode="out-in"
-        >
+        <v-scroll-y-transition mode="out-in">
           <v-flex
             v-if="contract.performance_bonus"
             xs12
@@ -163,9 +141,7 @@
           </v-flex>
         </v-scroll-y-transition>
 
-        <v-scroll-y-transition
-          mode="out-in"
-        >
+        <v-scroll-y-transition mode="out-in">
           <v-flex
             v-if="contract.performance_bonus"
             xs12
@@ -185,15 +161,9 @@
 </template>
 
 <script>
-  import {
-    mapState
-  } from 'vuex'
-  import {
-    addYears
-  } from 'date-fns'
-  import {
-    Contract
-  } from '@/models'
+  import { mapState } from 'vuex'
+  import { addYears } from 'date-fns'
+  import { Contract } from '@/models'
   import {
     TeamAccessible,
     DialogFormable

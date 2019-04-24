@@ -1,8 +1,6 @@
 <template>
   <div>
-    <span
-      class="font-weight-bold"
-    >{{ item.player_name }}</span>
+    <span class="font-weight-bold">{{ item.player_name }}</span>
     has received a {{ bookingType }}
   </div>
 </template>

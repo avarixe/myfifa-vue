@@ -7,35 +7,23 @@
       row
       wrap
     >
-      <v-flex
-        xs12
-      >
+      <v-flex xs12>
         <v-btn
           :to="seasonLink"
           nuxt
         >View Season</v-btn>
       </v-flex>
-      <v-flex
-        xs12
-      >
+      <v-flex xs12>
         <material-card>
-          <template
-            slot="header"
-          >
+          <template slot="header">
             <v-layout
               class="text-xs-center"
               row
               wrap
             >
-              <v-flex
-                xs12
-              >
-                <div
-                  class="subheading"
-                >{{ seasonLabel(competition.season) }}</div>
-                <div
-                  class="display-1"
-                >{{ competition.name }}</div>
+              <v-flex xs12>
+                <div class="subheading">{{ seasonLabel(competition.season) }}</div>
+                <div class="display-1">{{ competition.name }}</div>
               </v-flex>
             </v-layout>
           </template>
@@ -49,9 +37,7 @@
               v-if="competition.champion"
               xs12
             >
-              <div
-                class="title"
-              >
+              <div class="title">
                 <v-icon
                   color="yellow darken-2"
                   left
@@ -86,12 +72,8 @@
                   color="teal"
                 >Add Stage</v-btn>
               </stage-form>
-              <competition-remove
-                :competition="competition"
-              >
-                <v-btn
-                  dark
-                >Remove</v-btn>
+              <competition-remove :competition="competition">
+                <v-btn dark>Remove</v-btn>
               </competition-remove>
             </v-flex>
           </v-layout>
@@ -134,23 +116,21 @@
 </template>
 
 <script>
-  import {
-    Competition
-  } from '@/models'
+  import { Competition } from '@/models'
   import MaterialCard from '@/components/theme/Card'
   import EditCompetitionForm from '@/components/Competition/EditCompetitionForm'
   import CompetitionTable from '@/components/Competition/CompetitionTable'
   import CompetitionRound from '@/components/Competition/CompetitionRound'
   import CompetitionRemove from '@/components/Competition/CompetitionRemove'
   import StageForm from '@/components/Competition/StageForm'
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
     layout: 'team',
     middleware: 'authenticated',
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     components: {
       MaterialCard,
       EditCompetitionForm,

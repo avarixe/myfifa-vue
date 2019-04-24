@@ -1,8 +1,6 @@
 <template>
   <v-container>
-    <formation-view
-      :formation="sortedCaps"
-    >
+    <formation-view :formation="sortedCaps">
       <match-cap
         slot="item"
         slot-scope="{ player }"
@@ -17,9 +15,7 @@
       row
       wrap
     >
-      <v-flex
-        xs12
-      >
+      <v-flex xs12>
         <v-list
           id="substitutes"
           dense
@@ -43,9 +39,7 @@
     TeamAccessible,
     MatchAccessible
   } from '@/mixins'
-  import {
-    FormationView
-  } from '@/helpers'
+  import { FormationView } from '@/helpers'
   import MatchCap from './MatchCap'
   import SubstituteCap from './SubstituteCap'
 

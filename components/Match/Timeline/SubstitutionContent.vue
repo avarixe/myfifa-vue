@@ -1,12 +1,8 @@
 <template>
   <div>
-    <span
-      class="font-weight-bold"
-    >{{ item.player_name }}</span>
+    <span class="font-weight-bold">{{ item.player_name }}</span>
     {{ action }}
-    <span
-      class="font-weight-bold"
-    >{{ item.replaced_by }}</span>
+    <span class="font-weight-bold">{{ item.replaced_by }}</span>
   </div>
 </template>
 

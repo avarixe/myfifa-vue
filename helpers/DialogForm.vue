@@ -5,10 +5,12 @@
     lazy
     :max-width="fullWidth ? '' : '500px'"
   >
-    <slot
-      name="activator"
-      slot="activator"
-    />
+    <template v-slot:activator="{ on }">
+      <slot
+        name="activator"
+        :on="on"
+      />
+    </template>
 
     <v-form
       v-model="valid"
@@ -20,15 +22,9 @@
           primary-title
           :class="formColor"
         >
-          <slot
-            name="header"
-          >
-            <div
-              class="headline"
-            >
-              <v-icon
-                left
-              >{{ titleIcon }}</v-icon>
+          <slot name="header">
+            <div class="headline">
+              <v-icon left>{{ titleIcon }}</v-icon>
               {{ title }}
             </div>
           </slot>
@@ -37,9 +33,7 @@
         <v-divider />
 
         <v-card-text>
-          <slot
-            name="form"
-          />
+          <slot name="form" />
         </v-card-text>
 
         <v-alert

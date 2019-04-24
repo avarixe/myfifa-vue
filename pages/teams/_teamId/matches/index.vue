@@ -7,9 +7,7 @@
       row
       wrap
     >
-      <v-flex
-        xs12
-      >
+      <v-flex xs12>
         <match-grid />
       </v-flex>
     </v-layout>
@@ -17,15 +15,15 @@
 </template>
 
 <script>
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { TeamAccessible } from '@/mixins'
   import MatchGrid from '@/components/Match/MatchGrid'
 
   export default {
     layout: 'team',
     middleware: 'authenticated',
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     head () {
       return {
         title: `${this.team.title} - Matches`

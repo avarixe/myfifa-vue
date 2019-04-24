@@ -5,19 +5,11 @@
     :submit="submit"
     :color="color"
   >
-    <slot
-      slot="activator"
-    />
+    <slot slot="activator" />
 
-    <v-container
-      slot="form"
-    >
-      <v-layout
-        wrap
-      >
-        <v-flex
-          xs12
-        >
+    <v-container slot="form">
+      <v-layout wrap>
+        <v-flex xs12>
           <v-text-field
             v-model="squad.name"
             :rules="$_validate('Name', ['required'])"
@@ -37,9 +29,7 @@
         row
         wrap
       >
-        <v-flex
-          xs4
-        >
+        <v-flex xs4>
           <v-select
             v-model="squad.positions_list[i]"
             :items="positions"
@@ -49,9 +39,7 @@
           />
         </v-flex>
 
-        <v-flex
-          xs8
-        >
+        <v-flex xs8>
           <v-select
             v-model="squad.players_list[i]"
             :items="players"
@@ -61,15 +49,12 @@
             prepend-icon="mdi-account"
             hide-details
           >
-            <template
-              slot="item"
-              slot-scope="data"
-            >
+            <template #item="{ item }">
               <v-list-tile-action>
-                <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
+                <v-list-tile-action-text>{{ item.pos }}</v-list-tile-action-text>
               </v-list-tile-action>
               <v-list-tile-content>
-                <v-list-tile-title>{{ data.item.name }}</v-list-tile-title>
+                <v-list-tile-title>{{ item.name }}</v-list-tile-title>
               </v-list-tile-content>
             </template>
           </v-select>
@@ -84,9 +69,7 @@
     mapState,
     mapActions
   } from 'vuex'
-  import {
-    activePlayers
-  } from '@/models/Player'
+  import { activePlayers } from '@/models/Player'
   import {
     TeamAccessible,
     DialogFormable

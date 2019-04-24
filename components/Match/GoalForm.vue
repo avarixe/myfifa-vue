@@ -6,19 +6,13 @@
     :submit="submit"
     :color="color"
   >
-    <slot
-      slot="activator"
-    />
+    <template #activator="{ on }">
+      <slot :on="on" />
+    </template>
 
-    <v-container
-      slot="form"
-    >
-      <v-layout
-        wrap
-      >
-        <v-flex
-          xs12
-        >
+    <v-container slot="form">
+      <v-layout wrap>
+        <v-flex xs12>
           <v-radio-group
             v-model="goal.home"
             row
@@ -36,17 +30,13 @@
             />
           </v-radio-group>
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <minute-field
             v-model="minute"
             :extra-time="match.extra_time"
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <player-select
             v-if="teamGoal"
             v-model="goal.player_id"
@@ -66,9 +56,7 @@
             autocorrect="off"
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <player-select
             v-if="teamGoal"
             v-model="goal.assist_id"
@@ -92,9 +80,7 @@
             autocorrect="off"
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-checkbox
             label="Penalty"
             v-model="goal.penalty"
@@ -102,9 +88,7 @@
             hide-details
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-checkbox
             label="Own Goal"
             v-model="goal.own_goal"

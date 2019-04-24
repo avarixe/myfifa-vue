@@ -6,19 +6,13 @@
     :submit="submit"
     :color="color"
   >
-    <slot
-      slot="activator"
-    />
+    <template #activator="{ on }">
+      <slot :on="on" />
+    </template>
 
-    <v-container
-      slot="form"
-    >
-      <v-layout
-        wrap
-      >
-        <v-flex
-          xs12
-        >
+    <v-container slot="form">
+      <v-layout wrap>
+        <v-flex xs12>
           <v-radio-group
             v-model="booking.red_card"
             row
@@ -36,17 +30,13 @@
             />
           </v-radio-group>
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <minute-field
             v-model="minute"
             :extra-time="match.extra_time"
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <player-select
             v-model="booking.player_id"
             :players="unsubbedPlayers"

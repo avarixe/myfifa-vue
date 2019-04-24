@@ -4,13 +4,9 @@
     :title="title"
     :submit="submit"
   >
-    <slot
-      slot="activator"
-    />
+    <slot slot="activator" />
 
-    <v-container
-      slot="form"
-    >
+    <v-container slot="form">
       <v-text-field
         v-model="user.full_name"
         label="Name"
@@ -28,9 +24,7 @@
         type="email"
         :rules="$_validate('Email', ['required', 'email'])"
       />
-      <template
-        v-if="!user.id"
-      >
+      <template v-if="!user.id">
         <v-text-field
           v-model="user.password"
           label="Password"
@@ -54,15 +48,13 @@
 
 
 <script>
-  import {
-    mapActions
-  } from 'vuex'
-  import {
-    DialogFormable
-  } from '@/mixins'
+  import { mapActions } from 'vuex'
+  import { DialogFormable } from '@/mixins'
 
   export default {
-    mixins: [ DialogFormable ],
+    mixins: [
+      DialogFormable
+    ],
     data: () => ({
       visible1: false,
       visible2: false,

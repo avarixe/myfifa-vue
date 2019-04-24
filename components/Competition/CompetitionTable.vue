@@ -1,14 +1,8 @@
 <template>
-  <v-expansion-panel-content
-    class="elevation-1"
-  >
-    <template
-      slot="header"
-    >
+  <v-expansion-panel-content class="elevation-1">
+    <template slot="header">
       <div>
-        <template
-          v-if="edit"
-        >
+        <template v-if="edit">
           <v-text-field
             v-model="stage.name"
             :rules="$_validate('Stage Name', ['required'])"
@@ -16,21 +10,15 @@
             @click.stop
           />
         </template>
-        <span
-          v-else
-        >{{ table.name }}</span>
+        <span v-else>{{ table.name }}</span>
 
-        <template
-          v-if="!readonly"
-        >
+        <template v-if="!readonly">
           <edit-mode-button
             :mode="edit"
             :changed="stageChanged"
             @toggle-mode="edit = !edit"
           />
-          <stage-remove
-            :stage="table"
-          />
+          <stage-remove :stage="table" />
         </template>
       </div>
     </template>
@@ -53,9 +41,7 @@
             :class="`text-xs-${header.align}`"
             :width="header.width"
           >
-            <template
-              v-if="header.value"
-            >{{ header.text }}</template>
+            <template v-if="header.value">{{ header.text }}</template>
             <v-tooltip
               v-else
               right
@@ -88,9 +74,7 @@
 </template>
 
 <script>
-  import {
-    EditModeButton
-  } from '@/helpers'
+  import { EditModeButton } from '@/helpers'
   import StageRemove from './StageRemove'
   import TableRow from './TableRow'
 

@@ -14,15 +14,11 @@
           :key="i"
           flat
         >
-          <v-icon
-            :color="opt.color"
-          >{{ opt.icon }}</v-icon>
+          <v-icon :color="opt.color">{{ opt.icon }}</v-icon>
         </v-btn>
       </v-btn-toggle>
 
-      <div
-        :class="`subheading ${currentMode.color}--text`"
-      >{{ currentMode.text }}</div>
+      <div :class="`subheading ${currentMode.color}--text`">{{ currentMode.text }}</div>
 
       <v-spacer />
 
@@ -46,21 +42,13 @@
       must-sort
       no-data-text="No Players Recorded"
     >
-      <template
-        slot="headerCell"
-        slot-scope="{ header }"
-      >
-        <span
-          class="subheading font-weight-light accent--text text--darken-3"
-        >{{ header.text }}</span>
+      <template #headerCell="{ header }">
+        <span class="subheading font-weight-light accent--text text--darken-3">{{ header.text }}</span>
       </template>
-      <template
-        slot="items"
-        slot-scope="props"
-      >
+      <template #items="{ item }">
         <player-row
           :season="season"
-          :player="props.item"
+          :player="item"
           :mode="mode"
         />
       </template>
@@ -70,9 +58,7 @@
 </template>
 
 <script>
-  import {
-    addYears
-  } from 'date-fns'
+  import { addYears } from 'date-fns'
   import Vue from 'vue'
   import {
     Team,

@@ -2,7 +2,8 @@
   <v-snackbar
     v-model="snackbar"
     :color="color"
-    bottom>
+    bottom
+  >
     {{ message }}
     <v-btn
       dark

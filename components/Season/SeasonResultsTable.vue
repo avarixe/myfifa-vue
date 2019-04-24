@@ -7,18 +7,10 @@
     disable-initial-sort
     hide-actions
   >
-    <template
-      slot="headerCell"
-      slot-scope="{ header }"
-    >
-      <span
-        class="subheading font-weight-light text-success text--darken-3"
-      >{{ header.text }}</span>
+    <template #headerCell="{ header }">
+      <span class="subheading font-weight-light text-success text--darken-3">{{ header.text }}</span>
     </template>
-    <template
-      slot="items"
-      slot-scope="props"
-    >
+    <template #items="{ item }">
       <tr>
         <td
           v-for="(header, i) in headers"
@@ -27,12 +19,12 @@
         >
           <a
             v-if="header.value === 'competition'"
-            @click="competitionLink(props.item[header.value])"
+            @click="competitionLink(item[header.value])"
             class="blue-grey--text"
-          >{{ props.item[header.value] }}</a>
+          >{{ item[header.value] }}</a>
           <span
             v-else
-          >{{ props.item[header.value] }}</span>
+          >{{ item[header.value] }}</span>
         </td>
       </tr>
     </template>
@@ -40,9 +32,7 @@
 </template>
 
 <script>
-  import {
-    Competition
-  } from '@/models'
+  import { Competition } from '@/models'
 
   export default {
     props: {

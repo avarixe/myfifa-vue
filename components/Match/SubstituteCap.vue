@@ -25,9 +25,7 @@
 
     <v-list-tile-content>
       <v-list-tile-title>
-        <span
-          class="body-2"
-        >{{ cap.name }}</span>
+        <span class="body-2">{{ cap.name }}</span>
         <v-icon
           v-if="parseInt(cap.start) > 0"
           color="green"
@@ -67,9 +65,7 @@
 </template>
 
 <script>
-  import {
-    mapState
-  } from 'vuex'
+  import { mapState } from 'vuex'
 
   export default {
     props: {

@@ -1,7 +1,5 @@
 <template>
-  <material-card
-    title="Transfer History"
-  >
+  <material-card title="Transfer History">
     <v-card-title>
 
       <v-select
@@ -34,20 +32,11 @@
       item-key="id"
       no-data-text="No Matches Recorded"
     >
-      <template
-        slot="headerCell"
-        slot-scope="{ header }">
-        <span
-          class="subheading font-weight-light text-success text--darken-3"
-        >{{ header.text }}</span>
+      <template #headerCell="{ header }">
+        <span class="subheading font-weight-light text-success text--darken-3">{{ header.text }}</span>
       </template>
-      <template
-        slot="items"
-        slot-scope="props"
-      >
-        <transfer-row
-          :transfer="props.item"
-        />
+      <template #items="{ item }">
+        <transfer-row :transfer="item" />
       </template>
     </v-data-table>
 
@@ -61,15 +50,13 @@
   } from '@/models'
   import MaterialCard from '@/components/theme/Card'
   import TransferRow from './TransferRow'
-  import {
-    TeamAccessible
-  } from '@/mixins'
-  import {
-    addYears
-  } from 'date-fns'
+  import { TeamAccessible } from '@/mixins'
+  import { addYears } from 'date-fns'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     components: {
       MaterialCard,
       TransferRow

@@ -30,12 +30,12 @@
 </template>
 
 <script>
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     data () {
       return {
         calendar: false,

@@ -8,32 +8,27 @@
     row
     wrap
   >
-    <template
-      slot="item"
-      slot-scope="props"
-    >
+    <template #item="{ item }">
       <v-flex
         xs12
         sm6
         md4
         lg3
       >
-        <season-item
-          :season="parseInt(props.item)"
-        />
+        <season-item :season="parseInt(item)" />
       </v-flex>
     </template>
   </v-data-iterator>
 </template>
 
 <script>
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { TeamAccessible } from '@/mixins'
   import SeasonItem from './SeasonItem'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     components: {
       SeasonItem
     },

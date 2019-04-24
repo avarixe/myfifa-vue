@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="d-inline-block"
-  >
+  <div class="d-inline-block">
     <v-tooltip
       bottom
       color="purple"
@@ -11,9 +9,7 @@
         icon
         @click.stop="snackbar = true"
       >
-        <v-icon
-          color="purple"
-        >mdi-human-greeting</v-icon>
+        <v-icon color="purple">mdi-human-greeting</v-icon>
       </v-btn>
       Retire
     </v-tooltip>

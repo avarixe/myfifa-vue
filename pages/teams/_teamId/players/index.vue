@@ -7,9 +7,7 @@
       row
       wrap
     >
-      <v-flex
-        xs12
-      >
+      <v-flex xs12>
         <player-grid />
       </v-flex>
     </v-layout>
@@ -17,15 +15,15 @@
 </template>
 
 <script>
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { TeamAccessible } from '@/mixins'
   import PlayerGrid from '@/components/Player/PlayerGrid'
 
   export default {
     layout: 'team',
     middleware: 'authenticated',
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     components: {
       PlayerGrid
     },

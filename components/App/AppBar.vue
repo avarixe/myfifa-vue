@@ -9,15 +9,11 @@
       @click.stop="toggleDrawer"
     />
 
-    <v-toolbar-title
-      class="tertiary--text font-weight-light"
-    >{{ $store.state.app.title }}</v-toolbar-title>
+    <v-toolbar-title class="tertiary--text font-weight-light">{{ $store.state.app.title }}</v-toolbar-title>
 
     <v-spacer />
 
-    <v-toolbar-items
-      v-if="authenticated"
-    >
+    <v-toolbar-items v-if="authenticated">
       <v-flex
         align-center
         layout
@@ -28,9 +24,7 @@
           to="/"
           class="toolbar-items"
         >
-          <v-icon
-            color="tertiary"
-          >mdi-home</v-icon>
+          <v-icon color="tertiary">mdi-home</v-icon>
         </nuxt-link>
 
         <user-form>
@@ -38,9 +32,7 @@
             v-ripple
             class="toolbar-items"
           >
-            <v-icon
-              color="tertiary"
-            >mdi-account</v-icon>
+            <v-icon color="tertiary">mdi-account</v-icon>
           </a>
         </user-form>
 
@@ -49,9 +41,7 @@
           class="toolbar-items"
           @click="logout"
         >
-          <v-icon
-            color="tertiary"
-          >mdi-exit-to-app</v-icon>
+          <v-icon color="tertiary">mdi-exit-to-app</v-icon>
         </a>
       </v-flex>
     </v-toolbar-items>

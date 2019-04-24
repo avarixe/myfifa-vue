@@ -6,27 +6,19 @@
     :submit="submit"
     :color="color"
   >
-    <slot
-      slot="activator"
-    />
+    <template #activator="{ on }">
+      <slot :on="on" />
+    </template>
 
-    <v-container
-      slot="form"
-    >
-      <v-layout
-        wrap
-      >
-        <v-flex
-          xs12
-        >
+    <v-container slot="form">
+      <v-layout wrap>
+        <v-flex xs12>
           <minute-field
             v-model="minute"
             :extra-time="match.extra_time"
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <player-select
             v-model="substitution.player_id"
             :players="unsubbedPlayers"
@@ -34,9 +26,7 @@
             required
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <player-select
             v-model="substitution.replacement_id"
             :players="availablePlayers"
@@ -46,9 +36,7 @@
             required
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-checkbox
             label="Injury"
             v-model="substitution.injury"
@@ -61,9 +49,7 @@
 </template>
 
 <script>
-  import {
-    activePlayers
-  } from '@/models/Player'
+  import { activePlayers } from '@/models/Player'
   import {
     MinuteField,
     PlayerSelect

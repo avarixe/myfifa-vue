@@ -5,12 +5,8 @@
       :key="i"
       :class="`text-xs-${header.align} ${cellClass(header)}`"
     >
-      <template
-        v-if="header.value"
-      >
-        <template
-          v-if="edit"
-        >
+      <template v-if="header.value">
+        <template v-if="edit">
           <v-combobox
             v-if="header.value.includes('team')"
             v-model="fixture[header.value]"
@@ -27,9 +23,7 @@
             :label="header.text"
           />
         </template>
-        <template
-          v-else
-        >{{ fixtureData[header.value] }}</template>
+        <template v-else>{{ fixtureData[header.value] }}</template>
       </template>
 
       <template v-else>
@@ -45,18 +39,16 @@
 </template>
 
 <script>
-  import {
-    EditModeButton
-  } from '@/helpers'
-  import {
-    CompetitionAccessible
-  } from '@/mixins'
+  import { EditModeButton } from '@/helpers'
+  import { CompetitionAccessible } from '@/mixins'
 
   export default {
     components: {
       EditModeButton
     },
-    mixins: [ CompetitionAccessible ],
+    mixins: [
+      CompetitionAccessible
+    ],
     props: {
       fixtureData: {
         type: Object,

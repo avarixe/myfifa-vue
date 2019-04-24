@@ -1,34 +1,32 @@
 <template>
-  <div
-    class="text-xs-center"
-  >
+  <div class="text-xs-center">
     <match-form
       :match-data="match"
       color="orange"
     >
-      <v-tooltip
-        color="orange"
-        bottom
-      >
-        <v-btn
-          slot="activator"
-          icon
+      <template #default="{ on: dialog }">
+        <v-tooltip
+          color="orange"
+          bottom
         >
-          <v-icon
-            color="orange"
-          >mdi-pencil</v-icon>
-        </v-btn>
-        Edit
-      </v-tooltip>
+          <template #activator="{ on: tooltip }">
+            <v-btn
+              v-on="{ ...dialog, ...tooltip }"
+              icon
+            >
+              <v-icon color="orange">mdi-pencil</v-icon>
+            </v-btn>
+          </template>
+          Edit
+        </v-tooltip>
+      </template>
     </match-form>
 
     <cap-form
       v-if="numPlayers < 11"
       :match="match"
     >
-      <v-tooltip
-        bottom
-      >
+      <v-tooltip bottom>
         <v-btn
           slot="activator"
           icon
@@ -51,9 +49,7 @@
           slot="activator"
           icon
         >
-          <v-icon
-            color="cyan"
-          >mdi-clipboard-text</v-icon>
+          <v-icon color="cyan">mdi-clipboard-text</v-icon>
         </v-btn>
         <v-list>
           <v-list-tile
@@ -79,9 +75,7 @@
           slot="activator"
           icon
         >
-          <v-icon
-            color="green"
-          >mdi-repeat</v-icon>
+          <v-icon color="green">mdi-repeat</v-icon>
         </v-btn>
         Substitution
       </v-tooltip>
@@ -100,9 +94,7 @@
           slot="activator"
           icon
         >
-          <v-icon
-            color="blue"
-          >mdi-soccer</v-icon>
+          <v-icon color="blue">mdi-soccer</v-icon>
         </v-btn>
         Goal
       </v-tooltip>
@@ -121,9 +113,7 @@
           slot="activator"
           icon
         >
-          <v-icon
-            color="red"
-          >mdi-book</v-icon>
+          <v-icon color="red">mdi-book</v-icon>
         </v-btn>
         Booking
       </v-tooltip>
@@ -142,30 +132,20 @@
           slot="activator"
           icon
         >
-          <v-icon
-            color="indigo"
-          >mdi-human</v-icon>
+          <v-icon color="indigo">mdi-human</v-icon>
         </v-btn>
         Penalty Shootout
       </v-tooltip>
     </penalty-shootout-form>
 
-    <match-remove
-      :match="match"
-    />
+    <match-remove :match="match" />
   </div>
 </template>
 
 <script>
-  import {
-    mapActions
-  } from 'vuex'
-  import {
-    TeamAccessible
-  } from '@/mixins'
-  import {
-    Squad
-  } from '@/models'
+  import { mapActions } from 'vuex'
+  import { TeamAccessible } from '@/mixins'
+  import { Squad } from '@/models'
   import MatchForm from './MatchForm'
   import CapForm from './CapForm'
   import GoalForm from './GoalForm'
@@ -184,7 +164,9 @@
       PenaltyShootoutForm,
       MatchRemove
     },
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     props: {
       match: {
         type: Object,

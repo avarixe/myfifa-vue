@@ -5,9 +5,7 @@
     ratio="ct-major-twelfth"
     type="Bar"
   >
-    <season-results-table
-      :season-data="seasonData"
-    />
+    <season-results-table :season-data="seasonData" />
   </material-chart-card>
 </template>
 

@@ -1,27 +1,17 @@
 <template>
   <material-card>
-    <template
-      slot="header"
-    >
-      <span
-        class="title font-weight-light mb-2"
-      >{{ squad.name }}</span>
+    <template slot="header">
+      <span class="title font-weight-light mb-2">{{ squad.name }}</span>
 
-      <squad-actions
-        :squad="squad"
-      />
+      <squad-actions :squad="squad" />
     </template>
 
-    <formation-view
-      :formation="squadPlayers"
-    />
+    <formation-view :formation="squadPlayers" />
   </material-card>
 </template>
 
 <script>
-  import {
-    FormationView
-  } from '@/helpers'
+  import { FormationView } from '@/helpers'
   import MaterialCard from '@/components/theme/Card'
   import SquadActions from './SquadActions'
 

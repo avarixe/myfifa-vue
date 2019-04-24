@@ -12,9 +12,7 @@
           slot="activator"
           icon
         >
-          <v-icon
-            color="black"
-          >mdi-minus-circle</v-icon>
+          <v-icon color="black">mdi-minus-circle</v-icon>
         </v-btn>
         Remove
       </v-tooltip>
@@ -40,12 +38,12 @@
 </template>
 
 <script>
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     props: {
       competition: {
         type: Object,

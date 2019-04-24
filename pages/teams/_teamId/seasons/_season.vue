@@ -7,9 +7,7 @@
       row
       wrap
     >
-      <v-flex
-        xs12
-      >
+      <v-flex xs12>
         <v-btn
           v-if="season > 0"
           :to="previousSeasonLink"
@@ -20,17 +18,11 @@
           nuxt
         >Next Season</v-btn>
       </v-flex>
-      <v-flex
-        xs12
-      >
-        <season-results-chart
-          :season-data="seasonData"
-        />
+      <v-flex xs12>
+        <season-results-chart :season-data="seasonData" />
       </v-flex>
 
-      <v-flex
-        xs12
-      >
+      <v-flex xs12>
         <player-grid
           :season="season"
           :season-data="seasonData"
@@ -44,9 +36,7 @@
   import SeasonResultsChart from '@/components/Season/SeasonResultsChart'
   import SeasonResultsTable from '@/components/Season/SeasonResultsTable'
   import PlayerGrid from '@/components/Season/PlayerGrid'
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
     layout: 'team',
@@ -56,7 +46,9 @@
       SeasonResultsTable,
       PlayerGrid
     },
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     async asyncData ({ store, params }) {
       const { data } = await store.dispatch('teams/ANALYZE_SEASON', params)
       return { seasonData: data }
