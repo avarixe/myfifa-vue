@@ -1,13 +1,13 @@
 <template>
   <v-container>
     <formation-view :formation="sortedCaps">
-      <match-cap
-        slot="item"
-        slot-scope="{ player }"
-        :cap="player"
-        :match="match"
-        :readonly="readonly"
-      />
+      <template #item="{ player }">
+        <match-cap
+          :cap="player"
+          :match="match"
+          :readonly="readonly"
+        />
+      </template>
     </formation-view>
 
     <v-layout

@@ -20,7 +20,7 @@
 
       <v-flex xs12>
         <material-card :color="resultColor">
-          <template slot="header">
+          <template #header>
             <v-layout
               class="text-xs-center"
               row

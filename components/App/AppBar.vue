@@ -9,7 +9,9 @@
       @click.stop="toggleDrawer"
     />
 
-    <v-toolbar-title class="tertiary--text font-weight-light">{{ $store.state.app.title }}</v-toolbar-title>
+    <v-toolbar-title
+      class="tertiary--text font-weight-light"
+    >{{ $store.state.app.title }}</v-toolbar-title>
 
     <v-spacer />
 
@@ -28,12 +30,15 @@
         </nuxt-link>
 
         <user-form>
-          <a
-            v-ripple
-            class="toolbar-items"
-          >
-            <v-icon color="tertiary">mdi-account</v-icon>
-          </a>
+          <template #default="{ on }">
+            <a
+              v-on="on"
+              v-ripple
+              class="toolbar-items"
+            >
+              <v-icon color="tertiary">mdi-account</v-icon>
+            </a>
+          </template>
         </user-form>
 
         <a

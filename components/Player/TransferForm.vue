@@ -6,103 +6,111 @@
     :submit-cb="submitCb"
     :color="transferOut ? 'red' : 'green'"
   >
-    <slot slot="activator">
-      <v-tooltip
-        bottom
-        :color="transferOut ? 'red' : 'green'"
-      >
-        <v-btn
-          slot="activator"
-          icon
+    <template #activator="{ on }">
+      <slot :on="on">
+        <v-tooltip
+          bottom
+          :color="transferOut ? 'red' : 'green'"
         >
-          <v-icon :color="transferOut ? 'red' : 'green'">mdi-airplane-{{ transferOut ? 'takeoff' : 'landing' }}</v-icon>
-        </v-btn>
-        Transfer {{ transferOut ? 'Out' : 'In' }}
-      </v-tooltip>
-    </slot>
+          <template #activator="{ on: tooltip }">
+            <v-btn
+              v-on="{ ...on, ...tooltip }"
+              icon
+            >
+              <v-icon :color="transferOut ? 'red' : 'green'">mdi-airplane-{{ transferOut ? 'takeoff' : 'landing' }}</v-icon>
+            </v-btn>
+          </template>
+          Transfer {{ transferOut ? 'Out' : 'In' }}
+        </v-tooltip>
+      </slot>
+    </template>
 
-    <v-container slot="form">
-      <v-layout wrap>
-        <v-flex xs12>
-          <v-menu
-            v-model="menu"
-            ref="menu"
-            :close-on-content-click="false"
-            :return-value.sync="transfer.effective_date"
-            lazy
-            transition="scale-transition"
-            full-width
-          >
+    <template #form>
+      <v-container>
+        <v-layout wrap>
+          <v-flex xs12>
+            <v-menu
+              v-model="menu"
+              ref="menu"
+              :close-on-content-click="false"
+              :return-value.sync="transfer.effective_date"
+              lazy
+              transition="scale-transition"
+              full-width
+            >
+              <template #activator="{ on }">
+                <v-text-field
+                  v-model="transfer.effective_date"
+                  v-on="on"
+                  label="Effective Date"
+                  prepend-icon="mdi-calendar-today"
+                  required
+                  readonly
+                />
+              </template>
+              <v-date-picker
+                v-model="transfer.effective_date"
+                landscape
+                @input="$refs.menu.save(transfer.effective_date)"
+              />
+            </v-menu>
+          </v-flex>
+          <v-flex xs12>
             <v-text-field
-              v-model="transfer.effective_date"
-              slot="activator"
-              label="Effective Date"
-              prepend-icon="mdi-calendar-today"
-              required
-              readonly
+              v-model="transfer.origin"
+              :rules="$_validate('Origin', ['required'])"
+              label="Origin"
+              prepend-icon="mdi-airplane-takeoff"
+              :disabled="transferOut"
+              spellcheck="false"
+              autocapitalize="words"
+              autocomplete="off"
+              autocorrect="off"
             />
-            <v-date-picker
-              v-model="transfer.effective_date"
-              landscape
-              @input="$refs.menu.save(transfer.effective_date)"
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field
+              v-model="transfer.destination"
+              :rules="$_validate('Destination', ['required'])"
+              label="Destination"
+              prepend-icon="mdi-airplane-landing"
+              :disabled="!transferOut"
+              spellcheck="false"
+              autocapitalize="words"
+              autocomplete="off"
+              autocorrect="off"
             />
-          </v-menu>
-        </v-flex>
-        <v-flex xs12>
-          <v-text-field
-            v-model="transfer.origin"
-            :rules="$_validate('Origin', ['required'])"
-            label="Origin"
-            prepend-icon="mdi-airplane-takeoff"
-            :disabled="transferOut"
-            spellcheck="false"
-            autocapitalize="words"
-            autocomplete="off"
-            autocorrect="off"
-          />
-        </v-flex>
-        <v-flex xs12>
-          <v-text-field
-            v-model="transfer.destination"
-            :rules="$_validate('Destination', ['required'])"
-            label="Destination"
-            prepend-icon="mdi-airplane-landing"
-            :disabled="!transferOut"
-            spellcheck="false"
-            autocapitalize="words"
-            autocomplete="off"
-            autocorrect="off"
-          />
-        </v-flex>
-        <v-flex xs12>
-          <v-text-field
-            v-model="transfer.fee"
-            type="number"
-            label="Fee"
-            :prefix="team.currency"
-            :hint="$_numberHint(transfer.fee)"
-            persistent-hint
-          />
-        </v-flex>
-        <v-flex xs12>
-          <v-text-field
-            v-model="transfer.addon_clause"
-            label="Add-On Clause (%)"
-            :rules="$_validate('Add-On Clause', [{ type: 'range', options: { min: 0, max: 25 }}])"
-            type="number"
-            min="0"
-            max="25"
-          />
-        </v-flex>
-        <v-flex xs12>
-          <v-checkbox
-            v-model="transfer.loan"
-            label="Loan"
-            :disabled="transferOut"
-          />
-        </v-flex>
-      </v-layout>
-    </v-container>
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field
+              v-model="transfer.fee"
+              type="number"
+              label="Fee"
+              :prefix="team.currency"
+              :hint="$_numberHint(transfer.fee)"
+              persistent-hint
+            />
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field
+              v-model="transfer.addon_clause"
+              label="Add-On Clause (%)"
+              :rules="$_validate('Add-On Clause', [{ type: 'range', options: { min: 0, max: 25 }}])"
+              type="number"
+              min="0"
+              max="25"
+            />
+          </v-flex>
+          <v-flex xs12>
+            <v-checkbox
+              v-model="transfer.loan"
+              label="Loan"
+              :disabled="transferOut"
+            />
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </template>
   </dialog-form>
 </template>
 

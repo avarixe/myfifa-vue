@@ -8,7 +8,7 @@
       fill-dot
       right
     >
-      <template slot="opposite">
+      <template #opposite>
         <span :class="`headline font-weight-bold ${item.color}--text`">{{ item.title || item.type }}</span>
         <h4 :class="`headline font-weight-light mb-3 ${item.color}--text`">{{ item.dateRange }}</h4>
       </template>

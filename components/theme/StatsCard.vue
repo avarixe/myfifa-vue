@@ -4,31 +4,28 @@
     class="v-card--material-stats"
     v-on="$listeners"
   >
-    <v-card
-      slot="offset"
-      :class="`elevation-${elevation}`"
-      :color="color"
-      class="pa-4"
-      dark
-    >
-      <v-icon
-        size="40"
+    <template #offset>
+      <v-card
+        :class="`elevation-${elevation}`"
+        :color="color"
+        class="pa-4"
+        dark
       >
-        {{ icon }}
-      </v-icon>
-    </v-card>
+        <v-icon
+          size="40"
+        >
+          {{ icon }}
+        </v-icon>
+      </v-card>
+    </template>
     <div class="text-xs-right">
-      <p
-        class="category grey--text font-weight-light"
-      >{{ title }}</p>
-      <h3
-        class="title display-1 font-weight-light"
-      >
+      <p class="category grey--text font-weight-light">{{ title }}</p>
+      <h3 class="title display-1 font-weight-light">
         {{ value }} <small>{{ smallValue }}</small>
       </h3>
     </div>
 
-    <template slot="actions">
+    <template #actions>
       <v-icon
         :color="subIconColor"
         size="20"

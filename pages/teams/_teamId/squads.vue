@@ -9,10 +9,12 @@
     >
       <v-flex xs12>
         <squad-form>
-          <v-btn>
-            <v-icon left>mdi-plus-circle-outline</v-icon>
-            Squad
-          </v-btn>
+          <template #default="{ on }">
+            <v-btn v-on="on">
+              <v-icon left>mdi-plus-circle-outline</v-icon>
+              Squad
+            </v-btn>
+          </template>
         </squad-form>
       </v-flex>
 

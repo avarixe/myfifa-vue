@@ -1,6 +1,6 @@
 <template>
   <material-card>
-    <template slot="header">
+    <template #header>
       <span class="title font-weight-light mb-2">{{ squad.name }}</span>
 
       <squad-actions :squad="squad" />
@@ -37,9 +37,3 @@
     }
   }
 </script>
-
-<style scoped>
-  #app .v-card {
-    background-color: rgba(255, 255, 255, 0.5);
-  }
-</style>

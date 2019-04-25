@@ -1,21 +1,25 @@
 <template>
   <material-card>
-    <template slot="header">
+    <template #header>
       <span
         v-text="'Matches'"
         class="title font-weight-light mb-2"
       />
 
       <match-form>
-        <v-tooltip bottom>
-          <v-btn
-            slot="activator"
-            flat
-          >
-            <v-icon>mdi-plus-circle-outline</v-icon>
-          </v-btn>
-          New Match
-        </v-tooltip>
+        <template #default="{ on: dialog }">
+          <v-tooltip bottom>
+            <template #activator="{ on: tooltip }">
+              <v-btn
+                v-on="{ ...dialog, ...tooltip }"
+                flat
+              >
+                <v-icon>mdi-plus-circle-outline</v-icon>
+              </v-btn>
+            </template>
+            New Match
+          </v-tooltip>
+        </template>
       </match-form>
     </template>
 
@@ -70,18 +74,20 @@
             right
             color="blue darken-2"
           >
-            <v-btn
-              slot="activator"
-              :to="matchLink(item)"
-              small
-              icon
-              class="my-0"
-            >
-              <v-icon
+            <template #activator="{ on }">
+              <v-btn
+                v-on="on"
+                :to="matchLink(item)"
                 small
-                color="blue darken-2"
-              >mdi-arrow-right</v-icon>
-            </v-btn>
+                icon
+                class="my-0"
+              >
+                <v-icon
+                  small
+                  color="blue darken-2"
+                >mdi-arrow-right</v-icon>
+              </v-btn>
+            </template>
             View Match
           </v-tooltip>
         </td>

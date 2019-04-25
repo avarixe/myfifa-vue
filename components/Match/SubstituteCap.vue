@@ -8,10 +8,12 @@
         offset-overflow
         lazy
       >
-        <span
-          slot="activator"
-          class="body-1"
-        >{{ cap.pos }}</span>
+        <template #activator="{ on }">
+          <span
+            v-on="on"
+            class="body-1"
+          >{{ cap.pos }}</span>
+        </template>
         <v-list>
           <v-list-tile
             v-for="pos in positions"

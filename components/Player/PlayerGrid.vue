@@ -1,18 +1,22 @@
 <template>
   <material-card>
-    <template slot="header">
+    <template #header>
       <span class="title font-weight-light mb-2">Players</span>
 
       <player-form>
-        <v-tooltip bottom>
-          <v-btn
-            slot="activator"
-            flat
-          >
-            <v-icon>mdi-plus-circle-outline</v-icon>
-          </v-btn>
-          New Player
-        </v-tooltip>
+        <template #default="{ on: dialog }">
+          <v-tooltip bottom>
+            <template #activator="{ on: tooltip }">
+              <v-btn
+                v-on="{ ...dialog, ...tooltip }"
+                flat
+              >
+                <v-icon>mdi-plus-circle-outline</v-icon>
+              </v-btn>
+            </template>
+            New Player
+          </v-tooltip>
+        </template>
       </player-form>
     </template>
 
@@ -22,32 +26,35 @@
         bottom
         :color="currentFilter.color"
       >
-        <v-menu
-          slot="activator"
-          bottom
-          right
-        >
-          <v-btn
-            slot="activator"
-            class="px-1"
-            flat
+        <template #activator="{ on: tooltip }">
+          <v-menu
+            bottom
+            right
           >
-            <v-icon :color="currentFilter.color">mdi-{{ currentFilter.icon }}</v-icon>
-          </v-btn>
+            <template #activator="{ on: menu }">
+              <v-btn
+                v-on="{ ...menu, ...tooltip }"
+                class="px-1"
+                flat
+              >
+                <v-icon :color="currentFilter.color">mdi-{{ currentFilter.icon }}</v-icon>
+              </v-btn>
+            </template>
 
-          <v-list>
-            <v-list-tile
-              v-for="(opt, i) in filters"
-              :key="i"
-              @click="filter = i"
-            >
-              <v-list-tile-avatar>
-                <v-icon :color="opt.color">mdi-{{ opt.icon }}</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-title>{{ opt.text }}</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
+            <v-list>
+              <v-list-tile
+                v-for="(opt, i) in filters"
+                :key="i"
+                @click="filter = i"
+              >
+                <v-list-tile-avatar>
+                  <v-icon :color="opt.color">mdi-{{ opt.icon }}</v-icon>
+                </v-list-tile-avatar>
+                <v-list-tile-title>{{ opt.text }}</v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </v-menu>
+        </template>
         Display {{ currentFilter.text }} Players
       </v-tooltip>
 

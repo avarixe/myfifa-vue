@@ -21,13 +21,15 @@
         />
 
         <v-tooltip bottom>
-          <v-btn
-            slot="activator"
-            icon
-            @click="addFixture"
-          >
-            <v-icon>mdi-plus-circle</v-icon>
-          </v-btn>
+          <template #activator="{ on }">
+            <v-btn
+              v-on="on"
+              icon
+              @click="addFixture"
+            >
+              <v-icon>mdi-plus-circle</v-icon>
+            </v-btn>
+          </template>
           Add Fixture
         </v-tooltip>
 
@@ -42,10 +44,7 @@
       disable-initial-sort
       hide-actions
     >
-      <template
-        slot="headers"
-        slot-scope="props"
-      >
+      <template #headers>
         <th
           v-for="(header, i) in headers"
           :key="i"
@@ -57,25 +56,24 @@
             v-else
             right
           >
-            <v-btn
-              slot="activator"
-              icon
-              @click="override = !override"
-            >
-              <v-icon>mdi-playlist-edit</v-icon>
-            </v-btn>
+            <template #activator="{ on }">
+              <v-btn
+                v-on="on"
+                icon
+                @click="override = !override"
+              >
+                <v-icon>mdi-playlist-edit</v-icon>
+              </v-btn>
+            </template>
             Edit All
           </v-tooltip>
         </th>
       </template>
 
-      <template
-        slot="items"
-        slot-scope="props"
-      >
+      <template #items="{ item }">
         <fixture-view
           :headers="headers"
-          :fixture-data="props.item"
+          :fixture-data="item"
           :override="override"
         />
       </template>

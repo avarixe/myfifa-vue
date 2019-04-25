@@ -14,9 +14,14 @@
       :team-id="team.id"
       color="orange"
     >
-      <v-btn icon>
-        <v-icon color="orange darken-2">mdi-pencil</v-icon>
-      </v-btn>
+      <template #default="{ on }">
+        <v-btn
+          v-on="on"
+          icon
+        >
+          <v-icon color="orange darken-2">mdi-pencil</v-icon>
+        </v-btn>
+      </template>
     </team-form>
 
     <v-btn

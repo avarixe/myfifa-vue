@@ -21,14 +21,16 @@
           v-if="team.current_date === match.date_played"
           bottom
         >
-          <v-btn
-            slot="activator"
-            class="ma-0"
-            icon
-            @click="removeEvent(event)"
-          >
-            <v-icon :color="eventColor(event)">mdi-close</v-icon>
-          </v-btn>
+          <template #activator="{ on }">
+            <v-btn
+              v-on="on"
+              class="ma-0"
+              icon
+              @click="removeEvent(event)"
+            >
+              <v-icon :color="eventColor(event)">mdi-close</v-icon>
+            </v-btn>
+          </template>
           Remove
         </v-tooltip>
       </h2>
@@ -54,15 +56,17 @@
           v-if="team.current_date === match.date_played"
           bottom
         >
-          <v-btn
-            slot="activator"
-            color="indigo lighten-2"
-            class="ma-0"
-            icon
-            @click="removePS"
-          >
-            <v-icon color="indigo">mdi-close</v-icon>
-          </v-btn>
+          <template #activator="{ on }">
+            <v-btn
+              v-on="on"
+              color="indigo lighten-2"
+              class="ma-0"
+              icon
+              @click="removePS"
+            >
+              <v-icon color="indigo">mdi-close</v-icon>
+            </v-btn>
+          </template>
           Remove
         </v-tooltip>
       </h2>

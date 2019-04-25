@@ -47,18 +47,22 @@
                 :player-data="player"
                 color="orange"
               >
-                <v-tooltip
-                  bottom
-                  color="orange"
-                >
-                  <v-btn
-                    slot="activator"
-                    icon
+                <template #default="{ on: dialog }">
+                  <v-tooltip
+                    bottom
+                    color="orange"
                   >
-                    <v-icon color="orange">mdi-pencil</v-icon>
-                  </v-btn>
-                  Edit
-                </v-tooltip>
+                    <template #activator="{ on: tooltip }">
+                      <v-btn
+                        v-on="{ ...dialog, ...tooltip }"
+                        icon
+                      >
+                        <v-icon color="orange">mdi-pencil</v-icon>
+                      </v-btn>
+                    </template>
+                    Edit
+                  </v-tooltip>
+                </template>
               </player-form>
               <transfer-form :player="player" />
               <contract-form :player="player" />
@@ -173,35 +177,38 @@
 
       <v-flex xs12>
         <material-card color="accent">
-          <template slot="header">
+          <template #header>
             <span class="title font-weight-light mb-2">Timeline</span>
 
             <!-- Timeline Filter -->
             <v-tooltip top>
-              <v-menu
-                slot="activator"
-                bottom
-                right
-              >
-                <v-btn
-                  slot="activator"
-                  icon
+              <template #activator="{ on: tooltip }">
+                <v-menu
+                  bottom
+                  right
                 >
-                  <v-icon :color="currentFilter.color">mdi-{{ currentFilter.icon }}</v-icon>
-                </v-btn>
-                <v-list>
-                  <v-list-tile
-                    v-for="(event, key) in filterOptions"
-                    :key="key"
-                    @click="timelineFilter = key"
-                  >
-                    <v-list-tile-avatar>
-                      <v-icon :color="event.color">mdi-{{ event.icon }}</v-icon>
-                    </v-list-tile-avatar>
-                    <v-list-tile-title>{{ key }}</v-list-tile-title>
-                  </v-list-tile>
-                </v-list>
-              </v-menu>
+                  <template #activator="{ on: menu }">
+                    <v-btn
+                      v-on="{ ...menu, ...tooltip }"
+                      icon
+                    >
+                      <v-icon :color="currentFilter.color">mdi-{{ currentFilter.icon }}</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-list>
+                    <v-list-tile
+                      v-for="(event, key) in filterOptions"
+                      :key="key"
+                      @click="timelineFilter = key"
+                    >
+                      <v-list-tile-avatar>
+                        <v-icon :color="event.color">mdi-{{ event.icon }}</v-icon>
+                      </v-list-tile-avatar>
+                      <v-list-tile-title>{{ key }}</v-list-tile-title>
+                    </v-list-tile>
+                  </v-list>
+                </v-menu>
+              </template>
               Filter Timeline
             </v-tooltip>
           </template>

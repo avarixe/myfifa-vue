@@ -1,6 +1,6 @@
 <template>
   <v-expansion-panel-content class="elevation-1">
-    <template slot="header">
+    <template #header>
       <div>
         <template v-if="edit">
           <v-text-field
@@ -31,10 +31,7 @@
         disable-initial-sort
         hide-actions
       >
-        <template
-          slot="headers"
-          slot-scope="props"
-        >
+        <template #headers>
           <th
             v-for="(header, i) in headers"
             :key="i"
@@ -46,25 +43,24 @@
               v-else
               right
             >
-              <v-btn
-                slot="activator"
-                icon
-                @click="override = !override"
-              >
-                <v-icon>mdi-playlist-edit</v-icon>
-              </v-btn>
+              <template #activator="{ on }">
+                <v-btn
+                  v-on="on"
+                  icon
+                  @click="override = !override"
+                >
+                  <v-icon>mdi-playlist-edit</v-icon>
+                </v-btn>
+              </template>
               Edit All
             </v-tooltip>
           </th>
         </template>
 
-        <template
-          slot="items"
-          slot-scope="props"
-        >
+        <template #items="{ item }">
           <table-row
             :headers="headers"
-            :row-data="props.item"
+            :row-data="item"
             :override="override"
           />
         </template>

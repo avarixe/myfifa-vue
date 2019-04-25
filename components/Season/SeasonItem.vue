@@ -1,18 +1,20 @@
 <template>
   <material-card>
-    <template slot="header">
+    <template #header>
       <span class="title font-weight-light mb-2">{{ seasonLabel }}</span>
 
       <v-tooltip bottom>
-        <v-btn
-          slot="activator"
-          :to="seasonLink"
-          nuxt
-          small
-          icon
-        >
-          <v-icon color="white">mdi-arrow-right</v-icon>
-        </v-btn>
+        <template #activator="{ on }">
+          <v-btn
+            v-on="on"
+            :to="seasonLink"
+            nuxt
+            small
+            icon
+          >
+            <v-icon color="white">mdi-arrow-right</v-icon>
+          </v-btn>
+        </template>
         View Season
       </v-tooltip>
     </template>

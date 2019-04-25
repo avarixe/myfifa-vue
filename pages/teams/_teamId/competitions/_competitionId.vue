@@ -15,7 +15,7 @@
       </v-flex>
       <v-flex xs12>
         <material-card>
-          <template slot="header">
+          <template #header>
             <v-layout
               class="text-xs-center"
               row

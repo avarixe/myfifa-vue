@@ -1,17 +1,21 @@
 <template>
   <material-card>
-    <template slot="header">
+    <template #header>
       <span class="title font-weight-light mb-2">Teams</span>
       <team-form>
-        <v-tooltip bottom>
-          <v-btn
-            slot="activator"
-            flat
-          >
-            <v-icon left>mdi-plus-circle-outline</v-icon>
-          </v-btn>
-          New Team
-        </v-tooltip>
+        <template #default="{ on: dialog }">
+          <v-tooltip bottom>
+            <template #activator="{ on: tooltip }">
+              <v-btn
+                v-on="{ ...dialog, ...tooltip }"
+                flat
+              >
+                <v-icon left>mdi-plus-circle-outline</v-icon>
+              </v-btn>
+            </template>
+            New Team
+          </v-tooltip>
+        </template>
       </team-form>
     </template>
 

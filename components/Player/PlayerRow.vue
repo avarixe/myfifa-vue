@@ -14,18 +14,20 @@
             color="blue"
             right
           >
-            <v-btn
-              slot="activator"
-              :to="playerLink"
-              nuxt
-              small
-              icon
-            >
-              <v-icon
-                color="blue"
+            <template #activator="{ on }">
+              <v-btn
+                v-on="on"
+                :to="playerLink"
+                nuxt
                 small
-              >mdi-arrow-right</v-icon>
-            </v-btn>
+                icon
+              >
+                <v-icon
+                  color="blue"
+                  small
+                >mdi-arrow-right</v-icon>
+              </v-btn>
+            </template>
             View Player
           </v-tooltip>
 

@@ -5,7 +5,7 @@
     lazy
     :max-width="fullWidth ? '' : '500px'"
   >
-    <template v-slot:activator="{ on }">
+    <template #activator="{ on }">
       <slot
         name="activator"
         :on="on"
