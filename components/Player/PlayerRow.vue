@@ -50,6 +50,7 @@
           :items="editOptions[header.value].items"
           :label="header.text"
           menu-props="auto"
+          hide-details
         />
         <v-text-field
           v-else-if="editOptions[header.value].type === 'money'"

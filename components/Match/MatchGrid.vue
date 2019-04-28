@@ -66,36 +66,27 @@
       no-data-text="No Matches Recorded"
     >
       <template #headerCell="{ header }">
-        <span class="subheading font-weight-light text-success text--darken-3">{{ header.text }}</span>
+        <span
+          class="subheading font-weight-light text-success text--darken-3"
+        >{{ header.text }}</span>
       </template>
-      <template #items="{ item }">
-        <td>
-          <v-tooltip
-            right
-            color="blue darken-2"
-          >
-            <template #activator="{ on }">
-              <v-btn
-                v-on="on"
-                :to="matchLink(item)"
-                small
-                icon
-                class="my-0"
-              >
-                <v-icon
-                  small
-                  color="blue darken-2"
-                >mdi-arrow-right</v-icon>
-              </v-btn>
-            </template>
-            View Match
-          </v-tooltip>
-        </td>
-        <td class="text-xs-center">{{ item.competition }}</td>
-        <td class="text-xs-right">{{ item.home }}</td>
-        <td :class="resultColor(item.team_result) + '--text text-xs-center'">{{ item.score }}</td>
-        <td class="text-xs-left">{{ item.away }}</td>
-        <td class="text-xs-center">{{ $_format($_parse(item.date_played), 'MMM DD, YYYY') }}</td>
+      <template #items="{ item: match }">
+        <v-tooltip bottom>
+          <template #activator="{ on }">
+            <tr
+              v-on="on"
+              @click="$router.push(matchLink(match))"
+            >
+              <td class="text-xs-center">{{ match.competition }}</td>
+              <td class="text-xs-right">{{ match.home }}</td>
+              <td :class="resultColor(match.team_result) + '--text text-xs-center'">{{ match.score }}</td>
+              <td class="text-xs-left">{{ match.away }}</td>
+              <td class="text-xs-center">{{ $_format($_parse(match.date_played), 'MMM DD, YYYY') }}</td>
+            </tr>
+          </template>
+          Click to View Match: <br>
+          <i>{{ match.home }} v {{ match.away }}</i>
+        </v-tooltip>
       </template>
     </v-data-table>
 
@@ -130,7 +121,6 @@
           descending: true
         },
         headers: [
-          { text: '', value: null, sortable: false, width: 40 },
           { text: 'Competition', value: 'competition', align: 'center' },
           { text: 'Home', value: 'home', align: 'right' },
           { text: 'Score', value: 'score', align: 'center', sortable: false },
