@@ -1,39 +1,35 @@
 <template>
-  <div
-    class="d-inline-block"
-  >
-    <squad-form
-      :squad-data="squad"
-    >
-      <v-tooltip
-        bottom
-        color="orange"
-      >
-        <v-btn
-          slot="activator"
-          flat
-          icon
+  <div class="d-inline-block">
+    <squad-form :squad-data="squad" >
+      <template #default="{ on: dialog }">
+        <v-tooltip
+          bottom
+          color="orange"
         >
-          <v-icon
-            color="orange"
-          >mdi-pencil</v-icon>
-        </v-btn>
-        Edit
-      </v-tooltip>
+          <template #activator="{ on: tooltip }">
+            <v-btn
+              v-on="{ ...dialog, ...tooltip }"
+              flat
+              icon
+            >
+              <v-icon color="orange">mdi-pencil</v-icon>
+            </v-btn>
+          </template>
+          Edit
+        </v-tooltip>
+      </template>
     </squad-form>
 
-    <v-tooltip
-      bottom
-    >
-      <v-btn
-        slot="activator"
-        icon
-        @click="promptDeletion = true"
-      >
-        <v-icon
-          color="black"
-        >mdi-minus-circle</v-icon>
-      </v-btn>
+    <v-tooltip bottom>
+      <template #activator="{ on }">
+        <v-btn
+          v-on="on"
+          icon
+          @click="promptDeletion = true"
+        >
+          <v-icon color="black">mdi-minus-circle</v-icon>
+        </v-btn>
+      </template>
       Remove
     </v-tooltip>
 

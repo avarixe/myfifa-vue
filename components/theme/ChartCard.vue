@@ -4,22 +4,22 @@
     class="v-card--material-chart"
     v-on="$listeners"
   >
-    <chartist
-      slot="header"
-      :data="data"
-      :event-handlers="eventHandlers"
-      :options="options"
-      :ratio="ratio"
-      :responsive-options="responsiveOptions"
-      :type="type"
-    />
+    <template #header>
+      <chartist
+        :data="data"
+        :event-handlers="eventHandlers"
+        :options="options"
+        :ratio="ratio"
+        :responsive-options="responsiveOptions"
+        :type="type"
+      />
+    </template>
 
     <slot />
 
-    <slot
-      slot="actions"
-      name="actions"
-    />
+    <template #actions>
+      <slot name="actions" />
+    </template>
   </material-card>
 </template>
 

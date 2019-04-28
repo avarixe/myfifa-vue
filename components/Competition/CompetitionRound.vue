@@ -1,12 +1,8 @@
 <template>
   <v-card>
     <v-card-title>
-      <div
-        class="title"
-      >
-        <template
-          v-if="edit"
-        >
+      <div class="title">
+        <template v-if="edit">
           <v-text-field
             v-model="stage.name"
             :rules="$_validate('Stage Name', ['required'])"
@@ -14,36 +10,30 @@
             @click.stop
           />
         </template>
-        <span
-          v-else
-        >{{ round.name }}</span>
+        <span v-else>{{ round.name }}</span>
       </div>
 
-      <template
-        v-if="!readonly"
-      >
+      <template v-if="!readonly">
         <edit-mode-button
           :mode="edit"
           :changed="stageChanged"
           @toggle-mode="edit = !edit"
         />
 
-        <v-tooltip
-          bottom
-        >
-          <v-btn
-            slot="activator"
-            icon
-            @click="addFixture"
-          >
-            <v-icon>mdi-plus-circle</v-icon>
-          </v-btn>
+        <v-tooltip bottom>
+          <template #activator="{ on }">
+            <v-btn
+              v-on="on"
+              icon
+              @click="addFixture"
+            >
+              <v-icon>mdi-plus-circle</v-icon>
+            </v-btn>
+          </template>
           Add Fixture
         </v-tooltip>
 
-        <stage-remove
-          :stage="round"
-        />
+        <stage-remove :stage="round" />
       </template>
     </v-card-title>
 
@@ -54,42 +44,36 @@
       disable-initial-sort
       hide-actions
     >
-      <template
-        slot="headers"
-        slot-scope="props"
-      >
+      <template #headers>
         <th
           v-for="(header, i) in headers"
           :key="i"
           :class="`text-xs-${header.align}`"
           :width="header.width"
         >
-          <template
-            v-if="header.value"
-          >{{ header.text}}</template>
+          <template v-if="header.value">{{ header.text}}</template>
           <v-tooltip
             v-else
             right
           >
-            <v-btn
-              slot="activator"
-              icon
-              @click="override = !override"
-            >
-              <v-icon>mdi-playlist-edit</v-icon>
-            </v-btn>
+            <template #activator="{ on }">
+              <v-btn
+                v-on="on"
+                icon
+                @click="override = !override"
+              >
+                <v-icon>mdi-playlist-edit</v-icon>
+              </v-btn>
+            </template>
             Edit All
           </v-tooltip>
         </th>
       </template>
 
-      <template
-        slot="items"
-        slot-scope="props"
-      >
+      <template #items="{ item }">
         <fixture-view
           :headers="headers"
-          :fixture-data="props.item"
+          :fixture-data="item"
           :override="override"
         />
       </template>
@@ -99,9 +83,7 @@
 </template>
 
 <script>
-  import {
-    EditModeButton
-  } from '@/helpers'
+  import { EditModeButton } from '@/helpers'
   import StageRemove from './StageRemove'
   import FixtureView from './FixtureView'
 

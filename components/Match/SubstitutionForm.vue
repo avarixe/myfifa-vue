@@ -6,64 +6,52 @@
     :submit="submit"
     :color="color"
   >
-    <slot
-      slot="activator"
-    />
+    <template #activator="{ on }">
+      <slot :on="on" />
+    </template>
 
-    <v-container
-      slot="form"
-    >
-      <v-layout
-        wrap
-      >
-        <v-flex
-          xs12
-        >
-          <minute-field
-            v-model="minute"
-            :extra-time="match.extra_time"
-          />
-        </v-flex>
-        <v-flex
-          xs12
-        >
-          <player-select
-            v-model="substitution.player_id"
-            :players="unsubbedPlayers"
-            icon="mdi-subdirectory-arrow-left"
-            required
-          />
-        </v-flex>
-        <v-flex
-          xs12
-        >
-          <player-select
-            v-model="substitution.replacement_id"
-            :players="availablePlayers"
-            item-value="id"
-            label="Replaced By"
-            icon="mdi-subdirectory-arrow-right"
-            required
-          />
-        </v-flex>
-        <v-flex
-          xs12
-        >
-          <v-checkbox
-            label="Injury"
-            v-model="substitution.injury"
-            hide-details
-          />
-        </v-flex>
-      </v-layout>
-    </v-container>
+    <template #form>
+      <v-container>
+        <v-layout wrap>
+          <v-flex xs12>
+            <minute-field
+              v-model="minute"
+              :extra-time="match.extra_time"
+            />
+          </v-flex>
+          <v-flex xs12>
+            <player-select
+              v-model="substitution.player_id"
+              :players="unsubbedPlayers"
+              icon="mdi-subdirectory-arrow-left"
+              required
+            />
+          </v-flex>
+          <v-flex xs12>
+            <player-select
+              v-model="substitution.replacement_id"
+              :players="availablePlayers"
+              item-value="id"
+              label="Replaced By"
+              icon="mdi-subdirectory-arrow-right"
+              required
+            />
+          </v-flex>
+          <v-flex xs12>
+            <v-checkbox
+              label="Injury"
+              v-model="substitution.injury"
+              hide-details
+            />
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </template>
   </dialog-form>
 </template>
 
 <script>
-  import {
-    activePlayers
-  } from '@/models/Player'
+  import { activePlayers } from '@/models/Player'
   import {
     MinuteField,
     PlayerSelect

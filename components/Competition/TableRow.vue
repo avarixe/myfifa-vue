@@ -5,12 +5,8 @@
       :key="i"
       :class="`text-xs-${header.align}`"
     >
-      <template
-        v-if="header.value"
-      >
-        <template
-          v-if="edit && header.type"
-        >
+      <template v-if="header.value">
+        <template v-if="edit && header.type">
           <v-combobox
             v-if="header.value === 'name'"
             v-model="row.name"
@@ -35,18 +31,12 @@
             :autofocus="i === 0"
           />
         </template>
-        <template
-          v-else
-        >
-          <span
-            :class="teamClass(rowData.name)"
-          >{{ rowData[header.value] }}</span>
+        <template v-else>
+          <span :class="teamClass(rowData.name)">{{ rowData[header.value] }}</span>
         </template>
       </template>
 
-      <template
-        v-else
-      >
+      <template v-else>
         <edit-mode-button
           :mode="edit"
           :changed="rowChanged"
@@ -59,18 +49,16 @@
 </template>
 
 <script>
-  import {
-    EditModeButton
-  } from '@/helpers'
-  import {
-    CompetitionAccessible
-  } from '@/mixins'
+  import { EditModeButton } from '@/helpers'
+  import { CompetitionAccessible } from '@/mixins'
 
   export default {
     components: {
       EditModeButton
     },
-    mixins: [ CompetitionAccessible ],
+    mixins: [
+      CompetitionAccessible
+    ],
     props: {
       rowData: {
         type: Object,

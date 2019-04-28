@@ -8,10 +8,12 @@
         offset-overflow
         lazy
       >
-        <span
-          slot="activator"
-          class="body-1"
-        >{{ cap.pos }}</span>
+        <template #activator="{ on }">
+          <span
+            v-on="on"
+            class="body-1"
+          >{{ cap.pos }}</span>
+        </template>
         <v-list>
           <v-list-tile
             v-for="pos in positions"
@@ -25,9 +27,7 @@
 
     <v-list-tile-content>
       <v-list-tile-title>
-        <span
-          class="body-2"
-        >{{ cap.name }}</span>
+        <span class="body-2">{{ cap.name }}</span>
         <v-icon
           v-if="parseInt(cap.start) > 0"
           color="green"
@@ -67,9 +67,7 @@
 </template>
 
 <script>
-  import {
-    mapState
-  } from 'vuex'
+  import { mapState } from 'vuex'
 
   export default {
     props: {

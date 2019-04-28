@@ -5,9 +5,7 @@
       :key="i"
       :class="'text-xs-' + header.align"
     >
-      <template
-        v-if="header.value === 'action'"
-      >
+      <template v-if="header.value === 'action'">
         <v-flex
           layout
           class="pa-0"
@@ -16,18 +14,20 @@
             color="blue"
             right
           >
-            <v-btn
-              slot="activator"
-              :to="playerLink"
-              nuxt
-              small
-              icon
-            >
-              <v-icon
-                color="blue"
+            <template #activator="{ on }">
+              <v-btn
+                v-on="on"
+                :to="playerLink"
+                nuxt
                 small
-              >mdi-arrow-right</v-icon>
-            </v-btn>
+                icon
+              >
+                <v-icon
+                  color="blue"
+                  small
+                >mdi-arrow-right</v-icon>
+              </v-btn>
+            </template>
             View Player
           </v-tooltip>
 
@@ -40,22 +40,17 @@
           />
         </v-flex>
       </template>
-      <template
-        v-else-if="header.value === 'status' && playerData.status"
-      >
-        <v-icon
-          :color="statusColor"
-        >mdi-{{ statusIcon }}</v-icon>
+      <template v-else-if="header.value === 'status' && playerData.status">
+        <v-icon :color="statusColor">mdi-{{ statusIcon }}</v-icon>
       </template>
-      <template
-        v-else-if="header.editable && edit"
-      >
+      <template v-else-if="header.editable && edit">
         <v-select
           v-if="editOptions[header.value].type === 'select'"
           v-model="player[header.value]"
           :items="editOptions[header.value].items"
           :label="header.text"
           menu-props="auto"
+          hide-details
         />
         <v-text-field
           v-else-if="editOptions[header.value].type === 'money'"
@@ -67,26 +62,22 @@
           type="number"
         />
       </template>
-      <template
-        v-else
-      >{{ getProperty(header.view || header.value, header.format) }}</template>
+      <template v-else>{{ getProperty(header.view || header.value, header.format) }}</template>
     </td>
   </tr>
 </template>
 
 <script>
-  import {
-    EditModeButton
-  } from '@/helpers'
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { EditModeButton } from '@/helpers'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
     components: {
       EditModeButton
     },
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     props: {
       playerData: {
         type: Object,

@@ -6,76 +6,66 @@
     :submit-cb="submitCb"
     color="pink"
   >
-    <slot
-      slot="activator"
-    >
-      <v-tooltip
-        bottom
-        color="pink"
-      >
-        <v-btn
-          slot="activator"
-          icon
+    <template #activator="{ on }">
+      <slot :on="on">
+        <v-tooltip
+          bottom
+          color="pink"
         >
-          <v-icon
-            color="pink"
-          >mdi-hospital</v-icon>
-        </v-btn>
-        {{ title }}
-      </v-tooltip>
-    </slot>
+          <template #activator="{ on: tooltip }">
+            <v-btn
+              v-on="{ ...on, ...tooltip }"
+              icon
+            >
+              <v-icon color="pink">mdi-hospital</v-icon>
+            </v-btn>
+          </template>
+          {{ title }}
+        </v-tooltip>
+      </slot>
+    </template>
 
-    <v-container
-      slot="form"
-    >
-      <v-layout
-        wrap
-      >
-        <v-flex
-          xs12
-        >
-          <v-text-field
-            v-model="injury.description"
-            :rules="$_validate('Description', ['required'])"
-            label="Description"
-            prepend-icon="mdi-hospital"
-            spellcheck="false"
-            autocapitalize="words"
-            autocomplete="off"
-            autocorrect="off"
-          />
-        </v-flex>
-        <v-scroll-y-transition
-          mode="out-in"
-        >
-          <v-flex
-            v-if="playerInjured"
-            xs12
-          >
-            <v-checkbox
-              v-model="injury.recovered"
-              label="Player Recovered"
+    <template #form>
+      <v-container>
+        <v-layout wrap>
+          <v-flex xs12>
+            <v-text-field
+              v-model="injury.description"
+              :rules="$_validate('Description', ['required'])"
+              label="Description"
+              prepend-icon="mdi-hospital"
+              spellcheck="false"
+              autocapitalize="words"
+              autocomplete="off"
+              autocorrect="off"
             />
           </v-flex>
-        </v-scroll-y-transition>
-      </v-layout>
-    </v-container>
+          <v-scroll-y-transition mode="out-in">
+            <v-flex
+              v-if="playerInjured"
+              xs12
+            >
+              <v-checkbox
+                v-model="injury.recovered"
+                label="Player Recovered"
+              />
+            </v-flex>
+          </v-scroll-y-transition>
+        </v-layout>
+      </v-container>
+    </template>
   </dialog-form>
 </template>
 
 <script>
-  import {
-    mapActions
-  } from 'vuex'
-  import {
-    Injury
-  } from '@/models'
-  import {
-    DialogFormable
-  } from '@/mixins'
+  import { mapActions } from 'vuex'
+  import { Injury } from '@/models'
+  import { DialogFormable } from '@/mixins'
 
   export default {
-    mixins: [ DialogFormable ],
+    mixins: [
+      DialogFormable
+    ],
     props: {
       player: {
         type: Object,

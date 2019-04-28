@@ -1,20 +1,18 @@
 <template>
-  <div
-    class="d-inline-block"
-  >
+  <div class="d-inline-block">
     <v-tooltip
       bottom
       color="brown"
     >
-      <v-btn
-        slot="activator"
-        icon
-        @click.stop="snackbar = true"
-      >
-        <v-icon
-          color="brown"
-        >mdi-door-open</v-icon>
-      </v-btn>
+      <template #activator="{ on }">
+        <v-btn
+          v-on="on"
+          icon
+          @click.stop="snackbar = true"
+        >
+          <v-icon color="brown">mdi-door-open</v-icon>
+        </v-btn>
+      </template>
       Release
     </v-tooltip>
 

@@ -19,28 +19,20 @@
         tag="v-list"
         column
       >
-        <v-list-tile
-          avatar
-        >
+        <v-list-tile avatar>
           <v-list-tile-avatar>
             <!--<v-img
               src=""
               height="34"
               contain
             />-->
-            <v-icon
-              color="primary"
-            >mdi-soccer</v-icon>
+            <v-icon color="primary">mdi-soccer</v-icon>
           </v-list-tile-avatar>
-          <v-list-tile-title
-            class="title"
-          >MyFIFA Manager</v-list-tile-title>
+          <v-list-tile-title class="title">MyFIFA Manager</v-list-tile-title>
         </v-list-tile>
         <v-divider/>
 
-        <template
-          v-if="teamId"
-        >
+        <template v-if="teamId">
           <team-calendar />
 
           <v-list-tile

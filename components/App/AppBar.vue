@@ -15,9 +15,7 @@
 
     <v-spacer />
 
-    <v-toolbar-items
-      v-if="authenticated"
-    >
+    <v-toolbar-items v-if="authenticated">
       <v-flex
         align-center
         layout
@@ -28,20 +26,19 @@
           to="/"
           class="toolbar-items"
         >
-          <v-icon
-            color="tertiary"
-          >mdi-home</v-icon>
+          <v-icon color="tertiary">mdi-home</v-icon>
         </nuxt-link>
 
         <user-form>
-          <a
-            v-ripple
-            class="toolbar-items"
-          >
-            <v-icon
-              color="tertiary"
-            >mdi-account</v-icon>
-          </a>
+          <template #default="{ on }">
+            <a
+              v-on="on"
+              v-ripple
+              class="toolbar-items"
+            >
+              <v-icon color="tertiary">mdi-account</v-icon>
+            </a>
+          </template>
         </user-form>
 
         <a
@@ -49,9 +46,7 @@
           class="toolbar-items"
           @click="logout"
         >
-          <v-icon
-            color="tertiary"
-          >mdi-exit-to-app</v-icon>
+          <v-icon color="tertiary">mdi-exit-to-app</v-icon>
         </a>
       </v-flex>
     </v-toolbar-items>

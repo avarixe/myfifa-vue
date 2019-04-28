@@ -6,9 +6,7 @@
     <v-card>
       <v-card-title>MyFIFA Manager</v-card-title>
       <v-card-text>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-text-field
             v-model="credentials.username"
             label="Username"
@@ -16,9 +14,7 @@
             autocapitalize="off"
           />
         </v-flex>
-        <v-flex
-          xs12
-        >
+        <v-flex xs12>
           <v-text-field
             v-model="credentials.password"
             label="Password"

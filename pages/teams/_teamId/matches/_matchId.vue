@@ -7,40 +7,28 @@
       row
       wrap
     >
-      <v-flex
-        xs12
-      >
+      <v-flex xs12>
         <match-form>
-          <v-btn>
-            <v-icon
-              left
-            >mdi-plus-circle-outline</v-icon>
-            Match
-          </v-btn>
+          <template #default="{ on }">
+            <v-btn v-on="on">
+              <v-icon left>mdi-plus-circle-outline</v-icon>
+              Match
+            </v-btn>
+          </template>
         </match-form>
       </v-flex>
 
       <v-flex xs12>
-        <material-card
-          :color="resultColor"
-        >
-          <template
-            slot="header"
-          >
+        <material-card :color="resultColor">
+          <template #header>
             <v-layout
               class="text-xs-center"
               row
               wrap
             >
-              <v-flex
-                xs12
-              >
-                <div
-                  class="display-2"
-                >{{ match.competition }}</div>
-                <div
-                  class="subheading"
-                >{{ $_formatDate(match.date_played) }}</div>
+              <v-flex xs12>
+                <div class="display-2">{{ match.competition }}</div>
+                <div class="subheading">{{ $_formatDate(match.date_played) }}</div>
               </v-flex>
               <v-layout
                 class="display-1"
@@ -62,9 +50,7 @@
                   style="flex-basis:0"
                 >{{ match.away }}</v-flex>
               </v-layout>
-              <v-flex
-                xs12
-              >
+              <v-flex xs12>
                 <div class="display-1">
                   {{ match.score }}
                   {{ match.extra_time && !match.penalty_shootout ? '(AET)' : '' }}
@@ -77,9 +63,7 @@
             row
             wrap
           >
-            <v-flex
-              xs12
-            >
+            <v-flex xs12>
               <match-actions
                 v-if="match.date_played === team.current_date"
                 :match="match"
@@ -89,17 +73,13 @@
               xs12
               sm6
             >
-              <match-timeline
-                :match="match"
-              />
+              <match-timeline :match="match" />
             </v-flex>
             <v-flex
               xs12
               sm6
             >
-              <match-lineup
-                :match="match"
-              />
+              <match-lineup :match="match" />
             </v-flex>
           </v-layout>
         </material-card>
@@ -110,9 +90,7 @@
 </template>
 
 <script>
-  import {
-    mapActions
-  } from 'vuex'
+  import { mapActions } from 'vuex'
   import {
     Match,
     Player
@@ -122,9 +100,7 @@
   import MatchLineup from '@/components/Match/MatchLineup'
   import MatchTimeline from '@/components/Match/Timeline'
   import MaterialCard from '@/components/theme/Card'
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
     layout: 'team',
@@ -136,7 +112,9 @@
       MaterialCard
     },
     middleware: 'authenticated',
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     head () {
       return {
         title: `${this.match.home} vs ${this.match.away}`

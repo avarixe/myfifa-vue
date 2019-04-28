@@ -12,9 +12,7 @@
         sm8
         md4
       >
-        <login-form
-          v-if="!authenticated"
-        />
+        <login-form v-if="!authenticated" />
       </v-flex>
     </v-layout>
   </v-container>

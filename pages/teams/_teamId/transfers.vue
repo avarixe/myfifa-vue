@@ -7,9 +7,7 @@
       row
       wrap
     >
-      <v-flex
-        xs12
-      >
+      <v-flex xs12>
         <transfer-grid />
       </v-flex>
     </v-layout>
@@ -17,15 +15,15 @@
 </template>
 
 <script>
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { TeamAccessible } from '@/mixins'
   import TransferGrid from '@/components/Transfer/TransferGrid'
 
   export default {
     layout: 'team',
     middleware: 'authenticated',
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     head () {
       return {
         title: `${this.team.title} - Transfer History`

@@ -1,16 +1,10 @@
 <template>
   <div>
     {{ goalType }} scored by
-    <span
-      class="font-weight-bold"
-    >{{ item.player_name }}</span>
-    <span
-      v-if="item.assisted_by"
-    >
+    <span class="font-weight-bold">{{ item.player_name }}</span>
+    <span v-if="item.assisted_by">
       (assisted by
-      <span
-        class="font-weight-bold"
-      >{{ item.assisted_by }}</span>
+      <span class="font-weight-bold">{{ item.assisted_by }}</span>
       )
     </span>
   </div>

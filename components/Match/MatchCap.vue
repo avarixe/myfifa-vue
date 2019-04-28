@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div
-      class="body-2"
-    >
+    <div class="body-2">
       <v-menu
         :disabled="readonly || cap.start > 0"
         max-height="200px"
@@ -10,9 +8,9 @@
         offset-overflow
         lazy
       >
-        <span
-          slot="activator"
-        >{{ cap.name }}</span>
+        <template #activator="{ on }">
+          <span v-on="on">{{ cap.name }}</span>
+        </template>
 
         <v-list>
           <v-list-tile
@@ -30,9 +28,7 @@
         </v-list>
       </v-menu>
     </div>
-    <div
-      class="body-1"
-    >
+    <div class="body-1">
       <v-menu
         :disabled="readonly"
         max-height="200px"
@@ -40,9 +36,9 @@
         offset-overflow
         lazy
       >
-        <span
-          slot="activator"
-        >{{ cap.pos }}</span>
+        <template #activator="{ on }">
+          <span v-on="on">{{ cap.pos }}</span>
+        </template>
 
         <v-list>
           <v-list-tile
@@ -98,9 +94,7 @@
     mapState,
     mapActions
   } from 'vuex'
-  import {
-    activePlayers
-  } from '@/models/Player'
+  import { activePlayers } from '@/models/Player'
 
   export default {
     props: {

@@ -7,36 +7,29 @@
     row
     wrap
   >
-    <template
-      slot="item"
-      slot-scope="props"
-    >
+    <template #item="{ item }">
       <v-flex
         xs12
         md6
       >
-        <squad-item
-          :squad="props.item"
-        />
+        <squad-item :squad="item" />
       </v-flex>
     </template>
   </v-data-iterator>
 </template>
 
 <script>
-  import {
-    Squad
-  } from '@/models'
+  import { Squad } from '@/models'
   import SquadItem from './SquadItem'
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
     components: {
       SquadItem
     },
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     computed: {
       rows () {
         return Squad

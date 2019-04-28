@@ -7,12 +7,8 @@
       row
       wrap
     >
-      <v-flex
-        xs12
-      >
-        <material-card
-          :title="player.name"
-        >
+      <v-flex xs12>
+        <material-card :title="player.name">
           <v-layout
             class="text-xs-center"
             row
@@ -22,74 +18,54 @@
               xs6
               sm3
             >
-              <div
-                class="display-1"
-              >{{ player.pos }}</div>
-              <div
-                class="subheading"
-              >Position</div>
+              <div class="display-1">{{ player.pos }}</div>
+              <div class="subheading">Position</div>
             </v-flex>
             <v-flex
               xs6
               sm3
             >
-              <div
-                class="display-1"
-              >{{ $_listArray(player.sec_pos) }}</div>
-              <div
-                class="subheading"
-              >Secondary Position(s)</div>
+              <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
+              <div class="subheading">Secondary Position(s)</div>
             </v-flex>
             <v-flex
               xs6
               sm3
             >
-              <div
-                class="display-1"
-              >{{ player.age }}</div>
-              <div
-                class="subheading"
-              >Age</div>
+              <div class="display-1">{{ player.age }}</div>
+              <div class="subheading">Age</div>
             </v-flex>
             <v-flex
               xs6
               sm3
             >
-              <div
-                class="display-1"
-              >{{ player.status || '-' }}</div>
-              <div
-                class="subheading"
-              >Status</div>
+              <div class="display-1">{{ player.status || '-' }}</div>
+              <div class="subheading">Status</div>
             </v-flex>
-            <v-flex
-              xs12
-            >
+            <v-flex xs12>
               <player-form
                 :player-data="player"
                 color="orange"
               >
-                <v-tooltip
-                  bottom
-                  color="orange"
-                >
-                  <v-btn
-                    slot="activator"
-                    icon
+                <template #default="{ on: dialog }">
+                  <v-tooltip
+                    bottom
+                    color="orange"
                   >
-                    <v-icon
-                      color="orange"
-                    >mdi-pencil</v-icon>
-                  </v-btn>
-                  Edit
-                </v-tooltip>
+                    <template #activator="{ on: tooltip }">
+                      <v-btn
+                        v-on="{ ...dialog, ...tooltip }"
+                        icon
+                      >
+                        <v-icon color="orange">mdi-pencil</v-icon>
+                      </v-btn>
+                    </template>
+                    Edit
+                  </v-tooltip>
+                </template>
               </player-form>
-              <transfer-form
-                :player="player"
-              />
-              <contract-form
-                :player="player"
-              />
+              <transfer-form :player="player" />
+              <contract-form :player="player" />
               <injury-form
                 v-if="active"
                 :player="player"
@@ -106,9 +82,7 @@
                 v-if="active"
                 :player="player"
               />
-              <player-remove
-                :player="player"
-              />
+              <player-remove :player="player" />
             </v-flex>
           </v-layout>
 
@@ -126,17 +100,11 @@
           color="green"
           type="Line"
         >
-          <h4
-            class="title font-weight-light"
-          >
-            <span
-              class="green--text"
-            >{{ player.ovr }}</span>
+          <h4 class="title font-weight-light">
+            <span class="green--text">{{ player.ovr }}</span>
             <small>OVR</small>
           </h4>
-          <p
-            class="category d-inline-flex font-weight-light"
-          />
+          <p class="category d-inline-flex font-weight-light" />
         </material-chart-card>
       </v-flex>
 
@@ -151,17 +119,11 @@
           color="info"
           type="Line"
         >
-          <h4
-            class="title font-weight-light"
-          >
-            <span
-              class="green--text"
-            >{{ $_formatMoney(player.value) }}</span>
+          <h4 class="title font-weight-light">
+            <span class="green--text">{{ $_formatMoney(player.value) }}</span>
             <small>Value</small>
           </h4>
-          <p
-            class="category d-inline-flex font-weight-light"
-          />
+          <p class="category d-inline-flex font-weight-light" />
         </material-chart-card>
       </v-flex>
 
@@ -213,51 +175,40 @@
         />
       </v-flex>
 
-      <v-flex
-        xs12
-      >
-        <material-card
-          color="accent"
-        >
-          <template
-            slot="header"
-          >
-            <span
-              class="title font-weight-light mb-2"
-            >Timeline</span>
+      <v-flex xs12>
+        <material-card color="accent">
+          <template #header>
+            <span class="title font-weight-light mb-2">Timeline</span>
 
             <!-- Timeline Filter -->
-            <v-tooltip
-              top
-            >
-              <v-menu
-                slot="activator"
-                bottom
-                right
-              >
-                <v-btn
-                  slot="activator"
-                  icon
+            <v-tooltip top>
+              <template #activator="{ on: tooltip }">
+                <v-menu
+                  bottom
+                  right
                 >
-                  <v-icon
-                    :color="currentFilter.color"
-                  >mdi-{{ currentFilter.icon }}</v-icon>
-                </v-btn>
-                <v-list>
-                  <v-list-tile
-                    v-for="(event, key) in filterOptions"
-                    :key="key"
-                    @click="timelineFilter = key"
-                  >
-                    <v-list-tile-avatar>
-                      <v-icon
-                        :color="event.color"
-                      >mdi-{{ event.icon }}</v-icon>
-                    </v-list-tile-avatar>
-                    <v-list-tile-title>{{ key }}</v-list-tile-title>
-                  </v-list-tile>
-                </v-list>
-              </v-menu>
+                  <template #activator="{ on: menu }">
+                    <v-btn
+                      v-on="{ ...menu, ...tooltip }"
+                      icon
+                    >
+                      <v-icon :color="currentFilter.color">mdi-{{ currentFilter.icon }}</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-list>
+                    <v-list-tile
+                      v-for="(event, key) in filterOptions"
+                      :key="key"
+                      @click="timelineFilter = key"
+                    >
+                      <v-list-tile-avatar>
+                        <v-icon :color="event.color">mdi-{{ event.icon }}</v-icon>
+                      </v-list-tile-avatar>
+                      <v-list-tile-title>{{ key }}</v-list-tile-title>
+                    </v-list-tile>
+                  </v-list>
+                </v-menu>
+              </template>
               Filter Timeline
             </v-tooltip>
           </template>
@@ -276,15 +227,9 @@
 </template>
 
 <script>
-  import {
-    mapActions
-  } from 'vuex'
-  import {
-    parse
-  } from 'date-fns'
-  import {
-    Player
-  } from '@/models'
+  import { mapActions } from 'vuex'
+  import { parse } from 'date-fns'
+  import { Player } from '@/models'
   import PlayerForm from '@/components/Player/PlayerForm'
   import ContractForm from '@/components/Player/ContractForm'
   import InjuryForm from '@/components/Player/InjuryForm'
@@ -297,9 +242,7 @@
   import MaterialCard from '@/components/theme/Card'
   import MaterialChartCard from '@/components/theme/ChartCard'
   import MaterialStatsCard from '@/components/theme/StatsCard'
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
     layout: 'team',
@@ -318,7 +261,9 @@
       MaterialStatsCard
     },
     middleware: 'authenticated',
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     data () {
       return {
         historyHeaders: [

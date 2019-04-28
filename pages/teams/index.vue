@@ -1,14 +1,10 @@
 <template>
-  <v-container
-    grid-list-lg
-  >
+  <v-container grid-list-lg>
     <v-layout
       row
       wrap
     >
-      <v-flex
-        xs12
-      >
+      <v-flex xs12>
         <team-panel />
       </v-flex>
     </v-layout>

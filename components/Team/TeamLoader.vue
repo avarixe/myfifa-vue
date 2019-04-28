@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="loading-page"
-  >
+  <div class="loading-page">
     <v-progress-circular
       :size="200"
       :width="15"
@@ -13,9 +11,7 @@
 </template>
 
 <script>
-  import {
-    mapActions
-  } from 'vuex'
+  import { mapActions } from 'vuex'
 
   export default {
     props: {

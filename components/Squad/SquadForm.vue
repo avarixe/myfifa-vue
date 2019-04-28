@@ -5,77 +5,66 @@
     :submit="submit"
     :color="color"
   >
-    <slot
-      slot="activator"
-    />
+    <template #activator="{ on }">
+      <slot :on="on" />
+    </template>
 
-    <v-container
-      slot="form"
-    >
-      <v-layout
-        wrap
-      >
-        <v-flex
-          xs12
-        >
-          <v-text-field
-            v-model="squad.name"
-            :rules="$_validate('Name', ['required'])"
-            label="Name"
-            prepend-icon="mdi-clipboard-text"
-            spellcheck="false"
-            autocapitalize="words"
-            autocomplete="off"
-            autocorrect="off"
-          />
-        </v-flex>
-      </v-layout>
+    <template #form>
+      <v-container>
+        <v-layout wrap>
+          <v-flex xs12>
+            <v-text-field
+              v-model="squad.name"
+              :rules="$_validate('Name', ['required'])"
+              label="Name"
+              prepend-icon="mdi-clipboard-text"
+              spellcheck="false"
+              autocapitalize="words"
+              autocomplete="off"
+              autocorrect="off"
+            />
+          </v-flex>
+        </v-layout>
 
-      <v-layout
-        v-for="(position, i) in squad.positions_list"
-        :key="i"
-        row
-        wrap
-      >
-        <v-flex
-          xs4
+        <v-layout
+          v-for="(position, i) in squad.positions_list"
+          :key="i"
+          row
+          wrap
         >
-          <v-select
-            v-model="squad.positions_list[i]"
-            :items="positions"
-            label="Position"
-            prepend-icon="mdi-run"
-            hide-details
-          />
-        </v-flex>
+          <v-flex xs4>
+            <v-select
+              v-model="squad.positions_list[i]"
+              :items="positions"
+              label="Position"
+              prepend-icon="mdi-run"
+              hide-details
+            />
+          </v-flex>
 
-        <v-flex
-          xs8
-        >
-          <v-select
-            v-model="squad.players_list[i]"
-            :items="players"
-            item-value="id"
-            item-text="name"
-            label="Player"
-            prepend-icon="mdi-account"
-            hide-details
-          >
-            <template
-              slot="item"
-              slot-scope="data"
+          <v-flex xs8>
+            <v-select
+              v-model="squad.players_list[i]"
+              :items="players"
+              item-value="id"
+              item-text="name"
+              label="Player"
+              prepend-icon="mdi-account"
+              hide-details
             >
-              <v-list-tile-action>
-                <v-list-tile-action-text>{{ data.item.pos }}</v-list-tile-action-text>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ data.item.name }}</v-list-tile-title>
-              </v-list-tile-content>
-            </template>
-          </v-select>
-        </v-flex>
-      </v-layout>
-    </v-container>
+              <template #item="{ item }">
+                <v-list-tile-action>
+                  <v-list-tile-action-text>{{ item.pos }}</v-list-tile-action-text>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                </v-list-tile-content>
+              </template>
+            </v-select>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </template>
   </dialog-form>
 </template>
 
@@ -84,9 +73,7 @@
     mapState,
     mapActions
   } from 'vuex'
-  import {
-    activePlayers
-  } from '@/models/Player'
+  import { activePlayers } from '@/models/Player'
   import {
     TeamAccessible,
     DialogFormable

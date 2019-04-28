@@ -1,25 +1,25 @@
 <template>
   <material-card>
-    <template
-      slot="header"
-    >
+    <template #header>
       <span
         v-text="'Matches'"
         class="title font-weight-light mb-2"
       />
 
       <match-form>
-        <v-tooltip
-          bottom
-        >
-          <v-btn
-            slot="activator"
-            flat
-          >
-            <v-icon>mdi-plus-circle-outline</v-icon>
-          </v-btn>
-          New Match
-        </v-tooltip>
+        <template #default="{ on: dialog }">
+          <v-tooltip bottom>
+            <template #activator="{ on: tooltip }">
+              <v-btn
+                v-on="{ ...dialog, ...tooltip }"
+                flat
+              >
+                <v-icon>mdi-plus-circle-outline</v-icon>
+              </v-btn>
+            </template>
+            New Match
+          </v-tooltip>
+        </template>
       </match-form>
     </template>
 
@@ -65,52 +65,28 @@
       item-key="id"
       no-data-text="No Matches Recorded"
     >
-      <template
-        slot="headerCell"
-        slot-scope="{ header }">
+      <template #headerCell="{ header }">
         <span
           class="subheading font-weight-light text-success text--darken-3"
         >{{ header.text }}</span>
       </template>
-      <template
-        slot="items"
-        slot-scope="props"
-      >
-        <td>
-          <v-tooltip
-            right
-            color="blue darken-2"
-          >
-            <v-btn
-              slot="activator"
-              :to="matchLink(props.item)"
-              small
-              icon
-              class="my-0"
+      <template #items="{ item: match }">
+        <v-tooltip bottom>
+          <template #activator="{ on }">
+            <tr
+              v-on="on"
+              @click="$router.push(matchLink(match))"
             >
-              <v-icon
-                small
-                color="blue darken-2"
-              >mdi-arrow-right</v-icon>
-            </v-btn>
-            View Match
-          </v-tooltip>
-        </td>
-        <td
-          class="text-xs-center"
-        >{{ props.item.competition }}</td>
-        <td
-          class="text-xs-right"
-        >{{ props.item.home }}</td>
-        <td
-          :class="resultColor(props.item.team_result) + '--text text-xs-center'"
-        >{{ props.item.score }}</td>
-        <td
-          class="text-xs-left"
-        >{{ props.item.away }}</td>
-        <td
-          class="text-xs-center"
-        >{{ $_format($_parse(props.item.date_played), 'MMM DD, YYYY') }}</td>
+              <td class="text-xs-center">{{ match.competition }}</td>
+              <td class="text-xs-right">{{ match.home }}</td>
+              <td :class="resultColor(match.team_result) + '--text text-xs-center'">{{ match.score }}</td>
+              <td class="text-xs-left">{{ match.away }}</td>
+              <td class="text-xs-center">{{ $_format($_parse(match.date_played), 'MMM DD, YYYY') }}</td>
+            </tr>
+          </template>
+          Click to View Match: <br>
+          <i>{{ match.home }} v {{ match.away }}</i>
+        </v-tooltip>
       </template>
     </v-data-table>
 
@@ -125,15 +101,13 @@
   import MatchForm from './MatchForm'
   import MatchRemove from './MatchRemove'
   import MaterialCard from '@/components/theme/Card'
-  import {
-    TeamAccessible
-  } from '@/mixins'
-  import {
-    addYears
-  } from 'date-fns'
+  import { TeamAccessible } from '@/mixins'
+  import { addYears } from 'date-fns'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     components: {
       MatchForm,
       MatchRemove,
@@ -147,7 +121,6 @@
           descending: true
         },
         headers: [
-          { text: '', value: null, sortable: false, width: 40 },
           { text: 'Competition', value: 'competition', align: 'center' },
           { text: 'Home', value: 'home', align: 'right' },
           { text: 'Score', value: 'score', align: 'center', sortable: false },

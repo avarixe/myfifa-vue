@@ -1,57 +1,29 @@
 <template>
   <tr>
-    <td
-      class="text-xs-left"
-    >{{ player.name }}</td>
-    <td
-      class="text-xs-center"
-    >{{ player.pos }}</td>
-    <td
-      class="text-xs-center"
-    >{{ player.age }}</td>
+    <td class="text-xs-left">{{ player.name }}</td>
+    <td class="text-xs-center">{{ player.pos }}</td>
+    <td class="text-xs-center">{{ player.age }}</td>
 
     <!-- Growth -->
-    <template
-      v-if="mode === 0"
-    >
-      <td
-        class="text-xs-center"
-      >{{ endOvr }}</td>
-      <td
-        :class="`text-xs-center ${ovrColor}`"
-      >{{ ovrChange > 0 ? '+' : '' }}{{ ovrChange }}</td>
-      <td
-        class="text-xs-right"
-      >{{ team.currency }}{{ endValue.toLocaleString() }}</td>
-      <td
-        :class="`text-xs-right ${valueColor}`"
-      >{{ valueChange.toFixed(2) }}%</td>
+    <template v-if="mode === 0">
+      <td class="text-xs-center">{{ endOvr }}</td>
+      <td :class="`text-xs-center ${ovrColor}`">{{ ovrChange > 0 ? '+' : '' }}{{ ovrChange }}</td>
+      <td class="text-xs-right">{{ team.currency }}{{ endValue.toLocaleString() }}</td>
+      <td :class="`text-xs-right ${valueColor}`">{{ valueChange.toFixed(2) }}%</td>
     </template>
 
     <!-- Statistics -->
-    <template
-      v-else-if="mode === 1"
-    >
-      <td
-        class="text-xs-right"
-      >{{ gamesView || '-' }}</td>
-      <td
-        class="text-xs-right"
-      >{{ goalsView || '-' }}</td>
-      <td
-        class="text-xs-right"
-      >{{ assistsView || '-' }}</td>
-      <td
-        class="text-xs-right"
-      >{{ csView || '-' }}</td>
+    <template v-else-if="mode === 1">
+      <td class="text-xs-right">{{ gamesView || '-' }}</td>
+      <td class="text-xs-right">{{ goalsView || '-' }}</td>
+      <td class="text-xs-right">{{ assistsView || '-' }}</td>
+      <td class="text-xs-right">{{ csView || '-' }}</td>
     </template>
   </tr>
 </template>
 
 <script>
-  import {
-    Team
-  } from '@/models'
+  import { Team } from '@/models'
 
   export default {
     props: {

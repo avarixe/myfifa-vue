@@ -7,22 +7,18 @@
       row
       wrap
     >
-      <v-flex
-        xs12
-      >
+      <v-flex xs12>
         <squad-form>
-          <v-btn>
-            <v-icon
-              left
-            >mdi-plus-circle-outline</v-icon>
-            Squad
-          </v-btn>
+          <template #default="{ on }">
+            <v-btn v-on="on">
+              <v-icon left>mdi-plus-circle-outline</v-icon>
+              Squad
+            </v-btn>
+          </template>
         </squad-form>
       </v-flex>
 
-      <v-flex
-        xs12
-      >
+      <v-flex xs12>
         <squad-grid />
       </v-flex>
     </v-layout>
@@ -30,16 +26,16 @@
 </template>
 
 <script>
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { TeamAccessible } from '@/mixins'
   import SquadForm from '@/components/Squad/SquadForm'
   import SquadGrid from '@/components/Squad/SquadGrid'
 
   export default {
     layout: 'team',
     middleware: 'authenticated',
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     head () {
       return {
         title: `${this.team.title} - Squads`

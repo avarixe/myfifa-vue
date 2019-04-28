@@ -7,31 +7,28 @@
       :to="{ name: 'teams-teamId-matches', params: { teamId: team.id } }"
       icon
     >
-      <v-icon
-        color="blue darken-2"
-      >mdi-arrow-right</v-icon>
+      <v-icon color="blue darken-2">mdi-arrow-right</v-icon>
     </v-btn>
 
     <team-form
       :team-id="team.id"
       color="orange"
     >
-      <v-btn
-        icon
-      >
-        <v-icon
-          color="orange darken-2"
-        >mdi-pencil</v-icon>
-      </v-btn>
+      <template #default="{ on }">
+        <v-btn
+          v-on="on"
+          icon
+        >
+          <v-icon color="orange darken-2">mdi-pencil</v-icon>
+        </v-btn>
+      </template>
     </team-form>
 
     <v-btn
       icon
       @click.stop="snackbar = true"
     >
-      <v-icon
-        color="black"
-      >mdi-minus-circle</v-icon>
+      <v-icon color="black">mdi-minus-circle</v-icon>
     </v-btn>
 
     <v-snackbar

@@ -7,16 +7,10 @@
       row
       wrap
     >
-      <v-flex
-        xs12
-      >
+      <v-flex xs12>
         <v-card>
-          <v-card-title
-            primary-title
-          >
-            <div
-              class="display-2"
-            >{{ team.title }}</div>
+          <v-card-title primary-title>
+            <div class="display-2">{{ team.title }}</div>
           </v-card-title>
         </v-card>
       </v-flex>
@@ -25,14 +19,14 @@
 </template>
 
 <script>
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
     layout: 'team',
     middleware: 'authenticated',
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     head () {
       return {
         title: this.team.title

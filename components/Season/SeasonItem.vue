@@ -1,33 +1,25 @@
 <template>
   <material-card>
-    <template
-      slot="header"
-    >
-      <span
-        class="title font-weight-light mb-2"
-      >{{ seasonLabel }}</span>
+    <template #header>
+      <span class="title font-weight-light mb-2">{{ seasonLabel }}</span>
 
-      <v-tooltip
-        bottom
-      >
-        <v-btn
-          slot="activator"
-          :to="seasonLink"
-          nuxt
-          small
-          icon
-        >
-          <v-icon
-            color="white"
-          >mdi-arrow-right</v-icon>
-        </v-btn>
+      <v-tooltip bottom>
+        <template #activator="{ on }">
+          <v-btn
+            v-on="on"
+            :to="seasonLink"
+            nuxt
+            small
+            icon
+          >
+            <v-icon color="white">mdi-arrow-right</v-icon>
+          </v-btn>
+        </template>
         View Season
       </v-tooltip>
     </template>
 
-    <v-list
-      dense
-    >
+    <v-list dense>
       <v-subheader>Competitions</v-subheader>
       <v-list-tile
         v-for="(competition, i) in competitions"
@@ -43,12 +35,8 @@
           >mdi-arrow-right</v-icon>
           {{ competition.name }}
         </v-list-tile-title>
-        <v-list-tile-avatar
-          v-if="competition.champion === team.title"
-        >
-          <v-icon
-            color="yellow darken-2"
-          >mdi-trophy</v-icon>
+        <v-list-tile-avatar v-if="competition.champion === team.title">
+          <v-icon color="yellow darken-2">mdi-trophy</v-icon>
         </v-list-tile-avatar>
       </v-list-tile>
     </v-list>
@@ -58,9 +46,7 @@
 
 <script>
   import MaterialCard from '@/components/theme/Card'
-  import {
-    addYears
-  } from 'date-fns'
+  import { addYears } from 'date-fns'
   import {
     Team,
     Competition

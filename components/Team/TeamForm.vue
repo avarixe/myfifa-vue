@@ -5,85 +5,75 @@
     :submit="submit"
     :color="color"
   >
-    <slot
-      slot="activator"
-    />
+    <template #activator="{ on }">
+      <slot :on="on" />
+    </template>
 
-    <v-container
-      slot="form"
-    >
-      <v-layout
-        wrap
-      >
-        <v-flex
-          xs12
-        >
-          <v-text-field
-            v-model="team.title"
-            :rules="$_validate('Team', ['required'])"
-            label="Team"
-            prepend-icon="mdi-account-multiple"
-            spellcheck="false"
-            autocapitalize="words"
-            autocomplete="off"
-            autocorrect="off"
-          />
-        </v-flex>
-        <v-flex
-          xs12
-        >
-          <v-menu
-            v-model="menu"
-            ref="menu"
-            :close-on-content-click="false"
-            :return-value.sync="team.start_date"
-            lazy
-            transition="scale-transition"
-            full-width
-          >
+    <template #form>
+      <v-container>
+        <v-layout wrap>
+          <v-flex xs12>
             <v-text-field
-              v-model="team.start_date"
-              slot="activator"
-              label="Start Date"
-              prepend-icon="mdi-calendar-today"
-              :rules="$_validate('Start Date', ['required', 'date'])"
-              readonly
+              v-model="team.title"
+              :rules="$_validate('Team', ['required'])"
+              label="Team"
+              prepend-icon="mdi-account-multiple"
+              spellcheck="false"
+              autocapitalize="words"
+              autocomplete="off"
+              autocorrect="off"
             />
-            <v-date-picker
-              v-model="team.start_date"
-              landscape
-              :color="color"
-              @input="$refs.menu.save(team.start_date)"
+          </v-flex>
+          <v-flex xs12>
+            <v-menu
+              v-model="menu"
+              ref="menu"
+              :close-on-content-click="false"
+              :return-value.sync="team.start_date"
+              lazy
+              transition="scale-transition"
+              full-width
+            >
+              <template #activator="{ on }">
+                <v-text-field
+                  v-model="team.start_date"
+                  v-on="on"
+                  label="Start Date"
+                  prepend-icon="mdi-calendar-today"
+                  :rules="$_validate('Start Date', ['required', 'date'])"
+                  readonly
+                />
+              </template>
+              <v-date-picker
+                v-model="team.start_date"
+                landscape
+                :color="color"
+                @input="$refs.menu.save(team.start_date)"
+              />
+            </v-menu>
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field
+              v-model="team.currency"
+              :rules="$_validate('Currency', ['required'])"
+              label="Currency"
             />
-          </v-menu>
-        </v-flex>
-        <v-flex
-          xs12
-        >
-          <v-text-field
-            v-model="team.currency"
-            :rules="$_validate('Currency', ['required'])"
-            label="Currency"
-          />
-        </v-flex>
-      </v-layout>
-    </v-container>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </template>
   </dialog-form>
 </template>
 
 <script>
-  import {
-    mapActions
-  } from 'vuex'
-  import {
-    Team
-  } from '@/models'
-  import {
-    DialogFormable
-  } from '@/mixins'
+  import { mapActions } from 'vuex'
+  import { Team } from '@/models'
+  import { DialogFormable } from '@/mixins'
 
   export default {
-    mixins: [ DialogFormable ],
+    mixins: [
+      DialogFormable
+    ],
     props: {
       teamId: [String, Number]
     },

@@ -6,40 +6,34 @@
     :submit="submit"
     :color="color"
   >
-    <slot
-      slot="activator"
-    />
+    <template #activator="{ on }">
+      <slot :on="on" />
+    </template>
 
-    <v-container
-      slot="form"
-    >
-      <v-layout
-        wrap
-      >
-        <v-flex
-          xs6
-        >
-          <v-text-field
-            v-model="penaltyShootout.home_score"
-            :rules="$_validate('Home Score', ['required'])"
-            type="number"
-            :label="match.home"
-            prepend-icon="mdi-soccer"
-          />
-        </v-flex>
-        <v-flex
-          xs6
-        >
-          <v-text-field
-            v-model="penaltyShootout.away_score"
-            :rules="$_validate('Away Score', ['required'])"
-            type="number"
-            :label="match.away"
-            prepend-icon="mdi-soccer"
-          />
-        </v-flex>
-      </v-layout>
-    </v-container>
+    <template #form>
+      <v-container>
+        <v-layout wrap>
+          <v-flex xs6>
+            <v-text-field
+              v-model="penaltyShootout.home_score"
+              :rules="$_validate('Home Score', ['required'])"
+              type="number"
+              :label="match.home"
+              prepend-icon="mdi-soccer"
+            />
+          </v-flex>
+          <v-flex xs6>
+            <v-text-field
+              v-model="penaltyShootout.away_score"
+              :rules="$_validate('Away Score', ['required'])"
+              type="number"
+              :label="match.away"
+              prepend-icon="mdi-soccer"
+            />
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </template>
   </dialog-form>
 </template>
 

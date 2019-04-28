@@ -4,65 +4,61 @@
     :title="title"
     :submit="submit"
   >
-    <slot
-      slot="activator"
-    />
+    <template #activator="{ on }">
+      <slot :on="on" />
+    </template>
 
-    <v-container
-      slot="form"
-    >
-      <v-text-field
-        v-model="user.full_name"
-        label="Name"
-        :rules="$_validate('Name', ['required'])"
-      />
-      <v-text-field
-        v-model="user.username"
-        label="Username"
-        :rules="$_validate('Username', ['required'])"
-        autocapitalize="off"
-      />
-      <v-text-field
-        v-model="user.email"
-        label="Email"
-        type="email"
-        :rules="$_validate('Email', ['required', 'email'])"
-      />
-      <template
-        v-if="!user.id"
-      >
+    <template #form>
+      <v-container>
         <v-text-field
-          v-model="user.password"
-          label="Password"
-          :type="visible1 ? 'text' : 'password'"
-          :append-icon="`mdi-eye${visible1 ? '-off' : ''}`"
-          @click:append="visible1 = !visible1"
-          :rules="$_validate('Password', ['required'])"
+          v-model="user.full_name"
+          label="Name"
+          :rules="$_validate('Name', ['required'])"
         />
         <v-text-field
-          v-model="user.password_confirmation"
-          label="Confirm Password"
-          :type="visible2 ? 'text' : 'password'"
-          :append-icon="`mdi-eye${visible2 ? '-off' : ''}`"
-          @click:append="visible2 = !visible2"
-          :rules="$_validate('Password Confirmation', ['required'])"
+          v-model="user.username"
+          label="Username"
+          :rules="$_validate('Username', ['required'])"
+          autocapitalize="off"
         />
-      </template>
-    </v-container>
+        <v-text-field
+          v-model="user.email"
+          label="Email"
+          type="email"
+          :rules="$_validate('Email', ['required', 'email'])"
+        />
+        <template v-if="!user.id">
+          <v-text-field
+            v-model="user.password"
+            label="Password"
+            :type="visible1 ? 'text' : 'password'"
+            :append-icon="`mdi-eye${visible1 ? '-off' : ''}`"
+            @click:append="visible1 = !visible1"
+            :rules="$_validate('Password', ['required'])"
+          />
+          <v-text-field
+            v-model="user.password_confirmation"
+            label="Confirm Password"
+            :type="visible2 ? 'text' : 'password'"
+            :append-icon="`mdi-eye${visible2 ? '-off' : ''}`"
+            @click:append="visible2 = !visible2"
+            :rules="$_validate('Password Confirmation', ['required'])"
+          />
+        </template>
+      </v-container>
+    </template>
   </dialog-form>
 </template>
 
 
 <script>
-  import {
-    mapActions
-  } from 'vuex'
-  import {
-    DialogFormable
-  } from '@/mixins'
+  import { mapActions } from 'vuex'
+  import { DialogFormable } from '@/mixins'
 
   export default {
-    mixins: [ DialogFormable ],
+    mixins: [
+      DialogFormable
+    ],
     data: () => ({
       visible1: false,
       visible2: false,

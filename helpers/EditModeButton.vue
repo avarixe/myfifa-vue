@@ -6,17 +6,20 @@
     :top="dir === 'top'"
     :bottom="dir === 'bottom'"
   >
-    <v-btn
-      slot="activator"
-      small
-      icon
-      @click.stop="$emit('toggle-mode')"
-    >
-      <v-icon
-        :color="color"
+    <template #activator="{ on }">
+      <v-btn
+        v-on="on"
         small
-      >mdi-{{ icon }}</v-icon>
-    </v-btn>
+        icon
+        @click.stop="$emit('toggle-mode')"
+      >
+        <v-icon
+          v-on="on"
+          :color="color"
+          small
+        >mdi-{{ icon }}</v-icon>
+      </v-btn>
+    </template>
     {{ text }}
   </v-tooltip>
 </template>

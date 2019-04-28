@@ -8,14 +8,14 @@
         bottom
         color="black"
       >
-        <v-btn
-          slot="activator"
-          icon
-        >
-          <v-icon
-            color="black"
-          >mdi-minus-circle</v-icon>
-        </v-btn>
+        <template #activator="{ on }">
+          <v-btn
+            v-on="on"
+            icon
+          >
+            <v-icon color="black">mdi-minus-circle</v-icon>
+          </v-btn>
+        </template>
         Remove
       </v-tooltip>
     </slot>

@@ -2,27 +2,21 @@
   <table>
     <tbody>
       <tr>
-        <td
-          class="font-weight-bold"
-        >Duration</td>
-        <td
-          class="pl-1"
-        >Away for {{ length }}</td>
+        <td class="font-weight-bold">Duration</td>
+        <td class="pl-1">Away for {{ length }}</td>
       </tr>
     </tbody>
   </table>
 </template>
 
 <script>
-  import {
-    distanceInWords
-  } from 'date-fns'
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { distanceInWords } from 'date-fns'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     props: {
       item: {
         type: Object,

@@ -8,14 +8,14 @@
         color="black"
         bottom
       >
-        <v-btn
-          slot="activator"
-          icon
-        >
-          <v-icon
-            color="black"
-          >mdi-minus-circle</v-icon>
-        </v-btn>
+        <template #activator="{ on }">
+          <v-btn
+            v-on="on"
+            icon
+          >
+            <v-icon color="black">mdi-minus-circle</v-icon>
+          </v-btn>
+        </template>
         Remove
       </v-tooltip>
     </slot>
@@ -40,12 +40,12 @@
 </template>
 
 <script>
-  import {
-    TeamAccessible
-  } from '@/mixins'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     props: {
       competition: {
         type: Object,
