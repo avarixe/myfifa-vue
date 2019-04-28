@@ -18,7 +18,9 @@
         </v-btn>
       </v-btn-toggle>
 
-      <div :class="`subheading ${currentMode.color}--text`">{{ currentMode.text }}</div>
+      <div :class="`subheading ${currentMode.color}--text`">
+        {{ currentMode.text }}
+      </div>
 
       <v-spacer />
 
@@ -43,7 +45,9 @@
       no-data-text="No Players Recorded"
     >
       <template #headerCell="{ header }">
-        <span class="subheading font-weight-light accent--text text--darken-3">{{ header.text }}</span>
+        <span class="subheading font-weight-light accent--text text--darken-3">
+          {{ header.text }}
+        </span>
       </template>
       <template #items="{ item }">
         <player-row
@@ -85,8 +89,16 @@
     data: () => ({
       mode: 0,
       modes: [
-        { text: 'Growth',     color: 'green', icon: 'mdi-trending-up' },
-        { text: 'Statistics', color: 'red',   icon: 'mdi-numeric' }
+        {
+          text: 'Growth',
+          color: 'green',
+          icon: 'mdi-trending-up'
+        },
+        {
+          text: 'Statistics',
+          color: 'red',
+          icon: 'mdi-numeric'
+        }
       ],
       loading: false,
       pagination: {
@@ -106,25 +118,69 @@
       },
       headers () {
         let headers = [
-          { text: 'Name',     value: 'name',    align: 'left' },
-          { text: 'Position', value: 'posIdx', align: 'center' },
-          { text: 'Age',      value: 'age',     align: 'center' }
+          {
+            text: 'Name',
+            value: 'name',
+            align: 'left'
+          },
+          {
+            text: 'Position',
+            value: 'posIdx',
+            align: 'center'
+          },
+          {
+            text: 'Age',
+            value: 'age',
+            align: 'center'
+          }
         ]
 
         switch (this.mode) {
           case 0: // Growth
             return headers.concat([
-              { text: 'OVR',          value: 'endOvr',      align: 'center' },
-              { text: 'OVR Change',   value: 'ovrChange',   align: 'center' },
-              { text: 'Value',        value: 'endValue',    align: 'right' },
-              { text: 'Value Change', value: 'valueChange', align: 'right' }
+              {
+                text: 'OVR',
+                value: 'endOvr',
+                align: 'center'
+              },
+              {
+                text: 'OVR Change',
+                value: 'ovrChange',
+                align: 'center'
+              },
+              {
+                text: 'Value',
+                value: 'endValue',
+                align: 'right'
+              },
+              {
+                text: 'Value Change',
+                value: 'valueChange',
+                align: 'right'
+              }
             ])
           case 1: // Statistics
             return headers.concat([
-              { text: 'Games Played', value: 'numGames',   align: 'right' },
-              { text: 'Goals',        value: 'numGoals',   align: 'right' },
-              { text: 'Assists',      value: 'numAssists', align: 'right' },
-              { text: 'Clean Sheets', value: 'numCs',      align: 'right' }
+              {
+                text: 'Games Played',
+                value: 'numGames',
+                align: 'right'
+              },
+              {
+                text: 'Goals',
+                value: 'numGoals',
+                align: 'right'
+              },
+              {
+                text: 'Assists',
+                value: 'numAssists',
+                align: 'right'
+              },
+              {
+                text: 'Clean Sheets',
+                value: 'numCs',
+                align: 'right'
+              }
             ])
         }
       },
@@ -147,7 +203,9 @@
       }
     },
     async mounted () {
-      await this.$store.dispatch('players/FETCH', { teamId: this.team.id })
+      await this.$store.dispatch('players/FETCH', {
+        teamId: this.team.id
+      })
 
       for (let playerId of this.seasonData.player_ids) {
         const {

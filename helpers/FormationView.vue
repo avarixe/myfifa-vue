@@ -4,7 +4,13 @@
     wrap
   >
     <v-flex
-      v-for="(positions, i) in [posATT, posATTMID, posDEFMID, posDEF, posGK]"
+      v-for="(positions, i) in [
+        posATT,
+        posATTMID,
+        posDEFMID,
+        posDEF,
+        posGK
+      ]"
       :key="i"
       xs12
     >
@@ -33,7 +39,9 @@
   import { Player } from '@/models'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     props: {
       formation: {
         type: Array,

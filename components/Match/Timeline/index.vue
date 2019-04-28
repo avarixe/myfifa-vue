@@ -15,7 +15,9 @@
       <h2 :class="`headline font-weight-light my-0 ${eventColor(event)}--text`">
         {{ event.minute }}"
 
-        <span class="caption text-truncate">{{ event.home ? match.home : match.away }}</span>
+        <span class="caption text-truncate">
+          {{ event.home ? match.home : match.away }}
+        </span>
 
         <v-tooltip
           v-if="team.current_date === match.date_played"

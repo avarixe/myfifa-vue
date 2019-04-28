@@ -22,7 +22,9 @@
               wrap
             >
               <v-flex xs12>
-                <div class="subheading">{{ seasonLabel(competition.season) }}</div>
+                <div class="subheading">
+                  {{ seasonLabel(competition.season) }}
+                </div>
                 <div class="display-1">{{ competition.name }}</div>
               </v-flex>
             </v-layout>
@@ -144,7 +146,9 @@
     }),
     head () {
       return {
-        title: `${this.competition.name} (${this.seasonLabel(this.competition.season)})`
+        title:
+          this.competition.name +
+          ` (${this.seasonLabel(this.competition.season)})`
       }
     },
     computed: {

@@ -8,7 +8,9 @@
     hide-actions
   >
     <template #headerCell="{ header }">
-      <span class="subheading font-weight-light text-success text--darken-3">{{ header.text }}</span>
+      <span class="subheading font-weight-light text-success text--darken-3">
+        {{ header.text }}
+      </span>
     </template>
     <template #items="{ item }">
       <tr>
@@ -22,9 +24,7 @@
             @click="competitionLink(item[header.value])"
             class="blue-grey--text"
           >{{ item[header.value] }}</a>
-          <span
-            v-else
-          >{{ item[header.value] }}</span>
+          <span v-else>{{ item[header.value] }}</span>
         </td>
       </tr>
     </template>
@@ -43,14 +43,54 @@
     },
     data: () => ({
       headers: [
-        { text: 'Competition', value: 'competition', align: 'left', sortable: false },
-        { text: 'GP', value: 'gp',     align: 'center', sortable: false },
-        { text: 'W',  value: 'wins',   align: 'center', sortable: false },
-        { text: 'D',  value: 'draws',  align: 'center', sortable: false },
-        { text: 'L',  value: 'losses', align: 'center', sortable: false },
-        { text: 'GF', value: 'gf',     align: 'center', sortable: false },
-        { text: 'GA', value: 'ga',     align: 'center', sortable: false },
-        { text: 'GD', value: 'gd',     align: 'center', sortable: false }
+        {
+          text: 'Competition',
+          value: 'competition',
+          align: 'left',
+          sortable: false
+        },
+        {
+          text: 'GP',
+          value: 'gp',
+          align: 'center',
+          sortable: false
+        },
+        {
+          text: 'W',
+          value: 'wins',
+          align: 'center',
+          sortable: false
+        },
+        {
+          text: 'D',
+          value: 'draws',
+          align: 'center',
+          sortable: false
+        },
+        {
+          text: 'L',
+          value: 'losses',
+          align: 'center',
+          sortable: false
+        },
+        {
+          text: 'GF',
+          value: 'gf',
+          align: 'center',
+          sortable: false
+        },
+        {
+          text: 'GA',
+          value: 'ga',
+          align: 'center',
+          sortable: false
+        },
+        {
+          text: 'GD',
+          value: 'gd',
+          align: 'center',
+          sortable: false
+        }
       ]
     }),
     computed: {

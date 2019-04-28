@@ -192,7 +192,9 @@
                       v-on="{ ...menu, ...tooltip }"
                       icon
                     >
-                      <v-icon :color="currentFilter.color">mdi-{{ currentFilter.icon }}</v-icon>
+                      <v-icon :color="currentFilter.color">
+                        mdi-{{ currentFilter.icon }}
+                      </v-icon>
                     </v-btn>
                   </template>
                   <v-list>
@@ -202,7 +204,9 @@
                       @click="timelineFilter = key"
                     >
                       <v-list-tile-avatar>
-                        <v-icon :color="event.color">mdi-{{ event.icon }}</v-icon>
+                        <v-icon :color="event.color">
+                          mdi-{{ event.icon }}
+                        </v-icon>
                       </v-list-tile-avatar>
                       <v-list-tile-title>{{ key }}</v-list-tile-title>
                     </v-list-tile>
@@ -267,16 +271,42 @@
     data () {
       return {
         historyHeaders: [
-          { text: 'Datestamp', value: 'datestamp', align: 'center' },
-          { text: 'OVR',   value: 'ovr',  align: 'center' },
-          { text: 'Value', value: 'value',    align: 'center' }
+          {
+            text: 'Datestamp',
+            value: 'datestamp',
+            align: 'center'
+          },
+          {
+            text: 'OVR',
+            value: 'ovr',
+            align: 'center'
+          },
+          {
+            text: 'Value',
+            value: 'value',
+            align: 'center'
+          }
         ],
         filterOptions: {
-          'All': { icon: 'filter-variant' },
-          'Contract': { icon: 'file-document', color: 'blue' },
-          'Injury': { icon: 'hospital', color: 'pink' },
-          'Loan': { icon: 'transit-transfer', color: 'indigo' },
-          'Transfer': { icon: 'airplane-takeoff', color: 'green' }
+          'All': {
+            icon: 'filter-variant'
+          },
+          'Contract': {
+            icon: 'file-document',
+            color: 'blue'
+          },
+          'Injury': {
+            icon: 'hospital',
+            color: 'pink'
+          },
+          'Loan': {
+            icon: 'transit-transfer',
+            color: 'indigo'
+          },
+          'Transfer': {
+            icon: 'airplane-takeoff',
+            color: 'green'
+          }
         },
         timelineFilter: 'All',
         statistics: {}

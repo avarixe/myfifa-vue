@@ -36,7 +36,9 @@
           <v-flex xs12>
             <v-text-field
               v-model="stage.num_fixtures"
-              :rules="stage.table ? [] : $_validate('Number of Fixtures', ['required'])"
+              :rules="stage.table
+                ? []
+                : $_validate('Number of Fixtures', ['required'])"
               label="Number of Fixtures"
               prepend-icon="mdi-sword-cross"
               type="number"

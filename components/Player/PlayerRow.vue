@@ -62,7 +62,9 @@
           type="number"
         />
       </template>
-      <template v-else>{{ getProperty(header.view || header.value, header.format) }}</template>
+      <template v-else>
+        {{ getProperty(header.view || header.value, header.format) }}
+      </template>
     </td>
   </tr>
 </template>

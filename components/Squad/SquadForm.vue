@@ -54,7 +54,9 @@
             >
               <template #item="{ item }">
                 <v-list-tile-action>
-                  <v-list-tile-action-text>{{ item.pos }}</v-list-tile-action-text>
+                  <v-list-tile-action-text>
+                    {{ item.pos }}
+                  </v-list-tile-action-text>
                 </v-list-tile-action>
                 <v-list-tile-content>
                   <v-list-tile-title>{{ item.name }}</v-list-tile-title>
@@ -96,7 +98,8 @@
           positions_list: []
         }, {
           ...this.squadData,
-          players_list: ((this.squadData || {}).players_list || []).map(p => parseInt(p)),
+          players_list:
+            ((this.squadData || {}).players_list || []).map(p => parseInt(p)),
           positions_list: ((this.squadData || {}).positions_list || []).slice()
         })
       }

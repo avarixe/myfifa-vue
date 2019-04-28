@@ -113,7 +113,10 @@
       },
       bookings () {
         return this.events
-          .filter(event => event.event_type === 'Booking' && event.player_id === this.cap.player_id)
+          .filter(event => {
+            return event.event_type === 'Booking' &&
+              event.player_id === this.cap.player_id
+          })
           .map(booking => booking.red_card ? 'red' : 'yellow darken-2')
       },
       injured () {

@@ -28,13 +28,19 @@
       no-data-text="No Teams Recorded"
     >
       <template #headerCell="{ header }">
-        <span class="subheading font-weight-light text-success text--darken-3">{{ header.text }}</span>
+        <span class="subheading font-weight-light text-success text--darken-3">
+          {{ header.text }}
+        </span>
       </template>
       <template #items="{ item }">
         <tr>
           <td class="text-xs-center">{{ item.title }}</td>
-          <td class="text-xs-center">{{ $_format($_parse(item.start_date), 'MMM DD, YYYY') }}</td>
-          <td class="text-xs-center">{{ $_format($_parse(item.current_date), 'MMM DD, YYYY') }}</td>
+          <td class="text-xs-center">
+            {{ $_format($_parse(item.start_date), 'MMM DD, YYYY') }}
+          </td>
+          <td class="text-xs-center">
+            {{ $_format($_parse(item.current_date), 'MMM DD, YYYY') }}
+          </td>
           <td class="text-xs-right">
             <team-actions :team="item" />
           </td>
@@ -61,10 +67,28 @@
     data () {
       return {
         headers: [
-          { text: 'Team Name',    value: 'title',        align: 'center' },
-          { text: 'Start Date',   value: 'start_date',   align: 'center' },
-          { text: 'Current Date', value: 'current_date', align: 'center' },
-          { text: 'Actions',      value: 'actions',      align: 'right',  sortable: false, width: '120px' }
+          {
+            text: 'Team Name',
+            value: 'title',
+            align: 'center'
+          },
+          {
+            text: 'Start Date',
+            value: 'start_date',
+            align: 'center'
+          },
+          {
+            text: 'Current Date',
+            value: 'current_date',
+            align: 'center'
+          },
+          {
+            text: 'Actions',
+            value: 'actions',
+            align: 'right',
+            sortable: false,
+            width: '120px'
+          }
         ],
         loading: false,
         search: ''

@@ -4,7 +4,9 @@
     <td>{{ transfer.player.name }}</td>
     <td>{{ transfer.origin }}</td>
     <td>{{ transfer.destination }}</td>
-    <td :class="`${transferOut ? 'green' : 'red'}--text`">{{ $_formatMoney(transfer.fee) }}</td>
+    <td :class="`${transferOut ? 'green' : 'red'}--text`">
+      {{ $_formatMoney(transfer.fee) }}
+    </td>
   </tr>
 </template>
 

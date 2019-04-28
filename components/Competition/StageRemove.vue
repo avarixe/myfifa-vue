@@ -13,10 +13,7 @@
             v-on="on"
             icon
           >
-            <v-icon
-              color="black"
-              v-text="'mdi-minus-circle'"
-            />
+            <v-icon color="black">mdi-minus-circle</v-icon>
           </v-btn>
         </template>
         Remove

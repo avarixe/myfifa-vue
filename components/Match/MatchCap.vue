@@ -19,7 +19,9 @@
             @click="setPlayer(player.id)"
           >
             <v-list-tile-action>
-              <v-list-tile-action-text>{{ player.pos }}</v-list-tile-action-text>
+              <v-list-tile-action-text>
+                {{ player.pos }}
+              </v-list-tile-action-text>
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>{{ player.name }}</v-list-tile-title>

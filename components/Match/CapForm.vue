@@ -34,7 +34,9 @@
             >
               <template #item="{ item }">
                 <v-list-tile-action>
-                  <v-list-tile-action-text>{{ item.pos }}</v-list-tile-action-text>
+                  <v-list-tile-action-text>
+                    {{ item.pos }}
+                  </v-list-tile-action-text>
                 </v-list-tile-action>
                 <v-list-tile-content>
                   <v-list-tile-title>{{ item.name }}</v-list-tile-title>
