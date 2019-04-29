@@ -30,9 +30,22 @@
           </v-list-tile-avatar>
           <v-list-tile-title class="title">MyFIFA Manager</v-list-tile-title>
         </v-list-tile>
+
         <v-divider/>
 
         <template v-if="teamId">
+          <v-list-tile
+            :to="{ name: 'teams-teamId', params: { teamId } }"
+            active-class=""
+            avatar
+            exact
+          >
+            <v-list-tile-avatar>
+              <v-icon>mdi-home</v-icon>
+            </v-list-tile-avatar>
+            <v-list-tile-title>{{ teamName }}</v-list-tile-title>
+          </v-list-tile>
+
           <team-calendar />
 
           <v-list-tile
@@ -55,6 +68,7 @@
 </template>
 
 <script>
+  import { Team } from '@/models'
   import {
     mapState,
     mapMutations
@@ -71,6 +85,12 @@
       ]),
       teamId () {
         return this.$route.params.teamId
+      },
+      team () {
+        return Team.find(this.teamId)
+      },
+      teamName () {
+        return this.team.title
       },
       teamLinks () {
         if (this.teamId) {

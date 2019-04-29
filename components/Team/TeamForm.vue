@@ -89,7 +89,7 @@
     },
     computed: {
       title () {
-        return this.teamData ? 'Edit ' + this.team.title : 'New Team'
+        return this.teamId ? 'Edit ' + this.team.title : 'New Team'
       }
     },
     watch: {

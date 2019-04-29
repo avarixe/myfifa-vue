@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="body-2">
+    <div class="body-1">
       <v-menu
         :disabled="readonly || cap.start > 0"
         max-height="200px"
@@ -30,7 +30,7 @@
         </v-list>
       </v-menu>
     </div>
-    <div class="body-1">
+    <div class="body-2">
       <v-menu
         :disabled="readonly"
         max-height="200px"

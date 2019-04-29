@@ -1,7 +1,7 @@
 <template>
   <v-timeline
     v-if="events.length > 0 || match.penalty_shootout"
-    :dense="dense"
+    dense
   >
     <v-timeline-item
       v-for="(event, i) in events"
@@ -123,15 +123,6 @@
         return this.match.penalty_shootout
           ? { ...this.match.penalty_shootout, event_type: 'PenaltyShootout' }
           : {}
-      },
-      dense () {
-        switch (this.$vuetify.breakpoint.name) {
-          case 'lg':
-          case 'xl':
-            return false
-          default:
-            return true
-        }
       }
     },
     methods: {
