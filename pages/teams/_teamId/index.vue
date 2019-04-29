@@ -41,64 +41,124 @@
           title="Latest Matches"
           color="blue"
         >
-          <v-timeline dense>
-            <v-timeline-item
-              icon="mdi-plus"
-              fill-dot
-              color="blue"
-            >
-              <match-form>
-                <template #default="{ on }">
-                  <v-btn
-                    v-on="on"
-                    large
-                    flat
-                  >Play a Match</v-btn>
-                </template>
-              </match-form>
-            </v-timeline-item>
-
-            <v-timeline-item
+          <v-window v-model="curMatch">
+            <v-window-item>
+              <v-layout class="text-xs-center">
+                <v-flex>
+                  <match-form>
+                    <template #default="{ on }">
+                      <v-btn v-on="on">Add Match</v-btn>
+                    </template>
+                  </match-form>
+                </v-flex>
+              </v-layout>
+            </v-window-item>
+            <v-window-item
               v-for="match in latestMatches"
               :key="match.id"
-              :icon="matchIcon(match)"
-              :color="matchColor(match)"
-              fill-dot
             >
-              <table>
-                <tr>
-                  <td>
-                    <div class="title font-weight-light">
-                      <small>{{ match.home }}</small>
-                      <strong>{{ match.score }}</strong>
-                      <small>{{ match.away}}</small>
-                    </div>
-                    <div class="title font-weight-light">
-                      {{ match.competition }}
-                      <small class="caption">
-                        {{ $_format(match.date_played, 'MMM DD, YYYY') }}
-                      </small>
-                    </div>
-                  </td>
-                  <td>
-                    <v-tooltip bottom>
-                      <template #activator="{ on }">
-                        <v-btn
-                          v-on="on"
-                          :to="matchLink(match)"
-                          nuxt
-                          icon
-                        >
-                          <v-icon color="blue">mdi-arrow-right</v-icon>
-                        </v-btn>
-                      </template>
-                      View Match
-                    </v-tooltip>
-                  </td>
-                </tr>
-              </table>
-            </v-timeline-item>
-          </v-timeline>
+              <v-layout
+                class="text-xs-center"
+                row
+                wrap
+              >
+                <v-flex xs12>
+                  <div class="display-2">{{ match.competition }}</div>
+                  <div class="subheading">
+                    {{ $_formatDate(match.date_played) }}
+                  </div>
+                </v-flex>
+                <v-layout
+                  class="display-1"
+                  row
+                >
+                  <v-flex
+                    align-self-center
+                    class="font-weight-thin pa-1"
+                    style="flex-basis:0"
+                  >{{ match.home }}</v-flex>
+                  <v-flex
+                    align-self-center
+                    class="pa-1"
+                    shrink
+                  >v</v-flex>
+                  <v-flex
+                    align-self-center
+                    class="font-weight-thin pa-1"
+                    style="flex-basis:0"
+                  >{{ match.away }}</v-flex>
+                </v-layout>
+                <v-flex xs12>
+                  <div class="display-1">
+                    {{ match.score }}
+                    {{ match.extra_time && !match.penalty_shootout ? '(AET)' : '' }}
+                  </div>
+                </v-flex>
+                <v-flex xs12>
+                  <v-btn
+                    :to="matchLink(match)"
+                    class="blue"
+                    nuxt
+                    dark
+                  >View</v-btn>
+                </v-flex>
+              </v-layout>
+            </v-window-item>
+          </v-window>
+
+          <v-card-actions class="justify-space-between">
+            <v-btn
+              flat
+              @click="prevMatch"
+            >
+              <v-icon>mdi-chevron-left</v-icon>
+            </v-btn>
+
+            <v-item-group
+              v-model="curMatch"
+              class="text-xs-center"
+              mandatory
+            >
+              <!-- New Match -->
+              <v-item>
+                <template #default="{ active, toggle }">
+                  <v-btn
+                    :input-value="active"
+                    @click="toggle"
+                    round
+                    icon
+                  >
+                    <v-icon>mdi-plus</v-icon>
+                  </v-btn>
+                </template>
+              </v-item>
+
+              <v-item
+                v-for="match in latestMatches"
+                :key="`btn-${match.id}`"
+              >
+                <template #default="{ active, toggle }">
+                  <v-btn
+                    :input-value="active"
+                    @click="toggle"
+                    round
+                    icon
+                  >
+                    <v-icon :color="matchColor(match)">
+                      {{ matchIcon(match) }}
+                    </v-icon>
+                  </v-btn>
+                </template>
+              </v-item>
+            </v-item-group>
+
+            <v-btn
+              flat
+              @click="nextMatch"
+            >
+              <v-icon>mdi-chevron-right</v-icon>
+            </v-btn>
+          </v-card-actions>
         </material-card>
       </v-flex>
       <!-- TODO: Injured Players -->
@@ -132,7 +192,7 @@
       }
     },
     data: () => ({
-      latestMatch: 1
+      curMatch: 1
     }),
     computed: {
       latestMatches () {
@@ -140,8 +200,9 @@
           .query()
           .where('team_id', this.team.id)
           .orderBy('date_played', 'desc')
-          .limit(5)
+          .limit(10)
           .get()
+        // return []
       }
     },
     methods: {
@@ -177,10 +238,29 @@
             matchId: match.id
           }
         }
+      },
+      prevMatch () {
+        this.curMatch--
+        if (this.curMatch < 0) {
+          this.curMatch += this.latestMatches.length + 1
+        }
+      },
+      nextMatch () {
+        this.curMatch = (this.curMatch + 1) % (this.latestMatches.length + 1)
       }
     },
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
+
+      if (this.latestMatches.length === 0) {
+        this.curMatch = 0
+      }
     }
   }
 </script>
+
+<style scoped>
+  .v-item--active {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+</style>
