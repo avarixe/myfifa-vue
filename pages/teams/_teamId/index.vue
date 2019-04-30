@@ -15,6 +15,16 @@
             wrap
           >
             <v-flex xs12>
+              <team-calendar>
+                <template #default="{ on }">
+                  <v-btn
+                    v-on="on"
+                    color="accent"
+                    dark
+                  >{{ $_format(team.current_date, 'MMM DD, YYYY') }}</v-btn>
+                </template>
+              </team-calendar>
+
               <team-form
                 :team-id="team.id"
                 color="orange"
@@ -30,82 +40,16 @@
 
               <team-remove :team="team" />
             </v-flex>
-
           </v-layout>
         </material-card>
       </v-flex>
 
       <!-- Latest Matches -->
-      <v-flex>
+      <v-flex xs12>
         <material-card
           title="Latest Matches"
           color="blue"
         >
-          <v-window v-model="curMatch">
-            <v-window-item>
-              <v-layout class="text-xs-center">
-                <v-flex>
-                  <match-form>
-                    <template #default="{ on }">
-                      <v-btn v-on="on">Add Match</v-btn>
-                    </template>
-                  </match-form>
-                </v-flex>
-              </v-layout>
-            </v-window-item>
-            <v-window-item
-              v-for="match in latestMatches"
-              :key="match.id"
-            >
-              <v-layout
-                class="text-xs-center"
-                row
-                wrap
-              >
-                <v-flex xs12>
-                  <div class="display-2">{{ match.competition }}</div>
-                  <div class="subheading">
-                    {{ $_formatDate(match.date_played) }}
-                  </div>
-                </v-flex>
-                <v-layout
-                  class="display-1"
-                  row
-                >
-                  <v-flex
-                    align-self-center
-                    class="font-weight-thin pa-1"
-                    style="flex-basis:0"
-                  >{{ match.home }}</v-flex>
-                  <v-flex
-                    align-self-center
-                    class="pa-1"
-                    shrink
-                  >v</v-flex>
-                  <v-flex
-                    align-self-center
-                    class="font-weight-thin pa-1"
-                    style="flex-basis:0"
-                  >{{ match.away }}</v-flex>
-                </v-layout>
-                <v-flex xs12>
-                  <div class="display-1">
-                    {{ match.score }}
-                    {{ match.extra_time && !match.penalty_shootout ? '(AET)' : '' }}
-                  </div>
-                </v-flex>
-                <v-flex xs12>
-                  <v-btn
-                    :to="matchLink(match)"
-                    class="blue"
-                    nuxt
-                    dark
-                  >View</v-btn>
-                </v-flex>
-              </v-layout>
-            </v-window-item>
-          </v-window>
-
           <v-card-actions class="justify-space-between">
             <v-btn
               flat
@@ -159,8 +103,76 @@
               <v-icon>mdi-chevron-right</v-icon>
             </v-btn>
           </v-card-actions>
+
+          <v-window
+            v-model="curMatch"
+            style="height: 270px"
+          >
+            <!-- New Match -->
+            <v-window-item style="height: 270px">
+              <v-container fluid fill-height>
+                <v-layout align-center justify-center>
+                  <v-flex class="text-xs-center">
+                    <match-form />
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-window-item>
+            <v-window-item
+              v-for="match in latestMatches"
+              :key="match.id"
+            >
+              <v-layout
+                class="text-xs-center"
+                row
+                wrap
+              >
+                <v-flex xs12>
+                  <div class="display-2">{{ match.competition }}</div>
+                  <div class="subheading">
+                    {{ $_formatDate(match.date_played) }}
+                  </div>
+                </v-flex>
+                <v-layout
+                  class="display-1"
+                  row
+                >
+                  <v-flex
+                    align-self-center
+                    class="font-weight-thin pa-1"
+                    style="flex-basis:0"
+                  >{{ match.home }}</v-flex>
+                  <v-flex
+                    align-self-center
+                    class="pa-1"
+                    shrink
+                  >v</v-flex>
+                  <v-flex
+                    align-self-center
+                    class="font-weight-thin pa-1"
+                    style="flex-basis:0"
+                  >{{ match.away }}</v-flex>
+                </v-layout>
+                <v-flex xs12>
+                  <div class="display-1">
+                    {{ match.score }}
+                    {{ match.extra_time && !match.penalty_shootout ? '(AET)' : '' }}
+                  </div>
+                </v-flex>
+                <v-flex xs12>
+                  <v-btn
+                    :to="matchLink(match)"
+                    color="blue"
+                    nuxt
+                    outline
+                  >View</v-btn>
+                </v-flex>
+              </v-layout>
+            </v-window-item>
+          </v-window>
         </material-card>
       </v-flex>
+
       <!-- TODO: Injured Players -->
     </v-layout>
   </v-container>
@@ -169,6 +181,7 @@
 <script>
   import { Match } from '@/models'
   import MatchForm from '@/components/Match/MatchForm'
+  import TeamCalendar from '@/components/Team/TeamCalendar'
   import TeamForm from '@/components/Team/TeamForm'
   import TeamRemove from '@/components/Team/TeamRemove'
   import MaterialCard from '@/components/theme/Card'
@@ -179,6 +192,7 @@
     middleware: 'authenticated',
     components: {
       MatchForm,
+      TeamCalendar,
       TeamForm,
       TeamRemove,
       MaterialCard

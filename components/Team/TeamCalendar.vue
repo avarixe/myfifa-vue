@@ -6,21 +6,23 @@
     origin="top left"
   >
     <template #activator="{ on }">
-      <v-list-tile
-        v-ripple
-        v-on="on"
-        color="accent"
-        class="v-list-item"
-        avatar
-        style="width: 100%"
-      >
-        <v-list-tile-action>
-          <v-icon>mdi-calendar</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-title>
-          {{ $_format(currentDate, 'MMM DD, YYYY') }}
-        </v-list-tile-title>
-      </v-list-tile>
+      <slot :on="on">
+        <v-list-tile
+          v-ripple
+          v-on="on"
+          color="accent"
+          class="v-list-item"
+          avatar
+          style="width: 100%"
+        >
+          <v-list-tile-action>
+            <v-icon>mdi-calendar</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>
+            {{ $_format(currentDate, 'MMM DD, YYYY') }}
+          </v-list-tile-title>
+        </v-list-tile>
+      </slot>
     </template>
 
     <v-date-picker

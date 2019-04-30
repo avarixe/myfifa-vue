@@ -1,25 +1,5 @@
 <template>
-  <material-card>
-    <template #header>
-      <span class="title font-weight-light mb-2">Players</span>
-
-      <player-form>
-        <template #default="{ on: dialog }">
-          <v-tooltip bottom>
-            <template #activator="{ on: tooltip }">
-              <v-btn
-                v-on="{ ...dialog, ...tooltip }"
-                flat
-              >
-                <v-icon>mdi-plus-circle-outline</v-icon>
-              </v-btn>
-            </template>
-            New Player
-          </v-tooltip>
-        </template>
-      </player-form>
-    </template>
-
+  <material-card title="Players">
     <v-card-title>
       <!-- Display Menu -->
       <v-tooltip
@@ -122,7 +102,6 @@
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
   import MaterialCard from '@/components/theme/Card'
-  import PlayerForm from './PlayerForm'
   import PlayerRow from './PlayerRow'
 
   export default {
@@ -131,7 +110,6 @@
     ],
     components: {
       MaterialCard,
-      PlayerForm,
       PlayerRow
     },
     data () {

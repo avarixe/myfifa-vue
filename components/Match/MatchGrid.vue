@@ -1,28 +1,5 @@
 <template>
-  <material-card>
-    <template #header>
-      <span
-        v-text="'Matches'"
-        class="title font-weight-light mb-2"
-      />
-
-      <match-form>
-        <template #default="{ on: dialog }">
-          <v-tooltip bottom>
-            <template #activator="{ on: tooltip }">
-              <v-btn
-                v-on="{ ...dialog, ...tooltip }"
-                flat
-              >
-                <v-icon>mdi-plus-circle-outline</v-icon>
-              </v-btn>
-            </template>
-            New Match
-          </v-tooltip>
-        </template>
-      </match-form>
-    </template>
-
+  <material-card title="Matches">
     <v-card-title>
       <v-select
         v-model="seasonFilter"
@@ -102,8 +79,6 @@
     Competition,
     Match
   } from '@/models'
-  import MatchForm from './MatchForm'
-  import MatchRemove from './MatchRemove'
   import MaterialCard from '@/components/theme/Card'
   import { TeamAccessible } from '@/mixins'
   import { addYears } from 'date-fns'
@@ -113,8 +88,6 @@
       TeamAccessible
     ],
     components: {
-      MatchForm,
-      MatchRemove,
       MaterialCard
     },
     data () {

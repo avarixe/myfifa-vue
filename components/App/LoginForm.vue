@@ -55,6 +55,7 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
   import Cookie from 'js-cookie'
   import UserForm from '@/components/App/UserForm'
 
@@ -79,10 +80,15 @@
       }
     },
     methods: {
+      ...mapActions([
+        'login'
+      ]),
       async authenticate () {
         try {
-          const { data } = await this.$store.dispatch('login', this.credentials)
-          Cookie.set('token', data.access_token, data.expires_in / 86400)
+          const { data } = await this.login(this.credentials)
+          Cookie.set('token', data.access_token, {
+            expires: data.expires_in / 86400
+          })
         } catch (e) {
           this.errorMessage = e.message
         } finally {

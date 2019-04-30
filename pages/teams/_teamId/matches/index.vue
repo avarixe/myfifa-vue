@@ -8,6 +8,10 @@
       wrap
     >
       <v-flex xs12>
+        <match-form />
+      </v-flex>
+
+      <v-flex xs12>
         <match-grid />
       </v-flex>
     </v-layout>
@@ -16,6 +20,7 @@
 
 <script>
   import { TeamAccessible } from '@/mixins'
+  import MatchForm from '@/components/Match/MatchForm'
   import MatchGrid from '@/components/Match/MatchGrid'
 
   export default {
@@ -24,13 +29,14 @@
     mixins: [
       TeamAccessible
     ],
+    components: {
+      MatchForm,
+      MatchGrid
+    },
     head () {
       return {
         title: `${this.team.title} - Matches`
       }
-    },
-    components: {
-      MatchGrid
     },
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)

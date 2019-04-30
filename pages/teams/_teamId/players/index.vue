@@ -8,6 +8,21 @@
       wrap
     >
       <v-flex xs12>
+        <player-form>
+          <template #default="{ on }">
+            <v-btn
+              v-on="on"
+              color="blue-grey"
+              outline
+            >
+              <v-icon left>mdi-plus-circle-outline</v-icon>
+              Player
+            </v-btn>
+          </template>
+        </player-form>
+      </v-flex>
+
+      <v-flex xs12>
         <player-grid />
       </v-flex>
     </v-layout>
@@ -16,6 +31,7 @@
 
 <script>
   import { TeamAccessible } from '@/mixins'
+  import PlayerForm from '@/components/Player/PlayerForm'
   import PlayerGrid from '@/components/Player/PlayerGrid'
 
   export default {
@@ -25,6 +41,7 @@
       TeamAccessible
     ],
     components: {
+      PlayerForm,
       PlayerGrid
     },
     head () {
