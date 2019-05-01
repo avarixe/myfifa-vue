@@ -32,7 +32,9 @@
           />
         </template>
         <template v-else>
-          <span :class="teamClass(rowData.name)">{{ rowData[header.value] }}</span>
+          <span :class="teamClass(rowData.name)">
+            {{ rowData[header.value] }}
+          </span>
         </template>
       </template>
 

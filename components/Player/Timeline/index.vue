@@ -9,8 +9,12 @@
       right
     >
       <template #opposite>
-        <span :class="`headline font-weight-bold ${item.color}--text`">{{ item.title || item.type }}</span>
-        <h4 :class="`headline font-weight-light mb-3 ${item.color}--text`">{{ item.dateRange }}</h4>
+        <span :class="`headline font-weight-bold ${item.color}--text`">
+          {{ item.title || item.type }}
+        </span>
+        <h4 :class="`headline font-weight-light mb-3 ${item.color}--text`">
+          {{ item.dateRange }}
+        </h4>
       </template>
 
       <v-card dense>
@@ -18,8 +22,12 @@
           v-if="dense"
           :class="`${item.color} lighten-2 py-1`"
         >
-          <span class="font-weight-bold pr-1 white--text">{{ item.title || item.type }}</span>
-          <span class="font-weight-light pl-1 white--text">{{ item.dateRange }}</span>
+          <span class="font-weight-bold pr-1 white--text">
+            {{ item.title || item.type }}
+          </span>
+          <span class="font-weight-light pl-1 white--text">
+            {{ item.dateRange }}
+          </span>
         </v-card-title>
         <v-container>
           <v-layout>
@@ -74,7 +82,10 @@
             color: 'blue',
             icon: 'file-document',
             date: contract.effective_date,
-            dateRange: `${this.$_formatDate(contract.effective_date)} - ${this.$_formatDate(contract.end_date)}`,
+            dateRange:
+              this.$_formatDate(contract.effective_date) +
+              ' - ' +
+              this.$_formatDate(contract.end_date),
             data: contract
           })),
           ...this.injuries.map(injury => ({
@@ -82,7 +93,10 @@
             color: 'pink',
             icon: 'hospital',
             date: injury.start_date,
-            dateRange: `${this.$_formatDate(injury.start_date)} - ${this.$_formatDate(injury.end_date)}`,
+            dateRange:
+              this.$_formatDate(injury.start_date) +
+              ' - ' +
+              this.$_formatDate(injury.end_date),
             title: `${injury.description} Injury`,
             data: injury
           })),
@@ -91,7 +105,10 @@
             color: 'indigo',
             icon: 'transit-transfer',
             date: loan.start_date,
-            dateRange: `${this.$_formatDate(loan.start_date)} - ${this.$_formatDate(loan.end_date)}`,
+            dateRange:
+              this.$_formatDate(loan.start_date) +
+              ' - ' +
+              this.$_formatDate(loan.end_date),
             title: `On Loan at ${loan.destination}`,
             data: loan
           })),

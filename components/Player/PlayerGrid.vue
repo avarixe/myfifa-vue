@@ -1,25 +1,5 @@
 <template>
-  <material-card>
-    <template #header>
-      <span class="title font-weight-light mb-2">Players</span>
-
-      <player-form>
-        <template #default="{ on: dialog }">
-          <v-tooltip bottom>
-            <template #activator="{ on: tooltip }">
-              <v-btn
-                v-on="{ ...dialog, ...tooltip }"
-                flat
-              >
-                <v-icon>mdi-plus-circle-outline</v-icon>
-              </v-btn>
-            </template>
-            New Player
-          </v-tooltip>
-        </template>
-      </player-form>
-    </template>
-
+  <material-card title="Players">
     <v-card-title>
       <!-- Display Menu -->
       <v-tooltip
@@ -37,7 +17,9 @@
                 class="px-1"
                 flat
               >
-                <v-icon :color="currentFilter.color">mdi-{{ currentFilter.icon }}</v-icon>
+                <v-icon :color="currentFilter.color">
+                  mdi-{{ currentFilter.icon }}
+                </v-icon>
               </v-btn>
             </template>
 
@@ -72,7 +54,9 @@
         </v-btn>
       </v-btn-toggle>
 
-      <div :class="`subheading ${currentMode.color}--text`">{{ currentMode.text }}</div>
+      <div :class="`subheading ${currentMode.color}--text`">
+        {{ currentMode.text }}
+      </div>
 
       <v-spacer />
 
@@ -97,7 +81,9 @@
       no-data-text="No Players Found"
     >
       <template #headerCell="{ header }">
-        <span class="subheading font-weight-light text-success text--darken-3">{{ header.text }}</span>
+        <span class="subheading font-weight-light text-success text--darken-3">
+          {{ header.text }}
+        </span>
       </template>
       <template #items="{ item }">
         <player-row
@@ -116,7 +102,6 @@
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
   import MaterialCard from '@/components/theme/Card'
-  import PlayerForm from './PlayerForm'
   import PlayerRow from './PlayerRow'
 
   export default {
@@ -125,16 +110,27 @@
     ],
     components: {
       MaterialCard,
-      PlayerForm,
       PlayerRow
     },
     data () {
       return {
         mode: 0,
         modes: [
-          { text: 'Overall',    color: 'green', icon: 'trending-up' },
-          { text: 'Contract',   color: 'blue',  icon: 'file-document-outline' },
-          { text: 'Statistics', color: 'red',   icon: 'numeric' }
+          {
+            text: 'Overall',
+            color: 'green',
+            icon: 'trending-up'
+          },
+          {
+            text: 'Contract',
+            color: 'blue',
+            icon: 'file-document-outline'
+          },
+          {
+            text: 'Statistics',
+            color: 'red',
+            icon: 'numeric'
+          }
         ],
         loading: false,
         pagination: {
@@ -143,12 +139,36 @@
         },
         filter: 2,
         filters: [
-          { text: 'All', color: 'blue', icon: 'earth' },
-          { text: 'Youth', color: 'cyan', icon: 'school' },
-          { text: 'Active', color: 'bluegrey', icon: 'clipboard-account' },
-          { text: 'Injured', color: 'pink', icon: 'hospital' },
-          { text: 'Loaned', color: 'indigo', icon: 'transit-transfer' },
-          { text: 'Pending', color: 'deep-orange', icon: 'lock-clock' }
+          {
+            text: 'All',
+            color: 'blue',
+            icon: 'earth'
+          },
+          {
+            text: 'Youth',
+            color: 'cyan',
+            icon: 'school'
+          },
+          {
+            text: 'Active',
+            color: 'bluegrey',
+            icon: 'clipboard-account'
+          },
+          {
+            text: 'Injured',
+            color: 'pink',
+            icon: 'hospital'
+          },
+          {
+            text: 'Loaned',
+            color: 'indigo',
+            icon: 'transit-transfer'
+          },
+          {
+            text: 'Pending',
+            color: 'deep-orange',
+            icon: 'lock-clock'
+          }
         ],
         search: '',
         statistics: {
@@ -199,22 +219,69 @@
         switch (this.mode) {
           case 0: // Overall
             return headers.concat([
-              { text: '2nd Position(s)', value: 'sec_pos', align: 'center', format: 'array' },
-              { text: 'OVR',             value: 'ovr',     align: 'center', editable: true },
-              { text: 'Value',           value: 'value',   align: 'right',  format: 'money', editable: true }
+              {
+                text: '2nd Position(s)',
+                value: 'sec_pos',
+                align: 'center',
+                format: 'array'
+              },
+              {
+                text: 'OVR',
+                value: 'ovr',
+                align: 'center',
+                editable: true
+              },
+              {
+                text: 'Value',
+                value: 'value',
+                align: 'right',
+                format: 'money',
+                editable: true
+              }
             ])
           case 1: // Contract
             return headers.concat([
-              { text: 'Value',    value: 'value',    align: 'right', format: 'money' },
-              { text: 'Wage',     value: 'wage',     align: 'right', format: 'money' },
-              { text: 'End Date', value: 'end_date', align: 'right', format: 'date' }
+              {
+                text: 'Value',
+                value: 'value',
+                align: 'right',
+                format: 'money'
+              },
+              {
+                text: 'Wage',
+                value: 'wage',
+                align: 'right',
+                format: 'money'
+              },
+              {
+                text: 'End Date',
+                value: 'end_date',
+                align: 'right',
+                format: 'date'
+              }
             ])
           case 2: // Statistics
             return headers.concat([
-              { text: 'Games Played', value: 'num_games',   align: 'center' },
-              { text: 'Goals',        value: 'num_goals',   align: 'center' },
-              { text: 'Assists',      value: 'num_assists', align: 'center' },
-              { text: 'Clean Sheets', value: 'num_cs',      align: 'center' }
+              {
+                text: 'Games Played',
+                value: 'num_games',
+                align: 'center'
+              },
+              {
+                text: 'Goals',
+                value: 'num_goals',
+                align: 'center'
+              },
+              {
+                text: 'Assists',
+                value: 'num_assists',
+                align: 'center'
+              },
+              {
+                text: 'Clean Sheets',
+                value: 'num_cs',
+                align: 'center'
+              }
             ])
         }
       },

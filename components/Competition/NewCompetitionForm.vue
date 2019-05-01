@@ -86,7 +86,7 @@
           </v-scroll-y-transition>
           <v-scroll-y-transition mode="out-in">
             <v-text-field
-              v-if="competition.preset_format && competition.preset_format !== 'League'"
+              v-if="competition.preset_format !== 'League'"
               v-model="competition.num_matches_per_fixture"
               :rules="$_validate('Matches per Fixture', ['required'])"
               label="Matches per Fixture"

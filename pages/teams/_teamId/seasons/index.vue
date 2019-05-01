@@ -10,7 +10,11 @@
       <v-flex xs12>
         <new-competition-form>
           <template #default="{ on }">
-            <v-btn v-on="on">
+            <v-btn
+              v-on="on"
+              color="blue-grey"
+              outline
+            >
               <v-icon left>mdi-plus-circle-outline</v-icon>
               Competition
             </v-btn>

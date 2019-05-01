@@ -33,7 +33,9 @@
       no-data-text="No Matches Recorded"
     >
       <template #headerCell="{ header }">
-        <span class="subheading font-weight-light text-success text--darken-3">{{ header.text }}</span>
+        <span class="subheading font-weight-light text-success text--darken-3">
+          {{ header.text }}
+        </span>
       </template>
       <template #items="{ item }">
         <transfer-row :transfer="item" />
@@ -69,11 +71,26 @@
           descending: true
         },
         headers: [
-          { text: 'Date', value: 'effective_date' },
-          { text: 'Player', value: 'player.name' },
-          { text: 'Origin', value: 'origin' },
-          { text: 'Destination', value: 'destination' },
-          { text: 'Fee', value: 'fee' }
+          {
+            text: 'Date',
+            value: 'effective_date'
+          },
+          {
+            text: 'Player',
+            value: 'player.name'
+          },
+          {
+            text: 'Origin',
+            value: 'origin'
+          },
+          {
+            text: 'Destination',
+            value: 'destination'
+          },
+          {
+            text: 'Fee',
+            value: 'fee'
+          }
         ],
         search: '',
         seasonFilter: null

@@ -8,14 +8,7 @@
       wrap
     >
       <v-flex xs12>
-        <match-form>
-          <template #default="{ on }">
-            <v-btn v-on="on">
-              <v-icon left>mdi-plus-circle-outline</v-icon>
-              Match
-            </v-btn>
-          </template>
-        </match-form>
+        <match-form />
       </v-flex>
 
       <v-flex xs12>
@@ -28,7 +21,9 @@
             >
               <v-flex xs12>
                 <div class="display-2">{{ match.competition }}</div>
-                <div class="subheading">{{ $_formatDate(match.date_played) }}</div>
+                <div class="subheading">
+                  {{ $_formatDate(match.date_played) }}
+                </div>
               </v-flex>
               <v-layout
                 class="display-1"

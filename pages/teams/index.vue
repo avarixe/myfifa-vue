@@ -5,20 +5,20 @@
       wrap
     >
       <v-flex xs12>
-        <team-panel />
+        <team-grid />
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-  import TeamPanel from '@/components/Team/TeamPanel'
+  import TeamGrid from '@/components/Team/TeamGrid'
 
   export default {
     layout: 'default',
     middleware: 'home',
     components: {
-      TeamPanel
+      TeamGrid
     },
     mounted () {
       this.$store.commit('app/SET_TITLE', 'Teams')

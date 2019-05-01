@@ -1,28 +1,5 @@
 <template>
-  <material-card>
-    <template #header>
-      <span
-        v-text="'Matches'"
-        class="title font-weight-light mb-2"
-      />
-
-      <match-form>
-        <template #default="{ on: dialog }">
-          <v-tooltip bottom>
-            <template #activator="{ on: tooltip }">
-              <v-btn
-                v-on="{ ...dialog, ...tooltip }"
-                flat
-              >
-                <v-icon>mdi-plus-circle-outline</v-icon>
-              </v-btn>
-            </template>
-            New Match
-          </v-tooltip>
-        </template>
-      </match-form>
-    </template>
-
+  <material-card title="Matches">
     <v-card-title>
       <v-select
         v-model="seasonFilter"
@@ -66,9 +43,9 @@
       no-data-text="No Matches Recorded"
     >
       <template #headerCell="{ header }">
-        <span
-          class="subheading font-weight-light text-success text--darken-3"
-        >{{ header.text }}</span>
+        <span class="subheading font-weight-light text-success text--darken-3">
+          {{ header.text }}
+        </span>
       </template>
       <template #items="{ item: match }">
         <v-tooltip bottom>
@@ -79,9 +56,13 @@
             >
               <td class="text-xs-center">{{ match.competition }}</td>
               <td class="text-xs-right">{{ match.home }}</td>
-              <td :class="resultColor(match.team_result) + '--text text-xs-center'">{{ match.score }}</td>
+              <td :class="`${resultColor(match.team_result)} text-xs-center`">
+                {{ match.score }}
+              </td>
               <td class="text-xs-left">{{ match.away }}</td>
-              <td class="text-xs-center">{{ $_format($_parse(match.date_played), 'MMM DD, YYYY') }}</td>
+              <td class="text-xs-center">
+                {{ $_format($_parse(match.date_played), 'MMM DD, YYYY') }}
+              </td>
             </tr>
           </template>
           Click to View Match: <br>
@@ -98,8 +79,6 @@
     Competition,
     Match
   } from '@/models'
-  import MatchForm from './MatchForm'
-  import MatchRemove from './MatchRemove'
   import MaterialCard from '@/components/theme/Card'
   import { TeamAccessible } from '@/mixins'
   import { addYears } from 'date-fns'
@@ -109,8 +88,6 @@
       TeamAccessible
     ],
     components: {
-      MatchForm,
-      MatchRemove,
       MaterialCard
     },
     data () {
@@ -121,11 +98,32 @@
           descending: true
         },
         headers: [
-          { text: 'Competition', value: 'competition', align: 'center' },
-          { text: 'Home', value: 'home', align: 'right' },
-          { text: 'Score', value: 'score', align: 'center', sortable: false },
-          { text: 'Away', value: 'away', align: 'left' },
-          { text: 'Date Played', value: 'date_played', align: 'center' }
+          {
+            text: 'Competition',
+            value: 'competition',
+            align: 'center'
+          },
+          {
+            text: 'Home',
+            value: 'home',
+            align: 'right'
+          },
+          {
+            text: 'Score',
+            value: 'score',
+            align: 'center',
+            sortable: false
+          },
+          {
+            text: 'Away',
+            value: 'away',
+            align: 'left'
+          },
+          {
+            text: 'Date Played',
+            value: 'date_played',
+            align: 'center'
+          }
         ],
         search: '',
         seasonFilter: null,
@@ -154,12 +152,9 @@
             }
           })
           .filter(match => {
-            console.log(typeof this.competition)
-            if (typeof this.competition === 'string') {
-              return match.competition === this.competition
-            } else {
-              return true
-            }
+            return typeof this.competition === 'string'
+              ? match.competition === this.competition
+              : true
           })
       },
       seasons () {
@@ -175,16 +170,13 @@
         return seasons
       },
       competitions () {
-        console.log(typeof this.seasonFilter)
         return Competition
           .query()
           .where('team_id', this.team.id)
           .where(comp => {
-            if (typeof this.seasonFilter === 'number') {
-              return comp.season === this.seasonFilter
-            } else {
-              return true
-            }
+            return typeof this.seasonFilter === 'number'
+              ? comp.season === this.seasonFilter
+              : true
           })
           .get()
           .map(comp => comp.name)
@@ -204,11 +196,11 @@
       resultColor (result) {
         switch (result) {
           case 'win':
-            return 'success'
+            return 'success--text'
           case 'draw':
-            return 'warning'
+            return 'warning--text'
           case 'loss':
-            return 'red'
+            return 'red--text'
           default:
             return ''
         }

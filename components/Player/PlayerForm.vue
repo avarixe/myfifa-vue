@@ -139,7 +139,14 @@
           this.valid = !!val
           if (val) {
             Object.assign(this.player, this.$_pick(val, [
-              'id', 'name', 'pos', 'sec_pos', 'ovr', 'value', 'birth_year', 'youth'
+              'id',
+              'name',
+              'pos',
+              'sec_pos',
+              'ovr',
+              'value',
+              'birth_year',
+              'youth'
             ]))
           }
         }

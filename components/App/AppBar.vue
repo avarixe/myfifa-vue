@@ -9,9 +9,9 @@
       @click.stop="toggleDrawer"
     />
 
-    <v-toolbar-title
-      class="tertiary--text font-weight-light"
-    >{{ $store.state.app.title }}</v-toolbar-title>
+    <v-toolbar-title class="tertiary--text font-weight-light">
+      {{ $store.state.app.title }}
+    </v-toolbar-title>
 
     <v-spacer />
 

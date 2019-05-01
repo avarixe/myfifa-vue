@@ -218,7 +218,9 @@
         'bonusRequirementTypes'
       ]),
       maxEndDate () {
-        return this.$_format(addYears(this.$_parse(this.contract.effective_date), 6))
+        return this.$_format(
+          addYears(this.$_parse(this.contract.effective_date), 6)
+        )
       },
       currentContract () {
         return Contract
@@ -242,7 +244,9 @@
         }
       },
       'menus.end_date' (val, oldVal) {
-        return !oldVal && val && this.$nextTick(() => (this.$refs.picker2.activePicker = 'YEAR'))
+        return !oldVal &&
+          val &&
+          this.$nextTick(() => (this.$refs.picker2.activePicker = 'YEAR'))
       }
     },
     methods: {

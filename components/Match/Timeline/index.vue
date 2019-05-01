@@ -1,7 +1,7 @@
 <template>
   <v-timeline
     v-if="events.length > 0 || match.penalty_shootout"
-    :dense="dense"
+    dense
   >
     <v-timeline-item
       v-for="(event, i) in events"
@@ -15,7 +15,9 @@
       <h2 :class="`headline font-weight-light my-0 ${eventColor(event)}--text`">
         {{ event.minute }}"
 
-        <span class="caption text-truncate">{{ event.home ? match.home : match.away }}</span>
+        <span class="caption text-truncate">
+          {{ event.home ? match.home : match.away }}
+        </span>
 
         <v-tooltip
           v-if="team.current_date === match.date_played"
@@ -121,15 +123,6 @@
         return this.match.penalty_shootout
           ? { ...this.match.penalty_shootout, event_type: 'PenaltyShootout' }
           : {}
-      },
-      dense () {
-        switch (this.$vuetify.breakpoint.name) {
-          case 'lg':
-          case 'xl':
-            return false
-          default:
-            return true
-        }
       }
     },
     methods: {

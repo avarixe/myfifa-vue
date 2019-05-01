@@ -17,7 +17,9 @@
               v-on="{ ...on, ...tooltip }"
               icon
             >
-              <v-icon :color="transferOut ? 'red' : 'green'">mdi-airplane-{{ transferOut ? 'takeoff' : 'landing' }}</v-icon>
+              <v-icon :color="transferOut ? 'red' : 'green'">
+                mdi-airplane-{{ transferOut ? 'takeoff' : 'landing' }}
+              </v-icon>
             </v-btn>
           </template>
           Transfer {{ transferOut ? 'Out' : 'In' }}
@@ -95,7 +97,9 @@
             <v-text-field
               v-model="transfer.addon_clause"
               label="Add-On Clause (%)"
-              :rules="$_validate('Add-On Clause', [{ type: 'range', options: { min: 0, max: 25 }}])"
+              :rules="$_validate(
+                'Add-On Clause',
+                [{ type: 'range', options: { min: 0, max: 25 }}])"
               type="number"
               min="0"
               max="25"

@@ -28,17 +28,29 @@
       no-data-text="No Teams Recorded"
     >
       <template #headerCell="{ header }">
-        <span class="subheading font-weight-light text-success text--darken-3">{{ header.text }}</span>
+        <span class="subheading font-weight-light text-success text--darken-3">
+          {{ header.text }}
+        </span>
       </template>
-      <template #items="{ item }">
-        <tr>
-          <td class="text-xs-center">{{ item.title }}</td>
-          <td class="text-xs-center">{{ $_format($_parse(item.start_date), 'MMM DD, YYYY') }}</td>
-          <td class="text-xs-center">{{ $_format($_parse(item.current_date), 'MMM DD, YYYY') }}</td>
-          <td class="text-xs-right">
-            <team-actions :team="item" />
-          </td>
-        </tr>
+      <template #items="{ item: team }">
+        <v-tooltip bottom>
+          <template #activator="{ on }">
+            <tr
+              v-on="on"
+              @click="$router.push(teamLink(team))"
+            >
+              <td class="text-xs-center">{{ team.title }}</td>
+              <td class="text-xs-center">
+                {{ $_format($_parse(team.start_date), 'MMM DD, YYYY') }}
+              </td>
+              <td class="text-xs-center">
+                {{ $_format($_parse(team.current_date), 'MMM DD, YYYY') }}
+              </td>
+            </tr>
+          </template>
+          Click to Manage Team: <br>
+          <i>{{ team.title }}</i>
+        </v-tooltip>
       </template>
     </v-data-table>
 
@@ -61,10 +73,21 @@
     data () {
       return {
         headers: [
-          { text: 'Team Name',    value: 'title',        align: 'center' },
-          { text: 'Start Date',   value: 'start_date',   align: 'center' },
-          { text: 'Current Date', value: 'current_date', align: 'center' },
-          { text: 'Actions',      value: 'actions',      align: 'right',  sortable: false, width: '120px' }
+          {
+            text: 'Team Name',
+            value: 'title',
+            align: 'center'
+          },
+          {
+            text: 'Start Date',
+            value: 'start_date',
+            align: 'center'
+          },
+          {
+            text: 'Current Date',
+            value: 'current_date',
+            align: 'center'
+          }
         ],
         loading: false,
         search: ''
@@ -93,6 +116,12 @@
           alert(e.message)
         } finally {
           this.loading = false
+        }
+      },
+      teamLink (team) {
+        return {
+          name: 'teams-teamId',
+          params: { teamId: team.id }
         }
       }
     }

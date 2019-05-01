@@ -40,11 +40,23 @@
     computed: {
       info () {
         if (!this.mode) {
-          return { text: 'Edit', icon: 'pencil', color: 'orange' }
+          return {
+            text: 'Edit',
+            icon: 'pencil',
+            color: 'orange'
+          }
         } else if (this.changed) {
-          return { text: 'Save', icon: 'content-save', color: 'green' }
+          return {
+            text: 'Save',
+            icon: 'content-save',
+            color: 'green'
+          }
         } else {
-          return { text: 'Cancel', icon: 'close', color: 'black' }
+          return {
+            text: 'Cancel',
+            icon: 'close',
+            color: 'black'
+          }
         }
       },
       text () { return this.info.text },

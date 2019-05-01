@@ -50,7 +50,9 @@ function allByRecency (teamId) {
 }
 
 export function competitions (teamId) {
-  return [ ...new Set(allByRecency(teamId).map(match => match.competition)) ]
+  return [
+    ...new Set(allByRecency(teamId).map(match => match.competition))
+  ]
 }
 
 export function teams (teamId) {
