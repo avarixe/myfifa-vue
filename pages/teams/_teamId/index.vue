@@ -8,6 +8,11 @@
       wrap
     >
       <v-flex xs12>
+        <match-form />
+        <player-form />
+      </v-flex>
+
+      <v-flex xs12>
         <material-card :title="team.title">
           <v-layout
             class="text-xs-center"
@@ -46,6 +51,7 @@
 
       <!-- TODO: Panel for Latest Match -->
       <v-flex md6>
+
       </v-flex>
 
       <!-- TODO: Panel for Latest Season -->
@@ -72,6 +78,7 @@
 <script>
   import { Match } from '@/models'
   import MatchForm from '@/components/Match/MatchForm'
+  import PlayerForm from '@/components/Player/PlayerForm'
   import TeamDatePicker from '@/components/Team/TeamDatePicker'
   import TeamForm from '@/components/Team/TeamForm'
   import TeamRemove from '@/components/Team/TeamRemove'
@@ -83,6 +90,7 @@
     middleware: 'authenticated',
     components: {
       MatchForm,
+      PlayerForm,
       TeamDatePicker,
       TeamForm,
       TeamRemove,

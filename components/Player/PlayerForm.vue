@@ -7,7 +7,16 @@
     :color="color"
   >
     <template #activator="{ on }">
-      <slot :on="on" />
+      <slot :on="on">
+        <v-btn
+          v-on="on"
+          color="blue-grey"
+          outline
+        >
+          <v-icon left>mdi-plus-circle-outline</v-icon>
+          Player
+        </v-btn>
+      </slot>
     </template>
 
     <template #form>

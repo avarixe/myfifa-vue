@@ -8,18 +8,7 @@
       wrap
     >
       <v-flex xs12>
-        <player-form>
-          <template #default="{ on }">
-            <v-btn
-              v-on="on"
-              color="blue-grey"
-              outline
-            >
-              <v-icon left>mdi-plus-circle-outline</v-icon>
-              Player
-            </v-btn>
-          </template>
-        </player-form>
+        <player-form />
       </v-flex>
 
       <v-flex xs12>
