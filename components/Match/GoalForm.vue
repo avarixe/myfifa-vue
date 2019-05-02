@@ -41,7 +41,7 @@
             <player-select
               v-if="teamGoal"
               v-model="goal.player_id"
-              :players="unsubbedPlayers"
+              :players="scorerOptions"
               label="Goal Scorer"
               required
             />
@@ -61,7 +61,7 @@
             <player-select
               v-if="teamGoal"
               v-model="goal.assist_id"
-              :players="unsubbedPlayers"
+              :players="assistOptions"
               label="Assisted By"
               icon="mdi-human-greeting"
               :disabled="goal.penalty || goal.own_goal"
@@ -143,6 +143,16 @@
       },
       teamGoal () {
         return !this.goal.home ^ this.match.home === this.team.title
+      },
+      scorerOptions () {
+        return this.unsubbedPlayers.filter(cap => {
+          return cap.player_id !== this.goal.assist_id
+        })
+      },
+      assistOptions () {
+        return this.unsubbedPlayers.filter(cap => {
+          return cap.player_id !== this.goal.player_id
+        })
       }
     },
     watch: {
