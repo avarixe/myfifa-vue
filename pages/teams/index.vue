@@ -5,6 +5,21 @@
       wrap
     >
       <v-flex xs12>
+        <team-form>
+          <template #default="{ on }">
+            <v-btn
+              v-on="on"
+              color="blue-grey"
+              outline
+            >
+              <v-icon left>mdi-plus-circle-outline</v-icon>
+              Team
+            </v-btn>
+          </template>
+        </team-form>
+      </v-flex>
+
+      <v-flex xs12>
         <team-grid />
       </v-flex>
     </v-layout>
@@ -12,12 +27,14 @@
 </template>
 
 <script>
+  import TeamForm from '@/components/Team/TeamForm'
   import TeamGrid from '@/components/Team/TeamGrid'
 
   export default {
     layout: 'default',
     middleware: 'home',
     components: {
+      TeamForm,
       TeamGrid
     },
     mounted () {

@@ -1,24 +1,5 @@
 <template>
-  <material-card>
-    <template #header>
-      <span class="title font-weight-light mb-2">Teams</span>
-      <team-form>
-        <template #default="{ on: dialog }">
-          <v-tooltip bottom>
-            <template #activator="{ on: tooltip }">
-              <v-btn
-                v-on="{ ...dialog, ...tooltip }"
-                flat
-              >
-                <v-icon left>mdi-plus-circle-outline</v-icon>
-              </v-btn>
-            </template>
-            New Team
-          </v-tooltip>
-        </template>
-      </team-form>
-    </template>
-
+  <material-card title="Teams">
     <v-data-table
       :headers="headers"
       :items="rows"
@@ -61,14 +42,10 @@
   import { Team } from '@/models'
   import { mapActions } from 'vuex'
   import MaterialCard from '@/components/theme/Card'
-  import TeamForm from './TeamForm'
-  import TeamActions from './TeamActions'
 
   export default {
     components: {
-      MaterialCard,
-      TeamForm,
-      TeamActions
+      MaterialCard
     },
     data () {
       return {

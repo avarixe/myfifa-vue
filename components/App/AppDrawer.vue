@@ -46,7 +46,7 @@
             <v-list-tile-title>{{ teamName }}</v-list-tile-title>
           </v-list-tile>
 
-          <team-calendar />
+          <team-date-picker />
 
           <v-list-tile
             v-for="(link, i) in teamLinks"
@@ -73,11 +73,11 @@
     mapState,
     mapMutations
   } from 'vuex'
-  import TeamCalendar from '@/components/Team/TeamCalendar'
+  import TeamDatePicker from '@/components/Team/TeamDatePicker'
 
   export default {
     components: {
-      TeamCalendar
+      TeamDatePicker
     },
     computed: {
       ...mapState('app', [

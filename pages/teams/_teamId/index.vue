@@ -15,7 +15,7 @@
             wrap
           >
             <v-flex xs12>
-              <team-calendar>
+              <team-date-picker>
                 <template #default="{ on }">
                   <v-btn
                     v-on="on"
@@ -23,7 +23,7 @@
                     dark
                   >{{ $_format(team.current_date, 'MMM DD, YYYY') }}</v-btn>
                 </template>
-              </team-calendar>
+              </team-date-picker>
 
               <team-form
                 :team-id="team.id"
@@ -44,136 +44,27 @@
         </material-card>
       </v-flex>
 
-      <!-- Latest Matches -->
-      <v-flex xs12>
-        <material-card
-          title="Latest Matches"
-          color="blue"
-        >
-          <v-card-actions class="justify-space-between">
-            <v-btn
-              flat
-              @click="prevMatch"
-            >
-              <v-icon>mdi-chevron-left</v-icon>
-            </v-btn>
-
-            <v-item-group
-              v-model="curMatch"
-              class="text-xs-center"
-              mandatory
-            >
-              <!-- New Match -->
-              <v-item>
-                <template #default="{ active, toggle }">
-                  <v-btn
-                    :input-value="active"
-                    @click="toggle"
-                    round
-                    icon
-                  >
-                    <v-icon>mdi-plus</v-icon>
-                  </v-btn>
-                </template>
-              </v-item>
-
-              <v-item
-                v-for="match in latestMatches"
-                :key="`btn-${match.id}`"
-              >
-                <template #default="{ active, toggle }">
-                  <v-btn
-                    :input-value="active"
-                    @click="toggle"
-                    round
-                    icon
-                  >
-                    <v-icon :color="matchColor(match)">
-                      {{ matchIcon(match) }}
-                    </v-icon>
-                  </v-btn>
-                </template>
-              </v-item>
-            </v-item-group>
-
-            <v-btn
-              flat
-              @click="nextMatch"
-            >
-              <v-icon>mdi-chevron-right</v-icon>
-            </v-btn>
-          </v-card-actions>
-
-          <v-window
-            v-model="curMatch"
-            style="height: 270px"
-          >
-            <!-- New Match -->
-            <v-window-item style="height: 270px">
-              <v-container fluid fill-height>
-                <v-layout align-center justify-center>
-                  <v-flex class="text-xs-center">
-                    <match-form />
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-window-item>
-            <v-window-item
-              v-for="match in latestMatches"
-              :key="match.id"
-            >
-              <v-layout
-                class="text-xs-center"
-                row
-                wrap
-              >
-                <v-flex xs12>
-                  <div class="display-2">{{ match.competition }}</div>
-                  <div class="subheading">
-                    {{ $_formatDate(match.date_played) }}
-                  </div>
-                </v-flex>
-                <v-layout
-                  class="display-1"
-                  row
-                >
-                  <v-flex
-                    align-self-center
-                    class="font-weight-thin pa-1"
-                    style="flex-basis:0"
-                  >{{ match.home }}</v-flex>
-                  <v-flex
-                    align-self-center
-                    class="pa-1"
-                    shrink
-                  >v</v-flex>
-                  <v-flex
-                    align-self-center
-                    class="font-weight-thin pa-1"
-                    style="flex-basis:0"
-                  >{{ match.away }}</v-flex>
-                </v-layout>
-                <v-flex xs12>
-                  <div class="display-1">
-                    {{ match.score }}
-                    {{ match.extra_time && !match.penalty_shootout ? '(AET)' : '' }}
-                  </div>
-                </v-flex>
-                <v-flex xs12>
-                  <v-btn
-                    :to="matchLink(match)"
-                    color="blue"
-                    nuxt
-                    outline
-                  >View</v-btn>
-                </v-flex>
-              </v-layout>
-            </v-window-item>
-          </v-window>
-        </material-card>
+      <!-- TODO: Panel for Latest Match -->
+      <v-flex md6>
       </v-flex>
 
-      <!-- TODO: Injured Players -->
+      <!-- TODO: Panel for Latest Season -->
+      <v-flex md6>
+      </v-flex>
+
+      <!-- TODO: Panel for Injured Players -->
+      <v-flex md4>
+      </v-flex>
+
+      <!-- TODO: Panel for Loaned Players -->
+      <v-flex md4>
+      </v-flex>
+
+      <!-- TODO: Panel for Expiring Contracts -->
+      <v-flex md4>
+      </v-flex>
+
+      <!-- TODO: Team Calendar -->
     </v-layout>
   </v-container>
 </template>
@@ -181,7 +72,7 @@
 <script>
   import { Match } from '@/models'
   import MatchForm from '@/components/Match/MatchForm'
-  import TeamCalendar from '@/components/Team/TeamCalendar'
+  import TeamDatePicker from '@/components/Team/TeamDatePicker'
   import TeamForm from '@/components/Team/TeamForm'
   import TeamRemove from '@/components/Team/TeamRemove'
   import MaterialCard from '@/components/theme/Card'
@@ -192,7 +83,7 @@
     middleware: 'authenticated',
     components: {
       MatchForm,
-      TeamCalendar,
+      TeamDatePicker,
       TeamForm,
       TeamRemove,
       MaterialCard

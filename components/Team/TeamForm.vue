@@ -46,7 +46,6 @@
               </template>
               <v-date-picker
                 v-model="team.start_date"
-                landscape
                 :color="color"
                 @input="$refs.menu.save(team.start_date)"
               />

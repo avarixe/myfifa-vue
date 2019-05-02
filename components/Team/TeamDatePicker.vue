@@ -4,6 +4,7 @@
     :close-on-content-click="false"
     transition="scale-transition"
     origin="top left"
+    class="d-inline-block"
   >
     <template #activator="{ on }">
       <slot :on="on">

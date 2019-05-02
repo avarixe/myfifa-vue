@@ -51,7 +51,6 @@
               <v-date-picker
                 v-model="contract.effective_date"
                 ref="picker1"
-                landscape
                 :min="team.current_date"
                 :max="contract.end_date"
                 @input="$refs.menu1.save(contract.effective_date)"
@@ -82,7 +81,6 @@
               <v-date-picker
                 v-model="contract.end_date"
                 ref="picker2"
-                landscape
                 :min="contract.effective_date"
                 :max="maxEndDate"
                 @input="$refs.menu2.save(contract.end_date)"
