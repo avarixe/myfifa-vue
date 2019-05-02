@@ -46,7 +46,10 @@
       bottom
     >
       <template #activator="{ on: tooltip }">
-        <v-menu offset-y>
+        <v-menu
+          offset-y
+          class="d-inline-block"
+        >
           <template #activator="{ on: menu }">
             <v-btn
               v-on="{ ...menu, ...tooltip }"
