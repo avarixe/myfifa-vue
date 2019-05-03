@@ -84,8 +84,7 @@
     },
     methods: {
       sliceLabel (value, idx) {
-        var percentage = Math.round(value / this.total * 100)
-        console.log(value, this.total, percentage)
+        const percentage = Math.round(value / this.total * 100)
         return `${this.labels[idx]} ${percentage}%`
       }
     }

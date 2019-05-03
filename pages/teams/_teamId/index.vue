@@ -1,7 +1,7 @@
 <template>
   <v-container
     fluid
-    grid-list-lg
+    grid-list-xs
   >
     <v-layout
       row
@@ -71,6 +71,14 @@
       </v-flex>
 
       <!-- TODO: Team Calendar -->
+      <v-flex xs12>
+        <material-card
+          title="Calendar"
+          color="blue"
+        >
+          <team-calendar />
+        </material-card>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -82,6 +90,7 @@
   import TeamDatePicker from '@/components/Team/TeamDatePicker'
   import TeamForm from '@/components/Team/TeamForm'
   import TeamRemove from '@/components/Team/TeamRemove'
+  import TeamCalendar from '@/components/Team/TeamCalendar'
   import MaterialCard from '@/components/theme/Card'
   import { TeamAccessible } from '@/mixins'
 
@@ -94,6 +103,7 @@
       TeamDatePicker,
       TeamForm,
       TeamRemove,
+      TeamCalendar,
       MaterialCard
     },
     mixins: [
