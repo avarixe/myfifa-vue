@@ -4,7 +4,9 @@
     @click.stop="snackbar = true"
   >
     <slot>
-      <v-btn dark>Remove</v-btn>
+      <v-btn
+        outline
+      >Remove</v-btn>
     </slot>
 
     <v-snackbar

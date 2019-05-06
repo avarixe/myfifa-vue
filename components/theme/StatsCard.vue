@@ -11,11 +11,7 @@
         class="pa-4"
         dark
       >
-        <v-icon
-          size="40"
-        >
-          {{ icon }}
-        </v-icon>
+        <v-icon size="40">{{ icon }}</v-icon>
       </v-card>
     </template>
     <div class="text-xs-right">

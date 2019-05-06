@@ -9,6 +9,7 @@ import Cap from './Cap'
 import Match from './Match'
 import Goal from './Goal'
 import Booking from './Booking'
+import Team from './Team'
 
 class Player extends Model {
   static get entity () {
@@ -37,6 +38,7 @@ class Player extends Model {
       pos_idx: this.number(0),
 
       // Associations
+      team: this.belongsTo(Team, 'team_id'),
       histories: this.hasMany(PlayerHistory, 'player_id'),
       injuries: this.hasMany(Injury, 'player_id'),
       loans: this.hasMany(Loan, 'player_id'),
@@ -48,6 +50,13 @@ class Player extends Model {
       assists: this.hasMany(Goal, 'assist_id'),
       bookings: this.hasMany(Booking, 'player_id')
     }
+  }
+
+  get contract () {
+    return this.contracts.filter(contract =>
+      contract.effective_date <= this.team.current_date &&
+      this.team.current_date < contract.end_date
+    ).pop() || {}
   }
 }
 

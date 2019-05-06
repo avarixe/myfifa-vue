@@ -15,7 +15,10 @@
         md4
         lg3
       >
-        <season-item :season="parseInt(item)" />
+        <season-item
+          :season="parseInt(item)"
+          compact
+        />
       </v-flex>
     </template>
   </v-data-iterator>
