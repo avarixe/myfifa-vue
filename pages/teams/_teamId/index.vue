@@ -8,81 +8,107 @@
       wrap
     >
       <v-flex xs12>
+        <team-date-picker>
+          <template #default="{ on }">
+            <v-btn
+              v-on="on"
+              color="accent"
+              outline
+              dark
+            >{{ $_format(team.current_date, 'MMM DD, YYYY') }}</v-btn>
+          </template>
+        </team-date-picker>
+
+        <team-form
+          :team-id="team.id"
+          color="orange"
+        >
+          <template #default="{ on }">
+            <v-btn
+              v-on="on"
+              color="orange darken-2"
+              outline
+              dark
+            >Edit</v-btn>
+          </template>
+        </team-form>
+
         <match-form />
         <player-form />
+        <team-remove :team="team" />
       </v-flex>
 
-      <v-flex xs12>
-        <material-card :title="team.title">
-          <v-layout
-            class="text-xs-center"
-            row
-            wrap
-          >
-            <v-flex xs12>
-              <team-date-picker>
-                <template #default="{ on }">
-                  <v-btn
-                    v-on="on"
-                    color="accent"
-                    dark
-                  >{{ $_format(team.current_date, 'MMM DD, YYYY') }}</v-btn>
-                </template>
-              </team-date-picker>
+      <!-- Latest Match -->
+      <v-flex xs12 md6>
+        <match-card
+          title="Latest Match"
+          :match="lastMatch"
+        />
+      </v-flex>
 
-              <team-form
-                :team-id="team.id"
-                color="orange"
-              >
-                <template #default="{ on }">
-                  <v-btn
-                    v-on="on"
-                    color="orange"
-                    dark
-                  >Edit</v-btn>
-                </template>
-              </team-form>
+      <!-- Current Season -->
+      <v-flex xs12 md6>
+        <season-item
+          :season="season"
+          color="green"
+        />
+      </v-flex>
 
-              <team-remove :team="team" />
-            </v-flex>
-          </v-layout>
+      <!-- Injured Players -->
+      <v-flex xs12 md4>
+        <players-card
+          :players="injuredPlayers"
+          title="Injured Players"
+          color="pink"
+        />
+      </v-flex>
+
+      <!-- Loaned Players -->
+      <v-flex xs12 md4>
+        <players-card
+          :players="loanedPlayers"
+          title="Loaned Players"
+          color="indigo"
+        />
+      </v-flex>
+
+      <!-- Expiring Contracts -->
+      <v-flex xs12 md4>
+        <players-card
+          :players="playersWithExpiringContracts"
+          title="Expiring Contracts"
+          color="orange"
+        />
+      </v-flex>
+
+      <!-- Team Calendar -->
+      <v-flex
+        hidden-sm-and-down
+        xs12
+      >
+        <material-card
+          title="Calendar"
+          color="blue"
+        >
+          <team-calendar />
         </material-card>
       </v-flex>
-
-      <!-- TODO: Panel for Latest Match -->
-      <v-flex md6>
-
-      </v-flex>
-
-      <!-- TODO: Panel for Latest Season -->
-      <v-flex md6>
-      </v-flex>
-
-      <!-- TODO: Panel for Injured Players -->
-      <v-flex md4>
-      </v-flex>
-
-      <!-- TODO: Panel for Loaned Players -->
-      <v-flex md4>
-      </v-flex>
-
-      <!-- TODO: Panel for Expiring Contracts -->
-      <v-flex md4>
-      </v-flex>
-
-      <!-- TODO: Team Calendar -->
     </v-layout>
   </v-container>
 </template>
 
 <script>
-  import { Match } from '@/models'
+  import { Match, Player } from '@/models'
   import MatchForm from '@/components/Match/MatchForm'
   import PlayerForm from '@/components/Player/PlayerForm'
+  import SeasonItem from '@/components/Season/SeasonItem'
   import TeamDatePicker from '@/components/Team/TeamDatePicker'
   import TeamForm from '@/components/Team/TeamForm'
   import TeamRemove from '@/components/Team/TeamRemove'
   import MaterialCard from '@/components/theme/Card'
+  import TeamCalendar from '@/components/Team/Dashboard/TeamCalendar'
+  import MatchCard from '@/components/Team/Dashboard/MatchCard'
+  import PlayersCard from '@/components/Team/Dashboard/PlayersCard'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -90,10 +116,14 @@
     middleware: 'authenticated',
     components: {
       MatchForm,
+      MatchCard,
       PlayerForm,
+      PlayersCard,
+      SeasonItem,
       TeamDatePicker,
       TeamForm,
       TeamRemove,
+      TeamCalendar,
       MaterialCard
     },
     mixins: [
@@ -104,69 +134,40 @@
         title: this.team.title
       }
     },
-    data: () => ({
-      curMatch: 1
-    }),
     computed: {
-      latestMatches () {
+      lastMatch () {
         return Match
           .query()
+          .with('team')
           .where('team_id', this.team.id)
           .orderBy('date_played', 'desc')
-          .limit(10)
+          .first()
+      },
+      injuredPlayers () {
+        return this.getPlayersByStatus('Injured')
+      },
+      loanedPlayers () {
+        return this.getPlayersByStatus('Loaned')
+      },
+      playersWithExpiringContracts () {
+        return Player
+          .query()
+          .with('contracts|team')
+          .where('team_id', this.team.id)
           .get()
-        // return []
-      }
-    },
-    methods: {
-      matchIcon (match) {
-        switch (match.team_result) {
-          case 'win':
-            return 'mdi-alpha-w'
-          case 'draw':
-            return 'mdi-alpha-d'
-          case 'loss':
-            return 'mdi-alpha-l'
-          default:
-            return ''
-        }
-      },
-      matchColor (match) {
-        switch (match.team_result) {
-          case 'win':
-            return 'success'
-          case 'draw':
-            return 'warning'
-          case 'loss':
-            return 'red'
-          default:
-            return ''
-        }
-      },
-      matchLink (match) {
-        return {
-          name: 'teams-teamId-matches-matchId',
-          params: {
-            teamId: this.team.id,
-            matchId: match.id
-          }
-        }
-      },
-      prevMatch () {
-        this.curMatch--
-        if (this.curMatch < 0) {
-          this.curMatch += this.latestMatches.length + 1
-        }
-      },
-      nextMatch () {
-        this.curMatch = (this.curMatch + 1) % (this.latestMatches.length + 1)
+          .filter(player => player.contract.end_date <= this.seasonEnd)
       }
     },
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
-
-      if (this.latestMatches.length === 0) {
-        this.curMatch = 0
+    },
+    methods: {
+      getPlayersByStatus (status) {
+        return Player
+          .query()
+          .where('team_id', this.team.id)
+          .where('status', status)
+          .get()
       }
     }
   }

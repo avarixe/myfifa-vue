@@ -30,7 +30,8 @@ import Vuetify, {
   VProgressCircular,
   VInput,
   VTimeline,
-  VBtnToggle
+  VBtnToggle,
+  VCalendar
 } from 'vuetify/lib'
 import { Ripple } from 'vuetify/lib/directives'
 import VGrid from 'vuetify/lib/components/VGrid'
@@ -80,6 +81,7 @@ Vue.use(Vuetify, {
     VInput,
     VTimeline,
     VBtnToggle,
+    VCalendar,
     transitions
   },
   directives: {

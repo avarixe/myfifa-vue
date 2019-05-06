@@ -14,7 +14,7 @@
     },
     render (createElement, context) {
       function contentComponent () {
-        var item = context.props.item
+        const item = context.props.item
 
         switch (item.event_type) {
           case 'Goal':
@@ -26,7 +26,6 @@
           case 'PenaltyShootout':
             return PenaltyShootoutContent
           default:
-            console.log(item)
             throw new Error('Wrong Timeline Item Type!')
         }
       }

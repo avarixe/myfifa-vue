@@ -183,37 +183,59 @@
       players () {
         return Player
           .query()
-          .with('contracts')
+          .with('contracts|team')
           .where('team_id', this.team.id)
           .orderBy('ovr', 'desc')
           .get()
-          .map(player => {
-            const contract = player.contracts.filter(contract =>
-              contract.effective_date <= this.team.current_date &&
-              this.team.current_date < contract.end_date
-            ).pop() || {}
-            return {
-              ...player,
-              wage: contract.wage,
-              end_date: contract.end_date,
-              num_games: this.statistics.num_games[player.id],
-              num_goals: this.statistics.num_goals[player.id],
-              num_assists: this.statistics.num_assists[player.id],
-              num_cs: this.statistics.num_cs[player.id]
-            }
-          })
+          .map(player => ({
+            ...player,
+            wage: player.contract.wage,
+            end_date: player.contract.end_date,
+            num_games: this.statistics.num_games[player.id],
+            num_goals: this.statistics.num_goals[player.id],
+            num_assists: this.statistics.num_assists[player.id],
+            num_cs: this.statistics.num_cs[player.id]
+          }))
       },
       currentMode () { return this.modes[this.mode] },
       currentFilter () { return this.filters[this.filter] },
       actionWidth () { return this.mode === 0 ? 125 : 40 },
       headers () {
         let headers = [
-          { text: '',         value: 'action',  align: 'center', sortable: false },
-          { text: 'Name',     value: 'name',    align: 'left' },
-          { text: 'Status',   value: 'status',  align: 'center', width: 40 },
-          { text: 'Age',      value: 'age',     align: 'center' },
-          { text: 'Position', value: 'pos_idx', align: 'center', view: 'pos' },
-          { text: 'Kit No',   value: 'kit_no',  align: 'center', editable: true }
+          {
+            text: '',
+            value: 'action',
+            align: 'center',
+            sortable: false
+          },
+          {
+            text: 'Name',
+            value: 'name',
+            align: 'left'
+          },
+          {
+            text: 'Status',
+            value: 'status',
+            align: 'center',
+            width: 40
+          },
+          {
+            text: 'Age',
+            value: 'age',
+            align: 'center'
+          },
+          {
+            text: 'Position',
+            value: 'pos_idx',
+            align: 'center',
+            view: 'pos'
+          },
+          {
+            text: 'Kit No',
+            value: 'kit_no',
+            align: 'center',
+            editable: true
+          }
         ]
 
         switch (this.mode) {

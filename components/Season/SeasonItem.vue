@@ -1,11 +1,12 @@
 <template>
-  <material-card>
+  <material-card :color="color">
     <template #header>
-      <span class="title font-weight-light mb-2">{{ seasonLabel }}</span>
+      <span class="title font-weight-light mb-2">{{ cardTitle }}</span>
 
       <v-tooltip bottom>
         <template #activator="{ on }">
           <v-btn
+            v-if="compact"
             v-on="on"
             :to="seasonLink"
             nuxt
@@ -18,6 +19,18 @@
         View Season
       </v-tooltip>
     </template>
+
+    <p
+      v-if="!compact"
+      class="text-xs-center"
+    >
+      <v-btn
+        :to="seasonLink"
+        :color="color"
+        outline
+        nuxt
+      >View</v-btn>
+    </p>
 
     <v-list dense>
       <v-subheader>Competitions</v-subheader>
@@ -60,6 +73,14 @@
       season: {
         type: Number,
         required: true
+      },
+      color: {
+        type: String,
+        default: 'primary'
+      },
+      compact: {
+        type: Boolean,
+        default: false
       }
     },
     computed: {
@@ -71,6 +92,11 @@
           .query()
           .where('season', this.season)
           .get()
+      },
+      cardTitle () {
+        return this.compact
+          ? this.seasonLabel
+          : `${this.seasonLabel} Season`
       },
       seasonLabel () {
         let start = addYears(this.team.start_date, this.season)
