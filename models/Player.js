@@ -53,10 +53,13 @@ class Player extends Model {
   }
 
   get contract () {
-    return this.contracts.filter(contract =>
-      contract.effective_date <= this.team.current_date &&
-      this.team.current_date < contract.end_date
-    ).pop() || {}
+    const contract = this.contracts.pop()
+
+    return contract &&
+           contract.effective_date <= this.team.current_date &&
+           this.team.current_date < contract.end_date
+      ? contract
+      : {}
   }
 }
 
