@@ -60,22 +60,33 @@
                 :competition-data="competition"
                 color="orange"
               >
-                <v-btn
-                  dark
-                  color="orange"
-                >Edit</v-btn>
+                <template #default="{ on }">
+                  <v-btn
+                    v-on="on"
+                    dark
+                    color="orange"
+                  >Edit</v-btn>
+                </template>
               </edit-competition-form>
               <stage-form
                 :competition="competition"
                 color="teal"
               >
-                <v-btn
-                  dark
-                  color="teal"
-                >Add Stage</v-btn>
+                <template #default="{ on }">
+                  <v-btn
+                    v-on="on"
+                    dark
+                    color="teal"
+                  >Add Stage</v-btn>
+                </template>
               </stage-form>
               <competition-remove :competition="competition">
-                <v-btn dark>Remove</v-btn>
+                <template #default="{ on }">
+                  <v-btn
+                    v-on="on"
+                    dark
+                  >Remove</v-btn>
+                </template>
               </competition-remove>
             </v-flex>
           </v-layout>
