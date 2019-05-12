@@ -4,37 +4,45 @@
     title-icon="mdi-human"
     title="Record Penalty Shootout"
     :submit="submit"
-    :color="color">
-    <slot slot="activator"></slot>
-    <v-container slot="form">
-      <v-layout wrap>
-        <v-flex xs6>
-          <v-text-field
-            v-model="penaltyShootout.home_score"
-            :rules="$_validate('Home Score', ['required'])"
-            type="number"
-            :label="match.home"
-            prepend-icon="mdi-soccer"
-          ></v-text-field>
-        </v-flex>
-        <v-flex xs6>
-          <v-text-field
-            v-model="penaltyShootout.away_score"
-            :rules="$_validate('Away Score', ['required'])"
-            type="number"
-            :label="match.away"
-            prepend-icon="mdi-soccer"
-          ></v-text-field>
-        </v-flex>
-      </v-layout>
-    </v-container>
+    :color="color"
+  >
+    <template #activator="{ on }">
+      <slot :on="on" />
+    </template>
+
+    <template #form>
+      <v-container>
+        <v-layout wrap>
+          <v-flex xs6>
+            <v-text-field
+              v-model="penaltyShootout.home_score"
+              :rules="$_validate('Home Score', ['required'])"
+              type="number"
+              :label="match.home"
+              prepend-icon="mdi-soccer"
+            />
+          </v-flex>
+          <v-flex xs6>
+            <v-text-field
+              v-model="penaltyShootout.away_score"
+              :rules="$_validate('Away Score', ['required'])"
+              type="number"
+              :label="match.away"
+              prepend-icon="mdi-soccer"
+            />
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </template>
   </dialog-form>
 </template>
 
 <script>
-  import TeamAccessible from '@/mixins/TeamAccessible'
-  import DialogFormable from '@/mixins/DialogFormable'
-  import MatchAccessible from '@/mixins/MatchAccessible'
+  import {
+    TeamAccessible,
+    DialogFormable,
+    MatchAccessible
+  } from '@/mixins'
 
   export default {
     mixins: [
@@ -52,7 +60,7 @@
     },
     methods: {
       async submit () {
-        await this.$store.dispatch('entities/penaltyShootouts/CREATE', {
+        await this.$store.dispatch('penaltyShootout/CREATE', {
           matchId: this.match.id,
           penaltyShootout: this.penaltyShootout
         })

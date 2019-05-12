@@ -1,11 +1,12 @@
-import DialogForm from '@/components/DialogForm'
+import DialogForm from '@/helpers/DialogForm'
 
 export default {
   components: {
     DialogForm
   },
   props: {
-    color: String
+    color: String,
+    default: 'tertiary'
   },
   data: () => ({
     dialog: false

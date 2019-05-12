@@ -1,8 +1,9 @@
 import { Model } from '@vuex-orm/core'
 
 export default class PenaltyShootout extends Model {
-  static entity = 'penaltyShootouts'
-
+  static get entity () {
+    return 'penaltyShootouts'
+  }
   static fields () {
     return {
       // Primary/Foreign keys

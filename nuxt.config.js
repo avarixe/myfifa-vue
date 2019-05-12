@@ -9,7 +9,7 @@ export default {
   ** Headers of the page
   */
   head: {
-    title: 'JoonDEV | MyFIFA Manager',
+    title: 'MyFIFA Manager',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -19,9 +19,6 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700' },
       { rel: 'stylesheet', href: 'https://cdn.materialdesignicons.com/2.8.94/css/materialdesignicons.min.css' }
-    ],
-    script: [
-      { src: 'https://www.gstatic.com/charts/loader.js' }
     ]
   },
 
@@ -29,8 +26,8 @@ export default {
   ** Global CSS
   */
   css: [
-    'vuetify/src/stylus/main.styl',
-    '@/css/main.css'
+    'vuetify/dist/vuetify.min.css',
+    '@/styles/index.scss'
   ],
 
   /*
@@ -46,7 +43,7 @@ export default {
     '@/plugins/lodash.js',
     '@/plugins/custom.js',
     '@/plugins/date-fns.js',
-    '@/plugins/chartkick.js'
+    '@/plugins/chartist.client.js'
   ],
 
   /*
@@ -54,11 +51,17 @@ export default {
   */
   build: {
     // analyze: true,
+
     transpile: [/^vuetify/],
+
     plugins: [
       new VuetifyLoaderPlugin()
     ],
+
+    postcss: {},
+
     extractCSS: true,
+
     extend (config, { isDev, isClient }) {
       // Run ESLint on save
       if (isDev && isClient) {

@@ -1,41 +1,55 @@
 <template>
-  <v-card>
-    <v-card-title primary-title>
-      <div class="title">
-        // PLAYERS
-      </div>
-
+  <material-card title="Players">
+    <v-card-title>
       <!-- Display Menu -->
-      <v-tooltip bottom :color="currentFilter.color">
-        <v-menu slot="activator" bottom right>
-          <v-btn slot="activator" icon>
-            <v-icon :color="currentFilter.color">
-              mdi-{{ currentFilter.icon }}
-            </v-icon>
-          </v-btn>
-          <v-list>
-            <v-list-tile
-              v-for="(opt, i) in filters"
-              :key="i"
-              @click="filter = i">
-              <v-list-tile-avatar>
-                <v-icon :color="opt.color">mdi-{{ opt.icon }}</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-title>{{ opt.text }}</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
+      <v-tooltip
+        bottom
+        :color="currentFilter.color"
+      >
+        <template #activator="{ on: tooltip }">
+          <v-menu
+            bottom
+            right
+          >
+            <template #activator="{ on: menu }">
+              <v-btn
+                v-on="{ ...menu, ...tooltip }"
+                class="px-1"
+                flat
+              >
+                <v-icon :color="currentFilter.color">
+                  mdi-{{ currentFilter.icon }}
+                </v-icon>
+              </v-btn>
+            </template>
+
+            <v-list>
+              <v-list-tile
+                v-for="(opt, i) in filters"
+                :key="i"
+                @click="filter = i"
+              >
+                <v-list-tile-avatar>
+                  <v-icon :color="opt.color">mdi-{{ opt.icon }}</v-icon>
+                </v-list-tile-avatar>
+                <v-list-tile-title>{{ opt.text }}</v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </v-menu>
+        </template>
         Display {{ currentFilter.text }} Players
       </v-tooltip>
 
       <v-btn-toggle
         v-model="mode"
         mandatory
-        class="mx-3">
+        class="mx-3"
+      >
         <v-btn
           v-for="(opt, i) in modes"
           :key="i"
-          flat>
+          flat
+        >
           <v-icon :color="opt.color">mdi-{{ opt.icon }}</v-icon>
         </v-btn>
       </v-btn-toggle>
@@ -44,7 +58,7 @@
         {{ currentMode.text }}
       </div>
 
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <!-- Player Search -->
       <v-text-field
@@ -64,39 +78,59 @@
       :search="search"
       item-key="id"
       must-sort
-      no-data-text="No Players Found">
-      <template slot="items" slot-scope="props">
+      no-data-text="No Players Found"
+    >
+      <template #headerCell="{ header }">
+        <span class="subheading font-weight-light text-success text--darken-3">
+          {{ header.text }}
+        </span>
+      </template>
+      <template #items="{ item }">
         <player-row
-          :player-data="props.item"
+          :player-data="item"
           :headers="headers"
-          :action-width="actionWidth"
-        ></player-row>
+          :mode="mode"
+        />
       </template>
     </v-data-table>
 
-  </v-card>
+  </material-card>
 </template>
 
 <script>
   import { mapActions } from 'vuex'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
-  import PlayerForm from './PlayerForm'
+  import MaterialCard from '@/components/theme/Card'
   import PlayerRow from './PlayerRow'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     components: {
-      PlayerForm,
+      MaterialCard,
       PlayerRow
     },
     data () {
       return {
         mode: 0,
         modes: [
-          { text: 'Overall',    color: 'green', icon: 'trending-up' },
-          { text: 'Contract',   color: 'blue',  icon: 'file-document-outline' },
-          { text: 'Statistics', color: 'red',   icon: 'numeric' }
+          {
+            text: 'Overall',
+            color: 'green',
+            icon: 'trending-up'
+          },
+          {
+            text: 'Contract',
+            color: 'blue',
+            icon: 'file-document-outline'
+          },
+          {
+            text: 'Statistics',
+            color: 'red',
+            icon: 'numeric'
+          }
         ],
         loading: false,
         pagination: {
@@ -105,12 +139,36 @@
         },
         filter: 2,
         filters: [
-          { text: 'All', color: 'blue', icon: 'earth' },
-          { text: 'Youth', color: 'cyan', icon: 'school' },
-          { text: 'Active', color: 'bluegrey', icon: 'clipboard-account' },
-          { text: 'Injured', color: 'pink', icon: 'hospital' },
-          { text: 'Loaned', color: 'indigo', icon: 'transit-transfer' },
-          { text: 'Pending', color: 'deep-orange', icon: 'lock-clock' }
+          {
+            text: 'All',
+            color: 'blue',
+            icon: 'earth'
+          },
+          {
+            text: 'Youth',
+            color: 'cyan',
+            icon: 'school'
+          },
+          {
+            text: 'Active',
+            color: 'bluegrey',
+            icon: 'clipboard-account'
+          },
+          {
+            text: 'Injured',
+            color: 'pink',
+            icon: 'hospital'
+          },
+          {
+            text: 'Loaned',
+            color: 'indigo',
+            icon: 'transit-transfer'
+          },
+          {
+            text: 'Pending',
+            color: 'deep-orange',
+            icon: 'lock-clock'
+          }
         ],
         search: '',
         statistics: {
@@ -125,58 +183,127 @@
       players () {
         return Player
           .query()
-          .with('contracts')
+          .with('contracts|team')
           .where('team_id', this.team.id)
           .orderBy('ovr', 'desc')
           .get()
-          .map(player => {
-            const contract = player.contracts.filter(contract =>
-              contract.effective_date <= this.team.current_date &&
-              this.team.current_date < contract.end_date
-            ).pop() || {}
-            return {
-              ...player,
-              wage: contract.wage,
-              end_date: contract.end_date,
-              num_games: this.statistics.num_games[player.id],
-              num_goals: this.statistics.num_goals[player.id],
-              num_assists: this.statistics.num_assists[player.id],
-              num_cs: this.statistics.num_cs[player.id]
-            }
-          })
+          .map(player => ({
+            ...player,
+            wage: player.contract.wage,
+            end_date: player.contract.end_date,
+            num_games: this.statistics.num_games[player.id],
+            num_goals: this.statistics.num_goals[player.id],
+            num_assists: this.statistics.num_assists[player.id],
+            num_cs: this.statistics.num_cs[player.id]
+          }))
       },
       currentMode () { return this.modes[this.mode] },
       currentFilter () { return this.filters[this.filter] },
       actionWidth () { return this.mode === 0 ? 125 : 40 },
       headers () {
         let headers = [
-          { text: '',         value: 'action',  align: 'center', sortable: false, width: this.actionWidth },
-          { text: 'Name',     value: 'name',    align: 'left' },
-          { text: 'Status',   value: 'status',  align: 'left', width: '40px' },
-          { text: 'Age',      value: 'age',     align: 'center' },
-          { text: 'Position', value: 'pos_idx', align: 'center', view: 'pos' },
-          { text: 'Kit No',   value: 'kit_no',  align: 'center', editable: true }
+          {
+            text: '',
+            value: 'action',
+            align: 'center',
+            sortable: false
+          },
+          {
+            text: 'Name',
+            value: 'name',
+            align: 'left'
+          },
+          {
+            text: 'Status',
+            value: 'status',
+            align: 'center',
+            width: 40
+          },
+          {
+            text: 'Age',
+            value: 'age',
+            align: 'center'
+          },
+          {
+            text: 'Position',
+            value: 'pos_idx',
+            align: 'center',
+            view: 'pos'
+          },
+          {
+            text: 'Kit No',
+            value: 'kit_no',
+            align: 'center',
+            editable: true
+          }
         ]
 
         switch (this.mode) {
           case 0: // Overall
             return headers.concat([
-              { text: '2nd Position(s)', value: 'sec_pos', align: 'center', format: 'array' },
-              { text: 'OVR',             value: 'ovr',     align: 'center', editable: true },
-              { text: 'Value',           value: 'value',   align: 'right',  format: 'money', editable: true }
+              {
+                text: '2nd Position(s)',
+                value: 'sec_pos',
+                align: 'center',
+                format: 'array'
+              },
+              {
+                text: 'OVR',
+                value: 'ovr',
+                align: 'center',
+                editable: true
+              },
+              {
+                text: 'Value',
+                value: 'value',
+                align: 'right',
+                format: 'money',
+                editable: true
+              }
             ])
           case 1: // Contract
             return headers.concat([
-              { text: 'Value',    value: 'value',    align: 'right', format: 'money' },
-              { text: 'Wage',     value: 'wage',     align: 'right', format: 'money' },
-              { text: 'End Date', value: 'end_date', align: 'right', format: 'date' }
+              {
+                text: 'Value',
+                value: 'value',
+                align: 'right',
+                format: 'money'
+              },
+              {
+                text: 'Wage',
+                value: 'wage',
+                align: 'right',
+                format: 'money'
+              },
+              {
+                text: 'End Date',
+                value: 'end_date',
+                align: 'right',
+                format: 'date'
+              }
             ])
           case 2: // Statistics
             return headers.concat([
-              { text: 'Games Played', value: 'num_games',   align: 'center' },
-              { text: 'Goals',        value: 'num_goals',   align: 'center' },
-              { text: 'Assists',      value: 'num_assists', align: 'center' },
-              { text: 'Clean Sheets', value: 'num_cs',      align: 'center' }
+              {
+                text: 'Games Played',
+                value: 'num_games',
+                align: 'center'
+              },
+              {
+                text: 'Goals',
+                value: 'num_goals',
+                align: 'center'
+              },
+              {
+                text: 'Assists',
+                value: 'num_assists',
+                align: 'center'
+              },
+              {
+                text: 'Clean Sheets',
+                value: 'num_cs',
+                align: 'center'
+              }
             ])
         }
       },
@@ -187,7 +314,7 @@
             case 0: // All
               return true
             case 1: // Youth
-              return player.youth
+              return player.youth && player.contracts.length === 0
             case 2: // Active
               return player.status
             case 3: // Injured
@@ -209,7 +336,7 @@
       }
     },
     methods: {
-      ...mapActions('entities/players', {
+      ...mapActions('players', {
         analyze: 'ANALYZE'
       }),
       async reloadStatistics () {

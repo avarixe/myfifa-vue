@@ -1,19 +1,40 @@
 <template>
-  <div class="d-inline-block" @click.stop="snackbar = true">
+  <div
+    class="d-inline-block"
+    @click.stop="snackbar = true"
+  >
     <slot>
-      <v-tooltip bottom color="black">
-        <v-btn icon slot="activator">
-          <v-icon color="black">mdi-minus-circle</v-icon>
-        </v-btn>
+      <v-tooltip
+        bottom
+        color="black"
+      >
+        <template #activator="{ on }">
+          <v-btn
+            v-on="on"
+            icon
+          >
+            <v-icon color="black">mdi-minus-circle</v-icon>
+          </v-btn>
+        </template>
         Remove
       </v-tooltip>
     </slot>
+
     <v-snackbar
       v-model="snackbar"
-      color="black">
+      color="black"
+    >
       Remove Match: {{ match.home }} v {{ match.away }}?
-      <v-btn dark flat @click="removeMatch">Yes</v-btn>
-      <v-btn dark flat @click.stop="snackbar = false">No</v-btn>
+      <v-btn
+        dark
+        flat
+        @click="removeMatch"
+      >Yes</v-btn>
+      <v-btn
+        dark
+        flat
+        @click.stop="snackbar = false"
+      >No</v-btn>
     </v-snackbar>
   </div>
 </template>
@@ -31,7 +52,7 @@
     }),
     methods: {
       removeMatch () {
-        this.$store.dispatch('entities/matches/REMOVE', this.match.id)
+        this.$store.dispatch('matches/REMOVE', this.match.id)
         this.$router.push({
           name: 'teams-teamId-matches',
           params: { teamId: this.match.team_id }

@@ -1,28 +1,51 @@
 <template>
-  <div class="d-inline-block" @click.stop="snackbar = true">
+  <div
+    class="d-inline-block"
+    @click.stop="snackbar = true"
+  >
     <slot>
-      <v-tooltip bottom color="black">
-        <v-btn icon slot="activator">
-          <v-icon color="black">mdi-minus-circle</v-icon>
-        </v-btn>
+      <v-tooltip
+        color="black"
+        bottom
+      >
+        <template #activator="{ on }">
+          <v-btn
+            v-on="on"
+            icon
+          >
+            <v-icon color="black">mdi-minus-circle</v-icon>
+          </v-btn>
+        </template>
         Remove
       </v-tooltip>
     </slot>
+
     <v-snackbar
       v-model="snackbar"
-      color="black">
+      color="black"
+    >
       Remove {{ seasonLabel(competition.season) }} {{ competition.name }}?
-      <v-btn dark flat @click="removeCompetition">Yes</v-btn>
-      <v-btn dark flat @click.stop="snackbar = false">No</v-btn>
+      <v-btn
+        @click="removeCompetition"
+        dark
+        flat
+      >Yes</v-btn>
+      <v-btn
+        @click.stop="snackbar = false"
+        dark
+        flat
+      >No</v-btn>
     </v-snackbar>
   </div>
 </template>
 
 <script>
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     props: {
       competition: {
         type: Object,
@@ -34,7 +57,11 @@
     }),
     methods: {
       removeCompetition () {
-        this.$store.dispatch('entities/competitions/REMOVE', this.competition.id)
+        this.$store.dispatch(
+          'competitions/REMOVE',
+          this.competition.id
+        )
+
         this.$router.push({
           name: 'teams-teamId-seasons',
           params: { teamId: this.competition.team_id }

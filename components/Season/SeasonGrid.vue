@@ -1,39 +1,37 @@
 <template>
-  <v-card>
-    <v-card-title primary-title>
-      <div class="title">
-        // SEASONS
-      </div>
-    </v-card-title>
-    <v-card-text>
-      <v-data-iterator
-        :items="rows"
-        :pagination-sync="pagination"
-        no-data-text="No Seasons Recorded"
-        hide-actions
-        content-tag="v-layout"
-        row
-        wrap>
-        <template slot="item" slot-scope="props">
-          <v-flex xs12 sm6 md4 lg3>
-            <season-item
-              :season="parseInt(props.item[0])"
-              :competitions="props.item[1]"
-            ></season-item>
-          </v-flex>
-        </template>
-      </v-data-iterator>
-    </v-card-text>
-  </v-card>
+  <v-data-iterator
+    :items="rows"
+    :pagination-sync="pagination"
+    no-data-text="No Seasons Recorded"
+    hide-actions
+    content-tag="v-layout"
+    row
+    wrap
+  >
+    <template #item="{ item }">
+      <v-flex
+        xs12
+        sm6
+        md4
+        lg3
+      >
+        <season-item
+          :season="parseInt(item)"
+          compact
+        />
+      </v-flex>
+    </template>
+  </v-data-iterator>
 </template>
 
 <script>
-  import { Competition } from '@/models'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import { TeamAccessible } from '@/mixins'
   import SeasonItem from './SeasonItem'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     components: {
       SeasonItem
     },
@@ -43,21 +41,11 @@
       }
     }),
     computed: {
-      competitions () {
-        return Competition
-          .query()
-          .where('team_id', this.team.id)
-          .get()
+      numSeasons () {
+        return this.season > 0 ? this.season + 1 : 1
       },
       rows () {
-        return this.$_orderBy(
-          Object.entries(this.$_groupBy(
-            this.competitions,
-            competition => competition.season
-          )),
-          season => season[0],
-          'desc'
-        )
+        return [...Array(this.numSeasons).keys()].reverse()
       }
     }
   }

@@ -1,22 +1,23 @@
 <template>
-  <v-card>
-    <v-card-title class="title">
-      {{ squad.name }}
+  <material-card>
+    <template #header>
+      <span class="title font-weight-light mb-2">{{ squad.name }}</span>
 
-      <squad-actions :squad="squad"></squad-actions>
-    </v-card-title>
-    <formation-view
-      :formation="squadPlayers"
-    ></formation-view>
-  </v-card>
+      <squad-actions :squad="squad" />
+    </template>
+
+    <formation-view :formation="squadPlayers" />
+  </material-card>
 </template>
 
 <script>
+  import { FormationView } from '@/helpers'
+  import MaterialCard from '@/components/theme/Card'
   import SquadActions from './SquadActions'
-  import FormationView from './FormationView'
 
   export default {
     components: {
+      MaterialCard,
       SquadActions,
       FormationView
     },
@@ -36,9 +37,3 @@
     }
   }
 </script>
-
-<style scoped>
-  #app .v-card {
-    background-color: rgba(255, 255, 255, 0.5);
-  }
-</style>

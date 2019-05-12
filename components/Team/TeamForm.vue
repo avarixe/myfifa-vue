@@ -3,65 +3,76 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
-    :color="color">
-    <slot slot="activator"></slot>
-    <v-container slot="form">
-      <v-layout wrap>
-        <v-flex xs12>
-          <v-text-field
-            v-model="team.title"
-            :rules="$_validate('Team', ['required'])"
-            label="Team"
-            prepend-icon="mdi-account-multiple"
-            spellcheck="false"
-            autocapitalize="words"
-            autocomplete="off"
-            autocorrect="off"
-          ></v-text-field>
-        </v-flex>
-        <v-flex xs12>
-          <v-menu
-            ref="menu"
-            :close-on-content-click="false"
-            v-model="menu"
-            :return-value.sync="team.start_date"
-            lazy
-            transition="scale-transition"
-            full-width>
+    :color="color"
+  >
+    <template #activator="{ on }">
+      <slot :on="on" />
+    </template>
+
+    <template #form>
+      <v-container>
+        <v-layout wrap>
+          <v-flex xs12>
             <v-text-field
-              slot="activator"
-              label="Start Date"
-              prepend-icon="mdi-calendar-today"
-              v-model="team.start_date"
-              :rules="$_validate('Start Date', ['required', 'date'])"
-              readonly
-            ></v-text-field>
-            <v-date-picker
-              v-model="team.start_date"
-              landscape
-              @input="$refs.menu.save(team.start_date)"
-            ></v-date-picker>
-          </v-menu>
-        </v-flex>
-        <v-flex xs12>
-          <v-text-field
-            v-model="team.currency"
-            :rules="$_validate('Currency', ['required'])"
-            label="Currency"
-          ></v-text-field>
-        </v-flex>
-      </v-layout>
-    </v-container>
+              v-model="team.title"
+              :rules="$_validate('Team', ['required'])"
+              label="Team"
+              prepend-icon="mdi-account-multiple"
+              spellcheck="false"
+              autocapitalize="words"
+              autocomplete="off"
+              autocorrect="off"
+            />
+          </v-flex>
+          <v-flex xs12>
+            <v-menu
+              v-model="menu"
+              ref="menu"
+              :close-on-content-click="false"
+              :return-value.sync="team.start_date"
+              lazy
+              transition="scale-transition"
+              full-width
+            >
+              <template #activator="{ on }">
+                <v-text-field
+                  v-model="team.start_date"
+                  v-on="on"
+                  label="Start Date"
+                  prepend-icon="mdi-calendar-today"
+                  :rules="$_validate('Start Date', ['required', 'date'])"
+                  readonly
+                />
+              </template>
+              <v-date-picker
+                v-model="team.start_date"
+                :color="color"
+                @input="$refs.menu.save(team.start_date)"
+              />
+            </v-menu>
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field
+              v-model="team.currency"
+              :rules="$_validate('Currency', ['required'])"
+              label="Currency"
+            />
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </template>
   </dialog-form>
 </template>
 
 <script>
   import { mapActions } from 'vuex'
-  import Team from '@/models/Team'
-  import DialogFormable from '@/mixins/DialogFormable'
+  import { Team } from '@/models'
+  import { DialogFormable } from '@/mixins'
 
   export default {
-    mixins: [ DialogFormable ],
+    mixins: [
+      DialogFormable
+    ],
     props: {
       teamId: [String, Number]
     },
@@ -77,7 +88,7 @@
     },
     computed: {
       title () {
-        return this.teamData ? 'Edit ' + this.team.title : 'New Team'
+        return this.teamId ? 'Edit ' + this.team.title : 'New Team'
       }
     },
     watch: {
@@ -96,7 +107,7 @@
       }
     },
     methods: {
-      ...mapActions('entities/teams', {
+      ...mapActions('teams', {
         create: 'CREATE',
         update: 'UPDATE'
       }),

@@ -3,31 +3,45 @@
     <td
       v-for="(header, i) in headers"
       :key="i"
-      :class="'text-xs-' + header.align">
+      :class="'text-xs-' + header.align"
+    >
       <template v-if="header.value === 'action'">
-        <v-tooltip color="primary" right>
-          <v-btn
-            slot="activator"
-            :to="playerLink"
-            nuxt
-            small
-            icon>
-            <v-icon color="primary" small>mdi-arrow-right</v-icon>
-          </v-btn>
-          View Player
-        </v-tooltip>
-        <edit-mode-button
-          v-if="header.width > 40"
-          :mode="edit"
-          :changed="playerChanged"
-          @toggle-mode="edit = !edit"
-          dir="right"
-        ></edit-mode-button>
+        <v-flex
+          layout
+          class="pa-0"
+        >
+          <v-tooltip
+            color="blue"
+            right
+          >
+            <template #activator="{ on }">
+              <v-btn
+                v-on="on"
+                :to="playerLink"
+                nuxt
+                small
+                icon
+              >
+                <v-icon
+                  color="blue"
+                  small
+                >mdi-arrow-right</v-icon>
+              </v-btn>
+            </template>
+            View Player
+          </v-tooltip>
+
+          <edit-mode-button
+            v-if="mode === 0"
+            :mode="edit"
+            :changed="playerChanged"
+            dir="right"
+            @toggle-mode="edit = !edit"
+          />
+        </v-flex>
       </template>
       <template v-else-if="header.value === 'status' && playerData.status">
-        <v-icon :color="statusColor">
-          mdi-{{ statusIcon }}
-        </v-icon>
+        <v-icon :color="statusColor">mdi-{{ statusIcon }}</v-icon>
       </template>
       <template v-else-if="header.editable && edit">
         <v-select
@@ -36,7 +50,8 @@
           :items="editOptions[header.value].items"
           :label="header.text"
           menu-props="auto"
-        ></v-select>
+          hide-details
+        />
         <v-text-field
           v-else-if="editOptions[header.value].type === 'money'"
           v-model="player[header.value]"
@@ -45,7 +60,7 @@
           :prefix="team.currency"
           persistent-hint
           type="number"
-        ></v-text-field>
+        />
       </template>
       <template v-else>
         {{ getProperty(header.view || header.value, header.format) }}
@@ -55,14 +70,16 @@
 </template>
 
 <script>
-  import EditModeButton from '@/components/EditModeButton'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import { EditModeButton } from '@/helpers'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
     components: {
       EditModeButton
     },
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     props: {
       playerData: {
         type: Object,
@@ -72,7 +89,7 @@
         type: Array,
         required: true
       },
-      actionWidth: Number
+      mode: Number
     },
     data: () => ({
       edit: false,
@@ -137,8 +154,8 @@
       }
     },
     watch: {
-      actionWidth (val) {
-        if (val < 125) {
+      mode (val) {
+        if (val > 0) {
           this.edit = false
         }
       },
@@ -148,7 +165,7 @@
           const { id, value, kit_no, ovr } = this.playerData
           this.player = { id, value, kit_no, ovr }
         } else if (this.playerChanged) {
-          this.$store.dispatch('entities/players/UPDATE', this.player)
+          this.$store.dispatch('players/UPDATE', this.player)
         }
       }
     },

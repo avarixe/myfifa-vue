@@ -1,39 +1,53 @@
 <template>
   <v-app>
-    <app-bar></app-bar>
+    <no-ssr>
+      <app-bar />
+
+      <app-drawer />
+    </no-ssr>
+
     <v-content>
-      <template v-if="loaded">
-        <app-broadcaster></app-broadcaster>
-        <div class="pt-5">
-          <team-channel></team-channel>
-          <team-bar v-if="team"></team-bar>
-          <nuxt />
-        </div>
+      <app-broadcaster />
+
+      <template
+        v-if="loaded"
+      >
+        <team-channel />
+
+        <nuxt />
+
       </template>
-      <template v-else>
+
+      <template
+        v-else
+      >
         <team-loader
           :team="team"
           @loaded="loaded = true"
-        ></team-loader>
+        />
       </template>
     </v-content>
   </v-app>
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   import { Team } from '@/models'
   import AppBar from '@/components/App/AppBar'
   import AppBroadcaster from '@/components/App/AppBroadcaster'
-  import TeamBar from '@/components/Team/TeamBar'
+  import AppDrawer from '@/components/App/AppDrawer'
+  // import TeamBar from '@/components/Team/TeamBar'
   import TeamChannel from '@/components/Team/TeamChannel'
   import TeamLoader from '@/components/Team/TeamLoader'
 
   export default {
     name: 'App',
+    // middleware: 'responsive',
     components: {
       AppBar,
       AppBroadcaster,
-      TeamBar,
+      AppDrawer,
+      // TeamBar,
       TeamChannel,
       TeamLoader
     },
@@ -41,6 +55,9 @@
       loaded: false
     }),
     computed: {
+      ...mapState('app', [
+        'drawer'
+      ]),
       team () {
         return Team.find(this.$route.params.teamId)
       }

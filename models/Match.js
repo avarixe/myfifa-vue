@@ -1,4 +1,5 @@
 import { Model } from '@vuex-orm/core'
+import Team from './Team'
 import PenaltyShootout from './PenaltyShootout'
 import Goal from './Goal'
 import Substitution from './Substitution'
@@ -7,7 +8,9 @@ import Cap from './Cap'
 import Player from './Player'
 
 class Match extends Model {
-  static entity = 'matches'
+  static get entity () {
+    return 'matches'
+  }
 
   static fields () {
     return {
@@ -29,6 +32,7 @@ class Match extends Model {
       team_result: this.attr(null),
 
       // Associations
+      team: this.belongsTo(Team, 'team_id'),
       penalty_shootout: this.hasOne(PenaltyShootout, 'match_id'),
       goals: this.hasMany(Goal, 'match_id'),
       substitutions: this.hasMany(Substitution, 'match_id'),
@@ -36,6 +40,12 @@ class Match extends Model {
       caps: this.hasMany(Cap, 'match_id'),
       players: this.hasManyThrough(Player, Cap, 'match_id', 'player_id')
     }
+  }
+
+  get opponent () {
+    return this.home === this.team.title
+      ? this.away
+      : this.home
   }
 }
 
@@ -48,7 +58,9 @@ function allByRecency (teamId) {
 }
 
 export function competitions (teamId) {
-  return [ ...new Set(allByRecency(teamId).map(match => match.competition)) ]
+  return [
+    ...new Set(allByRecency(teamId).map(match => match.competition))
+  ]
 }
 
 export function teams (teamId) {

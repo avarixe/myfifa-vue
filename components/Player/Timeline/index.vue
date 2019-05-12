@@ -6,8 +6,9 @@
       :icon="`mdi-${item.icon}`"
       :color="item.color"
       fill-dot
-      right>
-      <template slot="opposite">
+      right
+    >
+      <template #opposite>
         <span :class="`headline font-weight-bold ${item.color}--text`">
           {{ item.title || item.type }}
         </span>
@@ -17,14 +18,21 @@
       </template>
 
       <v-card dense>
-        <v-card-title v-if="dense" :class="`${item.color} lighten-2 py-1`">
-          <span class="font-weight-bold pr-1 white--text">{{ item.title || item.type }}</span>
-          <span class="font-weight-light pl-1 white--text">{{ item.dateRange }}</span>
+        <v-card-title
+          v-if="dense"
+          :class="`${item.color} lighten-2 py-1`"
+        >
+          <span class="font-weight-bold pr-1 white--text">
+            {{ item.title || item.type }}
+          </span>
+          <span class="font-weight-light pl-1 white--text">
+            {{ item.dateRange }}
+          </span>
         </v-card-title>
         <v-container>
           <v-layout>
             <v-flex xs12>
-              <timeline-content :item="item"></timeline-content>
+              <timeline-content :item="item" />
             </v-flex>
           </v-layout>
         </v-container>
@@ -35,10 +43,12 @@
 
 <script>
   import TimelineContent from './TimelineContent'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     components: {
       TimelineContent
     },
@@ -72,7 +82,10 @@
             color: 'blue',
             icon: 'file-document',
             date: contract.effective_date,
-            dateRange: `${this.$_formatDate(contract.effective_date)} - ${this.$_formatDate(contract.end_date)}`,
+            dateRange:
+              this.$_formatDate(contract.effective_date) +
+              ' - ' +
+              this.$_formatDate(contract.end_date),
             data: contract
           })),
           ...this.injuries.map(injury => ({
@@ -80,7 +93,10 @@
             color: 'pink',
             icon: 'hospital',
             date: injury.start_date,
-            dateRange: `${this.$_formatDate(injury.start_date)} - ${this.$_formatDate(injury.end_date)}`,
+            dateRange:
+              this.$_formatDate(injury.start_date) +
+              ' - ' +
+              this.$_formatDate(injury.end_date),
             title: `${injury.description} Injury`,
             data: injury
           })),
@@ -89,7 +105,10 @@
             color: 'indigo',
             icon: 'transit-transfer',
             date: loan.start_date,
-            dateRange: `${this.$_formatDate(loan.start_date)} - ${this.$_formatDate(loan.end_date)}`,
+            dateRange:
+              this.$_formatDate(loan.start_date) +
+              ' - ' +
+              this.$_formatDate(loan.end_date),
             title: `On Loan at ${loan.destination}`,
             data: loan
           })),

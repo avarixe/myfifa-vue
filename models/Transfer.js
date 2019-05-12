@@ -1,7 +1,10 @@
 import { Model } from '@vuex-orm/core'
+import Player from './Player'
 
 export default class Transfer extends Model {
-  static entity = 'transfers'
+  static get entity () {
+    return 'transfers'
+  }
 
   static fields () {
     return {
@@ -17,7 +20,10 @@ export default class Transfer extends Model {
       fee: this.number(null).nullable(),
       traded_player: this.string(null).nullable(),
       addon_clause: this.number(null).nullable(),
-      loan: this.boolean(false)
+      loan: this.boolean(false),
+
+      // Associations
+      player: this.belongsTo(Player, 'player_id', 'id')
     }
   }
 }

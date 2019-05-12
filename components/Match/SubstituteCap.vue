@@ -6,10 +6,14 @@
         max-height="200px"
         offset-y
         offset-overflow
-        lazy>
-        <span slot="activator" class="body-1">
-          {{ cap.pos }}
-        </span>
+        lazy
+      >
+        <template #activator="{ on }">
+          <span
+            v-on="on"
+            class="body-1"
+          >{{ cap.pos }}</span>
+        </template>
         <v-list>
           <v-list-tile
             v-for="pos in positions"
@@ -38,8 +42,9 @@
         <v-icon
           v-for="index in assists"
           :key="index"
+          color="light-blue accent-1"
           small
-        >mdi-soccer</v-icon>
+        >mdi-human-greeting</v-icon>
         <v-icon
           v-for="(color, i) in bookings"
           :key="i"
@@ -83,7 +88,7 @@
       return {}
     },
     computed: {
-      ...mapState('entities/matches', [
+      ...mapState('matches', [
         'positions'
       ]),
       events () {
@@ -108,7 +113,10 @@
       },
       bookings () {
         return this.events
-          .filter(event => event.event_type === 'Booking' && event.player_id === this.cap.player_id)
+          .filter(event => {
+            return event.event_type === 'Booking' &&
+              event.player_id === this.cap.player_id
+          })
           .map(booking => booking.red_card ? 'red' : 'yellow darken-2')
       },
       injured () {
@@ -122,7 +130,7 @@
     },
     methods: {
       setPosition (position) {
-        this.$store.dispatch('entities/caps/UPDATE', {
+        this.$store.dispatch('caps/UPDATE', {
           ...this.cap,
           pos: position
         })

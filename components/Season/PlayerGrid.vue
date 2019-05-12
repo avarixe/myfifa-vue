@@ -1,18 +1,19 @@
 <template>
-  <v-card>
-    <v-card-title primary-title>
-      <div class="title">
-        // PLAYERS
-      </div>
-
+  <material-card
+    title="Players"
+    color="accent"
+  >
+    <v-card-title>
       <v-btn-toggle
         v-model="mode"
         mandatory
-        class="mx-3">
+        class="mx-3"
+      >
         <v-btn
           v-for="(opt, i) in modes"
           :key="i"
-          flat>
+          flat
+        >
           <v-icon :color="opt.color">{{ opt.icon }}</v-icon>
         </v-btn>
       </v-btn-toggle>
@@ -21,7 +22,7 @@
         {{ currentMode.text }}
       </div>
 
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <!-- Player Search -->
       <v-text-field
@@ -29,7 +30,7 @@
         label="Search"
         append-icon="mdi-magnify"
         hide-details
-      ></v-text-field>
+      />
     </v-card-title>
 
     <!-- Player Information Grid -->
@@ -41,27 +42,38 @@
       :search="search"
       item-key="id"
       must-sort
-      no-data-text="No Players Recorded">
-      <template slot="items" slot-scope="props">
+      no-data-text="No Players Recorded"
+    >
+      <template #headerCell="{ header }">
+        <span class="subheading font-weight-light accent--text text--darken-3">
+          {{ header.text }}
+        </span>
+      </template>
+      <template #items="{ item }">
         <player-row
           :season="season"
-          :player="props.item"
+          :player="item"
           :mode="mode"
-        ></player-row>
+        />
       </template>
     </v-data-table>
 
-  </v-card>
+  </material-card>
 </template>
 
 <script>
   import { addYears } from 'date-fns'
   import Vue from 'vue'
-  import { Team, Player } from '@/models'
+  import {
+    Team,
+    Player
+  } from '@/models'
+  import MaterialCard from '@/components/theme/Card'
   import PlayerRow from './PlayerRow'
 
   export default {
     components: {
+      MaterialCard,
       PlayerRow
     },
     props: {
@@ -77,8 +89,16 @@
     data: () => ({
       mode: 0,
       modes: [
-        { text: 'Growth',     color: 'green', icon: 'mdi-trending-up' },
-        { text: 'Statistics', color: 'red',   icon: 'mdi-numeric' }
+        {
+          text: 'Growth',
+          color: 'green',
+          icon: 'mdi-trending-up'
+        },
+        {
+          text: 'Statistics',
+          color: 'red',
+          icon: 'mdi-numeric'
+        }
       ],
       loading: false,
       pagination: {
@@ -98,25 +118,69 @@
       },
       headers () {
         let headers = [
-          { text: 'Name',     value: 'name',    align: 'left' },
-          { text: 'Position', value: 'posIdx', align: 'center' },
-          { text: 'Age',      value: 'age',     align: 'center' }
+          {
+            text: 'Name',
+            value: 'name',
+            align: 'left'
+          },
+          {
+            text: 'Position',
+            value: 'posIdx',
+            align: 'center'
+          },
+          {
+            text: 'Age',
+            value: 'age',
+            align: 'center'
+          }
         ]
 
         switch (this.mode) {
           case 0: // Growth
             return headers.concat([
-              { text: 'OVR',          value: 'endOvr',      align: 'center' },
-              { text: 'OVR Change',   value: 'ovrChange',   align: 'center' },
-              { text: 'Value',        value: 'endValue',    align: 'right' },
-              { text: 'Value Change', value: 'valueChange', align: 'right' }
+              {
+                text: 'OVR',
+                value: 'endOvr',
+                align: 'center'
+              },
+              {
+                text: 'OVR Change',
+                value: 'ovrChange',
+                align: 'center'
+              },
+              {
+                text: 'Value',
+                value: 'endValue',
+                align: 'right'
+              },
+              {
+                text: 'Value Change',
+                value: 'valueChange',
+                align: 'right'
+              }
             ])
           case 1: // Statistics
             return headers.concat([
-              { text: 'Games Played', value: 'numGames',   align: 'right' },
-              { text: 'Goals',        value: 'numGoals',   align: 'right' },
-              { text: 'Assists',      value: 'numAssists', align: 'right' },
-              { text: 'Clean Sheets', value: 'numCs',      align: 'right' }
+              {
+                text: 'Games Played',
+                value: 'numGames',
+                align: 'right'
+              },
+              {
+                text: 'Goals',
+                value: 'numGoals',
+                align: 'right'
+              },
+              {
+                text: 'Assists',
+                value: 'numAssists',
+                align: 'right'
+              },
+              {
+                text: 'Clean Sheets',
+                value: 'numCs',
+                align: 'right'
+              }
             ])
         }
       },
@@ -139,7 +203,9 @@
       }
     },
     async mounted () {
-      await this.$store.dispatch('entities/players/FETCH', { teamId: this.team.id })
+      await this.$store.dispatch('players/FETCH', {
+        teamId: this.team.id
+      })
 
       for (let playerId of this.seasonData.player_ids) {
         const {

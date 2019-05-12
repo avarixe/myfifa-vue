@@ -3,7 +3,8 @@
     <td
       v-for="(header, i) in headers"
       :key="i"
-      :class="`text-xs-${header.align}`">
+      :class="`text-xs-${header.align}`"
+    >
       <template v-if="header.value">
         <template v-if="edit && header.type">
           <v-combobox
@@ -15,20 +16,20 @@
             autocapitalize="words"
             autocomplete="off"
             autocorrect="off"
-          ></v-combobox>
+          />
           <v-text-field
             v-else-if="header.type === 'number'"
             v-model.number="row[header.value]"
             type="number"
             :label="header.text"
             :autofocus="i === 0"
-          ></v-text-field>
+          />
           <v-text-field
             v-else
             v-model="row[header.value]"
             :label="header.text"
             :autofocus="i === 0"
-          ></v-text-field>
+          />
         </template>
         <template v-else>
           <span :class="teamClass(rowData.name)">
@@ -36,27 +37,30 @@
           </span>
         </template>
       </template>
+
       <template v-else>
         <edit-mode-button
           :mode="edit"
           :changed="rowChanged"
           @toggle-mode="edit = !edit"
           dir="right"
-        ></edit-mode-button>
+        />
       </template>
     </td>
   </tr>
 </template>
 
 <script>
-  import EditModeButton from '@/components/EditModeButton'
-  import CompetitionAccessible from '@/mixins/CompetitionAccessible'
+  import { EditModeButton } from '@/helpers'
+  import { CompetitionAccessible } from '@/mixins'
 
   export default {
     components: {
       EditModeButton
     },
-    mixins: [ CompetitionAccessible ],
+    mixins: [
+      CompetitionAccessible
+    ],
     props: {
       rowData: {
         type: Object,
@@ -84,7 +88,7 @@
         if (val) {
           this.row = { ...this.rowData }
         } else if (this.rowChanged) {
-          this.$store.dispatch('entities/tableRows/UPDATE', this.row)
+          this.$store.dispatch('tableRows/UPDATE', this.row)
         }
       },
       override (val) {

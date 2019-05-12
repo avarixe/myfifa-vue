@@ -1,58 +1,102 @@
 <template>
-  <v-card>
-    <v-card-title class="headline">
-      {{ seasonLabel }}
-      <v-tooltip color="primary" bottom>
-        <v-btn
-          slot="activator"
-          :to="seasonLink"
-          nuxt
-          small
-          icon>
-          <v-icon color="primary">mdi-arrow-right</v-icon>
-        </v-btn>
+  <material-card :color="color">
+    <template #header>
+      <span class="title font-weight-light mb-2">{{ cardTitle }}</span>
+
+      <v-tooltip bottom>
+        <template #activator="{ on }">
+          <v-btn
+            v-if="compact"
+            v-on="on"
+            :to="seasonLink"
+            nuxt
+            small
+            icon
+          >
+            <v-icon color="white">mdi-arrow-right</v-icon>
+          </v-btn>
+        </template>
         View Season
       </v-tooltip>
-    </v-card-title>
-    <v-card-text>
-      <v-list dense>
-        <v-subheader>Competitions</v-subheader>
-        <v-list-tile
-          v-for="(competition, i) in competitions"
-          :key="i"
-          :to="competitionLink(competition)"
-          class="elevation-1">
-          <v-list-tile-title>
-            <v-icon color="blue" small left>mdi-arrow-right</v-icon>
-            {{ competition.name }}
-          </v-list-tile-title>
-          <v-list-tile-avatar v-if="competition.champion === team.title">
-            <v-icon color="yellow darken-2">mdi-trophy</v-icon>
-          </v-list-tile-avatar>
-        </v-list-tile>
-      </v-list>
-    </v-card-text>
-  </v-card>
+    </template>
+
+    <p
+      v-if="!compact"
+      class="text-xs-center"
+    >
+      <v-btn
+        :to="seasonLink"
+        :color="color"
+        outline
+        nuxt
+      >View</v-btn>
+    </p>
+
+    <v-list dense>
+      <v-subheader>Competitions</v-subheader>
+      <v-list-tile
+        v-for="(competition, i) in competitions"
+        :key="i"
+        :to="competitionLink(competition)"
+        class="elevation-1"
+      >
+        <v-list-tile-title>
+          <v-icon
+            color="blue"
+            small
+            left
+          >mdi-arrow-right</v-icon>
+          {{ competition.name }}
+        </v-list-tile-title>
+        <v-list-tile-avatar v-if="competition.champion === team.title">
+          <v-icon color="yellow darken-2">mdi-trophy</v-icon>
+        </v-list-tile-avatar>
+      </v-list-tile>
+    </v-list>
+
+  </material-card>
 </template>
 
 <script>
+  import MaterialCard from '@/components/theme/Card'
   import { addYears } from 'date-fns'
-  import { Team } from '@/models'
+  import {
+    Team,
+    Competition
+  } from '@/models'
 
   export default {
+    components: {
+      MaterialCard
+    },
     props: {
       season: {
         type: Number,
         required: true
       },
-      competitions: {
-        type: Array,
-        required: true
+      color: {
+        type: String,
+        default: 'primary'
+      },
+      compact: {
+        type: Boolean,
+        default: false
       }
     },
     computed: {
       team () {
         return Team.find(this.$route.params.teamId)
+      },
+      competitions () {
+        return Competition
+          .query()
+          .where('season', this.season)
+          .get()
+      },
+      cardTitle () {
+        return this.compact
+          ? this.seasonLabel
+          : `${this.seasonLabel} Season`
       },
       seasonLabel () {
         let start = addYears(this.team.start_date, this.season)

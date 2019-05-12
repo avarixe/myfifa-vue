@@ -1,27 +1,53 @@
 <template>
-  <div>
-    <squad-form :squad-data="squad">
-      <v-tooltip bottom color="orange">
-        <v-btn slot="activator" flat icon>
-          <v-icon color="orange">mdi-pencil</v-icon>
-        </v-btn>
-        Edit
-      </v-tooltip>
+  <div class="d-inline-block">
+    <squad-form :squad-data="squad" >
+      <template #default="{ on: dialog }">
+        <v-tooltip
+          bottom
+          color="orange"
+        >
+          <template #activator="{ on: tooltip }">
+            <v-btn
+              v-on="{ ...dialog, ...tooltip }"
+              flat
+              icon
+            >
+              <v-icon color="orange">mdi-pencil</v-icon>
+            </v-btn>
+          </template>
+          Edit
+        </v-tooltip>
+      </template>
     </squad-form>
 
     <v-tooltip bottom>
-      <v-btn slot="activator" icon @click="promptDeletion = true">
-        <v-icon color="black">mdi-minus-circle</v-icon>
-      </v-btn>
+      <template #activator="{ on }">
+        <v-btn
+          v-on="on"
+          icon
+          @click="promptDeletion = true"
+        >
+          <v-icon color="black">mdi-minus-circle</v-icon>
+        </v-btn>
+      </template>
       Remove
     </v-tooltip>
 
     <v-snackbar
       color="black"
-      v-model="promptDeletion">
+      v-model="promptDeletion"
+    >
       Remove Squad: {{ squad.name }}?
-      <v-btn dark flat @click.native="$store.dispatch('entities/squads/REMOVE', squad.id)">Yes</v-btn>
-      <v-btn dark flat @click.native="promptDeletion = false">No</v-btn>
+      <v-btn
+        dark
+        flat
+        @click.native="$store.dispatch('squads/REMOVE', squad.id)"
+      >Yes</v-btn>
+      <v-btn
+        dark
+        flat
+        @click.native="promptDeletion = false"
+      >No</v-btn>
     </v-snackbar>
   </div>
 </template>

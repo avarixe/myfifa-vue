@@ -1,16 +1,26 @@
 <template>
   <v-container grid-list-lg>
-    <v-layout row wrap>
+    <v-layout
+      row
+      wrap
+    >
       <v-flex xs12>
         <team-form>
-          <v-btn>
-            <v-icon left>mdi-plus-circle-outline</v-icon>
-            Team
-          </v-btn>
+          <template #default="{ on }">
+            <v-btn
+              v-on="on"
+              color="blue-grey"
+              outline
+            >
+              <v-icon left>mdi-plus-circle-outline</v-icon>
+              Team
+            </v-btn>
+          </template>
         </team-form>
       </v-flex>
+
       <v-flex xs12>
-        <team-panel></team-panel>
+        <team-grid />
       </v-flex>
     </v-layout>
   </v-container>
@@ -18,14 +28,17 @@
 
 <script>
   import TeamForm from '@/components/Team/TeamForm'
-  import TeamPanel from '@/components/Team/TeamPanel'
+  import TeamGrid from '@/components/Team/TeamGrid'
 
   export default {
     layout: 'default',
     middleware: 'home',
     components: {
       TeamForm,
-      TeamPanel
+      TeamGrid
+    },
+    mounted () {
+      this.$store.commit('app/SET_TITLE', 'Teams')
     }
   }
 </script>

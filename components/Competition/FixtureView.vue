@@ -3,7 +3,8 @@
     <td
       v-for="(header, i) in headers"
       :key="i"
-      :class="`text-xs-${header.align} ${cellClass(header)}`">
+      :class="`text-xs-${header.align} ${cellClass(header)}`"
+    >
       <template v-if="header.value">
         <template v-if="edit">
           <v-combobox
@@ -15,38 +16,39 @@
             autocapitalize="words"
             autocomplete="off"
             autocorrect="off"
-          ></v-combobox>
+          />
           <v-text-field
             v-else
             v-model="fixture[header.value]"
             :label="header.text"
-          ></v-text-field>
+          />
         </template>
-        <template v-else>
-          {{ fixtureData[header.value] }}
-        </template>
+        <template v-else>{{ fixtureData[header.value] }}</template>
       </template>
+
       <template v-else>
         <edit-mode-button
           :mode="edit"
           :changed="fixtureChanged"
           @toggle-mode="edit = !edit"
           dir="right"
-        ></edit-mode-button>
+        />
       </template>
     </td>
   </tr>
 </template>
 
 <script>
-  import EditModeButton from '@/components/EditModeButton'
-  import CompetitionAccessible from '@/mixins/CompetitionAccessible'
+  import { EditModeButton } from '@/helpers'
+  import { CompetitionAccessible } from '@/mixins'
 
   export default {
     components: {
       EditModeButton
     },
-    mixins: [ CompetitionAccessible ],
+    mixins: [
+      CompetitionAccessible
+    ],
     props: {
       fixtureData: {
         type: Object,
@@ -74,7 +76,7 @@
         if (val) {
           this.fixture = { ...this.fixtureData }
         } else if (this.fixtureChanged) {
-          this.$store.dispatch('entities/fixtures/UPDATE', this.fixture)
+          this.$store.dispatch('fixtures/UPDATE', this.fixture)
         }
       },
       override (val) {

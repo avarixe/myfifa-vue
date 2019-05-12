@@ -1,95 +1,174 @@
 <template>
   <div class="text-xs-center">
-    <match-form :match-data="match" color="orange">
-      <v-tooltip bottom color="orange">
-        <v-btn icon slot="activator">
-          <v-icon color="orange">mdi-pencil</v-icon>
-        </v-btn>
-        Edit
-      </v-tooltip>
+    <match-form
+      :match-data="match"
+      color="orange"
+    >
+      <template #default="{ on: dialog }">
+        <v-tooltip
+          color="orange"
+          bottom
+        >
+          <template #activator="{ on: tooltip }">
+            <v-btn
+              v-on="{ ...dialog, ...tooltip }"
+              icon
+            >
+              <v-icon color="orange">mdi-pencil</v-icon>
+            </v-btn>
+          </template>
+          Edit
+        </v-tooltip>
+      </template>
     </match-form>
 
-    <cap-form :match="match" v-if="numPlayers < 11">
-      <v-tooltip bottom>
-        <v-btn icon slot="activator">
-          <v-icon>mdi-plus-circle-outline</v-icon>
-        </v-btn>
-        Add Player
-      </v-tooltip>
+    <cap-form
+      v-if="numPlayers < 11"
+      :match="match"
+    >
+      <template #default="{ on: dialog }">
+        <v-tooltip bottom>
+          <template #activator="{ on: tooltip }">
+            <v-btn
+              v-on="{ ...dialog, ...tooltip }"
+              icon
+            >
+              <v-icon>mdi-plus-circle-outline</v-icon>
+            </v-btn>
+          </template>
+          Add Player
+        </v-tooltip>
+      </template>
     </cap-form>
 
-    <v-tooltip bottom color="cyan">
-      <v-menu slot="activator" offset-y>
-        <v-btn slot="activator" icon>
-          <v-icon color="cyan">mdi-clipboard-text</v-icon>
-        </v-btn>
-        <v-list>
-          <v-list-tile
-            v-for="squad in squads"
-            :key="squad.id"
-            @click="applySquadToMatch(squad.id)">
-            {{ squad.name }}
-          </v-list-tile>
-        </v-list>
-      </v-menu>
+    <v-tooltip
+      color="cyan"
+      bottom
+    >
+      <template #activator="{ on: tooltip }">
+        <v-menu
+          offset-y
+          class="d-inline-block"
+        >
+          <template #activator="{ on: menu }">
+            <v-btn
+              v-on="{ ...menu, ...tooltip }"
+              icon
+            >
+              <v-icon color="cyan">mdi-clipboard-text</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-tile
+              v-for="squad in squads"
+              :key="squad.id"
+              @click="applySquadToMatch(squad.id)"
+            >{{ squad.name }}</v-list-tile>
+          </v-list>
+        </v-menu>
+      </template>
       Apply Squad
     </v-tooltip>
 
     <substitution-form
       v-if="validMatch"
       :match="match"
-      color="green">
-      <v-tooltip bottom color="green">
-        <v-btn icon slot="activator">
-          <v-icon color="green">mdi-repeat</v-icon>
-        </v-btn>
-        Substitution
-      </v-tooltip>
+      color="green"
+    >
+      <template #default="{ on: dialog }">
+        <v-tooltip
+          bottom
+          color="green"
+        >
+          <template #activator="{ on: tooltip }">
+            <v-btn
+              v-on="{ ...dialog, ...tooltip }"
+              icon
+            >
+              <v-icon color="green">mdi-repeat</v-icon>
+            </v-btn>
+          </template>
+          Substitution
+        </v-tooltip>
+      </template>
     </substitution-form>
 
     <goal-form
       v-if="validMatch"
       :match="match"
-      color="blue">
-      <v-tooltip bottom color="blue">
-        <v-btn icon slot="activator">
-          <v-icon color="blue">mdi-soccer</v-icon>
-        </v-btn>
-        Goal
-      </v-tooltip>
+      color="blue"
+    >
+      <template #default="{ on: dialog }">
+        <v-tooltip
+          bottom
+          color="blue"
+        >
+          <template #activator="{ on: tooltip }">
+            <v-btn
+              v-on="{ ...dialog, ...tooltip }"
+              icon
+            >
+              <v-icon color="blue">mdi-soccer</v-icon>
+            </v-btn>
+          </template>
+          Goal
+        </v-tooltip>
+      </template>
     </goal-form>
 
     <booking-form
       v-if="validMatch"
       :match="match"
-      color="red">
-      <v-tooltip bottom color="red">
-        <v-btn icon slot="activator">
-          <v-icon color="red">mdi-book</v-icon>
-        </v-btn>
-        Booking
-      </v-tooltip>
+      color="red"
+    >
+      <template #default="{ on: dialog }">
+        <v-tooltip
+          bottom
+          color="red"
+        >
+          <template #activator="{ on: tooltip }">
+            <v-btn
+              v-on="{ ...dialog, ...tooltip }"
+              icon
+            >
+              <v-icon color="red">mdi-book</v-icon>
+            </v-btn>
+          </template>
+          Booking
+        </v-tooltip>
+      </template>
     </booking-form>
 
     <penalty-shootout-form
       v-if="validMatch && matchDraw && !match.penalty_shootout"
       :match="match"
-      color="indigo">
-      <v-tooltip bottom color="indigo">
-        <v-btn icon slot="activator">
-          <v-icon color="indigo">mdi-human</v-icon>
-        </v-btn>
-        Penalty Shootout
-      </v-tooltip>
+      color="indigo"
+    >
+      <template #default="{ on: dialog }">
+        <v-tooltip
+          bottom
+          color="indigo"
+        >
+          <template #activator="{ on: tooltip }">
+            <v-btn
+              v-on="{ ...dialog, ...tooltip }"
+              icon
+            >
+              <v-icon color="indigo">mdi-human</v-icon>
+            </v-btn>
+          </template>
+          Penalty Shootout
+        </v-tooltip>
+      </template>
     </penalty-shootout-form>
 
-    <match-remove :match="match"></match-remove>
+    <match-remove :match="match" />
   </div>
 </template>
 
 <script>
   import { mapActions } from 'vuex'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import { TeamAccessible } from '@/mixins'
   import { Squad } from '@/models'
   import MatchForm from './MatchForm'
   import CapForm from './CapForm'
@@ -109,7 +188,9 @@
       PenaltyShootoutForm,
       MatchRemove
     },
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     props: {
       match: {
         type: Object,
@@ -137,7 +218,7 @@
       }
     },
     methods: {
-      ...mapActions('entities/matches', {
+      ...mapActions('matches', {
         applySquad: 'APPLY_SQUAD',
         remove: 'REMOVE'
       }),

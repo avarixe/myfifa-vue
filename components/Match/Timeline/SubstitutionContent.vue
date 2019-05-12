@@ -1,16 +1,9 @@
 <template>
-  <table>
-    <tbody>
-      <tr>
-        <td class="font-weight-bold">Player</td>
-        <td class="pl-1">{{ item.player_name }}</td>
-      </tr>
-      <tr>
-        <td class="font-weight-bold">Replaced By</td>
-        <td class="pl-1">{{ item.replaced_by }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <span class="font-weight-bold">{{ item.player_name }}</span>
+    {{ action }}
+    <span class="font-weight-bold">{{ item.replaced_by }}</span>
+  </div>
 </template>
 
 <script>
@@ -19,6 +12,13 @@
       item: {
         type: Object,
         required: true
+      }
+    },
+    computed: {
+      action () {
+        return this.item.injured
+          ? 'has been injured. Replaced by'
+          : 'replaced by'
       }
     }
   }

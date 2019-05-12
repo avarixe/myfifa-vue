@@ -2,11 +2,14 @@
   <v-snackbar
     v-model="snackbar"
     :color="color"
-    bottom>
+    bottom
+  >
     {{ message }}
-    <v-btn dark flat @click="snackbar = false">
-      Close
-    </v-btn>
+    <v-btn
+      dark
+      flat
+      @click="snackbar = false"
+    >Close</v-btn>
   </v-snackbar>
 </template>
 

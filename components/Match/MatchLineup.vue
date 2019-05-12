@@ -1,21 +1,25 @@
 <template>
   <v-container>
     <formation-view :formation="sortedCaps">
-      <match-cap
-        slot="item"
-        slot-scope="{ player }"
-        :cap="player"
-        :match="match"
-        :readonly="readonly"
-      ></match-cap>
+      <template #item="{ player }">
+        <match-cap
+          :cap="player"
+          :match="match"
+          :readonly="readonly"
+        />
+      </template>
     </formation-view>
 
     <v-layout
       v-if="substitutes.length > 0"
       row
-      wrap>
+      wrap
+    >
       <v-flex xs12>
-        <v-list id="substitutes" dense>
+        <v-list
+          id="substitutes"
+          dense
+        >
           <v-subheader>Substitutes</v-subheader>
           <substitute-cap
             v-for="cap in substitutes"
@@ -23,7 +27,7 @@
             :cap="cap"
             :match="match"
             :readonly="readonly"
-          ></substitute-cap>
+          />
         </v-list>
       </v-flex>
     </v-layout>
@@ -31,22 +35,24 @@
 </template>
 
 <script>
-  import TeamAccessible from '@/mixins/TeamAccessible'
-  import MatchAccessible from '@/mixins/MatchAccessible'
-  import FormationView from '@/components/Squad/FormationView'
+  import {
+    TeamAccessible,
+    MatchAccessible
+  } from '@/mixins'
+  import { FormationView } from '@/helpers'
   import MatchCap from './MatchCap'
   import SubstituteCap from './SubstituteCap'
 
   export default {
-    mixins: [
-      TeamAccessible,
-      MatchAccessible
-    ],
     components: {
       FormationView,
       MatchCap,
       SubstituteCap
     },
+    mixins: [
+      TeamAccessible,
+      MatchAccessible
+    ],
     computed: {
       readonly () {
         return this.team.current_date !== this.match.date_played

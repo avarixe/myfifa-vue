@@ -8,11 +8,9 @@
             :rules="$_validate('Stage Name', ['required'])"
             class="d-inline-block"
             @click.stop
-          ></v-text-field>
+          />
         </template>
-        <template v-else>
-          {{ round.name }}
-        </template>
+        <span v-else>{{ round.name }}</span>
       </div>
 
       <template v-if="!readonly">
@@ -20,19 +18,22 @@
           :mode="edit"
           :changed="stageChanged"
           @toggle-mode="edit = !edit"
-        ></edit-mode-button>
+        />
 
         <v-tooltip bottom>
-          <v-btn
-            slot="activator"
-            @click="addFixture"
-            icon>
-            <v-icon>mdi-plus-circle</v-icon>
-          </v-btn>
+          <template #activator="{ on }">
+            <v-btn
+              v-on="on"
+              icon
+              @click="addFixture"
+            >
+              <v-icon>mdi-plus-circle</v-icon>
+            </v-btn>
+          </template>
           Add Fixture
         </v-tooltip>
 
-        <stage-remove :stage="round"></stage-remove>
+        <stage-remove :stage="round" />
       </template>
     </v-card-title>
 
@@ -41,33 +42,40 @@
       :items="items"
       :pagination.sync="pagination"
       disable-initial-sort
-      hide-actions>
-      <template slot="headers" slot-scope="props">
+      hide-actions
+    >
+      <template #headers>
         <th
           v-for="(header, i) in headers"
           :key="i"
           :class="`text-xs-${header.align}`"
-          :width="header.width">
-          <template v-if="header.value">
-            {{ header.text }}
-          </template>
-          <v-tooltip v-else right>
-            <v-btn
-              slot="activator"
-              @click="override = !override"
-              icon>
-              <v-icon>mdi-playlist-edit</v-icon>
-            </v-btn>
+          :width="header.width"
+        >
+          <template v-if="header.value">{{ header.text}}</template>
+          <v-tooltip
+            v-else
+            right
+          >
+            <template #activator="{ on }">
+              <v-btn
+                v-on="on"
+                icon
+                @click="override = !override"
+              >
+                <v-icon>mdi-playlist-edit</v-icon>
+              </v-btn>
+            </template>
             Edit All
           </v-tooltip>
         </th>
       </template>
-      <template slot="items" slot-scope="props">
+
+      <template #items="{ item }">
         <fixture-view
           :headers="headers"
-          :fixture-data="props.item"
+          :fixture-data="item"
           :override="override"
-        ></fixture-view>
+        />
       </template>
     </v-data-table>
 
@@ -75,7 +83,7 @@
 </template>
 
 <script>
-  import EditModeButton from '@/components/EditModeButton'
+  import { EditModeButton } from '@/helpers'
   import StageRemove from './StageRemove'
   import FixtureView from './FixtureView'
 
@@ -103,12 +111,37 @@
     computed: {
       headers () {
         let headers = [
-          { text: 'Home Team', value: 'home_team', sortable: false, align: 'right' },
-          { text: 'Home Score', value: 'home_score', sortable: false, align: 'right' },
-          { text: 'Away Score', value: 'away_score', sortable: false, align: 'left' },
-          { text: 'Away Team', value: 'away_team', sortable: false, align: 'left' }
+          {
+            text: 'Home Team',
+            value: 'home_team',
+            sortable: false,
+            align: 'right'
+          },
+          {
+            text: 'Home Score',
+            value: 'home_score',
+            sortable: false,
+            align: 'right'
+          },
+          {
+            text: 'Away Score',
+            value: 'away_score',
+            sortable: false,
+            align: 'left'
+          },
+          {
+            text: 'Away Team',
+            value: 'away_team',
+            sortable: false,
+            align: 'left'
+          }
         ]
-        !this.readonly && headers.unshift({ text: '', value: null, sortable: false, width: '40px' })
+        !this.readonly && headers.unshift({
+          text: '',
+          value: null,
+          sortable: false,
+          width: '40px'
+        })
         return headers
       },
       items () {
@@ -124,13 +157,13 @@
           const { id, name } = this.round
           this.stage = { id, name }
         } else if (this.stageChanged) {
-          this.$store.dispatch('entities/stages/UPDATE', this.stage)
+          this.$store.dispatch('stages/UPDATE', this.stage)
         }
       }
     },
     methods: {
       addFixture () {
-        this.$store.dispatch('entities/fixtures/CREATE', {
+        this.$store.dispatch('fixtures/CREATE', {
           stageId: this.round.id,
           fixture: { home_team: '', away_team: '' }
         })

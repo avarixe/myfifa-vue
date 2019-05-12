@@ -1,23 +1,27 @@
 <template>
   <div>
-    <div class="body-2">
+    <div class="body-1">
       <v-menu
         :disabled="readonly || cap.start > 0"
         max-height="200px"
         offset-y
         offset-overflow
-        lazy>
-        <span slot="activator">
-          {{ cap.name }}
-        </span>
+        lazy
+      >
+        <template #activator="{ on }">
+          <span v-on="on">{{ cap.name }}</span>
+        </template>
 
         <v-list>
           <v-list-tile
             v-for="player in players"
             :key="player.id"
-            @click="setPlayer(player.id)">
+            @click="setPlayer(player.id)"
+          >
             <v-list-tile-action>
-              <v-list-tile-action-text>{{ player.pos }}</v-list-tile-action-text>
+              <v-list-tile-action-text>
+                {{ player.pos }}
+              </v-list-tile-action-text>
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>{{ player.name }}</v-list-tile-title>
@@ -26,21 +30,24 @@
         </v-list>
       </v-menu>
     </div>
-    <div class="body-1">
+    <div class="body-2">
       <v-menu
         :disabled="readonly"
         max-height="200px"
         offset-y
         offset-overflow
-        lazy>
-        <span slot="activator">
-          {{ cap.pos }}
-        </span>
+        lazy
+      >
+        <template #activator="{ on }">
+          <span v-on="on">{{ cap.pos }}</span>
+        </template>
+
         <v-list>
           <v-list-tile
             v-for="pos in positions"
             :key="pos"
-            @click="setPosition(pos)">
+            @click="setPosition(pos)"
+          >
             <v-list-tile-title>{{ pos }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
@@ -61,8 +68,9 @@
       <v-icon
         v-for="index in assists"
         :key="`assist${index}`"
+        color="light-blue accent-1"
         small
-      >mdi-soccer</v-icon>
+      >mdi-human-greeting</v-icon>
       <v-icon
         v-for="(color, i) in bookings"
         :key="`booking${i}`"
@@ -84,7 +92,10 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import {
+    mapState,
+    mapActions
+  } from 'vuex'
   import { activePlayers } from '@/models/Player'
 
   export default {
@@ -106,7 +117,7 @@
       return {}
     },
     computed: {
-      ...mapState('entities/matches', [
+      ...mapState('matches', [
         'positions'
       ]),
       players () {
@@ -134,7 +145,10 @@
       },
       bookings () {
         return this.events
-          .filter(event => event.event_type === 'Booking' && event.player_id === this.cap.player_id)
+          .filter(event => {
+            return event.event_type === 'Booking' &&
+              event.player_id === this.cap.player_id
+          })
           .map(booking => booking.red_card ? 'red' : 'yellow darken-2')
       },
       injured () {
@@ -147,7 +161,7 @@
       }
     },
     methods: {
-      ...mapActions('entities/caps', {
+      ...mapActions('caps', {
         update: 'UPDATE'
       }),
       setPosition (position) {

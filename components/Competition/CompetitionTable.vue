@@ -1,60 +1,68 @@
 <template>
   <v-expansion-panel-content class="elevation-1">
-    <div slot="header">
-      <template v-if="edit">
-        <v-text-field
-          v-model="stage.name"
-          :rules="$_validate('Stage Name', ['required'])"
-          class="d-inline-block"
-          @click.stop
-        ></v-text-field>
-      </template>
-      <template v-else>
-        {{ table.name }}
-      </template>
+    <template #header>
+      <div>
+        <template v-if="edit">
+          <v-text-field
+            v-model="stage.name"
+            :rules="$_validate('Stage Name', ['required'])"
+            class="d-inline-block"
+            @click.stop
+          />
+        </template>
+        <span v-else>{{ table.name }}</span>
 
-      <template v-if="!readonly">
-        <edit-mode-button
-          :mode="edit"
-          :changed="stageChanged"
-          @toggle-mode="edit = !edit"
-        ></edit-mode-button>
-        <stage-remove :stage="table"></stage-remove>
-      </template>
-    </div>
+        <template v-if="!readonly">
+          <edit-mode-button
+            :mode="edit"
+            :changed="stageChanged"
+            @toggle-mode="edit = !edit"
+          />
+          <stage-remove :stage="table" />
+        </template>
+      </div>
+    </template>
+
     <v-card>
       <v-data-table
         :headers="headers"
         :items="items"
         :pagination.sync="pagination"
         disable-initial-sort
-        hide-actions>
-        <template slot="headers" slot-scope="props">
+        hide-actions
+      >
+        <template #headers>
           <th
             v-for="(header, i) in headers"
             :key="i"
             :class="`text-xs-${header.align}`"
-            :width="header.width">
-            <template v-if="header.value">
-              {{ header.text }}
-            </template>
-            <v-tooltip v-else right>
-              <v-btn
-                slot="activator"
-                @click="override = !override"
-                icon>
-                <v-icon>mdi-playlist-edit</v-icon>
-              </v-btn>
+            :width="header.width"
+          >
+            <template v-if="header.value">{{ header.text }}</template>
+            <v-tooltip
+              v-else
+              right
+            >
+              <template #activator="{ on }">
+                <v-btn
+                  v-on="on"
+                  icon
+                  @click="override = !override"
+                >
+                  <v-icon>mdi-playlist-edit</v-icon>
+                </v-btn>
+              </template>
               Edit All
             </v-tooltip>
           </th>
         </template>
-        <template slot="items" slot-scope="props">
+
+        <template #items="{ item }">
           <table-row
             :headers="headers"
-            :row-data="props.item"
+            :row-data="item"
             :override="override"
-          ></table-row>
+          />
         </template>
       </v-data-table>
     </v-card>
@@ -62,7 +70,7 @@
 </template>
 
 <script>
-  import EditModeButton from '@/components/EditModeButton'
+  import { EditModeButton } from '@/helpers'
   import StageRemove from './StageRemove'
   import TableRow from './TableRow'
 
@@ -90,16 +98,61 @@
     computed: {
       headers () {
         let headers = [
-          { text: 'Team', value: 'name', type: 'text', align: 'left' },
-          { text: 'W', value: 'wins', type: 'number', align: 'center' },
-          { text: 'D', value: 'draws', type: 'number', align: 'center' },
-          { text: 'L', value: 'losses', type: 'number', align: 'center' },
-          { text: 'GF', value: 'goals_for', type: 'number', align: 'center' },
-          { text: 'GA', value: 'goals_against', type: 'number', align: 'center' },
-          { text: 'GD', value: 'goal_difference', type: null, align: 'center' },
-          { text: 'PTS', value: 'points', type: null, align: 'center' }
+          {
+            text: 'Team',
+            value: 'name',
+            type: 'text',
+            align: 'left'
+          },
+          {
+            text: 'W',
+            value: 'wins',
+            type: 'number',
+            align: 'center'
+          },
+          {
+            text: 'D',
+            value: 'draws',
+            type: 'number',
+            align: 'center'
+          },
+          {
+            text: 'L',
+            value: 'losses',
+            type: 'number',
+            align: 'center'
+          },
+          {
+            text: 'GF',
+            value: 'goals_for',
+            type: 'number',
+            align: 'center'
+          },
+          {
+            text: 'GA',
+            value: 'goals_against',
+            type: 'number',
+            align: 'center'
+          },
+          {
+            text: 'GD',
+            value: 'goal_difference',
+            type: null,
+            align: 'center'
+          },
+          {
+            text: 'PTS',
+            value: 'points',
+            type: null,
+            align: 'center'
+          }
         ]
-        !this.readonly && headers.unshift({ text: '', value: null, sortable: false, width: '40px' })
+        !this.readonly && headers.unshift({
+          text: '',
+          value: null,
+          sortable: false,
+          width: '40px'
+        })
         return headers
       },
       items () {
@@ -119,7 +172,7 @@
           const { id, name } = this.table
           this.stage = { id, name }
         } else if (this.stageChanged) {
-          this.$store.dispatch('entities/stages/UPDATE', this.stage)
+          this.$store.dispatch('stages/UPDATE', this.stage)
         }
       }
     }

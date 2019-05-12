@@ -14,7 +14,7 @@
     },
     render (createElement, context) {
       function contentComponent () {
-        var item = context.props.item
+        const item = context.props.item
 
         switch (item.type) {
           case 'Contract':

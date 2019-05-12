@@ -9,7 +9,7 @@
         <td class="font-weight-bold">Destination</td>
         <td class="pl-1">
           {{ transfer.destination }}
-          <span v-if="transfer.loan"> (Loan)</span>
+          <span v-if="transfer.loan">(Loan)</span>
         </td>
       </tr>
       <tr>
@@ -22,17 +22,19 @@
       </tr>
       <tr v-if="transfer.addon_clause">
         <td class="font-weight-bold">Add-On Clause</td>
-        <td class="pl-1">{{ transfer.addon_clause }}%</td>
+        <td class="pl-1">{{ transfer.addon_clause }}</td>
       </tr>
     </tbody>
   </table>
 </template>
 
 <script>
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     props: {
       item: {
         type: Object,

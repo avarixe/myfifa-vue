@@ -1,78 +1,84 @@
 <template>
   <v-timeline
     v-if="events.length > 0 || match.penalty_shootout"
-    :dense="dense">
+    dense
+  >
     <v-timeline-item
       v-for="(event, i) in events"
       :key="i"
-      :color="teamColor(event)"
+      :color="eventColor(event)"
       :left="event.home"
       :right="!event.home"
-      fill-dot>
-      <span class="white--text" slot="icon">{{ event.minute }}'</span>
-      <v-card>
-        <v-card-title :class="`${eventColor(event)} lighten-2 py-1`">
-          <v-icon dark class="mr-3">mdi-{{ eventIcon(event) }}</v-icon>
-          <span class="font-weight-bold pr-1 white--text text-uppercase">{{ eventTitle(event) }}</span>
+      :icon="`mdi-${eventIcon(event)}`"
+      fill-dot
+    >
+      <h2 :class="`headline font-weight-light my-0 ${eventColor(event)}--text`">
+        {{ event.minute }}"
 
-          <v-spacer></v-spacer>
+        <span class="caption text-truncate">
+          {{ event.home ? match.home : match.away }}
+        </span>
 
-          <v-tooltip v-if="team.current_date === match.date_played" bottom>
+        <v-tooltip
+          v-if="team.current_date === match.date_played"
+          bottom
+        >
+          <template #activator="{ on }">
             <v-btn
-              slot="activator"
-              @click="removeEvent(event)"
-              :color="`${eventColor(event)} lighten-2`"
+              v-on="on"
               class="ma-0"
               icon
-              dark>
-              <v-icon dark>mdi-close</v-icon>
+              @click="removeEvent(event)"
+            >
+              <v-icon :color="eventColor(event)">mdi-close</v-icon>
             </v-btn>
-            Remove
-          </v-tooltip>
-        </v-card-title>
-        <v-container>
-          <v-layout>
-            <v-flex xs12>
-              <timeline-content :item="event"></timeline-content>
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </v-card>
+          </template>
+          Remove
+        </v-tooltip>
+      </h2>
+
+      <v-divider
+        :class="`ma-0 ${eventColor(event)}--text`"
+        :style="dividerStyle"
+      />
+
+      <timeline-content :item="event" />
     </v-timeline-item>
 
     <v-timeline-item
       v-if="match.penalty_shootout"
       icon="mdi-human"
       color="indigo"
-      fill-dot>
-      <v-card>
-        <v-card-title class="indigo lighten-2 py-1">
-          <v-icon dark class="mr-3">mdi-human</v-icon>
-          <span class="font-weight-bold pr-1 white--text text-uppercase">Penalty Shootout</span>
+      fill-dot
+    >
+      <h2 class="headline font-weight-light my-0 indigo--text">
+        Penalty Shootout
 
-          <v-spacer></v-spacer>
-
-          <v-tooltip v-if="team.current_date === match.date_played" bottom>
+        <v-tooltip
+          v-if="team.current_date === match.date_played"
+          bottom
+        >
+          <template #activator="{ on }">
             <v-btn
-              slot="activator"
-              @click="removePS"
+              v-on="on"
               color="indigo lighten-2"
               class="ma-0"
               icon
-              dark>
-              <v-icon dark>mdi-close</v-icon>
+              @click="removePS"
+            >
+              <v-icon color="indigo">mdi-close</v-icon>
             </v-btn>
-            Remove
-          </v-tooltip>
-        </v-card-title>
-        <v-container>
-          <v-layout>
-            <v-flex xs12>
-              <timeline-content :item="penaltyShootoutEvent"></timeline-content>
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </v-card>
+          </template>
+          Remove
+        </v-tooltip>
+      </h2>
+
+      <v-divider
+        class="ma-0 indigo--text"
+        :style="dividerStyle"
+      />
+
+      <timeline-content :item="penaltyShootoutEvent" />
     </v-timeline-item>
   </v-timeline>
 </template>
@@ -80,10 +86,12 @@
 <script>
   import TimelineContent from './TimelineContent'
   import { mapActions } from 'vuex'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     components: {
       TimelineContent
     },
@@ -94,7 +102,12 @@
       }
     },
     data () {
-      return {}
+      return {
+        dividerStyle: {
+          'border-color': 'inherit',
+          'border-width': 'thin 0 0'
+        }
+      }
     },
     computed: {
       events () {
@@ -110,23 +123,14 @@
         return this.match.penalty_shootout
           ? { ...this.match.penalty_shootout, event_type: 'PenaltyShootout' }
           : {}
-      },
-      dense () {
-        switch (this.$vuetify.breakpoint.name) {
-          case 'xs':
-          case 'sm':
-            return true
-          default:
-            return false
-        }
       }
     },
     methods: {
       ...mapActions({
-        removeGoal: 'entities/goals/REMOVE',
-        removeBooking: 'entities/bookings/REMOVE',
-        removeSubstitution: 'entities/substitutions/REMOVE',
-        removePenaltyShootout: 'entities/penaltyShootouts/REMOVE'
+        removeGoal: 'goals/REMOVE',
+        removeBooking: 'bookings/REMOVE',
+        removeSubstitution: 'substitutions/REMOVE',
+        removePenaltyShootout: 'penaltyShootout/REMOVE'
       }),
       async removeEvent (event) {
         if (confirm('Remove ' + event.event_type + '?')) {
@@ -155,7 +159,7 @@
           case 'Goal':
             return event.own_goal ? 'light-blue' : 'blue'
           case 'Booking':
-            return event.red_card ? 'red' : 'yellow darken-2'
+            return event.red_card ? 'red' : 'amber'
           case 'Substitution':
             return event.injury ? 'pink' : 'green'
           case 'PenaltyShootout':

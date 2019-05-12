@@ -11,10 +11,12 @@
 
 <script>
   import { distanceInWords } from 'date-fns'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     props: {
       item: {
         type: Object,

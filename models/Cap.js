@@ -1,7 +1,9 @@
 import { Model } from '@vuex-orm/core'
 
 export default class Cap extends Model {
-  static entity = 'caps'
+  static get entity () {
+    return 'caps'
+  }
 
   static fields () {
     return {

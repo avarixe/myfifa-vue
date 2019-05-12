@@ -1,54 +1,95 @@
 <template>
-  <v-container fluid grid-list-lg>
-    <v-layout row wrap>
+  <v-container
+    fluid
+    grid-list-lg
+  >
+    <v-layout
+      row
+      wrap
+    >
       <v-flex xs12>
-        <v-card>
-          <v-card-title>
-            <div class="display-1">{{ seasonLabel(season) }} Season</div>
-          </v-card-title>
-        </v-card>
+        <v-btn
+          v-if="season > 0"
+          :to="previousSeasonLink"
+          nuxt
+          color="blue-grey"
+          outline
+        >Previous Season</v-btn>
+        <v-btn
+          :to="nextSeasonLink"
+          nuxt
+          color="blue-grey"
+          outline
+        >Next Season</v-btn>
       </v-flex>
-
       <v-flex xs12>
-        <match-results
-          :season-data="seasonData"
-        ></match-results>
+        <season-results-chart :season-data="seasonData" />
       </v-flex>
 
       <v-flex xs12>
         <player-grid
           :season="season"
           :season-data="seasonData"
-        ></player-grid>
+        />
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-  import MatchResults from '@/components/Season/MatchResults'
+  import SeasonResultsChart from '@/components/Season/SeasonResultsChart'
+  import SeasonResultsTable from '@/components/Season/SeasonResultsTable'
   import PlayerGrid from '@/components/Season/PlayerGrid'
-  import TeamAccessible from '@/mixins/TeamAccessible'
+  import { TeamAccessible } from '@/mixins'
 
   export default {
     layout: 'team',
     middleware: 'authenticated',
     components: {
-      MatchResults,
+      SeasonResultsChart,
+      SeasonResultsTable,
       PlayerGrid
     },
-    mixins: [ TeamAccessible ],
+    mixins: [
+      TeamAccessible
+    ],
     async asyncData ({ store, params }) {
-      const { data } = await store.dispatch('entities/teams/ANALYZE_SEASON', params)
+      const { data } = await store.dispatch('teams/ANALYZE_SEASON', params)
       return { seasonData: data }
     },
     head () {
       return {
-        title: `${this.seasonLabel(this.season)} Season`
+        title: this.title
       }
     },
     computed: {
-      season () { return this.$route.params.season }
+      title () {
+        return `${this.seasonLabel(this.season)} Season`
+      },
+      season () {
+        return this.$route.params.season
+      },
+      previousSeasonLink () {
+        return {
+          name: 'teams-teamId-seasons-season',
+          params: {
+            teamId: this.team.id,
+            season: this.season - 1
+          }
+        }
+      },
+      nextSeasonLink () {
+        return {
+          name: 'teams-teamId-seasons-season',
+          params: {
+            teamId: this.team.id,
+            season: this.season + 1
+          }
+        }
+      }
+    },
+    mounted () {
+      this.$store.commit('app/SET_TITLE', this.title)
     }
   }
 </script>
