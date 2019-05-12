@@ -34,9 +34,10 @@
               ref="menu1"
               :close-on-content-click="false"
               :return-value.sync="contract.effective_date"
-              lazy
               transition="scale-transition"
               full-width
+              min-width="290px"
+              lazy
             >
               <template #activator="{ on }">
                 <v-text-field
@@ -64,9 +65,10 @@
               ref="menu2"
               :close-on-content-click="false"
               :return-value.sync="contract.end_date"
-              lazy
               transition="scale-transition"
               full-width
+              min-width="290px"
+              lazy
             >
               <template #activator="{ on }">
                 <v-text-field
