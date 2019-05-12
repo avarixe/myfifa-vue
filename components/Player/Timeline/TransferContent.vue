@@ -22,7 +22,7 @@
       </tr>
       <tr v-if="transfer.addon_clause">
         <td class="font-weight-bold">Add-On Clause</td>
-        <td class="pl-1">{{ transfer.addon_clause }}</td>
+        <td class="pl-1">{{ transfer.addon_clause }}%</td>
       </tr>
     </tbody>
   </table>
