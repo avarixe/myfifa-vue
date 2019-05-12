@@ -75,7 +75,10 @@
     ]),
     watch: {
       authenticated (val) {
-        !val && this.$router.push({ name: 'index' })
+        if (!val) {
+          this.$store.dispatch('entities/deleteAll')
+          this.$router.push({ name: 'index' })
+        }
       }
     },
     mounted () {
