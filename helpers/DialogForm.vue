@@ -50,6 +50,9 @@
             large
             @click="dialog = false"
           >Cancel</v-btn>
+
+          <slot name="additional-actions" />
+
           <v-btn
             type="submit"
             :disabled="!valid"

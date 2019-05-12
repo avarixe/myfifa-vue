@@ -34,11 +34,14 @@
       <v-card-actions>
         <v-spacer/>
         <user-form>
-          <v-btn
-            color="orange"
-            flat
-            large
-          >Register</v-btn>
+          <template #default="{ on }">
+            <v-btn
+              v-on="on"
+              color="orange"
+              flat
+              large
+            >Register</v-btn>
+          </template>
         </user-form>
 
         <v-btn
