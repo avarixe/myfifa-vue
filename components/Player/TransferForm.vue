@@ -36,9 +36,10 @@
               ref="menu"
               :close-on-content-click="false"
               :return-value.sync="transfer.effective_date"
+              full-width
+              min-width="290px"
               lazy
               transition="scale-transition"
-              full-width
             >
               <template #activator="{ on }">
                 <v-text-field
@@ -52,7 +53,6 @@
               </template>
               <v-date-picker
                 v-model="transfer.effective_date"
-                landscape
                 @input="$refs.menu.save(transfer.effective_date)"
               />
             </v-menu>

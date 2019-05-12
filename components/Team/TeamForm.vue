@@ -33,6 +33,7 @@
               lazy
               transition="scale-transition"
               full-width
+              min-width="290px"
             >
               <template #activator="{ on }">
                 <v-text-field
