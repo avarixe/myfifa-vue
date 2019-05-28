@@ -126,10 +126,3 @@
     }
   }
 </script>
-
-<style scoped>
-  #app .v-card,
-  #app .v-list {
-    background-color: rgba(255, 255, 255, 0.5);
-  }
-</style>
