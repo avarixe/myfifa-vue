@@ -53,7 +53,7 @@ class Player extends Model {
   }
 
   get contract () {
-    const contract = this.contracts.pop()
+    const contract = this.contracts.slice(-1)[0]
 
     return contract &&
            contract.effective_date <= this.team.current_date &&
