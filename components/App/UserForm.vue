@@ -61,7 +61,7 @@
     <template #additional-actions>
       <v-btn
         v-if="user.id"
-        flat
+        text
         color="blue"
         @click="changePassword = !changePassword"
       >{{ changePassword ? 'Profile' : 'Change Password' }}</v-btn>

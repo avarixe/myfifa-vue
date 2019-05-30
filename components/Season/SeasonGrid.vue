@@ -1,25 +1,29 @@
 <template>
   <v-data-iterator
     :items="rows"
-    :pagination-sync="pagination"
+    :items-per-page="-1"
     no-data-text="No Seasons Recorded"
-    hide-actions
-    content-tag="v-layout"
-    row
-    wrap
+    hide-default-footer
   >
-    <template #item="{ item }">
-      <v-flex
-        xs12
-        sm6
-        md4
-        lg3
+    <template #default="{ items }">
+      <v-layout
+        row
+        wrap
       >
-        <season-item
-          :season="parseInt(item)"
-          compact
-        />
-      </v-flex>
+        <v-flex
+          v-for="season in items"
+          :key="season"
+          xs12
+          sm6
+          md4
+          lg3
+        >
+          <season-item
+            :season="parseInt(season)"
+            compact
+          />
+        </v-flex>
+      </v-layout>
     </template>
   </v-data-iterator>
 </template>

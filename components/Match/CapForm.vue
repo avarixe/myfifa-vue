@@ -33,14 +33,14 @@
               prepend-icon="mdi-account"
             >
               <template #item="{ item }">
-                <v-list-tile-action>
-                  <v-list-tile-action-text>
+                <v-list-item-action>
+                  <v-list-item-action-text>
                     {{ item.pos }}
-                  </v-list-tile-action-text>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-                </v-list-tile-content>
+                  </v-list-item-action-text>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.name }}</v-list-item-title>
+                </v-list-item-content>
               </template>
             </v-select>
           </v-flex>

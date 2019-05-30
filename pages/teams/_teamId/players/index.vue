@@ -8,6 +8,11 @@
       wrap
     >
       <v-flex xs12>
+        <div class="overline">{{ team.title }}</div>
+        <div class="headline font-weight-thin">Players</div>
+      </v-flex>
+
+      <v-flex xs12>
         <player-form />
       </v-flex>
 

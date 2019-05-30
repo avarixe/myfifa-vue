@@ -37,25 +37,13 @@
       </template>
     </v-card-title>
 
-    <v-data-table
-      :headers="headers"
-      :items="items"
-      :pagination.sync="pagination"
-      disable-initial-sort
-      hide-actions
-    >
-      <template #headers>
+    <v-simple-table>
+      <thead>
         <th
-          v-for="(header, i) in headers"
-          :key="i"
-          :class="`text-xs-${header.align}`"
-          :width="header.width"
+          v-if="!readonly"
+          style="width:40px"
         >
-          <template v-if="header.value">{{ header.text}}</template>
-          <v-tooltip
-            v-else
-            right
-          >
+          <v-tooltip right>
             <template #activator="{ on }">
               <v-btn
                 v-on="on"
@@ -68,16 +56,23 @@
             Edit All
           </v-tooltip>
         </th>
-      </template>
-
-      <template #items="{ item }">
+        <th class="text-xs-right">Home Team</th>
+        <th
+          colspan="2"
+          class="text-xs-center"
+        >Score</th>
+        <th class="text-xs-left">Away Team</th>
+      </thead>
+      <tbody>
         <fixture-view
+          v-for="(item, i) in items"
+          :key="i"
           :headers="headers"
           :fixture-data="item"
           :override="override"
         />
-      </template>
-    </v-data-table>
+      </tbody>
+    </v-simple-table>
 
   </v-card>
 </template>
@@ -103,10 +98,7 @@
     data: () => ({
       stage: {},
       edit: false,
-      override: false,
-      pagination: {
-        rowsPerPage: -1
-      }
+      override: false
     }),
     computed: {
       headers () {

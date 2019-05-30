@@ -15,7 +15,7 @@
       xs6
       class="text-xs-center"
     >
-      <v-btn flat>{{ currentMonth }}</v-btn>
+      <v-btn text>{{ currentMonth }}</v-btn>
     </v-flex>
     <v-flex
       xs3

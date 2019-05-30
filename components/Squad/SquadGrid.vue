@@ -1,19 +1,24 @@
 <template>
   <v-data-iterator
     :items="rows"
+    :items-per-page="-1"
     no-data-text="No Squads Recorded"
-    hide-actions
-    content-tag="v-layout"
-    row
-    wrap
+    hide-default-footer
   >
-    <template #item="{ item }">
-      <v-flex
-        xs12
-        md6
+    <template #default="{ items }">
+      <v-layout
+        row
+        wrap
       >
-        <squad-item :squad="item" />
-      </v-flex>
+        <v-flex
+          v-for="squad in items"
+          :key="squad.id"
+          xs12
+          md6
+        >
+          <squad-item :squad="squad" />
+        </v-flex>
+      </v-layout>
     </template>
   </v-data-iterator>
 </template>

@@ -1,7 +1,6 @@
 <template>
-  <material-card title="Transfer History">
+  <v-card flat>
     <v-card-title>
-
       <v-select
         v-model="seasonFilter"
         label="Season"
@@ -27,22 +26,23 @@
     <v-data-table
       :headers="headers"
       :items="rows"
-      :pagination.sync="pagination"
+      sort-by="effective_date"
+      sort-desc
       :search="search"
       item-key="id"
       no-data-text="No Matches Recorded"
     >
-      <template #headerCell="{ header }">
-        <span class="subheading font-weight-light text-success text--darken-3">
-          {{ header.text }}
-        </span>
+      <template #item.effective_date="{ item: transfer }">
+        {{ $_format($_parse(transfer.effective_date), 'MMM DD, YYYY') }}
       </template>
-      <template #items="{ item }">
-        <transfer-row :transfer="item" />
+      <template #item.fee="{ item: transfer }">
+        <span :class="`${isTransferOut(transfer) ? 'green' : 'red'}--text`">
+          {{ $_formatMoney(transfer.fee) }}
+        </span>
       </template>
     </v-data-table>
 
-  </material-card>
+  </v-card>
 </template>
 
 <script>
@@ -50,8 +50,6 @@
     Player,
     Transfer
   } from '@/models'
-  import MaterialCard from '@/components/theme/Card'
-  import TransferRow from './TransferRow'
   import { TeamAccessible } from '@/mixins'
   import { addYears } from 'date-fns'
 
@@ -59,17 +57,8 @@
     mixins: [
       TeamAccessible
     ],
-    components: {
-      MaterialCard,
-      TransferRow
-    },
     data () {
       return {
-        pagination: {
-          sortBy: 'effective_date',
-          rowsPerPage: 10,
-          descending: true
-        },
         headers: [
           {
             text: 'Date',
@@ -134,6 +123,17 @@
 
         return seasons
       }
+    },
+    methods: {
+      isTransferOut (transfer) {
+        return transfer.origin === this.team.title
+      }
     }
   }
 </script>
+
+<style scoped>
+  .v-card, .v-data-table {
+    background-color: transparent;
+  }
+</style>

@@ -3,7 +3,7 @@
     <no-ssr>
       <app-bar />
 
-      <app-drawer />
+      <team-drawer />
     </no-ssr>
 
     <v-content>
@@ -35,20 +35,17 @@
   import { Team } from '@/models'
   import AppBar from '@/components/App/AppBar'
   import AppBroadcaster from '@/components/App/AppBroadcaster'
-  import AppDrawer from '@/components/App/AppDrawer'
-  // import TeamBar from '@/components/Team/TeamBar'
   import TeamChannel from '@/components/Team/TeamChannel'
+  import TeamDrawer from '@/components/Team/TeamDrawer'
   import TeamLoader from '@/components/Team/TeamLoader'
 
   export default {
     name: 'App',
-    // middleware: 'responsive',
     components: {
       AppBar,
       AppBroadcaster,
-      AppDrawer,
-      // TeamBar,
       TeamChannel,
+      TeamDrawer,
       TeamLoader
     },
     data: () => ({

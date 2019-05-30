@@ -1,34 +1,36 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="rows"
-    item-key="id"
-    no-data-text="No Matches Recorded"
-    disable-initial-sort
-    hide-actions
-  >
-    <template #headerCell="{ header }">
-      <span class="subheading font-weight-light text-success text--darken-3">
-        {{ header.text }}
-      </span>
-    </template>
-    <template #items="{ item }">
-      <tr>
-        <td
-          v-for="(header, i) in headers"
-          :key="i"
-          :class="`text-xs-${header.align}`"
-        >
+  <v-simple-table>
+    <thead>
+      <th class="text-xs-left">Competition</th>
+      <th>GP</th>
+      <th>W</th>
+      <th>D</th>
+      <th>L</th>
+      <th>GF</th>
+      <th>GA</th>
+      <th>GD</th>
+    </thead>
+    <tbody>
+      <tr
+        v-for="item in rows"
+        :key="item.competition"
+      >
+        <td class="text-xs-left">
           <a
-            v-if="header.value === 'competition'"
-            @click="competitionLink(item[header.value])"
+            @click="competitionLink(item.competition)"
             class="blue-grey--text"
-          >{{ item[header.value] }}</a>
-          <span v-else>{{ item[header.value] }}</span>
+          >{{ item.competition }}</a>
         </td>
+        <td>{{ item.wins + item.draws + item.losses }}</td>
+        <td>{{ item.wins }}</td>
+        <td>{{ item.draws }}</td>
+        <td>{{ item.losses }}</td>
+        <td>{{ item.gf }}</td>
+        <td>{{ item.ga }}</td>
+        <td>{{ item.gf - item.ga }}</td>
       </tr>
-    </template>
-  </v-data-table>
+    </tbody>
+  </v-simple-table>
 </template>
 
 <script>
@@ -41,66 +43,12 @@
         required: true
       }
     },
-    data: () => ({
-      headers: [
-        {
-          text: 'Competition',
-          value: 'competition',
-          align: 'left',
-          sortable: false
-        },
-        {
-          text: 'GP',
-          value: 'gp',
-          align: 'center',
-          sortable: false
-        },
-        {
-          text: 'W',
-          value: 'wins',
-          align: 'center',
-          sortable: false
-        },
-        {
-          text: 'D',
-          value: 'draws',
-          align: 'center',
-          sortable: false
-        },
-        {
-          text: 'L',
-          value: 'losses',
-          align: 'center',
-          sortable: false
-        },
-        {
-          text: 'GF',
-          value: 'gf',
-          align: 'center',
-          sortable: false
-        },
-        {
-          text: 'GA',
-          value: 'ga',
-          align: 'center',
-          sortable: false
-        },
-        {
-          text: 'GD',
-          value: 'gd',
-          align: 'center',
-          sortable: false
-        }
-      ]
-    }),
     computed: {
       rows () {
         return Object.entries(this.seasonData.results)
           .map(([competition, data]) => ({
             ...data,
-            competition,
-            gd: data.gf - data.ga,
-            gp: data.wins + data.draws + data.losses
+            competition
           }))
       }
     },
@@ -127,8 +75,7 @@
 </script>
 
 <style scoped>
-  >>> table.v-table tbody tr td {
-    padding: 8px 16px;
-    height: auto;
+  th, td {
+    text-align: center;
   }
 </style>

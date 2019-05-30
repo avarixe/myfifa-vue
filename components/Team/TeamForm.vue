@@ -30,7 +30,6 @@
               ref="menu"
               :close-on-content-click="false"
               :return-value.sync="team.start_date"
-              lazy
               transition="scale-transition"
               full-width
               min-width="290px"

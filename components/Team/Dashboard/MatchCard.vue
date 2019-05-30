@@ -12,7 +12,7 @@
           :to="matchLink"
           nuxt
           color="cyan"
-          outline
+          outlined
         >View</v-btn>
       </p>
 

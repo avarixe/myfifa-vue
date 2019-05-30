@@ -8,6 +8,10 @@
       wrap
     >
       <v-flex xs12>
+        <div class="overline">{{ team.title }}</div>
+        <div class="headline font-weight-thin">Seasons</div>
+      </v-flex>
+      <v-flex xs12>
         <new-competition-form>
           <template #default="{ on }">
             <v-btn

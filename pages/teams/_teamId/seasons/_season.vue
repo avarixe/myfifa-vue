@@ -8,6 +8,9 @@
       wrap
     >
       <v-flex xs12>
+        <div class="headline font-weight-thin">{{ title }}</div>
+      </v-flex>
+      <v-flex xs12>
         <v-btn
           v-if="season > 0"
           :to="previousSeasonLink"

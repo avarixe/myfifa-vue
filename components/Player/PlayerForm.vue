@@ -11,7 +11,7 @@
         <v-btn
           v-on="on"
           color="blue-grey"
-          outline
+          outlined
         >
           <v-icon left>mdi-plus-circle-outline</v-icon>
           Player

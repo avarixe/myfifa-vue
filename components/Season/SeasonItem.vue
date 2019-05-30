@@ -27,31 +27,31 @@
       <v-btn
         :to="seasonLink"
         :color="color"
-        outline
+        outlined
         nuxt
       >View</v-btn>
     </p>
 
     <v-list dense>
       <v-subheader>Competitions</v-subheader>
-      <v-list-tile
+      <v-list-item
         v-for="(competition, i) in competitions"
         :key="i"
         :to="competitionLink(competition)"
         class="elevation-1"
       >
-        <v-list-tile-title>
+        <v-list-item-title>
           <v-icon
             color="blue"
             small
             left
           >mdi-arrow-right</v-icon>
           {{ competition.name }}
-        </v-list-tile-title>
-        <v-list-tile-avatar v-if="competition.champion === team.title">
+        </v-list-item-title>
+        <v-list-item-avatar v-if="competition.champion === team.title">
           <v-icon color="yellow darken-2">mdi-trophy</v-icon>
-        </v-list-tile-avatar>
-      </v-list-tile>
+        </v-list-item-avatar>
+      </v-list-item>
     </v-list>
 
   </material-card>

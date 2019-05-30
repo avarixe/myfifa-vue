@@ -2,7 +2,6 @@
   <v-dialog
     v-model="dialog"
     persistent
-    lazy
     :max-width="fullWidth ? '' : '500px'"
   >
     <template #activator="{ on }">
@@ -46,7 +45,7 @@
           <v-spacer />
           <v-btn
             color="tertiary"
-            flat
+            text
             large
             @click="dialog = false"
           >Cancel</v-btn>
@@ -57,7 +56,7 @@
             type="submit"
             :disabled="!valid"
             :color="buttonColor"
-            flat
+            text
             large
             :loading="loading"
             @click="loading = true"

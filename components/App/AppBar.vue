@@ -1,57 +1,47 @@
 <template>
-  <v-toolbar
-    flat
-    prominent
-    style="background: #eee;"
+  <v-app-bar
+    app
+    clipped-left
   >
-    <v-toolbar-side-icon
-      v-show="responsive"
+    <v-app-bar-nav-icon
+      v-show="responsive && $route.params.teamId"
       @click.stop="toggleDrawer"
     />
 
     <v-toolbar-title class="tertiary--text font-weight-light">
-      {{ $store.state.app.title }}
+      MyFIFA Manager
     </v-toolbar-title>
 
     <v-spacer />
 
-    <v-toolbar-items v-if="authenticated">
-      <v-flex
-        align-center
-        layout
-        py-2
+    <template v-if="authenticated">
+      <v-btn
+        to="/"
+        nuxt
+        icon
       >
-        <nuxt-link
-          v-ripple
-          to="/"
-          class="toolbar-items"
-        >
-          <v-icon color="tertiary">mdi-home</v-icon>
-        </nuxt-link>
+        <v-icon color="tertiary">mdi-home</v-icon>
+      </v-btn>
 
-        <user-form>
-          <template #default="{ on }">
-            <a
-              v-on="on"
-              v-ripple
-              class="toolbar-items"
-            >
-              <v-icon color="tertiary">mdi-account</v-icon>
-            </a>
-          </template>
-        </user-form>
+      <user-form>
+        <template #default="{ on }">
+          <v-btn
+            v-on="on"
+            icon
+          >
+            <v-icon color="tertiary">mdi-account</v-icon>
+          </v-btn>
+        </template>
+      </user-form>
 
-        <a
-          v-ripple
-          class="toolbar-items"
-          @click="logout"
-        >
-          <v-icon color="tertiary">mdi-exit-to-app</v-icon>
-        </a>
-      </v-flex>
-    </v-toolbar-items>
-
-  </v-toolbar>
+      <v-btn
+        icon
+        @click="logout"
+      >
+        <v-icon color="tertiary">mdi-exit-to-app</v-icon>
+      </v-btn>
+    </template>
+  </v-app-bar>
 </template>
 
 <script>

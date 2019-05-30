@@ -8,21 +8,20 @@
   >
     <template #activator="{ on }">
       <slot :on="on">
-        <v-list-tile
+        <v-list-item
           v-ripple
           v-on="on"
           color="accent"
           class="v-list-item"
-          avatar
           style="width: 100%"
         >
-          <v-list-tile-action>
+          <v-list-item-action>
             <v-icon>mdi-calendar</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title>
+          </v-list-item-action>
+          <v-list-item-title>
             {{ $_format(currentDate, 'MMM DD, YYYY') }}
-          </v-list-tile-title>
-        </v-list-tile>
+          </v-list-item-title>
+        </v-list-item>
       </slot>
     </template>
 

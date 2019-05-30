@@ -5,15 +5,9 @@
       :items="rows"
       :loading="loading"
       item-key="id"
-      disable-initial-sort
       no-data-text="No Teams Recorded"
     >
-      <template #headerCell="{ header }">
-        <span class="subheading font-weight-light text-success text--darken-3">
-          {{ header.text }}
-        </span>
-      </template>
-      <template #items="{ item: team }">
+      <template #item="{ item: team }">
         <v-tooltip bottom>
           <template #activator="{ on }">
             <tr

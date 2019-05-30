@@ -99,17 +99,14 @@
         v-if="tables.length > 0"
         xs12
       >
-        <v-expansion-panel
-          v-model="stage"
-          popout
-        >
+        <v-expansion-panels>
           <competition-table
             v-for="(table, i) in tables"
             :key="i"
             :table="table"
             :readonly="readonly"
           />
-        </v-expansion-panel>
+        </v-expansion-panels>
       </v-flex>
 
       <!-- Elimination Round Stages -->

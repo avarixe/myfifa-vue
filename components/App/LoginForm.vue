@@ -38,7 +38,7 @@
             <v-btn
               v-on="on"
               color="orange"
-              flat
+              text
               large
             >Register</v-btn>
           </template>
@@ -47,7 +47,7 @@
         <v-btn
           type="submit"
           color="primary"
-          flat
+          text
           large
           :loading="loading"
           @click="loading = true"

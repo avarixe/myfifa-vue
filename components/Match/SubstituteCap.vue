@@ -1,6 +1,6 @@
 <template>
-  <v-list-tile>
-    <v-list-tile-action>
+  <v-list-item>
+    <v-list-item-action>
       <v-menu
         :disabled="readonly"
         max-height="200px"
@@ -15,18 +15,18 @@
           >{{ cap.pos }}</span>
         </template>
         <v-list>
-          <v-list-tile
+          <v-list-item
             v-for="pos in positions"
             :key="pos"
             @click="setPosition(pos)">
-            <v-list-tile-title>{{ pos }}</v-list-tile-title>
-          </v-list-tile>
+            <v-list-item-title>{{ pos }}</v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
-    </v-list-tile-action>
+    </v-list-item-action>
 
-    <v-list-tile-content>
-      <v-list-tile-title>
+    <v-list-item-content>
+      <v-list-item-title>
         <span class="body-2">{{ cap.name }}</span>
         <v-icon
           v-if="parseInt(cap.start) > 0"
@@ -61,9 +61,9 @@
           color="red"
           small
         >mdi-subdirectory-arrow-left</v-icon>
-      </v-list-tile-title>
-    </v-list-tile-content>
-  </v-list-tile>
+      </v-list-item-title>
+    </v-list-item-content>
+  </v-list-item>
 </template>
 
 <script>

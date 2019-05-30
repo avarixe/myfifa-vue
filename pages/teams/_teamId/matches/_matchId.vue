@@ -8,6 +8,14 @@
       wrap
     >
       <v-flex xs12>
+        <div class="overline">{{ team.title }}</div>
+        <div class="headline font-weight-thin">
+          Match
+          <small>v {{ match.opponent }}</small>
+        </div>
+      </v-flex>
+
+      <v-flex xs12>
         <match-form />
       </v-flex>
 

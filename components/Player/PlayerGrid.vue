@@ -1,5 +1,5 @@
 <template>
-  <material-card title="Players">
+  <v-card flat>
     <v-card-title>
       <!-- Display Menu -->
       <v-tooltip
@@ -24,16 +24,16 @@
             </template>
 
             <v-list>
-              <v-list-tile
+              <v-list-item
                 v-for="(opt, i) in filters"
                 :key="i"
                 @click="filter = i"
               >
-                <v-list-tile-avatar>
+                <v-list-item-avatar>
                   <v-icon :color="opt.color">mdi-{{ opt.icon }}</v-icon>
-                </v-list-tile-avatar>
-                <v-list-tile-title>{{ opt.text }}</v-list-tile-title>
-              </v-list-tile>
+                </v-list-item-avatar>
+                <v-list-item-title>{{ opt.text }}</v-list-item-title>
+              </v-list-item>
             </v-list>
           </v-menu>
         </template>
@@ -43,12 +43,13 @@
       <v-btn-toggle
         v-model="mode"
         mandatory
+        rounded
         class="mx-3"
       >
         <v-btn
           v-for="(opt, i) in modes"
           :key="i"
-          flat
+          text
         >
           <v-icon :color="opt.color">mdi-{{ opt.icon }}</v-icon>
         </v-btn>
@@ -74,18 +75,13 @@
       :headers="headers"
       :items="rows"
       :loading="loading"
-      :pagination.sync="pagination"
+      :sort-by="['pos_idx']"
+      multi-sort
       :search="search"
       item-key="id"
-      must-sort
       no-data-text="No Players Found"
     >
-      <template #headerCell="{ header }">
-        <span class="subheading font-weight-light text-success text--darken-3">
-          {{ header.text }}
-        </span>
-      </template>
-      <template #items="{ item }">
+      <template #item="{ item }">
         <player-row
           :player-data="item"
           :headers="headers"
@@ -94,14 +90,13 @@
       </template>
     </v-data-table>
 
-  </material-card>
+  </v-card>
 </template>
 
 <script>
   import { mapActions } from 'vuex'
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
-  import MaterialCard from '@/components/theme/Card'
   import PlayerRow from './PlayerRow'
 
   export default {
@@ -109,7 +104,6 @@
       TeamAccessible
     ],
     components: {
-      MaterialCard,
       PlayerRow
     },
     data () {
@@ -133,10 +127,6 @@
           }
         ],
         loading: false,
-        pagination: {
-          rowsPerPage: 10,
-          sortBy: 'pos_idx'
-        },
         filter: 2,
         filters: [
           {
@@ -359,8 +349,7 @@
 </script>
 
 <style scoped>
-  >>> table.v-table tbody tr td {
-    padding: 8px 16px;
-    height: auto;
+  .v-card, .v-data-table {
+    background-color: transparent;
   }
 </style>

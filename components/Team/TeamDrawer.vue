@@ -4,11 +4,7 @@
     @input="setDrawer"
     id="app-drawer"
     app
-    dark
-    floating
-    persistent
-    mobile-break-point="991"
-    width="260"
+    clipped
   >
     <v-img
       src=""
@@ -19,48 +15,34 @@
         tag="v-list"
         column
       >
-        <v-list-tile avatar>
-          <v-list-tile-avatar>
-            <!--<v-img
-              src=""
-              height="34"
-              contain
-            />-->
-            <v-icon color="primary">mdi-soccer</v-icon>
-          </v-list-tile-avatar>
-          <v-list-tile-title class="title">MyFIFA Manager</v-list-tile-title>
-        </v-list-tile>
-
-        <v-divider/>
-
         <template v-if="teamId">
-          <v-list-tile
+          <v-list-item
             :to="{ name: 'teams-teamId', params: { teamId } }"
             active-class=""
-            avatar
             exact
           >
-            <v-list-tile-avatar>
-              <v-icon>mdi-home</v-icon>
-            </v-list-tile-avatar>
-            <v-list-tile-title>{{ teamName }}</v-list-tile-title>
-          </v-list-tile>
+            <v-list-item-title
+              class="title"
+              color="primary"
+            >{{ teamName }}</v-list-item-title>
+          </v-list-item>
+
+          <v-divider/>
 
           <team-date-picker />
 
-          <v-list-tile
+          <v-list-item
             v-for="(link, i) in teamLinks"
             :key="i"
             :to="link.to"
             active-class=""
-            avatar
             class="v-list-item"
           >
-            <v-list-tile-action>
+            <v-list-item-action>
               <v-icon>{{ link.icon }}</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-title>{{ link.text }}</v-list-tile-title>
-          </v-list-tile>
+            </v-list-item-action>
+            <v-list-item-title>{{ link.text }}</v-list-item-title>
+          </v-list-item>
         </template>
       </v-layout>
     </v-img>
@@ -142,7 +124,7 @@
       }
     },
     mounted () {
-      this.setDrawer(window.innerWidth >= 991)
+      this.setDrawer(window.innerWidth >= 1264)
     },
     methods: {
       ...mapMutations('app', {
@@ -154,7 +136,7 @@
 
 <style lang="scss">
   #app-drawer {
-    .v-list__tile {
+    .v-list__item {
       border-radius: 4px;
 
       &--buy {

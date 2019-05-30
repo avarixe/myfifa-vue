@@ -4,9 +4,7 @@
     @click.stop="snackbar = true"
   >
     <slot>
-      <v-btn
-        outline
-      >Remove</v-btn>
+      <v-btn outlined>Remove</v-btn>
     </slot>
 
     <v-snackbar
@@ -16,12 +14,12 @@
       Remove Team: {{ team.title }}?
       <v-btn
         dark
-        flat
+        text
         @click="removeTeam"
       >Yes</v-btn>
       <v-btn
         dark
-        flat
+        text
         @click.stop="snackbar = false"
       >No</v-btn>
     </v-snackbar>

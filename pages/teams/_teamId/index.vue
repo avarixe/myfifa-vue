@@ -8,12 +8,16 @@
       wrap
     >
       <v-flex xs12>
+        <div class="overline">{{ team.title }}</div>
+        <div class="headline font-weight-thin">Dashboard</div>
+      </v-flex>
+      <v-flex xs12>
         <team-date-picker>
           <template #default="{ on }">
             <v-btn
               v-on="on"
               color="accent"
-              outline
+              outlined
               dark
             >{{ $_format(team.current_date, 'MMM DD, YYYY') }}</v-btn>
           </template>
@@ -27,7 +31,7 @@
             <v-btn
               v-on="on"
               color="orange darken-2"
-              outline
+              outlined
               dark
             >Edit</v-btn>
           </template>

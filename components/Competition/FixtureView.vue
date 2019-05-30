@@ -58,7 +58,10 @@
         type: Array,
         required: true
       },
-      override: Boolean
+      override: {
+        type: Boolean,
+        default: false
+      }
     },
     data: () => ({
       edit: false,

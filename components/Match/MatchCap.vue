@@ -13,20 +13,20 @@
         </template>
 
         <v-list>
-          <v-list-tile
+          <v-list-item
             v-for="player in players"
             :key="player.id"
             @click="setPlayer(player.id)"
           >
-            <v-list-tile-action>
-              <v-list-tile-action-text>
+            <v-list-item-action>
+              <v-list-item-action-text>
                 {{ player.pos }}
-              </v-list-tile-action-text>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>{{ player.name }}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+              </v-list-item-action-text>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{ player.name }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
       </v-menu>
     </div>
@@ -43,13 +43,13 @@
         </template>
 
         <v-list>
-          <v-list-tile
+          <v-list-item
             v-for="pos in positions"
             :key="pos"
             @click="setPosition(pos)"
           >
-            <v-list-tile-title>{{ pos }}</v-list-tile-title>
-          </v-list-tile>
+            <v-list-item-title>{{ pos }}</v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
     </div>

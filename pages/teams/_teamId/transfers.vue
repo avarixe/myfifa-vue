@@ -8,6 +8,11 @@
       wrap
     >
       <v-flex xs12>
+        <div class="overline">{{ team.title }}</div>
+        <div class="headline font-weight-thin">Transfer History</div>
+      </v-flex>
+
+      <v-flex xs12>
         <transfer-grid />
       </v-flex>
     </v-layout>

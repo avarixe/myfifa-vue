@@ -26,8 +26,8 @@ export default {
   ** Global CSS
   */
   css: [
-    'vuetify/dist/vuetify.min.css',
-    '@/styles/index.scss'
+    'vuetify/dist/vuetify.min.css'
+    // '@/styles/index.scss'
   ],
 
   /*
@@ -35,11 +35,17 @@ export default {
   */
   loading: '~/components/App/AppLoadingOverlay.vue', // { color: '#3B8070' },
 
+  devModules: [
+    '@nuxtjs/vuetify'
+  ],
+
+  vuetify: {},
+
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/vuetify.js',
+    // '@/plugins/vuetify.js',
     '@/plugins/lodash.js',
     '@/plugins/custom.js',
     '@/plugins/date-fns.js',

@@ -1,35 +1,35 @@
 <template>
-  <v-expansion-panel-content class="elevation-1">
-    <template #header>
-      <div>
-        <template v-if="edit">
-          <v-text-field
-            v-model="stage.name"
-            :rules="$_validate('Stage Name', ['required'])"
-            class="d-inline-block"
-            @click.stop
-          />
-        </template>
-        <span v-else>{{ table.name }}</span>
+  <v-expansion-panel
+    v-model="stage"
+    popout
+  >
+    <v-expansion-panel-header>
+      <template v-if="edit">
+        <v-text-field
+          v-model="stage.name"
+          :rules="$_validate('Stage Name', ['required'])"
+          class="d-inline-block"
+          @click.stop
+        />
+      </template>
+      <span v-else>{{ table.name }}</span>
 
-        <template v-if="!readonly">
-          <edit-mode-button
-            :mode="edit"
-            :changed="stageChanged"
-            @toggle-mode="edit = !edit"
-          />
-          <stage-remove :stage="table" />
-        </template>
-      </div>
-    </template>
+      <template v-if="!readonly">
+        <edit-mode-button
+          :mode="edit"
+          :changed="stageChanged"
+          @toggle-mode="edit = !edit"
+        />
+        <stage-remove :stage="table" />
+      </template>
+    </v-expansion-panel-header>
 
-    <v-card>
+    <v-expansion-panel-content class="elevation-1">
       <v-data-table
         :headers="headers"
         :items="items"
-        :pagination.sync="pagination"
-        disable-initial-sort
-        hide-actions
+        :items-per-page="-1"
+        hide-default-footer
       >
         <template #headers>
           <th
@@ -57,7 +57,7 @@
           </th>
         </template>
 
-        <template #items="{ item }">
+        <template #item="{ item }">
           <table-row
             :headers="headers"
             :row-data="item"
@@ -65,8 +65,8 @@
           />
         </template>
       </v-data-table>
-    </v-card>
-  </v-expansion-panel-content>
+    </v-expansion-panel-content>
+  </v-expansion-panel>
 </template>
 
 <script>
@@ -90,10 +90,7 @@
     data: () => ({
       stage: {},
       edit: false,
-      override: false,
-      pagination: {
-        rowsPerPage: -1
-      }
+      override: false
     }),
     computed: {
       headers () {
@@ -102,49 +99,57 @@
             text: 'Team',
             value: 'name',
             type: 'text',
-            align: 'left'
+            align: 'left',
+            sortable: false
           },
           {
             text: 'W',
             value: 'wins',
             type: 'number',
-            align: 'center'
+            align: 'center',
+            sortable: false
           },
           {
             text: 'D',
             value: 'draws',
             type: 'number',
-            align: 'center'
+            align: 'center',
+            sortable: false
           },
           {
             text: 'L',
             value: 'losses',
             type: 'number',
-            align: 'center'
+            align: 'center',
+            sortable: false
           },
           {
             text: 'GF',
             value: 'goals_for',
             type: 'number',
-            align: 'center'
+            align: 'center',
+            sortable: false
           },
           {
             text: 'GA',
             value: 'goals_against',
             type: 'number',
-            align: 'center'
+            align: 'center',
+            sortable: false
           },
           {
             text: 'GD',
             value: 'goal_difference',
             type: null,
-            align: 'center'
+            align: 'center',
+            sortable: false
           },
           {
             text: 'PTS',
             value: 'points',
             type: null,
-            align: 'center'
+            align: 'center',
+            sortable: false
           }
         ]
         !this.readonly && headers.unshift({

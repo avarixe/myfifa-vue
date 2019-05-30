@@ -59,11 +59,11 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-tile
+            <v-list-item
               v-for="squad in squads"
               :key="squad.id"
               @click="applySquadToMatch(squad.id)"
-            >{{ squad.name }}</v-list-tile>
+            >{{ squad.name }}</v-list-item>
           </v-list>
         </v-menu>
       </template>

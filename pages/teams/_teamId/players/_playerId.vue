@@ -8,7 +8,11 @@
       wrap
     >
       <v-flex xs12>
-        <material-card :title="player.name">
+        <div class="overline">{{ team.title }}</div>
+        <div class="headline font-weight-thin">{{ player.name }}</div>
+      </v-flex>
+
+      <v-flex xs12>
           <v-layout
             class="text-xs-center"
             row
@@ -86,7 +90,6 @@
             </v-flex>
           </v-layout>
 
-        </material-card>
       </v-flex>
 
       <v-flex
@@ -198,18 +201,18 @@
                     </v-btn>
                   </template>
                   <v-list>
-                    <v-list-tile
+                    <v-list-item
                       v-for="(event, key) in filterOptions"
                       :key="key"
                       @click="timelineFilter = key"
                     >
-                      <v-list-tile-avatar>
+                      <v-list-item-avatar>
                         <v-icon :color="event.color">
                           mdi-{{ event.icon }}
                         </v-icon>
-                      </v-list-tile-avatar>
-                      <v-list-tile-title>{{ key }}</v-list-tile-title>
-                    </v-list-tile>
+                      </v-list-item-avatar>
+                      <v-list-item-title>{{ key }}</v-list-item-title>
+                    </v-list-item>
                   </v-list>
                 </v-menu>
               </template>

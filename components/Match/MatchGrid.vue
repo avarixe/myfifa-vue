@@ -1,5 +1,5 @@
 <template>
-  <material-card title="Matches">
+  <v-card flat>
     <v-card-title>
       <v-select
         v-model="seasonFilter"
@@ -37,17 +37,13 @@
     <v-data-table
       :headers="headers"
       :items="rows"
-      :pagination.sync="pagination"
+      sort-by="date_played"
+      sort-desc
       :search="search"
       item-key="id"
       no-data-text="No Matches Recorded"
     >
-      <template #headerCell="{ header }">
-        <span class="subheading font-weight-light text-success text--darken-3">
-          {{ header.text }}
-        </span>
-      </template>
-      <template #items="{ item: match }">
+      <template #item="{ item: match }">
         <v-tooltip bottom>
           <template #activator="{ on }">
             <tr
@@ -71,7 +67,7 @@
       </template>
     </v-data-table>
 
-  </material-card>
+  </v-card>
 </template>
 
 <script>
@@ -79,7 +75,6 @@
     Competition,
     Match
   } from '@/models'
-  import MaterialCard from '@/components/theme/Card'
   import { TeamAccessible } from '@/mixins'
   import { addYears } from 'date-fns'
 
@@ -87,16 +82,8 @@
     mixins: [
       TeamAccessible
     ],
-    components: {
-      MaterialCard
-    },
     data () {
       return {
-        pagination: {
-          sortBy: 'date_played',
-          rowsPerPage: 10,
-          descending: true
-        },
         headers: [
           {
             text: 'Competition',
@@ -219,8 +206,7 @@
 </script>
 
 <style scoped>
-  >>> table.v-table tbody tr td {
-    padding: 8px 16px;
-    height: auto;
+  .v-card, .v-data-table {
+    background-color: transparent;
   }
 </style>

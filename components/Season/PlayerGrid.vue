@@ -6,13 +6,14 @@
     <v-card-title>
       <v-btn-toggle
         v-model="mode"
+        rounded
         mandatory
         class="mx-3"
       >
         <v-btn
           v-for="(opt, i) in modes"
           :key="i"
-          flat
+          text
         >
           <v-icon :color="opt.color">{{ opt.icon }}</v-icon>
         </v-btn>
@@ -38,18 +39,13 @@
       :headers="headers"
       :items="rows"
       :loading="loading"
-      :pagination.sync="pagination"
+      sort-by="posIdx"
       :search="search"
       item-key="id"
       must-sort
       no-data-text="No Players Recorded"
     >
-      <template #headerCell="{ header }">
-        <span class="subheading font-weight-light accent--text text--darken-3">
-          {{ header.text }}
-        </span>
-      </template>
-      <template #items="{ item }">
+      <template #item="{ item }">
         <player-row
           :season="season"
           :player="item"
@@ -101,10 +97,6 @@
         }
       ],
       loading: false,
-      pagination: {
-        rowsPerPage: 10,
-        sortBy: 'posIdx'
-      },
       filterActive: true,
       search: '',
       playerData: {}
