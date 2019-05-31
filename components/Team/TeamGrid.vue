@@ -1,5 +1,5 @@
 <template>
-  <material-card title="Teams">
+  <v-card flat>
     <v-data-table
       :headers="headers"
       :items="rows"
@@ -29,7 +29,7 @@
       </template>
     </v-data-table>
 
-  </material-card>
+  </v-card>
 </template>
 
 <script>
@@ -100,7 +100,7 @@
 </script>
 
 <style scoped>
-  >>> .v-btn-toggle .v-btn {
-    opacity: 1;
+  .v-card, .v-data-table {
+    background-color: transparent;
   }
 </style>

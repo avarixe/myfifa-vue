@@ -5,6 +5,10 @@
       wrap
     >
       <v-flex xs12>
+        <div class="headline font-weight-thin">Teams</div>
+      </v-flex>
+
+      <v-flex xs12>
         <team-form>
           <template #default="{ on }">
             <v-btn
