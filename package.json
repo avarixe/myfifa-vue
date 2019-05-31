@@ -1,8 +1,8 @@
 {
   "name": "nuxt-myfifa",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "JoonDEV | MyFIFA Manager",
-  "author": "Joon Lee <joon.lee@ucla.edu>",
+  "author": "Joon Lee <l33j00n325@gmail.com>",
   "private": true,
   "config": {
     "nuxt": {
@@ -17,7 +17,6 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "@nuxtjs/vuetify": "^1.0.0-alpha.6",
     "@vuex-orm/core": "^0.31.0",
     "actioncable": "^5.2.1",
     "axios": "^0.18.0",
@@ -30,12 +29,10 @@
     "lodash.orderby": "^4.6.0",
     "lodash.pick": "^4.4.0",
     "nuxt": "^2.5.1",
-    "vue": "^2.6.10",
-    "vue-chartist": "^2.2.0",
-    "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.25.1"
+    "vue-chartist": "^2.2.0"
   },
   "devDependencies": {
+    "@nuxtjs/vuetify": "^1.0.0-alpha.6",
     "@babel/traverse": "^7.1.5",
     "@babel/types": "^7.1.5",
     "babel-eslint": "^10.0.1",
@@ -49,8 +46,6 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
     "node-sass": "^4.11.0",
-    "sass-loader": "^7.1.0",
-    "stylus": "^0.54.5",
-    "stylus-loader": "^3.0.2"
+    "sass-loader": "^7.1.0"
   }
 }
