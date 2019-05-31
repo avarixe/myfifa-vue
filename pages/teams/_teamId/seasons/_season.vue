@@ -18,13 +18,13 @@
           :to="previousSeasonLink"
           nuxt
           color="blue-grey"
-          outline
+          outlined
         >Previous Season</v-btn>
         <v-btn
           :to="nextSeasonLink"
           nuxt
           color="blue-grey"
-          outline
+          outlined
         >Next Season</v-btn>
       </v-flex>
       <v-flex xs12>

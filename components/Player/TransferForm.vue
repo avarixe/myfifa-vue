@@ -4,20 +4,20 @@
     :title="title"
     :submit="submit"
     :submit-cb="submitCb"
-    :color="transferOut ? 'red' : 'green'"
+    :color="color"
   >
     <template #activator="{ on }">
       <slot :on="on">
         <v-tooltip
           bottom
-          :color="transferOut ? 'red' : 'green'"
+          :color="color"
         >
           <template #activator="{ on: tooltip }">
             <v-btn
               v-on="{ ...on, ...tooltip }"
               icon
             >
-              <v-icon :color="transferOut ? 'red' : 'green'">
+              <v-icon :color="color">
                 mdi-airplane-{{ transferOut ? 'takeoff' : 'landing' }}
               </v-icon>
             </v-btn>
@@ -53,6 +53,7 @@
               <v-date-picker
                 v-model="transfer.effective_date"
                 @input="$refs.menu.save(transfer.effective_date)"
+                :color="color"
               />
             </v-menu>
           </v-flex>
@@ -154,6 +155,9 @@
       },
       title () {
         return 'Transfer ' + this.player.name
+      },
+      color () {
+        return this.transferOut ? 'red' : 'green'
       }
     },
     watch: {
