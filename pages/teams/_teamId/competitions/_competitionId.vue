@@ -136,7 +136,7 @@
 
 <script>
   import { Competition } from '@/models'
-  import MaterialCard from '@/components/theme/Card'
+  import MaterialCard from '@/helpers/theme/Card'
   import EditCompetitionForm from '@/components/Competition/EditCompetitionForm'
   import CompetitionTable from '@/components/Competition/CompetitionTable'
   import CompetitionRound from '@/components/Competition/CompetitionRound'

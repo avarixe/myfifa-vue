@@ -35,7 +35,7 @@
 <script>
   import { Team } from '@/models'
   import { mapActions } from 'vuex'
-  import MaterialCard from '@/components/theme/Card'
+  import MaterialCard from '@/helpers/theme/Card'
 
   export default {
     components: {

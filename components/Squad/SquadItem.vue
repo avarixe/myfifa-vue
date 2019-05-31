@@ -12,7 +12,7 @@
 
 <script>
   import { FormationView } from '@/helpers'
-  import MaterialCard from '@/components/theme/Card'
+  import MaterialCard from '@/helpers/theme/Card'
   import SquadActions from './SquadActions'
 
   export default {

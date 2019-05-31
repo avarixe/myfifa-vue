@@ -246,9 +246,9 @@
   import PlayerRelease from '@/components/Player/PlayerRelease'
   import PlayerRemove from '@/components/Player/PlayerRemove'
   import PlayerTimeline from '@/components/Player/Timeline'
-  import MaterialCard from '@/components/theme/Card'
-  import MaterialChartCard from '@/components/theme/ChartCard'
-  import MaterialStatsCard from '@/components/theme/StatsCard'
+  import MaterialCard from '@/helpers/theme/Card'
+  import MaterialChartCard from '@/helpers/theme/ChartCard'
+  import MaterialStatsCard from '@/helpers/theme/StatsCard'
   import { TeamAccessible } from '@/mixins'
 
   export default {

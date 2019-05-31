@@ -102,7 +102,7 @@
   import MatchActions from '@/components/Match/MatchActions'
   import MatchLineup from '@/components/Match/MatchLineup'
   import MatchTimeline from '@/components/Match/Timeline'
-  import MaterialCard from '@/components/theme/Card'
+  import MaterialCard from '@/helpers/theme/Card'
   import { TeamAccessible } from '@/mixins'
 
   export default {
