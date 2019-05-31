@@ -8,11 +8,20 @@
       wrap
     >
       <v-flex xs12>
+        <div class="overline">{{ team.title }}</div>
+        <div class="headline font-weight-thin">
+          {{ competition.name }}
+          ({{ seasonLabel(competition.season) }})
+        </div>
+      </v-flex>
+
+      <v-flex xs12>
         <v-btn
           :to="seasonLink"
           nuxt
         >View Season</v-btn>
       </v-flex>
+
       <v-flex xs12>
         <material-card>
           <template #header>

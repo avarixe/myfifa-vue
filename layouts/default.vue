@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <no-ssr>
-      <app-bar />
+      <app-bar v-if="$store.getters.authenticated"/>
     </no-ssr>
 
     <v-content>
@@ -18,7 +18,6 @@
 
   export default {
     name: 'App',
-    // middleware: ['responsive'],
     components: {
       AppBar,
       AppBroadcaster

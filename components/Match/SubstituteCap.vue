@@ -6,7 +6,6 @@
         max-height="200px"
         offset-y
         offset-overflow
-        lazy
       >
         <template #activator="{ on }">
           <span

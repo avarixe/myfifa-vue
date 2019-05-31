@@ -6,7 +6,6 @@
         max-height="200px"
         offset-y
         offset-overflow
-        lazy
       >
         <template #activator="{ on }">
           <span v-on="on">{{ cap.name }}</span>
@@ -36,7 +35,6 @@
         max-height="200px"
         offset-y
         offset-overflow
-        lazy
       >
         <template #activator="{ on }">
           <span v-on="on">{{ cap.pos }}</span>

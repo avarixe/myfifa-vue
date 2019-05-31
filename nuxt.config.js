@@ -1,6 +1,5 @@
 import pkg from './package'
 import nodeExternals from 'webpack-node-externals'
-import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin'
 
 export default {
   mode: 'universal',
@@ -59,10 +58,6 @@ export default {
     // analyze: true,
 
     transpile: [/^vuetify/],
-
-    plugins: [
-      new VuetifyLoaderPlugin()
-    ],
 
     postcss: {},
 

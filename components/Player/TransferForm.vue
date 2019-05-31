@@ -38,7 +38,6 @@
               :return-value.sync="transfer.effective_date"
               full-width
               min-width="290px"
-              lazy
               transition="scale-transition"
             >
               <template #activator="{ on }">

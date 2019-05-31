@@ -33,7 +33,6 @@
     "vue": "^2.6.10",
     "vue-chartist": "^2.2.0",
     "vue-template-compiler": "^2.6.10",
-    "vuetify-loader": "^1.0.6",
     "webpack": "^4.25.1"
   },
   "devDependencies": {

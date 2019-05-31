@@ -5,6 +5,8 @@
     id="app-drawer"
     app
     clipped
+    mobile-break-point="991"
+    width="260px"
   >
     <v-img
       src=""
@@ -124,7 +126,7 @@
       }
     },
     mounted () {
-      this.setDrawer(window.innerWidth >= 1264)
+      this.setDrawer(window.innerWidth >= 991)
     },
     methods: {
       ...mapMutations('app', {

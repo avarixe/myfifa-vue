@@ -37,7 +37,6 @@
               transition="scale-transition"
               full-width
               min-width="290px"
-              lazy
             >
               <template #activator="{ on }">
                 <v-text-field
@@ -68,7 +67,6 @@
               transition="scale-transition"
               full-width
               min-width="290px"
-              lazy
             >
               <template #activator="{ on }">
                 <v-text-field

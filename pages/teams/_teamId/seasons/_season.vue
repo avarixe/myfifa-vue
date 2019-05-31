@@ -8,8 +8,10 @@
       wrap
     >
       <v-flex xs12>
+        <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">{{ title }}</div>
       </v-flex>
+
       <v-flex xs12>
         <v-btn
           v-if="season > 0"
