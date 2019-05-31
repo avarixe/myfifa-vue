@@ -107,7 +107,7 @@
             <span class="green--text">{{ player.ovr }}</span>
             <small>OVR</small>
           </h4>
-          <p class="category d-inline-flex font-weight-light" />
+          <!-- <p class="category d-inline-flex font-weight-light" /> -->
         </material-chart-card>
       </v-flex>
 
@@ -126,7 +126,7 @@
             <span class="green--text">{{ $_formatMoney(player.value) }}</span>
             <small>Value</small>
           </h4>
-          <p class="category d-inline-flex font-weight-light" />
+          <!-- <p class="category d-inline-flex font-weight-light" /> -->
         </material-chart-card>
       </v-flex>
 

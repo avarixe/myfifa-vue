@@ -24,10 +24,7 @@ export default {
   /*
   ** Global CSS
   */
-  css: [
-    'vuetify/dist/vuetify.min.css'
-    // '@/styles/index.scss'
-  ],
+  css: [],
 
   /*
   ** Customize the progress bar color
@@ -38,7 +35,9 @@ export default {
     '@nuxtjs/vuetify'
   ],
 
-  vuetify: {},
+  vuetify: {
+    assets: false
+  },
 
   /*
   ** Plugins to load before mounting the App

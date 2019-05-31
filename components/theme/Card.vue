@@ -22,8 +22,13 @@
           name="header"
         />
         <span v-else>
-          <h4 class="title font-weight-light mb-2">{{ title }}</h4>
-          <p class="category font-weight-thin">{{ text }}</p>
+          <h4
+            :class="`title font-weight-light ${text && 'mb-2'}`"
+          >{{ title }}</h4>
+          <p
+            v-if="text"
+            class="category font-weight-thin"
+          >{{ text }}</p>
         </span>
       </v-card>
       <slot
@@ -112,6 +117,7 @@
     &__header {
       &.v-card {
         border-radius: 4px;
+        padding: 15px;
       }
     }
   }
