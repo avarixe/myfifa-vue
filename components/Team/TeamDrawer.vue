@@ -23,6 +23,9 @@
             active-class=""
             exact
           >
+            <v-list-item-avatar>
+              <v-icon>mdi-shield-half-full</v-icon>
+            </v-list-item-avatar>
             <v-list-item-title
               class="title"
               color="primary"

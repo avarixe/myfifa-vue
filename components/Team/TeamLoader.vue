@@ -31,7 +31,8 @@
         { resource: 'Injuries',     handler: this.getInjuries },
         { resource: 'Matches',      handler: this.getMatches },
         { resource: 'Squads',       handler: this.getSquads },
-        { resource: 'Competitions', handler: this.getCompetitions }
+        { resource: 'Competitions', handler: this.getCompetitions },
+        { resource: 'Stages',       handler: this.getStages }
       ]
 
       for (let i = 0; i < loaders.length; i++) {
@@ -55,7 +56,8 @@
         getInjuries: 'injuries/TEAM_FETCH',
         getMatches: 'matches/FETCH',
         getSquads: 'squads/FETCH',
-        getCompetitions: 'competitions/FETCH'
+        getCompetitions: 'competitions/FETCH',
+        getStages: 'stages/TEAM_FETCH'
       }),
       async loadData ({ resource, handler }) {
         this.status = `Loading ${resource}...`

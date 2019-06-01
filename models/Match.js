@@ -22,6 +22,7 @@ class Match extends Model {
       home: this.string(''),
       away: this.string(''),
       competition: this.string(''),
+      stage: this.string(''),
       date_played: this.string(''),
       extra_time: this.boolean(false),
       home_score: this.number(0),

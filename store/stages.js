@@ -4,6 +4,14 @@ import { Stage } from '@/models'
 
 // actions
 export const actions = {
+  TEAM_FETCH ({ rootState }, { teamId }) {
+    return http({
+      path: myfifa.stages.teamIndex,
+      pathData: { teamId },
+      token: rootState.token,
+      success: ({ data }) => { Stage.insert({ data }) }
+    })
+  },
   FETCH ({ rootState }, { competitionId }) {
     return http({
       path: myfifa.stages.index,

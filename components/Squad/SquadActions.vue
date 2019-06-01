@@ -40,12 +40,12 @@
       Remove Squad: {{ squad.name }}?
       <v-btn
         dark
-        flat
+        text
         @click.native="$store.dispatch('squads/REMOVE', squad.id)"
       >Yes</v-btn>
       <v-btn
         dark
-        flat
+        text
         @click.native="promptDeletion = false"
       >No</v-btn>
     </v-snackbar>

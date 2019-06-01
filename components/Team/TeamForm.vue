@@ -17,7 +17,7 @@
               v-model="team.title"
               :rules="$_validate('Team', ['required'])"
               label="Team"
-              prepend-icon="mdi-account-multiple"
+              prepend-icon="mdi-shield-half-full"
               spellcheck="false"
               autocapitalize="words"
               autocomplete="off"
