@@ -91,6 +91,7 @@ export default {
   },
 
   stages: {
+    teamIndex: 'teams/{{ teamId }}/stages',
     index: 'competitions/{{ competitionId }}/stages',
     record: 'stages/{{ stageId }}'
   },
