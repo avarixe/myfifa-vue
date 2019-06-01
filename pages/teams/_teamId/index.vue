@@ -109,10 +109,10 @@
   import TeamDatePicker from '@/components/Team/TeamDatePicker'
   import TeamForm from '@/components/Team/TeamForm'
   import TeamRemove from '@/components/Team/TeamRemove'
-  import MaterialCard from '@/components/theme/Card'
   import TeamCalendar from '@/components/Team/Dashboard/TeamCalendar'
   import MatchCard from '@/components/Team/Dashboard/MatchCard'
   import PlayersCard from '@/components/Team/Dashboard/PlayersCard'
+  import MaterialCard from '@/helpers/theme/Card'
   import { TeamAccessible } from '@/mixins'
 
   export default {

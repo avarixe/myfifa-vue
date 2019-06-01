@@ -32,7 +32,7 @@
 </template>
 
 <script>
-  import MaterialCard from '@/components/theme/Card'
+  import MaterialCard from '@/helpers/theme/Card'
 
   export default {
     components: {

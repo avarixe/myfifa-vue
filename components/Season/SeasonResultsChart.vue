@@ -10,7 +10,7 @@
 </template>
 
 <script>
-  import MaterialChartCard from '@/components/theme/ChartCard'
+  import MaterialChartCard from '@/helpers/theme/ChartCard'
   import SeasonResultsTable from './SeasonResultsTable'
 
   export default {

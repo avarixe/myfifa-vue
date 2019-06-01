@@ -64,7 +64,7 @@
     Team,
     Player
   } from '@/models'
-  import MaterialCard from '@/components/theme/Card'
+  import MaterialCard from '@/helpers/theme/Card'
   import PlayerRow from './PlayerRow'
 
   export default {
