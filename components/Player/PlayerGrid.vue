@@ -15,7 +15,7 @@
               <v-btn
                 v-on="{ ...menu, ...tooltip }"
                 class="px-1"
-                flat
+                text
               >
                 <v-icon :color="currentFilter.color">
                   mdi-{{ currentFilter.icon }}

@@ -50,11 +50,23 @@
             </v-menu>
           </v-flex>
           <v-flex xs12>
-            <v-combobox
+            <v-select
               v-model="match.competition"
               :items="competitions"
               :rules="$_validate('Competition', ['required'])"
               label="Competition"
+              prepend-icon="mdi-trophy"
+              spellcheck="false"
+              autocapitalize="words"
+              autocomplete="off"
+              autocorrect="off"
+            />
+          </v-flex>
+          <v-flex xs12>
+            <v-select
+              v-model="match.stage"
+              :items="stages"
+              label="Stage"
               prepend-icon="mdi-trophy"
               spellcheck="false"
               autocapitalize="words"
@@ -68,7 +80,7 @@
               :items="teams"
               :rules="$_validate('Home Team', ['required'])"
               label="Home Team"
-              prepend-icon="mdi-account-multiple"
+              prepend-icon="mdi-shield-half-full"
               spellcheck="false"
               autocapitalize="words"
               autocomplete="off"
@@ -93,7 +105,7 @@
               :items="teams"
               :rules="$_validate('Away Team', ['required'])"
               label="Away Team"
-              prepend-icon="mdi-account-multiple"
+              prepend-icon="mdi-shield-half-full"
               spellcheck="false"
               autocapitalize="words"
               autocomplete="off"
@@ -126,10 +138,8 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import {
-    competitions,
-    teams
-  } from '@/models/Match'
+  import { Competition } from '@/models'
+  import { teams } from '@/models/Match'
   import {
     TeamAccessible,
     DialogFormable
@@ -158,14 +168,43 @@
       }
     }),
     computed: {
-      teams () { return teams(this.team.id) },
-      competitions () { return competitions(this.team.id) },
+      teams () {
+        return teams(this.team.id)
+      },
       title () {
         return this.match.id ? 'Edit Match' : 'New Match'
       },
       isTeamGame () {
         return this.match.home === this.team.title ||
                this.match.away === this.team.title
+      },
+      season () {
+        const startDate = this.$_parse(this.team.start_date)
+        const datePlayed = this.$_parse(this.match.date_played)
+        return parseInt((datePlayed - startDate) / (525600 * 60 * 1000))
+      },
+      competitions () {
+        return Competition
+          .query()
+          .where('season', this.season)
+          .get()
+          .map(competition => competition.name)
+      },
+      stages () {
+        const competition = Competition
+          .query()
+          .with('stages')
+          .where('season', this.season)
+          .where('name', this.match.competition)
+          .first()
+        console.log(competition)
+        if (competition) {
+          return competition.stages
+            .filter(stage => !stage.table)
+            .map(stage => stage.name)
+        } else {
+          return []
+        }
       }
     },
     watch: {
@@ -188,6 +227,7 @@
               'id',
               'date_played',
               'competition',
+              'stage',
               'home',
               'away',
               'extra_time'
