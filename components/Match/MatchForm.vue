@@ -62,18 +62,23 @@
               autocorrect="off"
             />
           </v-flex>
-          <v-flex xs12>
-            <v-select
-              v-model="match.stage"
-              :items="stages"
-              label="Stage"
-              prepend-icon="mdi-trophy"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-flex>
+          <v-scroll-y-transition mode="out-in">
+            <v-flex
+              v-if="stages.length > 0"
+              xs12
+            >
+              <v-select
+                v-model="match.stage"
+                :items="stages"
+                label="Stage"
+                prepend-icon="mdi-trophy"
+                spellcheck="false"
+                autocapitalize="words"
+                autocomplete="off"
+                autocorrect="off"
+              />
+            </v-flex>
+          </v-scroll-y-transition>
           <v-flex xs12>
             <v-combobox
               v-model="match.home"
