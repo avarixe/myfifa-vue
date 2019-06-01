@@ -64,6 +64,23 @@
             />
           </v-flex>
           <v-flex xs12>
+            <v-checkbox
+              v-model="player.youth"
+              label="Youth Player"
+              :disabled="player.id > 0"
+              hide-details
+            />
+          </v-flex>
+
+          <v-flex xs12>
+            <v-select
+              v-model="player.kit_no"
+              :items="Array.from({ length: 99 }, (v, k) => k + 1)"
+              label="Kit Number"
+              prepend-icon="mdi-tshirt-crew"
+            />
+          </v-flex>
+          <v-flex xs12>
             <v-select
               v-model="player.ovr"
               :items="Array.from({ length: 61 }, (v, k) => k + 40)"
@@ -81,14 +98,6 @@
               :prefix="team.currency"
               :hint="$_numberHint(player.value)"
               persistent-hint
-            />
-          </v-flex>
-          <v-flex xs12>
-            <v-checkbox
-              v-model="player.youth"
-              label="Youth Player"
-              :disabled="player.id > 0"
-              hide-details
             />
           </v-flex>
         </v-layout>
