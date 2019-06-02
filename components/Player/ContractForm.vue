@@ -29,63 +29,25 @@
       <v-container>
         <v-layout wrap>
           <v-flex xs12>
-            <v-menu
-              v-model="menus.effective_date"
-              ref="menu1"
-              :close-on-content-click="false"
-              :return-value.sync="contract.effective_date"
-              transition="scale-transition"
-              full-width
-              min-width="290px"
-            >
-              <template #activator="{ on }">
-                <v-text-field
-                  v-model="contract.effective_date"
-                  v-on="on"
-                  label="Effective Date"
-                  prepend-icon="mdi-calendar-today"
-                  :rules="$_validate('Effective Date', ['required', 'date'])"
-                  readonly
-                />
-              </template>
-              <v-date-picker
-                v-model="contract.effective_date"
-                ref="picker1"
-                :min="team.current_date"
-                :max="contract.end_date"
-                @input="$refs.menu1.save(contract.effective_date)"
-              />
-            </v-menu>
+            <v-date-field
+              v-model="contract.effective_date"
+              label="Effective Date"
+              prepend-icon="mdi-calendar-today"
+              :rules="$_validate('Effective Date', ['required', 'date'])"
+              :min="team.current_date"
+              :max="contract.end_date"
+            />
           </v-flex>
 
           <v-flex xs12>
-            <v-menu
-              v-model="menus.end_date"
-              ref="menu2"
-              :close-on-content-click="false"
-              :return-value.sync="contract.end_date"
-              transition="scale-transition"
-              full-width
-              min-width="290px"
-            >
-              <template #activator="{ on }">
-                <v-text-field
-                  v-model="contract.end_date"
-                  v-on="on"
-                  label="End Date"
-                  prepend-icon="mdi-calendar"
-                  :rules="$_validate('End Date', ['required', 'date'])"
-                  readonly
-                />
-              </template>
-              <v-date-picker
-                v-model="contract.end_date"
-                ref="picker2"
-                :min="contract.effective_date"
-                :max="maxEndDate"
-                @input="$refs.menu2.save(contract.end_date)"
-              />
-            </v-menu>
+            <v-date-field
+              v-model="contract.end_date"
+              label="End Date"
+              prepend-icon="mdi-calendar"
+              :rules="$_validate('End Date', ['required', 'date'])"
+              :min="contract.effective_date"
+              :max="maxEndDate"
+            />
           </v-flex>
 
           <v-flex xs12>
@@ -172,12 +134,13 @@
   import { mapState } from 'vuex'
   import { addYears } from 'date-fns'
   import { Contract } from '@/models'
-  import {
-    TeamAccessible,
-    DialogFormable
-  } from '@/mixins'
+  import { VDateField } from '@/helpers'
+  import { TeamAccessible, DialogFormable } from '@/mixins'
 
   export default {
+    components: {
+      VDateField
+    },
     mixins: [
       DialogFormable,
       TeamAccessible

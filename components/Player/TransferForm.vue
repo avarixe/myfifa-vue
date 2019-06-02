@@ -31,31 +31,14 @@
       <v-container>
         <v-layout wrap>
           <v-flex xs12>
-            <v-menu
-              v-model="menu"
-              ref="menu"
-              :close-on-content-click="false"
-              :return-value.sync="transfer.effective_date"
-              full-width
-              min-width="290px"
-              transition="scale-transition"
-            >
-              <template #activator="{ on }">
-                <v-text-field
-                  v-model="transfer.effective_date"
-                  v-on="on"
-                  label="Effective Date"
-                  prepend-icon="mdi-calendar-today"
-                  required
-                  readonly
-                />
-              </template>
-              <v-date-picker
-                v-model="transfer.effective_date"
-                @input="$refs.menu.save(transfer.effective_date)"
-                :color="color"
-              />
-            </v-menu>
+            <v-date-field
+              v-model="transfer.effective_date"
+              label="Effective Date"
+              prepend-icon="mdi-calendar-today"
+              :rules="$_validate('Effective Date', ['required', 'date'])"
+              :min="team.current_date"
+              :color="color"
+            />
           </v-flex>
           <v-flex xs12>
             <v-text-field
@@ -119,12 +102,13 @@
 </template>
 
 <script>
-  import {
-    TeamAccessible,
-    DialogFormable
-  } from '@/mixins'
+  import { VDateField } from '@/helpers'
+  import { TeamAccessible, DialogFormable } from '@/mixins'
 
   export default {
+    components: {
+      VDateField
+    },
     mixins: [
       DialogFormable,
       TeamAccessible
