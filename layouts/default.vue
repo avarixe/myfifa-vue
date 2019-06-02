@@ -1,8 +1,6 @@
 <template>
   <v-app>
-    <no-ssr>
-      <app-bar v-if="$store.getters.authenticated"/>
-    </no-ssr>
+    <app-bar v-if="$store.getters.authenticated"/>
 
     <v-content>
       <app-broadcaster />

@@ -167,10 +167,6 @@
           performance_bonus: null,
           bonus_req: null,
           bonus_req_type: null
-        },
-        menus: {
-          effective_date: false,
-          end_date: false
         }
       }
     },

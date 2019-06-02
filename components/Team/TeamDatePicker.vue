@@ -3,25 +3,20 @@
     v-model="calendar"
     :close-on-content-click="false"
     transition="scale-transition"
-    origin="top left"
-    class="d-inline-block"
+    :origin="origin"
+    :class="menuClass"
   >
     <template #activator="{ on }">
-      <slot :on="on">
-        <v-list-item
-          v-ripple
+      <slot
+        :on="on"
+        :date="currentDate"
+      >
+        <v-btn
           v-on="on"
           color="accent"
-          class="v-list-item"
-          style="width: 100%"
-        >
-          <v-list-item-action>
-            <v-icon>mdi-calendar</v-icon>
-          </v-list-item-action>
-          <v-list-item-title>
-            {{ $_format(currentDate, 'MMM DD, YYYY') }}
-          </v-list-item-title>
-        </v-list-item>
+          outlined
+          dark
+        >{{ $_format(currentDate, 'MMM DD, YYYY') }}</v-btn>
       </slot>
     </template>
 
@@ -42,6 +37,16 @@
     mixins: [
       TeamAccessible
     ],
+    props: {
+      menuClass: {
+        type: String,
+        default: 'd-inline-block'
+      },
+      origin: {
+        type: String,
+        default: 'top left'
+      }
+    },
     data () {
       return {
         calendar: false,
