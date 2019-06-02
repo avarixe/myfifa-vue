@@ -35,41 +35,48 @@
     </v-card-title>
 
     <!-- Player Information Grid -->
-    <v-data-table
-      :headers="headers"
-      :items="rows"
-      :loading="loading"
-      sort-by="posIdx"
-      :search="search"
-      item-key="id"
-      must-sort
-      no-data-text="No Players Recorded"
+    <paged-table
+      v-model="page"
+      :page-count="pageCount"
     >
-      <template #item="{ item }">
-        <player-row
-          :season="season"
-          :player="item"
-          :mode="mode"
-        />
+      <template #table>
+        <v-data-table
+          :headers="headers"
+          :items="rows"
+          :page.sync="page"
+          :loading="loading"
+          sort-by="posIdx"
+          :search="search"
+          item-key="id"
+          must-sort
+          hide-default-footer
+          no-data-text="No Players Recorded"
+          @page-count="pageCount = $event"
+        >
+          <template #item="{ item }">
+            <player-row
+              :season="season"
+              :player="item"
+              :mode="mode"
+            />
+          </template>
+        </v-data-table>
       </template>
-    </v-data-table>
-
+    </paged-table>
   </material-card>
 </template>
 
 <script>
   import { addYears } from 'date-fns'
   import Vue from 'vue'
-  import {
-    Team,
-    Player
-  } from '@/models'
-  import MaterialCard from '@/helpers/theme/Card'
+  import { Team, Player } from '@/models'
+  import { MaterialCard, PagedTable } from '@/helpers'
   import PlayerRow from './PlayerRow'
 
   export default {
     components: {
       MaterialCard,
+      PagedTable,
       PlayerRow
     },
     props: {
@@ -98,6 +105,8 @@
       ],
       loading: false,
       filterActive: true,
+      page: 1,
+      pageCount: 0,
       search: '',
       playerData: {}
     }),

@@ -65,7 +65,7 @@
     props: {
       color: {
         type: String,
-        default: 'secondary'
+        default: 'primary'
       },
       elevation: {
         type: [Number, String],

@@ -4,6 +4,7 @@ export { default as FormationView } from './FormationView'
 export { default as MinuteField } from './MinuteField'
 export { default as PlayerSelect } from './PlayerSelect'
 export { default as VDateField } from './VDateField'
+export { default as PagedTable } from './PagedTable'
 
 export { default as MaterialCard } from './theme/Card'
 export { default as MaterialStatsCard } from './theme/StatsCard'

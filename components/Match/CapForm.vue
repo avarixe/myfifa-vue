@@ -22,27 +22,14 @@
             />
           </v-flex>
           <v-flex xs12>
-            <v-select
+            <player-select
               v-model="cap.player_id"
-              :items="players"
-              item-text="name"
+              :players="players"
               item-value="id"
               :rules="$_validate('Player', ['required'])"
               :disabled="cap.start > 0"
               label="Player"
-              prepend-icon="mdi-account"
-            >
-              <template #item="{ item }">
-                <v-list-item-action>
-                  <v-list-item-action-text>
-                    {{ item.pos }}
-                  </v-list-item-action-text>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title>{{ item.name }}</v-list-item-title>
-                </v-list-item-content>
-              </template>
-            </v-select>
+            />
           </v-flex>
         </v-layout>
       </v-container>
@@ -53,9 +40,13 @@
 <script>
   import { mapState } from 'vuex'
   import { activePlayers } from '@/models/Player'
+  import { PlayerSelect } from '@/helpers'
   import { DialogFormable } from '@/mixins'
 
   export default {
+    components: {
+      PlayerSelect
+    },
     mixins: [
       DialogFormable
     ],

@@ -43,26 +43,13 @@
           </v-flex>
 
           <v-flex xs8>
-            <v-select
+            <player-select
               v-model="squad.players_list[i]"
-              :items="players"
+              :players="players"
               item-value="id"
-              item-text="name"
               label="Player"
-              prepend-icon="mdi-account"
               hide-details
-            >
-              <template #item="{ item }">
-                <v-list-item-action>
-                  <v-list-item-action-text>
-                    {{ item.pos }}
-                  </v-list-item-action-text>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title>{{ item.name }}</v-list-item-title>
-                </v-list-item-content>
-              </template>
-            </v-select>
+            />
           </v-flex>
         </v-layout>
       </v-container>
@@ -71,17 +58,15 @@
 </template>
 
 <script>
-  import {
-    mapState,
-    mapActions
-  } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   import { activePlayers } from '@/models/Player'
-  import {
-    TeamAccessible,
-    DialogFormable
-  } from '@/mixins'
+  import { PlayerSelect } from '@/helpers'
+  import { TeamAccessible, DialogFormable } from '@/mixins'
 
   export default {
+    components: {
+      PlayerSelect
+    },
     mixins: [
       DialogFormable,
       TeamAccessible
