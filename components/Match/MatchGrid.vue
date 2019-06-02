@@ -37,11 +37,14 @@
     <v-data-table
       :headers="headers"
       :items="rows"
+      :page="page"
       sort-by="date_played"
       sort-desc
       :search="search"
       item-key="id"
+      hide-default-footer
       no-data-text="No Matches Recorded"
+      @page-count="pageCount = $event"
     >
       <template #item="{ item: match }">
         <v-tooltip bottom>
@@ -66,7 +69,13 @@
         </v-tooltip>
       </template>
     </v-data-table>
-
+    <div class="text-xs-center pt-2">
+      <v-pagination
+        v-if="pageCount > 1"
+        v-model="page"
+        :length="pageCount"
+      />
+    </div>
   </v-card>
 </template>
 
@@ -113,6 +122,8 @@
           }
         ],
         search: '',
+        page: 1,
+        pageCount: 0,
         seasonFilter: null,
         competition: null
       }

@@ -3,9 +3,12 @@
     <v-data-table
       :headers="headers"
       :items="rows"
+      :page.sync="page"
       :loading="loading"
       item-key="id"
       no-data-text="No Teams Recorded"
+      hide-default-footer
+      @page-count="pageCount = $event"
     >
       <template #item="{ item: team }">
         <v-tooltip bottom>
@@ -28,19 +31,21 @@
         </v-tooltip>
       </template>
     </v-data-table>
-
+    <div class="text-xs-center pt-2">
+      <v-pagination
+        v-if="pageCount > 1"
+        v-model="page"
+        :length="pageCount"
+      />
+    </div>
   </v-card>
 </template>
 
 <script>
   import { Team } from '@/models'
   import { mapActions } from 'vuex'
-  import MaterialCard from '@/helpers/theme/Card'
 
   export default {
-    components: {
-      MaterialCard
-    },
     data () {
       return {
         headers: [
@@ -61,7 +66,9 @@
           }
         ],
         loading: false,
-        search: ''
+        search: '',
+        page: 1,
+        pageCount: 0
       }
     },
     computed: {

@@ -38,12 +38,15 @@
     <v-data-table
       :headers="headers"
       :items="rows"
+      :page="page"
       :loading="loading"
       sort-by="posIdx"
       :search="search"
       item-key="id"
       must-sort
+      hide-default-footer
       no-data-text="No Players Recorded"
+      @page-count="pageCount = $event"
     >
       <template #item="{ item }">
         <player-row
@@ -53,7 +56,13 @@
         />
       </template>
     </v-data-table>
-
+    <div class="text-xs-center pt-2">
+      <v-pagination
+        v-if="pageCount > 1"
+        v-model="page"
+        :length="pageCount"
+      />
+    </div>
   </material-card>
 </template>
 
@@ -98,6 +107,8 @@
       ],
       loading: false,
       filterActive: true,
+      page: 1,
+      pageCount: 0,
       search: '',
       playerData: {}
     }),

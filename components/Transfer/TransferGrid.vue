@@ -26,11 +26,14 @@
     <v-data-table
       :headers="headers"
       :items="rows"
+      :page="page"
       sort-by="effective_date"
       sort-desc
       :search="search"
       item-key="id"
+      hide-default-footer
       no-data-text="No Matches Recorded"
+      @page-count="pageCount = $event"
     >
       <template #item.effective_date="{ item: transfer }">
         {{ $_format($_parse(transfer.effective_date), 'MMM DD, YYYY') }}
@@ -41,7 +44,13 @@
         </span>
       </template>
     </v-data-table>
-
+    <div class="text-xs-center pt-2">
+      <v-pagination
+        v-if="pageCount > 1"
+        v-model="page"
+        :length="pageCount"
+      />
+    </div>
   </v-card>
 </template>
 
@@ -82,6 +91,8 @@
           }
         ],
         search: '',
+        page: 1,
+        pageCount: 0,
         seasonFilter: null
       }
     },
