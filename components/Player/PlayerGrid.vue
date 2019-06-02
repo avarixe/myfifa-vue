@@ -71,34 +71,35 @@
     </v-card-title>
 
     <!-- Player Information Grid -->
-    <v-data-table
-      :headers="headers"
-      :items="rows"
-      :page="page"
-      :loading="loading"
-      :sort-by="['pos_idx']"
-      multi-sort
-      :search="search"
-      item-key="id"
-      hide-default-footer
-      no-data-text="No Players Found"
-      @page-count="pageCount = $event"
+    <paged-table
+      v-model="page"
+      :page-count="pageCount"
     >
-      <template #item="{ item }">
-        <player-row
-          :player-data="item"
+      <template #table>
+        <v-data-table
           :headers="headers"
-          :mode="mode"
-        />
+          :items="rows"
+          :page.sync="page"
+          :loading="loading"
+          :sort-by="['pos_idx']"
+          multi-sort
+          :search="search"
+          item-key="id"
+          hide-default-footer
+          no-data-text="No Players Found"
+          @page-count="pageCount = $event"
+        >
+          <template #item="{ item }">
+            <player-row
+              :player-data="item"
+              :headers="headers"
+              :mode="mode"
+            />
+          </template>
+        </v-data-table>
       </template>
-    </v-data-table>
-    <div class="text-xs-center pt-2">
-      <v-pagination
-        v-if="pageCount > 1"
-        v-model="page"
-        :length="pageCount"
-      />
-    </div>
+    </paged-table>
+
   </v-card>
 </template>
 
@@ -106,6 +107,7 @@
   import { mapActions } from 'vuex'
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
+  import { PagedTable } from '@/helpers'
   import PlayerRow from './PlayerRow'
 
   export default {
@@ -113,7 +115,8 @@
       TeamAccessible
     ],
     components: {
-      PlayerRow
+      PlayerRow,
+      PagedTable
     },
     data () {
       return {

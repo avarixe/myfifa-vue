@@ -23,46 +23,47 @@
     </v-card-title>
 
     <!-- Match History Grid -->
-    <v-data-table
-      :headers="headers"
-      :items="rows"
-      :page="page"
-      sort-by="effective_date"
-      sort-desc
-      :search="search"
-      item-key="id"
-      hide-default-footer
-      no-data-text="No Matches Recorded"
-      @page-count="pageCount = $event"
+    <paged-table
+      v-model="page"
+      :page-count="pageCount"
     >
-      <template #item.effective_date="{ item: transfer }">
-        {{ $_format($_parse(transfer.effective_date), 'MMM DD, YYYY') }}
+      <template #table>
+        <v-data-table
+          :headers="headers"
+          :items="rows"
+          :page.sync="page"
+          sort-by="effective_date"
+          sort-desc
+          :search="search"
+          item-key="id"
+          hide-default-footer
+          no-data-text="No Matches Recorded"
+          @page-count="pageCount = $event"
+        >
+          <template #item.effective_date="{ item: transfer }">
+            {{ $_format($_parse(transfer.effective_date), 'MMM DD, YYYY') }}
+          </template>
+          <template #item.fee="{ item: transfer }">
+            <span :class="`${isTransferOut(transfer) ? 'green' : 'red'}--text`">
+              {{ $_formatMoney(transfer.fee) }}
+            </span>
+          </template>
+        </v-data-table>
       </template>
-      <template #item.fee="{ item: transfer }">
-        <span :class="`${isTransferOut(transfer) ? 'green' : 'red'}--text`">
-          {{ $_formatMoney(transfer.fee) }}
-        </span>
-      </template>
-    </v-data-table>
-    <div class="text-xs-center pt-2">
-      <v-pagination
-        v-if="pageCount > 1"
-        v-model="page"
-        :length="pageCount"
-      />
-    </div>
+    </paged-table>
   </v-card>
 </template>
 
 <script>
-  import {
-    Player,
-    Transfer
-  } from '@/models'
+  import { Player, Transfer } from '@/models'
+  import { PagedTable } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
   import { addYears } from 'date-fns'
 
   export default {
+    components: {
+      PagedTable
+    },
     mixins: [
       TeamAccessible
     ],

@@ -34,60 +34,62 @@
     </v-card-title>
 
     <!-- Match History Grid -->
-    <v-data-table
-      :headers="headers"
-      :items="rows"
-      :page="page"
-      sort-by="date_played"
-      sort-desc
-      :search="search"
-      item-key="id"
-      hide-default-footer
-      no-data-text="No Matches Recorded"
-      @page-count="pageCount = $event"
+    <paged-table
+      v-model="page"
+      :page-count="pageCount"
     >
-      <template #item="{ item: match }">
-        <v-tooltip bottom>
-          <template #activator="{ on }">
-            <tr
-              v-on="on"
-              @click="$router.push(matchLink(match))"
-            >
-              <td class="text-xs-center">{{ match.competition }}</td>
-              <td class="text-xs-right">{{ match.home }}</td>
-              <td :class="`${resultColor(match.team_result)} text-xs-center`">
-                {{ match.score }}
-              </td>
-              <td class="text-xs-left">{{ match.away }}</td>
-              <td class="text-xs-center">
-                {{ $_format($_parse(match.date_played), 'MMM DD, YYYY') }}
-              </td>
-            </tr>
+      <template #table>
+        <v-data-table
+          :headers="headers"
+          :items="rows"
+          :page.sync="page"
+          sort-by="date_played"
+          sort-desc
+          :search="search"
+          item-key="id"
+          hide-default-footer
+          no-data-text="No Matches Recorded"
+          @page-count="pageCount = $event"
+        >
+          <template #item="{ item: match }">
+            <v-tooltip bottom>
+              <template #activator="{ on }">
+                <tr
+                  v-on="on"
+                  @click="$router.push(matchLink(match))"
+                >
+                  <td class="text-xs-center">{{ match.competition }}</td>
+                  <td class="text-xs-right">{{ match.home }}</td>
+                  <td :class="`${resultColor(match.team_result)} text-xs-center`">
+                    {{ match.score }}
+                  </td>
+                  <td class="text-xs-left">{{ match.away }}</td>
+                  <td class="text-xs-center">
+                    {{ $_format($_parse(match.date_played), 'MMM DD, YYYY') }}
+                  </td>
+                </tr>
+              </template>
+              Click to View Match: <br>
+              <i>{{ match.home }} v {{ match.away }}</i>
+            </v-tooltip>
           </template>
-          Click to View Match: <br>
-          <i>{{ match.home }} v {{ match.away }}</i>
-        </v-tooltip>
+        </v-data-table>
       </template>
-    </v-data-table>
-    <div class="text-xs-center pt-2">
-      <v-pagination
-        v-if="pageCount > 1"
-        v-model="page"
-        :length="pageCount"
-      />
-    </div>
+    </paged-table>
+
   </v-card>
 </template>
 
 <script>
-  import {
-    Competition,
-    Match
-  } from '@/models'
+  import { Competition, Match } from '@/models'
+  import { PagedTable } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
   import { addYears } from 'date-fns'
 
   export default {
+    components: {
+      PagedTable
+    },
     mixins: [
       TeamAccessible
     ],
