@@ -12,16 +12,7 @@
         <div class="headline font-weight-thin">Dashboard</div>
       </v-flex>
       <v-flex xs12>
-        <team-date-picker>
-          <template #default="{ on }">
-            <v-btn
-              v-on="on"
-              color="accent"
-              outlined
-              dark
-            >{{ $_format(team.current_date, 'MMM DD, YYYY') }}</v-btn>
-          </template>
-        </team-date-picker>
+        <team-date-picker />
 
         <team-form
           :team-id="team.id"

@@ -123,7 +123,6 @@
       submitCb: Function
     },
     data: () => ({
-      menu: false,
       transfer: {
         effective_date: null,
         origin: '',

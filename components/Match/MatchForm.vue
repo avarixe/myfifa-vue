@@ -146,7 +146,6 @@
     },
     data: () => ({
       valid: false,
-      menu: false,
       match: {
         date_played: null,
         competition: '',

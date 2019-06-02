@@ -34,7 +34,24 @@
 
           <v-divider/>
 
-          <team-date-picker />
+          <team-date-picker>
+            <template #default="{ on, date }">
+              <v-list-item
+                v-ripple
+                v-on="on"
+                color="accent"
+                class="v-list-item"
+                style="width: 100%"
+              >
+                <v-list-item-action>
+                  <v-icon>mdi-calendar</v-icon>
+                </v-list-item-action>
+                <v-list-item-title>
+                  {{ $_format(date, 'MMM DD, YYYY') }}
+                </v-list-item-title>
+              </v-list-item>
+            </template>
+          </team-date-picker>
 
           <v-list-item
             v-for="(link, i) in teamLinks"
