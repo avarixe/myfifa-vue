@@ -53,7 +53,7 @@
 </template>
 
 <script>
-  import HelperOffset from './helper/Offset'
+  import HelperOffset from './Offset'
 
   export default {
     inheritAttrs: false,

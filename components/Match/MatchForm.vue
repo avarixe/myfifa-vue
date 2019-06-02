@@ -22,32 +22,14 @@
       <v-container>
         <v-layout wrap>
           <v-flex xs12>
-            <v-menu
-              v-model="menu"
-              ref="menu"
-              :close-on-content-click="false"
-              :return-value.sync="match.date_played"
-              transition="scale-transition"
-              full-width
-              min-width="290px"
-            >
-              <template #activator="{ on }">
-                <v-text-field
-                  v-model="match.date_played"
-                  v-on="on"
-                  label="Date Played"
-                  prepend-icon="mdi-calendar-today"
-                  :rules="$_validate('Date Played', ['required', 'date'])"
-                  readonly
-                />
-              </template>
-              <v-date-picker
-                v-model="match.date_played"
-                ref="picker"
-                :color="color"
-                @input="$refs.menu.save(match.date_played)"
-              />
-            </v-menu>
+            <v-date-field
+              v-model="match.date_played"
+              label="Date Played"
+              prepend-icon="mdi-calendar-today"
+              :rules="$_validate('Date Played', ['required', 'date'])"
+              :min="team.current_date"
+              :color="color"
+            />
           </v-flex>
           <v-flex xs12>
             <v-select
@@ -145,12 +127,13 @@
   import { mapActions } from 'vuex'
   import { Competition } from '@/models'
   import { teams } from '@/models/Match'
-  import {
-    TeamAccessible,
-    DialogFormable
-  } from '@/mixins'
+  import { VDateField } from '@/helpers'
+  import { TeamAccessible, DialogFormable } from '@/mixins'
 
   export default {
+    components: {
+      VDateField
+    },
     mixins: [
       DialogFormable,
       TeamAccessible

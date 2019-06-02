@@ -25,31 +25,13 @@
             />
           </v-flex>
           <v-flex xs12>
-            <v-menu
-              v-model="menu"
-              ref="menu"
-              :close-on-content-click="false"
-              :return-value.sync="team.start_date"
-              transition="scale-transition"
-              full-width
-              min-width="290px"
-            >
-              <template #activator="{ on }">
-                <v-text-field
-                  v-model="team.start_date"
-                  v-on="on"
-                  label="Start Date"
-                  prepend-icon="mdi-calendar-today"
-                  :rules="$_validate('Start Date', ['required', 'date'])"
-                  readonly
-                />
-              </template>
-              <v-date-picker
-                v-model="team.start_date"
-                :color="color"
-                @input="$refs.menu.save(team.start_date)"
-              />
-            </v-menu>
+            <v-date-field
+              v-model="team.start_date"
+              label="Start Date"
+              prepend-icon="mdi-calendar-today"
+              :rules="$_validate('Start Date', ['required', 'date'])"
+              :color="color"
+            />
           </v-flex>
           <v-flex xs12>
             <v-text-field
@@ -67,9 +49,13 @@
 <script>
   import { mapActions } from 'vuex'
   import { Team } from '@/models'
+  import { VDateField } from '@/helpers'
   import { DialogFormable } from '@/mixins'
 
   export default {
+    components: {
+      VDateField
+    },
     mixins: [
       DialogFormable
     ],
@@ -78,7 +64,6 @@
     },
     data () {
       return {
-        menu: false,
         team: {
           title: '',
           start_date: this.$_format(new Date()),
