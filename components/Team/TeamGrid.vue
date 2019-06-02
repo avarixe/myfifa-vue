@@ -1,45 +1,54 @@
 <template>
   <v-card flat>
-    <v-data-table
-      :headers="headers"
-      :items="rows"
-      :loading="loading"
-      item-key="id"
-      no-data-text="No Teams Recorded"
+    <paged-table
+      v-model="page"
+      :page-count="pageCount"
     >
-      <template #item="{ item: team }">
-        <v-tooltip bottom>
-          <template #activator="{ on }">
-            <tr
-              v-on="on"
-              @click="$router.push(teamLink(team))"
-            >
-              <td class="text-xs-center">{{ team.title }}</td>
-              <td class="text-xs-center">
-                {{ $_format($_parse(team.start_date), 'MMM DD, YYYY') }}
-              </td>
-              <td class="text-xs-center">
-                {{ $_format($_parse(team.current_date), 'MMM DD, YYYY') }}
-              </td>
-            </tr>
+      <template #table>
+        <v-data-table
+          :headers="headers"
+          :items="rows"
+          :page.sync="page"
+          :loading="loading"
+          item-key="id"
+          no-data-text="No Teams Recorded"
+          hide-default-footer
+          @page-count="pageCount = $event"
+        >
+          <template #item="{ item: team }">
+            <v-tooltip bottom>
+              <template #activator="{ on }">
+                <tr
+                  v-on="on"
+                  @click="$router.push(teamLink(team))"
+                >
+                  <td class="text-xs-center">{{ team.title }}</td>
+                  <td class="text-xs-center">
+                    {{ $_format($_parse(team.start_date), 'MMM DD, YYYY') }}
+                  </td>
+                  <td class="text-xs-center">
+                    {{ $_format($_parse(team.current_date), 'MMM DD, YYYY') }}
+                  </td>
+                </tr>
+              </template>
+              Click to Manage Team: <br>
+              <i>{{ team.title }}</i>
+            </v-tooltip>
           </template>
-          Click to Manage Team: <br>
-          <i>{{ team.title }}</i>
-        </v-tooltip>
+        </v-data-table>
       </template>
-    </v-data-table>
-
+    </paged-table>
   </v-card>
 </template>
 
 <script>
   import { Team } from '@/models'
+  import { PagedTable } from '@/helpers'
   import { mapActions } from 'vuex'
-  import MaterialCard from '@/helpers/theme/Card'
 
   export default {
     components: {
-      MaterialCard
+      PagedTable
     },
     data () {
       return {
@@ -61,7 +70,9 @@
           }
         ],
         loading: false,
-        search: ''
+        search: '',
+        page: 1,
+        pageCount: 0
       }
     },
     computed: {
