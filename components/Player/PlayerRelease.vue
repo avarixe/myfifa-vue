@@ -23,12 +23,12 @@
       Release Player: {{ player.name }}?
       <v-btn
         dark
-        flat
+        text
         @click="$store.dispatch('players/RELEASE', player.id)"
       >Yes</v-btn>
       <v-btn
         dark
-        flat
+        text
         @click.stop="snackbar = false"
       >No</v-btn>
     </v-snackbar>

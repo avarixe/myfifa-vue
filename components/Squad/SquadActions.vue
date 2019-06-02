@@ -9,7 +9,7 @@
           <template #activator="{ on: tooltip }">
             <v-btn
               v-on="{ ...dialog, ...tooltip }"
-              flat
+              text
               icon
             >
               <v-icon color="orange">mdi-pencil</v-icon>

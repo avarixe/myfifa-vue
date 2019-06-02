@@ -28,12 +28,12 @@
       <v-btn
         @click="removeCompetition"
         dark
-        flat
+        text
       >Yes</v-btn>
       <v-btn
         @click.stop="snackbar = false"
         dark
-        flat
+        text
       >No</v-btn>
     </v-snackbar>
   </div>

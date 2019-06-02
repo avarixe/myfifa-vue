@@ -27,12 +27,12 @@
       Remove Match: {{ match.home }} v {{ match.away }}?
       <v-btn
         dark
-        flat
+        text
         @click="removeMatch"
       >Yes</v-btn>
       <v-btn
         dark
-        flat
+        text
         @click.stop="snackbar = false"
       >No</v-btn>
     </v-snackbar>
