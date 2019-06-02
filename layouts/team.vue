@@ -2,12 +2,6 @@
   <v-app>
     <app-bar />
 
-    <no-ssr>
-      <team-drawer />
-    </no-ssr>
-
-    <team-bottom-navigation />
-
     <v-content>
       <app-broadcaster />
 
@@ -29,6 +23,9 @@
         />
       </template>
     </v-content>
+
+    <team-bottom-navigation />
+
   </v-app>
 </template>
 
@@ -38,7 +35,6 @@
   import AppBar from '@/components/App/AppBar'
   import AppBroadcaster from '@/components/App/AppBroadcaster'
   import TeamChannel from '@/components/Team/TeamChannel'
-  import TeamDrawer from '@/components/Team/TeamDrawer'
   import TeamLoader from '@/components/Team/TeamLoader'
   import TeamBottomNavigation from '@/components/Team/TeamBottomNavigation'
 
@@ -48,7 +44,6 @@
       AppBar,
       AppBroadcaster,
       TeamChannel,
-      TeamDrawer,
       TeamLoader,
       TeamBottomNavigation
     },

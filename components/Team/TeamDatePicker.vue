@@ -3,8 +3,8 @@
     v-model="calendar"
     :close-on-content-click="false"
     transition="scale-transition"
-    origin="top left"
-    class="d-inline-block"
+    :origin="origin"
+    :class="menuClass"
   >
     <template #activator="{ on }">
       <slot
@@ -37,6 +37,16 @@
     mixins: [
       TeamAccessible
     ],
+    props: {
+      menuClass: {
+        type: String,
+        default: 'd-inline-block'
+      },
+      origin: {
+        type: String,
+        default: 'top left'
+      }
+    },
     data () {
       return {
         calendar: false,

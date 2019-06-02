@@ -1,14 +1,28 @@
 <template>
   <v-bottom-navigation
-    :value="$route.name"
     app
     grow
   >
+    <team-date-picker
+      v-if="teamId"
+      origin="bottom left"
+      menu-class="d-flex"
+    >
+      <template #default="{ on, date }">
+        <v-btn v-on="on">
+          <span>{{ $_format(date, 'MMM DD, YYYY') }}</span>
+          <v-icon>mdi-calendar</v-icon>
+        </v-btn>
+      </template>
+    </team-date-picker>
+
     <v-btn
       v-for="(link, i) in links"
       :key="i"
       :value="link.to.name"
-      @click="$router.push(link.to)"
+      :to="link.to"
+      nuxt
+      :exact="link.exact"
     >
       <span>{{ link.text }}</span>
       <v-icon>{{ link.icon }}</v-icon>
@@ -17,6 +31,7 @@
 </template>
 
 <script>
+  import { Team } from '@/models'
   import TeamDatePicker from '@/components/Team/TeamDatePicker'
 
   export default {
@@ -27,6 +42,9 @@
       teamId () {
         return this.$route.params.teamId
       },
+      team () {
+        return Team.find(this.teamId)
+      },
       links () {
         if (this.teamId) {
           return [
@@ -36,7 +54,8 @@
                 params: { teamId: this.teamId }
               },
               icon: 'mdi-shield-half-full',
-              text: 'Dashboard'
+              text: this.team.title,
+              exact: true
             },
             {
               to: {
