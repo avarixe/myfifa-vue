@@ -43,7 +43,10 @@
           v-if="!readonly"
           style="width:40px"
         >
-          <v-tooltip right>
+          <v-tooltip
+            v-if="items.length > 1"
+            right
+          >
             <template #activator="{ on }">
               <v-btn
                 v-on="on"

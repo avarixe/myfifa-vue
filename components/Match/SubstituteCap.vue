@@ -34,19 +34,19 @@
         >mdi-subdirectory-arrow-right</v-icon>
         <v-icon
           v-for="index in goals"
-          :key="index"
+          :key="`goal${index}`"
           color="blue"
           small
         >mdi-soccer</v-icon>
         <v-icon
           v-for="index in assists"
-          :key="index"
+          :key="`assist${index}`"
           color="light-blue accent-1"
           small
         >mdi-human-greeting</v-icon>
         <v-icon
           v-for="(color, i) in bookings"
-          :key="i"
+          :key="`booking${i}`"
           :color="color"
           small
         >mdi-book</v-icon>

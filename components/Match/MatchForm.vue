@@ -139,10 +139,7 @@
       TeamAccessible
     ],
     props: {
-      matchData: {
-        type: Object,
-        default: () => ({})
-      }
+      matchData: Object
     },
     data: () => ({
       valid: false,
@@ -174,6 +171,7 @@
         return Competition
           .query()
           .where('season', this.season)
+          .where('champion', null)
           .get()
           .map(competition => competition.name)
       },
@@ -196,20 +194,18 @@
     },
     watch: {
       dialog (val) {
-        if (val) {
-          if (this.matchData) {
-            Object.assign(this.match, this.$_pick(this.matchData, [
-              'id',
-              'date_played',
-              'competition',
-              'stage',
-              'home',
-              'away',
-              'extra_time'
-            ]))
-          } else {
-            this.match.date_played = this.team.current_date
-          }
+        if (val && this.matchData) {
+          Object.assign(this.match, this.$_pick(this.matchData, [
+            'id',
+            'date_played',
+            'competition',
+            'stage',
+            'home',
+            'away',
+            'extra_time'
+          ]))
+        } else {
+          this.match.date_played = this.team.current_date
         }
       }
     },

@@ -1,7 +1,7 @@
 <template>
   <dialog-form
     v-model="dialog"
-    title="Edit Competition"
+    title="Close Competition"
     :submit="submit"
     :color="color"
   >
@@ -13,24 +13,12 @@
       <v-container>
         <v-layout wrap>
           <v-flex xs12>
-            <v-text-field
-              :value="seasonLabel(competitionData.season)"
-              label="Season"
-              prepend-icon="mdi-calendar-text"
-              disabled
-            />
-          </v-flex>
-          <v-flex xs12>
-            <v-combobox
-              v-model="competition.name"
-              :items="competitions"
-              :rules="$_validate('Name', ['required'])"
-              label="Name"
-              prepend-icon="mdi-trophy"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
+            <v-select
+              v-model="competition.champion"
+              :items="teams"
+              label="Champion"
+              prepend-icon="mdi-crown"
+              :rules="$_validate('Champion', ['required'])"
             />
           </v-flex>
         </v-layout>
@@ -40,7 +28,7 @@
 </template>
 
 <script>
-  import { Competition } from '@/models'
+  import { teamOptions } from '@/models/Competition'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   export default {
@@ -58,21 +46,14 @@
       return {
         valid: true,
         competition: {
-          name: ''
+          name: '',
+          champion: ''
         }
       }
     },
     computed: {
-      competitions () {
-        return [
-          ...new Set(
-            Competition
-              .query()
-              .where('teamId', this.team.id)
-              .get()
-              .map(c => c.name)
-          )
-        ]
+      teams () {
+        return teamOptions(this.competitionData)
       }
     },
     watch: {
@@ -81,7 +62,7 @@
         handler (val) {
           if (val) {
             this.competition = this.$_pick(this.competitionData, [
-              'id', 'name'
+              'id', 'name', 'champion'
             ])
           }
         }

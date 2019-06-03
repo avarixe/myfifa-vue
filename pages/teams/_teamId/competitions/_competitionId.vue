@@ -45,7 +45,7 @@
             wrap
           >
             <v-flex
-              v-if="competition.champion"
+              v-if="readonly"
               xs12
             >
               <div class="title">
@@ -62,7 +62,7 @@
             </v-flex>
 
             <v-flex
-              v-if="!readonly"
+              v-else
               xs12
             >
               <edit-competition-form
@@ -77,6 +77,20 @@
                   >Edit</v-btn>
                 </template>
               </edit-competition-form>
+
+              <competition-close-form
+                :competition-data="competition"
+                color="red"
+              >
+                <template #default="{ on }">
+                  <v-btn
+                    v-on="on"
+                    dark
+                    color="red"
+                  >Close</v-btn>
+                </template>
+              </competition-close-form>
+
               <stage-form
                 :competition="competition"
                 color="teal"
@@ -89,6 +103,7 @@
                   >Add Stage</v-btn>
                 </template>
               </stage-form>
+
               <competition-remove :competition="competition">
                 <template #default="{ on }">
                   <v-btn
@@ -138,6 +153,7 @@
   import { Competition } from '@/models'
   import MaterialCard from '@/helpers/theme/Card'
   import EditCompetitionForm from '@/components/Competition/EditCompetitionForm'
+  import CompetitionCloseForm from '@/components/Competition/CompetitionCloseForm'
   import CompetitionTable from '@/components/Competition/CompetitionTable'
   import CompetitionRound from '@/components/Competition/CompetitionRound'
   import CompetitionRemove from '@/components/Competition/CompetitionRemove'
@@ -153,6 +169,7 @@
     components: {
       MaterialCard,
       EditCompetitionForm,
+      CompetitionCloseForm,
       CompetitionTable,
       CompetitionRound,
       CompetitionRemove,
@@ -185,7 +202,8 @@
         return this.stages.filter(stage => !stage.table)
       },
       readonly () {
-        return this.competition.season !== this.season
+        return this.competition.champion &&
+          this.competition.champion.length > 0
       },
       seasonLink () {
         return {
