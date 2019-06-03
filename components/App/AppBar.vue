@@ -3,6 +3,11 @@
     app
     clipped-left
   >
+    <v-app-bar-nav-icon
+      v-show="responsive && $route.params.teamId"
+      @click.stop="toggleDrawer"
+    />
+
     <v-toolbar-title class="tertiary--text font-weight-light">
       MyFIFA Manager
     </v-toolbar-title>
@@ -41,13 +46,16 @@
 
 <script>
   import UserForm from './UserForm'
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapMutations } from 'vuex'
   import Cookie from 'js-cookie'
 
   export default {
     components: {
       UserForm
     },
+    data: () => ({
+      responsive: false
+    }),
     computed: mapGetters([
       'authenticated'
     ]),
@@ -59,10 +67,23 @@
         }
       }
     },
+    mounted () {
+      this.updateResponsiveState()
+      window.addEventListener('resize', this.updateResponsiveState)
+    },
+    beforeDestroy () {
+      window.removeEventListener('resize', this.updateResponsiveState)
+    },
     methods: {
+      ...mapMutations('app', {
+        toggleDrawer: 'TOGGLE_DRAWER'
+      }),
       async logout () {
         await this.$store.dispatch('logout')
         Cookie.remove('token')
+      },
+      updateResponsiveState () {
+        this.responsive = window.innerWidth < 991
       }
     }
   }

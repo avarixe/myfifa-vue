@@ -1,6 +1,10 @@
 <template>
   <v-app>
-    <app-bar />
+    <no-ssr>
+      <app-bar />
+
+      <team-drawer />
+    </no-ssr>
 
     <v-content>
       <app-broadcaster />
@@ -24,7 +28,7 @@
       </template>
     </v-content>
 
-    <team-bottom-navigation />
+    <!-- <team-bottom-navigation /> -->
 
   </v-app>
 </template>
@@ -36,7 +40,8 @@
   import AppBroadcaster from '@/components/App/AppBroadcaster'
   import TeamChannel from '@/components/Team/TeamChannel'
   import TeamLoader from '@/components/Team/TeamLoader'
-  import TeamBottomNavigation from '@/components/Team/TeamBottomNavigation'
+  import TeamDrawer from '@/components/Team/TeamDrawer'
+  // import TeamBottomNavigation from '@/components/Team/TeamBottomNavigation'
 
   export default {
     name: 'App',
@@ -45,7 +50,8 @@
       AppBroadcaster,
       TeamChannel,
       TeamLoader,
-      TeamBottomNavigation
+      TeamDrawer
+      // TeamBottomNavigation
     },
     data: () => ({
       loaded: false
