@@ -27,7 +27,7 @@
               label="Date Played"
               prepend-icon="mdi-calendar-today"
               :rules="$_validate('Date Played', ['required', 'date'])"
-              :min="team.current_date"
+              :min="match.id ? null : team.current_date"
               :color="color"
             />
           </v-flex>
@@ -197,20 +197,8 @@
     watch: {
       dialog (val) {
         if (val) {
-          if (!this.match.date_played) {
-            this.match.date_played = this.team.current_date
-          }
-        } else {
-          Object.assign(this.$data, this.$options.data.apply(this))
-          // this.$refs.form.reset()
-        }
-      },
-      matchData: {
-        immediate: true,
-        handler (val) {
-          this.valid = !!val
-          if (val) {
-            Object.assign(this.match, this.$_pick(val, [
+          if (this.matchData) {
+            Object.assign(this.match, this.$_pick(this.matchData, [
               'id',
               'date_played',
               'competition',
@@ -219,6 +207,8 @@
               'away',
               'extra_time'
             ]))
+          } else {
+            this.match.date_played = this.team.current_date
           }
         }
       }

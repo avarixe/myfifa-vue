@@ -4,20 +4,20 @@
     :title="title"
     :submit="submit"
     :submit-cb="submitCb"
-    :color="color"
+    :color="transferColor"
   >
     <template #activator="{ on }">
       <slot :on="on">
         <v-tooltip
           bottom
-          :color="color"
+          :color="transferColor"
         >
           <template #activator="{ on: tooltip }">
             <v-btn
               v-on="{ ...on, ...tooltip }"
               icon
             >
-              <v-icon :color="color">
+              <v-icon :color="transferColor">
                 mdi-airplane-{{ transferOut ? 'takeoff' : 'landing' }}
               </v-icon>
             </v-btn>
@@ -37,7 +37,7 @@
               prepend-icon="mdi-calendar-today"
               :rules="$_validate('Effective Date', ['required', 'date'])"
               :min="team.current_date"
-              :color="color"
+              :color="transferColor"
             />
           </v-flex>
           <v-flex xs12>
@@ -118,7 +118,6 @@
         type: Object,
         required: true
       },
-      color: String,
       dark: Boolean,
       submitCb: Function
     },
@@ -139,7 +138,7 @@
       title () {
         return 'Transfer ' + this.player.name
       },
-      color () {
+      transferColor () {
         return this.transferOut ? 'red' : 'green'
       }
     },
