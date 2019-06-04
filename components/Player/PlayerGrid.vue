@@ -128,6 +128,11 @@
             icon: 'trending-up'
           },
           {
+            text: 'Edit',
+            color: 'orange',
+            icon: 'pencil'
+          },
+          {
             text: 'Contract',
             color: 'blue',
             icon: 'file-document-outline'
@@ -207,12 +212,6 @@
       headers () {
         let headers = [
           {
-            text: '',
-            value: 'action',
-            align: 'center',
-            sortable: false
-          },
-          {
             text: 'Name',
             value: 'name',
             align: 'left'
@@ -237,8 +236,7 @@
           {
             text: 'Kit No',
             value: 'kit_no',
-            align: 'center',
-            editable: true
+            align: 'center'
           }
         ]
 
@@ -254,6 +252,43 @@
               {
                 text: 'OVR',
                 value: 'ovr',
+                align: 'center'
+              },
+              {
+                text: 'Value',
+                value: 'value',
+                align: 'right',
+                format: 'money'
+              }
+            ])
+          case 1: // Edit
+            return [
+              {
+                text: '',
+                value: 'edit',
+                align: 'center',
+                sortable: false
+              },
+              {
+                text: 'Name',
+                value: 'name',
+                align: 'left'
+              },
+              {
+                text: 'Position',
+                value: 'pos_idx',
+                align: 'center',
+                view: 'pos'
+              },
+              {
+                text: 'Kit No',
+                value: 'kit_no',
+                align: 'center',
+                editable: true
+              },
+              {
+                text: 'OVR',
+                value: 'ovr',
                 align: 'center',
                 editable: true
               },
@@ -264,8 +299,8 @@
                 format: 'money',
                 editable: true
               }
-            ])
-          case 1: // Contract
+            ]
+          case 2: // Contract
             return headers.concat([
               {
                 text: 'Value',
@@ -286,7 +321,7 @@
                 format: 'date'
               }
             ])
-          case 2: // Statistics
+          case 3: // Statistics
             return headers.concat([
               {
                 text: 'Games Played',
@@ -331,10 +366,10 @@
     },
     watch: {
       filterActive () {
-        this.pagination.page = 1
+        this.page = 1
       },
       mode (val) {
-        if (val === 2) {
+        if (val === 3) {
           this.reloadStatistics()
         }
       }
