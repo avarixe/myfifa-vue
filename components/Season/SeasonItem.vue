@@ -22,14 +22,14 @@
 
     <p
       v-if="!compact"
-      class="text-xs-center"
+      class="text-xs-center mt-2 mb-0"
     >
       <v-btn
         :to="seasonLink"
         :color="color"
         outlined
         nuxt
-      >View</v-btn>
+      >View Season</v-btn>
     </p>
 
     <v-simple-table>

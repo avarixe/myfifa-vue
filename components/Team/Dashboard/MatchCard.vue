@@ -7,7 +7,7 @@
       v-if="match"
       class="text-xs-center"
     >
-      <p class="mb-0 text-xs-center">
+      <p class="my-2 text-xs-center">
         <v-btn
           :to="matchLink"
           nuxt
@@ -16,13 +16,13 @@
         >View</v-btn>
       </p>
 
-      <p class="category font-weight-thin">{{ match.competition }}</p>
-      <h4 class="font-weight-light mt-0 mb-3">
+      <p class="font-weight-thin mb-0">{{ match.competition }}</p>
+      <h4 class="title font-weight-light mt-0 mb-3">
         {{ match.home }} v {{ match.away }}
       </h4>
 
-      <h4 class="font-weight-light mb-0">{{ match.score }}</h4>
-      <p class="category font-weight-thin mt-0">
+      <h4 class="title font-weight-light mb-0">{{ match.score }}</h4>
+      <p class="font-weight-thin mt-0">
         {{ $_format($_parse(match.date_played), 'MMMM DD, YYYY') }}
       </p>
     </div>

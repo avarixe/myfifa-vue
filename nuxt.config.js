@@ -24,7 +24,9 @@ export default {
   /*
   ** Global CSS
   */
-  css: [],
+  css: [
+    '@/styles/index.scss'
+  ],
 
   /*
   ** Customize the progress bar color

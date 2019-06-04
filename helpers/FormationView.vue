@@ -24,8 +24,8 @@
             name="item"
             :player="player"
           >
-            <div class="body-1">{{ nameOf(player.player_id) }}</div>
-            <div class="body-2">{{ player.pos }}</div>
+            <div class="font-weight-thin">{{ nameOf(player.player_id) }}</div>
+            <div class="font-weight-bold">{{ player.pos }}</div>
           </slot>
         </v-flex>
       </v-layout>
