@@ -14,9 +14,9 @@
           v-for="season in items"
           :key="season"
           xs12
-          sm6
-          md4
-          lg3
+          md6
+          lg4
+          xl3
         >
           <season-item
             :season="parseInt(season)"

@@ -32,27 +32,35 @@
       >View</v-btn>
     </p>
 
-    <v-list dense>
-      <v-subheader>Competitions</v-subheader>
-      <v-list-item
-        v-for="(competition, i) in competitions"
-        :key="i"
-        :to="competitionLink(competition)"
-        class="elevation-1"
-      >
-        <v-list-item-title>
-          <v-icon
-            color="blue"
-            small
-            left
-          >mdi-arrow-right</v-icon>
-          {{ competition.name }}
-        </v-list-item-title>
-        <v-list-item-avatar v-if="competition.champion === team.title">
-          <v-icon color="yellow darken-2">mdi-trophy</v-icon>
-        </v-list-item-avatar>
-      </v-list-item>
-    </v-list>
+    <v-simple-table>
+      <thead>
+        <th>Competitions</th>
+        <th />
+      </thead>
+      <tbody>
+        <tr
+          v-for="competition in competitions"
+          :key="competition.id"
+        >
+          <td>
+            <v-icon
+              left
+              :color="competitionStatus(competition).color"
+              small
+            >{{ competitionStatus(competition).icon }}</v-icon>
+            {{ competition.name }}
+          </td>
+          <td>
+            <v-btn
+              :to="competitionLink(competition)"
+              nuxt
+              :color="color"
+              outlined
+            >View</v-btn>
+          </td>
+        </tr>
+      </tbody>
+    </v-simple-table>
 
   </material-card>
 </template>
@@ -120,6 +128,24 @@
           params: {
             teamId: this.team.id,
             competitionId: competition.id
+          }
+        }
+      },
+      competitionStatus (competition) {
+        if (competition.champion === this.team.title) {
+          return {
+            icon: 'mdi-trophy',
+            color: 'yellow darken-2'
+          }
+        } else if (competition.champion) {
+          return {
+            icon: 'mdi-check',
+            color: 'green'
+          }
+        } else {
+          return {
+            icon: 'mdi-timelapse',
+            color: 'gray'
           }
         }
       }

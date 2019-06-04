@@ -126,7 +126,7 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import { Competition } from '@/models'
+  import Competition, { teamOptions } from '@/models/Competition'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   export default {
@@ -169,12 +169,15 @@
               .map(c => c.name)
           )
         ]
+      },
+      teams () {
+        return teamOptions(this.competitionData)
       }
     },
     watch: {
       dialog (val) {
         if (val && this.competitionData) {
-          this.competition = this.$_pick(this.matchData, [
+          this.competition = this.$_pick(this.competitionData, [
             'id',
             'name',
             'champion'
