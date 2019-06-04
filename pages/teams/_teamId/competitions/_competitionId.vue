@@ -45,7 +45,7 @@
             wrap
           >
             <v-flex
-              v-if="competition.champion"
+              v-if="readonly"
               xs12
             >
               <div class="title">
@@ -62,10 +62,10 @@
             </v-flex>
 
             <v-flex
-              v-if="!readonly"
+              v-else
               xs12
             >
-              <edit-competition-form
+              <competition-form
                 :competition-data="competition"
                 color="orange"
               >
@@ -76,7 +76,22 @@
                     color="orange"
                   >Edit</v-btn>
                 </template>
-              </edit-competition-form>
+              </competition-form>
+
+              <competition-form
+                :competition-data="competition"
+                color="red"
+                close
+              >
+                <template #default="{ on }">
+                  <v-btn
+                    v-on="on"
+                    dark
+                    color="red"
+                  >Close</v-btn>
+                </template>
+              </competition-form>
+
               <stage-form
                 :competition="competition"
                 color="teal"
@@ -89,6 +104,7 @@
                   >Add Stage</v-btn>
                 </template>
               </stage-form>
+
               <competition-remove :competition="competition">
                 <template #default="{ on }">
                   <v-btn
@@ -137,7 +153,7 @@
 <script>
   import { Competition } from '@/models'
   import MaterialCard from '@/helpers/theme/Card'
-  import EditCompetitionForm from '@/components/Competition/EditCompetitionForm'
+  import CompetitionForm from '@/components/Competition/CompetitionForm'
   import CompetitionTable from '@/components/Competition/CompetitionTable'
   import CompetitionRound from '@/components/Competition/CompetitionRound'
   import CompetitionRemove from '@/components/Competition/CompetitionRemove'
@@ -152,7 +168,7 @@
     ],
     components: {
       MaterialCard,
-      EditCompetitionForm,
+      CompetitionForm,
       CompetitionTable,
       CompetitionRound,
       CompetitionRemove,
@@ -185,7 +201,8 @@
         return this.stages.filter(stage => !stage.table)
       },
       readonly () {
-        return this.competition.season !== this.season
+        return this.competition.champion &&
+          this.competition.champion.length > 0
       },
       seasonLink () {
         return {

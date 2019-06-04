@@ -12,7 +12,7 @@
         <div class="headline font-weight-thin">Seasons</div>
       </v-flex>
       <v-flex xs12>
-        <new-competition-form>
+        <competition-form>
           <template #default="{ on }">
             <v-btn
               v-on="on"
@@ -23,7 +23,7 @@
               Competition
             </v-btn>
           </template>
-        </new-competition-form>
+        </competition-form>
       </v-flex>
 
       <v-flex xs12>
@@ -36,7 +36,7 @@
 <script>
   import { TeamAccessible } from '@/mixins'
   import SeasonGrid from '@/components/Season/SeasonGrid'
-  import NewCompetitionForm from '@/components/Competition/NewCompetitionForm'
+  import CompetitionForm from '@/components/Competition/CompetitionForm'
 
   export default {
     layout: 'team',
@@ -50,7 +50,7 @@
       }
     },
     components: {
-      NewCompetitionForm,
+      CompetitionForm,
       SeasonGrid
     },
     mounted () {
