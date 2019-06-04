@@ -3,7 +3,7 @@
     <template #activator="{ on }">
       <tr
         v-on="!editable && on"
-        @click="!editable && goToPlayer"
+        @click="!editable && goToPlayer()"
       >
         <td
           v-for="(header, i) in headers"
