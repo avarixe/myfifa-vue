@@ -14,18 +14,23 @@
 
       <v-flex xs12>
         <v-btn
-          v-if="season > 0"
+          v-if="pageSeason > 0"
           :to="previousSeasonLink"
           nuxt
           color="blue-grey"
           outlined
         >Previous Season</v-btn>
+
+        <competition-form v-if="pageSeason === season" />
+
         <v-btn
+          v-else
           :to="nextSeasonLink"
           nuxt
           color="blue-grey"
           outlined
         >Next Season</v-btn>
+
       </v-flex>
       <v-flex xs12>
         <season-results-chart :season-data="seasonData" />
@@ -33,7 +38,7 @@
 
       <v-flex xs12>
         <player-grid
-          :season="season"
+          :season="pageSeason"
           :season-data="seasonData"
         />
       </v-flex>
@@ -42,6 +47,7 @@
 </template>
 
 <script>
+  import CompetitionForm from '@/components/Competition/CompetitionForm'
   import SeasonResultsChart from '@/components/Season/SeasonResultsChart'
   import SeasonResultsTable from '@/components/Season/SeasonResultsTable'
   import PlayerGrid from '@/components/Season/PlayerGrid'
@@ -51,6 +57,7 @@
     layout: 'team',
     middleware: 'authenticated',
     components: {
+      CompetitionForm,
       SeasonResultsChart,
       SeasonResultsTable,
       PlayerGrid
@@ -69,9 +76,9 @@
     },
     computed: {
       title () {
-        return `${this.seasonLabel(this.season)} Season`
+        return `${this.seasonLabel(this.pageSeason)} Season`
       },
-      season () {
+      pageSeason () {
         return this.$route.params.season
       },
       previousSeasonLink () {
@@ -79,7 +86,7 @@
           name: 'teams-teamId-seasons-season',
           params: {
             teamId: this.team.id,
-            season: this.season - 1
+            season: this.pageSeason - 1
           }
         }
       },
@@ -88,7 +95,7 @@
           name: 'teams-teamId-seasons-season',
           params: {
             teamId: this.team.id,
-            season: this.season + 1
+            season: this.pageSeason + 1
           }
         }
       }

@@ -65,7 +65,7 @@
               v-else
               xs12
             >
-              <edit-competition-form
+              <competition-form
                 :competition-data="competition"
                 color="orange"
               >
@@ -76,11 +76,12 @@
                     color="orange"
                   >Edit</v-btn>
                 </template>
-              </edit-competition-form>
+              </competition-form>
 
-              <competition-close-form
+              <competition-form
                 :competition-data="competition"
                 color="red"
+                close
               >
                 <template #default="{ on }">
                   <v-btn
@@ -89,7 +90,7 @@
                     color="red"
                   >Close</v-btn>
                 </template>
-              </competition-close-form>
+              </competition-form>
 
               <stage-form
                 :competition="competition"
@@ -152,8 +153,7 @@
 <script>
   import { Competition } from '@/models'
   import MaterialCard from '@/helpers/theme/Card'
-  import EditCompetitionForm from '@/components/Competition/EditCompetitionForm'
-  import CompetitionCloseForm from '@/components/Competition/CompetitionCloseForm'
+  import CompetitionForm from '@/components/Competition/CompetitionForm'
   import CompetitionTable from '@/components/Competition/CompetitionTable'
   import CompetitionRound from '@/components/Competition/CompetitionRound'
   import CompetitionRemove from '@/components/Competition/CompetitionRemove'
@@ -168,8 +168,7 @@
     ],
     components: {
       MaterialCard,
-      EditCompetitionForm,
-      CompetitionCloseForm,
+      CompetitionForm,
       CompetitionTable,
       CompetitionRound,
       CompetitionRemove,
