@@ -50,6 +50,7 @@
           item-key="id"
           must-sort
           hide-default-footer
+          mobile-breakpoint="0"
           no-data-text="No Players Recorded"
           @page-count="pageCount = $event"
         >

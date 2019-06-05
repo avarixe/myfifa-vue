@@ -1,15 +1,12 @@
 <template>
-  <div
-    v-if="loading"
-    class="loading-page"
-  >
+  <v-overlay :value="loading">
     <v-progress-circular
       :size="100"
       :width="7"
       color="primary"
       indeterminate
     />
-  </div>
+  </v-overlay>
 </template>
 
 <script>
@@ -27,16 +24,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .loading-page {
-    display: flex;
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.25);
-    z-index: 2;
-  }
-</style>

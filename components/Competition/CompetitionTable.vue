@@ -41,6 +41,7 @@
         :headers="headers"
         :items="items"
         :items-per-page="-1"
+        mobile-breakpoint="0"
         hide-default-footer
       >
         <template #headers>
