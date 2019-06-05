@@ -37,12 +37,17 @@
           :search="search"
           item-key="id"
           hide-default-footer
-          mobile-breakpoint="0"
+          :mobile-breakpoint="0"
           no-data-text="No Matches Recorded"
           @page-count="pageCount = $event"
         >
           <template #item.effective_date="{ item: transfer }">
             {{ $_format($_parse(transfer.effective_date), 'MMM DD, YYYY') }}
+          </template>
+          <template #item.player.name="{ item: transfer }">
+            <a @click="$router.push(playerLink(transfer))">
+              {{ transfer.player.name }}
+            </a>
           </template>
           <template #item.fee="{ item: transfer }">
             <span :class="`${isTransferOut(transfer) ? 'green' : 'red'}--text`">
@@ -140,6 +145,15 @@
     methods: {
       isTransferOut (transfer) {
         return transfer.origin === this.team.title
+      },
+      playerLink (transfer) {
+        return {
+          name: 'teams-teamId-players-playerId',
+          params: {
+            teamId: this.team.id,
+            playerId: transfer.player_id
+          }
+        }
       }
     }
   }

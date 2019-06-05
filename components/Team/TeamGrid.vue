@@ -11,7 +11,7 @@
           :page.sync="page"
           :loading="loading"
           item-key="id"
-          mobile-breakpoint="0"
+          :mobile-breakpoint="0"
           no-data-text="No Teams Recorded"
           hide-default-footer
           @page-count="pageCount = $event"
