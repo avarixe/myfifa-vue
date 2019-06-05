@@ -326,7 +326,7 @@
       player () {
         return Player
           .query()
-          .with('contracts|loans|injures|transfers|histories')
+          .with('contracts|loans|injuries|transfers|histories')
           .find(this.$route.params.playerId)
       },
       active () { return this.player.status && this.player.status.length > 0 },
