@@ -10,7 +10,7 @@
         <template #activator="{ on }">
           <span
             v-on="on"
-            class="body-1"
+            class="font-weight-bold"
           >{{ cap.pos }}</span>
         </template>
         <v-list>
@@ -26,7 +26,10 @@
 
     <v-list-item-content>
       <v-list-item-title>
-        <span class="body-2">{{ cap.name }}</span>
+        <a
+          class="font-weight-thin body-2 black--text"
+          @click="goToPlayer"
+        >{{ cap.name }}</a>
         <v-icon
           v-if="parseInt(cap.start) > 0"
           color="green"
@@ -132,6 +135,15 @@
         this.$store.dispatch('caps/UPDATE', {
           ...this.cap,
           pos: position
+        })
+      },
+      goToPlayer () {
+        this.$router.push({
+          name: 'teams-teamId-players-playerId',
+          params: {
+            teamId: this.match.team_id,
+            playerId: this.cap.player_id
+          }
         })
       }
     }

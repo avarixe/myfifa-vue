@@ -16,10 +16,9 @@
         :key="item.competition"
       >
         <td class="text-xs-left">
-          <a
-            @click="competitionLink(item.competition)"
-            class="blue-grey--text"
-          >{{ item.competition }}</a>
+          <a @click="competitionLink(item.competition)">
+            {{ item.competition }}
+          </a>
         </td>
         <td>{{ item.wins + item.draws + item.losses }}</td>
         <td>{{ item.wins }}</td>

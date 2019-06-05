@@ -24,7 +24,7 @@
     </div>
     <div class="font-weight-thin">
       <v-menu
-        :disabled="readonly || cap.start > 0"
+        v-if="!readonly"
         max-height="200px"
         offset-y
         offset-overflow
@@ -50,6 +50,12 @@
           </v-list-item>
         </v-list>
       </v-menu>
+
+      <a
+        v-else
+        class="black--text"
+        @click="goToPlayer"
+      >{{ cap.name }}</a>
     </div>
     <div>
       <v-icon
@@ -90,10 +96,7 @@
 </template>
 
 <script>
-  import {
-    mapState,
-    mapActions
-  } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   import { activePlayers } from '@/models/Player'
 
   export default {
@@ -172,6 +175,15 @@
         this.update({
           ...this.cap,
           player_id: playerId
+        })
+      },
+      goToPlayer () {
+        this.$router.push({
+          name: 'teams-teamId-players-playerId',
+          params: {
+            teamId: this.match.team_id,
+            playerId: this.cap.player_id
+          }
         })
       }
     }

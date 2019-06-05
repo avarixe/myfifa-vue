@@ -49,7 +49,7 @@
           item-key="id"
           hide-default-footer
           no-data-text="No Matches Recorded"
-          mobile-breakpoint="0"
+          :mobile-breakpoint="0"
           @page-count="pageCount = $event"
         >
           <template #item="{ item: match }">

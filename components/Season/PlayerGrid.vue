@@ -50,7 +50,7 @@
           item-key="id"
           must-sort
           hide-default-footer
-          mobile-breakpoint="0"
+          :mobile-breakpoint="0"
           no-data-text="No Players Recorded"
           @page-count="pageCount = $event"
         >
@@ -232,6 +232,7 @@
         const valueChange = (endValue - startValue) / startValue * 100
 
         Vue.set(this.playerData, playerId, {
+          id: playerId,
           name,
           pos,
           posIdx,

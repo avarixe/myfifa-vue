@@ -86,7 +86,7 @@
           :search="search"
           item-key="id"
           hide-default-footer
-          mobile-breakpoint="0"
+          :mobile-breakpoint="0"
           no-data-text="No Players Found"
           @page-count="pageCount = $event"
         >
