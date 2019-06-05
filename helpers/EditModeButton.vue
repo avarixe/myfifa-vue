@@ -1,6 +1,6 @@
 <template>
   <v-tooltip
-    :color="color"
+    :color="info.color"
     :right="dir === 'right'"
     :left="dir === 'left'"
     :top="dir === 'top'"
@@ -8,19 +8,22 @@
   >
     <template #activator="{ on }">
       <v-btn
-        v-on="on"
+        v-on="!text && on"
         small
-        icon
+        :color="text ? info.color : null"
+        dark
+        :icon="!text"
         @click.stop="$emit('toggle-mode')"
       >
         <v-icon
-          v-on="on"
-          :color="color"
+          v-if="!text"
+          :color="info.color"
           small
-        >mdi-{{ icon }}</v-icon>
+        >mdi-{{ info.icon }}</v-icon>
+        <span v-if="text">{{ info.text }}</span>
       </v-btn>
     </template>
-    {{ text }}
+    {{ info.text }}
   </v-tooltip>
 </template>
 
@@ -34,6 +37,10 @@
       dir: {
         type: String,
         default: 'bottom'
+      },
+      text: {
+        type: Boolean,
+        default: false
       },
       changed: Boolean
     },
@@ -58,10 +65,7 @@
             color: 'black'
           }
         }
-      },
-      text () { return this.info.text },
-      icon () { return this.info.icon },
-      color () { return this.info.color }
+      }
     }
   }
 </script>

@@ -13,18 +13,30 @@
         />
       </template>
       <span v-else>{{ table.name }}</span>
-
-      <template v-if="!readonly">
-        <edit-mode-button
-          :mode="edit"
-          :changed="stageChanged"
-          @toggle-mode="edit = !edit"
-        />
-        <stage-remove :stage="table" />
-      </template>
     </v-expansion-panel-header>
 
     <v-expansion-panel-content class="elevation-1">
+      <div
+        v-if="!readonly"
+        class="text-xs-center my-1"
+      >
+        <edit-mode-button
+          :mode="edit"
+          :changed="stageChanged"
+          text
+          @toggle-mode="edit = !edit"
+        />
+
+        <stage-remove :stage="table">
+          <template #default="{ on }">
+            <v-btn
+              dark
+              small
+            >Close</v-btn>
+          </template>
+        </stage-remove>
+      </div>
+
       <v-data-table
         :headers="headers"
         :items="items"
