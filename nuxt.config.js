@@ -45,11 +45,11 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    // '@/plugins/vuetify.js',
     '@/plugins/lodash.js',
     '@/plugins/custom.js',
     '@/plugins/date-fns.js',
-    '@/plugins/chartist.client.js'
+    '@/plugins/chartist.client.js',
+    '@/plugins/fitty.js'
   ],
 
   /*

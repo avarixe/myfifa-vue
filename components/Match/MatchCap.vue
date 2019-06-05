@@ -1,5 +1,27 @@
 <template>
   <div>
+    <div class="font-weight-bold">
+      <v-menu
+        :disabled="readonly"
+        max-height="200px"
+        offset-y
+        offset-overflow
+      >
+        <template #activator="{ on }">
+          <span v-on="on">{{ cap.pos }}</span>
+        </template>
+
+        <v-list>
+          <v-list-item
+            v-for="pos in positions"
+            :key="pos"
+            @click="setPosition(pos)"
+          >
+            <v-list-item-title>{{ pos }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </div>
     <div class="font-weight-thin">
       <v-menu
         :disabled="readonly || cap.start > 0"
@@ -25,28 +47,6 @@
             <v-list-item-content>
               <v-list-item-title>{{ player.name }}</v-list-item-title>
             </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </div>
-    <div class="font-weight-bold">
-      <v-menu
-        :disabled="readonly"
-        max-height="200px"
-        offset-y
-        offset-overflow
-      >
-        <template #activator="{ on }">
-          <span v-on="on">{{ cap.pos }}</span>
-        </template>
-
-        <v-list>
-          <v-list-item
-            v-for="pos in positions"
-            :key="pos"
-            @click="setPosition(pos)"
-          >
-            <v-list-item-title>{{ pos }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>

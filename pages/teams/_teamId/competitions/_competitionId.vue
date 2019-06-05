@@ -34,7 +34,9 @@
                 <div class="subheading">
                   {{ seasonLabel(competition.season) }}
                 </div>
-                <div class="display-1">{{ competition.name }}</div>
+                <div class="display-1">
+                  <fitty-text :text="competition.name" />
+                </div>
               </v-flex>
             </v-layout>
           </template>
@@ -152,7 +154,7 @@
 
 <script>
   import { Competition } from '@/models'
-  import MaterialCard from '@/helpers/theme/Card'
+  import { FittyText, MaterialCard } from '@/helpers'
   import CompetitionForm from '@/components/Competition/CompetitionForm'
   import CompetitionTable from '@/components/Competition/CompetitionTable'
   import CompetitionRound from '@/components/Competition/CompetitionRound'
@@ -167,6 +169,7 @@
       TeamAccessible
     ],
     components: {
+      FittyText,
       MaterialCard,
       CompetitionForm,
       CompetitionTable,

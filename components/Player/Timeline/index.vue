@@ -22,10 +22,10 @@
           v-if="dense"
           :class="`${item.color} lighten-2 py-1`"
         >
-          <span class="font-weight-bold pr-1 white--text">
+          <span class="title font-weight-bold pr-1 white--text">
             {{ item.title || item.type }}
           </span>
-          <span class="font-weight-light pl-1 white--text">
+          <span class="body-2 font-weight-light pl-1 white--text">
             {{ item.dateRange }}
           </span>
         </v-card-title>

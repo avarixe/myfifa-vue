@@ -24,11 +24,18 @@
           <template #header>
             <v-layout
               class="text-xs-center"
-              row
               wrap
             >
               <v-flex xs12>
-                <div class="display-2">{{ match.competition }}</div>
+                <div class="display-2">
+                  <fitty-text :text="match.competition" />
+                </div>
+                <div
+                  v-if="match.stage"
+                  class="display-1"
+                >
+                  <fitty-text :text="match.stage" />
+                </div>
                 <div class="subheading">
                   {{ $_formatDate(match.date_played) }}
                 </div>
@@ -36,29 +43,34 @@
               <v-layout
                 class="display-1"
                 row
+                justify-space-between
+                align-center
               >
                 <v-flex
-                  align-self-center
-                  class="font-weight-thin pa-1"
-                  style="flex-basis:0"
-                >{{ match.home }}</v-flex>
+                  xs5
+                  class="font-weight-thin pa-3"
+                >
+                  <fitty-text :text="match.home" />
+                  <div>
+                    {{ match.home_score }}
+                    <span v-if="match.penalty_shootout">
+                      ({{ match.penalty_shootout.home_score }})
+                    </span>
+                  </div>
+                </v-flex>
                 <v-flex
-                  align-self-center
-                  class="pa-1"
-                  shrink
-                >v</v-flex>
-                <v-flex
-                  align-self-center
-                  class="font-weight-thin pa-1"
-                  style="flex-basis:0"
-                >{{ match.away }}</v-flex>
+                  xs5
+                  class="font-weight-thin pa-3"
+                >
+                  <fitty-text :text="match.away" />
+                  <div>
+                    {{ match.away_score }}
+                    <span v-if="match.penalty_shootout">
+                      ({{ match.penalty_shootout.away_score }})
+                    </span>
+                  </div>
+                </v-flex>
               </v-layout>
-              <v-flex xs12>
-                <div class="display-1">
-                  {{ match.score }}
-                  {{ match.extra_time && !match.penalty_shootout ? '(AET)' : '' }}
-                </div>
-              </v-flex>
             </v-layout>
           </template>
 
@@ -102,12 +114,13 @@
   import MatchActions from '@/components/Match/MatchActions'
   import MatchLineup from '@/components/Match/MatchLineup'
   import MatchTimeline from '@/components/Match/Timeline'
-  import MaterialCard from '@/helpers/theme/Card'
+  import { FittyText, MaterialCard } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
   export default {
     layout: 'team',
     components: {
+      FittyText,
       MatchForm,
       MatchActions,
       MatchLineup,

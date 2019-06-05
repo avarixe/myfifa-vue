@@ -14,18 +14,19 @@
       :key="i"
       xs12
     >
-      <v-layout>
+      <v-layout justify-space-around>
         <v-flex
           v-for="(player, j) in $_compact(positions)"
           :key="j"
           class="text-xs-center"
+          v-bind="flexAttributes($_compact(positions))"
         >
           <slot
             name="item"
             :player="player"
           >
-            <div class="font-weight-thin">{{ nameOf(player.player_id) }}</div>
             <div class="font-weight-bold">{{ player.pos }}</div>
+            <div class="font-weight-thin">{{ nameOf(player.player_id) }}</div>
           </slot>
         </v-flex>
       </v-layout>
@@ -35,6 +36,7 @@
 
 <script>
   import { mapState } from 'vuex'
+  import { FittyText } from '@/helpers'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import { Player } from '@/models'
 
@@ -42,16 +44,18 @@
     mixins: [
       TeamAccessible
     ],
+    components: {
+      FittyText
+    },
     props: {
       formation: {
         type: Array,
         required: true
       }
     },
-    data () {
-      let windows = {}
-      return { windows }
-    },
+    data: () => ({
+      windows: {}
+    }),
     computed: {
       ...mapState('matches', [
         'positions'
@@ -96,6 +100,11 @@
       nameOf (playerId) {
         const player = Player.find(playerId)
         return player ? player.name : ''
+      },
+      flexAttributes (items) {
+        let attr = {}
+        attr[`xs${parseInt(12 / items.length)}`] = true
+        return attr
       }
     }
   }

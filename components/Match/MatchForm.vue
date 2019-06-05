@@ -182,7 +182,7 @@
           .where('season', this.season)
           .where('name', this.match.competition)
           .first()
-        console.log(competition)
+
         if (competition) {
           return competition.stages
             .filter(stage => !stage.table)
