@@ -57,49 +57,23 @@
         @click="goToPlayer"
       >{{ cap.name }}</a>
     </div>
-    <div>
-      <v-icon
-        v-if="parseInt(cap.start) > 0"
-        color="green"
-        small
-      >mdi-subdirectory-arrow-right</v-icon>
-      <v-icon
-        v-for="index in goals"
-        :key="`goal${index}`"
-        color="blue"
-        small
-      >mdi-soccer</v-icon>
-      <v-icon
-        v-for="index in assists"
-        :key="`assist${index}`"
-        color="light-blue accent-1"
-        small
-      >mdi-human-greeting</v-icon>
-      <v-icon
-        v-for="(color, i) in bookings"
-        :key="`booking${i}`"
-        :color="color"
-        small
-      >mdi-book</v-icon>
-      <v-icon
-        v-if="injured"
-        color="pink"
-        small
-      >mdi-hospital</v-icon>
-      <v-icon
-        v-if="cap.subbed_out"
-        color="red"
-        small
-      >mdi-subdirectory-arrow-left</v-icon>
-    </div>
+
+    <cap-events
+      :cap="cap"
+      :match="match"
+    />
   </div>
 </template>
 
 <script>
   import { mapState, mapActions } from 'vuex'
   import { activePlayers } from '@/models/Player'
+  import CapEvents from './Cap/CapEvents'
 
   export default {
+    components: {
+      CapEvents
+    },
     props: {
       cap: {
         type: Object,
