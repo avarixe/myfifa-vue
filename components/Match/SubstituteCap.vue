@@ -1,27 +1,12 @@
 <template>
   <v-list-item>
-    <v-list-item-action>
-      <v-menu
+    <v-list-item-action class="font-weight-bold">
+      <cap-select
         :disabled="readonly"
-        max-height="200px"
-        offset-y
-        offset-overflow
-      >
-        <template #activator="{ on }">
-          <span
-            v-on="on"
-            class="font-weight-bold"
-          >{{ cap.pos }}</span>
-        </template>
-        <v-list>
-          <v-list-item
-            v-for="pos in positions"
-            :key="pos"
-            @click="setPosition(pos)">
-            <v-list-item-title>{{ pos }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+        :value="cap.pos"
+        :options="positions"
+        @change="setPosition($event)"
+      />
     </v-list-item-action>
 
     <v-list-item-content>
@@ -44,10 +29,12 @@
 <script>
   import { mapState } from 'vuex'
   import CapEvents from './Cap/CapEvents'
+  import CapSelect from './Cap/CapSelect'
 
   export default {
     components: {
-      CapEvents
+      CapEvents,
+      CapSelect
     },
     props: {
       cap: {

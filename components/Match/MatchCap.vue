@@ -1,55 +1,31 @@
 <template>
   <div>
     <div class="font-weight-bold">
-      <v-menu
+      <cap-select
         :disabled="readonly"
-        max-height="200px"
-        offset-y
-        offset-overflow
-      >
-        <template #activator="{ on }">
-          <span v-on="on">{{ cap.pos }}</span>
-        </template>
-
-        <v-list>
-          <v-list-item
-            v-for="pos in positions"
-            :key="pos"
-            @click="setPosition(pos)"
-          >
-            <v-list-item-title>{{ pos }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+        :value="cap.pos"
+        :options="positions"
+        @change="setPosition($event)"
+      />
     </div>
     <div class="font-weight-thin">
-      <v-menu
+      <cap-select
         v-if="!readonly"
-        max-height="200px"
-        offset-y
-        offset-overflow
+        :value="cap.name"
+        :options="players"
+        @change="setPlayer($event)"
       >
-        <template #activator="{ on }">
-          <span v-on="on">{{ cap.name }}</span>
+        <template #option="{ option: player }">
+          <v-list-item-action>
+            <v-list-item-action-text>
+              {{ player.pos }}
+            </v-list-item-action-text>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{ player.name }}</v-list-item-title>
+          </v-list-item-content>
         </template>
-
-        <v-list>
-          <v-list-item
-            v-for="player in players"
-            :key="player.id"
-            @click="setPlayer(player.id)"
-          >
-            <v-list-item-action>
-              <v-list-item-action-text>
-                {{ player.pos }}
-              </v-list-item-action-text>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>{{ player.name }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+      </cap-select>
 
       <a
         v-else
@@ -66,13 +42,15 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapState } from 'vuex'
   import { activePlayers } from '@/models/Player'
   import CapEvents from './Cap/CapEvents'
+  import CapSelect from './Cap/CapSelect'
 
   export default {
     components: {
-      CapEvents
+      CapEvents,
+      CapSelect
     },
     props: {
       cap: {
@@ -97,59 +75,27 @@
       ]),
       players () {
         return activePlayers(parseInt(this.$route.params.teamId))
-      },
-      events () {
-        return [
-          ...this.match.goals,
-          ...this.match.bookings,
-          ...this.match.substitutions
-        ]
-      },
-      goals () {
-        return this.events.filter(event => (
-          event.event_type === 'Goal' &&
-          event.player_id === this.cap.player_id &&
-          !event.own_goal
-        )).length
-      },
-      assists () {
-        return this.events.filter(event => (
-          event.event_type === 'Goal' &&
-          event.assist_id === this.cap.player_id
-        )).length
-      },
-      bookings () {
-        return this.events
-          .filter(event => {
-            return event.event_type === 'Booking' &&
-              event.player_id === this.cap.player_id
-          })
-          .map(booking => booking.red_card ? 'red' : 'yellow darken-2')
-      },
-      injured () {
-        return this.events
-          .filter(event => (
-            event.event_type === 'Substitution' &&
-            event.player_id === this.cap.player_id &&
-            event.injury
-          )).length > 0
       }
     },
     methods: {
-      ...mapActions('caps', {
-        update: 'UPDATE'
-      }),
-      setPosition (position) {
-        this.update({
-          ...this.cap,
-          pos: position
-        })
+      async updateCap (key, value) {
+        try {
+          await this.$store.dispatch('caps/UPDATE', {
+            ...this.cap,
+            [key]: value
+          })
+        } catch (e) {
+          this.$store.commit('broadcaster/ANNOUNCE', {
+            message: e.message,
+            color: 'red'
+          })
+        }
       },
-      setPlayer (playerId) {
-        this.update({
-          ...this.cap,
-          player_id: playerId
-        })
+      async setPosition (position) {
+        await this.updateCap('pos', position)
+      },
+      async setPlayer (player) {
+        await this.updateCap('player_id', player.id)
       },
       goToPlayer () {
         this.$router.push({
