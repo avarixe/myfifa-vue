@@ -4,6 +4,18 @@ import { Substitution } from '@/models'
 
 // actions
 export const actions = {
+  SEARCH ({ rootState }, { teamId }) {
+    return http({
+      method: 'post',
+      path: myfifa.substitutions.search,
+      pathData: { teamId },
+      token: rootState.token,
+      success: ({ data }) => {
+        console.log(`${data.length} substitutions found!`)
+        Substitution.insert({ data })
+      }
+    })
+  },
   FETCH ({ rootState }, { matchId }) {
     return http({
       method: 'get',

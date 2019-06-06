@@ -4,6 +4,15 @@ import { Booking } from '@/models'
 
 // actions
 export const actions = {
+  SEARCH ({ rootState }, { teamId }) {
+    return http({
+      method: 'post',
+      path: myfifa.bookings.search,
+      pathData: { teamId },
+      token: rootState.token,
+      success: ({ data }) => { Booking.insert({ data }) }
+    })
+  },
   FETCH ({ rootState }, { matchId }) {
     return http({
       method: 'get',

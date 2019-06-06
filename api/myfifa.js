@@ -67,22 +67,26 @@ export default {
 
   goals: {
     index: 'matches/{{ matchId }}/goals',
-    record: 'goals/{{ goalId }}'
+    record: 'goals/{{ goalId }}',
+    search: 'teams/{{ teamId }}/goals/search'
   },
 
   substitutions: {
     index: 'matches/{{ matchId }}/substitutions',
-    record: 'substitutions/{{ substitutionId }}'
+    record: 'substitutions/{{ substitutionId }}',
+    search: 'teams/{{ teamId }}/substitutions/search'
   },
 
   bookings: {
     index: 'matches/{{ matchId }}/bookings',
-    record: 'bookings/{{ bookingId }}'
+    record: 'bookings/{{ bookingId }}',
+    search: 'teams/{{ teamId }}/bookings/search'
   },
 
   caps: {
     index: 'matches/{{ matchId }}/caps',
-    record: 'caps/{{ capId }}'
+    record: 'caps/{{ capId }}',
+    search: 'teams/{{ teamId }}/caps/search'
   },
 
   competitions: {

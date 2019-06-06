@@ -4,6 +4,15 @@ import { Cap } from '@/models'
 
 // actions
 export const actions = {
+  SEARCH ({ rootState }, { teamId }) {
+    return http({
+      method: 'post',
+      path: myfifa.caps.search,
+      pathData: { teamId },
+      token: rootState.token,
+      success: ({ data }) => { Cap.insert({ data }) }
+    })
+  },
   FETCH ({ rootState }, { matchId }) {
     return http({
       path: myfifa.caps.index,

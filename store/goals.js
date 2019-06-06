@@ -4,6 +4,15 @@ import { Goal } from '@/models'
 
 // actions
 export const actions = {
+  SEARCH ({ rootState }, { teamId }) {
+    return http({
+      method: 'post',
+      path: myfifa.goals.search,
+      pathData: { teamId },
+      token: rootState.token,
+      success: ({ data }) => { Goal.insert({ data }) }
+    })
+  },
   FETCH ({ rootState }, { matchId }) {
     return http({
       method: 'get',

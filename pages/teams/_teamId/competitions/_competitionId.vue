@@ -217,12 +217,6 @@
         }
       }
     },
-    async fetch ({ store, params }) {
-      await Promise.all([
-        store.dispatch('competitions/GET', params),
-        store.dispatch('stages/FETCH', params)
-      ])
-    },
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
     },

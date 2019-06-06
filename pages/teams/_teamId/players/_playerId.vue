@@ -391,12 +391,11 @@
       }
     },
     async fetch ({ store, params }) {
-      await store.dispatch('players/GET', params)
+      await store.dispatch('players/GET_HISTORY', params)
     },
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
       this.getStatistics()
-      this.getHistory({ playerId: this.player.id })
     },
     watch: {
       player (val) {
@@ -408,9 +407,7 @@
     },
     methods: {
       ...mapActions('players', {
-        getPlayer: 'GET',
-        analyze: 'ANALYZE',
-        getHistory: 'GET_HISTORY'
+        analyze: 'ANALYZE'
       }),
       async getStatistics () {
         const { data } = await this.analyze({
@@ -427,9 +424,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .g-chart {
-    line-height: 0 !important;
-  }
-</style>
