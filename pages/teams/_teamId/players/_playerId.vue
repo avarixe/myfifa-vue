@@ -138,7 +138,7 @@
           color="teal"
           icon="mdi-soccer-field"
           title="Matches"
-          :value="statistics.numGames"
+          :value="player.matches.length"
         />
       </v-flex>
 
@@ -150,7 +150,7 @@
           color="blue"
           icon="mdi-soccer"
           title="Goals"
-          :value="statistics.numGoals"
+          :value="player.goals.length"
         />
       </v-flex>
 
@@ -162,7 +162,7 @@
           color="orange"
           icon="mdi-soccer"
           title="Assists"
-          :value="statistics.numAssists"
+          :value="player.assists.length"
         />
       </v-flex>
 
@@ -174,7 +174,7 @@
           color="pink"
           icon="mdi-wall"
           title="Clean Sheets"
-          :value="statistics.numCs"
+          :value="player.cleanSheets.length"
         />
       </v-flex>
 
@@ -221,11 +221,11 @@
           </template>
 
           <player-timeline
-            :contracts="contracts"
+            :contracts="player.contracts"
             :filter="timelineFilter"
-            :injuries="injuries"
-            :loans="loans"
-            :transfers="transfers"
+            :injuries="player.injuries"
+            :loans="player.loans"
+            :transfers="player.transfers"
           />
         </material-card>
       </v-flex>
@@ -234,7 +234,6 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
   import { parse } from 'date-fns'
   import { Player } from '@/models'
   import PlayerForm from '@/components/Player/PlayerForm'
@@ -313,8 +312,7 @@
             color: 'green'
           }
         },
-        timelineFilter: 'All',
-        statistics: {}
+        timelineFilter: 'All'
       }
     },
     head () {
@@ -326,23 +324,17 @@
       player () {
         return Player
           .query()
-          .with('contracts|loans|injuries|transfers|histories')
+          .withAll()
           .find(this.$route.params.playerId)
       },
       active () { return this.player.status && this.player.status.length > 0 },
 
-      contracts () { return this.player.contracts },
-      loans () { return this.player.loans },
-      injuries () { return this.player.injuries },
-      transfers () { return this.player.transfers },
-      histories () { return this.player.histories },
-
       ovrChart () {
         return {
           data: {
-            labels: this.histories.map(h => parse(h.datestamp)),
+            labels: this.player.histories.map(h => parse(h.datestamp)),
             series: [
-              this.histories.map(h => h.ovr)
+              this.player.histories.map(h => h.ovr)
             ]
           },
           options: {
@@ -365,9 +357,9 @@
       valueChart () {
         return {
           data: {
-            labels: this.histories.map(h => parse(h.datestamp)),
+            labels: this.player.histories.map(h => parse(h.datestamp)),
             series: [
-              this.histories.map(h => h.value)
+              this.player.histories.map(h => h.value)
             ]
           },
           options: {
@@ -391,12 +383,10 @@
       }
     },
     async fetch ({ store, params }) {
-      await store.dispatch('players/GET', params)
+      await store.dispatch('players/GET_HISTORY', params)
     },
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
-      this.getStatistics()
-      this.getHistory({ playerId: this.player.id })
     },
     watch: {
       player (val) {
@@ -405,31 +395,6 @@
           params: { teamId: this.team.id }
         })
       }
-    },
-    methods: {
-      ...mapActions('players', {
-        getPlayer: 'GET',
-        analyze: 'ANALYZE',
-        getHistory: 'GET_HISTORY'
-      }),
-      async getStatistics () {
-        const { data } = await this.analyze({
-          teamId: this.team.id,
-          playerIds: [this.player.id]
-        })
-        this.statistics = {
-          numGames: data.num_games[this.player.id] || 0,
-          numGoals: data.num_goals[this.player.id] || 0,
-          numAssists: data.num_assists[this.player.id] || 0,
-          numCs: data.num_cs[this.player.id] || 0
-        }
-      }
     }
   }
 </script>
-
-<style scoped>
-  .g-chart {
-    line-height: 0 !important;
-  }
-</style>

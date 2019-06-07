@@ -105,11 +105,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import {
-    Match,
-    Player
-  } from '@/models'
+  import { Match, Player } from '@/models'
   import MatchForm from '@/components/Match/MatchForm'
   import MatchActions from '@/components/Match/MatchActions'
   import MatchLineup from '@/components/Match/MatchLineup'
@@ -163,18 +159,15 @@
       }
     },
     async fetch ({ store, params }) {
-      await Promise.all([
-        store.dispatch('matches/GET', params),
-        store.dispatch('caps/FETCH', params),
-        store.dispatch('bookings/FETCH', params),
-        store.dispatch('goals/FETCH', params),
-        store.dispatch('substitutions/FETCH', params)
-      ])
+      // await Promise.all([
+      //   store.dispatch('caps/FETCH', params),
+      //   store.dispatch('bookings/FETCH', params),
+      //   store.dispatch('goals/FETCH', params),
+      //   store.dispatch('substitutions/FETCH', params)
+      // ])
     },
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
-      this.getPlayers({ teamId: this.team.id })
-      this.getSquads({ teamId: this.team.id })
     },
     watch: {
       match (val) {
@@ -183,12 +176,6 @@
           params: { teamId: this.team.id }
         })
       }
-    },
-    methods: {
-      ...mapActions({
-        getPlayers: 'players/FETCH',
-        getSquads: 'squads/FETCH'
-      })
     }
   }
 </script>

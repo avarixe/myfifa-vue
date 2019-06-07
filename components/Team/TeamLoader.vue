@@ -24,15 +24,20 @@
     }),
     async mounted () {
       const loaders = [
-        { resource: 'Players',      handler: this.getPlayers },
-        { resource: 'Contracts',    handler: this.getContracts },
-        { resource: 'Transfers',    handler: this.getTransfers },
-        { resource: 'Loans',        handler: this.getLoans },
-        { resource: 'Injuries',     handler: this.getInjuries },
-        { resource: 'Matches',      handler: this.getMatches },
-        { resource: 'Squads',       handler: this.getSquads },
-        { resource: 'Competitions', handler: this.getCompetitions },
-        { resource: 'Stages',       handler: this.getStages }
+        { resource: 'Players' },
+        { resource: 'Contracts' },
+        { resource: 'Transfers' },
+        { resource: 'Loans' },
+        { resource: 'Injuries' },
+        { resource: 'Matches' },
+        { resource: 'Squads' },
+        { resource: 'Competitions' },
+        { resource: 'Stages' },
+
+        { resource: 'Bookings' },
+        { resource: 'Goals' },
+        { resource: 'Caps' },
+        { resource: 'Substitutions' }
       ]
 
       for (let i = 0; i < loaders.length; i++) {
@@ -57,11 +62,16 @@
         getMatches: 'matches/FETCH',
         getSquads: 'squads/FETCH',
         getCompetitions: 'competitions/FETCH',
-        getStages: 'stages/TEAM_FETCH'
+        getStages: 'stages/TEAM_FETCH',
+
+        getCaps: 'caps/SEARCH',
+        getBookings: 'bookings/SEARCH',
+        getGoals: 'goals/SEARCH',
+        getSubstitutions: 'substitutions/SEARCH'
       }),
-      async loadData ({ resource, handler }) {
+      async loadData ({ resource }) {
         this.status = `Loading ${resource}...`
-        await handler({ teamId: this.team.id })
+        await this[`get${resource}`]({ teamId: this.team.id })
       }
     }
   }

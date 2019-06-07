@@ -39,7 +39,7 @@ class Match extends Model {
       substitutions: this.hasMany(Substitution, 'match_id'),
       bookings: this.hasMany(Booking, 'match_id'),
       caps: this.hasMany(Cap, 'match_id'),
-      players: this.hasManyThrough(Player, Cap, 'match_id', 'player_id')
+      players: this.belongsToMany(Player, Cap, 'match_id', 'player_id')
     }
   }
 

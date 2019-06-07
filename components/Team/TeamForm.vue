@@ -38,6 +38,7 @@
               v-model="team.currency"
               :rules="$_validate('Currency', ['required'])"
               label="Currency"
+              prepend-icon="mdi-cash"
             />
           </v-flex>
         </v-layout>

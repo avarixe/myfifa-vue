@@ -45,7 +45,7 @@ class Player extends Model {
       contracts: this.hasMany(Contract, 'player_id'),
       transfers: this.hasMany(Transfer, 'player_id'),
       caps: this.hasMany(Cap, 'player_id'),
-      matches: this.hasManyThrough(Match, Cap, 'player_id', 'match_id'),
+      matches: this.belongsToMany(Match, Cap, 'player_id', 'match_id'),
       goals: this.hasMany(Goal, 'player_id'),
       assists: this.hasMany(Goal, 'assist_id'),
       bookings: this.hasMany(Booking, 'player_id')
@@ -60,6 +60,13 @@ class Player extends Model {
            this.team.current_date < contract.end_date
       ? contract
       : {}
+  }
+
+  get cleanSheets () {
+    return this.matches.filter(m =>
+      (m.home === this.team.title && m.away_score === 0) ||
+      (m.away === this.team.title && m.home_score === 0)
+    )
   }
 }
 

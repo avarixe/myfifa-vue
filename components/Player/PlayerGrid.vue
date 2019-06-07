@@ -105,16 +105,11 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
   import { PagedTable } from '@/helpers'
   import PlayerRow from './PlayerRow'
 
   export default {
-    mixins: [
-      TeamAccessible
-    ],
     components: {
       PlayerRow,
       PagedTable
@@ -161,8 +156,8 @@
           },
           {
             text: 'Active',
-            color: 'bluegrey',
-            icon: 'clipboard-account'
+            color: 'light-green',
+            icon: 'account-check'
           },
           {
             text: 'Injured',
@@ -180,32 +175,17 @@
             icon: 'lock-clock'
           }
         ],
-        search: '',
-        statistics: {
-          num_games: {},
-          num_goals: {},
-          num_assists: {},
-          num_cs: {}
-        }
+        search: ''
       }
     },
     computed: {
       players () {
         return Player
           .query()
-          .with('contracts|team')
-          .where('team_id', this.team.id)
+          .withAll()
+          .where('team_id', parseInt(this.$route.params.teamId))
           .orderBy('ovr', 'desc')
           .get()
-          .map(player => ({
-            ...player,
-            wage: player.contract.wage,
-            end_date: player.contract.end_date,
-            num_games: this.statistics.num_games[player.id],
-            num_goals: this.statistics.num_goals[player.id],
-            num_assists: this.statistics.num_assists[player.id],
-            num_cs: this.statistics.num_cs[player.id]
-          }))
       },
       currentMode () { return this.modes[this.mode] },
       currentFilter () { return this.filters[this.filter] },
@@ -311,13 +291,13 @@
               },
               {
                 text: 'Wage',
-                value: 'wage',
+                value: 'contract.wage',
                 align: 'right',
                 format: 'money'
               },
               {
                 text: 'End Date',
-                value: 'end_date',
+                value: 'contract.end_date',
                 align: 'right',
                 format: 'date'
               }
@@ -326,22 +306,22 @@
             return headers.concat([
               {
                 text: 'Games Played',
-                value: 'num_games',
+                value: 'matches.length',
                 align: 'center'
               },
               {
                 text: 'Goals',
-                value: 'num_goals',
+                value: 'goals.length',
                 align: 'center'
               },
               {
                 text: 'Assists',
-                value: 'num_assists',
+                value: 'assists.length',
                 align: 'center'
               },
               {
                 text: 'Clean Sheets',
-                value: 'num_cs',
+                value: 'cleanSheets.length',
                 align: 'center'
               }
             ])
@@ -368,31 +348,6 @@
     watch: {
       filterActive () {
         this.page = 1
-      },
-      mode (val) {
-        if (val === 3) {
-          this.reloadStatistics()
-        }
-      }
-    },
-    methods: {
-      ...mapActions('players', {
-        analyze: 'ANALYZE'
-      }),
-      async reloadStatistics () {
-        this.loading = true
-
-        try {
-          const { data } = await this.analyze({
-            teamId: this.team.id,
-            playerIds: this.players.map(player => player.id)
-          })
-          this.statistics = data
-        } catch (e) {
-          alert(e.message)
-        } finally {
-          this.loading = false
-        }
       }
     }
   }
