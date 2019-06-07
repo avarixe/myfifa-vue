@@ -55,7 +55,8 @@
         </v-btn>
       </v-btn-toggle>
 
-      <div :class="`subheading ${currentMode.color}--text`">
+      <div
+        :class="`hidden-sm-and-down subheading ${currentMode.color}--text`">
         {{ currentMode.text }}
       </div>
 
@@ -67,7 +68,7 @@
         label="Search"
         append-icon="mdi-magnify"
         hide-details
-      ></v-text-field>
+      />
     </v-card-title>
 
     <!-- Player Information Grid -->
