@@ -1,23 +1,27 @@
 <template>
-  <material-card>
-    <template #header>
-      <span class="title font-weight-light mb-2">{{ squad.name }}</span>
+  <v-card outlined>
+    <v-card-title>
+      <span class="title font-weight-light">{{ squad.name }}</span>
+
+      <v-spacer />
 
       <squad-actions :squad="squad" />
-    </template>
+    </v-card-title>
 
-    <formation-view :formation="squadPlayers" />
-  </material-card>
+    <v-divider class="mx-3" />
+
+    <v-card-text>
+      <formation-view :formation="squadPlayers" />
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
   import { FormationView } from '@/helpers'
-  import MaterialCard from '@/helpers/theme/Card'
   import SquadActions from './SquadActions'
 
   export default {
     components: {
-      MaterialCard,
       SquadActions,
       FormationView
     },
