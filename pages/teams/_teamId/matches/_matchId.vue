@@ -3,10 +3,7 @@
     fluid
     grid-list-lg
   >
-    <v-layout
-      row
-      wrap
-    >
+    <v-layout wrap>
       <v-flex xs12>
         <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">
@@ -19,85 +16,95 @@
         <match-form />
       </v-flex>
 
-      <v-flex xs12>
-        <material-card :color="resultColor">
-          <template #header>
-            <v-layout
-              class="text-xs-center"
-              wrap
-            >
-              <v-flex xs12>
-                <div class="display-2">
-                  <fitty-text :text="match.competition" />
-                </div>
-                <div
-                  v-if="match.stage"
-                  class="display-1"
-                >
-                  <fitty-text :text="match.stage" />
-                </div>
-                <div class="subheading">
-                  {{ $_formatDate(match.date_played) }}
-                </div>
-              </v-flex>
-              <v-layout
-                class="display-1"
-                row
-                justify-space-between
-                align-center
-              >
-                <v-flex
-                  xs5
-                  class="font-weight-thin pa-3"
-                >
-                  <fitty-text :text="match.home" />
-                  <div>
-                    {{ match.home_score }}
-                    <span v-if="match.penalty_shootout">
-                      ({{ match.penalty_shootout.home_score }})
-                    </span>
-                  </div>
-                </v-flex>
-                <v-flex
-                  xs5
-                  class="font-weight-thin pa-3"
-                >
-                  <fitty-text :text="match.away" />
-                  <div>
-                    {{ match.away_score }}
-                    <span v-if="match.penalty_shootout">
-                      ({{ match.penalty_shootout.away_score }})
-                    </span>
-                  </div>
-                </v-flex>
-              </v-layout>
-            </v-layout>
-          </template>
-
-          <v-layout
-            row
-            wrap
+      <v-layout
+        class="text-xs-center"
+        wrap
+      >
+        <v-flex xs12>
+          <div class="display-2">
+            <fitty-text :text="match.competition" />
+          </div>
+          <div
+            v-if="match.stage"
+            class="display-1"
           >
-            <v-flex xs12>
-              <match-actions
-                v-if="match.date_played === team.current_date"
-                :match="match"
-              />
-            </v-flex>
-            <v-flex
-              xs12
-              sm6
-            >
-              <match-timeline :match="match" />
-            </v-flex>
-            <v-flex
-              xs12
-              sm6
-            >
-              <match-lineup :match="match" />
-            </v-flex>
-          </v-layout>
-        </material-card>
+            <fitty-text
+              :text="match.stage"
+              :options="{ minSize: 10, maxSize: 30 }"
+            />
+          </div>
+          <div class="subheading">
+            {{ $_formatDate(match.date_played) }}
+          </div>
+        </v-flex>
+        <v-layout
+          class="display-1"
+          justify-space-between
+          align-center
+        >
+          <v-flex
+            xs5
+            class="font-weight-thin pa-3"
+          >
+            <fitty-text :text="match.home" />
+            <div :class="`${resultColor}--text font-weight-bold`">
+              {{ match.home_score }}
+              <span v-if="match.penalty_shootout">
+                ({{ match.penalty_shootout.home_score }})
+              </span>
+            </div>
+          </v-flex>
+          <v-flex
+            xs5
+            class="font-weight-thin pa-3"
+          >
+            <fitty-text :text="match.away" />
+            <div :class="`${resultColor}--text font-weight-bold`">
+              {{ match.away_score }}
+              <span v-if="match.penalty_shootout">
+                ({{ match.penalty_shootout.away_score }})
+              </span>
+            </div>
+          </v-flex>
+        </v-layout>
+
+        <v-flex xs12>
+          <match-actions
+            v-if="match.date_played === team.current_date"
+            :match="match"
+          />
+        </v-flex>
+      </v-layout>
+
+      <v-flex
+        xs12
+        sm6
+      >
+        <v-card outlined>
+          <v-card-title class="subtitle-1 d-block text-xs-center">
+            Timeline
+          </v-card-title>
+          <v-divider class="mx-3" />
+          <v-card-text>
+            <match-timeline :match="match" />
+          </v-card-text>
+        </v-card>
+      </v-flex>
+
+      <v-flex
+        xs12
+        sm6
+      >
+        <v-card outlined>
+          <v-card-title class="subtitle-1 d-block text-xs-center">
+            Lineup
+          </v-card-title>
+          <v-divider class="mx-3" />
+          <v-card-text>
+            <match-lineup :match="match" />
+          </v-card-text>
+        </v-card>
+      </v-flex>
 
       </v-flex>
     </v-layout>
@@ -110,7 +117,7 @@
   import MatchActions from '@/components/Match/MatchActions'
   import MatchLineup from '@/components/Match/MatchLineup'
   import MatchTimeline from '@/components/Match/Timeline'
-  import { FittyText, MaterialCard } from '@/helpers'
+  import { FittyText } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -120,8 +127,7 @@
       MatchForm,
       MatchActions,
       MatchLineup,
-      MatchTimeline,
-      MaterialCard
+      MatchTimeline
     },
     middleware: 'authenticated',
     mixins: [

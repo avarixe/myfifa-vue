@@ -3,10 +3,7 @@
     fluid
     grid-list-lg
   >
-    <v-layout
-      row
-      wrap
-    >
+    <v-layout wrap>
       <v-flex xs12>
         <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">{{ player.name }}</div>
@@ -15,7 +12,6 @@
       <v-flex xs12>
           <v-layout
             class="text-xs-center"
-            row
             wrap
           >
             <v-flex
