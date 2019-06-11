@@ -74,6 +74,10 @@
 </script>
 
 <style scoped>
+  .v-data-table {
+    background: transparent;
+  }
+
   th, td {
     text-align: center;
   }

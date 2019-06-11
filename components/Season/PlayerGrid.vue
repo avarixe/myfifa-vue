@@ -1,8 +1,5 @@
 <template>
-  <material-card
-    title="Players"
-    color="accent"
-  >
+  <v-card flat>
     <v-card-title>
       <v-btn-toggle
         v-model="mode"
@@ -64,19 +61,18 @@
         </v-data-table>
       </template>
     </paged-table>
-  </material-card>
+  </v-card>
 </template>
 
 <script>
   import { addYears } from 'date-fns'
   import Vue from 'vue'
   import { Team, Player } from '@/models'
-  import { MaterialCard, PagedTable } from '@/helpers'
+  import { PagedTable } from '@/helpers'
   import PlayerRow from './PlayerRow'
 
   export default {
     components: {
-      MaterialCard,
       PagedTable,
       PlayerRow
     },
@@ -274,6 +270,10 @@
 </script>
 
 <style scoped>
+  .v-card, .v-data-table {
+    background: transparent;
+  }
+
   >>> table.v-table tbody tr td {
     padding: 8px 16px;
     height: auto;
