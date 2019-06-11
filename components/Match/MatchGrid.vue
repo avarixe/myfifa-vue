@@ -1,5 +1,5 @@
 <template>
-  <v-card flat>
+  <v-card outlined>
     <v-card-title>
       <v-select
         v-model="seasonFilter"
@@ -34,49 +34,51 @@
     </v-card-title>
 
     <!-- Match History Grid -->
-    <paged-table
-      v-model="page"
-      :page-count="pageCount"
-    >
-      <template #table>
-        <v-data-table
-          :headers="headers"
-          :items="rows"
-          :page.sync="page"
-          sort-by="date_played"
-          sort-desc
-          :search="search"
-          item-key="id"
-          hide-default-footer
-          no-data-text="No Matches Recorded"
-          :mobile-breakpoint="0"
-          @page-count="pageCount = $event"
-        >
-          <template #item="{ item: match }">
-            <v-tooltip bottom>
-              <template #activator="{ on }">
-                <tr
-                  v-on="on"
-                  @click="$router.push(matchLink(match))"
-                >
-                  <td class="text-xs-center">{{ match.competition }}</td>
-                  <td class="text-xs-right">{{ match.home }}</td>
-                  <td :class="`${resultColor(match.team_result)} text-xs-center`">
-                    {{ match.score }}
-                  </td>
-                  <td class="text-xs-left">{{ match.away }}</td>
-                  <td class="text-xs-center">
-                    {{ $_format($_parse(match.date_played), 'MMM DD, YYYY') }}
-                  </td>
-                </tr>
-              </template>
-              Click to View Match: <br>
-              <i>{{ match.home }} v {{ match.away }}</i>
-            </v-tooltip>
-          </template>
-        </v-data-table>
-      </template>
-    </paged-table>
+    <v-card-text>
+      <paged-table
+        v-model="page"
+        :page-count="pageCount"
+      >
+        <template #table>
+          <v-data-table
+            :headers="headers"
+            :items="rows"
+            :page.sync="page"
+            sort-by="date_played"
+            sort-desc
+            :search="search"
+            item-key="id"
+            hide-default-footer
+            no-data-text="No Matches Recorded"
+            :mobile-breakpoint="0"
+            @page-count="pageCount = $event"
+          >
+            <template #item="{ item: match }">
+              <v-tooltip bottom>
+                <template #activator="{ on }">
+                  <tr
+                    v-on="on"
+                    @click="$router.push(matchLink(match))"
+                  >
+                    <td class="text-xs-center">{{ match.competition }}</td>
+                    <td class="text-xs-right">{{ match.home }}</td>
+                    <td :class="`${resultColor(match.team_result)} text-xs-center`">
+                      {{ match.score }}
+                    </td>
+                    <td class="text-xs-left">{{ match.away }}</td>
+                    <td class="text-xs-center">
+                      {{ $_format($_parse(match.date_played), 'MMM DD, YYYY') }}
+                    </td>
+                  </tr>
+                </template>
+                Click to View Match: <br>
+                <i>{{ match.home }} v {{ match.away }}</i>
+              </v-tooltip>
+            </template>
+          </v-data-table>
+        </template>
+      </paged-table>
+    </v-card-text>
 
   </v-card>
 </template>
@@ -218,9 +220,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .v-card, .v-data-table {
-    background-color: transparent;
-  }
-</style>

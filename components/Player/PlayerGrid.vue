@@ -1,5 +1,5 @@
 <template>
-  <v-card flat>
+  <v-card outlined>
     <v-card-title>
       <!-- Display Menu -->
       <v-tooltip
@@ -72,35 +72,37 @@
     </v-card-title>
 
     <!-- Player Information Grid -->
-    <paged-table
-      v-model="page"
-      :page-count="pageCount"
-    >
-      <template #table>
-        <v-data-table
-          :headers="headers"
-          :items="rows"
-          :page.sync="page"
-          :loading="loading"
-          :sort-by="['pos_idx']"
-          multi-sort
-          :search="search"
-          item-key="id"
-          hide-default-footer
-          :mobile-breakpoint="0"
-          no-data-text="No Players Found"
-          @page-count="pageCount = $event"
-        >
-          <template #item="{ item }">
-            <player-row
-              :player-data="item"
-              :headers="headers"
-              :mode="mode"
-            />
-          </template>
-        </v-data-table>
-      </template>
-    </paged-table>
+    <v-card-text>
+      <paged-table
+        v-model="page"
+        :page-count="pageCount"
+      >
+        <template #table>
+          <v-data-table
+            :headers="headers"
+            :items="rows"
+            :page.sync="page"
+            :loading="loading"
+            :sort-by="['pos_idx']"
+            multi-sort
+            :search="search"
+            item-key="id"
+            hide-default-footer
+            :mobile-breakpoint="0"
+            no-data-text="No Players Found"
+            @page-count="pageCount = $event"
+          >
+            <template #item="{ item }">
+              <player-row
+                :player-data="item"
+                :headers="headers"
+                :mode="mode"
+              />
+            </template>
+          </v-data-table>
+        </template>
+      </paged-table>
+    </v-card-text>
 
   </v-card>
 </template>
@@ -353,9 +355,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .v-card, .v-data-table {
-    background-color: transparent;
-  }
-</style>

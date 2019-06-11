@@ -1,13 +1,15 @@
 <template>
   <v-card outlined>
-    <v-card-title class="title font-weight-light">{{ cardTitle }}</v-card-title>
+    <v-card-title
+      :class="`title font-weight-light ${color}--text`"
+    >{{ cardTitle }}</v-card-title>
 
     <v-divider class="mx-3" />
 
     <v-card-actions>
         <v-btn
           :to="seasonLink"
-          :color="color"
+          :color="color || 'primary'"
           text
           nuxt
           block
@@ -36,7 +38,7 @@
             <v-btn
               :to="competitionLink(competition)"
               nuxt
-              :color="color"
+              :color="color || 'primary'"
               outlined
             >View</v-btn>
           </td>
@@ -56,10 +58,7 @@
         type: Number,
         required: true
       },
-      color: {
-        type: String,
-        default: 'primary'
-      },
+      color: String,
       compact: {
         type: Boolean,
         default: false
