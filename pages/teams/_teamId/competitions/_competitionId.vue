@@ -3,10 +3,7 @@
     fluid
     grid-list-lg
   >
-    <v-layout
-      row
-      wrap
-    >
+    <v-layout wrap>
       <v-flex xs12>
         <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">
@@ -23,102 +20,96 @@
       </v-flex>
 
       <v-flex xs12>
-        <material-card>
-          <template #header>
-            <v-layout
-              class="text-xs-center"
-              row
-              wrap
-            >
-              <v-flex xs12>
-                <div class="subheading">
-                  {{ seasonLabel(competition.season) }}
-                </div>
-                <div class="display-1">
-                  <fitty-text :text="competition.name" />
-                </div>
-              </v-flex>
-            </v-layout>
-          </template>
+        <v-layout
+          class="text-xs-center"
+          wrap
+        >
+          <v-flex xs12>
+            <div class="subheading">
+              {{ seasonLabel(competition.season) }}
+            </div>
+            <div class="display-1 primary--text">
+              <fitty-text :text="competition.name" />
+            </div>
+          </v-flex>
+        </v-layout>
 
-          <v-layout
-            class="text-xs-center"
-            row
-            wrap
+        <v-layout
+          class="text-xs-center"
+          row
+          wrap
+        >
+          <v-flex
+            v-if="readonly"
+            xs12
           >
-            <v-flex
-              v-if="readonly"
-              xs12
+            <div class="title">
+              <v-icon
+                color="yellow darken-2"
+                left
+              >mdi-crown</v-icon>
+              {{ competition.champion }}
+              <v-icon
+                color="yellow darken-2"
+                right
+              >mdi-crown</v-icon>
+            </div>
+          </v-flex>
+
+          <v-flex
+            v-else
+            xs12
+          >
+            <competition-form
+              :competition-data="competition"
+              color="orange"
             >
-              <div class="title">
-                <v-icon
-                  color="yellow darken-2"
-                  left
-                >mdi-crown</v-icon>
-                {{ competition.champion }}
-                <v-icon
-                  color="yellow darken-2"
-                  right
-                >mdi-crown</v-icon>
-              </div>
-            </v-flex>
+              <template #default="{ on }">
+                <v-btn
+                  v-on="on"
+                  dark
+                  color="orange"
+                >Edit</v-btn>
+              </template>
+            </competition-form>
 
-            <v-flex
-              v-else
-              xs12
+            <competition-form
+              :competition-data="competition"
+              color="red"
+              close
             >
-              <competition-form
-                :competition-data="competition"
-                color="orange"
-              >
-                <template #default="{ on }">
-                  <v-btn
-                    v-on="on"
-                    dark
-                    color="orange"
-                  >Edit</v-btn>
-                </template>
-              </competition-form>
+              <template #default="{ on }">
+                <v-btn
+                  v-on="on"
+                  dark
+                  color="red"
+                >Close</v-btn>
+              </template>
+            </competition-form>
 
-              <competition-form
-                :competition-data="competition"
-                color="red"
-                close
-              >
-                <template #default="{ on }">
-                  <v-btn
-                    v-on="on"
-                    dark
-                    color="red"
-                  >Close</v-btn>
-                </template>
-              </competition-form>
+            <stage-form
+              :competition="competition"
+              color="teal"
+            >
+              <template #default="{ on }">
+                <v-btn
+                  v-on="on"
+                  dark
+                  color="teal"
+                >Add Stage</v-btn>
+              </template>
+            </stage-form>
 
-              <stage-form
-                :competition="competition"
-                color="teal"
-              >
-                <template #default="{ on }">
-                  <v-btn
-                    v-on="on"
-                    dark
-                    color="teal"
-                  >Add Stage</v-btn>
-                </template>
-              </stage-form>
-
-              <competition-remove :competition="competition">
-                <template #default="{ on }">
-                  <v-btn
-                    v-on="on"
-                    dark
-                  >Remove</v-btn>
-                </template>
-              </competition-remove>
-            </v-flex>
-          </v-layout>
-
-        </material-card>
+            <competition-remove :competition="competition">
+              <template #default="{ on }">
+                <v-btn
+                  v-on="on"
+                  dark
+                >Remove</v-btn>
+              </template>
+            </competition-remove>
+          </v-flex>
+        </v-layout>
       </v-flex>
 
       <!-- Table Stages -->
