@@ -53,7 +53,7 @@
           </player-form>
           <transfer-form :player="player" />
           <contract-form :player="player" />
-          <template v-if="active">
+          <template v-if="player.isActive">
             <injury-form :player="player" />
             <loan-form :player="player" />
             <player-retire :player="player" />
@@ -68,6 +68,7 @@
           <v-card-text>
             <v-tabs centered>
               <v-tab>Performance</v-tab>
+              <v-tab>Partnerships</v-tab>
               <v-tab>Growth</v-tab>
               <v-tab>Timeline</v-tab>
 
@@ -105,6 +106,16 @@
                   </v-card-text>
                 </v-card>
               </v-tab-item>
+
+
+              <v-tab-item>
+                <v-card flat>
+                  <v-card-text>
+                    <player-partnerships-table :player="player" />
+                  </v-card-text>
+                </v-card>
+              </v-tab-item>
+
 
               <v-tab-item>
                 <v-card flat>
@@ -182,6 +193,7 @@
   import PlayerRemove from '@/components/Player/PlayerRemove'
   import PlayerTimeline from '@/components/Player/Timeline'
   import PlayerPerformanceTable from '@/components/Player/PerformanceTable'
+  import PlayerPartnershipsTable from '@/components/Player/PartnershipsTable'
   import PlayerHistoryChart from '@/components/Charts/PlayerHistoryChart'
   import { TeamAccessible } from '@/mixins'
 
@@ -198,6 +210,7 @@
       PlayerRemove,
       PlayerTimeline,
       PlayerPerformanceTable,
+      PlayerPartnershipsTable,
       PlayerHistoryChart
     },
     middleware: 'authenticated',
@@ -216,9 +229,6 @@
           .withAll()
           .with('matches.team')
           .find(this.$route.params.playerId)
-      },
-      active () {
-        return this.player.status && this.player.status.length > 0
       }
     },
     async fetch ({ store, params }) {

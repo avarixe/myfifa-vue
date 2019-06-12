@@ -37,6 +37,10 @@ export default {
     '@nuxtjs/vuetify'
   ],
 
+  modules: [
+    '@nuxtjs/moment'
+  ],
+
   vuetify: {
     assets: false
   },
