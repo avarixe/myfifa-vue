@@ -1,9 +1,6 @@
 <template>
   <v-container grid-list-lg>
-    <v-layout
-      row
-      wrap
-    >
+    <v-layout wrap>
       <v-flex xs12>
         <div class="headline font-weight-thin">Teams</div>
       </v-flex>

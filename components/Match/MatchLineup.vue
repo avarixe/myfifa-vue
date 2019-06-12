@@ -12,14 +12,10 @@
 
     <v-layout
       v-if="substitutes.length > 0"
-      row
       wrap
     >
       <v-flex xs12>
-        <v-list
-          id="substitutes"
-          dense
-        >
+        <v-list dense>
           <v-subheader>Substitutes</v-subheader>
           <substitute-cap
             v-for="cap in substitutes"
@@ -63,7 +59,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .v-list#substitutes { background-color: transparent; }
-</style>

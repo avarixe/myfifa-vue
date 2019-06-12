@@ -1,8 +1,8 @@
 <template>
   <v-card outlined>
-    <v-card-title
-      :class="`title font-weight-light cyan--text`"
-    >{{ title }}</v-card-title>
+    <v-card-title :class="`subtitle-1 d-block text-xs-center`">
+      <span class="green--text font-weight-light">{{ title }}</span>
+    </v-card-title>
 
     <v-divider class="mx-3" />
 
@@ -11,7 +11,7 @@
         <v-btn
           :to="matchLink"
           nuxt
-          color="cyan"
+          color="green"
           block
           text
         >View Match</v-btn>

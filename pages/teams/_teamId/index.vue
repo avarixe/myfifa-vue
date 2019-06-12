@@ -3,10 +3,7 @@
     fluid
     grid-list-lg
   >
-    <v-layout
-      row
-      wrap
-    >
+    <v-layout wrap>
       <v-flex xs12>
         <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">Dashboard</div>
@@ -43,10 +40,7 @@
 
       <!-- Current Season -->
       <v-flex xs12 md6>
-        <season-item
-          :season="season"
-          color="green"
-        />
+        <season-item :season="season" />
       </v-flex>
 
       <!-- Injured Players -->
@@ -82,9 +76,9 @@
         xs12
       >
         <v-card outlined>
-          <v-card-title
-            class="title font-weight-thin blue--text"
-          >Calendar</v-card-title>
+          <v-card-title :class="`subtitle-1 d-block text-xs-center`">
+            <span class="blue--text font-weight-light">Calendar</span>
+          </v-card-title>
 
           <v-divider class="mx-3" />
 

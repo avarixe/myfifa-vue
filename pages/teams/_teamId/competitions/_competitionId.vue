@@ -32,13 +32,7 @@
               <fitty-text :text="competition.name" />
             </div>
           </v-flex>
-        </v-layout>
 
-        <v-layout
-          class="text-xs-center"
-          row
-          wrap
-        >
           <v-flex
             v-if="readonly"
             xs12

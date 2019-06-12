@@ -1,8 +1,8 @@
 <template>
   <v-card outlined>
-    <v-card-title
-      :class="`title font-weight-light ${color}--text`"
-    >{{ title }}</v-card-title>
+    <v-card-title :class="`subtitle-1 d-block text-xs-center`">
+      <span :class="`${color}--text font-weight-light`">{{ title }}</span>
+    </v-card-title>
 
     <v-divider class="mx-3" />
 
