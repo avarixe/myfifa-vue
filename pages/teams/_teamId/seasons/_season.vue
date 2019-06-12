@@ -30,20 +30,24 @@
       </v-flex>
 
       <v-flex xs12>
-        <v-tabs>
-          <v-tab>Competitions</v-tab>
-          <v-tab>Players</v-tab>
+        <v-card outlined>
+          <v-card-text>
+            <v-tabs>
+              <v-tab>Competitions</v-tab>
+              <v-tab>Players</v-tab>
 
-          <v-tab-item>
-            <season-results-table :season-data="seasonData" />
-          </v-tab-item>
-          <v-tab-item>
-            <player-grid
-              :season="pageSeason"
-              :season-data="seasonData"
-            />
-          </v-tab-item>
-        </v-tabs>
+              <v-tab-item>
+                <season-results-table :season-data="seasonData" />
+              </v-tab-item>
+              <v-tab-item>
+                <player-grid
+                  :season="pageSeason"
+                  :season-data="seasonData"
+                />
+              </v-tab-item>
+            </v-tabs>
+          </v-card-text>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>

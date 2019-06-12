@@ -32,35 +32,37 @@
     </v-card-title>
 
     <!-- Player Information Grid -->
-    <paged-table
-      v-model="page"
-      :page-count="pageCount"
-    >
-      <template #table>
-        <v-data-table
-          :headers="headers"
-          :items="rows"
-          :page.sync="page"
-          :loading="loading"
-          sort-by="posIdx"
-          :search="search"
-          item-key="id"
-          must-sort
-          hide-default-footer
-          :mobile-breakpoint="0"
-          no-data-text="No Players Recorded"
-          @page-count="pageCount = $event"
-        >
-          <template #item="{ item }">
-            <player-row
-              :season="season"
-              :player="item"
-              :mode="mode"
-            />
-          </template>
-        </v-data-table>
-      </template>
-    </paged-table>
+    <v-card-text>
+      <paged-table
+        v-model="page"
+        :page-count="pageCount"
+      >
+        <template #table>
+          <v-data-table
+            :headers="headers"
+            :items="rows"
+            :page.sync="page"
+            :loading="loading"
+            sort-by="posIdx"
+            :search="search"
+            item-key="id"
+            must-sort
+            hide-default-footer
+            :mobile-breakpoint="0"
+            no-data-text="No Players Recorded"
+            @page-count="pageCount = $event"
+          >
+            <template #item="{ item }">
+              <player-row
+                :season="season"
+                :player="item"
+                :mode="mode"
+              />
+            </template>
+          </v-data-table>
+        </template>
+      </paged-table>
+    </v-card-text>
   </v-card>
 </template>
 
@@ -270,10 +272,6 @@
 </script>
 
 <style scoped>
-  .v-card, .v-data-table {
-    background: transparent;
-  }
-
   >>> table.v-table tbody tr td {
     padding: 8px 16px;
     height: auto;

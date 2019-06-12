@@ -9,228 +9,165 @@
         <div class="headline font-weight-thin">{{ player.name }}</div>
       </v-flex>
 
-      <v-flex xs12>
-          <v-layout
-            class="text-xs-center"
-            wrap
+      <v-layout
+        class="text-xs-center"
+        wrap
+      >
+        <v-flex
+          xs6
+          sm3
+        >
+          <div class="display-1">{{ player.pos }}</div>
+          <div class="subheading">Position</div>
+        </v-flex>
+        <v-flex
+          xs6
+          sm3
+        >
+          <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
+          <div class="subheading">Secondary Position(s)</div>
+        </v-flex>
+        <v-flex
+          xs6
+          sm3
+        >
+          <div class="display-1">{{ player.age }}</div>
+          <div class="subheading">Age</div>
+        </v-flex>
+        <v-flex
+          xs6
+          sm3
+        >
+          <div class="display-1">{{ player.status || '-' }}</div>
+          <div class="subheading">Status</div>
+        </v-flex>
+        <v-flex xs12>
+          <player-form
+            :player-data="player"
+            color="orange"
           >
-            <v-flex
-              xs6
-              sm3
-            >
-              <div class="display-1">{{ player.pos }}</div>
-              <div class="subheading">Position</div>
-            </v-flex>
-            <v-flex
-              xs6
-              sm3
-            >
-              <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
-              <div class="subheading">Secondary Position(s)</div>
-            </v-flex>
-            <v-flex
-              xs6
-              sm3
-            >
-              <div class="display-1">{{ player.age }}</div>
-              <div class="subheading">Age</div>
-            </v-flex>
-            <v-flex
-              xs6
-              sm3
-            >
-              <div class="display-1">{{ player.status || '-' }}</div>
-              <div class="subheading">Status</div>
-            </v-flex>
-            <v-flex xs12>
-              <player-form
-                :player-data="player"
+            <template #default="{ on: dialog }">
+              <v-tooltip
+                bottom
                 color="orange"
               >
-                <template #default="{ on: dialog }">
-                  <v-tooltip
-                    bottom
-                    color="orange"
+                <template #activator="{ on: tooltip }">
+                  <v-btn
+                    v-on="{ ...dialog, ...tooltip }"
+                    icon
                   >
-                    <template #activator="{ on: tooltip }">
-                      <v-btn
-                        v-on="{ ...dialog, ...tooltip }"
-                        icon
-                      >
-                        <v-icon color="orange">mdi-pencil</v-icon>
-                      </v-btn>
-                    </template>
-                    Edit
-                  </v-tooltip>
+                    <v-icon color="orange">mdi-pencil</v-icon>
+                  </v-btn>
                 </template>
-              </player-form>
-              <transfer-form :player="player" />
-              <contract-form :player="player" />
-              <injury-form
-                v-if="active"
-                :player="player"
-              />
-              <loan-form
-                v-if="active"
-                :player="player"
-              />
-              <player-retire
-                v-if="active"
-                :player="player"
-              />
-              <player-release
-                v-if="active"
-                :player="player"
-              />
-              <player-remove :player="player" />
-            </v-flex>
-          </v-layout>
-
-      </v-flex>
-
-      <v-flex
-        xs12
-        sm6
-      >
-        <material-chart-card
-          :data="ovrChart.data"
-          :options="ovrChart.options"
-          ratio="ct-major-twelfth"
-          color="green"
-          type="Line"
-        >
-          <h4 class="title font-weight-light">
-            <span class="green--text">{{ player.ovr }}</span>
-            <small>OVR</small>
-          </h4>
-          <!-- <p class="category d-inline-flex font-weight-light" /> -->
-        </material-chart-card>
-      </v-flex>
-
-      <v-flex
-        xs12
-        sm6
-      >
-        <material-chart-card
-          :data="valueChart.data"
-          :options="valueChart.options"
-          ratio="ct-major-twelfth"
-          color="info"
-          type="Line"
-        >
-          <h4 class="title font-weight-light">
-            <span class="green--text">{{ $_formatMoney(player.value) }}</span>
-            <small>Value</small>
-          </h4>
-          <!-- <p class="category d-inline-flex font-weight-light" /> -->
-        </material-chart-card>
-      </v-flex>
-
-      <v-flex
-        xs12
-        sm3
-      >
-        <material-stats-card
-          color="teal"
-          icon="mdi-soccer-field"
-          title="Matches"
-          :value="player.matches.length"
-        />
-      </v-flex>
-
-      <v-flex
-        xs12
-        sm3
-      >
-        <material-stats-card
-          color="blue"
-          icon="mdi-soccer"
-          title="Goals"
-          :value="player.goals.length"
-        />
-      </v-flex>
-
-      <v-flex
-        xs12
-        sm3
-      >
-        <material-stats-card
-          color="orange"
-          icon="mdi-soccer"
-          title="Assists"
-          :value="player.assists.length"
-        />
-      </v-flex>
-
-      <v-flex
-        xs12
-        sm3
-      >
-        <material-stats-card
-          color="pink"
-          icon="mdi-wall"
-          title="Clean Sheets"
-          :value="player.cleanSheets.length"
-        />
-      </v-flex>
+                Edit
+              </v-tooltip>
+            </template>
+          </player-form>
+          <transfer-form :player="player" />
+          <contract-form :player="player" />
+          <injury-form
+            v-if="active"
+            :player="player"
+          />
+          <loan-form
+            v-if="active"
+            :player="player"
+          />
+          <player-retire
+            v-if="active"
+            :player="player"
+          />
+          <player-release
+            v-if="active"
+            :player="player"
+          />
+          <player-remove :player="player" />
+        </v-flex>
+      </v-layout>
 
       <v-flex xs12>
-        <material-card color="accent">
-          <template #header>
-            <span class="title font-weight-light mb-2">Timeline</span>
+        <v-card outlined>
+          <v-card-text>
+            <v-tabs>
+              <v-tab>Statistics</v-tab>
+              <v-tab>Timeline</v-tab>
 
-            <!-- Timeline Filter -->
-            <v-tooltip top>
-              <template #activator="{ on: tooltip }">
-                <v-menu
-                  bottom
-                  right
+              <v-tab-item>
+                <v-layout
+                  class="text-xs-center"
+                  wrap
                 >
-                  <template #activator="{ on: menu }">
-                    <v-btn
-                      v-on="{ ...menu, ...tooltip }"
-                      icon
-                    >
-                      <v-icon :color="currentFilter.color">
-                        mdi-{{ currentFilter.icon }}
-                      </v-icon>
-                    </v-btn>
-                  </template>
-                  <v-list>
-                    <v-list-item
-                      v-for="(event, key) in filterOptions"
-                      :key="key"
-                      @click="timelineFilter = key"
-                    >
-                      <v-list-item-avatar>
-                        <v-icon :color="event.color">
-                          mdi-{{ event.icon }}
-                        </v-icon>
-                      </v-list-item-avatar>
-                      <v-list-item-title>{{ key }}</v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </template>
-              Filter Timeline
-            </v-tooltip>
-          </template>
+                  <v-flex
+                    xs12
+                    sm6
+                  >
+                    <div class="display-1 success--text">{{ player.ovr }}</div>
+                    <div class="subheading">OVR</div>
+                  </v-flex>
 
-          <player-timeline
-            :contracts="player.contracts"
-            :filter="timelineFilter"
-            :injuries="player.injuries"
-            :loans="player.loans"
-            :transfers="player.transfers"
-          />
-        </material-card>
+                  <v-flex
+                    xs12
+                    sm6
+                  >
+                    <div class="display-1 blue-grey--text">{{ $_formatMoney(player.value) }}</div>
+                    <div class="subheading">Value</div>
+                  </v-flex>
+
+                  <v-flex
+                    xs12
+                    sm3
+                  >
+                    <div class="display-1 teal--text">{{ player.matches.length }}</div>
+                    <div class="subheading">Matches</div>
+                  </v-flex>
+
+                  <v-flex
+                    xs12
+                    sm3
+                  >
+                    <div class="display-1 blue--text">{{ player.goals.length }}</div>
+                    <div class="subheading">Goals</div>
+                  </v-flex>
+
+                  <v-flex
+                    xs12
+                    sm3
+                  >
+                    <div class="display-1 orange--text">{{ player.assists.length }}</div>
+                    <div class="subheading">Assists</div>
+                  </v-flex>
+
+                  <v-flex
+                    xs12
+                    sm3
+                  >
+                    <div class="display-1 pink--text">{{ player.cleanSheets.length }}</div>
+                    <div class="subheading">Clean Sheets</div>
+                  </v-flex>
+                </v-layout>
+              </v-tab-item>
+
+              <v-tab-item>
+                <v-card flat>
+                  <v-card-text>
+                    <player-timeline
+                      :contracts="player.contracts"
+                      :injuries="player.injuries"
+                      :loans="player.loans"
+                      :transfers="player.transfers"
+                    />
+                  </v-card-text>
+                </v-card>
+              </v-tab-item>
+            </v-tabs>
+          </v-card-text>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-  import { parse } from 'date-fns'
   import { Player } from '@/models'
   import PlayerForm from '@/components/Player/PlayerForm'
   import ContractForm from '@/components/Player/ContractForm'
@@ -241,11 +178,6 @@
   import PlayerRelease from '@/components/Player/PlayerRelease'
   import PlayerRemove from '@/components/Player/PlayerRemove'
   import PlayerTimeline from '@/components/Player/Timeline'
-  import {
-    MaterialCard,
-    MaterialChartCard,
-    MaterialStatsCard
-  } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -259,58 +191,12 @@
       PlayerRetire,
       PlayerRelease,
       PlayerRemove,
-      PlayerTimeline,
-      MaterialCard,
-      MaterialChartCard,
-      MaterialStatsCard
+      PlayerTimeline
     },
     middleware: 'authenticated',
     mixins: [
       TeamAccessible
     ],
-    data () {
-      return {
-        historyHeaders: [
-          {
-            text: 'Datestamp',
-            value: 'datestamp',
-            align: 'center'
-          },
-          {
-            text: 'OVR',
-            value: 'ovr',
-            align: 'center'
-          },
-          {
-            text: 'Value',
-            value: 'value',
-            align: 'center'
-          }
-        ],
-        filterOptions: {
-          'All': {
-            icon: 'filter-variant'
-          },
-          'Contract': {
-            icon: 'file-document',
-            color: 'blue'
-          },
-          'Injury': {
-            icon: 'hospital',
-            color: 'pink'
-          },
-          'Loan': {
-            icon: 'transit-transfer',
-            color: 'indigo'
-          },
-          'Transfer': {
-            icon: 'airplane-takeoff',
-            color: 'green'
-          }
-        },
-        timelineFilter: 'All'
-      }
-    },
     head () {
       return {
         title: this.player.name
@@ -323,59 +209,8 @@
           .withAll()
           .find(this.$route.params.playerId)
       },
-      active () { return this.player.status && this.player.status.length > 0 },
-
-      ovrChart () {
-        return {
-          data: {
-            labels: this.player.histories.map(h => parse(h.datestamp)),
-            series: [
-              this.player.histories.map(h => h.ovr)
-            ]
-          },
-          options: {
-            axisX: {
-              showGrid: false,
-              showLabel: false
-            },
-            low: 40,
-            high: 100,
-            chartPadding: {
-              top: 0,
-              right: 0,
-              bottom: 0,
-              left: 0
-            }
-          }
-        }
-      },
-
-      valueChart () {
-        return {
-          data: {
-            labels: this.player.histories.map(h => parse(h.datestamp)),
-            series: [
-              this.player.histories.map(h => h.value)
-            ]
-          },
-          options: {
-            axisX: {
-              showGrid: false,
-              showLabel: false
-            },
-            low: 0,
-            chartPadding: {
-              top: 0,
-              right: 0,
-              bottom: 0,
-              left: 0
-            }
-          }
-        }
-      },
-
-      currentFilter () {
-        return this.filterOptions[this.timelineFilter]
+      active () {
+        return this.player.status && this.player.status.length > 0
       }
     },
     async fetch ({ store, params }) {

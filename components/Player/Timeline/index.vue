@@ -53,10 +53,6 @@
       TimelineContent
     },
     props: {
-      filter: {
-        type: String,
-        required: true
-      },
       contracts: {
         type: Array,
         required: true
@@ -125,13 +121,8 @@
           })
         ]
       },
-      filteredItems () {
-        return this.filter !== 'All'
-          ? this.items.filter(item => item.type === this.filter)
-          : this.items
-      },
       sortedItems () {
-        return this.$_orderBy(this.filteredItems, ['date'], ['desc'])
+        return this.$_orderBy(this.items, ['date'], ['desc'])
       },
       dense () {
         switch (this.$vuetify.breakpoint.name) {
