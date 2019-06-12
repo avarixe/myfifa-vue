@@ -1,12 +1,32 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="items"
-  >
-    <template #item.season="{ item }">
-      {{ seasonLabel(item.season) }}
-    </template>
-  </v-data-table>
+  <v-card flat>
+    <v-card-title>
+      <v-select
+        v-model="filters.season"
+        :items="filteredItems.map(i => i.season)"
+        label="Season"
+        clearable
+      />
+
+      <v-spacer />
+
+      <v-select
+        v-model="filters.competition"
+        :items="filteredItems.map(i => i.competition)"
+        label="Competition"
+        clearable
+      />
+    </v-card-title>
+
+    <v-card-text>
+      <v-data-table
+        :headers="headers"
+        :items="filteredItems"
+        sort-by="season"
+        sort-desc
+      />
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -24,6 +44,10 @@
       }
     },
     data: () => ({
+      filters: {
+        season: null,
+        competition: null
+      },
       headers: [
         {
           text: 'Season',
@@ -56,13 +80,21 @@
       ]
     }),
     computed: {
+      filteredItems () {
+        const season = this.filters.season
+        const competition = this.filters.competition
+        return this.items.filter(i =>
+          (!season || season === i.season) &&
+          (!competition || competition === i.competition)
+        )
+      },
       items () {
         const data = []
 
         this.$_forEach(this.groupedMatches, (seasonMatches, season) => {
           this.$_forEach(seasonMatches, (matches, competition) => {
             data.push({
-              season,
+              season: this.seasonLabel(season),
               competition,
               matches: matches.length,
               goals: this.numGoals(matches),

@@ -129,8 +129,8 @@
                           attribute="ovr"
                           label="Overall Rating"
                           color="#4caf50"
-                          min="40"
-                          max="100"
+                          :min="40"
+                          :max="100"
                         />
                       </v-flex>
 
