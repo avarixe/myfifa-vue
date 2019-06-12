@@ -32,7 +32,7 @@
       <v-flex xs12>
         <v-card outlined>
           <v-card-text>
-            <v-tabs>
+            <v-tabs centered>
               <v-tab>Competitions</v-tab>
               <v-tab>Players</v-tab>
 

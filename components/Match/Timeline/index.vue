@@ -37,11 +37,6 @@
         </v-tooltip>
       </h2>
 
-      <v-divider
-        :class="`ma-0 ${eventColor(event)}--text`"
-        :style="dividerStyle"
-      />
-
       <timeline-content :item="event" />
     </v-timeline-item>
 
@@ -73,11 +68,6 @@
         </v-tooltip>
       </h2>
 
-      <v-divider
-        class="ma-0 indigo--text"
-        :style="dividerStyle"
-      />
-
       <timeline-content :item="penaltyShootoutEvent" />
     </v-timeline-item>
   </v-timeline>
@@ -99,14 +89,6 @@
       match: {
         type: Object,
         required: true
-      }
-    },
-    data () {
-      return {
-        dividerStyle: {
-          'border-color': 'inherit',
-          'border-width': 'thin 0 0'
-        }
       }
     },
     computed: {

@@ -76,37 +76,25 @@
         </v-flex>
       </v-layout>
 
-      <v-flex
-        xs12
-        sm6
-      >
+      <v-flex xs12>
         <v-card outlined>
-          <v-card-title class="subtitle-1 d-block text-xs-center">
-            Timeline
-          </v-card-title>
-          <v-divider class="mx-3" />
           <v-card-text>
-            <match-timeline :match="match" />
+            <v-tabs centered>
+              <v-tab>Lineup</v-tab>
+              <v-tab>Timeline</v-tab>
+
+              <v-tab-item>
+                <match-lineup :match="match" />
+              </v-tab-item>
+
+              <v-tab-item>
+                <match-timeline :match="match" />
+              </v-tab-item>
+            </v-tabs>
           </v-card-text>
         </v-card>
       </v-flex>
 
-      <v-flex
-        xs12
-        sm6
-      >
-        <v-card outlined>
-          <v-card-title class="subtitle-1 d-block text-xs-center">
-            Lineup
-          </v-card-title>
-          <v-divider class="mx-3" />
-          <v-card-text>
-            <match-lineup :match="match" />
-          </v-card-text>
-        </v-card>
-      </v-flex>
-
-      </v-flex>
     </v-layout>
   </v-container>
 </template>

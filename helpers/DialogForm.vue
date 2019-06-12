@@ -2,6 +2,7 @@
   <v-dialog
     v-model="dialog"
     persistent
+    scrollable
     :max-width="fullWidth ? '' : '500px'"
   >
     <template #activator="{ on }">
@@ -15,6 +16,7 @@
       v-model="valid"
       ref="form"
       @submit.prevent="submitForm"
+      style="width:100%"
     >
       <v-card>
         <v-card-title
