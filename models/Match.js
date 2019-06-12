@@ -1,4 +1,5 @@
 import { Model } from '@vuex-orm/core'
+import { parse } from 'date-fns'
 import Team from './Team'
 import PenaltyShootout from './PenaltyShootout'
 import Goal from './Goal'
@@ -47,6 +48,12 @@ class Match extends Model {
     return this.home === this.team.title
       ? this.away
       : this.home
+  }
+
+  get season () {
+    const startDate = parse(this.team.start_date)
+    const datePlayed = parse(this.date_played)
+    return parseInt((datePlayed - startDate) / (525600 * 60 * 1000))
   }
 }
 
