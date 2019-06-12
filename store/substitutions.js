@@ -10,10 +10,7 @@ export const actions = {
       path: myfifa.substitutions.search,
       pathData: { teamId },
       token: rootState.token,
-      success: ({ data }) => {
-        console.log(`${data.length} substitutions found!`)
-        Substitution.insert({ data })
-      }
+      success: ({ data }) => { Substitution.insert({ data }) }
     })
   },
   FETCH ({ rootState }, { matchId }) {

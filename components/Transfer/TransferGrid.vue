@@ -1,5 +1,5 @@
 <template>
-  <v-card flat>
+  <v-card outlined>
     <v-card-title>
       <v-select
         v-model="seasonFilter"
@@ -23,40 +23,42 @@
     </v-card-title>
 
     <!-- Match History Grid -->
-    <paged-table
-      v-model="page"
-      :page-count="pageCount"
-    >
-      <template #table>
-        <v-data-table
-          :headers="headers"
-          :items="rows"
-          :page.sync="page"
-          sort-by="effective_date"
-          sort-desc
-          :search="search"
-          item-key="id"
-          hide-default-footer
-          :mobile-breakpoint="0"
-          no-data-text="No Matches Recorded"
-          @page-count="pageCount = $event"
-        >
-          <template #item.effective_date="{ item: transfer }">
-            {{ $_format($_parse(transfer.effective_date), 'MMM DD, YYYY') }}
-          </template>
-          <template #item.player.name="{ item: transfer }">
-            <a @click="$router.push(playerLink(transfer))">
-              {{ transfer.player.name }}
-            </a>
-          </template>
-          <template #item.fee="{ item: transfer }">
-            <span :class="`${isTransferOut(transfer) ? 'green' : 'red'}--text`">
-              {{ $_formatMoney(transfer.fee) }}
-            </span>
-          </template>
-        </v-data-table>
-      </template>
-    </paged-table>
+    <v-card-text>
+      <paged-table
+        v-model="page"
+        :page-count="pageCount"
+      >
+        <template #table>
+          <v-data-table
+            :headers="headers"
+            :items="rows"
+            :page.sync="page"
+            sort-by="effective_date"
+            sort-desc
+            :search="search"
+            item-key="id"
+            hide-default-footer
+            :mobile-breakpoint="0"
+            no-data-text="No Matches Recorded"
+            @page-count="pageCount = $event"
+          >
+            <template #item.effective_date="{ item: transfer }">
+              {{ $_format($_parse(transfer.effective_date), 'MMM DD, YYYY') }}
+            </template>
+            <template #item.player.name="{ item: transfer }">
+              <a @click="$router.push(playerLink(transfer))">
+                {{ transfer.player.name }}
+              </a>
+            </template>
+            <template #item.fee="{ item: transfer }">
+              <span :class="`${isTransferOut(transfer) ? 'green' : 'red'}--text`">
+                {{ $_formatMoney(transfer.fee) }}
+              </span>
+            </template>
+          </v-data-table>
+        </template>
+      </paged-table>
+    </v-card-text>
   </v-card>
 </template>
 
@@ -158,9 +160,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .v-card, .v-data-table {
-    background-color: transparent;
-  }
-</style>

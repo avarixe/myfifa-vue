@@ -1,36 +1,20 @@
 <template>
-  <material-card :color="color">
-    <template #header>
-      <span class="title font-weight-light mb-2">{{ cardTitle }}</span>
+  <v-card outlined>
+    <v-card-title :class="`subtitle-1 d-block text-xs-center`">
+      <span class="primary--text font-weight-light">{{ cardTitle }}</span>
+    </v-card-title>
 
-      <v-tooltip bottom>
-        <template #activator="{ on }">
-          <v-btn
-            v-if="compact"
-            v-on="on"
-            :to="seasonLink"
-            nuxt
-            small
-            icon
-          >
-            <v-icon color="white">mdi-arrow-right</v-icon>
-          </v-btn>
-        </template>
-        View Season
-      </v-tooltip>
-    </template>
+    <v-divider class="mx-3" />
 
-    <p
-      v-if="!compact"
-      class="text-xs-center mt-2 mb-0"
-    >
-      <v-btn
-        :to="seasonLink"
-        :color="color"
-        outlined
-        nuxt
-      >View Season</v-btn>
-    </p>
+    <v-card-actions>
+        <v-btn
+          :to="seasonLink"
+          color="primary"
+          text
+          nuxt
+          block
+        >View Season</v-btn>
+    </v-card-actions>
 
     <v-simple-table>
       <thead>
@@ -50,41 +34,29 @@
             >{{ competitionStatus(competition).icon }}</v-icon>
             {{ competition.name }}
           </td>
-          <td>
+          <td class="text-xs-center">
             <v-btn
               :to="competitionLink(competition)"
               nuxt
-              :color="color"
+              color="primary"
               outlined
             >View</v-btn>
           </td>
         </tr>
       </tbody>
     </v-simple-table>
-
-  </material-card>
+  </v-card>
 </template>
 
 <script>
-  import MaterialCard from '@/helpers/theme/Card'
   import { addYears } from 'date-fns'
-  import {
-    Team,
-    Competition
-  } from '@/models'
+  import { Team, Competition } from '@/models'
 
   export default {
-    components: {
-      MaterialCard
-    },
     props: {
       season: {
         type: Number,
         required: true
-      },
-      color: {
-        type: String,
-        default: 'primary'
       },
       compact: {
         type: Boolean,

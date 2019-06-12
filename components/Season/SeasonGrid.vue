@@ -6,10 +6,7 @@
     hide-default-footer
   >
     <template #default="{ items }">
-      <v-layout
-        row
-        wrap
-      >
+      <v-layout wrap>
         <v-flex
           v-for="season in items"
           :key="season"

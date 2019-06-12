@@ -1,8 +1,5 @@
 <template>
-  <material-card
-    title="Players"
-    color="accent"
-  >
+  <v-card flat>
     <v-card-title>
       <v-btn-toggle
         v-model="mode"
@@ -35,48 +32,49 @@
     </v-card-title>
 
     <!-- Player Information Grid -->
-    <paged-table
-      v-model="page"
-      :page-count="pageCount"
-    >
-      <template #table>
-        <v-data-table
-          :headers="headers"
-          :items="rows"
-          :page.sync="page"
-          :loading="loading"
-          sort-by="posIdx"
-          :search="search"
-          item-key="id"
-          must-sort
-          hide-default-footer
-          :mobile-breakpoint="0"
-          no-data-text="No Players Recorded"
-          @page-count="pageCount = $event"
-        >
-          <template #item="{ item }">
-            <player-row
-              :season="season"
-              :player="item"
-              :mode="mode"
-            />
-          </template>
-        </v-data-table>
-      </template>
-    </paged-table>
-  </material-card>
+    <v-card-text>
+      <paged-table
+        v-model="page"
+        :page-count="pageCount"
+      >
+        <template #table>
+          <v-data-table
+            :headers="headers"
+            :items="rows"
+            :page.sync="page"
+            :loading="loading"
+            sort-by="posIdx"
+            :search="search"
+            item-key="id"
+            must-sort
+            hide-default-footer
+            :mobile-breakpoint="0"
+            no-data-text="No Players Recorded"
+            @page-count="pageCount = $event"
+          >
+            <template #item="{ item }">
+              <player-row
+                :season="season"
+                :player="item"
+                :mode="mode"
+              />
+            </template>
+          </v-data-table>
+        </template>
+      </paged-table>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
   import { addYears } from 'date-fns'
   import Vue from 'vue'
   import { Team, Player } from '@/models'
-  import { MaterialCard, PagedTable } from '@/helpers'
+  import { PagedTable } from '@/helpers'
   import PlayerRow from './PlayerRow'
 
   export default {
     components: {
-      MaterialCard,
       PagedTable,
       PlayerRow
     },

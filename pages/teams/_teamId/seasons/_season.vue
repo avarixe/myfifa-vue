@@ -3,10 +3,7 @@
     fluid
     grid-list-lg
   >
-    <v-layout
-      row
-      wrap
-    >
+    <v-layout wrap>
       <v-flex xs12>
         <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">{{ title }}</div>
@@ -30,17 +27,27 @@
           color="blue-grey"
           outlined
         >Next Season</v-btn>
-
-      </v-flex>
-      <v-flex xs12>
-        <season-results-chart :season-data="seasonData" />
       </v-flex>
 
       <v-flex xs12>
-        <player-grid
-          :season="pageSeason"
-          :season-data="seasonData"
-        />
+        <v-card outlined>
+          <v-card-text>
+            <v-tabs centered>
+              <v-tab>Competitions</v-tab>
+              <v-tab>Players</v-tab>
+
+              <v-tab-item>
+                <season-results-table :season-data="seasonData" />
+              </v-tab-item>
+              <v-tab-item>
+                <player-grid
+                  :season="pageSeason"
+                  :season-data="seasonData"
+                />
+              </v-tab-item>
+            </v-tabs>
+          </v-card-text>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
@@ -48,7 +55,6 @@
 
 <script>
   import CompetitionForm from '@/components/Competition/CompetitionForm'
-  import SeasonResultsChart from '@/components/Season/SeasonResultsChart'
   import SeasonResultsTable from '@/components/Season/SeasonResultsTable'
   import PlayerGrid from '@/components/Season/PlayerGrid'
   import { TeamAccessible } from '@/mixins'
@@ -58,7 +64,6 @@
     middleware: 'authenticated',
     components: {
       CompetitionForm,
-      SeasonResultsChart,
       SeasonResultsTable,
       PlayerGrid
     },

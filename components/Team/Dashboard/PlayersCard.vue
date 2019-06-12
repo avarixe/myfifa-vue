@@ -1,8 +1,11 @@
 <template>
-  <material-card
-    :color="color"
-    :title="title"
-  >
+  <v-card outlined>
+    <v-card-title :class="`subtitle-1 d-block text-xs-center`">
+      <span :class="`${color}--text font-weight-light`">{{ title }}</span>
+    </v-card-title>
+
+    <v-divider class="mx-3" />
+
     <v-simple-table>
       <thead>
         <th>Player</th>
@@ -28,16 +31,11 @@
         </tr>
       </tbody>
     </v-simple-table>
-  </material-card>
+  </v-card>
 </template>
 
 <script>
-  import MaterialCard from '@/helpers/theme/Card'
-
   export default {
-    components: {
-      MaterialCard
-    },
     props: {
       players: {
         type: Array,

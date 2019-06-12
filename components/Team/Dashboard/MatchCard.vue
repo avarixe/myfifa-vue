@@ -1,31 +1,34 @@
 <template>
-  <material-card
-    color="cyan"
-    :title="title"
-  >
-    <div
-      v-if="match"
-      class="text-xs-center"
-    >
-      <p class="my-2 text-xs-center">
+  <v-card outlined>
+    <v-card-title :class="`subtitle-1 d-block text-xs-center`">
+      <span class="green--text font-weight-light">{{ title }}</span>
+    </v-card-title>
+
+    <v-divider class="mx-3" />
+
+    <template v-if="match">
+      <v-card-actions>
         <v-btn
           :to="matchLink"
           nuxt
-          color="cyan"
-          outlined
-        >View</v-btn>
-      </p>
+          color="green"
+          block
+          text
+        >View Match</v-btn>
+      </v-card-actions>
 
-      <p class="font-weight-thin mb-0">{{ match.competition }}</p>
-      <h4 class="title font-weight-light mt-0 mb-3">
-        {{ match.home }} v {{ match.away }}
-      </h4>
+      <v-card-text class="text-xs-center">
+        <p class="font-weight-thin mb-0">{{ match.competition }}</p>
+        <h4 class="title font-weight-light mt-0 mb-3">
+          {{ match.home }} v {{ match.away }}
+        </h4>
 
-      <h4 class="title font-weight-light mb-0">{{ match.score }}</h4>
-      <p class="font-weight-thin mt-0">
-        {{ $_format($_parse(match.date_played), 'MMMM DD, YYYY') }}
-      </p>
-    </div>
+        <h4 class="title font-weight-light mb-0">{{ match.score }}</h4>
+        <p class="font-weight-thin mt-0">
+          {{ $_format($_parse(match.date_played), 'MMMM DD, YYYY') }}
+        </p>
+      </v-card-text>
+    </template>
     <div
       v-else
       class="text-xs-center"
@@ -34,16 +37,11 @@
         No Matches have been Recorded.
       </p>
     </div>
-  </material-card>
+  </v-card>
 </template>
 
 <script>
-  import MaterialCard from '@/helpers/theme/Card'
-
   export default {
-    components: {
-      MaterialCard
-    },
     props: {
       match: Object,
       title: String

@@ -3,10 +3,7 @@
     fluid
     grid-list-lg
   >
-    <v-layout
-      row
-      wrap
-    >
+    <v-layout wrap>
       <v-flex xs12>
         <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">Dashboard</div>
@@ -43,10 +40,7 @@
 
       <!-- Current Season -->
       <v-flex xs12 md6>
-        <season-item
-          :season="season"
-          color="green"
-        />
+        <season-item :season="season" />
       </v-flex>
 
       <!-- Injured Players -->
@@ -81,12 +75,17 @@
         hidden-sm-and-down
         xs12
       >
-        <material-card
-          title="Calendar"
-          color="blue"
-        >
-          <team-calendar />
-        </material-card>
+        <v-card outlined>
+          <v-card-title :class="`subtitle-1 d-block text-xs-center`">
+            <span class="blue--text font-weight-light">Calendar</span>
+          </v-card-title>
+
+          <v-divider class="mx-3" />
+
+          <v-card-text>
+            <team-calendar />
+          </v-card-text>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
@@ -103,7 +102,6 @@
   import TeamCalendar from '@/components/Team/Dashboard/TeamCalendar'
   import MatchCard from '@/components/Team/Dashboard/MatchCard'
   import PlayersCard from '@/components/Team/Dashboard/PlayersCard'
-  import MaterialCard from '@/helpers/theme/Card'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -118,8 +116,7 @@
       TeamDatePicker,
       TeamForm,
       TeamRemove,
-      TeamCalendar,
-      MaterialCard
+      TeamCalendar
     },
     mixins: [
       TeamAccessible
