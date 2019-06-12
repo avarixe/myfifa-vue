@@ -145,7 +145,7 @@
 
 <script>
   import { Competition } from '@/models'
-  import { FittyText, MaterialCard } from '@/helpers'
+  import { FittyText } from '@/helpers'
   import CompetitionForm from '@/components/Competition/CompetitionForm'
   import CompetitionTable from '@/components/Competition/CompetitionTable'
   import CompetitionRound from '@/components/Competition/CompetitionRound'
@@ -161,7 +161,6 @@
     ],
     components: {
       FittyText,
-      MaterialCard,
       CompetitionForm,
       CompetitionTable,
       CompetitionRound,
