@@ -111,7 +111,7 @@
         v-if="tables.length > 0"
         xs12
       >
-        <v-expansion-panels>
+        <v-expansion-panels v-model="viewTable">
           <competition-table
             v-for="(table, i) in tables"
             :key="i"
@@ -162,7 +162,7 @@
       StageForm
     },
     data: () => ({
-      stage: 0
+      viewTable: 0
     }),
     head () {
       return {

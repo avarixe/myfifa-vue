@@ -1,8 +1,5 @@
 <template>
-  <v-expansion-panel
-    v-model="stage"
-    popout
-  >
+  <v-expansion-panel>
     <v-expansion-panel-header>
       <template v-if="edit">
         <v-text-field
@@ -20,76 +17,46 @@
         v-if="!readonly"
         class="text-xs-center my-1"
       >
-        <edit-mode-button
-          :mode="edit"
-          :changed="stageChanged"
-          text
-          @toggle-mode="edit = !edit"
-        />
-
         <stage-remove :stage="table">
           <template #default="{ on }">
             <v-btn
               dark
               small
-            >Close</v-btn>
+            >Remove</v-btn>
           </template>
         </stage-remove>
       </div>
 
-      <v-data-table
-        :headers="headers"
-        :items="items"
-        :items-per-page="-1"
-        :mobile-breakpoint="0"
-        hide-default-footer
-      >
-        <template #headers>
-          <th
-            v-for="(header, i) in headers"
-            :key="i"
-            :class="`text-xs-${header.align}`"
-            :width="header.width"
-          >
-            <template v-if="header.value">{{ header.text }}</template>
-            <v-tooltip
-              v-else
-              right
-            >
-              <template #activator="{ on }">
-                <v-btn
-                  v-on="on"
-                  icon
-                  @click="override = !override"
-                >
-                  <v-icon>mdi-playlist-edit</v-icon>
-                </v-btn>
-              </template>
-              Edit All
-            </v-tooltip>
-          </th>
-        </template>
-
-        <template #item="{ item }">
-          <table-row
+      <v-flex xs12>
+        <v-card flat>
+          <v-data-table
             :headers="headers"
-            :row-data="item"
-            :override="override"
-          />
-        </template>
-      </v-data-table>
+            :items="items"
+            :items-per-page="-1"
+            :mobile-breakpoint="0"
+            disable-sort
+            hide-default-footer
+          >
+            <template #item="{ item }">
+              <table-row
+                :headers="headers"
+                :row-data="item"
+                :override="override"
+              />
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-flex>
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
 
 <script>
-  import { EditModeButton } from '@/helpers'
   import StageRemove from './StageRemove'
   import TableRow from './TableRow'
 
   export default {
     components: {
-      EditModeButton,
       StageRemove,
       TableRow
     },
@@ -112,57 +79,49 @@
             text: 'Team',
             value: 'name',
             type: 'text',
-            align: 'left',
-            sortable: false
+            align: 'left'
           },
           {
             text: 'W',
             value: 'wins',
             type: 'number',
-            align: 'center',
-            sortable: false
+            align: 'center'
           },
           {
             text: 'D',
             value: 'draws',
             type: 'number',
-            align: 'center',
-            sortable: false
+            align: 'center'
           },
           {
             text: 'L',
             value: 'losses',
             type: 'number',
-            align: 'center',
-            sortable: false
+            align: 'center'
           },
           {
             text: 'GF',
             value: 'goals_for',
             type: 'number',
-            align: 'center',
-            sortable: false
+            align: 'center'
           },
           {
             text: 'GA',
             value: 'goals_against',
             type: 'number',
-            align: 'center',
-            sortable: false
+            align: 'center'
           },
           {
             text: 'GD',
             value: 'goal_difference',
             type: null,
-            align: 'center',
-            sortable: false
+            align: 'center'
           },
           {
             text: 'PTS',
             value: 'points',
             type: null,
-            align: 'center',
-            sortable: false
+            align: 'center'
           }
         ]
         !this.readonly && headers.unshift({
