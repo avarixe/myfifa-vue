@@ -172,10 +172,10 @@
   import { Squad } from '@/models'
   import MatchForm from './MatchForm'
   import CapForm from '@/components/Cap/CapForm'
-  import GoalForm from './GoalForm'
-  import BookingForm from './BookingForm'
-  import SubstitutionForm from './SubstitutionForm'
-  import PenaltyShootoutForm from './PenaltyShootoutForm'
+  import GoalForm from '@/components/Goal/GoalForm'
+  import BookingForm from '@/components/Booking/BookingForm'
+  import SubstitutionForm from '@/components/Substitution/SubstitutionForm'
+  import PenaltyShootoutForm from '@/components/PenaltyShootout/PenaltyShootoutForm'
   import MatchRemove from './MatchRemove'
 
   export default {

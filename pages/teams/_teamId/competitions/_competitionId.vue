@@ -175,7 +175,7 @@
   import CompetitionTable from '@/components/Competition/CompetitionTable'
   import CompetitionRound from '@/components/Competition/CompetitionRound'
   import CompetitionRemove from '@/components/Competition/CompetitionRemove'
-  import StageForm from '@/components/Competition/StageForm'
+  import StageForm from '@/components/Stage/StageForm'
   import { TeamAccessible } from '@/mixins'
 
   export default {

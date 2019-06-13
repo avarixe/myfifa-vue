@@ -107,7 +107,7 @@
   import { mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
   import { InlineField } from '@/helpers'
-  import StageRemove from './StageRemove'
+  import StageRemove from '@/components/Stage/StageRemove'
 
   export default {
     mixins: [
