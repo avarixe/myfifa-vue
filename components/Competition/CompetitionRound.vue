@@ -1,25 +1,18 @@
 <template>
-  <v-card outlined>
+  <v-card flat>
     <v-card-title>
-      <div class="title">
-        <template v-if="edit">
-          <v-text-field
-            v-model="stage.name"
-            :rules="$_validate('Stage Name', ['required'])"
-            class="d-inline-block"
-            @click.stop
-          />
-        </template>
-        <span v-else>{{ round.name }}</span>
-      </div>
+      <inline-field
+        :key="key"
+        :item="round"
+        attribute="name"
+        :readonly="readonly"
+        @close="updateStageAttribute(round.id, 'name', $event)"
+        display-class="font-weight-light"
+      />
+
+      <v-spacer />
 
       <template v-if="!readonly">
-        <edit-mode-button
-          :mode="edit"
-          :changed="stageChanged"
-          @toggle-mode="edit = !edit"
-        />
-
         <v-tooltip bottom>
           <template #activator="{ on }">
             <v-btn
@@ -47,7 +40,7 @@
       hide-default-footer
     >
       <template #item.home_team="{ item }">
-        <edit-td
+        <inline-field
           :item="item"
           attribute="home_team"
           label="Home Team"
@@ -59,7 +52,7 @@
         />
       </template>
       <template #item.home_score="{ item }">
-        <edit-td
+        <inline-field
           :item="item"
           attribute="home_score"
           label="Home Score"
@@ -69,7 +62,7 @@
         />
       </template>
       <template #item.away_score="{ item }">
-        <edit-td
+        <inline-field
           :item="item"
           attribute="away_score"
           label="Away Score"
@@ -79,7 +72,7 @@
         />
       </template>
       <template #item.away_team="{ item }">
-        <edit-td
+        <inline-field
           :item="item"
           attribute="away_team"
           label="Away Team"
@@ -98,7 +91,7 @@
 <script>
   import { mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
-  import { EditModeButton, EditTd } from '@/helpers'
+  import { InlineField } from '@/helpers'
   import StageRemove from './StageRemove'
 
   export default {
@@ -106,8 +99,7 @@
       CompetitionAccessible
     ],
     components: {
-      EditModeButton,
-      EditTd,
+      InlineField,
       StageRemove
     },
     props: {
@@ -119,7 +111,6 @@
     },
     data: () => ({
       key: 0,
-      stage: {},
       headers: [
         {
           text: 'Home Team',
@@ -145,26 +136,11 @@
           sortable: false,
           align: 'left'
         }
-      ],
-      edit: false,
-      override: false
+      ]
     }),
     computed: {
       items () {
         return Object.values(this.round.fixtures) || []
-      },
-      stageChanged () {
-        return this.stage.name !== this.round.name
-      }
-    },
-    watch: {
-      edit (val) {
-        if (val) {
-          const { id, name } = this.round
-          this.stage = { id, name }
-        } else if (this.stageChanged) {
-          this.updateStage(this.stage)
-        }
       }
     },
     methods: {
@@ -173,6 +149,20 @@
         updateFixture: 'fixtures/UPDATE',
         updateStage: 'stages/UPDATE'
       }),
+      async updateStageAttribute (stageId, attribute, value) {
+        try {
+          await this.updateStage({
+            id: stageId,
+            [attribute]: value
+          })
+        } catch (e) {
+          this.key++
+          this.$store.commit('broadcaster/ANNOUNCE', {
+            message: e.message,
+            color: 'red'
+          })
+        }
+      },
       addFixture () {
         this.createFixture({
           stageId: this.round.id,

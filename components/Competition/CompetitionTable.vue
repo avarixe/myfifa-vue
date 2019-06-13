@@ -1,39 +1,21 @@
 <template>
-  <v-expansion-panel>
-    <v-expansion-panel-header>
-      <template v-if="edit">
-        <v-text-field
-          v-model="stage.name"
-          :rules="$_validate('Stage Name', ['required'])"
-          class="d-inline-block"
-          @click.stop
-        />
-      </template>
-      <span v-else>{{ table.name }}</span>
-    </v-expansion-panel-header>
+  <v-card flat>
+    <v-card-title>
+      <inline-field
+        :key="key"
+        :item="table"
+        attribute="name"
+        :readonly="readonly"
+        @close="updateStageAttribute(table.id, 'name', $event)"
+        display-class="font-weight-light"
+      />
 
-    <v-expansion-panel-content>
-      <div
-        v-if="!readonly"
-        class="text-xs-center my-1"
-      >
-        <edit-mode-button
-          :mode="edit"
-          :changed="stageChanged"
-          text
-          @toggle-mode="edit = !edit"
-        />
+      <v-spacer />
 
-        <stage-remove :stage="table">
-          <template #default="{ on }">
-            <v-btn
-              dark
-              small
-            >Remove</v-btn>
-          </template>
-        </stage-remove>
-      </div>
+      <stage-remove :stage="table" />
+    </v-card-title>
 
+    <v-card-text>
       <v-data-table
         :key="key"
         :headers="headers"
@@ -44,7 +26,7 @@
         hide-default-footer
       >
         <template #item.name="{ item }">
-          <edit-td
+          <inline-field
             :item="item"
             attribute="name"
             label="Team"
@@ -56,7 +38,7 @@
           />
         </template>
         <template #item.wins="{ item }">
-          <edit-td
+          <inline-field
             :item="item"
             attribute="wins"
             label="W"
@@ -67,7 +49,7 @@
           />
         </template>
         <template #item.draws="{ item }">
-          <edit-td
+          <inline-field
             :item="item"
             attribute="draws"
             label="D"
@@ -78,7 +60,7 @@
           />
         </template>
         <template #item.losses="{ item }">
-          <edit-td
+          <inline-field
             :item="item"
             attribute="losses"
             label="L"
@@ -89,7 +71,7 @@
           />
         </template>
         <template #item.goals_for="{ item }">
-          <edit-td
+          <inline-field
             :item="item"
             attribute="goals_for"
             label="GF"
@@ -100,7 +82,7 @@
           />
         </template>
         <template #item.goals_against="{ item }">
-          <edit-td
+          <inline-field
             :item="item"
             attribute="goals_against"
             label="GA"
@@ -117,14 +99,14 @@
           <span :class="teamClass(item.name)">{{ item.points }}</span>
         </template>
       </v-data-table>
-    </v-expansion-panel-content>
-  </v-expansion-panel>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
   import { mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
-  import { EditModeButton, EditTd } from '@/helpers'
+  import { InlineField } from '@/helpers'
   import StageRemove from './StageRemove'
 
   export default {
@@ -132,8 +114,7 @@
       CompetitionAccessible
     ],
     components: {
-      EditModeButton,
-      EditTd,
+      InlineField,
       StageRemove
     },
     props: {
@@ -145,7 +126,6 @@
     },
     data: () => ({
       key: 0,
-      stage: {},
       headers: [
         {
           text: 'Team',
@@ -187,9 +167,7 @@
           value: 'points',
           align: 'center'
         }
-      ],
-      edit: false,
-      override: false
+      ]
     }),
     computed: {
       items () {
@@ -198,19 +176,6 @@
           ['points', 'goal_difference', 'goals_for', 'goals_against'],
           ['desc', 'desc', 'desc', 'desc']
         )
-      },
-      stageChanged () {
-        return this.stage.name !== this.table.name
-      }
-    },
-    watch: {
-      edit (val) {
-        if (val) {
-          const { id, name } = this.table
-          this.stage = { id, name }
-        } else if (this.stageChanged) {
-          this.updateStage(this.stage)
-        }
       }
     },
     methods: {
@@ -218,6 +183,20 @@
         updateStage: 'stages/UPDATE',
         updateRow: 'tableRows/UPDATE'
       }),
+      async updateStageAttribute (stageId, attribute, value) {
+        try {
+          await this.updateStage({
+            id: stageId,
+            [attribute]: value
+          })
+        } catch (e) {
+          this.key++
+          this.$store.commit('broadcaster/ANNOUNCE', {
+            message: e.message,
+            color: 'red'
+          })
+        }
+      },
       async updateRowAttribute (rowId, attribute, value) {
         try {
           await this.updateRow({

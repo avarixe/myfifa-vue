@@ -97,7 +97,7 @@
               <a @click="goToPlayer(item)">{{ item.name }}</a>
             </template>
             <template #item.kit_no="{ item }">
-              <edit-td
+              <inline-field
                 :item="item"
                 attribute="kit_no"
                 label="Kit No"
@@ -107,7 +107,7 @@
               />
             </template>
             <template #item.ovr="{ item }">
-              <edit-td
+              <inline-field
                 :item="item"
                 attribute="ovr"
                 label="OVR"
@@ -117,7 +117,7 @@
               />
             </template>
             <template #item.value="{ item }">
-              <edit-td
+              <inline-field
                 :item="item"
                 attribute="value"
                 label="Value"
@@ -154,14 +154,14 @@
 <script>
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
-  import { EditTd, PagedTable } from '@/helpers'
+  import { InlineField, PagedTable } from '@/helpers'
 
   export default {
     mixins: [
       TeamAccessible
     ],
     components: {
-      EditTd,
+      InlineField,
       PagedTable
     },
     data: () => ({

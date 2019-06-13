@@ -16,6 +16,8 @@
         <v-btn
           :to="seasonLink"
           nuxt
+          outlined
+          color="blue-grey"
         >View Season</v-btn>
       </v-flex>
 
@@ -111,14 +113,26 @@
         v-if="tables.length > 0"
         xs12
       >
-        <v-expansion-panels v-model="viewTable">
-          <competition-table
-            v-for="(table, i) in tables"
-            :key="i"
-            :table="table"
-            :readonly="readonly"
-          />
-        </v-expansion-panels>
+        <v-card outlined>
+          <v-card-text>
+            <v-tabs centered center-active>
+              <v-tab
+                v-for="table in tables"
+                :key="table.id"
+              >{{ table.name }}</v-tab>
+
+              <v-tab-item
+                v-for="table in tables"
+                :key="table.id"
+              >
+                <competition-table
+                  :table="table"
+                  :readonly="readonly"
+                />
+              </v-tab-item>
+            </v-tabs>
+          </v-card-text>
+        </v-card>
       </v-flex>
 
       <!-- Elimination Round Stages -->
@@ -126,12 +140,29 @@
         v-if="rounds.length > 0"
         xs12
       >
-        <competition-round
-          v-for="(round, i) in rounds"
-          :key="i"
-          :round="round"
-          :readonly="readonly"
-        />
+        <v-card outlined>
+          <v-card-text>
+            <v-tabs
+              centered
+              center-active
+            >
+              <v-tab
+                v-for="round in rounds"
+                :key="round.id"
+              >{{ round.name }}</v-tab>
+
+              <v-tab-item
+                v-for="round in rounds"
+                :key="round.id"
+              >
+                <competition-round
+                  :round="round"
+                  :readonly="readonly"
+                />
+              </v-tab-item>
+            </v-tabs>
+          </v-card-text>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
