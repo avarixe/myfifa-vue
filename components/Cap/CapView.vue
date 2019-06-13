@@ -1,31 +1,30 @@
 <template>
   <div>
     <div class="font-weight-bold">
-      <cap-select
-        :disabled="readonly"
-        :value="cap.pos"
+      <inline-field
+        :item="cap"
+        attribute="pos"
+        input-type="select"
+        label="Position"
         :options="positions"
-        @change="setPosition($event)"
+        @close="setPosition($event)"
+        :readonly="readonly"
       />
     </div>
     <div class="font-weight-thin">
-      <cap-select
+      <inline-field
         v-if="!readonly"
-        :value="cap.name"
+        :item="cap"
+        attribute="player_id"
+        input-type="select"
+        label="Player"
         :options="players"
-        @change="setPlayer($event)"
-      >
-        <template #option="{ option: player }">
-          <v-list-item-action>
-            <v-list-item-action-text>
-              {{ player.pos }}
-            </v-list-item-action-text>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{ player.name }}</v-list-item-title>
-          </v-list-item-content>
-        </template>
-      </cap-select>
+        option-avatar="pos"
+        option-text="name"
+        option-value="id"
+        :display="cap.name"
+        @close="setPlayer($event)"
+      />
 
       <a
         v-else
@@ -43,14 +42,14 @@
 
 <script>
   import { mapState } from 'vuex'
-  import { activePlayers } from '@/models/Player'
-  import CapEvents from './Cap/CapEvents'
-  import CapSelect from './Cap/CapSelect'
+  import Player, { activePlayers } from '@/models/Player'
+  import { InlineField } from '@/helpers'
+  import CapEvents from './CapEvents'
 
   export default {
     components: {
       CapEvents,
-      CapSelect
+      InlineField
     },
     props: {
       cap: {
@@ -81,7 +80,7 @@
       async updateCap (key, value) {
         try {
           await this.$store.dispatch('caps/UPDATE', {
-            ...this.cap,
+            id: this.cap.id,
             [key]: value
           })
         } catch (e) {
@@ -94,8 +93,8 @@
       async setPosition (position) {
         await this.updateCap('pos', position)
       },
-      async setPlayer (player) {
-        await this.updateCap('player_id', player.id)
+      async setPlayer (playerId) {
+        await this.updateCap('player_id', playerId)
       },
       goToPlayer () {
         this.$router.push({
@@ -105,6 +104,9 @@
             playerId: this.cap.player_id
           }
         })
+      },
+      playerName (id) {
+        return Player.find(id).name
       }
     }
   }

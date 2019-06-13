@@ -2,7 +2,7 @@
   <v-container>
     <formation-view :formation="sortedCaps">
       <template #item="{ player }">
-        <match-cap
+        <cap-view
           :cap="player"
           :match="match"
           :readonly="readonly"
@@ -17,7 +17,7 @@
       <v-flex xs12>
         <v-list dense>
           <v-subheader>Substitutes</v-subheader>
-          <substitute-cap
+          <cap-sub-view
             v-for="cap in substitutes"
             :key="cap.id"
             :cap="cap"
@@ -36,14 +36,14 @@
     MatchAccessible
   } from '@/mixins'
   import { FormationView } from '@/helpers'
-  import MatchCap from './MatchCap'
-  import SubstituteCap from './SubstituteCap'
+  import CapView from '@/components/Cap/CapView'
+  import CapSubView from '@/components/Cap/CapSubView'
 
   export default {
     components: {
       FormationView,
-      MatchCap,
-      SubstituteCap
+      CapView,
+      CapSubView
     },
     mixins: [
       TeamAccessible,

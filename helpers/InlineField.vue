@@ -1,16 +1,22 @@
 <template>
-  <div>
+  <div :key="key">
     <template v-if="readonly">
-      <span :class="displayClass">{{ display }}</span>
+      <span :class="displayClass">{{ humanizedDisplay }}</span>
     </template>
     <template v-else>
-      <v-edit-dialog @close="close">
-        <span :class="displayClass">{{ display }}</span>
+      <v-edit-dialog
+        @open="open"
+        @close="close"
+      >
+        <span :class="displayClass">{{ humanizedDisplay }}</span>
         <template #input>
           <v-combobox
             v-if="inputType === 'combobox'"
             v-model="value"
             :items="options"
+            :item-avatar="optionAvatar"
+            :item-text="optionText"
+            :item-value="optionValue"
             :rules="rules"
             :label="label"
             spellcheck="false"
@@ -18,15 +24,45 @@
             autocomplete="off"
             autocorrect="off"
             autofocus
-          />
+          >
+            <template #item="{ item }">
+              <slot
+                name="option"
+                :item="item"
+              >
+                <list-option
+                  :item="item"
+                  :option-avatar="optionAvatar"
+                  :option-text="optionText"
+                />
+              </slot>
+            </template>
+          </v-combobox>
           <v-select
             v-else-if="inputType === 'select'"
             v-model="value"
             :items="options"
+            :item-avatar="optionAvatar"
+            :item-text="optionText"
+            :item-value="optionValue"
             :rules="rules"
             :label="label"
             menu-props="auto"
-          />
+            @change="close"
+          >
+            <template #item="{ item }">
+              <slot
+                name="option"
+                :item="item"
+              >
+                <list-option
+                  :item="item"
+                  :option-avatar="optionAvatar"
+                  :option-text="optionText"
+                />
+              </slot>
+            </template>
+          </v-select>
           <v-text-field
             v-else-if="inputType === 'money'"
             v-model="value"
@@ -36,6 +72,7 @@
             :prefix="team.currency"
             persistent-hint
             type="number"
+            autofocus
           />
           <v-text-field
             v-else
@@ -53,11 +90,15 @@
 
 <script>
   import { TeamAccessible } from '@/mixins'
+  import ListOption from './ListOption'
 
   export default {
     mixins: [
       TeamAccessible
     ],
+    components: {
+      ListOption
+    },
     props: {
       item: {
         type: Object,
@@ -67,39 +108,49 @@
         type: String,
         required: true
       },
-      humanizer: {
-        type: Function,
-        default: val => val
-      },
       label: String,
       options: Array,
+      optionAvatar: String,
+      optionText: String,
+      optionValue: String,
       rules: Array,
       inputType: String,
+      display: [String, Number],
       displayClass: String,
-      readonly: Boolean,
-      open: Function
+      readonly: Boolean
     },
     data: () => ({
       value: null,
-      original: null
+      original: null,
+      key: 0
     }),
     computed: {
-      display () {
-        const humanizedValue = this.humanizer(this.value)
-        return humanizedValue === null || humanizedValue === ''
-          ? '-'
-          : humanizedValue
+      humanizedDisplay () {
+        const value = this.display || this.value
+        return value === null || value === '' ? '-' : value
       },
       isDirty () {
         return this.value !== this.original
       }
     },
-    mounted () {
-      this.value = this.item[this.attribute]
+    watch: {
+      item: {
+        immediate: true,
+        handler () {
+          this.value = this.item[this.attribute]
+          this.original = this.value
+        }
+      }
     },
     methods: {
+      open () {
+        console.log(this.$slots)
+      },
       close () {
-        this.isDirty && this.$emit('close', this.value)
+        if (this.isDirty) {
+          this.$emit('close', this.value)
+          this.key++
+        }
       }
     }
   }

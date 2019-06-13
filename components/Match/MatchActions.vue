@@ -171,7 +171,7 @@
   import { TeamAccessible } from '@/mixins'
   import { Squad } from '@/models'
   import MatchForm from './MatchForm'
-  import CapForm from './CapForm'
+  import CapForm from '@/components/Cap/CapForm'
   import GoalForm from './GoalForm'
   import BookingForm from './BookingForm'
   import SubstitutionForm from './SubstitutionForm'

@@ -122,7 +122,7 @@
                 attribute="value"
                 label="Value"
                 input-type="money"
-                :humanizer="v => $_formatMoney(v)"
+                :display="$_formatMoney(item.value)"
                 @close="updatePlayerAttribute(item.id, 'value', $event)"
               />
             </template>
