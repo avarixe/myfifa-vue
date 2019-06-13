@@ -1,7 +1,7 @@
 <template>
   <v-card outlined>
     <v-card-title>
-      <span class="title font-weight-light">{{ squad.name }}</span>
+      <span class="subtitle-1 font-weight-light">{{ squad.name }}</span>
 
       <v-spacer />
 

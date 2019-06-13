@@ -1,25 +1,18 @@
 <template>
-  <v-card>
+  <v-card flat>
     <v-card-title>
-      <div class="title">
-        <template v-if="edit">
-          <v-text-field
-            v-model="stage.name"
-            :rules="$_validate('Stage Name', ['required'])"
-            class="d-inline-block"
-            @click.stop
-          />
-        </template>
-        <span v-else>{{ round.name }}</span>
-      </div>
+      <inline-field
+        :key="key"
+        :item="round"
+        attribute="name"
+        :readonly="readonly"
+        @close="updateStageAttribute(round.id, 'name', $event)"
+        display-class="font-weight-light"
+      />
+
+      <v-spacer />
 
       <template v-if="!readonly">
-        <edit-mode-button
-          :mode="edit"
-          :changed="stageChanged"
-          @toggle-mode="edit = !edit"
-        />
-
         <v-tooltip bottom>
           <template #activator="{ on }">
             <v-btn
@@ -37,59 +30,77 @@
       </template>
     </v-card-title>
 
-    <v-simple-table>
-      <thead>
-        <th
-          v-if="!readonly"
-          style="width:40px"
-        >
-          <v-tooltip
-            v-if="items.length > 1"
-            right
-          >
-            <template #activator="{ on }">
-              <v-btn
-                v-on="on"
-                icon
-                @click="override = !override"
-              >
-                <v-icon>mdi-playlist-edit</v-icon>
-              </v-btn>
-            </template>
-            Edit All
-          </v-tooltip>
-        </th>
-        <th class="text-xs-right">Home Team</th>
-        <th
-          colspan="2"
-          class="text-xs-center"
-        >Score</th>
-        <th class="text-xs-left">Away Team</th>
-      </thead>
-      <tbody>
-        <fixture-view
-          v-for="(item, i) in items"
-          :key="i"
-          :headers="headers"
-          :fixture-data="item"
-          :override="override"
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      disable-sort
+      disable-pagination
+      :mobile-breakpoint="0"
+      :items-per-page="-1"
+      hide-default-footer
+    >
+      <template #item.home_team="{ item }">
+        <inline-field
+          :item="item"
+          attribute="home_team"
+          label="Home Team"
+          input-type="combobox"
+          :options="competitionTeams"
+          @close="updateFixtureAttribute(item.id, 'home_team', $event)"
+          :readonly="readonly"
+          :display-class="teamClass(item.home_team)"
         />
-      </tbody>
-    </v-simple-table>
+      </template>
+      <template #item.home_score="{ item }">
+        <inline-field
+          :item="item"
+          attribute="home_score"
+          label="Home Score"
+          @close="updateFixtureAttribute(item.id, 'home_score', $event)"
+          :readonly="readonly"
+          :display-class="teamClass(item.home_team)"
+        />
+      </template>
+      <template #item.away_score="{ item }">
+        <inline-field
+          :item="item"
+          attribute="away_score"
+          label="Away Score"
+          @close="updateFixtureAttribute(item.id, 'away_score', $event)"
+          :readonly="readonly"
+          :display-class="teamClass(item.away_team)"
+        />
+      </template>
+      <template #item.away_team="{ item }">
+        <inline-field
+          :item="item"
+          attribute="away_team"
+          label="Away Team"
+          input-type="combobox"
+          :options="competitionTeams"
+          @close="updateFixtureAttribute(item.id, 'away_team', $event)"
+          :readonly="readonly"
+          :display-class="teamClass(item.away_team)"
+        />
+      </template>
+    </v-data-table>
 
   </v-card>
 </template>
 
 <script>
-  import { EditModeButton } from '@/helpers'
+  import { mapActions } from 'vuex'
+  import { CompetitionAccessible } from '@/mixins'
+  import { InlineField } from '@/helpers'
   import StageRemove from './StageRemove'
-  import FixtureView from './FixtureView'
 
   export default {
+    mixins: [
+      CompetitionAccessible
+    ],
     components: {
-      EditModeButton,
-      StageRemove,
-      FixtureView
+      InlineField,
+      StageRemove
     },
     props: {
       round: {
@@ -99,68 +110,69 @@
       readonly: Boolean
     },
     data: () => ({
-      stage: {},
-      edit: false,
-      override: false
+      key: 0,
+      headers: [
+        {
+          text: 'Home Team',
+          value: 'home_team',
+          sortable: false,
+          align: 'right'
+        },
+        {
+          text: 'Home Score',
+          value: 'home_score',
+          sortable: false,
+          align: 'right'
+        },
+        {
+          text: 'Away Score',
+          value: 'away_score',
+          sortable: false,
+          align: 'left'
+        },
+        {
+          text: 'Away Team',
+          value: 'away_team',
+          sortable: false,
+          align: 'left'
+        }
+      ]
     }),
     computed: {
-      headers () {
-        let headers = [
-          {
-            text: 'Home Team',
-            value: 'home_team',
-            sortable: false,
-            align: 'right'
-          },
-          {
-            text: 'Home Score',
-            value: 'home_score',
-            sortable: false,
-            align: 'right'
-          },
-          {
-            text: 'Away Score',
-            value: 'away_score',
-            sortable: false,
-            align: 'left'
-          },
-          {
-            text: 'Away Team',
-            value: 'away_team',
-            sortable: false,
-            align: 'left'
-          }
-        ]
-        !this.readonly && headers.unshift({
-          text: '',
-          value: null,
-          sortable: false,
-          width: '40px'
-        })
-        return headers
-      },
       items () {
         return Object.values(this.round.fixtures) || []
-      },
-      stageChanged () {
-        return this.stage.name !== this.round.name
-      }
-    },
-    watch: {
-      edit (val) {
-        if (val) {
-          const { id, name } = this.round
-          this.stage = { id, name }
-        } else if (this.stageChanged) {
-          this.$store.dispatch('stages/UPDATE', this.stage)
-        }
       }
     },
     methods: {
+      ...mapActions({
+        createFixture: 'fixtures/CREATE',
+        updateFixture: 'fixtures/UPDATE',
+        updateStage: 'stages/UPDATE'
+      }),
+      async updateStageAttribute (stageId, attribute, value) {
+        try {
+          await this.updateStage({
+            id: stageId,
+            [attribute]: value
+          })
+        } catch (e) {
+          this.key++
+          this.$store.commit('broadcaster/ANNOUNCE', {
+            message: e.message,
+            color: 'red'
+          })
+        }
+      },
       addFixture () {
-        this.$store.dispatch('fixtures/CREATE', {
+        this.createFixture({
           stageId: this.round.id,
           fixture: { home_team: '', away_team: '' }
+        })
+      },
+      updateFixtureAttribute (fixtureId, attribute, value) {
+        this.updateFixture({
+          id: fixtureId,
+          [attribute]: value
         })
       }
     }

@@ -1,97 +1,121 @@
 <template>
-  <v-expansion-panel
-    v-model="stage"
-    popout
-  >
-    <v-expansion-panel-header>
-      <template v-if="edit">
-        <v-text-field
-          v-model="stage.name"
-          :rules="$_validate('Stage Name', ['required'])"
-          class="d-inline-block"
-          @click.stop
-        />
-      </template>
-      <span v-else>{{ table.name }}</span>
-    </v-expansion-panel-header>
+  <v-card flat>
+    <v-card-title>
+      <inline-field
+        :key="key"
+        :item="table"
+        attribute="name"
+        :readonly="readonly"
+        @close="updateStageAttribute(table.id, 'name', $event)"
+        display-class="font-weight-light"
+      />
 
-    <v-expansion-panel-content class="elevation-1">
-      <div
-        v-if="!readonly"
-        class="text-xs-center my-1"
-      >
-        <edit-mode-button
-          :mode="edit"
-          :changed="stageChanged"
-          text
-          @toggle-mode="edit = !edit"
-        />
+      <v-spacer />
 
-        <stage-remove :stage="table">
-          <template #default="{ on }">
-            <v-btn
-              dark
-              small
-            >Close</v-btn>
-          </template>
-        </stage-remove>
-      </div>
+      <stage-remove :stage="table" />
+    </v-card-title>
 
+    <v-card-text>
       <v-data-table
+        :key="key"
         :headers="headers"
         :items="items"
         :items-per-page="-1"
         :mobile-breakpoint="0"
+        disable-sort
         hide-default-footer
       >
-        <template #headers>
-          <th
-            v-for="(header, i) in headers"
-            :key="i"
-            :class="`text-xs-${header.align}`"
-            :width="header.width"
-          >
-            <template v-if="header.value">{{ header.text }}</template>
-            <v-tooltip
-              v-else
-              right
-            >
-              <template #activator="{ on }">
-                <v-btn
-                  v-on="on"
-                  icon
-                  @click="override = !override"
-                >
-                  <v-icon>mdi-playlist-edit</v-icon>
-                </v-btn>
-              </template>
-              Edit All
-            </v-tooltip>
-          </th>
-        </template>
-
-        <template #item="{ item }">
-          <table-row
-            :headers="headers"
-            :row-data="item"
-            :override="override"
+        <template #item.name="{ item }">
+          <inline-field
+            :item="item"
+            attribute="name"
+            label="Team"
+            input-type="combobox"
+            :options="competitionTeams"
+            @close="updateRowAttribute(item.id, 'name', $event)"
+            :readonly="readonly"
+            :display-class="teamClass(item.name)"
           />
         </template>
+        <template #item.wins="{ item }">
+          <inline-field
+            :item="item"
+            attribute="wins"
+            label="W"
+            input-type="number"
+            @close="updateRowAttribute(item.id, 'wins', $event)"
+            :readonly="readonly"
+            :display-class="teamClass(item.name)"
+          />
+        </template>
+        <template #item.draws="{ item }">
+          <inline-field
+            :item="item"
+            attribute="draws"
+            label="D"
+            input-type="number"
+            @close="updateRowAttribute(item.id, 'draws', $event)"
+            :readonly="readonly"
+            :display-class="teamClass(item.name)"
+          />
+        </template>
+        <template #item.losses="{ item }">
+          <inline-field
+            :item="item"
+            attribute="losses"
+            label="L"
+            input-type="number"
+            @close="updateRowAttribute(item.id, 'losses', $event)"
+            :readonly="readonly"
+            :display-class="teamClass(item.name)"
+          />
+        </template>
+        <template #item.goals_for="{ item }">
+          <inline-field
+            :item="item"
+            attribute="goals_for"
+            label="GF"
+            input-type="number"
+            @close="updateRowAttribute(item.id, 'goals_for', $event)"
+            :readonly="readonly"
+            :display-class="teamClass(item.name)"
+          />
+        </template>
+        <template #item.goals_against="{ item }">
+          <inline-field
+            :item="item"
+            attribute="goals_against"
+            label="GA"
+            input-type="number"
+            @close="updateRowAttribute(item.id, 'goals_against', $event)"
+            :readonly="readonly"
+            :display-class="teamClass(item.name)"
+          />
+        </template>
+        <template #item.goal_difference="{ item }">
+          <span :class="teamClass(item.name)">{{ item.goal_difference }}</span>
+        </template>
+        <template #item.points="{ item }">
+          <span :class="teamClass(item.name)">{{ item.points }}</span>
+        </template>
       </v-data-table>
-    </v-expansion-panel-content>
-  </v-expansion-panel>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
-  import { EditModeButton } from '@/helpers'
+  import { mapActions } from 'vuex'
+  import { CompetitionAccessible } from '@/mixins'
+  import { InlineField } from '@/helpers'
   import StageRemove from './StageRemove'
-  import TableRow from './TableRow'
 
   export default {
+    mixins: [
+      CompetitionAccessible
+    ],
     components: {
-      EditModeButton,
-      StageRemove,
-      TableRow
+      InlineField,
+      StageRemove
     },
     props: {
       table: {
@@ -101,98 +125,98 @@
       readonly: Boolean
     },
     data: () => ({
-      stage: {},
-      edit: false,
-      override: false
+      key: 0,
+      headers: [
+        {
+          text: 'Team',
+          value: 'name',
+          align: 'left'
+        },
+        {
+          text: 'W',
+          value: 'wins',
+          align: 'center'
+        },
+        {
+          text: 'D',
+          value: 'draws',
+          align: 'center'
+        },
+        {
+          text: 'L',
+          value: 'losses',
+          align: 'center'
+        },
+        {
+          text: 'GF',
+          value: 'goals_for',
+          align: 'center'
+        },
+        {
+          text: 'GA',
+          value: 'goals_against',
+          align: 'center'
+        },
+        {
+          text: 'GD',
+          value: 'goal_difference',
+          align: 'center'
+        },
+        {
+          text: 'PTS',
+          value: 'points',
+          align: 'center'
+        }
+      ]
     }),
     computed: {
-      headers () {
-        let headers = [
-          {
-            text: 'Team',
-            value: 'name',
-            type: 'text',
-            align: 'left',
-            sortable: false
-          },
-          {
-            text: 'W',
-            value: 'wins',
-            type: 'number',
-            align: 'center',
-            sortable: false
-          },
-          {
-            text: 'D',
-            value: 'draws',
-            type: 'number',
-            align: 'center',
-            sortable: false
-          },
-          {
-            text: 'L',
-            value: 'losses',
-            type: 'number',
-            align: 'center',
-            sortable: false
-          },
-          {
-            text: 'GF',
-            value: 'goals_for',
-            type: 'number',
-            align: 'center',
-            sortable: false
-          },
-          {
-            text: 'GA',
-            value: 'goals_against',
-            type: 'number',
-            align: 'center',
-            sortable: false
-          },
-          {
-            text: 'GD',
-            value: 'goal_difference',
-            type: null,
-            align: 'center',
-            sortable: false
-          },
-          {
-            text: 'PTS',
-            value: 'points',
-            type: null,
-            align: 'center',
-            sortable: false
-          }
-        ]
-        !this.readonly && headers.unshift({
-          text: '',
-          value: null,
-          sortable: false,
-          width: '40px'
-        })
-        return headers
-      },
       items () {
         return this.$_orderBy(
           Object.values(this.table.table_rows || {}),
           ['points', 'goal_difference', 'goals_for', 'goals_against'],
           ['desc', 'desc', 'desc', 'desc']
         )
-      },
-      stageChanged () {
-        return this.stage.name !== this.table.name
       }
     },
-    watch: {
-      edit (val) {
-        if (val) {
-          const { id, name } = this.table
-          this.stage = { id, name }
-        } else if (this.stageChanged) {
-          this.$store.dispatch('stages/UPDATE', this.stage)
+    methods: {
+      ...mapActions({
+        updateStage: 'stages/UPDATE',
+        updateRow: 'tableRows/UPDATE'
+      }),
+      async updateStageAttribute (stageId, attribute, value) {
+        try {
+          await this.updateStage({
+            id: stageId,
+            [attribute]: value
+          })
+        } catch (e) {
+          this.key++
+          this.$store.commit('broadcaster/ANNOUNCE', {
+            message: e.message,
+            color: 'red'
+          })
+        }
+      },
+      async updateRowAttribute (rowId, attribute, value) {
+        try {
+          await this.updateRow({
+            id: rowId,
+            [attribute]: value
+          })
+        } catch (e) {
+          this.key++
+          this.$store.commit('broadcaster/ANNOUNCE', {
+            message: e.message,
+            color: 'red'
+          })
         }
       }
     }
   }
 </script>
+
+<style scoped>
+  >>> .v-expansion-panel-content__wrap {
+    width: 100%;
+  }
+</style>

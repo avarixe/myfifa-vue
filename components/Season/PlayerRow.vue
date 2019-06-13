@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td class="text-xs-left">
-      <a @click="$router.push(playerLink)">{{ player.name }}</a>
+      <a @click="goToPlayer">{{ player.name }}</a>
     </td>
     <td class="text-xs-center">{{ player.pos }}</td>
     <td class="text-xs-center">{{ player.age }}</td>
@@ -49,16 +49,6 @@
       }
     },
     computed: {
-      playerLink () {
-        return {
-          name: 'teams-teamId-players-playerId',
-          params: {
-            teamId: this.$route.params.teamId,
-            playerId: this.player.id
-          }
-        }
-      },
-
       team () { return Team.find(this.$route.params.teamId) },
       numGames () { return this.player.numGames },
       numSubs () { return this.player.numSubs },
@@ -133,6 +123,17 @@
           default:
             return 'grey--text'
         }
+      }
+    },
+    methods: {
+      goToPlayer () {
+        this.$router.push({
+          name: 'teams-teamId-players-playerId',
+          params: {
+            teamId: this.$route.params.teamId,
+            playerId: this.player.id
+          }
+        })
       }
     }
   }

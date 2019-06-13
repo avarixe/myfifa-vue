@@ -79,6 +79,7 @@
       >
         <template #table>
           <v-data-table
+            :key="key"
             :headers="headers"
             :items="rows"
             :page.sync="page"
@@ -92,12 +93,55 @@
             no-data-text="No Players Found"
             @page-count="pageCount = $event"
           >
-            <template #item="{ item }">
-              <player-row
-                :player-data="item"
-                :headers="headers"
-                :mode="mode"
+            <template #item.name="{ item }">
+              <a @click="goToPlayer(item)">{{ item.name }}</a>
+            </template>
+            <template #item.kit_no="{ item }">
+              <inline-field
+                :item="item"
+                attribute="kit_no"
+                label="Kit No"
+                input-type="select"
+                :options="Array.from({ length: 98 }, (v, k) => k + 1)"
+                @close="updatePlayerAttribute(item.id, 'kit_no', $event)"
               />
+            </template>
+            <template #item.ovr="{ item }">
+              <inline-field
+                :item="item"
+                attribute="ovr"
+                label="OVR"
+                input-type="select"
+                :options="Array.from({ length: 61 }, (v, k) => k + 40)"
+                @close="updatePlayerAttribute(item.id, 'ovr', $event)"
+              />
+            </template>
+            <template #item.value="{ item }">
+              <inline-field
+                :item="item"
+                attribute="value"
+                label="Value"
+                input-type="money"
+                :humanizer="v => $_formatMoney(v)"
+                @close="updatePlayerAttribute(item.id, 'value', $event)"
+              />
+            </template>
+            <template #item.status="{ item }">
+              <v-icon :color="statusColor(item)">
+                mdi-{{ statusIcon(item) }}
+              </v-icon>
+            </template>
+            <template #item.pos_idx="{ item }">
+              {{ item.pos }}
+            </template>
+            <template #item.sec_pos="{ item }">
+              {{ item.sec_pos && item.sec_pos.toString() }}
+            </template>
+            <template #item.contract.wage="{ item }">
+              {{ contractWage(item) }}
+            </template>
+            <template #item.contract.end_date="{ item }">
+              {{ contractDate(item) }}
             </template>
           </v-data-table>
         </template>
@@ -108,79 +152,81 @@
 </template>
 
 <script>
+  import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
-  import { PagedTable } from '@/helpers'
-  import PlayerRow from './PlayerRow'
+  import { InlineField, PagedTable } from '@/helpers'
 
   export default {
+    mixins: [
+      TeamAccessible
+    ],
     components: {
-      PlayerRow,
+      InlineField,
       PagedTable
     },
-    data () {
-      return {
-        mode: 0,
-        modes: [
-          {
-            text: 'Overall',
-            color: 'green',
-            icon: 'trending-up'
-          },
-          {
-            text: 'Edit',
-            color: 'orange',
-            icon: 'pencil'
-          },
-          {
-            text: 'Contract',
-            color: 'blue',
-            icon: 'file-document-outline'
-          },
-          {
-            text: 'Statistics',
-            color: 'red',
-            icon: 'numeric'
-          }
-        ],
-        loading: false,
-        page: 1,
-        pageCount: 0,
-        filter: 2,
-        filters: [
-          {
-            text: 'All',
-            color: 'blue',
-            icon: 'earth'
-          },
-          {
-            text: 'Youth',
-            color: 'cyan',
-            icon: 'school'
-          },
-          {
-            text: 'Active',
-            color: 'light-green',
-            icon: 'account-check'
-          },
-          {
-            text: 'Injured',
-            color: 'pink',
-            icon: 'hospital'
-          },
-          {
-            text: 'Loaned',
-            color: 'indigo',
-            icon: 'transit-transfer'
-          },
-          {
-            text: 'Pending',
-            color: 'deep-orange',
-            icon: 'lock-clock'
-          }
-        ],
-        search: ''
-      }
-    },
+    data: () => ({
+      key: 0,
+      mode: 0,
+      modes: [
+        {
+          text: 'Overall',
+          color: 'green',
+          icon: 'trending-up'
+        },
+        {
+          text: 'Edit',
+          color: 'orange',
+          icon: 'pencil'
+        },
+        {
+          text: 'Contract',
+          color: 'blue',
+          icon: 'file-document-outline'
+        },
+        {
+          text: 'Statistics',
+          color: 'red',
+          icon: 'numeric'
+        }
+      ],
+      loading: false,
+      page: 1,
+      pageCount: 0,
+      filter: 2,
+      filters: [
+        {
+          text: 'All',
+          color: 'blue',
+          icon: 'earth'
+        },
+        {
+          text: 'Youth',
+          color: 'cyan',
+          icon: 'school'
+        },
+        {
+          text: 'Active',
+          color: 'light-green',
+          icon: 'account-check'
+        },
+        {
+          text: 'Injured',
+          color: 'pink',
+          icon: 'hospital'
+        },
+        {
+          text: 'Loaned',
+          color: 'indigo',
+          icon: 'transit-transfer'
+        },
+        {
+          text: 'Pending',
+          color: 'deep-orange',
+          icon: 'lock-clock'
+        }
+      ],
+      search: ''
+    }),
     computed: {
       players () {
         return Player
@@ -197,8 +243,7 @@
         let headers = [
           {
             text: 'Name',
-            value: 'name',
-            align: 'left'
+            value: 'name'
           },
           {
             text: 'Status',
@@ -255,8 +300,7 @@
               },
               {
                 text: 'Name',
-                value: 'name',
-                align: 'left'
+                value: 'name'
               },
               {
                 text: 'Position',
@@ -267,21 +311,18 @@
               {
                 text: 'Kit No',
                 value: 'kit_no',
-                align: 'center',
-                editable: true
+                align: 'center'
               },
               {
                 text: 'OVR',
                 value: 'ovr',
-                align: 'center',
-                editable: true
+                align: 'center'
               },
               {
                 text: 'Value',
                 value: 'value',
                 align: 'right',
-                format: 'money',
-                editable: true
+                format: 'money'
               }
             ]
           case 2: // Contract
@@ -351,6 +392,63 @@
     watch: {
       filterActive () {
         this.page = 1
+      }
+    },
+    methods: {
+      goToPlayer (player) {
+        this.$router.push({
+          name: 'teams-teamId-players-playerId',
+          params: {
+            teamId: this.team.id,
+            playerId: player.id
+          }
+        })
+      },
+      async updatePlayerAttribute (playerId, attribute, value) {
+        try {
+          await this.$store.dispatch('players/UPDATE', {
+            id: playerId,
+            [attribute]: value
+          })
+        } catch (e) {
+          this.key++
+          this.$store.commit('broadcaster/ANNOUNCE', {
+            message: e.message,
+            color: 'red'
+          })
+        }
+      },
+      statusColor (player) {
+        switch (player.status) {
+          case 'Active':
+            return 'light-green'
+          case 'Loaned':
+            return 'indigo'
+          case 'Injured':
+            return 'pink'
+          case 'Pending':
+            return 'deep-orange'
+        }
+      },
+      statusIcon (player) {
+        switch (player.status) {
+          case 'Active':
+            return 'account-check'
+          case 'Loaned':
+            return 'transit-transfer'
+          case 'Injured':
+            return 'hospital'
+          case 'Pending':
+            return 'lock-clock'
+        }
+      },
+      contractWage (player) {
+        const value = this.$_get(player, 'contract.wage', '')
+        return value && this.$_formatMoney(value)
+      },
+      contractDate (player) {
+        const value = this.$_get(player, 'contract.end_date', '')
+        return value && this.$_format(this.$_parse(value), 'MMM D, YYYY')
       }
     }
   }
