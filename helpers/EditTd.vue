@@ -1,29 +1,36 @@
 <template>
-  <v-edit-dialog @close="$emit('close', value)">
-    {{ humanizer(value) || '-' }}
-    <template #input>
-      <v-combobox
-        v-if="inputType === 'combobox'"
-        v-model="value"
-        :items="options"
-        :rules="rules"
-        :label="label"
-        spellcheck="false"
-        autocapitalize="words"
-        autocomplete="off"
-        autocorrect="off"
-        autofocus
-      />
-      <v-text-field
-        v-else
-        v-model="value"
-        :label="label"
-        :type="inputType"
-        :rules="rules"
-        autofocus
-      />
+  <div>
+    <template v-if="readonly">
+      <span :class="displayClass">{{ display }}</span>
     </template>
-  </v-edit-dialog>
+    <template v-else>
+      <v-edit-dialog @close="$emit('close', value)">
+        <span :class="displayClass">{{ display }}</span>
+        <template #input>
+          <v-combobox
+            v-if="inputType === 'combobox'"
+            v-model="value"
+            :items="options"
+            :rules="rules"
+            :label="label"
+            spellcheck="false"
+            autocapitalize="words"
+            autocomplete="off"
+            autocorrect="off"
+            autofocus
+          />
+          <v-text-field
+            v-else
+            v-model="value"
+            :label="label"
+            :type="inputType"
+            :rules="rules"
+            autofocus
+          />
+        </template>
+      </v-edit-dialog>
+    </template>
+  </div>
 </template>
 
 <script>
@@ -44,11 +51,21 @@
       label: String,
       options: Array,
       rules: Array,
-      inputType: String
+      inputType: String,
+      displayClass: String,
+      readonly: Boolean
     },
     data: () => ({
       value: null
     }),
+    computed: {
+      display () {
+        const humanizedValue = this.humanizer(this.value)
+        return humanizedValue === null || humanizedValue === ''
+          ? '-'
+          : humanizedValue
+      }
+    },
     mounted () {
       this.value = this.item[this.attribute]
     }

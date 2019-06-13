@@ -47,6 +47,9 @@
           label="Home Team"
           input-type="combobox"
           :options="competitionTeams"
+          @close="updateFixtureAttribute(item.id, 'home_team', $event)"
+          :readonly="readonly"
+          :display-class="teamClass(item.home_team)"
         />
       </template>
       <template #item.home_score="{ item }">
@@ -54,6 +57,9 @@
           :item="item"
           attribute="home_score"
           label="Home Score"
+          @close="updateFixtureAttribute(item.id, 'home_score', $event)"
+          :readonly="readonly"
+          :display-class="teamClass(item.home_team)"
         />
       </template>
       <template #item.away_score="{ item }">
@@ -61,6 +67,9 @@
           :item="item"
           attribute="away_score"
           label="Away Score"
+          @close="updateFixtureAttribute(item.id, 'away_score', $event)"
+          :readonly="readonly"
+          :display-class="teamClass(item.away_team)"
         />
       </template>
       <template #item.away_team="{ item }">
@@ -70,6 +79,9 @@
           label="Away Team"
           input-type="combobox"
           :options="competitionTeams"
+          @close="updateFixtureAttribute(item.id, 'away_team', $event)"
+          :readonly="readonly"
+          :display-class="teamClass(item.away_team)"
         />
       </template>
     </v-data-table>
@@ -78,10 +90,10 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
   import { EditTd } from '@/helpers'
   import StageRemove from './StageRemove'
-  import FixtureView from './FixtureView'
 
   export default {
     mixins: [
@@ -89,8 +101,7 @@
     ],
     components: {
       EditTd,
-      StageRemove,
-      FixtureView
+      StageRemove
     },
     props: {
       round: {
@@ -100,6 +111,7 @@
       readonly: Boolean
     },
     data: () => ({
+      key: 0,
       stage: {},
       headers: [
         {
@@ -144,15 +156,26 @@
           const { id, name } = this.round
           this.stage = { id, name }
         } else if (this.stageChanged) {
-          this.$store.dispatch('stages/UPDATE', this.stage)
+          this.updateStage(this.stage)
         }
       }
     },
     methods: {
+      ...mapActions({
+        createFixture: 'fixtures/CREATE',
+        updateFixture: 'fixtures/UPDATE',
+        updateStage: 'stages/UPDATE'
+      }),
       addFixture () {
-        this.$store.dispatch('fixtures/CREATE', {
+        this.createFixture({
           stageId: this.round.id,
           fixture: { home_team: '', away_team: '' }
+        })
+      },
+      updateFixtureAttribute (fixtureId, attribute, value) {
+        this.updateFixture({
+          id: fixtureId,
+          [attribute]: value
         })
       }
     }
