@@ -22,8 +22,8 @@
 
 <script>
   import { TeamAccessible } from '@/mixins'
-  import PlayerForm from '@/components/Player/PlayerForm'
-  import PlayerGrid from '@/components/Player/PlayerGrid'
+  import PlayerForm from '@/components/Player/Form'
+  import PlayerGrid from '@/components/Player/Grid'
 
   export default {
     layout: 'team',

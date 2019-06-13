@@ -53,7 +53,7 @@
 </template>
 
 <script>
-  import SquadForm from './SquadForm'
+  import SquadForm from './Form'
 
   export default {
     components: {

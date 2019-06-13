@@ -36,11 +36,11 @@
 <script>
   import { mapState } from 'vuex'
   import { Team } from '@/models'
-  import AppBar from '@/components/App/AppBar'
-  import AppBroadcaster from '@/components/App/AppBroadcaster'
-  import TeamChannel from '@/components/Team/TeamChannel'
-  import TeamLoader from '@/components/Team/TeamLoader'
-  import TeamDrawer from '@/components/Team/TeamDrawer'
+  import AppBar from '@/components/App/Bar'
+  import AppBroadcaster from '@/components/App/Broadcaster'
+  import TeamChannel from '@/components/Team/Channel'
+  import TeamLoader from '@/components/Team/Loader'
+  import TeamDrawer from '@/components/Team/Drawer'
   // import TeamBottomNavigation from '@/components/Team/TeamBottomNavigation'
 
   export default {

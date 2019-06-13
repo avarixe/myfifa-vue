@@ -169,14 +169,14 @@
 
 <script>
   import { Player } from '@/models'
-  import PlayerForm from '@/components/Player/PlayerForm'
-  import ContractForm from '@/components/Contract/ContractForm'
-  import InjuryForm from '@/components/Injury/InjuryForm'
-  import LoanForm from '@/components/Loan/LoanForm'
-  import TransferForm from '@/components/Transfer/TransferForm'
-  import PlayerRetire from '@/components/Player/PlayerRetire'
-  import PlayerRelease from '@/components/Player/PlayerRelease'
-  import PlayerRemove from '@/components/Player/PlayerRemove'
+  import PlayerForm from '@/components/Player/Form'
+  import ContractForm from '@/components/Contract/Form'
+  import InjuryForm from '@/components/Injury/Form'
+  import LoanForm from '@/components/Loan/Form'
+  import TransferForm from '@/components/Transfer/Form'
+  import PlayerRetire from '@/components/Player/Retire'
+  import PlayerRelease from '@/components/Player/Release'
+  import PlayerRemove from '@/components/Player/Remove'
   import PlayerTimeline from '@/components/Player/Timeline'
   import { TeamAccessible } from '@/mixins'
 

@@ -36,8 +36,8 @@
     MatchAccessible
   } from '@/mixins'
   import { FormationView } from '@/helpers'
-  import CapView from '@/components/Cap/CapView'
-  import CapSubView from '@/components/Cap/CapSubView'
+  import CapView from '@/components/Cap/View'
+  import CapSubView from '@/components/Cap/SubView'
 
   export default {
     components: {

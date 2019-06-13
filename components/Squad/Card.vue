@@ -18,7 +18,7 @@
 
 <script>
   import { FormationView } from '@/helpers'
-  import SquadActions from './SquadActions'
+  import SquadActions from './Actions'
 
   export default {
     components: {

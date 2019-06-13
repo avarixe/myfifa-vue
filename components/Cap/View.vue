@@ -44,7 +44,7 @@
   import { mapState } from 'vuex'
   import Player, { activePlayers } from '@/models/Player'
   import { InlineField } from '@/helpers'
-  import CapEvents from './CapEvents'
+  import CapEvents from './Events'
 
   export default {
     components: {

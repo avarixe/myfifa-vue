@@ -77,7 +77,7 @@
     mapState,
     mapMutations
   } from 'vuex'
-  import TeamDatePicker from '@/components/Team/TeamDatePicker'
+  import TeamDatePicker from '@/components/Team/DatePicker'
   export default {
     components: {
       TeamDatePicker

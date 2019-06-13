@@ -15,7 +15,7 @@
           lg4
           xl3
         >
-          <season-item
+          <season-card
             :season="parseInt(season)"
             compact
           />
@@ -27,14 +27,14 @@
 
 <script>
   import { TeamAccessible } from '@/mixins'
-  import SeasonItem from './SeasonItem'
+  import SeasonCard from './Card'
 
   export default {
     mixins: [
       TeamAccessible
     ],
     components: {
-      SeasonItem
+      SeasonCard
     },
     data: () => ({
       pagination: {

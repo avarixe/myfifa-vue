@@ -18,7 +18,7 @@
 
 <script>
   import { TeamAccessible } from '@/mixins'
-  import TransferGrid from '@/components/Transfer/TransferGrid'
+  import TransferGrid from '@/components/Transfer/Grid'
 
   export default {
     layout: 'team',

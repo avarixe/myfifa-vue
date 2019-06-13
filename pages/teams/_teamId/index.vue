@@ -40,7 +40,7 @@
 
       <!-- Current Season -->
       <v-flex xs12 md6>
-        <season-item :season="season" />
+        <season-card :season="season" />
       </v-flex>
 
       <!-- Injured Players -->
@@ -93,13 +93,13 @@
 
 <script>
   import { Match, Player } from '@/models'
-  import MatchForm from '@/components/Match/MatchForm'
-  import PlayerForm from '@/components/Player/PlayerForm'
-  import SeasonItem from '@/components/Season/SeasonItem'
-  import TeamDatePicker from '@/components/Team/TeamDatePicker'
-  import TeamForm from '@/components/Team/TeamForm'
-  import TeamRemove from '@/components/Team/TeamRemove'
-  import TeamCalendar from '@/components/Team/Dashboard/TeamCalendar'
+  import MatchForm from '@/components/Match/Form'
+  import PlayerForm from '@/components/Player/Form'
+  import SeasonCard from '@/components/Season/Card'
+  import TeamDatePicker from '@/components/Team/DatePicker'
+  import TeamForm from '@/components/Team/Form'
+  import TeamRemove from '@/components/Team/Remove'
+  import TeamCalendar from '@/components/Team/Calendar'
   import MatchCard from '@/components/Team/Dashboard/MatchCard'
   import PlayersCard from '@/components/Team/Dashboard/PlayersCard'
   import { TeamAccessible } from '@/mixins'
@@ -112,7 +112,7 @@
       MatchCard,
       PlayerForm,
       PlayersCard,
-      SeasonItem,
+      SeasonCard,
       TeamDatePicker,
       TeamForm,
       TeamRemove,

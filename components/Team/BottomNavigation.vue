@@ -32,7 +32,7 @@
 
 <script>
   import { Team } from '@/models'
-  import TeamDatePicker from '@/components/Team/TeamDatePicker'
+  import TeamDatePicker from '@/components/Team/DatePicker'
 
   export default {
     components: {

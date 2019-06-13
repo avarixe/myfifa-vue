@@ -170,13 +170,13 @@
   import { mapActions } from 'vuex'
   import { TeamAccessible } from '@/mixins'
   import { Squad } from '@/models'
-  import MatchForm from './MatchForm'
-  import CapForm from '@/components/Cap/CapForm'
-  import GoalForm from '@/components/Goal/GoalForm'
-  import BookingForm from '@/components/Booking/BookingForm'
-  import SubstitutionForm from '@/components/Substitution/SubstitutionForm'
-  import PenaltyShootoutForm from '@/components/PenaltyShootout/PenaltyShootoutForm'
-  import MatchRemove from './MatchRemove'
+  import MatchForm from './Form'
+  import CapForm from '@/components/Cap/Form'
+  import GoalForm from '@/components/Goal/Form'
+  import BookingForm from '@/components/Booking/Form'
+  import SubstitutionForm from '@/components/Substitution/Form'
+  import PenaltyShootoutForm from '@/components/PenaltyShootout/Form'
+  import MatchRemove from './Remove'
 
   export default {
     components: {

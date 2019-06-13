@@ -13,7 +13,7 @@
           xs12
           md6
         >
-          <squad-item :squad="squad" />
+          <squad-card :squad="squad" />
         </v-flex>
       </v-layout>
     </template>
@@ -22,12 +22,12 @@
 
 <script>
   import { Squad } from '@/models'
-  import SquadItem from './SquadItem'
+  import SquadCard from './Card'
   import { TeamAccessible } from '@/mixins'
 
   export default {
     components: {
-      SquadItem
+      SquadCard
     },
     mixins: [
       TeamAccessible

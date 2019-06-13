@@ -54,8 +54,8 @@
 </template>
 
 <script>
-  import CompetitionForm from '@/components/Competition/CompetitionForm'
-  import SeasonResultsTable from '@/components/Season/SeasonResultsTable'
+  import CompetitionForm from '@/components/Competition/Form'
+  import SeasonResultsTable from '@/components/Season/ResultsTable'
   import PlayerGrid from '@/components/Season/PlayerGrid'
   import { TeamAccessible } from '@/mixins'
 

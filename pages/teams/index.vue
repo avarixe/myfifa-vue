@@ -28,8 +28,8 @@
 </template>
 
 <script>
-  import TeamForm from '@/components/Team/TeamForm'
-  import TeamGrid from '@/components/Team/TeamGrid'
+  import TeamForm from '@/components/Team/Form'
+  import TeamGrid from '@/components/Team/Grid'
 
   export default {
     layout: 'default',

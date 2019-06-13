@@ -32,7 +32,7 @@
 <script>
   import { mapState } from 'vuex'
   import { InlineField } from '@/helpers'
-  import CapEvents from './CapEvents'
+  import CapEvents from './Events'
 
   export default {
     components: {

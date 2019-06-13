@@ -32,8 +32,8 @@
 
 <script>
   import { TeamAccessible } from '@/mixins'
-  import SeasonGrid from '@/components/Season/SeasonGrid'
-  import CompetitionForm from '@/components/Competition/CompetitionForm'
+  import SeasonGrid from '@/components/Season/Grid'
+  import CompetitionForm from '@/components/Competition/Form'
 
   export default {
     layout: 'team',
