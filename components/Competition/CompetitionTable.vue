@@ -17,6 +17,13 @@
         v-if="!readonly"
         class="text-xs-center my-1"
       >
+        <edit-mode-button
+          :mode="edit"
+          :changed="stageChanged"
+          text
+          @toggle-mode="edit = !edit"
+        />
+
         <stage-remove :stage="table">
           <template #default="{ on }">
             <v-btn
@@ -117,7 +124,7 @@
 <script>
   import { mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
-  import { EditTd } from '@/helpers'
+  import { EditModeButton, EditTd } from '@/helpers'
   import StageRemove from './StageRemove'
 
   export default {
@@ -125,6 +132,7 @@
       CompetitionAccessible
     ],
     components: {
+      EditModeButton,
       EditTd,
       StageRemove
     },

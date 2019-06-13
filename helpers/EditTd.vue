@@ -19,6 +19,24 @@
             autocorrect="off"
             autofocus
           />
+          <v-select
+            v-if="inputType === 'select'"
+            v-model="value"
+            :items="options"
+            :rules="rules"
+            :label="label"
+            menu-props="auto"
+          />
+          <v-text-field
+            v-else-if="inputType === 'money'"
+            v-model="value"
+            :rules="rules"
+            :label="label"
+            :hint="$_formatMoney(value)"
+            :prefix="team.currency"
+            persistent-hint
+            type="number"
+          />
           <v-text-field
             v-else
             v-model="value"
@@ -34,7 +52,12 @@
 </template>
 
 <script>
+  import { TeamAccessible } from '@/mixins'
+
   export default {
+    mixins: [
+      TeamAccessible
+    ],
     props: {
       item: {
         type: Object,

@@ -14,6 +14,12 @@
       </div>
 
       <template v-if="!readonly">
+        <edit-mode-button
+          :mode="edit"
+          :changed="stageChanged"
+          @toggle-mode="edit = !edit"
+        />
+
         <v-tooltip bottom>
           <template #activator="{ on }">
             <v-btn
@@ -92,7 +98,7 @@
 <script>
   import { mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
-  import { EditTd } from '@/helpers'
+  import { EditModeButton, EditTd } from '@/helpers'
   import StageRemove from './StageRemove'
 
   export default {
@@ -100,6 +106,7 @@
       CompetitionAccessible
     ],
     components: {
+      EditModeButton,
       EditTd,
       StageRemove
     },
