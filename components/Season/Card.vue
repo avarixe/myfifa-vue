@@ -70,6 +70,7 @@
       competitions () {
         return Competition
           .query()
+          .where('team_id', this.team.id)
           .where('season', this.season)
           .get()
       },

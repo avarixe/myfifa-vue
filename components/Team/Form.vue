@@ -98,8 +98,18 @@
         update: 'UPDATE'
       }),
       async submit () {
-        const save = 'id' in this.team ? this.update : this.create
-        await save(this.team)
+        if ('id' in this.team) {
+          await this.update(this.team)
+        } else {
+          const { data } = await this.create(this.team)
+
+          this.$router.push({
+            name: 'teams-teamId',
+            params: {
+              teamId: data.id
+            }
+          })
+        }
       }
     }
   }
