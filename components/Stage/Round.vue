@@ -14,7 +14,11 @@
 
       <template v-if="!readonly">
         <fixture-form :stage="round" />
-        <stage-remove :stage="round" />
+        <record-remove
+          :record="round"
+          store="stages"
+          :label="round.name"
+        />
       </template>
     </v-card-title>
 
@@ -70,7 +74,11 @@
         />
       </template>
       <template #item.delete="{ item }">
-        <fixture-remove :fixture="item" />
+        <record-remove
+          :record="item"
+          store="fixtures"
+          label="Fixture"
+        />
       </template>
     </v-data-table>
 
@@ -80,10 +88,8 @@
 <script>
   import { mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
-  import { InlineField } from '@/helpers'
-  import StageRemove from './Remove'
+  import { InlineField, RecordRemove } from '@/helpers'
   import FixtureForm from '@/components/Fixture/Form'
-  import FixtureRemove from '@/components/Fixture/Remove'
 
   export default {
     mixins: [
@@ -91,9 +97,8 @@
     ],
     components: {
       InlineField,
-      StageRemove,
-      FixtureForm,
-      FixtureRemove
+      RecordRemove,
+      FixtureForm
     },
     props: {
       round: {

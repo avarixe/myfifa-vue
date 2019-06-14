@@ -8,7 +8,7 @@
         <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">
           {{ competition.name }}
-          ({{ seasonLabel(competition.season) }})
+          ({{ competitionSeason }})
         </div>
       </v-flex>
 
@@ -28,7 +28,7 @@
         >
           <v-flex xs12>
             <div class="subheading">
-              {{ seasonLabel(competition.season) }}
+              {{ competitionSeason }}
             </div>
             <div class="display-1 primary--text">
               <fitty-text :text="competition.name" />
@@ -96,7 +96,17 @@
               </template>
             </stage-form>
 
-            <competition-remove :competition="competition" />
+            <record-remove
+              :record="competition"
+              store="competitions"
+              :label="`${competitionSeason} ${competition.name}`"
+              :redirect="seasonLink"
+            >
+              <v-btn
+                dark
+                class="my-1"
+              >Remove</v-btn>
+            </record-remove>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -178,9 +188,8 @@
 
 <script>
   import { Competition } from '@/models'
-  import { FittyText } from '@/helpers'
+  import { FittyText, RecordRemove } from '@/helpers'
   import CompetitionForm from '@/components/Competition/Form'
-  import CompetitionRemove from '@/components/Competition/Remove'
   import StageForm from '@/components/Stage/Form'
   import RoundStage from '@/components/Stage/Round'
   import TableStage from '@/components/Stage/Table'
@@ -194,8 +203,8 @@
     ],
     components: {
       FittyText,
+      RecordRemove,
       CompetitionForm,
-      CompetitionRemove,
       RoundStage,
       TableStage,
       StageForm
@@ -206,9 +215,7 @@
     }),
     head () {
       return {
-        title:
-          this.competition.name +
-          ` (${this.seasonLabel(this.competition.season)})`
+        title: `${this.competition.name} (${this.competitionSeason})`
       }
     },
     computed: {
@@ -230,6 +237,9 @@
       readonly () {
         return this.competition.champion &&
           this.competition.champion.length > 0
+      },
+      competitionSeason () {
+        return this.seasonLabel(this.competition.season)
       },
       seasonLink () {
         return {

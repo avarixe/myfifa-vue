@@ -26,7 +26,14 @@
           </template>
         </team-form>
 
-        <team-remove :team="team" />
+        <record-remove
+          :record="team"
+          store="teams"
+          :label="team.title"
+          :redirect="{ name: 'teams' }"
+        >
+          <v-btn outlined>Remove</v-btn>
+        </record-remove>
       </v-flex>
 
       <v-flex xs12>
@@ -102,10 +109,10 @@
   import SeasonCard from '@/components/Season/Card'
   import TeamDatePicker from '@/components/Team/DatePicker'
   import TeamForm from '@/components/Team/Form'
-  import TeamRemove from '@/components/Team/Remove'
   import TeamCalendar from '@/components/Team/Calendar'
   import MatchCard from '@/components/Team/Dashboard/MatchCard'
   import PlayersCard from '@/components/Team/Dashboard/PlayersCard'
+  import { RecordRemove } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -119,8 +126,8 @@
       SeasonCard,
       TeamDatePicker,
       TeamForm,
-      TeamRemove,
-      TeamCalendar
+      TeamCalendar,
+      RecordRemove
     },
     mixins: [
       TeamAccessible

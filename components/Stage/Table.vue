@@ -10,10 +10,15 @@
         display-class="font-weight-light"
       />
 
+      <v-spacer />
+
       <template v-if="!readonly">
-        <v-spacer />
         <table-row-form :stage="table" />
-        <stage-remove :stage="table"/>
+        <record-remove
+          :record="table"
+          store="stages"
+          :label="table.name"
+        />
       </template>
     </v-card-title>
 
@@ -102,7 +107,11 @@
         <span :class="teamClass(item.name)">{{ item.points }}</span>
       </template>
       <template #item.delete="{ item }">
-        <table-row-remove :row="item" />
+        <record-remove
+          :record="item"
+          store="tableRows"
+          label="Table Row"
+        />
       </template>
     </v-data-table>
   </v-card>
@@ -111,10 +120,8 @@
 <script>
   import { mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
-  import { InlineField } from '@/helpers'
-  import StageRemove from './Remove'
+  import { InlineField, RecordRemove } from '@/helpers'
   import TableRowForm from '@/components/TableRow/Form'
-  import TableRowRemove from '@/components/TableRow/Remove'
 
   export default {
     mixins: [
@@ -122,9 +129,8 @@
     ],
     components: {
       InlineField,
-      StageRemove,
-      TableRowForm,
-      TableRowRemove
+      RecordRemove,
+      TableRowForm
     },
     props: {
       table: {

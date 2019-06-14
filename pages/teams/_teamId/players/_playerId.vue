@@ -59,7 +59,12 @@
             <player-retire :player="player" />
             <player-release :player="player" />
           </template>
-          <player-remove :player="player" />
+          <record-remove
+            :record="player"
+            store="players"
+            :label="player.name"
+            :redirect="playersPage"
+          />
         </v-flex>
       </v-layout>
 
@@ -197,11 +202,11 @@
   import TransferForm from '@/components/Transfer/Form'
   import PlayerRetire from '@/components/Player/Retire'
   import PlayerRelease from '@/components/Player/Release'
-  import PlayerRemove from '@/components/Player/Remove'
   import PlayerTimeline from '@/components/Player/Timeline'
   import PlayerPerformanceTable from '@/components/Player/PerformanceTable'
   import PlayerPartnershipsTable from '@/components/Player/PartnershipsTable'
   import PlayerHistoryChart from '@/components/Charts/PlayerHistoryChart'
+  import { RecordRemove } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -214,11 +219,11 @@
       TransferForm,
       PlayerRetire,
       PlayerRelease,
-      PlayerRemove,
       PlayerTimeline,
       PlayerPerformanceTable,
       PlayerPartnershipsTable,
-      PlayerHistoryChart
+      PlayerHistoryChart,
+      RecordRemove
     },
     middleware: 'authenticated',
     mixins: [
@@ -239,6 +244,12 @@
           .withAll()
           .with('matches.team')
           .find(this.$route.params.playerId)
+      },
+      playersPage () {
+        return {
+          name: 'teams-teamId-players',
+          params: { teamId: this.team.id }
+        }
       }
     },
     async fetch ({ store, params }) {
@@ -246,14 +257,6 @@
     },
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
-    },
-    watch: {
-      player (val) {
-        !val && this.$router.push({
-          name: 'teams-teamId-players',
-          params: { teamId: this.team.id }
-        })
-      }
     }
   }
 </script>
