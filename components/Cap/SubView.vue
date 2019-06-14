@@ -1,11 +1,14 @@
 <template>
   <v-list-item>
     <v-list-item-action class="font-weight-bold">
-      <cap-select
-        :disabled="readonly"
-        :value="cap.pos"
+      <inline-field
+        :item="cap"
+        attribute="pos"
+        input-type="select"
+        label="Position"
         :options="positions"
-        @change="setPosition($event)"
+        @close="setPosition($event)"
+        :readonly="readonly"
       />
     </v-list-item-action>
 
@@ -28,13 +31,13 @@
 
 <script>
   import { mapState } from 'vuex'
-  import CapEvents from './Cap/CapEvents'
-  import CapSelect from './Cap/CapSelect'
+  import { InlineField } from '@/helpers'
+  import CapEvents from './Events'
 
   export default {
     components: {
       CapEvents,
-      CapSelect
+      InlineField
     },
     props: {
       cap: {

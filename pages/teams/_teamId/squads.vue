@@ -33,8 +33,8 @@
 
 <script>
   import { TeamAccessible } from '@/mixins'
-  import SquadForm from '@/components/Squad/SquadForm'
-  import SquadGrid from '@/components/Squad/SquadGrid'
+  import SquadForm from '@/components/Squad/Form'
+  import SquadGrid from '@/components/Squad/Grid'
 
   export default {
     layout: 'team',

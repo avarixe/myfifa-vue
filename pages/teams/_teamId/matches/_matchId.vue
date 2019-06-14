@@ -101,9 +101,9 @@
 
 <script>
   import { Match, Player } from '@/models'
-  import MatchForm from '@/components/Match/MatchForm'
-  import MatchActions from '@/components/Match/MatchActions'
-  import MatchLineup from '@/components/Match/MatchLineup'
+  import MatchForm from '@/components/Match/Form'
+  import MatchActions from '@/components/Match/Actions'
+  import MatchLineup from '@/components/Match/Lineup'
   import MatchTimeline from '@/components/Match/Timeline'
   import { FittyText } from '@/helpers'
   import { TeamAccessible } from '@/mixins'

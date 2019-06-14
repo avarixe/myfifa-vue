@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import TimelineContent from './TimelineContent'
+  import TimelineContent from './Content'
   import { TeamAccessible } from '@/mixins'
 
   export default {

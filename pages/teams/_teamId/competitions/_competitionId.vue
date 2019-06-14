@@ -171,11 +171,11 @@
 <script>
   import { Competition } from '@/models'
   import { FittyText } from '@/helpers'
-  import CompetitionForm from '@/components/Competition/CompetitionForm'
-  import CompetitionTable from '@/components/Competition/CompetitionTable'
-  import CompetitionRound from '@/components/Competition/CompetitionRound'
-  import CompetitionRemove from '@/components/Competition/CompetitionRemove'
-  import StageForm from '@/components/Competition/StageForm'
+  import CompetitionForm from '@/components/Competition/Form'
+  import CompetitionTable from '@/components/Competition/Table'
+  import CompetitionRound from '@/components/Competition/Round'
+  import CompetitionRemove from '@/components/Competition/Remove'
+  import StageForm from '@/components/Stage/Form'
   import { TeamAccessible } from '@/mixins'
 
   export default {
