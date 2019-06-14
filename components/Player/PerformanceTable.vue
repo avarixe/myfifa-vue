@@ -24,6 +24,7 @@
         :items="filteredItems"
         sort-by="season"
         sort-desc
+        :mobile-breakpoint="0"
       />
     </v-card-text>
   </v-card>
