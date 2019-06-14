@@ -1,8 +1,10 @@
-import TeamAccessible from '@/mixins/TeamAccessible'
-import Competition, { teamOptions } from '@/models/Competition'
+import TeamAccessible from './TeamAccessible'
+import { Competition } from '@/models'
 
 export default {
-  mixins: [ TeamAccessible ],
+  mixins: [
+    TeamAccessible
+  ],
   computed: {
     competition () {
       return Competition
@@ -11,7 +13,7 @@ export default {
         .find(this.$route.params.competitionId)
     },
     competitionTeams () {
-      return teamOptions(this.competition)
+      return this.competition.teamOptions
     }
   },
   methods: {

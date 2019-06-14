@@ -10,12 +10,11 @@
         display-class="font-weight-light"
       />
 
-      <v-spacer />
-
-      <stage-remove
-        v-if="!readonly"
-        :stage="table"
-      />
+      <template v-if="!readonly">
+        <v-spacer />
+        <table-row-form :stage="table" />
+        <stage-remove :stage="table"/>
+      </template>
     </v-card-title>
 
     <v-data-table
@@ -114,6 +113,7 @@
   import { CompetitionAccessible } from '@/mixins'
   import { InlineField } from '@/helpers'
   import StageRemove from './Remove'
+  import TableRowForm from '@/components/TableRow/Form'
   import TableRowRemove from '@/components/TableRow/Remove'
 
   export default {
@@ -123,6 +123,7 @@
     components: {
       InlineField,
       StageRemove,
+      TableRowForm,
       TableRowRemove
     },
     props: {

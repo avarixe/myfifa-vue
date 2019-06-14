@@ -11,7 +11,7 @@
     </template>
 
     <template #form>
-      <v-container>
+      <v-container grid-list-xs>
         <v-layout wrap>
           <v-flex xs12>
             <v-radio-group

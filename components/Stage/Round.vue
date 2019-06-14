@@ -13,19 +13,7 @@
       <v-spacer />
 
       <template v-if="!readonly">
-        <v-tooltip bottom>
-          <template #activator="{ on }">
-            <v-btn
-              v-on="on"
-              icon
-              @click="addFixture"
-            >
-              <v-icon>mdi-plus-circle</v-icon>
-            </v-btn>
-          </template>
-          Add Fixture
-        </v-tooltip>
-
+        <fixture-form :stage="round" />
         <stage-remove :stage="round" />
       </template>
     </v-card-title>
@@ -94,6 +82,7 @@
   import { CompetitionAccessible } from '@/mixins'
   import { InlineField } from '@/helpers'
   import StageRemove from './Remove'
+  import FixtureForm from '@/components/Fixture/Form'
   import FixtureRemove from '@/components/Fixture/Remove'
 
   export default {
@@ -103,6 +92,7 @@
     components: {
       InlineField,
       StageRemove,
+      FixtureForm,
       FixtureRemove
     },
     props: {
