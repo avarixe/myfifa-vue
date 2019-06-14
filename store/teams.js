@@ -1,6 +1,4 @@
-import http from '@/api'
-import myfifa from '@/api/myfifa'
-import { crud } from '@/api/actions'
+import { crud, http, routes } from '@/api'
 import { Team } from '@/models'
 
 // actions
@@ -14,7 +12,7 @@ export const actions = {
   }),
   FETCH ({ commit, rootState }) {
     return http({
-      path: myfifa.teams.index,
+      path: routes.teams.index,
       token: rootState.token,
       success ({ data }) {
         Team.insert({ data })
@@ -24,7 +22,7 @@ export const actions = {
   CREATE ({ commit, rootState }, team) {
     return http({
       method: 'post',
-      path: myfifa.teams.index,
+      path: routes.teams.index,
       token: rootState.token,
       data: { team },
       success ({ data }) {
@@ -35,7 +33,7 @@ export const actions = {
   ANALYZE_SEASON ({ rootState }, { teamId, season }) {
     return http({
       method: 'post',
-      path: myfifa.analyze.season,
+      path: routes.analyze.season,
       pathData: { teamId, season },
       token: rootState.token
     })

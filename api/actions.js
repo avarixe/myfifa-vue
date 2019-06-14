@@ -1,9 +1,9 @@
-import http from './index'
-import myfifa from './myfifa'
+import http from './http'
+import { routes } from './routes'
 
 export function fetch ({ model, route, parentId }) {
   return ({ rootState }, pathData) => http({
-    path: myfifa[route].index,
+    path: routes[route].index,
     pathData: { [parentId]: pathData[parentId] },
     token: rootState.token,
     success ({ data }) {
@@ -14,7 +14,7 @@ export function fetch ({ model, route, parentId }) {
 
 export function get ({ model, route, recordId }) {
   return ({ rootState }, pathData) => http({
-    path: myfifa[route].record,
+    path: routes[route].record,
     pathData: { [recordId]: pathData[recordId] },
     token: rootState.token,
     success ({ data }) {
@@ -26,7 +26,7 @@ export function get ({ model, route, recordId }) {
 export function create ({ model, route, parentId, dataName }) {
   return ({ rootState }, data) => http({
     method: 'post',
-    path: myfifa[route].index,
+    path: routes[route].index,
     pathData: { [parentId]: data[parentId] },
     token: rootState.token,
     data: { [dataName]: data[dataName] },
@@ -39,7 +39,7 @@ export function create ({ model, route, parentId, dataName }) {
 export function update ({ model, route, recordId, dataName }) {
   return ({ rootState }, data) => http({
     method: 'patch',
-    path: myfifa[route].record,
+    path: routes[route].record,
     pathData: { [recordId]: data.id },
     token: rootState.token,
     data: { [dataName]: data },
@@ -52,7 +52,7 @@ export function update ({ model, route, recordId, dataName }) {
 export function remove ({ model, route, recordId }) {
   return ({ rootState }, id) => http({
     method: 'delete',
-    path: myfifa[route].record,
+    path: routes[route].record,
     pathData: { [recordId]: id },
     token: rootState.token,
     success ({ data }) {

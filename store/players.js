@@ -1,6 +1,4 @@
-import http from '@/api'
-import myfifa from '@/api/myfifa'
-import { crud } from '@/api/actions'
+import { crud, http, routes } from '@/api'
 import { Player, PlayerHistory } from '@/models'
 
 // initial state
@@ -36,7 +34,7 @@ export const actions = {
   ANALYZE ({ rootState }, { teamId, playerIds }) {
     return http({
       method: 'post',
-      path: myfifa.analyze.players,
+      path: routes.analyze.players,
       pathData: { teamId },
       token: rootState.token,
       data: {
@@ -49,7 +47,7 @@ export const actions = {
   RETIRE ({ rootState }, playerId) {
     return http({
       method: 'post',
-      path: myfifa.players.retire,
+      path: routes.players.retire,
       pathData: { playerId },
       token: rootState.token
     })
@@ -57,14 +55,14 @@ export const actions = {
   RELEASE ({ rootState }, playerId) {
     return http({
       method: 'post',
-      path: myfifa.players.release,
+      path: routes.players.release,
       pathData: { playerId },
       token: rootState.token
     })
   },
   GET_HISTORY ({ rootState }, { playerId }) {
     return http({
-      path: myfifa.players.history,
+      path: routes.players.history,
       pathData: { playerId },
       token: rootState.token,
       success ({ data }) {
@@ -74,14 +72,14 @@ export const actions = {
   },
   GET_CURRENT_INJURY ({ rootState }, { playerId }) {
     return http({
-      path: myfifa.players.currentInjury,
+      path: routes.players.currentInjury,
       pathData: { playerId },
       token: rootState.token
     })
   },
   GET_CURRENT_LOAN ({ rootState }, { playerId }) {
     return http({
-      path: myfifa.players.currentLoan,
+      path: routes.players.currentLoan,
       pathData: { playerId },
       token: rootState.token
     })

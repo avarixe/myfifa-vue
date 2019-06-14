@@ -3,7 +3,7 @@
 </template>
 
 <script>
-  import { cableURL } from '@/api/myfifa'
+  import { cableURL } from '@/api'
   import * as models from '@/models'
 
   export default {

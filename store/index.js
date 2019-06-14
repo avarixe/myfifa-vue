@@ -1,8 +1,7 @@
 import VuexORM from '@vuex-orm/core'
 import database from '@/database'
 import cookieparser from 'cookieparser'
-import http from '@/api'
-import myfifa from '@/api/myfifa'
+import { http, routes } from '@/api'
 
 // initial state
 export const state = () => ({
@@ -33,7 +32,7 @@ export const actions = {
   login ({ commit }, payload) {
     return http({
       method: 'post',
-      path: myfifa.token.get,
+      path: routes.token.get,
       data: payload,
       success ({ data }) {
         commit('SET_TOKEN', data.access_token)
@@ -47,7 +46,7 @@ export const actions = {
   logout ({ commit, state }) {
     return http({
       method: 'post',
-      path: myfifa.token.revoke,
+      path: routes.token.revoke,
       data: { token: state.token },
       success ({ data }) {
         commit('SET_TOKEN', null)

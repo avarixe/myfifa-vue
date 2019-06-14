@@ -1,6 +1,4 @@
-import http from '@/api'
-import myfifa from '@/api/myfifa'
-import { crud } from '@/api/actions'
+import { crud, http, routes } from '@/api'
 import { Contract } from '@/models'
 
 // initial state
@@ -24,7 +22,7 @@ export const actions = {
   }),
   TEAM_FETCH ({ rootState }, { teamId }) {
     return http({
-      path: myfifa.contracts.teamIndex,
+      path: routes.contracts.teamIndex,
       pathData: { teamId },
       token: rootState.token,
       success ({ data }) {

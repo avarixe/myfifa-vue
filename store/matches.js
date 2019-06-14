@@ -1,6 +1,4 @@
-import http from '@/api'
-import myfifa from '@/api/myfifa'
-import { crud } from '@/api/actions'
+import { crud, http, routes } from '@/api'
 import { Match } from '@/models'
 
 // initial state
@@ -46,7 +44,7 @@ export const actions = {
   APPLY_SQUAD ({ rootState }, { matchId, squadId }) {
     return http({
       method: 'post',
-      path: myfifa.matches.applySquad,
+      path: routes.matches.applySquad,
       pathData: { matchId },
       token: rootState.token,
       data: { squad_id: squadId }

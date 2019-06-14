@@ -1,4 +1,4 @@
-import { crud } from '@/api/actions'
+import { crud } from '@/api'
 import { Squad } from '@/models'
 
 // actions
