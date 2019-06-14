@@ -52,6 +52,10 @@ class Player extends Model {
     }
   }
 
+  get isActive () {
+    return this.status && this.status.length > 0
+  }
+
   get contract () {
     const contract = this.contracts.slice(-1)[0]
 
