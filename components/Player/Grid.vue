@@ -84,8 +84,7 @@
             :items="rows"
             :page.sync="page"
             :loading="loading"
-            :sort-by="['pos_idx']"
-            multi-sort
+            sort-by="pos_idx"
             :search="search"
             item-key="id"
             hide-default-footer

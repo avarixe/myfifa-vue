@@ -8,6 +8,7 @@
         <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">Dashboard</div>
       </v-flex>
+
       <v-flex xs12>
         <team-date-picker />
 
