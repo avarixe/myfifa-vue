@@ -35,7 +35,7 @@ export const actions = {
       method: 'post',
       path: myfifa.token.get,
       data: payload,
-      success: ({ data }) => {
+      success ({ data }) {
         commit('SET_TOKEN', data.access_token)
         commit('broadcaster/ANNOUNCE', {
           message: 'You have successfully logged in!',
@@ -49,7 +49,7 @@ export const actions = {
       method: 'post',
       path: myfifa.token.revoke,
       data: { token: state.token },
-      success: ({ data }) => {
+      success ({ data }) {
         commit('SET_TOKEN', null)
         commit('broadcaster/ANNOUNCE', {
           message: 'You have successfully logged out!',

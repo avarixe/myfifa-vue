@@ -1,5 +1,6 @@
 import http from '@/api'
 import myfifa from '@/api/myfifa'
+import { crud } from '@/api/actions'
 import { Match } from '@/models'
 
 // initial state
@@ -35,53 +36,13 @@ export const state = () => ({
 
 // actions
 export const actions = {
-  FETCH ({ rootState }, { teamId }) {
-    return http({
-      path: myfifa.matches.index,
-      pathData: { teamId },
-      token: rootState.token,
-      success: function ({ data }) { Match.insert({ data }) }
-    })
-  },
-  GET ({ rootState }, { matchId }) {
-    const match = Match.find(matchId)
-    if (match) {
-      return { data: match }
-    } else {
-      return http({
-        path: myfifa.matches.record,
-        pathData: { matchId },
-        token: rootState.token,
-        success: function ({ data }) { Match.insert({ data }) }
-      })
-    }
-  },
-  CREATE ({ rootState }, { teamId, match }) {
-    return http({
-      method: 'post',
-      path: myfifa.matches.index,
-      pathData: { teamId },
-      token: rootState.token,
-      data: { match }
-    })
-  },
-  UPDATE ({ rootState }, match) {
-    return http({
-      method: 'patch',
-      path: myfifa.matches.record,
-      pathData: { matchId: match.id },
-      token: rootState.token,
-      data: { match }
-    })
-  },
-  REMOVE ({ rootState }, matchId) {
-    return http({
-      method: 'delete',
-      path: myfifa.matches.record,
-      pathData: { matchId },
-      token: rootState.token
-    })
-  },
+  ...crud({
+    model: Match,
+    route: 'matches',
+    parentId: 'teamId',
+    recordId: 'matchId',
+    dataName: 'match'
+  }),
   APPLY_SQUAD ({ rootState }, { matchId, squadId }) {
     return http({
       method: 'post',
