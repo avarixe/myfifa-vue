@@ -20,5 +20,13 @@ export const actions = {
       token: rootState.token,
       data: { fixture }
     })
+  },
+  REMOVE ({ rootState }, fixtureId) {
+    return http({
+      method: 'delete',
+      path: myfifa.fixtures.record,
+      pathData: { fixtureId },
+      token: rootState.token
+    })
   }
 }

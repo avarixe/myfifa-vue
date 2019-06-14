@@ -33,8 +33,6 @@
     <v-data-table
       :headers="headers"
       :items="items"
-      disable-sort
-      disable-pagination
       :mobile-breakpoint="0"
       :items-per-page="-1"
       hide-default-footer
@@ -83,6 +81,9 @@
           :display-class="teamClass(item.away_team)"
         />
       </template>
+      <template #item.delete="{ item }">
+        <fixture-remove :fixture="item" />
+      </template>
     </v-data-table>
 
   </v-card>
@@ -92,7 +93,8 @@
   import { mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
   import { InlineField } from '@/helpers'
-  import StageRemove from '@/components/Stage/Remove'
+  import StageRemove from './Remove'
+  import FixtureRemove from '@/components/Fixture/Remove'
 
   export default {
     mixins: [
@@ -100,7 +102,8 @@
     ],
     components: {
       InlineField,
-      StageRemove
+      StageRemove,
+      FixtureRemove
     },
     props: {
       round: {
@@ -110,37 +113,50 @@
       readonly: Boolean
     },
     data: () => ({
-      key: 0,
-      headers: [
-        {
-          text: 'Home Team',
-          value: 'home_team',
-          sortable: false,
-          align: 'right'
-        },
-        {
-          text: 'Home Score',
-          value: 'home_score',
-          sortable: false,
-          align: 'right'
-        },
-        {
-          text: 'Away Score',
-          value: 'away_score',
-          sortable: false,
-          align: 'left'
-        },
-        {
-          text: 'Away Team',
-          value: 'away_team',
-          sortable: false,
-          align: 'left'
-        }
-      ]
+      key: 0
     }),
     computed: {
       items () {
         return Object.values(this.round.fixtures) || []
+      },
+      headers () {
+        const headers = [
+          {
+            text: 'Home Team',
+            value: 'home_team',
+            align: 'right',
+            sortable: false
+          },
+          {
+            text: 'Home Score',
+            value: 'home_score',
+            align: 'right',
+            sortable: false
+          },
+          {
+            text: 'Away Score',
+            value: 'away_score',
+            align: 'left',
+            sortable: false
+          },
+          {
+            text: 'Away Team',
+            value: 'away_team',
+            align: 'left',
+            sortable: false
+          }
+        ]
+
+        if (!this.readonly) {
+          headers.push({
+            text: '',
+            value: 'delete',
+            sortable: false,
+            width: 40
+          })
+        }
+
+        return headers
       }
     },
     methods: {

@@ -13,7 +13,7 @@
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </template>
-        Remove {{ stage.name }}
+        Remove Table Row
       </v-tooltip>
     </slot>
 
@@ -21,9 +21,9 @@
       v-model="snackbar"
       color="black"
     >
-      Remove {{ stage.name }}?
+      Remove Table Row?
       <v-btn
-        @click="$store.dispatch('stages/REMOVE', stage.id)"
+        @click="$store.dispatch('tableRows/REMOVE', row.id)"
         dark
         text
       >Yes</v-btn>
@@ -39,7 +39,7 @@
 <script>
   export default {
     props: {
-      stage: {
+      row: {
         type: Object,
         required: true
       }
