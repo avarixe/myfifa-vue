@@ -33,13 +33,10 @@
             <div class="display-1 primary--text">
               <fitty-text :text="competition.name" />
             </div>
-          </v-flex>
-
-          <v-flex
-            v-if="readonly"
-            xs12
-          >
-            <div class="title">
+            <div
+              v-if="readonly"
+              class="title"
+            >
               <v-icon
                 color="yellow darken-2"
                 left
@@ -53,7 +50,7 @@
           </v-flex>
 
           <v-flex
-            v-else
+            v-if="!readonly"
             xs12
           >
             <competition-form
@@ -65,6 +62,7 @@
                   v-on="on"
                   dark
                   color="orange"
+                  class="my-1"
                 >Edit</v-btn>
               </template>
             </competition-form>
@@ -79,6 +77,7 @@
                   v-on="on"
                   dark
                   color="red"
+                  class="my-1"
                 >Close</v-btn>
               </template>
             </competition-form>
@@ -92,6 +91,7 @@
                   v-on="on"
                   dark
                   color="teal"
+                  class="my-1"
                 >Add Stage</v-btn>
               </template>
             </stage-form>
@@ -101,6 +101,7 @@
                 <v-btn
                   v-on="on"
                   dark
+                  class="my-1"
                 >Remove</v-btn>
               </template>
             </competition-remove>

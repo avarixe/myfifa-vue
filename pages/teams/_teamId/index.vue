@@ -25,9 +25,12 @@
           </template>
         </team-form>
 
+        <team-remove :team="team" />
+      </v-flex>
+
+      <v-flex xs12>
         <match-form />
         <player-form />
-        <team-remove :team="team" />
       </v-flex>
 
       <!-- Latest Match -->
