@@ -25,7 +25,11 @@
         </template>
       </squad-form>
 
-      <squad-remove :squad="squad" />
+      <record-remove
+        :record="squad"
+        store="squads"
+        :label="`Squad: ${ squad.name }`"
+      />
     </v-card-title>
 
     <v-divider class="mx-3" />
@@ -37,15 +41,14 @@
 </template>
 
 <script>
-  import { FormationView } from '@/helpers'
+  import { FormationView, RecordRemove } from '@/helpers'
   import SquadForm from './Form'
-  import SquadRemove from './Remove'
 
   export default {
     components: {
       SquadForm,
-      SquadRemove,
-      FormationView
+      FormationView,
+      RecordRemove
     },
     props: {
       squad: {

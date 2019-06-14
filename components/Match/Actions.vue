@@ -162,7 +162,12 @@
       </template>
     </penalty-shootout-form>
 
-    <match-remove :match="match" />
+    <record-remove
+      :record="match"
+      store="matches"
+      :label="`${match.home} v ${match.away}`"
+      :redirect="matchesPage"
+    />
   </div>
 </template>
 
@@ -176,7 +181,7 @@
   import BookingForm from '@/components/Booking/Form'
   import SubstitutionForm from '@/components/Substitution/Form'
   import PenaltyShootoutForm from '@/components/PenaltyShootout/Form'
-  import MatchRemove from './Remove'
+  import { RecordRemove } from '@/helpers'
 
   export default {
     components: {
@@ -186,7 +191,7 @@
       BookingForm,
       SubstitutionForm,
       PenaltyShootoutForm,
-      MatchRemove
+      RecordRemove
     },
     mixins: [
       TeamAccessible
@@ -215,6 +220,12 @@
       },
       numPlayers () {
         return this.match.caps.length
+      },
+      matchesPage () {
+        return {
+          name: 'teams-teamId-matches',
+          params: { teamId: this.match.team_id }
+        }
       }
     },
     methods: {
