@@ -19,7 +19,7 @@
     </template>
 
     <template #form>
-      <v-container>
+      <v-container grid-list-xs>
         <v-layout wrap>
           <template v-if="close">
             <v-flex xs12>
@@ -126,7 +126,7 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import Competition, { teamOptions } from '@/models/Competition'
+  import { Competition } from '@/models'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   export default {
@@ -171,7 +171,7 @@
         ]
       },
       teams () {
-        return teamOptions(this.competitionData)
+        return this.competitionData.teamOptions
       }
     },
     watch: {

@@ -26,19 +26,19 @@ class Competition extends Model {
       stages: this.hasMany(Stage, 'competition_id')
     }
   }
-}
 
-export function teamOptions (competition) {
-  let array = competition.stages.reduce((arr, stage) => {
-    return [
-      ...arr,
-      ...stage.table_rows.map(row => row.name),
-      ...stage.fixtures.reduce((names, fixture) => {
-        return [ ...names, fixture.home_team, fixture.away_team ]
-      }, [])
-    ]
-  }, [])
-  return [ ...new Set(array.filter(team => team != null)) ]
+  get teamOptions () {
+    let array = this.stages.reduce((arr, stage) => {
+      return [
+        ...arr,
+        ...stage.table_rows.map(row => row.name),
+        ...stage.fixtures.reduce((names, fixture) => {
+          return [ ...names, fixture.home_team, fixture.away_team ]
+        }, [])
+      ]
+    }, [])
+    return [ ...new Set(array.filter(team => team !== null && team !== '')) ]
+  }
 }
 
 export default Competition

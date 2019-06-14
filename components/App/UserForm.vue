@@ -9,7 +9,7 @@
     </template>
 
     <template #form>
-      <v-container>
+      <v-container grid-list-xs>
         <template v-if="!changePassword">
           <v-text-field
             v-model="user.full_name"

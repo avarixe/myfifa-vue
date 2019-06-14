@@ -10,7 +10,7 @@
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
-      Remove
+      Remove {{ stage.name }}
     </v-tooltip>
 
     <v-snackbar

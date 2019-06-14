@@ -11,7 +11,7 @@
     </template>
 
     <template #form>
-      <v-container>
+      <v-container grid-list-xs>
         <v-layout wrap>
           <v-flex xs12>
             <v-radio-group
@@ -104,15 +104,8 @@
 </template>
 
 <script>
-  import {
-    MinuteField,
-    PlayerSelect
-  } from '@/helpers'
-  import {
-    TeamAccessible,
-    DialogFormable,
-    MatchAccessible
-  } from '@/mixins'
+  import { MinuteField, PlayerSelect } from '@/helpers'
+  import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
   export default {
     components: {

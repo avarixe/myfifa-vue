@@ -127,7 +127,7 @@
                 v-for="table in tables"
                 :key="table.id"
               >
-                <competition-table
+                <table-stage
                   :table="table"
                   :readonly="readonly"
                 />
@@ -163,7 +163,7 @@
                 v-for="round in rounds"
                 :key="round.id"
               >
-                <competition-round
+                <round-stage
                   :round="round"
                   :readonly="readonly"
                 />
@@ -180,10 +180,10 @@
   import { Competition } from '@/models'
   import { FittyText } from '@/helpers'
   import CompetitionForm from '@/components/Competition/Form'
-  import CompetitionTable from '@/components/Competition/Table'
-  import CompetitionRound from '@/components/Competition/Round'
   import CompetitionRemove from '@/components/Competition/Remove'
   import StageForm from '@/components/Stage/Form'
+  import RoundStage from '@/components/Stage/Round'
+  import TableStage from '@/components/Stage/Table'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -195,9 +195,9 @@
     components: {
       FittyText,
       CompetitionForm,
-      CompetitionTable,
-      CompetitionRound,
       CompetitionRemove,
+      RoundStage,
+      TableStage,
       StageForm
     },
     data: () => ({
