@@ -196,7 +196,7 @@
   import { TeamAccessible } from '@/mixins'
 
   export default {
-    layout: 'team',
+    layout: 'default',
     middleware: 'authenticated',
     mixins: [
       TeamAccessible

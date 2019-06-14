@@ -36,7 +36,7 @@
   import CompetitionForm from '@/components/Competition/Form'
 
   export default {
-    layout: 'team',
+    layout: 'default',
     middleware: 'authenticated',
     mixins: [
       TeamAccessible

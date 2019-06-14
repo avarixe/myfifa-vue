@@ -26,7 +26,7 @@
   import MatchGrid from '@/components/Match/Grid'
 
   export default {
-    layout: 'team',
+    layout: 'default',
     middleware: 'authenticated',
     mixins: [
       TeamAccessible

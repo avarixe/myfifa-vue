@@ -117,7 +117,7 @@
   import { TeamAccessible } from '@/mixins'
 
   export default {
-    layout: 'team',
+    layout: 'default',
     components: {
       FittyText,
       MatchForm,
