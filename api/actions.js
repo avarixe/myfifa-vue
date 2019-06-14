@@ -24,7 +24,7 @@ export function get ({ model, route, recordId }) {
 }
 
 export function create ({ model, route, parentId, dataName }) {
-  return ({ rootState }, data) => http({
+  return ({ commit, rootState }, data) => http({
     method: 'post',
     path: routes[route].index,
     pathData: { [parentId]: data[parentId] },
@@ -32,12 +32,17 @@ export function create ({ model, route, parentId, dataName }) {
     data: { [dataName]: data[dataName] },
     success ({ data }) {
       model.insert({ data })
+
+      commit('broadcaster/ANNOUNCE', {
+        message: `${model.name} has been added.`,
+        color: 'success'
+      }, { root: true })
     }
   })
 }
 
 export function update ({ model, route, recordId, dataName }) {
-  return ({ rootState }, data) => http({
+  return ({ commit, rootState }, data) => http({
     method: 'patch',
     path: routes[route].record,
     pathData: { [recordId]: data.id },
@@ -45,18 +50,28 @@ export function update ({ model, route, recordId, dataName }) {
     data: { [dataName]: data },
     success ({ data }) {
       model.insert({ data })
+
+      commit('broadcaster/ANNOUNCE', {
+        message: `${model.name} has been updated.`,
+        color: 'success'
+      }, { root: true })
     }
   })
 }
 
 export function remove ({ model, route, recordId }) {
-  return ({ rootState }, id) => http({
+  return ({ commit, rootState }, id) => http({
     method: 'delete',
     path: routes[route].record,
     pathData: { [recordId]: id },
     token: rootState.token,
     success ({ data }) {
       model.delete(data.id)
+
+      commit('broadcaster/ANNOUNCE', {
+        message: `${model.name} has been removed.`,
+        color: 'success'
+      }, { root: true })
     }
   })
 }
