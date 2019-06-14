@@ -17,11 +17,11 @@
       v-model="snackbar"
       color="black"
     >
-      Remove Match: {{ match.home }} v {{ match.away }}?
+      Remove Squad: {{ squad.name }}?
       <v-btn
         dark
         text
-        @click="removeMatch"
+        @click="$store.dispatch('squads/REMOVE', squad.id)"
       >Yes</v-btn>
       <v-btn
         dark
@@ -35,23 +35,13 @@
 <script>
   export default {
     props: {
-      match: {
+      squad: {
         type: Object,
         required: true
       }
     },
     data: () => ({
       snackbar: false
-    }),
-    methods: {
-      removeMatch () {
-        this.$store.dispatch('matches/REMOVE', this.match.id)
-
-        this.$router.push({
-          name: 'teams-teamId-matches',
-          params: { teamId: this.match.team_id }
-        })
-      }
-    }
+    })
   }
 </script>
