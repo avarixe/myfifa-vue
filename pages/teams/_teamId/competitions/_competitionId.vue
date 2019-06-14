@@ -96,15 +96,7 @@
               </template>
             </stage-form>
 
-            <competition-remove :competition="competition">
-              <template #default="{ on }">
-                <v-btn
-                  v-on="on"
-                  dark
-                  class="my-1"
-                >Remove</v-btn>
-              </template>
-            </competition-remove>
+            <competition-remove :competition="competition" />
           </v-flex>
         </v-layout>
       </v-flex>
