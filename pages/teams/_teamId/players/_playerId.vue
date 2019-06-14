@@ -66,12 +66,70 @@
       <v-flex xs12>
         <v-card outlined>
           <v-card-text>
-            <v-tabs centered>
+            <v-layout
+              class="text-xs-center"
+              wrap
+            >
+              <v-flex xs12 sm6>
+                <div class="display-1 success--text">{{ player.ovr }}</div>
+                <div class="subheading">OVR</div>
+              </v-flex>
+
+              <v-flex xs12 sm6>
+                <div class="display-1 primary--text">{{ $_formatMoney(player.value) }}</div>
+                <div class="subheading">Value</div>
+              </v-flex>
+
+              <v-flex xs6 sm3>
+                <div class="display-1 teal--text">{{ player.matches.length }}</div>
+                <div class="subheading">Matches</div>
+              </v-flex>
+
+              <v-flex xs6 sm3>
+                <div class="display-1 pink--text">{{ player.cleanSheets.length }}</div>
+                <div class="subheading">Clean Sheets</div>
+              </v-flex>
+
+              <v-flex xs6 sm3>
+                <div class="display-1 blue--text">{{ player.goals.length }}</div>
+                <div class="subheading">Goals</div>
+              </v-flex>
+
+              <v-flex xs6 sm3>
+                <div class="display-1 orange--text">{{ player.assists.length }}</div>
+                <div class="subheading">Assists</div>
+              </v-flex>
+            </v-layout>
+
+            <v-tabs
+              v-model="tab"
+              centered
+            >
+              <v-tab>Timeline</v-tab>
+              <v-tab>Growth</v-tab>
               <v-tab>Performance</v-tab>
               <v-tab>Partnerships</v-tab>
-              <v-tab>Growth</v-tab>
-              <v-tab>Timeline</v-tab>
+            </v-tabs>
 
+            <v-tabs-items
+              v-model="tab"
+              touchless
+            >
+              <!-- Timeline -->
+              <v-tab-item>
+                <v-card flat>
+                  <v-card-text>
+                    <player-timeline
+                      :contracts="player.contracts"
+                      :injuries="player.injuries"
+                      :loans="player.loans"
+                      :transfers="player.transfers"
+                    />
+                  </v-card-text>
+                </v-card>
+              </v-tab-item>
+
+              <!-- Growth -->
               <v-tab-item>
                 <v-card flat>
                   <v-card-text>
@@ -79,61 +137,6 @@
                       class="text-xs-center"
                       wrap
                     >
-                      <v-flex xs12 sm3>
-                        <div class="display-1 teal--text">{{ player.matches.length }}</div>
-                        <div class="subheading">Matches</div>
-                      </v-flex>
-
-                      <v-flex xs12 sm3>
-                        <div class="display-1 blue--text">{{ player.goals.length }}</div>
-                        <div class="subheading">Goals</div>
-                      </v-flex>
-
-                      <v-flex xs12 sm3>
-                        <div class="display-1 orange--text">{{ player.assists.length }}</div>
-                        <div class="subheading">Assists</div>
-                      </v-flex>
-
-                      <v-flex xs12 sm3>
-                        <div class="display-1 pink--text">{{ player.cleanSheets.length }}</div>
-                        <div class="subheading">Clean Sheets</div>
-                      </v-flex>
-
-                      <v-flex xs12>
-                        <player-performance-table :player="player" />
-                      </v-flex>
-                    </v-layout>
-                  </v-card-text>
-                </v-card>
-              </v-tab-item>
-
-
-              <v-tab-item>
-                <v-card flat>
-                  <v-card-text>
-                    <player-partnerships-table :player="player" />
-                  </v-card-text>
-                </v-card>
-              </v-tab-item>
-
-
-              <v-tab-item>
-                <v-card flat>
-                  <v-card-text>
-                    <v-layout
-                      class="text-xs-center"
-                      wrap
-                    >
-                      <v-flex xs12 sm6>
-                        <div class="display-1 success--text">{{ player.ovr }}</div>
-                        <div class="subheading">OVR</div>
-                      </v-flex>
-
-                      <v-flex xs12 sm6>
-                        <div class="display-1 primary--text">{{ $_formatMoney(player.value) }}</div>
-                        <div class="subheading">Value</div>
-                      </v-flex>
-
                       <v-flex xs12>
                         <player-history-chart
                           :player="player"
@@ -160,20 +163,24 @@
                 </v-card>
               </v-tab-item>
 
+              <!-- Performance -->
               <v-tab-item>
                 <v-card flat>
                   <v-card-text>
-                    <player-timeline
-                      :contracts="player.contracts"
-                      :injuries="player.injuries"
-                      :loans="player.loans"
-                      :transfers="player.transfers"
-                    />
+                    <player-performance-table :player="player" />
                   </v-card-text>
                 </v-card>
               </v-tab-item>
 
-            </v-tabs>
+              <!-- Partnerships -->
+              <v-tab-item>
+                <v-card flat>
+                  <v-card-text>
+                    <player-partnerships-table :player="player" />
+                  </v-card-text>
+                </v-card>
+              </v-tab-item>
+            </v-tabs-items>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -222,6 +229,9 @@
         title: this.player.name
       }
     },
+    data: () => ({
+      tab: 0
+    }),
     computed: {
       player () {
         return Player

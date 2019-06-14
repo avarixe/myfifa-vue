@@ -5,7 +5,27 @@
 
       <v-spacer />
 
-      <squad-actions :squad="squad" />
+      <squad-form :squad-data="squad" >
+        <template #default="{ on: dialog }">
+          <v-tooltip
+            bottom
+            color="orange"
+          >
+            <template #activator="{ on: tooltip }">
+              <v-btn
+                v-on="{ ...dialog, ...tooltip }"
+                text
+                icon
+              >
+                <v-icon color="orange">mdi-pencil</v-icon>
+              </v-btn>
+            </template>
+            Edit
+          </v-tooltip>
+        </template>
+      </squad-form>
+
+      <squad-remove :squad="squad" />
     </v-card-title>
 
     <v-divider class="mx-3" />
@@ -18,11 +38,13 @@
 
 <script>
   import { FormationView } from '@/helpers'
-  import SquadActions from './Actions'
+  import SquadForm from './Form'
+  import SquadRemove from './Remove'
 
   export default {
     components: {
-      SquadActions,
+      SquadForm,
+      SquadRemove,
       FormationView
     },
     props: {

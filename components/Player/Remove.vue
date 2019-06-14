@@ -1,24 +1,17 @@
 <template>
-  <div
-    class="d-inline-block"
-    @click.stop="snackbar = true"
-  >
-    <slot>
-      <v-tooltip
-        bottom
-        color="black"
-      >
-        <template #activator="{ on }">
-          <v-btn
-            v-on="on"
-            icon
-          >
-            <v-icon>mdi-minus-circle</v-icon>
-          </v-btn>
-        </template>
-        Remove
-      </v-tooltip>
-    </slot>
+  <div class="d-inline-block">
+    <v-tooltip bottom>
+      <template #activator="{ on }">
+        <v-btn
+          v-on="on"
+          @click="snackbar = true"
+          icon
+        >
+          <v-icon>mdi-delete</v-icon>
+        </v-btn>
+      </template>
+      Remove
+    </v-tooltip>
 
     <v-snackbar
       v-model="snackbar"
@@ -53,6 +46,7 @@
     methods: {
       removePlayer () {
         this.$store.dispatch('players/REMOVE', this.player.id)
+
         this.$router.push({
           name: 'teams-teamId-players',
           params: { teamId: this.player.team_id }

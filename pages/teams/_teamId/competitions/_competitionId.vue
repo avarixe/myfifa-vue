@@ -33,13 +33,10 @@
             <div class="display-1 primary--text">
               <fitty-text :text="competition.name" />
             </div>
-          </v-flex>
-
-          <v-flex
-            v-if="readonly"
-            xs12
-          >
-            <div class="title">
+            <div
+              v-if="readonly"
+              class="title"
+            >
               <v-icon
                 color="yellow darken-2"
                 left
@@ -53,7 +50,7 @@
           </v-flex>
 
           <v-flex
-            v-else
+            v-if="!readonly"
             xs12
           >
             <competition-form
@@ -65,6 +62,7 @@
                   v-on="on"
                   dark
                   color="orange"
+                  class="my-1"
                 >Edit</v-btn>
               </template>
             </competition-form>
@@ -79,6 +77,7 @@
                   v-on="on"
                   dark
                   color="red"
+                  class="my-1"
                 >Close</v-btn>
               </template>
             </competition-form>
@@ -92,18 +91,12 @@
                   v-on="on"
                   dark
                   color="teal"
+                  class="my-1"
                 >Add Stage</v-btn>
               </template>
             </stage-form>
 
-            <competition-remove :competition="competition">
-              <template #default="{ on }">
-                <v-btn
-                  v-on="on"
-                  dark
-                >Remove</v-btn>
-              </template>
-            </competition-remove>
+            <competition-remove :competition="competition" />
           </v-flex>
         </v-layout>
       </v-flex>
@@ -115,12 +108,21 @@
       >
         <v-card outlined>
           <v-card-text>
-            <v-tabs centered center-active>
+            <v-tabs
+              v-model="tab1"
+              centered
+              center-active
+            >
               <v-tab
                 v-for="table in tables"
                 :key="table.id"
               >{{ table.name }}</v-tab>
+            </v-tabs>
 
+            <v-tabs-items
+              v-model="tab1"
+              touchless
+            >
               <v-tab-item
                 v-for="table in tables"
                 :key="table.id"
@@ -130,7 +132,7 @@
                   :readonly="readonly"
                 />
               </v-tab-item>
-            </v-tabs>
+            </v-tabs-items>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -143,6 +145,7 @@
         <v-card outlined>
           <v-card-text>
             <v-tabs
+              v-model="tab2"
               centered
               center-active
             >
@@ -150,7 +153,12 @@
                 v-for="round in rounds"
                 :key="round.id"
               >{{ round.name }}</v-tab>
+            </v-tabs>
 
+            <v-tabs-items
+              v-model="tab2"
+              touchless
+            >
               <v-tab-item
                 v-for="round in rounds"
                 :key="round.id"
@@ -160,7 +168,7 @@
                   :readonly="readonly"
                 />
               </v-tab-item>
-            </v-tabs>
+            </v-tabs-items>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -193,7 +201,8 @@
       StageForm
     },
     data: () => ({
-      viewTable: 0
+      tab1: 0,
+      tab2: 0
     }),
     head () {
       return {

@@ -33,6 +33,7 @@
         :items="items"
         sort-by="season"
         sort-desc
+        :mobile-breakpoint="0"
       >
         <template #item.name="{ item: player }">
           <a @click="goToPlayer(player)">
