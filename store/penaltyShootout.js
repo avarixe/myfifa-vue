@@ -1,12 +1,11 @@
-import http from '@/api'
-import myfifa from '@/api/myfifa'
+import { http, routes } from '@/api'
 
 // actions
 export const actions = {
   CREATE ({ rootState }, { matchId, penaltyShootout }) {
     return http({
       method: 'post',
-      path: myfifa.matches.penaltyShootout,
+      path: routes.matches.penaltyShootout,
       pathData: { matchId },
       token: rootState.token,
       data: { penalty_shootout: penaltyShootout }
@@ -15,7 +14,7 @@ export const actions = {
   REMOVE ({ rootState }, matchId) {
     return http({
       method: 'delete',
-      path: myfifa.matches.penaltyShootout,
+      path: routes.matches.penaltyShootout,
       pathData: { matchId },
       token: rootState.token
     })

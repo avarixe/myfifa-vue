@@ -8,7 +8,7 @@ export const cableURL = process.env.NODE_ENV === 'production'
   ? `wss://${domain}/cable`
   : `ws://${domain}:3000/cable`
 
-export default {
+export const routes = {
   teams: {
     index: 'teams',
     record: 'teams/{{ teamId }}'

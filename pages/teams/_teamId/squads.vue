@@ -37,7 +37,7 @@
   import SquadGrid from '@/components/Squad/Grid'
 
   export default {
-    layout: 'team',
+    layout: 'default',
     middleware: 'authenticated',
     mixins: [
       TeamAccessible

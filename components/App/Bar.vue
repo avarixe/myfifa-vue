@@ -59,20 +59,14 @@
     computed: mapGetters([
       'authenticated'
     ]),
-    watch: {
-      authenticated (val) {
-        if (!val) {
-          this.$store.dispatch('entities/deleteAll')
-          this.$router.push({ name: 'index' })
-        }
-      }
-    },
     mounted () {
       this.updateResponsiveState()
       window.addEventListener('resize', this.updateResponsiveState)
     },
     beforeDestroy () {
       window.removeEventListener('resize', this.updateResponsiveState)
+      this.$store.dispatch('entities/deleteAll')
+      this.$router.push({ name: 'index' })
     },
     methods: {
       ...mapMutations('app', {

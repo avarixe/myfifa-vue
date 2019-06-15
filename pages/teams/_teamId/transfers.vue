@@ -21,7 +21,7 @@
   import TransferGrid from '@/components/Transfer/Grid'
 
   export default {
-    layout: 'team',
+    layout: 'default',
     middleware: 'authenticated',
     mixins: [
       TeamAccessible

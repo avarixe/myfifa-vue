@@ -1,6 +1,4 @@
-import http from '@/api'
-import myfifa from '@/api/myfifa'
-import { crud } from '@/api/actions'
+import { crud, http, routes } from '@/api'
 import { Booking } from '@/models'
 
 // actions
@@ -15,7 +13,7 @@ export const actions = {
   SEARCH ({ rootState }, { teamId }) {
     return http({
       method: 'post',
-      path: myfifa.bookings.search,
+      path: routes.bookings.search,
       pathData: { teamId },
       token: rootState.token,
       success ({ data }) {

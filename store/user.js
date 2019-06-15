@@ -1,18 +1,17 @@
-import http from '@/api'
-import myfifa from '@/api/myfifa'
+import { http, routes } from '@/api'
 
 // actions
 export const actions = {
   GET ({ rootState }) {
     return http({
-      path: myfifa.users.sync,
+      path: routes.users.sync,
       token: rootState.token
     })
   },
   CREATE ({ commit }, user) {
     return http({
       method: 'post',
-      path: myfifa.users.record,
+      path: routes.users.record,
       data: { user },
       success () {
         commit('broadcaster/ANNOUNCE', {
@@ -25,7 +24,7 @@ export const actions = {
   UPDATE ({ commit, rootState }, user) {
     return http({
       method: 'patch',
-      path: myfifa.users.record,
+      path: routes.users.record,
       token: rootState.token,
       data: { user },
       success () {

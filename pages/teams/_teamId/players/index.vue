@@ -26,7 +26,7 @@
   import PlayerGrid from '@/components/Player/Grid'
 
   export default {
-    layout: 'team',
+    layout: 'default',
     middleware: 'authenticated',
     mixins: [
       TeamAccessible
