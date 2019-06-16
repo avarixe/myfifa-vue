@@ -15,9 +15,7 @@ export const state = () => ({
 export const actions = {
   ...crud({
     model: Contract,
-    route: 'contracts',
     parentId: 'playerId',
-    recordId: 'contractId',
     dataName: 'contract'
   }),
   TEAM_FETCH ({ rootState }, { teamId }) {

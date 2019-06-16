@@ -5,9 +5,7 @@ import { Cap } from '@/models'
 export const actions = {
   ...crud({
     model: Cap,
-    route: 'caps',
     parentId: 'matchId',
-    recordId: 'capId',
     dataName: 'cap'
   }),
   SEARCH ({ rootState }, { teamId }) {

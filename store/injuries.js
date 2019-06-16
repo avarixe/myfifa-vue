@@ -5,9 +5,7 @@ import { Injury } from '@/models'
 export const actions = {
   ...crud({
     model: Injury,
-    route: 'injuries',
     parentId: 'playerId',
-    recordId: 'injuryId',
     dataName: 'injury'
   }),
   TEAM_FETCH ({ rootState }, { teamId }) {

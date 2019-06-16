@@ -1,9 +1,13 @@
 import http from './http'
 import { routes } from './routes'
 
-export function fetch ({ model, route, parentId }) {
+function dataId ({ recordId, dataName }) {
+  return recordId || `${dataName}Id`
+}
+
+export function fetch ({ model, parentId }) {
   return ({ rootState }, pathData) => http({
-    path: routes[route].index,
+    path: routes[model.entity].index,
     pathData: { [parentId]: pathData[parentId] },
     token: rootState.token,
     success ({ data }) {
@@ -12,10 +16,11 @@ export function fetch ({ model, route, parentId }) {
   })
 }
 
-export function get ({ model, route, recordId }) {
+export function get ({ model, recordId, dataName }) {
+  const $id = dataId({ recordId, dataName })
   return ({ rootState }, pathData) => http({
-    path: routes[route].record,
-    pathData: { [recordId]: pathData[recordId] },
+    path: routes[model.entity].record,
+    pathData: { [$id]: pathData[$id] },
     token: rootState.token,
     success ({ data }) {
       model.insert({ data })
@@ -23,10 +28,10 @@ export function get ({ model, route, recordId }) {
   })
 }
 
-export function create ({ model, route, parentId, dataName }) {
+export function create ({ model, parentId, dataName }) {
   return ({ commit, rootState }, data) => http({
     method: 'post',
-    path: routes[route].index,
+    path: routes[model.entity].index,
     pathData: { [parentId]: data[parentId] },
     token: rootState.token,
     data: { [dataName]: data[dataName] },
@@ -41,11 +46,12 @@ export function create ({ model, route, parentId, dataName }) {
   })
 }
 
-export function update ({ model, route, recordId, dataName }) {
+export function update ({ model, recordId, dataName }) {
+  const $id = dataId({ recordId, dataName })
   return ({ commit, rootState }, data) => http({
     method: 'patch',
-    path: routes[route].record,
-    pathData: { [recordId]: data.id },
+    path: routes[model.entity].record,
+    pathData: { [$id]: data.id },
     token: rootState.token,
     data: { [dataName]: data },
     success ({ data }) {
@@ -59,11 +65,12 @@ export function update ({ model, route, recordId, dataName }) {
   })
 }
 
-export function remove ({ model, route, recordId }) {
+export function remove ({ model, recordId, dataName }) {
+  const $id = dataId({ recordId, dataName })
   return ({ commit, rootState }, id) => http({
     method: 'delete',
-    path: routes[route].record,
-    pathData: { [recordId]: id },
+    path: routes[model.entity].record,
+    pathData: { [$id]: id },
     token: rootState.token,
     success ({ data }) {
       model.delete(data.id)
@@ -76,10 +83,10 @@ export function remove ({ model, route, recordId }) {
   })
 }
 
-export const crud = ({ model, route, parentId, recordId, dataName }) => ({
-  FETCH: fetch({ model, route, parentId }),
-  GET: get({ model, route, recordId }),
-  CREATE: create({ model, route, parentId, dataName }),
-  UPDATE: update({ model, route, recordId, dataName }),
-  REMOVE: remove({ model, route, recordId })
+export const crud = ({ model, parentId, recordId, dataName }) => ({
+  FETCH: fetch({ model, parentId }),
+  GET: get({ model, recordId, dataName }),
+  CREATE: create({ model, parentId, dataName }),
+  UPDATE: update({ model, recordId, dataName }),
+  REMOVE: remove({ model, recordId, dataName })
 })
