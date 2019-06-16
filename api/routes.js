@@ -102,7 +102,7 @@ export const routes = {
 
   tableRows: {
     index: 'stages/{{ stageId }}/table_rows',
-    record: 'table_rows/{{ rowId }}'
+    record: 'table_rows/{{ tableRowId }}'
   },
 
   fixtures: {

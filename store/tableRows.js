@@ -5,6 +5,6 @@ import { TableRow } from '@/models'
 export const actions = crud({
   model: TableRow,
   parentId: 'stageId',
-  recordId: 'rowId',
+  recordId: 'tableRowId',
   dataName: 'table_row'
 })
