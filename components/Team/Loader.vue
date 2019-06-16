@@ -1,13 +1,61 @@
 <template>
-  <div class="loading-page">
-    <v-progress-circular
-      :size="200"
-      :width="15"
-      color="primary"
-      :value="value"
-      class="text-xs-center primary--text"
-    >{{ status }}</v-progress-circular>
-  </div>
+  <v-container
+    fluid
+    fill-height
+  >
+    <v-layout
+      align-center
+      justify-center
+    >
+      <v-flex xs12 sm6>
+        <v-card flat>
+          <v-card-title class="font-weight-light">
+            <span v-if="!finished">{{ title }}</span>
+            <template v-else>
+              Team Assets have been loaded!
+
+              <v-spacer />
+
+              <v-icon color="success">mdi-check</v-icon>
+            </template>
+          </v-card-title>
+
+          <v-divider
+            v-if="!finished"
+            class="mx-3"
+          />
+
+          <v-fade-transition>
+            <v-list v-if="!finished">
+              <v-slide-y-transition
+                v-for="resource in resources"
+                :key="resource"
+              >
+                <v-list-item v-if="!loaders[resource].cleared">
+                  <v-list-item-icon>
+                    <v-progress-circular
+                      v-if="!loaders[resource].loaded"
+                      indeterminate
+                      color="warning"
+                      size="24"
+                      width="2"
+                    />
+                    <v-icon
+                      v-else
+                      color="success"
+                    >mdi-check</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    {{ resource }}
+                  </v-list-item-content>
+                </v-list-item>
+              </v-slide-y-transition>
+            </v-list>
+          </v-fade-transition>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -18,38 +66,89 @@
       team: Object
     },
     data: () => ({
-      value: 0,
-      loaded: false,
-      status: 'Loading Team Data'
-    }),
-    async mounted () {
-      const loaders = [
-        { resource: 'Players' },
-        { resource: 'Contracts' },
-        { resource: 'Transfers' },
-        { resource: 'Loans' },
-        { resource: 'Injuries' },
-        { resource: 'Matches' },
-        { resource: 'Squads' },
-        { resource: 'Competitions' },
-        { resource: 'Stages' },
-
-        { resource: 'Bookings' },
-        { resource: 'Goals' },
-        { resource: 'Caps' },
-        { resource: 'Substitutions' }
-      ]
-
-      for (let i = 0; i < loaders.length; i++) {
-        this.value = 100 / loaders.length * (i + 1)
-        await this.loadData(loaders[i])
+      interval: null,
+      ellipses: 0,
+      loaders: {
+        'Players': {
+          loaded: false,
+          cleared: false
+        },
+        'Contracts': {
+          loaded: false,
+          cleared: false
+        },
+        'Transfers': {
+          loaded: false,
+          cleared: false
+        },
+        'Loans': {
+          loaded: false,
+          cleared: false
+        },
+        'Injuries': {
+          loaded: false,
+          cleared: false
+        },
+        'Matches': {
+          loaded: false,
+          cleared: false
+        },
+        'Squads': {
+          loaded: false,
+          cleared: false
+        },
+        'Competitions': {
+          loaded: false,
+          cleared: false
+        },
+        'Stages': {
+          loaded: false,
+          cleared: false
+        },
+        'Bookings': {
+          loaded: false,
+          cleared: false
+        },
+        'Goals': {
+          loaded: false,
+          cleared: false
+        },
+        'Caps': {
+          loaded: false,
+          cleared: false
+        },
+        'Substitutions': {
+          loaded: false,
+          cleared: false
+        }
       }
+    }),
+    computed: {
+      title () {
+        return `Loading Team Assets${'.'.repeat(this.ellipses)}`
+      },
+      resources () {
+        return Object.keys(this.loaders)
+      },
+      finished () {
+        return this.resources.every(resource => this.loaders[resource].loaded)
+      }
+    },
+    mounted () {
+      this.interval = setInterval(() => {
+        this.ellipses = (this.ellipses + 1) % 4
+      }, 300)
 
-      this.loaded = true
+      this.resources.forEach(resource => this.loadData(resource))
+    },
+    destroyed () {
+      clearInterval(this.interval)
     },
     watch: {
-      loaded (val) {
-        this.$emit('loaded')
+      finished (val) {
+        setTimeout(() => {
+          this.$emit('loaded')
+        }, 2000)
       }
     },
     methods: {
@@ -63,29 +162,25 @@
         getSquads: 'squads/FETCH',
         getCompetitions: 'competitions/FETCH',
         getStages: 'stages/TEAM_FETCH',
-
         getCaps: 'caps/SEARCH',
         getBookings: 'bookings/SEARCH',
         getGoals: 'goals/SEARCH',
         getSubstitutions: 'substitutions/SEARCH'
       }),
-      async loadData ({ resource }) {
-        this.status = `Loading ${resource}...`
+      async loadData (resource) {
         await this[`get${resource}`]({ teamId: this.team.id })
+
+        this.loaders[resource].loaded = true
+        setTimeout(() => {
+          this.loaders[resource].cleared = true
+        }, 2000)
       }
     }
   }
 </script>
 
 <style scoped>
-  .loading-page {
-    display: flex;
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.5);
-    z-index: 2;
+  .v-card, .v-list {
+    background: transparent
   }
 </style>
