@@ -43,6 +43,8 @@
           dismissible
         >{{ errorMessage }}</v-alert>
 
+        <v-divider />
+
         <v-card-actions>
           <v-spacer />
           <v-btn
