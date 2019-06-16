@@ -144,7 +144,6 @@
     },
     methods: {
       open () {
-        console.log(this.$slots)
       },
       close () {
         if (this.isDirty) {

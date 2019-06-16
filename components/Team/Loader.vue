@@ -148,7 +148,7 @@
       finished (val) {
         setTimeout(() => {
           this.$emit('loaded')
-        }, 2000)
+        }, 1000)
       }
     },
     methods: {
@@ -173,7 +173,7 @@
         this.loaders[resource].loaded = true
         setTimeout(() => {
           this.loaders[resource].cleared = true
-        }, 2000)
+        }, 1000)
       }
     }
   }
