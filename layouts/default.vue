@@ -3,7 +3,7 @@
     <no-ssr>
       <app-bar v-if="$store.getters.authenticated" />
 
-      <team-drawer v-if="teamPage" />
+      <team-drawer v-if="teamPage && loaded" />
     </no-ssr>
 
     <app-broadcaster />

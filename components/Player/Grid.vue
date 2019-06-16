@@ -85,6 +85,7 @@
             :page.sync="page"
             :loading="loading"
             sort-by="pos_idx"
+            must-sort
             :search="search"
             item-key="id"
             hide-default-footer
