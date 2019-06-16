@@ -36,8 +36,7 @@ export const state = () => ({
 export const actions = {
   ...crud({
     model: Match,
-    parent: 'team',
-    dataName: 'match'
+    parent: 'team'
   }),
   APPLY_SQUAD ({ rootState }, { matchId, squadId }) {
     return http({

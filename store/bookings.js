@@ -5,8 +5,7 @@ import { Booking } from '@/models'
 export const actions = {
   ...crud({
     model: Booking,
-    parent: 'match',
-    dataName: 'booking'
+    parent: 'match'
   }),
   SEARCH ({ rootState }, { teamId }) {
     return http({

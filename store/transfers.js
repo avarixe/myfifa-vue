@@ -4,8 +4,7 @@ import { Transfer } from '@/models'
 export const actions = {
   ...crud({
     model: Transfer,
-    parent: 'player',
-    dataName: 'transfer'
+    parent: 'player'
   }),
   TEAM_FETCH ({ rootState }, { teamId }) {
     return http({

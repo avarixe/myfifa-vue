@@ -5,8 +5,7 @@ import { Loan } from '@/models'
 export const actions = {
   ...crud({
     model: Loan,
-    parent: 'player',
-    dataName: 'loan'
+    parent: 'player'
   }),
   TEAM_FETCH ({ rootState }, { teamId }) {
     return http({

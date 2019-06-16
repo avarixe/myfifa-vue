@@ -4,6 +4,5 @@ import { Squad } from '@/models'
 // actions
 export const actions = crud({
   model: Squad,
-  parent: 'team',
-  dataName: 'squad'
+  parent: 'team'
 })

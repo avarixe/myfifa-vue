@@ -3,10 +3,7 @@ import { Team } from '@/models'
 
 // actions
 export const actions = {
-  ...crud({
-    model: Team,
-    dataName: 'team'
-  }),
+  ...crud({ model: Team }),
   FETCH ({ commit, rootState }) {
     return http({
       path: routes.teams.index,

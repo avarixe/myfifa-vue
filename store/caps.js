@@ -5,8 +5,7 @@ import { Cap } from '@/models'
 export const actions = {
   ...crud({
     model: Cap,
-    parent: 'match',
-    dataName: 'cap'
+    parent: 'match'
   }),
   SEARCH ({ rootState }, { teamId }) {
     return http({
