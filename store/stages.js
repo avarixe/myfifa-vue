@@ -5,7 +5,7 @@ import { Stage } from '@/models'
 export const actions = {
   ...crud({
     model: Stage,
-    parentId: 'competitionId',
+    parent: 'competition',
     dataName: 'stage'
   }),
   TEAM_FETCH ({ rootState }, { teamId }) {

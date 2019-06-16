@@ -5,7 +5,7 @@ import { Goal } from '@/models'
 export const actions = {
   ...crud({
     model: Goal,
-    parentId: 'matchId',
+    parent: 'match',
     dataName: 'goal'
   }),
   SEARCH ({ rootState }, { teamId }) {

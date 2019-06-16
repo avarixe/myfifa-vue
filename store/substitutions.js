@@ -5,7 +5,7 @@ import { Substitution } from '@/models'
 export const actions = {
   ...crud({
     model: Substitution,
-    parentId: 'matchId',
+    parent: 'match',
     dataName: 'substitution'
   }),
   SEARCH ({ rootState }, { teamId }) {

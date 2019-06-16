@@ -4,6 +4,6 @@ import { Fixture } from '@/models'
 // actions
 export const actions = crud({
   model: Fixture,
-  parentId: 'stageId',
+  parent: 'stage',
   dataName: 'fixture'
 })

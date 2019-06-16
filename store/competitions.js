@@ -4,6 +4,6 @@ import { Competition } from '@/models'
 // actions
 export const actions = crud({
   model: Competition,
-  parentId: 'teamId',
+  parent: 'team',
   dataName: 'competition'
 })
