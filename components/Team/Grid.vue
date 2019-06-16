@@ -22,7 +22,7 @@
                 <template #activator="{ on }">
                   <tr
                     v-on="on"
-                    @click="$router.push(teamLink(team))"
+                    @click="goToTeam(team)"
                   >
                     <td class="text-xs-center">{{ team.title }}</td>
                     <td class="text-xs-center">
@@ -103,11 +103,11 @@
           this.loading = false
         }
       },
-      teamLink (team) {
-        return {
+      goToTeam (team) {
+        this.$router.push({
           name: 'teams-teamId',
           params: { teamId: team.id }
-        }
+        })
       }
     }
   }

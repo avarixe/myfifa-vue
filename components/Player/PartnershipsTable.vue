@@ -28,19 +28,30 @@
     </v-card-title>
 
     <v-card-text>
-      <v-data-table
-        :headers="headers"
-        :items="items"
-        sort-by="season"
-        sort-desc
-        :mobile-breakpoint="0"
+      <paged-table
+        v-model="page"
+        :page-count="pageCount"
       >
-        <template #item.name="{ item: player }">
-          <a @click="goToPlayer(player)">
-            {{ player.name }}
-          </a>
+        <template #table>
+          <v-data-table
+            :headers="headers"
+            :items="items"
+            sort-by="matches"
+            sort-desc
+            must-sort
+            :mobile-breakpoint="0"
+            hide-default-footer
+            :page.sync="page"
+            @page-count="pageCount = $event"
+          >
+            <template #item.name="{ item: player }">
+              <a @click="goToPlayer(player)">
+                {{ player.name }}
+              </a>
+            </template>
+          </v-data-table>
         </template>
-      </v-data-table>
+      </paged-table>
     </v-card-text>
   </v-card>
 </template>
@@ -48,11 +59,15 @@
 <script>
   import { Goal, Player } from '@/models'
   import { TeamAccessible } from '@/mixins'
+  import { PagedTable } from '@/helpers'
 
   export default {
     mixins: [
       TeamAccessible
     ],
+    components: {
+      PagedTable
+    },
     props: {
       player: {
         type: Object,
@@ -85,7 +100,9 @@
           value: 'assists',
           align: 'center'
         }
-      ]
+      ],
+      page: 1,
+      pageCount: 0
     }),
     computed: {
       items () {

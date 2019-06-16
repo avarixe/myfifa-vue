@@ -19,13 +19,24 @@
     </v-card-title>
 
     <v-card-text>
-      <v-data-table
-        :headers="headers"
-        :items="filteredItems"
-        sort-by="season"
-        sort-desc
-        :mobile-breakpoint="0"
-      />
+      <paged-table
+        v-model="page"
+        :page-count="pageCount"
+      >
+        <template #table>
+          <v-data-table
+            :headers="headers"
+            :items="filteredItems"
+            sort-by="season"
+            sort-desc
+            must-sort
+            :mobile-breakpoint="0"
+            hide-default-footer
+            :page.sync="page"
+            @page-count="pageCount = $event"
+          />
+        </template>
+      </paged-table>
     </v-card-text>
   </v-card>
 </template>
@@ -33,11 +44,15 @@
 <script>
   import { Goal } from '@/models'
   import { TeamAccessible } from '@/mixins'
+  import { PagedTable } from '@/helpers'
 
   export default {
     mixins: [
       TeamAccessible
     ],
+    components: {
+      PagedTable
+    },
     props: {
       player: {
         type: Object,
@@ -78,7 +93,9 @@
           value: 'cleanSheets',
           align: 'center'
         }
-      ]
+      ],
+      page: 1,
+      pageCount: 0
     }),
     computed: {
       filteredItems () {
