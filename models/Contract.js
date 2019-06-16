@@ -5,6 +5,10 @@ export default class Contract extends Model {
     return 'contracts'
   }
 
+  static get title () {
+    return 'Contract'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys

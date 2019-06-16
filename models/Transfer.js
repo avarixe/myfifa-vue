@@ -6,6 +6,10 @@ export default class Transfer extends Model {
     return 'transfers'
   }
 
+  static get title () {
+    return 'Transfer'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys

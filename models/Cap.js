@@ -5,6 +5,10 @@ export default class Cap extends Model {
     return 'caps'
   }
 
+  static get title () {
+    return 'Cap'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys

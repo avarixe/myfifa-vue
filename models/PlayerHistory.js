@@ -4,6 +4,11 @@ export default class PlayerHistory extends Model {
   static get entity () {
     return 'playerHistories'
   }
+
+  static get title () {
+    return 'Player History'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys

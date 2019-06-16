@@ -5,6 +5,10 @@ export default class Loan extends Model {
     return 'loans'
   }
 
+  static get title () {
+    return 'Loan'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys

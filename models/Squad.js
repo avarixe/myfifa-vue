@@ -4,6 +4,11 @@ export default class Squad extends Model {
   static get entity () {
     return 'squads'
   }
+
+  static get title () {
+    return 'Squad'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys

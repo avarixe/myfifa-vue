@@ -6,6 +6,10 @@ class Competition extends Model {
     return 'competitions'
   }
 
+  static get title () {
+    return 'Competition'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys

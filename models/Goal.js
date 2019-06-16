@@ -6,6 +6,10 @@ export default class Goal extends Model {
     return 'goals'
   }
 
+  static get title () {
+    return 'Goal'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys

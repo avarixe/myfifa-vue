@@ -16,6 +16,10 @@ class Player extends Model {
     return 'players'
   }
 
+  static get title () {
+    return 'Player'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys

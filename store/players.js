@@ -26,10 +26,7 @@ export const state = () => ({
 export const actions = {
   ...crud({
     model: Player,
-    route: 'players',
-    parentId: 'teamId',
-    recordId: 'playerId',
-    dataName: 'player'
+    parent: 'team'
   }),
   ANALYZE ({ rootState }, { teamId, playerIds }) {
     return http({

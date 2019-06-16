@@ -13,6 +13,10 @@ class Match extends Model {
     return 'matches'
   }
 
+  static get title () {
+    return 'Match'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys
