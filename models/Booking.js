@@ -7,6 +7,10 @@ export default class Booking extends Model {
     return 'bookings'
   }
 
+  static get title () {
+    return 'Booking'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys

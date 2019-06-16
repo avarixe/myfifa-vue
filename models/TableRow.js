@@ -5,6 +5,10 @@ export default class TableRow extends Model {
     return 'tableRows'
   }
 
+  static get title () {
+    return 'Table Row'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys

@@ -6,6 +6,10 @@ export default class Substitution extends Model {
     return 'substitutions'
   }
 
+  static get title () {
+    return 'Substitution'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys

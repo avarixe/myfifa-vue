@@ -9,6 +9,10 @@ export default class Team extends Model {
     return 'teams'
   }
 
+  static get title () {
+    return 'Team'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys

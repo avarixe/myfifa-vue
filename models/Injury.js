@@ -5,6 +5,10 @@ export default class Injury extends Model {
     return 'injuries'
   }
 
+  static get title () {
+    return 'Injury'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys

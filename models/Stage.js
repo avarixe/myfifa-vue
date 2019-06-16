@@ -7,6 +7,10 @@ export default class Stage extends Model {
     return 'stages'
   }
 
+  static get title () {
+    return 'Stage'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys

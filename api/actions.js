@@ -39,7 +39,7 @@ export function create ({ model, parentId, dataName }) {
       model.insert({ data })
 
       commit('broadcaster/ANNOUNCE', {
-        message: `${model.name} has been added.`,
+        message: `${model.title} has been added.`,
         color: 'success'
       }, { root: true })
     }
@@ -58,7 +58,7 @@ export function update ({ model, recordId, dataName }) {
       model.insert({ data })
 
       commit('broadcaster/ANNOUNCE', {
-        message: `${model.name} has been updated.`,
+        message: `${model.title} has been updated.`,
         color: 'success'
       }, { root: true })
     }
@@ -76,7 +76,7 @@ export function remove ({ model, recordId, dataName }) {
       model.delete(data.id)
 
       commit('broadcaster/ANNOUNCE', {
-        message: `${model.name} has been removed.`,
+        message: `${model.title} has been removed.`,
         color: 'success'
       }, { root: true })
     }
