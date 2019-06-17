@@ -85,32 +85,32 @@ export function teams (teamId) {
   ]
 }
 
-export const positions = [
-  'GK',
-  'LB',
-  'LWB',
-  'LCB',
-  'CB',
-  'RCB',
-  'RB',
-  'RWB',
-  'LM',
-  'LDM',
-  'LCM',
-  'CDM',
-  'CM',
-  'RDM',
-  'RCM',
-  'RM',
-  'LAM',
-  'CAM',
-  'RAM',
-  'LW',
-  'CF',
-  'LS',
-  'ST',
-  'RS',
-  'RW'
-]
+export const positions = {
+  'GK': 'DEF',
+  'LB': 'DEF',
+  'LWB': 'DEF',
+  'LCB': 'DEF',
+  'CB': 'DEF',
+  'RCB': 'DEF',
+  'RB': 'DEF',
+  'RWB': 'DEF',
+  'LM': 'MID',
+  'LDM': 'MID',
+  'LCM': 'MID',
+  'CDM': 'MID',
+  'CM': 'MID',
+  'RDM': 'MID',
+  'RCM': 'MID',
+  'RM': 'MID',
+  'LAM': 'MID',
+  'CAM': 'MID',
+  'RAM': 'MID',
+  'LW': 'ATT',
+  'CF': 'ATT',
+  'LS': 'ATT',
+  'ST': 'ATT',
+  'RS': 'ATT',
+  'RW': 'ATT'
+}
 
 export default Match

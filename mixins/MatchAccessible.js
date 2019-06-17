@@ -11,7 +11,7 @@ export default {
     minute: 0
   }),
   computed: {
-    positions: () => positions,
+    positions: () => Object.keys(positions),
     sortedCaps () {
       return this.$_orderBy(
         this.match.caps,

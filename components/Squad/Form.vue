@@ -91,7 +91,7 @@
       }
     },
     computed: {
-      positions: () => positions,
+      positions: () => Object.keys(positions),
       title () {
         return this.squad.id ? 'Edit Squad' : 'New Squad'
       },

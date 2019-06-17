@@ -57,7 +57,7 @@
       return {}
     },
     computed: {
-      position: () => positions
+      position: () => Object.keys(positions)
     },
     methods: {
       setPosition (position) {

@@ -69,7 +69,7 @@
       return {}
     },
     computed: {
-      positions: () => positions,
+      positions: () => Object.keys(positions),
       players () {
         return activePlayers(parseInt(this.$route.params.teamId))
       }

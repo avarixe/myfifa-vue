@@ -57,7 +57,7 @@
       windows: {}
     }),
     computed: {
-      positions: () => positions,
+      positions: () => Object.keys(positions),
       startingEleven () {
         return this.$_orderBy(
           this.formation.filter(p => !('start' in p) || p.start === 0),

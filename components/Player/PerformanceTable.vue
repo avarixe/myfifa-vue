@@ -134,13 +134,15 @@
     },
     methods: {
       numGoals (matches) {
-        return Goal.query()
+        return Goal
+          .query()
           .where('match_id', matches.map(m => m.id))
           .where('player_id', this.player.id)
           .count()
       },
       numAssists (matches) {
-        return Goal.query()
+        return Goal
+          .query()
           .where('match_id', matches.map(m => m.id))
           .where('assist_id', this.player.id)
           .count()
