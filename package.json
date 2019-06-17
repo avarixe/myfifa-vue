@@ -4,12 +4,6 @@
   "description": "JoonDEV | MyFIFA Manager",
   "author": "Joon Lee <l33j00n325@gmail.com>",
   "private": true,
-  "config": {
-    "nuxt": {
-      "host": "0.0.0.0",
-      "port": "8080"
-    }
-  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
