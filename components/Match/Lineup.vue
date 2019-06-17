@@ -1,6 +1,23 @@
 <template>
   <v-container>
-    <formation-view :formation="sortedCaps">
+    <v-layout class="text-xs-center">
+      <v-flex>
+        <div class="display-1 primary--text">{{ defOVR }}</div>
+        <div class="subheading">DEF</div>
+      </v-flex>
+      <v-flex>
+        <div class="display-1 success--text">{{ midOVR }}</div>
+        <div class="subheading">MID</div>
+      </v-flex>
+      <v-flex>
+        <div class="display-1 warning--text">{{ attOVR }}</div>
+        <div class="subheading">ATT</div>
+      </v-flex>
+    </v-layout>
+
+    <v-divider class="mx-3" />
+
+    <formation-view :formation="starters">
       <template #item="{ player }">
         <cap-view
           :cap="player"
@@ -31,11 +48,10 @@
 </template>
 
 <script>
-  import {
-    TeamAccessible,
-    MatchAccessible
-  } from '@/mixins'
+  import { TeamAccessible, MatchAccessible } from '@/mixins'
   import { FormationView } from '@/helpers'
+  import { Player } from '@/models'
+  import { positions } from '@/models/Match'
   import CapView from '@/components/Cap/View'
   import CapSubView from '@/components/Cap/SubView'
 
@@ -53,8 +69,43 @@
       readonly () {
         return this.team.current_date !== this.match.date_played
       },
+      starters () {
+        return this.sortedCaps.filter(c => c.start === 0)
+      },
       substitutes () {
-        return this.sortedCaps.filter(c => 'start' in c && c.start > 0)
+        return this.sortedCaps.filter(c => c.start > 0)
+      },
+      defOVR () {
+        return this.avgOVR('DEF')
+      },
+      midOVR () {
+        return this.avgOVR('MID')
+      },
+      attOVR () {
+        return this.avgOVR('ATT')
+      }
+    },
+    methods: {
+      avgOVR (positionType) {
+        let playerIds = []
+
+        this.starters.forEach(cap => {
+          if (positions[cap.pos] === positionType) {
+            playerIds.push(cap.player_id)
+          }
+        })
+
+        const totalOvr = Player
+          .query()
+          .with('histories')
+          .whereIdIn(playerIds)
+          .get()
+          .reduce(
+            (sum, player) => sum + player.ovrAt(this.match.date_played),
+            0
+          )
+
+        return Math.round(totalOvr / playerIds.length)
       }
     }
   }

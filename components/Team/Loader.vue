@@ -73,6 +73,10 @@
           loaded: false,
           cleared: false
         },
+        'Player Histories': {
+          loaded: false,
+          cleared: false
+        },
         'Contracts': {
           loaded: false,
           cleared: false
@@ -162,13 +166,16 @@
         getSquads: 'squads/FETCH',
         getCompetitions: 'competitions/FETCH',
         getStages: 'stages/TEAM_FETCH',
+        getPlayerHistories: 'playerHistories/SEARCH',
         getCaps: 'caps/SEARCH',
         getBookings: 'bookings/SEARCH',
         getGoals: 'goals/SEARCH',
         getSubstitutions: 'substitutions/SEARCH'
       }),
       async loadData (resource) {
-        await this[`get${resource}`]({ teamId: this.team.id })
+        await this[`get${resource.replace(/\s+/g, '')}`]({
+          teamId: this.team.id
+        })
 
         this.loaders[resource].loaded = true
         setTimeout(() => {

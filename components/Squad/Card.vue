@@ -35,10 +35,6 @@
     <v-divider class="mx-3" />
 
     <v-card-text>
-      <formation-view :formation="squadPlayers" />
-
-      <v-divider class="mx-3" />
-
       <v-layout class="text-xs-center">
         <v-flex>
           <div class="display-1 primary--text">{{ defOVR }}</div>
@@ -53,6 +49,10 @@
           <div class="subheading">ATT</div>
         </v-flex>
       </v-layout>
+
+      <v-divider class="mx-3" />
+
+      <formation-view :formation="squadPlayers" />
     </v-card-text>
   </v-card>
 </template>
