@@ -78,7 +78,6 @@ class Player extends Model {
   }
 
   ovrAt (date) {
-    console.log('in ovrAt')
     const historyBefore = this.histories.filter(h => h.datestamp <= date)
     return historyBefore[historyBefore.length - 1].ovr
   }
