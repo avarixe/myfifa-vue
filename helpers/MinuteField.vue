@@ -10,7 +10,9 @@
 </template>
 
 <script>
-  export default {
+  import { Vue, Component } from 'vue-property-decorator'
+
+  @Component({
     props: {
       value: {
         type: [String, Number]
@@ -18,19 +20,18 @@
       extraTime: {
         type: Boolean
       }
-    },
-    computed: {
-      minutes () {
-        return Array.from(
-          { length: this.extraTime ? 120 : 90 },
-          (v, k) => k + 1
-        )
-      }
-    },
-    methods: {
-      updateValue (value) {
-        this.$emit('input', value)
-      }
+    }
+  })
+  export default class MinuteField extends Vue {
+    get minutes () {
+      return Array.from(
+        { length: this.extraTime ? 120 : 90 },
+        (v, k) => k + 1
+      )
+    }
+
+    updateValue (value) {
+      this.$emit('input', value)
     }
   }
 </script>

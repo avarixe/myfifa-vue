@@ -14,7 +14,9 @@
 </template>
 
 <script>
-  export default {
+  import { Vue, Component } from 'vue-property-decorator'
+
+  @Component({
     props: {
       value: {
         type: Number,
@@ -24,11 +26,11 @@
         type: Number,
         required: true
       }
-    },
-    methods: {
-      updateValue (value) {
-        this.$emit('input', value)
-      }
+    }
+  })
+  export default class PagedTable extends Vue {
+    updateValue (value) {
+      this.$emit('input', value)
     }
   }
 </script>

@@ -37,7 +37,9 @@
 </template>
 
 <script>
-  export default {
+  import { Vue, Component } from 'vue-property-decorator'
+
+  @Component({
     props: {
       record: {
         type: Object,
@@ -49,20 +51,19 @@
       },
       redirect: [String, Object],
       label: String
-    },
-    data: () => ({
-      snackbar: false
-    }),
-    methods: {
-      remove () {
-        this.$store.dispatch(
-          `${this.store}/REMOVE`,
-          this.record.id
-        )
+    }
+  })
+  export default class RecordRemove extends Vue {
+    snackbar = false
 
-        if (this.redirect) {
-          this.$router.push(this.redirect)
-        }
+    remove () {
+      this.$store.dispatch(
+        `${this.store}/REMOVE`,
+        this.record.id
+      )
+
+      if (this.redirect) {
+        this.$router.push(this.redirect)
       }
     }
   }

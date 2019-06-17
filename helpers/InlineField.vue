@@ -89,13 +89,12 @@
 </template>
 
 <script>
+  import Component, { mixins } from 'vue-class-component'
+  import { Watch } from 'vue-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import ListOption from './ListOption'
 
-  export default {
-    mixins: [
-      TeamAccessible
-    ],
+  @Component({
     components: {
       ListOption
     },
@@ -118,44 +117,36 @@
       display: [String, Number],
       displayClass: String,
       readonly: Boolean
-    },
-    data: () => ({
-      value: null,
-      original: null,
-      key: 0
-    }),
-    computed: {
-      humanizedDisplay () {
-        const value = this.display || this.value
-        return value === null || value === '' ? '-' : value
-      },
-      isDirty () {
-        return this.value !== this.original
-      }
-    },
-    watch: {
-      item: {
-        immediate: true,
-        handler () {
-          this.reset()
-        }
-      },
-      attribute () {
-        this.reset()
-      }
-    },
-    methods: {
-      reset () {
-        this.value = this.item[this.attribute]
-        this.original = this.value
-      },
-      open () {
-      },
-      close () {
-        if (this.isDirty) {
-          this.$emit('close', this.value)
-          this.key++
-        }
+    }
+  })
+  export default class InlineField extends mixins(TeamAccessible) {
+    value = null
+    original = null
+    key = 0
+
+    get humanizedDisplay () {
+      const value = this.display || this.value
+      return value === null || value === '' ? '-' : value
+    }
+
+    get isDirty () {
+      return this.value !== this.original
+    }
+
+    @Watch('item', { immediate: true })
+    @Watch('attribute')
+    reset () {
+      this.value = this.item[this.attribute]
+      this.original = this.value
+    }
+
+    open () {
+    }
+
+    close () {
+      if (this.isDirty) {
+        this.$emit('close', this.value)
+        this.key++
       }
     }
   }

@@ -26,7 +26,9 @@
 </template>
 
 <script>
-  export default {
+  import { Vue, Component } from 'vue-property-decorator'
+
+  @Component({
     props: {
       value: {
         type: [String, Number]
@@ -62,18 +64,17 @@
         type: Boolean,
         default: false
       }
-    },
-    methods: {
-      updateValue (value) {
-        this.$emit('input', value)
-      }
-    },
-    computed: {
-      rules () {
-        return this.required
-          ? this.$_validate(this.label, ['required'])
-          : []
-      }
+    }
+  })
+  export default class PlayerSelect extends Vue {
+    get rules () {
+      return this.required
+        ? this.$_validate(this.label, ['required'])
+        : []
+    }
+
+    updateValue (value) {
+      this.$emit('input', value)
     }
   }
 </script>

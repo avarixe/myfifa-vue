@@ -29,7 +29,9 @@
 </template>
 
 <script>
-  export default {
+  import { Vue, Component, Watch } from 'vue-property-decorator'
+
+  @Component({
     props: {
       value: {
         type: String,
@@ -44,21 +46,20 @@
       color: String,
       prependIcon: String,
       rules: Array
-    },
-    data: () => ({
-      menu: false,
-      date: null
-    }),
-    watch: {
-      value: {
-        immediate: true,
-        handler () {
-          this.date = this.value
-        }
-      },
-      date (value) {
-        this.$emit('input', value)
-      }
+    }
+  })
+  export default class VDateField extends Vue {
+    menu = false
+    date = null
+
+    @Watch('value', { immediate: true })
+    setDate () {
+      this.date = this.value
+    }
+
+    @Watch('date')
+    emitValue (value) {
+      this.$emit('input', value)
     }
   }
 </script>
