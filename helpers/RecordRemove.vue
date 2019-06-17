@@ -37,23 +37,15 @@
 </template>
 
 <script>
-  import { Vue, Component } from 'vue-property-decorator'
+  import { Vue, Prop, Component } from 'nuxt-property-decorator'
 
-  @Component({
-    props: {
-      record: {
-        type: Object,
-        required: true
-      },
-      store: {
-        type: String,
-        required: true
-      },
-      redirect: [String, Object],
-      label: String
-    }
-  })
+  @Component
   export default class RecordRemove extends Vue {
+    @Prop(Object, { required: true }) record
+    @Prop(String, { required: true }) store
+    @Prop([String, Object]) redirect
+    @Prop(String) label
+
     snackbar = false
 
     remove () {

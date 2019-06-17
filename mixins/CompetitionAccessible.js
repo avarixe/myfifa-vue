@@ -1,4 +1,4 @@
-import Component, { mixins } from 'vue-class-component'
+import { Component, mixins } from 'nuxt-property-decorator'
 import TeamAccessible from './TeamAccessible'
 import { Competition } from '@/models'
 

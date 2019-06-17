@@ -46,7 +46,7 @@
           >
             <fitty-text
               :text="match.stage"
-              :options="{ minSize: 10, maxSize: 30 }"
+              :max-size="30"
             />
           </div>
           <div class="subheading">

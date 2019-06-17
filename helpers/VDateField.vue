@@ -29,26 +29,18 @@
 </template>
 
 <script>
-  import { Vue, Component, Watch } from 'vue-property-decorator'
+  import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
 
-  @Component({
-    props: {
-      value: {
-        type: String,
-        required: true
-      },
-      label: {
-        type: String,
-        required: true
-      },
-      min: String,
-      max: String,
-      color: String,
-      prependIcon: String,
-      rules: Array
-    }
-  })
+  @Component
   export default class VDateField extends Vue {
+    @Prop(String, { required: true }) value
+    @Prop(String, { required: true }) label
+    @Prop(String) min
+    @Prop(String) max
+    @Prop(String) color
+    @Prop(String) prependIcon
+    @Prop(Array) rules
+
     menu = false
     date = null
 

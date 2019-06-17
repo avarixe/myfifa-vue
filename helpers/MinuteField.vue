@@ -10,19 +10,13 @@
 </template>
 
 <script>
-  import { Vue, Component } from 'vue-property-decorator'
+  import { Vue, Component, Prop } from 'nuxt-property-decorator'
 
-  @Component({
-    props: {
-      value: {
-        type: [String, Number]
-      },
-      extraTime: {
-        type: Boolean
-      }
-    }
-  })
+  @Component
   export default class MinuteField extends Vue {
+    @Prop([String, Number]) value
+    @Prop(Boolean) extraTime
+
     get minutes () {
       return Array.from(
         { length: this.extraTime ? 120 : 90 },

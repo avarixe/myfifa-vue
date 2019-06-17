@@ -1,15 +1,10 @@
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
 import { positions } from '@/models/Match'
 
-@Component({
-  props: {
-    match: {
-      type: Object,
-      required: true
-    }
-  }
-})
+@Component
 export default class MatchAccessible extends Vue {
+  @Prop(Object, { required: true }) match
+
   minute = 0
 
   get positions () {

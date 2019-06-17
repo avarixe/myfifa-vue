@@ -89,7 +89,7 @@
 </template>
 
 <script>
-  import Component, { mixins } from 'vue-class-component'
+  import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { Watch } from 'vue-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import ListOption from './ListOption'
@@ -97,29 +97,22 @@
   @Component({
     components: {
       ListOption
-    },
-    props: {
-      item: {
-        type: Object,
-        required: true
-      },
-      attribute: {
-        type: String,
-        required: true
-      },
-      label: String,
-      options: Array,
-      optionAvatar: String,
-      optionText: String,
-      optionValue: String,
-      rules: Array,
-      inputType: String,
-      display: [String, Number],
-      displayClass: String,
-      readonly: Boolean
     }
   })
   export default class InlineField extends mixins(TeamAccessible) {
+    @Prop(Object, { required: true }) item
+    @Prop(String, { required: true }) attribute
+    @Prop(String) label
+    @Prop(Array) options
+    @Prop(String) optionAvatar
+    @Prop(String) optionText
+    @Prop(String) optionValue
+    @Prop(Array) rules
+    @Prop(String) inputType
+    @Prop([String, Number]) display
+    @Prop(String) displayClass
+    @Prop(Boolean) readonly
+
     value = null
     original = null
     key = 0

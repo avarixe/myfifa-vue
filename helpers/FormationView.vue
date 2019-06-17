@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import Component, { mixins } from 'vue-class-component'
+  import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { FittyText } from '@/helpers'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import { Player } from '@/models'
@@ -44,15 +44,11 @@
   @Component({
     components: {
       FittyText
-    },
-    props: {
-      formation: {
-        type: Array,
-        required: true
-      }
     }
   })
   export default class FormationView extends mixins(TeamAccessible) {
+    @Prop(Array, { required: true }) formation
+
     windows = {}
 
     get positions () {

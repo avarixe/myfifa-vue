@@ -26,47 +26,20 @@
 </template>
 
 <script>
-  import { Vue, Component } from 'vue-property-decorator'
+  import { Vue, Prop, Component } from 'nuxt-property-decorator'
 
-  @Component({
-    props: {
-      value: {
-        type: [String, Number]
-      },
-      players: {
-        type: Array
-      },
-      label: {
-        type: String,
-        default: 'Player'
-      },
-      icon: {
-        type: String,
-        default: 'mdi-account'
-      },
-      itemValue: {
-        type: String,
-        default: 'player_id'
-      },
-      required: {
-        type: Boolean,
-        default: false
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      },
-      clearable: {
-        type: Boolean,
-        default: false
-      },
-      hideDetails: {
-        type: Boolean,
-        default: false
-      }
-    }
-  })
+  @Component
   export default class PlayerSelect extends Vue {
+    @Prop([String, Number]) value
+    @Prop(Array) players
+    @Prop(String, { default: 'Player' }) label
+    @Prop(String, { default: 'mdi-account' }) icon
+    @Prop(String, { default: 'player_id' }) itemValue
+    @Prop(Boolean) required
+    @Prop(Boolean) disabled
+    @Prop(Boolean) clearable
+    @Prop(Boolean) hideDetails
+
     get rules () {
       return this.required
         ? this.$_validate(this.label, ['required'])

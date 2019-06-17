@@ -72,29 +72,18 @@
 </template>
 
 <script>
-  import { Component, Vue, Watch } from 'vue-property-decorator'
+  import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 
-  @Component({
-    props: {
-      value: {
-        type: Boolean,
-        required: true
-      },
-      submit: {
-        type: Function,
-        required: true
-      },
-      submitCb: Function,
-      title: String,
-      titleIcon: String,
-      color: String,
-      fullWidth: {
-        type: Boolean,
-        default: false
-      }
-    }
-  })
+  @Component
   export default class DialogForm extends Vue {
+    @Prop(Boolean, { required: true }) value
+    @Prop(Function, { required: true }) submit
+    @Prop(Function) submitCb
+    @Prop(String) title
+    @Prop(String) titleIcon
+    @Prop(String) color
+    @Prop(Boolean) fullWidth
+
     dialog = this.value
     valid = false
     loading = false
