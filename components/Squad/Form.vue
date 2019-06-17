@@ -58,7 +58,8 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
+  import { positions } from '@/models/Match'
   import { activePlayers } from '@/models/Player'
   import { PlayerSelect } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
@@ -90,9 +91,7 @@
       }
     },
     computed: {
-      ...mapState('matches', [
-        'positions'
-      ]),
+      positions: () => Object.keys(positions),
       title () {
         return this.squad.id ? 'Edit Squad' : 'New Squad'
       },

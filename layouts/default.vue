@@ -16,6 +16,7 @@
         </template>
         <team-loader
           v-else
+          :key="key"
           :team="team"
           @loaded="loaded = true"
         />
@@ -51,7 +52,8 @@
       // TeamBottomNavigation
     },
     data: () => ({
-      loaded: false
+      loaded: false,
+      key: 0
     }),
     computed: {
       ...mapState('app', [
@@ -62,6 +64,12 @@
       },
       team () {
         return Team.find(this.$route.params.teamId)
+      }
+    },
+    watch: {
+      teamPage () {
+        this.loaded = false
+        this.key++
       }
     }
   }

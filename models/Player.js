@@ -76,6 +76,11 @@ class Player extends Model {
       (m.away === this.team.title && m.home_score === 0)
     )
   }
+
+  ovrAt (date) {
+    const historyBefore = this.histories.filter(h => h.datestamp <= date)
+    return historyBefore[historyBefore.length - 1].ovr
+  }
 }
 
 export function contractedPlayers (teamId) {

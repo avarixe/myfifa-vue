@@ -1,4 +1,4 @@
-import { mapState } from 'vuex'
+import { positions } from '@/models/Match'
 
 export default {
   props: {
@@ -11,9 +11,7 @@ export default {
     minute: 0
   }),
   computed: {
-    ...mapState('matches', [
-      'positions'
-    ]),
+    positions: () => Object.keys(positions),
     sortedCaps () {
       return this.$_orderBy(
         this.match.caps,

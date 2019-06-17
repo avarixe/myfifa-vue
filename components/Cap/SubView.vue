@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import { positions } from '@/models/Match'
   import { InlineField } from '@/helpers'
   import CapEvents from './Events'
 
@@ -56,9 +56,9 @@
     data () {
       return {}
     },
-    computed: mapState('matches', [
-      'positions'
-    ]),
+    computed: {
+      positions: () => Object.keys(positions)
+    },
     methods: {
       setPosition (position) {
         this.$store.dispatch('caps/UPDATE', {

@@ -135,7 +135,8 @@
         )
       },
       players () {
-        return Player.query()
+        return Player
+          .query()
           .with('matches')
           .where('isActive', val => this.filters.showAll || val)
           .get()
@@ -153,14 +154,16 @@
         return this.matches.filter(m => playerMatchIds.includes(m.id))
       },
       numGoalsWith (player, matches) {
-        return Goal.query()
+        return Goal
+          .query()
           .where('match_id', matches.map(m => m.id))
           .where('player_id', this.player.id)
           .where('assist_id', player.id)
           .count()
       },
       numAssistsFor (player, matches) {
-        return Goal.query()
+        return Goal
+          .query()
           .where('match_id', matches.map(m => m.id))
           .where('player_id', player.id)
           .where('assist_id', this.player.id)

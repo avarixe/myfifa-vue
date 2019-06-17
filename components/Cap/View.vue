@@ -41,8 +41,8 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
   import Player, { activePlayers } from '@/models/Player'
+  import { positions } from '@/models/Match'
   import { InlineField } from '@/helpers'
   import CapEvents from './Events'
 
@@ -69,9 +69,7 @@
       return {}
     },
     computed: {
-      ...mapState('matches', [
-        'positions'
-      ]),
+      positions: () => Object.keys(positions),
       players () {
         return activePlayers(parseInt(this.$route.params.teamId))
       }

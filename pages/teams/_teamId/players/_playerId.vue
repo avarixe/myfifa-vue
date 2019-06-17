@@ -252,9 +252,6 @@
         }
       }
     },
-    async fetch ({ store, params }) {
-      await store.dispatch('players/GET_HISTORY', params)
-    },
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
     }

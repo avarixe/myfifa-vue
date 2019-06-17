@@ -29,6 +29,10 @@ export const routes = {
     release: 'players/{{ playerId }}/release'
   },
 
+  playerHistories: {
+    search: 'teams/{{ teamId }}/player_histories/search'
+  },
+
   transfers: {
     teamIndex: 'teams/{{ teamId }}/transfers',
     index: 'players/{{ playerId }}/transfers',
