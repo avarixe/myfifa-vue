@@ -120,8 +120,7 @@
         let headers = [
           {
             text: 'Name',
-            value: 'name',
-            align: 'left'
+            value: 'name'
           },
           {
             text: 'Position',
@@ -146,17 +145,17 @@
               {
                 text: 'OVR Change',
                 value: 'ovrChange',
-                align: 'center'
+                align: 'end'
               },
               {
                 text: 'Value',
                 value: 'endValue',
-                align: 'right'
+                align: 'end'
               },
               {
                 text: 'Value Change',
                 value: 'valueChange',
-                align: 'right'
+                align: 'end'
               }
             ])
           case 1: // Statistics
@@ -164,22 +163,22 @@
               {
                 text: 'Games Played',
                 value: 'numGames',
-                align: 'right'
+                align: 'end'
               },
               {
                 text: 'Goals',
                 value: 'numGoals',
-                align: 'right'
+                align: 'end'
               },
               {
                 text: 'Assists',
                 value: 'numAssists',
-                align: 'right'
+                align: 'end'
               },
               {
                 text: 'Clean Sheets',
                 value: 'numCs',
-                align: 'right'
+                align: 'end'
               }
             ])
         }

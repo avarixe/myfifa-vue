@@ -9,7 +9,7 @@
     <!-- Growth -->
     <template v-if="mode === 0">
       <td class="text-xs-center">{{ endOvr }}</td>
-      <td :class="`text-xs-center ${ovrColor}`">
+      <td :class="`text-xs-right ${ovrColor}`">
         {{ ovrChange > 0 ? '+' : '' }}{{ ovrChange }}
       </td>
       <td class="text-xs-right">

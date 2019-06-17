@@ -119,25 +119,23 @@
           {
             text: 'Home Team',
             value: 'home_team',
-            align: 'right',
+            align: 'end',
             sortable: false
           },
           {
             text: 'Home Score',
             value: 'home_score',
-            align: 'right',
+            align: 'end',
             sortable: false
           },
           {
             text: 'Away Score',
             value: 'away_score',
-            align: 'left',
             sortable: false
           },
           {
             text: 'Away Team',
             value: 'away_team',
-            align: 'left',
             sortable: false
           }
         ]

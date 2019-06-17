@@ -60,13 +60,13 @@
                     v-on="on"
                     @click="$router.push(matchLink(match))"
                   >
-                    <td class="text-xs-center">{{ match.competition }}</td>
+                    <td class="text-xs-right">{{ match.competition }}</td>
                     <td class="text-xs-right">{{ match.home }}</td>
                     <td :class="`${resultColor(match.team_result)} text-xs-center`">
                       {{ match.score }}
                     </td>
                     <td class="text-xs-left">{{ match.away }}</td>
-                    <td class="text-xs-center">
+                    <td>
                       {{ $_format($_parse(match.date_played), 'MMM DD, YYYY') }}
                     </td>
                   </tr>
@@ -102,12 +102,12 @@
           {
             text: 'Competition',
             value: 'competition',
-            align: 'center'
+            align: 'end'
           },
           {
             text: 'Home',
             value: 'home',
-            align: 'right'
+            align: 'end'
           },
           {
             text: 'Score',
@@ -117,13 +117,11 @@
           },
           {
             text: 'Away',
-            value: 'away',
-            align: 'left'
+            value: 'away'
           },
           {
             text: 'Date Played',
-            value: 'date_played',
-            align: 'center'
+            value: 'date_played'
           }
         ],
         search: '',

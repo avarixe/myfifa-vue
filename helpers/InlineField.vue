@@ -137,12 +137,18 @@
       item: {
         immediate: true,
         handler () {
-          this.value = this.item[this.attribute]
-          this.original = this.value
+          this.reset()
         }
+      },
+      attribute () {
+        this.reset()
       }
     },
     methods: {
+      reset () {
+        this.value = this.item[this.attribute]
+        this.original = this.value
+      },
       open () {
       },
       close () {

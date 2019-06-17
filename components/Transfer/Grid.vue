@@ -96,7 +96,8 @@
           },
           {
             text: 'Fee',
-            value: 'fee'
+            value: 'fee',
+            align: 'end'
           }
         ],
         search: '',

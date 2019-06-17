@@ -135,7 +135,7 @@
               {{ item.pos }}
             </template>
             <template #item.sec_pos="{ item }">
-              {{ item.sec_pos && item.sec_pos.toString() }}
+              {{ item.sec_pos && item.sec_pos.join(', ') }}
             </template>
             <template #item.contract.wage="{ item }">
               {{ contractWage(item) }}
@@ -249,6 +249,7 @@
             text: 'Status',
             value: 'status',
             align: 'center',
+            sortable: false,
             width: 40
           },
           {
@@ -259,8 +260,7 @@
           {
             text: 'Position',
             value: 'pos_idx',
-            align: 'center',
-            view: 'pos'
+            align: 'center'
           },
           {
             text: 'Kit No',
@@ -276,7 +276,7 @@
                 text: '2nd Position(s)',
                 value: 'sec_pos',
                 align: 'center',
-                format: 'array'
+                sortable: false
               },
               {
                 text: 'OVR',
@@ -286,18 +286,11 @@
               {
                 text: 'Value',
                 value: 'value',
-                align: 'right',
-                format: 'money'
+                align: 'end'
               }
             ])
           case 1: // Edit
             return [
-              {
-                text: '',
-                value: 'edit',
-                align: 'center',
-                sortable: false
-              },
               {
                 text: 'Name',
                 value: 'name'
@@ -305,8 +298,7 @@
               {
                 text: 'Position',
                 value: 'pos_idx',
-                align: 'center',
-                view: 'pos'
+                align: 'center'
               },
               {
                 text: 'Kit No',
@@ -321,8 +313,7 @@
               {
                 text: 'Value',
                 value: 'value',
-                align: 'right',
-                format: 'money'
+                align: 'end'
               }
             ]
           case 2: // Contract
@@ -330,20 +321,17 @@
               {
                 text: 'Value',
                 value: 'value',
-                align: 'right',
-                format: 'money'
+                align: 'end'
               },
               {
                 text: 'Wage',
                 value: 'contract.wage',
-                align: 'right',
-                format: 'money'
+                align: 'end'
               },
               {
                 text: 'End Date',
                 value: 'contract.end_date',
-                align: 'right',
-                format: 'date'
+                align: 'end'
               }
             ])
           case 3: // Statistics
