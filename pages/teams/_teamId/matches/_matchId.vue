@@ -13,7 +13,23 @@
       </v-flex>
 
       <v-flex xs12>
-        <match-form />
+        <v-btn
+          v-if="prevMatchLink"
+          :to="prevMatchLink"
+          nuxt
+          color="blue-grey"
+          outlined
+        >Previous Match</v-btn>
+
+        <v-btn
+          v-if="nextMatchLink"
+          :to="nextMatchLink"
+          nuxt
+          color="blue-grey"
+          outlined
+        >Next Match</v-btn>
+
+        <match-form v-else />
       </v-flex>
 
       <v-layout
@@ -160,6 +176,34 @@
             return 'red'
           default:
             return ''
+        }
+      },
+      prevMatchLink () {
+        const prevMatch = Match
+          .query()
+          .where('date_played', date => date < this.match.date_played)
+          .orderBy('date_played')
+          .last()
+        return prevMatch && {
+          name: 'teams-teamId-matches-matchId',
+          params: {
+            teamId: this.team.id,
+            matchId: prevMatch.id
+          }
+        }
+      },
+      nextMatchLink () {
+        const nextMatch = Match
+          .query()
+          .where('date_played', date => date > this.match.date_played)
+          .orderBy('date_played')
+          .first()
+        return nextMatch && {
+          name: 'teams-teamId-matches-matchId',
+          params: {
+            teamId: this.team.id,
+            matchId: nextMatch.id
+          }
         }
       }
     },
