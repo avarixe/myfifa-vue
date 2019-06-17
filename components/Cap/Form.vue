@@ -38,7 +38,7 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import { positions } from '@/models/Match'
   import { activePlayers } from '@/models/Player'
   import { PlayerSelect } from '@/helpers'
   import { DialogFormable } from '@/mixins'
@@ -65,9 +65,7 @@
       }
     },
     computed: {
-      ...mapState('matches', [
-        'positions'
-      ]),
+      positions: () => positions,
       players () {
         return activePlayers(parseInt(this.$route.params.teamId))
       }

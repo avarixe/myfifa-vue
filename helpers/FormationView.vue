@@ -35,10 +35,10 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
   import { FittyText } from '@/helpers'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import { Player } from '@/models'
+  import { positions } from '@/models/Match'
 
   export default {
     mixins: [
@@ -57,9 +57,7 @@
       windows: {}
     }),
     computed: {
-      ...mapState('matches', [
-        'positions'
-      ]),
+      positions: () => positions,
       startingEleven () {
         return this.$_orderBy(
           this.formation.filter(p => !('start' in p) || p.start === 0),
