@@ -31,25 +31,27 @@
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import SeasonGrid from '@/components/Season/Grid'
   import CompetitionForm from '@/components/Competition/Form'
 
-  export default {
-    layout: 'default',
-    middleware: 'authenticated',
-    mixins: [
-      TeamAccessible
-    ],
+  @Component({
+    components: {
+      CompetitionForm,
+      SeasonGrid
+    }
+  })
+  export default class SeasonsPage extends mixins(TeamAccessible) {
+    layout = () => 'default'
+    middleware = () => 'authenticated'
+
     head () {
       return {
         title: `${this.team.title} - Seasons`
       }
-    },
-    components: {
-      CompetitionForm,
-      SeasonGrid
-    },
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
     }

@@ -194,6 +194,7 @@
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { Player } from '@/models'
   import PlayerForm from '@/components/Player/Form'
   import ContractForm from '@/components/Contract/Form'
@@ -209,8 +210,7 @@
   import { RecordRemove } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
-  export default {
-    layout: 'default',
+  @Component({
     components: {
       PlayerForm,
       ContractForm,
@@ -224,34 +224,35 @@
       PlayerPartnershipsTable,
       PlayerHistoryChart,
       RecordRemove
-    },
-    middleware: 'authenticated',
-    mixins: [
-      TeamAccessible
-    ],
+    }
+  })
+  export default class PlayerPage extends mixins(TeamAccessible) {
+    layout = () => 'default'
+    middleware = () => 'authenticated'
+
     head () {
       return {
         title: this.player.name
       }
-    },
-    data: () => ({
-      tab: 0
-    }),
-    computed: {
-      player () {
-        return Player
-          .query()
-          .withAll()
-          .with('matches.team')
-          .find(this.$route.params.playerId)
-      },
-      playersPage () {
-        return {
-          name: 'teams-teamId-players',
-          params: { teamId: this.team.id }
-        }
+    }
+
+    tab = 0
+
+    get player () {
+      return Player
+        .query()
+        .withAll()
+        .with('matches.team')
+        .find(this.$route.params.playerId)
+    }
+
+    get playersPage () {
+      return {
+        name: 'teams-teamId-players',
+        params: { teamId: this.team.id }
       }
-    },
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
     }

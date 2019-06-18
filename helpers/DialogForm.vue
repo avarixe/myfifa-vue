@@ -84,7 +84,7 @@
     @Prop(String) color
     @Prop(Boolean) fullWidth
 
-    dialog = this.value
+    dialog = null
     valid = false
     loading = false
     errorMessage = ''
@@ -103,6 +103,10 @@
 
     get formColor () {
       return this.color ? this.color + ' accent-2' : null
+    }
+
+    mounted () {
+      this.dialog = this.value
     }
 
     @Watch('dialog')
