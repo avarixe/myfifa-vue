@@ -69,7 +69,6 @@
   </dialog-form>
 </template>
 
-
 <script>
   import { mixins, Component, Watch } from 'nuxt-property-decorator'
   import { mapActions } from 'vuex'

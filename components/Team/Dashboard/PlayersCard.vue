@@ -35,26 +35,20 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      players: {
-        type: Array,
-        default: []
-      },
-      color: {
-        type: String,
-        default: 'primary'
-      },
-      title: String
-    },
-    methods: {
-      playerLink (player) {
-        return {
-          name: 'teams-teamId-players-playerId',
-          params: {
-            teamId: player.team_id,
-            playerId: player.id
-          }
+  import { Vue, Component, Prop } from 'nuxt-property-decorator'
+
+  @Component
+  export default class PlayersCard extends Vue {
+    @Prop({ type: Array, default: [] }) players
+    @Prop({ type: String, default: 'primary' }) color
+    @Prop(String) title
+
+    playerLink (player) {
+      return {
+        name: 'teams-teamId-players-playerId',
+        params: {
+          teamId: player.team_id,
+          playerId: player.id
         }
       }
     }

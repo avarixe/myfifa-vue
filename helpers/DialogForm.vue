@@ -76,8 +76,8 @@
 
   @Component
   export default class DialogForm extends Vue {
-    @Prop(Boolean, { required: true }) value
-    @Prop(Function, { required: true }) submit
+    @Prop({ type: Boolean, required: true }) value
+    @Prop({ type: Function, required: true }) submit
     @Prop(Function) submitCb
     @Prop(String) title
     @Prop(String) titleIcon

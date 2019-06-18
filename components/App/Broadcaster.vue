@@ -23,7 +23,7 @@
       'color'
     ])
   })
-  export default class Broadcaster extends Vue {
+  export default class AppBroadcaster extends Vue {
     snackbar = false
 
     @Watch('message')

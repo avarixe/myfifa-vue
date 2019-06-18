@@ -13,7 +13,7 @@
   import { Vue, Component } from 'nuxt-property-decorator'
 
   @Component
-  export default class LoadingOverlay extends Vue {
+  export default class AppLoadingOverlay extends Vue {
     loading = false
 
     start () {

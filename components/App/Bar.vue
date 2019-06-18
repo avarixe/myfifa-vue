@@ -61,7 +61,7 @@
       toggleDrawer: 'TOGGLE_DRAWER'
     })
   })
-  export default class Bar extends Vue {
+  export default class AppBar extends Vue {
     responsive = false
 
     mounted () {

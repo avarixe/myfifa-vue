@@ -8,15 +8,13 @@
 
     <!-- Growth -->
     <template v-if="mode === 0">
-      <td class="text-xs-center">{{ endOvr }}</td>
+      <td class="text-xs-center">{{ player.endOvr }}</td>
       <td :class="`text-xs-right ${ovrColor}`">
-        {{ ovrChange > 0 ? '+' : '' }}{{ ovrChange }}
+        {{ player.ovrChange > 0 ? '+' : '' }}{{ player.ovrChange }}
       </td>
-      <td class="text-xs-right">
-        {{ team.currency }}{{ endValue.toLocaleString() }}
-      </td>
+      <td class="text-xs-right">{{ $_formatMoney(player.endValue) }}</td>
       <td :class="`text-xs-right ${valueColor}`">
-        {{ valueChange.toFixed(2) }}%
+        {{ player.valueChange.toFixed(2) }}%
       </td>
     </template>
 
@@ -31,110 +29,97 @@
 </template>
 
 <script>
+  import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { Team } from '@/models'
 
-  export default {
-    props: {
-      season: {
-        type: [String, Number],
-        required: true
-      },
-      player: {
-        type: Object,
-        required: true
-      },
-      mode: {
-        type: [String, Number],
-        required: true
+  @Component
+  export default class SeasonPlayerRow extends Vue {
+    @Prop({ type: [String, Number], required: true }) season
+    @Prop({ type: Object, required: true }) player
+    @Prop({ type: [String, Number], required: true }) mode
+
+    get team () {
+      return Team.find(this.$route.params.teamId)
+    }
+
+    get numGoalsPer90 () {
+      return (this.player.numGoals / this.player.numMinutes * 90).toFixed(2)
+    }
+
+    get numAssistsPer90 () {
+      return (this.player.numAssists / this.player.numMinutes * 90).toFixed(2)
+    }
+
+    get csPercentage () {
+      return (this.player.numCs / this.player.numGames * 100).toFixed(2)
+    }
+
+    get gamesView () {
+      return this.player.numGames > 0 &&
+        `${this.player.numGames} (${this.player.numSubs})`
+    }
+
+    get goalsView () {
+      return this.player.numGoals > 0 &&
+        `${this.player.numGoals} (${this.numGoalsPer90})`
+    }
+
+    get assistsView () {
+      return this.player.numAssists > 0 &&
+        `${this.player.numAssists} (${this.numAssistsPer90})`
+    }
+
+    get csView () {
+      return this.player.numCs > 0 &&
+        `${this.player.numCs} (${this.csPercentage}%)`
+    }
+
+    get ovrColor () {
+      switch (true) {
+        case this.player.ovrChange > 6:
+          return 'green--text text--darken-2'
+        case this.player.ovrChange > 4:
+          return 'green--text'
+        case this.player.ovrChange > 2:
+          return 'light-green--text text--darken-2'
+        case this.player.ovrChange > 0:
+          return 'light-green--text'
+        case this.player.ovrChange < -2:
+          return 'red--text'
+        case this.player.ovrChange < 0:
+          return 'orange--text'
+        default:
+          return 'grey--text'
       }
-    },
-    computed: {
-      team () { return Team.find(this.$route.params.teamId) },
-      numGames () { return this.player.numGames },
-      numSubs () { return this.player.numSubs },
-      numGoals () { return this.player.numGoals },
-      numAssists () { return this.player.numAssists },
-      numMinutes () { return this.player.numMinutes },
-      numCs () { return this.player.numCs },
-      endOvr () { return this.player.endOvr },
-      endValue () { return this.player.endValue },
-      ovrChange () { return this.player.ovrChange },
-      valueChange () { return this.player.valueChange },
+    }
 
-      numGoalsPer90 () {
-        return (this.numGoals / this.numMinutes * 90).toFixed(2)
-      },
-      numAssistsPer90 () {
-        return (this.numAssists / this.numMinutes * 90).toFixed(2)
-      },
-      csPercentage () {
-        return (this.numCs / this.numGames * 100).toFixed(2)
-      },
+    get valueColor () {
+      switch (true) {
+        case this.player.valueChange > 100:
+          return 'green--text text--darken-2'
+        case this.player.valueChange > 50:
+          return 'green--text'
+        case this.player.valueChange > 25:
+          return 'light-green--text text--darken-2'
+        case this.player.valueChange > 0:
+          return 'light-green--text'
+        case this.player.valueChange < -25:
+          return 'red--text'
+        case this.player.valueChange < 0:
+          return 'orange--text'
+        default:
+          return 'grey--text'
+      }
+    }
 
-      gamesView () {
-        return this.numGames > 0 &&
-          `${this.numGames} (${this.numSubs})`
-      },
-      goalsView () {
-        return this.numGoals > 0 &&
-          `${this.numGoals} (${this.numGoalsPer90})`
-      },
-      assistsView () {
-        return this.numAssists > 0 &&
-          `${this.numAssists} (${this.numAssistsPer90})`
-      },
-      csView () {
-        return this.numCs > 0 &&
-          `${this.numCs} (${this.csPercentage}%)`
-      },
-
-      ovrColor () {
-        switch (true) {
-          case this.ovrChange > 6:
-            return 'green--text text--darken-2'
-          case this.ovrChange > 4:
-            return 'green--text'
-          case this.ovrChange > 2:
-            return 'light-green--text text--darken-2'
-          case this.ovrChange > 0:
-            return 'light-green--text'
-          case this.ovrChange < -2:
-            return 'red--text'
-          case this.ovrChange < 0:
-            return 'orange--text'
-          default:
-            return 'grey--text'
+    goToPlayer () {
+      this.$router.push({
+        name: 'teams-teamId-players-playerId',
+        params: {
+          teamId: this.$route.params.teamId,
+          playerId: this.player.id
         }
-      },
-      valueColor () {
-        switch (true) {
-          case this.valueChange > 100:
-            return 'green--text text--darken-2'
-          case this.valueChange > 50:
-            return 'green--text'
-          case this.valueChange > 25:
-            return 'light-green--text text--darken-2'
-          case this.valueChange > 0:
-            return 'light-green--text'
-          case this.valueChange < -25:
-            return 'red--text'
-          case this.valueChange < 0:
-            return 'orange--text'
-          default:
-            return 'grey--text'
-        }
-      }
-    },
-    methods: {
-      goToPlayer () {
-        this.$router.push({
-          name: 'teams-teamId-players-playerId',
-          params: {
-            teamId: this.$route.params.teamId,
-            playerId: this.player.id
-          }
-        })
-      }
+      })
     }
   }
 </script>

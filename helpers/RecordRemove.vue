@@ -41,8 +41,8 @@
 
   @Component
   export default class RecordRemove extends Vue {
-    @Prop(Object, { required: true }) record
-    @Prop(String, { required: true }) store
+    @Prop({ type: Object, required: true }) record
+    @Prop({ type: String, required: true }) store
     @Prop([String, Object]) redirect
     @Prop(String) label
 

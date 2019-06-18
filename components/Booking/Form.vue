@@ -51,44 +51,32 @@
 </template>
 
 <script>
-  import {
-    MinuteField,
-    PlayerSelect
-  } from '@/helpers'
-  import {
-    TeamAccessible,
-    DialogFormable,
-    MatchAccessible
-  } from '@/mixins'
+  import { mixins, Component } from 'nuxt-property-decorator'
+  import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
+  import { MinuteField, PlayerSelect } from '@/helpers'
 
-  export default {
+  const mix = mixins(DialogFormable, TeamAccessible, MatchAccessible)
+
+  @Component({
     components: {
       MinuteField,
       PlayerSelect
-    },
-    mixins: [
-      DialogFormable,
-      TeamAccessible,
-      MatchAccessible
-    ],
-    data () {
-      return {
+    }
+  })
+  export default class BookingForm extends mix {
+    booking = {
+      player_id: null,
+      red_card: false
+    }
+
+    async submit () {
+      await this.$store.dispatch('bookings/CREATE', {
+        matchId: this.match.id,
         booking: {
-          player_id: null,
-          red_card: false
+          ...this.booking,
+          minute: this.minute
         }
-      }
-    },
-    methods: {
-      async submit () {
-        await this.$store.dispatch('bookings/CREATE', {
-          matchId: this.match.id,
-          booking: {
-            ...this.booking,
-            minute: this.minute
-          }
-        })
-      }
+      })
     }
   }
 </script>

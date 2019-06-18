@@ -37,54 +37,35 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      cap: {
-        type: Object,
-        required: true
-      },
-      match: {
-        type: Object,
-        required: true
-      }
-    },
-    computed: {
-      events () {
-        return [
-          ...this.match.substitutions,
-          ...this.match.goals,
-          ...this.match.bookings
-        ]
-      },
-      goals () {
-        return this.events.filter(event => (
-          event.event_type === 'Goal' &&
-          event.player_id === this.cap.player_id &&
-          !event.own_goal
-        )).length
-      },
-      assists () {
-        return this.events.filter(event => (
-          event.event_type === 'Goal' &&
-          event.assist_id === this.cap.player_id
-        )).length
-      },
-      bookings () {
-        return this.events
-          .filter(event => {
-            return event.event_type === 'Booking' &&
-              event.player_id === this.cap.player_id
-          })
-          .map(booking => booking.red_card ? 'red' : 'yellow darken-2')
-      },
-      injured () {
-        return this.events
-          .filter(event => (
-            event.event_type === 'Substitution' &&
-            event.player_id === this.cap.player_id &&
-            event.injury
-          )).length > 0
-      }
+  import { Vue, Component, Prop } from 'nuxt-property-decorator'
+
+  @Component
+  export default class CapEvents extends Vue {
+    @Prop({ type: Object, required: true }) cap
+    @Prop({ type: Object, required: true }) match
+
+    get goals () {
+      return this.match.goals
+        .filter(g => g.player_id === this.cap.player_id && !g.own_goal)
+        .length
+    }
+
+    get assists () {
+      return this.match.goals
+        .filter(g => g.assist_id === this.cap.player_id)
+        .length
+    }
+
+    get bookings () {
+      return this.match.bookings
+        .filter(b => b.player_id === this.cap.player_id)
+        .map(b => b.red_card ? 'red' : 'yellow darken-2')
+    }
+
+    get injured () {
+      return this.match.substitutions.some(s =>
+        s.player_id === this.cap.player_id && s.injury
+      )
     }
   }
 </script>

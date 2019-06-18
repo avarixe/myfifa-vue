@@ -61,34 +61,27 @@
 </template>
 
 <script>
+  import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { CompetitionAccessible, DialogFormable } from '@/mixins'
 
-  export default {
-    mixins: [
-      CompetitionAccessible,
-      DialogFormable
-    ],
-    props: {
-      stage: {
-        type: Object,
-        required: true
-      }
-    },
-    data: () => ({
-      fixture: {
-        home_team: '',
-        home_score: '',
-        away_score: '',
-        away_team: ''
-      }
-    }),
-    methods: {
-      async submit () {
-        await this.$store.dispatch('fixtures/CREATE', {
-          stageId: this.stage.id,
-          fixture: this.fixture
-        })
-      }
+  const mix = mixins(CompetitionAccessible, DialogFormable)
+
+  @Component
+  export default class FixtureForm extends mix {
+    @Prop({ type: Object, required: true }) stage
+
+    fixture = {
+      home_team: '',
+      home_score: '',
+      away_score: '',
+      away_team: ''
+    }
+
+    async submit () {
+      await this.$store.dispatch('fixtures/CREATE', {
+        stageId: this.stage.id,
+        fixture: this.fixture
+      })
     }
   }
 </script>

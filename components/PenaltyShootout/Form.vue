@@ -38,33 +38,23 @@
 </template>
 
 <script>
-  import {
-    TeamAccessible,
-    DialogFormable,
-    MatchAccessible
-  } from '@/mixins'
+  import { mixins, Component } from 'nuxt-property-decorator'
+  import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
-  export default {
-    mixins: [
-      DialogFormable,
-      TeamAccessible,
-      MatchAccessible
-    ],
-    data () {
-      return {
-        penaltyShootout: {
-          home_score: null,
-          away_score: null
-        }
-      }
-    },
-    methods: {
-      async submit () {
-        await this.$store.dispatch('penaltyShootout/CREATE', {
-          matchId: this.match.id,
-          penaltyShootout: this.penaltyShootout
-        })
-      }
+  const mix = mixins(TeamAccessible, DialogFormable, MatchAccessible)
+
+  @Component
+  export default class PenaltyShootoutForm extends mix {
+    penaltyShootout = {
+      home_score: null,
+      away_score: null
+    }
+
+    async submit () {
+      await this.$store.dispatch('penaltyShootout/CREATE', {
+        matchId: this.match.id,
+        penaltyShootout: this.penaltyShootout
+      })
     }
   }
 </script>

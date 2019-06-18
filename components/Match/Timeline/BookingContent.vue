@@ -6,19 +6,16 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      item: {
-        type: Object,
-        required: true
-      }
-    },
-    computed: {
-      bookingType () {
-        return this.item.red_card
-          ? 'Red Card'
-          : 'Yellow Card'
-      }
+  import { Vue, Component, Prop } from 'nuxt-property-decorator'
+
+  @Component
+  export default class BookingContent extends Vue {
+    @Prop({ type: Object, required: true }) item
+
+    get bookingType () {
+      return this.item.red_card
+        ? 'Red Card'
+        : 'Yellow Card'
     }
   }
 </script>

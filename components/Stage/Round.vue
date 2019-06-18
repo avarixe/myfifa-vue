@@ -86,104 +86,99 @@
 </template>
 
 <script>
+  import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
   import { InlineField, RecordRemove } from '@/helpers'
   import FixtureForm from '@/components/Fixture/Form'
 
-  export default {
-    mixins: [
-      CompetitionAccessible
-    ],
+  @Component({
     components: {
       InlineField,
       RecordRemove,
       FixtureForm
     },
-    props: {
-      round: {
-        type: Object,
-        required: true
-      },
-      readonly: Boolean
-    },
-    data: () => ({
-      key: 0
-    }),
-    computed: {
-      items () {
-        return Object.values(this.round.fixtures) || []
-      },
-      headers () {
-        const headers = [
-          {
-            text: 'Home Team',
-            value: 'home_team',
-            align: 'end',
-            sortable: false
-          },
-          {
-            text: 'Home Score',
-            value: 'home_score',
-            align: 'end',
-            sortable: false
-          },
-          {
-            text: 'Away Score',
-            value: 'away_score',
-            sortable: false
-          },
-          {
-            text: 'Away Team',
-            value: 'away_team',
-            sortable: false
-          }
-        ]
+    methods: mapActions({
+      createFixture: 'fixtures/CREATE',
+      updateFixture: 'fixtures/UPDATE',
+      updateStage: 'stages/UPDATE'
+    })
+  })
+  export default class RoundStage extends mixins(CompetitionAccessible) {
+    @Prop({ type: Object, required: true }) round
+    @Prop(Boolean) readonly
 
-        if (!this.readonly) {
-          headers.push({
-            text: '',
-            value: 'delete',
-            sortable: false,
-            width: 40
-          })
-        }
+    key = 0
 
-        return headers
-      }
-    },
-    methods: {
-      ...mapActions({
-        createFixture: 'fixtures/CREATE',
-        updateFixture: 'fixtures/UPDATE',
-        updateStage: 'stages/UPDATE'
-      }),
-      async updateStageAttribute (stageId, attribute, value) {
-        try {
-          await this.updateStage({
-            id: stageId,
-            [attribute]: value
-          })
-        } catch (e) {
-          this.key++
-          this.$store.commit('broadcaster/ANNOUNCE', {
-            message: e.message,
-            color: 'red'
-          })
+    get items () {
+      return Object.values(this.round.fixtures) || []
+    }
+
+    get headers () {
+      const headers = [
+        {
+          text: 'Home Team',
+          value: 'home_team',
+          align: 'end',
+          sortable: false
+        },
+        {
+          text: 'Home Score',
+          value: 'home_score',
+          align: 'end',
+          sortable: false
+        },
+        {
+          text: 'Away Score',
+          value: 'away_score',
+          sortable: false
+        },
+        {
+          text: 'Away Team',
+          value: 'away_team',
+          sortable: false
         }
-      },
-      addFixture () {
-        this.createFixture({
-          stageId: this.round.id,
-          fixture: { home_team: '', away_team: '' }
+      ]
+
+      if (!this.readonly) {
+        headers.push({
+          text: '',
+          value: 'delete',
+          sortable: false,
+          width: 40
         })
-      },
-      updateFixtureAttribute (fixtureId, attribute, value) {
-        this.updateFixture({
-          id: fixtureId,
+      }
+
+      return headers
+    }
+
+    async updateStageAttribute (stageId, attribute, value) {
+      try {
+        await this.updateStage({
+          id: stageId,
           [attribute]: value
         })
+      } catch (e) {
+        this.key++
+        this.$store.commit('broadcaster/ANNOUNCE', {
+          message: e.message,
+          color: 'red'
+        })
       }
+    }
+
+    addFixture () {
+      this.createFixture({
+        stageId: this.round.id,
+        fixture: { home_team: '', away_team: '' }
+      })
+    }
+
+    updateFixtureAttribute (fixtureId, attribute, value) {
+      this.updateFixture({
+        id: fixtureId,
+        [attribute]: value
+      })
     }
   }
 </script>

@@ -102,65 +102,60 @@
 </template>
 
 <script>
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { VDateField } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
-  export default {
+  const mix = mixins(DialogFormable, TeamAccessible)
+
+  @Component({
     components: {
       VDateField
-    },
-    mixins: [
-      DialogFormable,
-      TeamAccessible
-    ],
-    props: {
-      player: {
-        type: Object,
-        required: true
-      },
-      dark: Boolean,
-      submitCb: Function
-    },
-    data: () => ({
-      transfer: {
-        effective_date: null,
-        origin: '',
-        destination: '',
-        fee: null,
-        addon_clause: 0,
-        loan: false
-      }
-    }),
-    computed: {
-      transferOut () {
-        return this.player.status && this.player.status.length > 0
-      },
-      title () {
-        return 'Transfer ' + this.player.name
-      },
-      transferColor () {
-        return this.transferOut ? 'red' : 'green'
-      }
-    },
-    watch: {
-      dialog (val) {
-        if (val) {
-          this.transfer.effective_date = this.team.current_date
-          if (this.transferOut) {
-            this.transfer.origin = this.team.title
-          } else {
-            this.transfer.destination = this.team.title
-          }
+    }
+  })
+  export default class TransferForm extends mix {
+    @Prop({ type: Object, required: true }) player
+    @Prop(Boolean) dark
+    @Prop(Function) submitCb
+
+    transfer = {
+      effective_date: null,
+      origin: '',
+      destination: '',
+      fee: null,
+      addon_clause: 0,
+      loan: false
+    }
+
+    get transferOut () {
+      return this.player.status && this.player.status.length > 0
+    }
+
+    get title () {
+      return 'Transfer ' + this.player.name
+    }
+
+    get transferColor () {
+      return this.transferOut ? 'red' : 'green'
+    }
+
+    @Watch('dialog')
+    setTransfer (val) {
+      if (val) {
+        this.transfer.effective_date = this.team.current_date
+        if (this.transferOut) {
+          this.transfer.origin = this.team.title
+        } else {
+          this.transfer.destination = this.team.title
         }
       }
-    },
-    methods: {
-      async submit () {
-        await this.$store.dispatch('transfers/CREATE', {
-          playerId: this.player.id,
-          transfer: this.transfer
-        })
-      }
+    }
+
+    async submit () {
+      await this.$store.dispatch('transfers/CREATE', {
+        playerId: this.player.id,
+        transfer: this.transfer
+      })
     }
   }
 </script>

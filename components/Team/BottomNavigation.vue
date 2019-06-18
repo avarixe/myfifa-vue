@@ -31,76 +31,79 @@
 </template>
 
 <script>
+  import { Vue, Component } from 'nuxt-property-decorator'
   import { Team } from '@/models'
   import TeamDatePicker from '@/components/Team/DatePicker'
 
-  export default {
+  @Component({
     components: {
       TeamDatePicker
-    },
-    computed: {
-      teamId () {
-        return this.$route.params.teamId
-      },
-      team () {
-        return Team.find(this.teamId)
-      },
-      links () {
-        if (this.teamId) {
-          return [
-            {
-              to: {
-                name: 'teams-teamId',
-                params: { teamId: this.teamId }
-              },
-              icon: 'mdi-shield-half-full',
-              text: this.team.title,
-              exact: true
+    }
+  })
+  export default class TeamBottomNavigation extends Vue {
+    get teamId () {
+      return this.$route.params.teamId
+    }
+
+    get team () {
+      return Team.find(this.teamId)
+    }
+
+    get links () {
+      if (this.teamId) {
+        return [
+          {
+            to: {
+              name: 'teams-teamId',
+              params: { teamId: this.teamId }
             },
-            {
-              to: {
-                name: 'teams-teamId-seasons',
-                params: { teamId: this.teamId }
-              },
-              icon: 'mdi-trophy',
-              text: 'Seasons'
+            icon: 'mdi-shield-half-full',
+            text: this.team.title,
+            exact: true
+          },
+          {
+            to: {
+              name: 'teams-teamId-seasons',
+              params: { teamId: this.teamId }
             },
-            {
-              to: {
-                name: 'teams-teamId-players',
-                params: { teamId: this.teamId }
-              },
-              icon: 'mdi-account',
-              text: 'Players'
+            icon: 'mdi-trophy',
+            text: 'Seasons'
+          },
+          {
+            to: {
+              name: 'teams-teamId-players',
+              params: { teamId: this.teamId }
             },
-            {
-              to: {
-                name: 'teams-teamId-matches',
-                params: { teamId: this.teamId }
-              },
-              icon: 'mdi-soccer-field',
-              text: 'Matches'
+            icon: 'mdi-account',
+            text: 'Players'
+          },
+          {
+            to: {
+              name: 'teams-teamId-matches',
+              params: { teamId: this.teamId }
             },
-            {
-              to: {
-                name: 'teams-teamId-squads',
-                params: { teamId: this.teamId }
-              },
-              icon: 'mdi-clipboard-text',
-              text: 'Squads'
+            icon: 'mdi-soccer-field',
+            text: 'Matches'
+          },
+          {
+            to: {
+              name: 'teams-teamId-squads',
+              params: { teamId: this.teamId }
             },
-            {
-              to: {
-                name: 'teams-teamId-transfers',
-                params: { teamId: this.teamId }
-              },
-              icon: 'mdi-airplane-takeoff',
-              text: 'Transfers'
-            }
-          ]
-        } else {
-          return []
-        }
+            icon: 'mdi-clipboard-text',
+            text: 'Squads'
+          },
+          {
+            to: {
+              name: 'teams-teamId-transfers',
+              params: { teamId: this.teamId }
+            },
+            icon: 'mdi-airplane-takeoff',
+            text: 'Transfers'
+          }
+        ]
+      } else {
+        return []
       }
     }
   }

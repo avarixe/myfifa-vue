@@ -1,6 +1,6 @@
 <template>
   <area-chart
-    :data="data"
+    :data="chartData"
     :label="label"
     :xtitle="xtitle"
     :ytitle="ytitle"
@@ -14,33 +14,27 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      player: {
-        type: Object,
-        required: true
-      },
-      attribute: {
-        type: String,
-        required: true
-      },
-      label: String,
-      color: String,
-      xtitle: String,
-      ytitle: String,
-      min: Number,
-      max: Number,
-      legend: String,
-      prefix: String,
-      thousands: String
-    },
-    computed: {
-      data () {
-        return this.player.histories.reduce((data, history) => {
-          data[history.datestamp] = history[this.attribute]
-          return data
-        }, {})
-      }
+  import { Vue, Component, Prop } from 'nuxt-property-decorator'
+
+  @Component
+  export default class PlayerHistoryChart extends Vue {
+    @Prop({ type: Object, required: true }) player
+    @Prop({ type: String, required: true }) attribute
+    @Prop(String) label
+    @Prop(String) color
+    @Prop(String) xtitle
+    @Prop(String) ytitle
+    @Prop(Number) min
+    @Prop(Number) max
+    @Prop(String) legend
+    @Prop(String) prefix
+    @Prop(String) thousands
+
+    get chartData () {
+      return this.player.histories.reduce((data, history) => {
+        data[history.datestamp] = history[this.attribute]
+        return data
+      }, {})
     }
   }
 </script>

@@ -31,43 +31,31 @@
 </template>
 
 <script>
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
+  import { format } from 'date-fns'
 
-  export default {
-    mixins: [
-      TeamAccessible
-    ],
-    props: {
-      menuClass: {
-        type: String,
-        default: 'd-inline-block'
-      },
-      origin: {
-        type: String,
-        default: 'top left'
-      }
-    },
-    data () {
-      return {
-        calendar: false,
-        currentDate: this.$_format(new Date())
-      }
-    },
-    watch: {
-      team: {
-        immediate: true,
-        handler (val) {
-          this.currentDate = this.team.current_date
-        }
-      },
-      async currentDate (val, oldVal) {
-        if (oldVal) {
-          await this.$store.dispatch('teams/UPDATE', {
-            id: this.team.id,
-            current_date: val
-          })
-          this.calendar = false
-        }
+  @Component
+  export default class TeamDatePicker extends mixins(TeamAccessible) {
+    @Prop({ type: String, default: 'd-inline-block' }) menuClass
+    @Prop({ type: String, default: 'top left' }) origin
+
+    calendar = false
+    currentDate = format(new Date(), 'YYYY-MM-DD')
+
+    @Watch('team', { immediate: true })
+    setCurrentDate () {
+      this.currentDate = this.team.current_date
+    }
+
+    @Watch('currentDate')
+    async updateDate (val, oldVal) {
+      if (oldVal) {
+        await this.$store.dispatch('teams/UPDATE', {
+          id: this.team.id,
+          current_date: val
+        })
+        this.calendar = false
       }
     }
   }

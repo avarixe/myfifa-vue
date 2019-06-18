@@ -125,96 +125,92 @@
 </template>
 
 <script>
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { mapActions } from 'vuex'
   import { Competition } from '@/models'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
-  export default {
-    mixins: [
-      DialogFormable,
-      TeamAccessible
-    ],
-    props: {
-      competitionData: Object,
-      close: Boolean
-    },
-    data () {
-      return {
-        valid: false,
-        presetFormats: [
-          'League',
-          'Knockout',
-          'Group + Knockout'
-        ],
-        competition: {}
+  const mix = mixins(DialogFormable, TeamAccessible)
+
+  @Component({
+    methods: mapActions('competitions', {
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
+  })
+  export default class CompetitionForm extends mix {
+    @Prop(Object) competitionData
+    @Prop(Boolean) close
+
+    valid = false
+    presetFormats = [
+      'League',
+      'Knockout',
+      'Group + Knockout'
+    ]
+    competition = {}
+
+    get title () {
+      if (this.close) {
+        return 'Close Competition'
+      } else if (this.competitionData) {
+        return 'Edit Competition'
+      } else {
+        return 'New Competition'
       }
-    },
-    computed: {
-      title () {
-        if (this.close) {
-          return 'Close Competition'
-        } else if (this.competitionData) {
-          return 'Edit Competition'
-        } else {
-          return 'New Competition'
+    }
+
+    get competitions () {
+      return [
+        ...new Set(
+          Competition
+            .query()
+            .where('team_id', this.team.id)
+            .get()
+            .map(c => c.name)
+        )
+      ]
+    }
+
+    get teams () {
+      return this.competitionData.teamOptions
+    }
+
+    @Watch('dialog')
+    setCompetition (val) {
+      if (val && this.competitionData) {
+        this.competition = this.$_pick(this.competitionData, [
+          'id',
+          'name',
+          'champion'
+        ])
+      } else {
+        this.competition = {
+          season: this.season,
+          preset_format: null,
+          num_teams: null,
+          num_teams_per_group: null,
+          num_advances_from_group: null,
+          num_matches_per_fixture: null
         }
-      },
-      competitions () {
-        return [
-          ...new Set(
-            Competition
-              .query()
-              .where('team_id', this.team.id)
-              .get()
-              .map(c => c.name)
-          )
-        ]
-      },
-      teams () {
-        return this.competitionData.teamOptions
       }
-    },
-    watch: {
-      dialog (val) {
-        if (val && this.competitionData) {
-          this.competition = this.$_pick(this.competitionData, [
-            'id',
-            'name',
-            'champion'
-          ])
-        } else {
-          this.competition = {
-            season: this.season,
-            preset_format: null,
-            num_teams: null,
-            num_teams_per_group: null,
-            num_advances_from_group: null,
-            num_matches_per_fixture: null
-          }
-        }
-      }
-    },
-    methods: {
-      ...mapActions('competitions', {
-        create: 'CREATE',
-        update: 'UPDATE'
-      }),
-      async submit () {
-        if (this.competitionData) {
-          await this.update(this.competition)
-        } else {
-          const { data } = await this.create({
+    }
+
+    async submit () {
+      if (this.competitionData) {
+        await this.update(this.competition)
+      } else {
+        const { data } = await this.create({
+          teamId: this.team.id,
+          competition: this.competition
+        })
+        this.$router.push({
+          name: 'teams-teamId-competitions-competitionId',
+          params: {
             teamId: this.team.id,
-            competition: this.competition
-          })
-          this.$router.push({
-            name: 'teams-teamId-competitions-competitionId',
-            params: {
-              teamId: this.team.id,
-              competitionId: data.id
-            }
-          })
-        }
+            competitionId: data.id
+          }
+        })
       }
     }
   }

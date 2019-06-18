@@ -72,85 +72,86 @@
 </template>
 
 <script>
+  import { Vue, Component } from 'nuxt-property-decorator'
   import { Team } from '@/models'
-  import {
-    mapState,
-    mapMutations
-  } from 'vuex'
+  import { mapState, mapMutations } from 'vuex'
   import TeamDatePicker from '@/components/Team/DatePicker'
-  export default {
+
+  @Component({
     components: {
       TeamDatePicker
     },
-    computed: {
-      ...mapState('app', [
-        'drawer'
-      ]),
-      teamId () {
-        return this.$route.params.teamId
-      },
-      team () {
-        return Team.find(this.teamId)
-      },
-      teamName () {
-        return this.team.title
-      },
-      teamLinks () {
-        if (this.teamId) {
-          return [
-            {
-              to: {
-                name: 'teams-teamId-seasons',
-                params: { teamId: this.teamId }
-              },
-              icon: 'mdi-trophy',
-              text: 'Seasons'
+    computed: mapState('app', [
+      'drawer'
+    ]),
+    methods: mapMutations('app', {
+      setDrawer: 'SET_DRAWER'
+    })
+  })
+  export default class TeamDrawer extends Vue {
+    get teamId () {
+      return this.$route.params.teamId
+    }
+
+    get team () {
+      return Team.find(this.teamId)
+    }
+
+    get teamName () {
+      return this.team.title
+    }
+
+    get teamLinks () {
+      if (this.teamId) {
+        return [
+          {
+            to: {
+              name: 'teams-teamId-seasons',
+              params: { teamId: this.teamId }
             },
-            {
-              to: {
-                name: 'teams-teamId-players',
-                params: { teamId: this.teamId }
-              },
-              icon: 'mdi-account',
-              text: 'Players'
+            icon: 'mdi-trophy',
+            text: 'Seasons'
+          },
+          {
+            to: {
+              name: 'teams-teamId-players',
+              params: { teamId: this.teamId }
             },
-            {
-              to: {
-                name: 'teams-teamId-matches',
-                params: { teamId: this.teamId }
-              },
-              icon: 'mdi-soccer-field',
-              text: 'Matches'
+            icon: 'mdi-account',
+            text: 'Players'
+          },
+          {
+            to: {
+              name: 'teams-teamId-matches',
+              params: { teamId: this.teamId }
             },
-            {
-              to: {
-                name: 'teams-teamId-squads',
-                params: { teamId: this.teamId }
-              },
-              icon: 'mdi-clipboard-text',
-              text: 'Squads'
+            icon: 'mdi-soccer-field',
+            text: 'Matches'
+          },
+          {
+            to: {
+              name: 'teams-teamId-squads',
+              params: { teamId: this.teamId }
             },
-            {
-              to: {
-                name: 'teams-teamId-transfers',
-                params: { teamId: this.teamId }
-              },
-              icon: 'mdi-airplane-takeoff',
-              text: 'Transfers'
-            }
-          ]
-        } else {
-          return []
-        }
+            icon: 'mdi-clipboard-text',
+            text: 'Squads'
+          },
+          {
+            to: {
+              name: 'teams-teamId-transfers',
+              params: { teamId: this.teamId }
+            },
+            icon: 'mdi-airplane-takeoff',
+            text: 'Transfers'
+          }
+        ]
+      } else {
+        return []
       }
-    },
+    }
+
     mounted () {
       this.setDrawer(window.innerWidth >= 991)
-    },
-    methods: {
-      ...mapMutations('app', {
-        setDrawer: 'SET_DRAWER'
-      })
     }
   }
 </script>

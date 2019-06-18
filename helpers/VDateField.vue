@@ -33,8 +33,8 @@
 
   @Component
   export default class VDateField extends Vue {
-    @Prop(String, { required: true }) value
-    @Prop(String, { required: true }) label
+    @Prop({ type: String, required: true }) value
+    @Prop({ type: String, required: true }) label
     @Prop(String) min
     @Prop(String) max
     @Prop(String) color

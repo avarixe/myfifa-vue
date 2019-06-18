@@ -30,51 +30,41 @@
 </template>
 
 <script>
+  import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { positions } from '@/models/Match'
   import { InlineField } from '@/helpers'
   import CapEvents from './Events'
 
-  export default {
+  @Component({
     components: {
       CapEvents,
       InlineField
-    },
-    props: {
-      cap: {
-        type: Object,
-        required: true
-      },
-      match: {
-        type: Object,
-        required: true
-      },
-      readonly: {
-        type: Boolean,
-        required: true
-      }
-    },
-    data () {
-      return {}
-    },
-    computed: {
-      positions: () => Object.keys(positions)
-    },
-    methods: {
-      setPosition (position) {
-        this.$store.dispatch('caps/UPDATE', {
-          ...this.cap,
-          pos: position
-        })
-      },
-      goToPlayer () {
-        this.$router.push({
-          name: 'teams-teamId-players-playerId',
-          params: {
-            teamId: this.match.team_id,
-            playerId: this.cap.player_id
-          }
-        })
-      }
+    }
+  })
+  export default class CapSubView extends Vue {
+    @Prop({ type: Object, required: true }) cap
+    @Prop({ type: Object, required: true }) match
+    @Prop(Boolean) readonly
+
+    get positions () {
+      return Object.keys(positions)
+    }
+
+    setPosition (position) {
+      this.$store.dispatch('caps/UPDATE', {
+        ...this.cap,
+        pos: position
+      })
+    }
+
+    goToPlayer () {
+      this.$router.push({
+        name: 'teams-teamId-players-playerId',
+        params: {
+          teamId: this.match.team_id,
+          playerId: this.cap.player_id
+        }
+      })
     }
   }
 </script>

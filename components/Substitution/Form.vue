@@ -51,56 +51,44 @@
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { activePlayers } from '@/models/Player'
-  import {
-    MinuteField,
-    PlayerSelect
-  } from '@/helpers'
-  import {
-    TeamAccessible,
-    DialogFormable,
-    MatchAccessible
-  } from '@/mixins'
+  import { MinuteField, PlayerSelect } from '@/helpers'
+  import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
-  export default {
+  const mix = mixins(DialogFormable, MatchAccessible, TeamAccessible)
+
+  @Component({
     components: {
       MinuteField,
       PlayerSelect
-    },
-    mixins: [
-      DialogFormable,
-      TeamAccessible,
-      MatchAccessible
-    ],
-    data () {
-      return {
+    }
+  })
+  export default class SubstitutionForm extends mix {
+    substitution = {
+      player_id: null,
+      replacement_id: '',
+      injury: false
+    }
+
+    get availablePlayers () {
+      const selectedIds = this.sortedCaps.map(c => c.player_id)
+      return activePlayers(this.team.id)
+        .filter(p => selectedIds.indexOf(p.id) < 0)
+    }
+
+    get unsubbedPlayers () {
+      return this.sortedCaps.filter(c => !c.subbed_out)
+    }
+
+    async submit () {
+      await this.$store.dispatch('substitutions/CREATE', {
+        matchId: this.match.id,
         substitution: {
-          player_id: null,
-          replacement_id: '',
-          injury: false
+          ...this.substitution,
+          minute: this.minute
         }
-      }
-    },
-    computed: {
-      availablePlayers () {
-        const selectedIds = this.sortedCaps.map(c => c.player_id)
-        return activePlayers(this.team.id)
-          .filter(p => selectedIds.indexOf(p.id) < 0)
-      },
-      unsubbedPlayers () {
-        return this.sortedCaps.filter(c => !c.subbed_out)
-      }
-    },
-    methods: {
-      async submit () {
-        await this.$store.dispatch('substitutions/CREATE', {
-          matchId: this.match.id,
-          substitution: {
-            ...this.substitution,
-            minute: this.minute
-          }
-        })
-      }
+      })
     }
   }
 </script>

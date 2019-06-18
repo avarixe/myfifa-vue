@@ -32,9 +32,9 @@
   export default class PlayerSelect extends Vue {
     @Prop([String, Number]) value
     @Prop(Array) players
-    @Prop(String, { default: 'Player' }) label
-    @Prop(String, { default: 'mdi-account' }) icon
-    @Prop(String, { default: 'player_id' }) itemValue
+    @Prop({ type: String, default: 'Player' }) label
+    @Prop({ type: String, default: 'mdi-account' }) icon
+    @Prop({ type: String, default: 'player_id' }) itemValue
     @Prop(Boolean) required
     @Prop(Boolean) disabled
     @Prop(Boolean) clearable

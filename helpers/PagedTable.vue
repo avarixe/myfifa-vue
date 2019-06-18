@@ -18,8 +18,8 @@
 
   @Component
   export default class PagedTable extends Vue {
-    @Prop(Number, { required: true }) value
-    @Prop(Number, { required: true }) pageCount
+    @Prop({ type: Number, required: true }) value
+    @Prop({ type: Number, required: true }) pageCount
 
     updateValue (value) {
       this.$emit('input', value)

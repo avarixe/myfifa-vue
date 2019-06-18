@@ -10,29 +10,23 @@
 </template>
 
 <script>
+  import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { distanceInWords } from 'date-fns'
   import { TeamAccessible } from '@/mixins'
 
-  export default {
-    mixins: [
-      TeamAccessible
-    ],
-    props: {
-      item: {
-        type: Object,
-        required: true
-      }
-    },
-    computed: {
-      injury () {
-        return this.item.data
-      },
-      length () {
-        return distanceInWords(
-          this.injury.start_date,
-          this.injury.end_date || this.team.current_date
-        )
-      }
+  @Component
+  export default class InjuryContent extends mixins(TeamAccessible) {
+    @Prop({ type: Object, required: true }) item
+
+    get injury () {
+      return this.item.data
+    }
+
+    get length () {
+      return distanceInWords(
+        this.injury.start_date,
+        this.injury.end_date || this.team.current_date
+      )
     }
   }
 </script>

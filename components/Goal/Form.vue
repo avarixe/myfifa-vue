@@ -104,80 +104,75 @@
 </template>
 
 <script>
+  import { mixins, Component, Watch } from 'nuxt-property-decorator'
   import { MinuteField, PlayerSelect } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
-  export default {
+  const mix = mixins(TeamAccessible, DialogFormable, MatchAccessible)
+
+  @Component({
     components: {
       MinuteField,
       PlayerSelect
-    },
-    mixins: [
-      DialogFormable,
-      TeamAccessible,
-      MatchAccessible
-    ],
-    data () {
-      return {
+    }
+  })
+  export default class GoalForm extends mix {
+    goal = {
+      home: true, // default to Team side
+      player_id: null,
+      player_name: '',
+      assisted_by: '',
+      assist_id: '',
+      own_goal: false,
+      penalty: false
+    }
+
+    get scoredTeam () {
+      return this.home ? this.match.home : this.match.away
+    }
+
+    get teamGoal () {
+      return !this.goal.home ^ this.match.home === this.team.title
+    }
+
+    get scorerOptions () {
+      return this.unsubbedPlayers.filter(cap =>
+        cap.player_id !== this.goal.assist_id
+      )
+    }
+
+    get assistOptions () {
+      return this.unsubbedPlayers.filter(cap =>
+        cap.player_id !== this.goal.player_id
+      )
+    }
+
+    @Watch('goal.home')
+    clearNames () {
+      this.clearPlayerName()
+      this.clearAssistedBy()
+    }
+
+    @Watch('goal.penalty')
+    @Watch('goal.own_goal')
+    clearAssistedBy () {
+      this.goal.assist_id = null
+      this.goal.assisted_by = null
+    }
+
+    clearPlayerName () {
+      this.goal.player_name = ''
+      this.goal.assisted_by = ''
+    }
+
+    async submit () {
+      await this.$store.dispatch('goals/CREATE', {
+        matchId: this.match.id,
         goal: {
-          home: true, // default to Team side
-          player_id: null,
-          player_name: '',
-          assisted_by: '',
-          assist_id: '',
-          own_goal: false,
-          penalty: false
+          ...this.goal,
+          minute: this.minute
         }
-      }
-    },
-    computed: {
-      scoredTeam () {
-        return this.home ? this.match.home : this.match.away
-      },
-      teamGoal () {
-        return !this.goal.home ^ this.match.home === this.team.title
-      },
-      scorerOptions () {
-        return this.unsubbedPlayers.filter(cap => {
-          return cap.player_id !== this.goal.assist_id
-        })
-      },
-      assistOptions () {
-        return this.unsubbedPlayers.filter(cap => {
-          return cap.player_id !== this.goal.player_id
-        })
-      }
-    },
-    watch: {
-      'goal.home': function (val) {
-        this.clearPlayerName()
-        this.clearAssistedBy()
-      },
-      'goal.penalty': function (val) {
-        this.clearAssistedBy()
-      },
-      'goal.own_goal': function (val) {
-        this.clearAssistedBy()
-      }
-    },
-    methods: {
-      async submit () {
-        await this.$store.dispatch('goals/CREATE', {
-          matchId: this.match.id,
-          goal: {
-            ...this.goal,
-            minute: this.minute
-          }
-        })
-      },
-      clearPlayerName () {
-        this.goal.player_name = ''
-        this.goal.assisted_by = ''
-      },
-      clearAssistedBy () {
-        this.goal.assist_id = null
-        this.goal.assisted_by = null
-      }
+      })
     }
   }
 </script>

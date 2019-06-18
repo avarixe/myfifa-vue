@@ -41,19 +41,19 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      match: Object,
-      title: String
-    },
-    computed: {
-      matchLink () {
-        return {
-          name: 'teams-teamId-matches-matchId',
-          params: {
-            teamId: this.match.team_id,
-            matchId: this.match.id
-          }
+  import { Vue, Component, Prop } from 'nuxt-property-decorator'
+
+  @Component
+  export default class MatchCard extends Vue {
+    @Prop(Object) match
+    @Prop(String) title
+
+    get matchLink () {
+      return {
+        name: 'teams-teamId-matches-matchId',
+        params: {
+          teamId: this.match.team_id,
+          matchId: this.match.id
         }
       }
     }

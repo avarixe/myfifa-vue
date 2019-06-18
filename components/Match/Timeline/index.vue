@@ -74,105 +74,101 @@
 </template>
 
 <script>
+  import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import TimelineContent from './Content'
   import { mapActions } from 'vuex'
   import { TeamAccessible } from '@/mixins'
 
-  export default {
-    mixins: [
-      TeamAccessible
-    ],
+  @Component({
     components: {
       TimelineContent
     },
-    props: {
-      match: {
-        type: Object,
-        required: true
-      }
-    },
-    computed: {
-      events () {
-        return this.$_orderBy([
-          ...this.match.bookings,
-          ...this.match.substitutions,
-          ...this.match.goals
-        ],
-        'minute',
-        'asc')
-      },
-      penaltyShootoutEvent () {
-        return this.match.penalty_shootout
-          ? { ...this.match.penalty_shootout, event_type: 'PenaltyShootout' }
-          : {}
-      }
-    },
-    methods: {
-      ...mapActions({
-        removeGoal: 'goals/REMOVE',
-        removeBooking: 'bookings/REMOVE',
-        removeSubstitution: 'substitutions/REMOVE',
-        removePenaltyShootout: 'penaltyShootout/REMOVE'
-      }),
-      async removeEvent (event) {
-        if (confirm('Remove ' + event.event_type + '?')) {
-          try {
-            await this['remove' + event.event_type](event.id)
-          } catch (e) {
-            alert(e.message)
-          }
-        }
-      },
-      async removePS () {
-        if (confirm('Remove Penalty Shootout?')) {
-          try {
-            await this.removePenaltyShootout(this.match.id)
-          } catch (e) {
-            alert(e.message)
-          }
-        }
-      },
+    methods: mapActions({
+      removeGoal: 'goals/REMOVE',
+      removeBooking: 'bookings/REMOVE',
+      removeSubstitution: 'substitutions/REMOVE',
+      removePenaltyShootout: 'penaltyShootout/REMOVE'
+    })
+  })
+  export default class MatchTimeline extends mixins(TeamAccessible) {
+    @Prop({ type: Object, required: true }) match
 
-      teamColor (event) {
-        return event.home ? 'teal' : 'pink'
-      },
-      eventColor (event) {
-        switch (event.event_type) {
-          case 'Goal':
-            return event.own_goal ? 'light-blue' : 'blue'
-          case 'Booking':
-            return event.red_card ? 'red' : 'amber'
-          case 'Substitution':
-            return event.injury ? 'pink' : 'green'
-          case 'PenaltyShootout':
-            return 'indigo'
+    get events () {
+      return this.$_orderBy([
+        ...this.match.bookings,
+        ...this.match.substitutions,
+        ...this.match.goals
+      ], 'minute', 'asc')
+    }
+
+    get penaltyShootoutEvent () {
+      return this.match.penalty_shootout
+        ? { ...this.match.penalty_shootout, event_type: 'PenaltyShootout' }
+        : {}
+    }
+
+    async removeEvent (event) {
+      if (confirm('Remove ' + event.event_type + '?')) {
+        try {
+          await this['remove' + event.event_type](event.id)
+        } catch (e) {
+          alert(e.message)
         }
-      },
-      eventIcon (event) {
-        switch (event.event_type) {
-          case 'Goal':
-            return event.penalty ? 'alpha-p-box' : 'soccer'
-          case 'Booking':
-            return 'book'
-          case 'Substitution':
-            return event.injury ? 'hospital' : 'repeat'
-          case 'PenaltyShootout':
-            return 'human'
+      }
+    }
+
+    async removePS () {
+      if (confirm('Remove Penalty Shootout?')) {
+        try {
+          await this.removePenaltyShootout(this.match.id)
+        } catch (e) {
+          alert(e.message)
         }
-      },
-      eventTitle (event) {
-        switch (event.event_type) {
-          case 'Goal':
-            if (event.own_goal) {
-              return 'Own Goal'
-            } else if (event.penalty) {
-              return 'Penalty'
-            } else {
-              return 'Goal'
-            }
-          default:
-            return event.event_type
-        }
+      }
+    }
+
+    teamColor (event) {
+      return event.home ? 'teal' : 'pink'
+    }
+
+    eventColor (event) {
+      switch (event.event_type) {
+        case 'Goal':
+          return event.own_goal ? 'light-blue' : 'blue'
+        case 'Booking':
+          return event.red_card ? 'red' : 'amber'
+        case 'Substitution':
+          return event.injury ? 'pink' : 'green'
+        case 'PenaltyShootout':
+          return 'indigo'
+      }
+    }
+
+    eventIcon (event) {
+      switch (event.event_type) {
+        case 'Goal':
+          return event.penalty ? 'alpha-p-box' : 'soccer'
+        case 'Booking':
+          return 'book'
+        case 'Substitution':
+          return event.injury ? 'hospital' : 'repeat'
+        case 'PenaltyShootout':
+          return 'human'
+      }
+    }
+
+    eventTitle (event) {
+      switch (event.event_type) {
+        case 'Goal':
+          if (event.own_goal) {
+            return 'Own Goal'
+          } else if (event.penalty) {
+            return 'Penalty'
+          } else {
+            return 'Goal'
+          }
+        default:
+          return event.event_type
       }
     }
   }

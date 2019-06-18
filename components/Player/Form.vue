@@ -107,90 +107,73 @@
 </template>
 
 <script>
-  import {
-    mapState,
-    mapActions
-  } from 'vuex'
-  import {
-    DialogFormable,
-    TeamAccessible
-  } from '@/mixins'
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { mapState, mapActions } from 'vuex'
+  import { DialogFormable, TeamAccessible } from '@/mixins'
 
-  export default {
-    mixins: [
-      DialogFormable,
-      TeamAccessible
-    ],
-    props: {
-      playerData: {
-        type: Object,
-        default: () => ({})
-      },
-      submitCb: Function
-    },
-    data () {
-      return {
-        valid: false,
-        player: {
-          name: '',
-          pos: '',
-          sec_pos: [],
-          ovr: 60,
-          value: '',
-          birth_year: null,
-          youth: false
-        }
+  const mix = mixins(DialogFormable, TeamAccessible)
+
+  @Component({
+    computed: mapState('players', [
+      'positions'
+    ]),
+    methods: mapActions('players', {
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
+  })
+  export default class PlayerForm extends mix {
+    @Prop(Object) playerData
+    @Prop(Function) submitCb
+
+    valid = false
+    player = {
+      name: '',
+      pos: '',
+      sec_pos: [],
+      ovr: 60,
+      value: '',
+      birth_year: null,
+      youth: false
+    }
+
+    get title () {
+      return this.player.id ? 'Edit ' + this.player.name : 'New Player'
+    }
+
+    @Watch('dialog')
+    setPlayer (val) {
+      this.valid = !!this.playerData
+      if (this.playerData) {
+        Object.assign(this.player, this.$_pick(this.playerData, [
+          'id',
+          'name',
+          'pos',
+          'sec_pos',
+          'ovr',
+          'value',
+          'birth_year',
+          'youth'
+        ]))
+        this.player.sec_pos = [...this.playerData.sec_pos]
       }
-    },
-    computed: {
-      ...mapState('players', [
-        'positions'
-      ]),
-      title () {
-        return this.player.id ? 'Edit ' + this.player.name : 'New Player'
-      }
-    },
-    watch: {
-      playerData: {
-        immediate: true,
-        handler (val) {
-          this.valid = !!val
-          if (val) {
-            Object.assign(this.player, this.$_pick(val, [
-              'id',
-              'name',
-              'pos',
-              'sec_pos',
-              'ovr',
-              'value',
-              'birth_year',
-              'youth'
-            ]))
-          }
-        }
-      }
-    },
-    methods: {
-      ...mapActions('players', {
-        create: 'CREATE',
-        update: 'UPDATE'
-      }),
-      async submit () {
-        if ('id' in this.player) {
-          await this.update(this.player)
-        } else {
-          const { data } = await this.create({
+    }
+
+    async submit () {
+      if ('id' in this.player) {
+        await this.update(this.player)
+      } else {
+        const { data } = await this.create({
+          teamId: this.team.id,
+          player: this.player
+        })
+        this.$router.push({
+          name: 'teams-teamId-players-playerId',
+          params: {
             teamId: this.team.id,
-            player: this.player
-          })
-          this.$router.push({
-            name: 'teams-teamId-players-playerId',
-            params: {
-              teamId: this.team.id,
-              playerId: data.id
-            }
-          })
-        }
+            playerId: data.id
+          }
+        })
       }
     }
   }

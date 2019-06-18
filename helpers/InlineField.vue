@@ -100,8 +100,8 @@
     }
   })
   export default class InlineField extends mixins(TeamAccessible) {
-    @Prop(Object, { required: true }) item
-    @Prop(String, { required: true }) attribute
+    @Prop({ type: Object, required: true }) item
+    @Prop({ type: String, required: true }) attribute
     @Prop(String) label
     @Prop(Array) options
     @Prop(String) optionAvatar

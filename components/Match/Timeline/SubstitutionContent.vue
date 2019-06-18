@@ -7,19 +7,16 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      item: {
-        type: Object,
-        required: true
-      }
-    },
-    computed: {
-      action () {
-        return this.item.injured
-          ? 'has been injured. Replaced by'
-          : 'replaced by'
-      }
+  import { Vue, Component, Prop } from 'nuxt-property-decorator'
+
+  @Component
+  export default class SubstitutionContent extends Vue {
+    @Prop({ type: Object, required: true }) item
+
+    get action () {
+      return this.item.injured
+        ? 'has been injured. Replaced by'
+        : 'replaced by'
     }
   }
 </script>

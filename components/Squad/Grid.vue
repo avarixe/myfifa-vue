@@ -21,24 +21,22 @@
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { Squad } from '@/models'
   import SquadCard from './Card'
   import { TeamAccessible } from '@/mixins'
 
-  export default {
+  @Component({
     components: {
       SquadCard
-    },
-    mixins: [
-      TeamAccessible
-    ],
-    computed: {
-      rows () {
-        return Squad
-          .query()
-          .where('team_id', this.team.id)
-          .get()
-      }
+    }
+  })
+  export default class SquadGrid extends mixins(TeamAccessible) {
+    get rows () {
+      return Squad
+        .query()
+        .where('team_id', this.team.id)
+        .get()
     }
   }
 </script>

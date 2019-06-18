@@ -47,7 +47,7 @@
     }
   })
   export default class FormationView extends mixins(TeamAccessible) {
-    @Prop(Array, { required: true }) formation
+    @Prop({ type: Array, required: true }) formation
 
     windows = {}
 
