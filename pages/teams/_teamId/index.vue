@@ -103,6 +103,7 @@
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { Match, Player } from '@/models'
   import MatchForm from '@/components/Match/Form'
   import PlayerForm from '@/components/Player/Form'
@@ -115,9 +116,7 @@
   import { RecordRemove } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
-  export default {
-    layout: 'default',
-    middleware: 'authenticated',
+  @Component({
     components: {
       MatchForm,
       MatchCard,
@@ -128,50 +127,53 @@
       TeamForm,
       TeamCalendar,
       RecordRemove
-    },
-    mixins: [
-      TeamAccessible
-    ],
+    }
+  })
+  export default class TeamPage extends mixins(TeamAccessible) {
+    layout = () => 'default'
+    middleware = () => 'authenticated'
     head () {
       return {
         title: this.team.title
       }
-    },
-    computed: {
-      lastMatch () {
-        return Match
-          .query()
-          .with('team')
-          .where('team_id', this.team.id)
-          .orderBy('date_played', 'desc')
-          .first()
-      },
-      injuredPlayers () {
-        return this.getPlayersByStatus('Injured')
-      },
-      loanedPlayers () {
-        return this.getPlayersByStatus('Loaned')
-      },
-      playersWithExpiringContracts () {
-        return Player
-          .query()
-          .with('contracts|team')
-          .where('team_id', this.team.id)
-          .get()
-          .filter(player => player.contract.end_date <= this.seasonEnd)
-      }
-    },
+    }
+
+    get lastMatch () {
+      return Match
+        .query()
+        .with('team')
+        .where('team_id', this.team.id)
+        .orderBy('date_played', 'desc')
+        .first()
+    }
+
+    get injuredPlayers () {
+      return this.getPlayersByStatus('Injured')
+    }
+
+    get loanedPlayers () {
+      return this.getPlayersByStatus('Loaned')
+    }
+
+    get playersWithExpiringContracts () {
+      return Player
+        .query()
+        .with('contracts|team')
+        .where('team_id', this.team.id)
+        .get()
+        .filter(player => player.contract.end_date <= this.seasonEnd)
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
-    },
-    methods: {
-      getPlayersByStatus (status) {
-        return Player
-          .query()
-          .where('team_id', this.team.id)
-          .where('status', status)
-          .get()
-      }
+    }
+
+    getPlayersByStatus (status) {
+      return Player
+        .query()
+        .where('team_id', this.team.id)
+        .where('status', status)
+        .get()
     }
   }
 </script>

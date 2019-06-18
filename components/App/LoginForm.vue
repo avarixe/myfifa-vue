@@ -58,45 +58,43 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { Vue, Component } from 'nuxt-property-decorator'
   import Cookie from 'js-cookie'
   import UserForm from '@/components/App/UserForm'
 
-  export default {
+  @Component({
     components: {
       UserForm
-    },
-    data: () => ({
-      visible: false,
-      loading: false,
-      errorMessage: '',
-      credentials: {
-        username: '',
-        password: '',
-        grant_type: 'password'
-      }
-    }),
-    computed: {
-      formError: {
-        get: function () { return this.errorMessage.length > 0 },
-        set: function (val) { this.errorMessage = val }
-      }
-    },
-    methods: {
-      ...mapActions([
-        'login'
-      ]),
-      async authenticate () {
-        try {
-          const { data } = await this.login(this.credentials)
-          Cookie.set('token', data.access_token, {
-            expires: data.expires_in / 86400
-          })
-        } catch (e) {
-          this.errorMessage = e.message
-        } finally {
-          this.loading = false
-        }
+    }
+  })
+  export default class LoginForm extends Vue {
+    visible = false
+    loading = false
+    errorMessage = ''
+    credentials = {
+      username: '',
+      password: '',
+      grant_type: 'password'
+    }
+
+    get formError () {
+      return this.errorMessage.length > 0
+    }
+
+    set formError (val) {
+      this.errorMessage = val
+    }
+
+    async authenticate () {
+      try {
+        const { data } = await this.$store.dispatch('login', this.credentials)
+        Cookie.set('token', data.access_token, {
+          expires: data.expires_in / 86400
+        })
+      } catch (e) {
+        this.errorMessage = e.message
+      } finally {
+        this.loading = false
       }
     }
   }

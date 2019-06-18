@@ -28,16 +28,20 @@
 </template>
 
 <script>
+  import { Vue, Component } from 'nuxt-property-decorator'
   import TeamForm from '@/components/Team/Form'
   import TeamGrid from '@/components/Team/Grid'
 
-  export default {
-    layout: 'default',
-    middleware: 'home',
+  @Component({
     components: {
       TeamForm,
       TeamGrid
-    },
+    }
+  })
+  export default class TeamsPage extends Vue {
+    layout = () => 'default'
+    middleware = () => 'home'
+
     mounted () {
       this.$store.commit('app/SET_TITLE', 'Teams')
     }

@@ -37,32 +37,25 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      record: {
-        type: Object,
-        required: true
-      },
-      store: {
-        type: String,
-        required: true
-      },
-      redirect: [String, Object],
-      label: String
-    },
-    data: () => ({
-      snackbar: false
-    }),
-    methods: {
-      remove () {
-        this.$store.dispatch(
-          `${this.store}/REMOVE`,
-          this.record.id
-        )
+  import { Vue, Prop, Component } from 'nuxt-property-decorator'
 
-        if (this.redirect) {
-          this.$router.push(this.redirect)
-        }
+  @Component
+  export default class RecordRemove extends Vue {
+    @Prop({ type: Object, required: true }) record
+    @Prop({ type: String, required: true }) store
+    @Prop([String, Object]) redirect
+    @Prop(String) label
+
+    snackbar = false
+
+    remove () {
+      this.$store.dispatch(
+        `${this.store}/REMOVE`,
+        this.record.id
+      )
+
+      if (this.redirect) {
+        this.$router.push(this.redirect)
       }
     }
   }

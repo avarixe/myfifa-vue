@@ -48,68 +48,61 @@
 </template>
 
 <script>
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { mapActions } from 'vuex'
   import { Team } from '@/models'
   import { VDateField } from '@/helpers'
   import { DialogFormable } from '@/mixins'
+  import { format } from 'date-fns'
 
-  export default {
+  @Component({
     components: {
       VDateField
     },
-    mixins: [
-      DialogFormable
-    ],
-    props: {
-      teamId: [String, Number]
-    },
-    data () {
-      return {
-        team: {
-          title: '',
-          start_date: this.$_format(new Date()),
-          currency: '$'
-        }
-      }
-    },
-    computed: {
-      title () {
-        return this.teamId ? 'Edit ' + this.team.title : 'New Team'
-      }
-    },
-    watch: {
-      dialog: {
-        immediate: true,
-        handler (val) {
-          if (val && this.teamId) {
-            Object.assign(
-              this.team,
-              this.$_pick(Team.find(this.teamId), [
-                'id', 'title', 'start_date', 'currency'
-              ])
-            )
-          }
-        }
-      }
-    },
-    methods: {
-      ...mapActions('teams', {
-        create: 'CREATE',
-        update: 'UPDATE'
-      }),
-      async submit () {
-        if ('id' in this.team) {
-          await this.update(this.team)
-        } else {
-          const { data } = await this.create(this.team)
+    methods: mapActions('teams', {
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
+  })
+  export default class TeamForm extends mixins(DialogFormable) {
+    @Prop([String, Number]) teamId
 
-          this.$router.push({
-            name: 'teams-teamId',
-            params: {
-              teamId: data.id
-            }
-          })
-        }
+    team = {
+      title: '',
+      start_date: format(new Date(), 'YYYY-MM-DD'),
+      currency: '$'
+    }
+
+    get title () {
+      return this.teamId
+        ? `Edit ${this.team.title}`
+        : 'New Team'
+    }
+
+    @Watch('dialog')
+    setTeam (val) {
+      if (val && this.teamId) {
+        Object.assign(
+          this.team,
+          this.$_pick(Team.find(this.teamId), [
+            'id', 'title', 'start_date', 'currency'
+          ])
+        )
+      }
+    }
+
+    async submit () {
+      if ('id' in this.team) {
+        await this.update(this.team)
+      } else {
+        const { data } = await this.create(this.team)
+
+        this.$router.push({
+          name: 'teams-teamId',
+          params: {
+            teamId: data.id
+          }
+        })
       }
     }
   }

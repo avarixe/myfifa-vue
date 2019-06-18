@@ -68,47 +68,35 @@
 </template>
 
 <script>
-  import {
-    TeamAccessible,
-    DialogFormable
-  } from '@/mixins'
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { TeamAccessible, DialogFormable } from '@/mixins'
 
-  export default {
-    mixins: [
-      DialogFormable,
-      TeamAccessible
-    ],
-    props: {
-      competition: {
-        type: Object,
-        required: true
+  const mix = mixins(DialogFormable, TeamAccessible)
+
+  @Component
+  export default class StageFrom extends mix {
+    @Prop({ type: Object, required: true }) competition
+
+    valid = false
+    stage = {
+      name: '',
+      num_teams: null,
+      num_fixtures: null,
+      table: false
+    }
+
+    @Watch('stage.table')
+    setNumFixtures (val) {
+      if (val) {
+        this.stage.num_fixtures = null
       }
-    },
-    data () {
-      return {
-        valid: false,
-        stage: {
-          name: '',
-          num_teams: null,
-          num_fixtures: null,
-          table: false
-        }
-      }
-    },
-    watch: {
-      'stage.table' (val) {
-        if (val) {
-          this.stage.num_fixtures = null
-        }
-      }
-    },
-    methods: {
-      async submit () {
-        await this.$store.dispatch('stages/CREATE', {
-          competitionId: this.competition.id,
-          stage: this.stage
-        })
-      }
+    }
+
+    async submit () {
+      await this.$store.dispatch('stages/CREATE', {
+        competitionId: this.competition.id,
+        stage: this.stage
+      })
     }
   }
 </script>

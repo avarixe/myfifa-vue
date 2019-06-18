@@ -17,23 +17,25 @@
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import TransferGrid from '@/components/Transfer/Grid'
 
-  export default {
-    layout: 'default',
-    middleware: 'authenticated',
-    mixins: [
-      TeamAccessible
-    ],
+  @Component({
+    components: {
+      TransferGrid
+    }
+  })
+  export default class TransfersPage extends mixins(TeamAccessible) {
+    layout = () => 'default'
+    middleware = () => 'authenticated'
+
     head () {
       return {
         title: `${this.team.title} - Transfer History`
       }
-    },
-    components: {
-      TransferGrid
-    },
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
     }

@@ -57,73 +57,65 @@
 </template>
 
 <script>
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { mapActions } from 'vuex'
   import { Loan } from '@/models'
   import { DialogFormable } from '@/mixins'
 
-  export default {
-    mixins: [
-      DialogFormable
-    ],
-    props: {
-      player: {
-        type: Object,
-        required: true
-      },
-      color: String,
-      dark: Boolean,
-      submitCb: Function
-    },
-    data () {
-      return {
-        loan: {
-          destination: '',
-          returned: false
-        }
+  @Component({
+    methods: mapActions('loans', {
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
+  })
+  export default class LoanForm extends mixins(DialogFormable) {
+    @Prop({ type: Object, required: true }) player
+    @Prop(String) color
+    @Prop(Boolean) dark
+    @Prop(Function) submitCb
+
+    loan = {
+      destination: '',
+      returned: false
+    }
+
+    get playerLoaned () {
+      return this.player.status && this.player.status === 'Loaned'
+    }
+
+    get title () {
+      return this.playerLoaned
+        ? 'Update Loan'
+        : 'Record New Loan'
+    }
+
+    get currentLoan () {
+      return Loan
+        .query()
+        .where('player_id', this.player.id)
+        .orderBy('start_date')
+        .last()
+    }
+
+    @Watch('dialog')
+    async setLoan (val) {
+      if (val) {
+        const { id, destination } = this.currentLoan
+        Object.assign(this.loan, { id, destination })
+      } else {
+        Object.assign(this.$data, this.$options.data.apply(this))
+        // this.$refs.form.reset()
       }
-    },
-    computed: {
-      playerLoaned () {
-        return this.player.status && this.player.status === 'Loaned'
-      },
-      title () {
-        return this.playerLoaned
-          ? 'Update Loan'
-          : 'Record New Loan'
-      },
-      currentLoan () {
-        return Loan
-          .query()
-          .where('player_id', this.player.id)
-          .orderBy('start_date')
-          .last()
-      }
-    },
-    watch: {
-      async dialog (val) {
-        if (val) {
-          const { id, destination } = this.currentLoan
-          Object.assign(this.loan, { id, destination })
-        } else {
-          Object.assign(this.$data, this.$options.data.apply(this))
-          // this.$refs.form.reset()
-        }
-      }
-    },
-    methods: {
-      ...mapActions('loans', {
-        create: 'CREATE',
-        update: 'UPDATE'
-      }),
-      async submit () {
-        if (this.playerLoaned) {
-          await this.update(this.loan)
-        } else {
-          await this.create({
-            playerId: this.player.id,
-            loan: this.loan
-          })
-        }
+    }
+
+    async submit () {
+      if (this.playerLoaned) {
+        await this.update(this.loan)
+      } else {
+        await this.create({
+          playerId: this.player.id,
+          loan: this.loan
+        })
       }
     }
   }

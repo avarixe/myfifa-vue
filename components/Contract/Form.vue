@@ -131,88 +131,82 @@
 </template>
 
 <script>
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { mapState } from 'vuex'
   import { addYears } from 'date-fns'
   import { Contract } from '@/models'
   import { VDateField } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
-  export default {
+  const mix = mixins(DialogFormable, TeamAccessible)
+
+  @Component({
     components: {
       VDateField
     },
-    mixins: [
-      DialogFormable,
-      TeamAccessible
-    ],
-    props: {
-      player: {
-        type: Object,
-        required: true
-      },
-      color: String,
-      dark: Boolean,
-      submitCb: Function
-    },
-    data () {
-      return {
-        valid: false,
-        title: 'Sign New Contract',
-        contract: {
-          effective_date: null,
-          end_date: null,
-          wage: null,
-          signing_bonus: null,
-          release_clause: null,
-          performance_bonus: null,
-          bonus_req: null,
-          bonus_req_type: null
-        }
-      }
-    },
-    computed: {
-      ...mapState('contracts', [
-        'bonusRequirementTypes'
-      ]),
-      maxEndDate () {
-        return this.$_format(
-          addYears(this.$_parse(this.contract.effective_date), 6)
-        )
-      },
-      currentContract () {
-        return Contract
-          .query()
-          .where('player_id', this.player.id)
-          .where('effective_date', date => date <= this.team.current_date)
-          .where('end_date', date => this.team.current_date < date)
-          .last()
-      }
-    },
-    watch: {
-      dialog (val) {
-        if (val) {
-          Object.assign(this.contract, {
-            ...this.currentContract,
-            effective_date: this.team.current_date
-          })
-        } else {
-          Object.assign(this.$data, this.$options.data.apply(this))
-          // this.$refs.form.reset()
-        }
-      },
-      'menus.end_date' (val, oldVal) {
-        return !oldVal &&
-          val &&
-          this.$nextTick(() => (this.$refs.picker2.activePicker = 'YEAR'))
-      }
-    },
-    methods: {
-      async submit () {
-        await this.$store.dispatch('contracts/CREATE', {
-          playerId: this.player.id,
-          contract: this.contract
+    computed: mapState('contracts', [
+      'bonusRequirementTypes'
+    ])
+  })
+  export default class ContractForm extends mix {
+    @Prop({ type: Object, required: true }) player
+    @Prop(String) color
+    @Prop(Boolean) dark
+    @Prop(Function) submitCb
+
+    valid = false
+    title = 'Sign New Contract'
+    contract = {
+      effective_date: null,
+      end_date: null,
+      wage: null,
+      signing_bonus: null,
+      release_clause: null,
+      performance_bonus: null,
+      bonus_req: null,
+      bonus_req_type: null
+    }
+
+    get maxEndDate () {
+      return this.$_format(
+        addYears(this.$_parse(this.contract.effective_date), 6)
+      )
+    }
+
+    get currentContract () {
+      return Contract
+        .query()
+        .where('player_id', this.player.id)
+        .where('effective_date', date => date <= this.team.current_date)
+        .where('end_date', date => this.team.current_date < date)
+        .last()
+    }
+
+    @Watch('dialog')
+    setContract (val) {
+      if (val) {
+        Object.assign(this.contract, {
+          ...this.currentContract,
+          effective_date: this.team.current_date
         })
+      } else {
+        Object.assign(this.$data, this.$options.data.apply(this))
+        // this.$refs.form.reset()
       }
+    }
+
+    @Watch('menus.end_date')
+    setPicker (val, oldVal) {
+      return !oldVal &&
+        val &&
+        this.$nextTick(() => (this.$refs.picker2.activePicker = 'YEAR'))
+    }
+
+    async submit () {
+      await this.$store.dispatch('contracts/CREATE', {
+        playerId: this.player.id,
+        contract: this.contract
+      })
     }
   }
 </script>

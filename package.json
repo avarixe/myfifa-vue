@@ -4,12 +4,6 @@
   "description": "JoonDEV | MyFIFA Manager",
   "author": "Joon Lee <l33j00n325@gmail.com>",
   "private": true,
-  "config": {
-    "nuxt": {
-      "host": "0.0.0.0",
-      "port": "8080"
-    }
-  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
@@ -32,8 +26,11 @@
     "lodash.orderby": "^4.6.0",
     "lodash.pick": "^4.4.0",
     "nuxt": "^2.5.1",
+    "nuxt-property-decorator": "^2.3.0",
     "vue-chartkick": "^0.5.1",
-    "vue-fitty": "^0.1.7"
+    "vue-class-component": "^7.1.0",
+    "vue-fitty": "^0.1.7",
+    "vue-property-decorator": "^8.2.1"
   },
   "devDependencies": {
     "@babel/traverse": "^7.1.5",

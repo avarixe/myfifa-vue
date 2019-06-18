@@ -72,64 +72,60 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      value: {
-        type: Boolean,
-        required: true
-      },
-      submit: {
-        type: Function,
-        required: true
-      },
-      submitCb: Function,
-      title: String,
-      titleIcon: String,
-      color: String,
-      fullWidth: {
-        type: Boolean,
-        default: false
-      }
-    },
-    data () {
-      return {
-        dialog: this.value,
-        valid: false,
-        loading: false,
-        errorMessage: ''
-      }
-    },
-    computed: {
-      formError: {
-        get: function () { return this.errorMessage.length > 0 },
-        set: function (val) { this.errorMessage = val }
-      },
-      buttonColor () {
-        return this.color ? this.color + ' darken-2' : 'primary'
-      },
-      formColor () {
-        return this.color ? this.color + ' accent-2' : null
-      }
-    },
-    watch: {
-      dialog (val) {
-        this.$emit('input', val)
-      }
-    },
-    methods: {
-      async submitForm () {
-        if (this.$refs.form.validate()) {
-          try {
-            await this.submit()
-            this.dialog = false
-            this.submitCb && this.submitCb()
-          } catch (e) {
-            console.log(e)
-            console.log(e.message)
-            this.errorMessage = e.message
-          } finally {
-            this.loading = false
-          }
+  import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
+
+  @Component
+  export default class DialogForm extends Vue {
+    @Prop({ type: Boolean, required: true }) value
+    @Prop({ type: Function, required: true }) submit
+    @Prop(Function) submitCb
+    @Prop(String) title
+    @Prop(String) titleIcon
+    @Prop(String) color
+    @Prop(Boolean) fullWidth
+
+    dialog = null
+    valid = false
+    loading = false
+    errorMessage = ''
+
+    get formError () {
+      return this.errorMessage.length > 0
+    }
+
+    set formError (val) {
+      this.errMessage = val
+    }
+
+    get buttonColor () {
+      return this.color ? this.color + ' darken-2' : 'primary'
+    }
+
+    get formColor () {
+      return this.color ? this.color + ' accent-2' : null
+    }
+
+    mounted () {
+      this.dialog = this.value
+    }
+
+    @Watch('dialog')
+    emitValue (val) {
+      this.$emit('input', val)
+    }
+
+    async submitForm () {
+      if (this.$refs.form.validate()) {
+        try {
+          await this.submit()
+          this.dialog = false
+          this.submitCb && this.submitCb()
+        } catch (e) {
+          console.log(e)
+          console.log(e.message)
+          this.errorMessage = e.message
+        } finally {
+          this.loading = false
         }
       }
     }

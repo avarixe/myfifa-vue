@@ -33,41 +33,36 @@
 </template>
 
 <script>
+  import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { Competition } from '@/models'
 
-  export default {
-    props: {
-      seasonData: {
-        type: Object,
-        required: true
-      }
-    },
-    computed: {
-      rows () {
-        return Object.entries(this.seasonData.results)
-          .map(([competition, data]) => ({
-            ...data,
-            competition
-          }))
-      }
-    },
-    methods: {
-      competitionLink (competition) {
-        const record = Competition
-          .query()
-          .where('season', parseInt(this.$route.params.season))
-          .where('name', competition)
-          .get()
+  @Component
+  export default class SeasonResultsTable extends Vue {
+    @Prop({ type: Object, required: true }) seasonData
 
-        if (record.length > 0) {
-          this.$router.push({
-            name: 'teams-teamId-competitions-competitionId',
-            params: {
-              teamId: this.$route.params.teamId,
-              competitionId: record[0].id
-            }
-          })
-        }
+    get rows () {
+      return Object.entries(this.seasonData.results)
+        .map(([competition, data]) => ({
+          ...data,
+          competition
+        }))
+    }
+
+    competitionLink (competition) {
+      const record = Competition
+        .query()
+        .where('season', parseInt(this.$route.params.season))
+        .where('name', competition)
+        .get()
+
+      if (record.length > 0) {
+        this.$router.push({
+          name: 'teams-teamId-competitions-competitionId',
+          params: {
+            teamId: this.$route.params.teamId,
+            competitionId: record[0].id
+          }
+        })
       }
     }
   }

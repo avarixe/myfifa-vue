@@ -46,7 +46,7 @@
           >
             <fitty-text
               :text="match.stage"
-              :options="{ minSize: 10, maxSize: 30 }"
+              :max-size="30"
             />
           </div>
           <div class="subheading">
@@ -127,6 +127,7 @@
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { Match, Player } from '@/models'
   import MatchForm from '@/components/Match/Form'
   import MatchActions from '@/components/Match/Actions'
@@ -135,99 +136,86 @@
   import { FittyText } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
-  export default {
-    layout: 'default',
+  @Component({
     components: {
       FittyText,
       MatchForm,
       MatchActions,
       MatchLineup,
       MatchTimeline
-    },
-    middleware: 'authenticated',
-    mixins: [
-      TeamAccessible
-    ],
+    }
+  })
+  export default class MatchPage extends mixins(TeamAccessible) {
+    layout = () => 'default'
+    middleware = () => 'authenticated'
+
     head () {
       return {
         title: `${this.match.home} vs ${this.match.away}`
       }
-    },
-    data: () => ({
-      tab: 0
-    }),
-    computed: {
-      match () {
-        return Match
-          .query()
-          .withAll()
-          .find(this.$route.params.matchId)
-      },
-      players () {
-        return Player
-          .query()
-          .where('team_id', this.team.id)
-          .get()
-      },
-      resultColor () {
-        switch (this.match.team_result) {
-          case 'win':
-            return 'success'
-          case 'draw':
-            return 'warning'
-          case 'loss':
-            return 'red'
-          default:
-            return ''
-        }
-      },
-      prevMatchLink () {
-        const prevMatch = Match
-          .query()
-          .where('date_played', date => date < this.match.date_played)
-          .orderBy('date_played')
-          .last()
-        return prevMatch && {
-          name: 'teams-teamId-matches-matchId',
-          params: {
-            teamId: this.team.id,
-            matchId: prevMatch.id
-          }
-        }
-      },
-      nextMatchLink () {
-        const nextMatch = Match
-          .query()
-          .where('date_played', date => date > this.match.date_played)
-          .orderBy('date_played')
-          .first()
-        return nextMatch && {
-          name: 'teams-teamId-matches-matchId',
-          params: {
-            teamId: this.team.id,
-            matchId: nextMatch.id
-          }
+    }
+
+    tab = 0
+
+    get match () {
+      return Match
+        .query()
+        .withAll()
+        .find(this.$route.params.matchId)
+    }
+
+    get players () {
+      return Player
+        .query()
+        .where('team_id', this.team.id)
+        .get()
+    }
+
+    get resultColor () {
+      switch (this.match.team_result) {
+        case 'win':
+          return 'success'
+        case 'draw':
+          return 'warning'
+        case 'loss':
+          return 'red'
+        default:
+          return ''
+      }
+    }
+
+    get prevMatchLink () {
+      const prevMatch = Match
+        .query()
+        .where('date_played', date => date < this.match.date_played)
+        .orderBy('date_played')
+        .last()
+      return prevMatch && {
+        name: 'teams-teamId-matches-matchId',
+        params: {
+          teamId: this.team.id,
+          matchId: prevMatch.id
         }
       }
-    },
-    async fetch ({ store, params }) {
-      // await Promise.all([
-      //   store.dispatch('caps/FETCH', params),
-      //   store.dispatch('bookings/FETCH', params),
-      //   store.dispatch('goals/FETCH', params),
-      //   store.dispatch('substitutions/FETCH', params)
-      // ])
-    },
+    }
+
+    get nextMatchLink () {
+      const nextMatch = Match
+        .query()
+        .where('date_played', date => date > this.match.date_played)
+        .orderBy('date_played')
+        .first()
+      return nextMatch && {
+        name: 'teams-teamId-matches-matchId',
+        params: {
+          teamId: this.team.id,
+          matchId: nextMatch.id
+        }
+      }
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
-    },
-    watch: {
-      match (val) {
-        !val && this.$router.push({
-          name: 'teams-teamId-matches',
-          params: { teamId: this.team.id }
-        })
-      }
     }
   }
 </script>

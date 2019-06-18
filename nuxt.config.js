@@ -4,6 +4,11 @@ import nodeExternals from 'webpack-node-externals'
 export default {
   mode: 'universal',
 
+  server: {
+    host: '0.0.0.0',
+    port: '8080'
+  },
+
   /*
   ** Headers of the page
   */
@@ -61,6 +66,13 @@ export default {
   */
   build: {
     // analyze: true,
+
+    babel: {
+      plugins: [
+        ['@babel/plugin-proposal-decorators', { legacy: true }],
+        ['@babel/plugin-proposal-class-properties', { loose: true }]
+      ]
+    },
 
     transpile: [/^vuetify/],
 

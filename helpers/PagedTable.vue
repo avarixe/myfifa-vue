@@ -14,21 +14,15 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      value: {
-        type: Number,
-        required: true
-      },
-      pageCount: {
-        type: Number,
-        required: true
-      }
-    },
-    methods: {
-      updateValue (value) {
-        this.$emit('input', value)
-      }
+  import { Vue, Component, Prop } from 'nuxt-property-decorator'
+
+  @Component
+  export default class PagedTable extends Vue {
+    @Prop({ type: Number, required: true }) value
+    @Prop({ type: Number, required: true }) pageCount
+
+    updateValue (value) {
+      this.$emit('input', value)
     }
   }
 </script>

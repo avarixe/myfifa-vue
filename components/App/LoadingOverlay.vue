@@ -10,17 +10,18 @@
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      loading: false
-    }),
-    methods: {
-      start () {
-        this.loading = true
-      },
-      finish () {
-        this.loading = false
-      }
+  import { Vue, Component } from 'nuxt-property-decorator'
+
+  @Component
+  export default class AppLoadingOverlay extends Vue {
+    loading = false
+
+    start () {
+      this.loading = true
+    }
+
+    finish () {
+      this.loading = false
     }
   }
 </script>

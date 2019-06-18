@@ -67,140 +67,138 @@
 </template>
 
 <script>
+  import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { addYears } from 'date-fns'
-  import Vue from 'vue'
   import { Team, Player } from '@/models'
   import { PagedTable } from '@/helpers'
   import PlayerRow from './PlayerRow'
 
-  export default {
+  @Component({
     components: {
       PagedTable,
       PlayerRow
-    },
-    props: {
-      season: {
-        type: [String, Number],
-        required: true
+    }
+  })
+  export default class SeasonPlayerGrid extends Vue {
+    @Prop({ type: [String, Number], required: true }) season
+    @Prop({ type: Object, required: true }) seasonData
+
+    mode = 0
+    modes = [
+      {
+        text: 'Growth',
+        color: 'green',
+        icon: 'mdi-trending-up'
       },
-      seasonData: {
-        type: Object,
-        required: true
+      {
+        text: 'Statistics',
+        color: 'red',
+        icon: 'mdi-numeric'
       }
-    },
-    data: () => ({
-      mode: 0,
-      modes: [
+    ]
+    loading = false
+    filterActive = true
+    page = 1
+    pageCount = 0
+    search = ''
+    playerData = {}
+
+    get team () {
+      return Team.find(this.$route.params.teamId)
+    }
+
+    get currentMode () {
+      return this.modes[this.mode]
+    }
+
+    get headers () {
+      let headers = [
         {
-          text: 'Growth',
-          color: 'green',
-          icon: 'mdi-trending-up'
+          text: 'Name',
+          value: 'name'
         },
         {
-          text: 'Statistics',
-          color: 'red',
-          icon: 'mdi-numeric'
+          text: 'Position',
+          value: 'posIdx',
+          align: 'center'
+        },
+        {
+          text: 'Age',
+          value: 'age',
+          align: 'center'
         }
-      ],
-      loading: false,
-      filterActive: true,
-      page: 1,
-      pageCount: 0,
-      search: '',
-      playerData: {}
-    }),
-    computed: {
-      team () {
-        return Team.find(this.$route.params.teamId)
-      },
-      currentMode () {
-        return this.modes[this.mode]
-      },
-      headers () {
-        let headers = [
-          {
-            text: 'Name',
-            value: 'name'
-          },
-          {
-            text: 'Position',
-            value: 'posIdx',
-            align: 'center'
-          },
-          {
-            text: 'Age',
-            value: 'age',
-            align: 'center'
-          }
-        ]
+      ]
 
-        switch (this.mode) {
-          case 0: // Growth
-            return headers.concat([
-              {
-                text: 'OVR',
-                value: 'endOvr',
-                align: 'center'
-              },
-              {
-                text: 'OVR Change',
-                value: 'ovrChange',
-                align: 'end'
-              },
-              {
-                text: 'Value',
-                value: 'endValue',
-                align: 'end'
-              },
-              {
-                text: 'Value Change',
-                value: 'valueChange',
-                align: 'end'
-              }
-            ])
-          case 1: // Statistics
-            return headers.concat([
-              {
-                text: 'Games Played',
-                value: 'numGames',
-                align: 'end'
-              },
-              {
-                text: 'Goals',
-                value: 'numGoals',
-                align: 'end'
-              },
-              {
-                text: 'Assists',
-                value: 'numAssists',
-                align: 'end'
-              },
-              {
-                text: 'Clean Sheets',
-                value: 'numCs',
-                align: 'end'
-              }
-            ])
-        }
-      },
-      rows () {
-        return this.$_orderBy(
-          Object.values(this.playerData),
-          ['pos_idx', 'numMinutes'],
-          ['asc', 'desc']
-        )
-      },
-      seasonStart () {
-        let date = this.$_parse(this.team.start_date)
-        date = addYears(date, parseInt(this.season))
-        return this.$_format(date)
-      },
-      seasonEnd () {
-        let date = this.$_parse(this.team.start_date)
-        date = addYears(date, parseInt(this.season) + 1)
-        return this.$_format(date)
+      switch (this.mode) {
+        case 0: // Growth
+          return headers.concat([
+            {
+              text: 'OVR',
+              value: 'endOvr',
+              align: 'center'
+            },
+            {
+              text: 'OVR Change',
+              value: 'ovrChange',
+              align: 'end'
+            },
+            {
+              text: 'Value',
+              value: 'endValue',
+              align: 'end'
+            },
+            {
+              text: 'Value Change',
+              value: 'valueChange',
+              align: 'end'
+            }
+          ])
+        case 1: // Statistics
+          return headers.concat([
+            {
+              text: 'Games Played',
+              value: 'numGames',
+              align: 'end'
+            },
+            {
+              text: 'Goals',
+              value: 'numGoals',
+              align: 'end'
+            },
+            {
+              text: 'Assists',
+              value: 'numAssists',
+              align: 'end'
+            },
+            {
+              text: 'Clean Sheets',
+              value: 'numCs',
+              align: 'end'
+            }
+          ])
       }
-    },
+    }
+
+    get rows () {
+      return this.$_orderBy(
+        Object.values(this.playerData),
+        ['pos_idx', 'numMinutes'],
+        ['asc', 'desc']
+      )
+    }
+
+    get seasonStart () {
+      let date = this.$_parse(this.team.start_date)
+      date = addYears(date, parseInt(this.season))
+      return this.$_format(date)
+    }
+
+    get seasonEnd () {
+      let date = this.$_parse(this.team.start_date)
+      date = addYears(date, parseInt(this.season) + 1)
+      return this.$_format(date)
+    }
+
     async mounted () {
       await this.$store.dispatch('players/FETCH', {
         teamId: this.team.id
@@ -248,24 +246,25 @@
           valueChange
         })
       }
-    },
-    methods: {
-      closestRecord (records, date) {
-        return this.$_orderBy(
-          records,
-          rec => {
-            const date1 = rec.datestamp.replace(/[^0-9]/g, '')
-            const date2 = date.replace(/[^0-9]/g, '')
-            return Math.abs(date1 - date2)
-          }
-        )[0]
-      },
-      firstSeasonRecord (records) {
-        return this.closestRecord(records, this.seasonStart)
-      },
-      lastSeasonRecord (records) {
-        return this.closestRecord(records, this.seasonEnd)
-      }
+    }
+
+    closestRecord (records, date) {
+      return this.$_orderBy(
+        records,
+        rec => {
+          const date1 = rec.datestamp.replace(/[^0-9]/g, '')
+          const date2 = date.replace(/[^0-9]/g, '')
+          return Math.abs(date1 - date2)
+        }
+      )[0]
+    }
+
+    firstSeasonRecord (records) {
+      return this.closestRecord(records, this.seasonStart)
+    }
+
+    lastSeasonRecord (records) {
+      return this.closestRecord(records, this.seasonEnd)
     }
   }
 </script>

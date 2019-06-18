@@ -32,6 +32,7 @@
 </template>
 
 <script>
+  import { Vue, Component, Watch } from 'vue-property-decorator'
   import { mapState } from 'vuex'
   import { Team } from '@/models'
   import AppBar from '@/components/App/Bar'
@@ -41,7 +42,7 @@
   import TeamDrawer from '@/components/Team/Drawer'
   // import TeamBottomNavigation from '@/components/Team/TeamBottomNavigation'
 
-  export default {
+  @Component({
     name: 'App',
     components: {
       AppBar,
@@ -51,26 +52,24 @@
       TeamDrawer
       // TeamBottomNavigation
     },
-    data: () => ({
-      loaded: false,
-      key: 0
-    }),
-    computed: {
-      ...mapState('app', [
-        'drawer'
-      ]),
-      teamPage () {
-        return 'teamId' in this.$route.params
-      },
-      team () {
-        return Team.find(this.$route.params.teamId)
-      }
-    },
-    watch: {
-      teamPage () {
-        this.loaded = false
-        this.key++
-      }
+    computed: mapState('app', ['drawer'])
+  })
+  export default class Layout extends Vue {
+    loaded = false
+    key = 0
+
+    get teamPage () {
+      return 'teamId' in this.$route.params
+    }
+
+    get team () {
+      return Team.find(this.$route.params.teamId)
+    }
+
+    @Watch('teamPage')
+    resetLoader () {
+      this.loaded = false
+      this.key++
     }
   }
 </script>

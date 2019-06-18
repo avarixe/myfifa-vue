@@ -56,36 +56,31 @@
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { Match } from '@/models'
   import { TeamAccessible } from '@/mixins'
+  import { format } from 'date-fns'
 
-  export default {
-    mixins: [
-      TeamAccessible
-    ],
-    data () {
-      return {
-        day: this.$_format(new Date(), 'YYYY-MM-DD')
-      }
-    },
-    computed: {
-      currentMonth () {
-        const date = this.$_parse(this.day)
-        return this.$_format(date, 'MMMM YYYY')
-      }
-    },
+  @Component
+  export default class TeamCalendar extends mixins(TeamAccessible) {
+    day = format(new Date(), 'YYYY-MM-DD')
+
+    get currentMonth () {
+      const date = this.$_parse(this.day)
+      return this.$_format(date, 'MMMM YYYY')
+    }
+
     mounted () {
       this.day = this.team.current_date
-    },
-    methods: {
-      matchesOn (date) {
-        return Match
-          .query()
-          .with('team')
-          .where('team_id', this.team.id)
-          .where('date_played', date)
-          .get()
-      }
+    }
+
+    matchesOn (date) {
+      return Match
+        .query()
+        .with('team')
+        .where('team_id', this.team.id)
+        .where('date_played', date)
+        .get()
     }
   }
 </script>

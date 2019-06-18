@@ -42,96 +42,81 @@
 </template>
 
 <script>
+  import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import TimelineContent from './Content'
   import { TeamAccessible } from '@/mixins'
 
-  export default {
-    mixins: [
-      TeamAccessible
-    ],
+  @Component({
     components: {
       TimelineContent
-    },
-    props: {
-      contracts: {
-        type: Array,
-        required: true
-      },
-      injuries: {
-        type: Array,
-        required: true
-      },
-      loans: {
-        type: Array,
-        required: true
-      },
-      transfers: {
-        type: Array,
-        required: true
-      }
-    },
-    computed: {
-      items () {
-        return [
-          ...this.contracts.map(contract => ({
-            type: 'Contract',
-            color: 'blue',
-            icon: 'file-document',
-            date: contract.effective_date,
-            dateRange:
-              this.$_formatDate(contract.effective_date) +
-              ' - ' +
-              this.$_formatDate(contract.end_date),
-            data: contract
-          })),
-          ...this.injuries.map(injury => ({
-            type: 'Injury',
-            color: 'pink',
-            icon: 'hospital',
-            date: injury.start_date,
-            dateRange:
-              this.$_formatDate(injury.start_date) +
-              ' - ' +
-              this.$_formatDate(injury.end_date),
-            title: `${injury.description} Injury`,
-            data: injury
-          })),
-          ...this.loans.map(loan => ({
-            type: 'Loan',
-            color: 'indigo',
-            icon: 'transit-transfer',
-            date: loan.start_date,
-            dateRange:
-              this.$_formatDate(loan.start_date) +
-              ' - ' +
-              this.$_formatDate(loan.end_date),
-            title: `On Loan at ${loan.destination}`,
-            data: loan
-          })),
-          ...this.transfers.map(transfer => {
-            const transferOut = transfer.origin === this.team.title
-            return {
-              type: 'Transfer',
-              color: transferOut ? 'red' : 'green',
-              icon: `airplane-${transferOut ? 'takeoff' : 'landing'}`,
-              date: transfer.effective_date,
-              dateRange: this.$_formatDate(transfer.effective_date),
-              data: transfer
-            }
-          })
-        ]
-      },
-      sortedItems () {
-        return this.$_orderBy(this.items, ['date'], ['desc'])
-      },
-      dense () {
-        switch (this.$vuetify.breakpoint.name) {
-          case 'xs':
-          case 'sm':
-            return true
-          default:
-            return false
-        }
+    }
+  })
+  export default class PlayerTimeline extends mixins(TeamAccessible) {
+    @Prop(Array) contracts
+    @Prop(Array) injuries
+    @Prop(Array) loans
+    @Prop(Array) transfers
+
+    get items () {
+      return [
+        ...this.contracts.map(contract => ({
+          type: 'Contract',
+          color: 'blue',
+          icon: 'file-document',
+          date: contract.effective_date,
+          dateRange:
+            this.$_formatDate(contract.effective_date) +
+            ' - ' +
+            this.$_formatDate(contract.end_date),
+          data: contract
+        })),
+        ...this.injuries.map(injury => ({
+          type: 'Injury',
+          color: 'pink',
+          icon: 'hospital',
+          date: injury.start_date,
+          dateRange:
+            this.$_formatDate(injury.start_date) +
+            ' - ' +
+            this.$_formatDate(injury.end_date),
+          title: `${injury.description} Injury`,
+          data: injury
+        })),
+        ...this.loans.map(loan => ({
+          type: 'Loan',
+          color: 'indigo',
+          icon: 'transit-transfer',
+          date: loan.start_date,
+          dateRange:
+            this.$_formatDate(loan.start_date) +
+            ' - ' +
+            this.$_formatDate(loan.end_date),
+          title: `On Loan at ${loan.destination}`,
+          data: loan
+        })),
+        ...this.transfers.map(transfer => {
+          const transferOut = transfer.origin === this.team.title
+          return {
+            type: 'Transfer',
+            color: transferOut ? 'red' : 'green',
+            icon: `airplane-${transferOut ? 'takeoff' : 'landing'}`,
+            date: transfer.effective_date,
+            dateRange: this.$_formatDate(transfer.effective_date),
+            data: transfer
+          }
+        })
+      ]
+    }
+    get sortedItems () {
+      return this.$_orderBy(this.items, ['date'], ['desc'])
+    }
+    get dense () {
+      switch (this.$vuetify.breakpoint.name) {
+        case 'xs':
+        case 'sm':
+          return true
+        default:
+          return false
       }
     }
   }

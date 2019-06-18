@@ -36,15 +36,12 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      player: {
-        type: Object,
-        required: true
-      }
-    },
-    data: () => ({
-      snackbar: false
-    })
+  import { Vue, Component, Prop } from 'nuxt-property-decorator'
+
+  @Component
+  export default class PlayerRetire extends Vue {
+    @Prop({ type: Object, required: true }) player
+
+    snackbar = false
   }
 </script>

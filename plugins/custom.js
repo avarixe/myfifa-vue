@@ -72,3 +72,7 @@ Vue.prototype.$_formatDate = function (date, dateFormat = 'MMM DD, YYYY') {
     ? this.$_format(this.$_parse(date), dateFormat)
     : 'N/A'
 }
+
+Vue.prototype.$_numberHint = function (num) {
+  return num && parseInt(num).toLocaleString()
+}

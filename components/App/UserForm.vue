@@ -69,73 +69,70 @@
   </dialog-form>
 </template>
 
-
 <script>
+  import { mixins, Component, Watch } from 'nuxt-property-decorator'
   import { mapActions } from 'vuex'
   import { DialogFormable } from '@/mixins'
 
-  export default {
-    mixins: [
-      DialogFormable
-    ],
-    data: () => ({
-      visible: false,
-      changePassword: false,
-      user: {
-        full_name: '',
-        username: '',
-        email: '',
-        password: '',
-        password_confirmation: ''
-      }
-    }),
-    computed: {
-      title () {
-        return this.user.id ? 'Edit Account' : 'New Account'
-      },
-      passwordLabel () {
-        return this.changePassword ? 'New Password' : 'Password'
-      },
-      editParams () {
-        return this.changePassword
-          ? ['current_password', 'password', 'password_confirmation']
-          : ['full_name', 'username', 'email']
-      }
-    },
-    watch: {
-      async dialog (val) {
-        if (val && this.$store.getters.authenticated) {
-          const { data } = await this.get()
-          this.user = data
-        }
-      }
-    },
-    methods: {
-      ...mapActions('user', {
-        get: 'GET',
-        create: 'CREATE',
-        update: 'UPDATE'
-      }),
-      async submit () {
-        try {
-          if (!this.user.id) {
-            await this.create(this.user)
-          } else {
-            let params = {}
+  @Component({
+    methods: mapActions('user', {
+      get: 'GET',
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
+  })
+  export default class UserForm extends mixins(DialogFormable) {
+    visible = false
+    changePassword = false
+    user = {
+      full_name: '',
+      username: '',
+      email: '',
+      password: '',
+      password_confirmation: ''
+    }
 
-            this.editParams.forEach(attr => {
-              params[attr] = this.user[attr]
-            })
+    get title () {
+      return this.user.id ? 'Edit Account' : 'New Account'
+    }
 
-            await this.update(params)
-          }
-        } catch (e) {
-          this.$store.commit('broadcaster/ANNOUNCE', {
-            message: 'Could not save Account',
-            color: 'error'
+    get passwordLabel () {
+      return this.changePassword ? 'New Password' : 'Password'
+    }
+
+    get editParams () {
+      return this.changePassword
+        ? ['current_password', 'password', 'password_confirmation']
+        : ['full_name', 'username', 'email']
+    }
+
+    @Watch('dialog')
+    async getUser (val) {
+      if (val && this.$store.getters.authenticated) {
+        const { data } = await this.get()
+        this.user = data
+      }
+    }
+
+    async submit () {
+      try {
+        if (!this.user.id) {
+          await this.create(this.user)
+        } else {
+          let params = {}
+
+          this.editParams.forEach(attr => {
+            params[attr] = this.user[attr]
           })
-          throw e
+
+          await this.update(params)
         }
+      } catch (e) {
+        this.$store.commit('broadcaster/ANNOUNCE', {
+          message: 'Could not save Account',
+          color: 'error'
+        })
+        throw e
       }
     }
   }

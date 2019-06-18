@@ -45,70 +45,66 @@
 </template>
 
 <script>
+  import { Vue, Component } from 'nuxt-property-decorator'
   import { Team } from '@/models'
   import { PagedTable } from '@/helpers'
-  import { mapActions } from 'vuex'
 
-  export default {
+  @Component({
     components: {
       PagedTable
-    },
-    data () {
-      return {
-        headers: [
-          {
-            text: 'Team Name',
-            value: 'title',
-            align: 'center'
-          },
-          {
-            text: 'Start Date',
-            value: 'start_date',
-            align: 'center'
-          },
-          {
-            text: 'Current Date',
-            value: 'current_date',
-            align: 'center'
-          }
-        ],
-        loading: false,
-        search: '',
-        page: 1,
-        pageCount: 0
-      }
-    },
-    computed: {
-      teams () {
-        return Team.all()
+    }
+  })
+  export default class TeamGrid extends Vue {
+    headers = [
+      {
+        text: 'Team Name',
+        value: 'title',
+        align: 'center'
       },
-      rows () {
-        return this.$_orderBy(this.teams, ['id'], ['desc'])
+      {
+        text: 'Start Date',
+        value: 'start_date',
+        align: 'center'
+      },
+      {
+        text: 'Current Date',
+        value: 'current_date',
+        align: 'center'
       }
-    },
+    ]
+    loading = false
+    search = ''
+    page = 1
+    pageCount = 0
+
+    get teams () {
+      return Team.all()
+    }
+
+    get rows () {
+      return this.$_orderBy(this.teams, ['id'], ['desc'])
+    }
+
     mounted () {
       this.reloadTable()
-    },
-    methods: {
-      ...mapActions('teams', {
-        fetch: 'FETCH'
-      }),
-      async reloadTable () {
-        this.loading = true
-        try {
-          await this.fetch()
-        } catch (e) {
-          alert(e.message)
-        } finally {
-          this.loading = false
-        }
-      },
-      goToTeam (team) {
-        this.$router.push({
-          name: 'teams-teamId',
-          params: { teamId: team.id }
-        })
+    }
+
+    async reloadTable () {
+      this.loading = true
+      try {
+        await this.$store.dispatch('teams/FETCH')
+      } catch (e) {
+        alert(e.message)
+      } finally {
+        this.loading = false
       }
+    }
+
+    goToTeam (team) {
+      this.$router.push({
+        name: 'teams-teamId',
+        params: { teamId: team.id }
+      })
     }
   }
 </script>

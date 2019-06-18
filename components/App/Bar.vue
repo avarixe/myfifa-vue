@@ -45,40 +45,43 @@
 </template>
 
 <script>
+  import { Vue, Component } from 'nuxt-property-decorator'
   import UserForm from './UserForm'
   import { mapGetters, mapMutations } from 'vuex'
   import Cookie from 'js-cookie'
 
-  export default {
+  @Component({
     components: {
       UserForm
     },
-    data: () => ({
-      responsive: false
-    }),
     computed: mapGetters([
       'authenticated'
     ]),
+    methods: mapMutations('app', {
+      toggleDrawer: 'TOGGLE_DRAWER'
+    })
+  })
+  export default class AppBar extends Vue {
+    responsive = false
+
     mounted () {
       this.updateResponsiveState()
       window.addEventListener('resize', this.updateResponsiveState)
-    },
+    }
+
     beforeDestroy () {
       window.removeEventListener('resize', this.updateResponsiveState)
       this.$store.dispatch('entities/deleteAll')
       this.$router.push({ name: 'index' })
-    },
-    methods: {
-      ...mapMutations('app', {
-        toggleDrawer: 'TOGGLE_DRAWER'
-      }),
-      async logout () {
-        await this.$store.dispatch('logout')
-        Cookie.remove('token')
-      },
-      updateResponsiveState () {
-        this.responsive = window.innerWidth < 991
-      }
+    }
+
+    async logout () {
+      await this.$store.dispatch('logout')
+      Cookie.remove('token')
+    }
+
+    updateResponsiveState () {
+      this.responsive = window.innerWidth < 991
     }
   }
 </script>

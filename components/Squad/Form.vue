@@ -58,76 +58,68 @@
 </template>
 
 <script>
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { mapActions } from 'vuex'
   import { positions } from '@/models/Match'
   import { activePlayers } from '@/models/Player'
   import { PlayerSelect } from '@/helpers'
-  import { TeamAccessible, DialogFormable } from '@/mixins'
+  import { DialogFormable, TeamAccessible } from '@/mixins'
 
-  export default {
+  const mix = mixins(DialogFormable, TeamAccessible)
+
+  @Component({
     components: {
       PlayerSelect
     },
-    mixins: [
-      DialogFormable,
-      TeamAccessible
-    ],
-    props: {
-      squadData: Object
-    },
-    data () {
-      return {
-        valid: !!this.squadData,
-        squad: Object.assign({
-          name: '',
-          players_list: [],
-          positions_list: []
-        }, {
-          ...this.squadData,
-          players_list:
-            ((this.squadData || {}).players_list || []).map(p => parseInt(p)),
-          positions_list: ((this.squadData || {}).positions_list || []).slice()
+    methods: mapActions('squads', {
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
+  })
+  export default class SquadForm extends mix {
+    @Prop(Object) squadData
+
+    valid = false
+    squad = {
+      name: '',
+      players_list: new Array(11),
+      positions_list: new Array(11)
+    }
+
+    get positions () {
+      return Object.keys(positions)
+    }
+
+    get title () {
+      return this.squad.id ? 'Edit Squad' : 'New Squad'
+    }
+
+    get players () {
+      return activePlayers(this.team.id)
+    }
+
+    @Watch('dialog')
+    setSquad (val) {
+      this.valid = !!this.squadData
+      if (this.squadData) {
+        Object.assign(this.squad, this.$_pick(this.squadData, [
+          'id',
+          'name'
+        ]))
+        this.squad.positions_list = [...this.squadData.positions_list]
+        this.squad.players_list = this.squadData.players_list
+          .map(id => parseInt(id))
+      }
+    }
+
+    async submit () {
+      if (this.squadData) {
+        await this.update(this.squad)
+      } else {
+        await this.create({
+          teamId: this.team.id,
+          squad: this.squad
         })
-      }
-    },
-    computed: {
-      positions: () => Object.keys(positions),
-      title () {
-        return this.squad.id ? 'Edit Squad' : 'New Squad'
-      },
-      players () {
-        return activePlayers(this.team.id)
-      }
-    },
-    watch: {
-      dialog (val) {
-        if (!val) {
-          Object.assign(this.$data, this.$options.data.apply(this))
-          // this.$refs.form.reset()
-        } else {
-          if (!('id' in this.squad)) {
-            for (let i = 0; i < 11; i++) {
-              this.squad.players_list.push(null)
-              this.squad.positions_list.push(null)
-            }
-          }
-        }
-      }
-    },
-    methods: {
-      ...mapActions('squads', {
-        create: 'CREATE',
-        update: 'UPDATE'
-      }),
-      async submit () {
-        if (this.squadData) {
-          await this.update(this.squad)
-        } else {
-          await this.create({
-            teamId: this.team.id,
-            squad: this.squad
-          })
-        }
       }
     }
   }

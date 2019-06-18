@@ -3,14 +3,15 @@
 </template>
 
 <script>
+  import { Vue, Component } from 'nuxt-property-decorator'
   import { cableURL } from '@/api'
   import * as models from '@/models'
 
-  export default {
-    data: () => ({
-      cable: null,
-      subscriptions: []
-    }),
+  @Component
+  export default class TeamChannel extends Vue {
+    cable = null
+    subscriptions = []
+
     mounted () {
       const token = this.$store.state.token
 
@@ -40,13 +41,12 @@
 
         this.subscriptions.push(subscription)
       }
-    },
+    }
+
     destroyed () {
       this.subscriptions.forEach((sub) => {
         sub && this.cable.subscriptions.remove(sub)
       })
-    },
-    methods: {
     }
   }
 </script>

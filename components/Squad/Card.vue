@@ -58,57 +58,56 @@
 </template>
 
 <script>
+  import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { FormationView, RecordRemove } from '@/helpers'
   import { Player } from '@/models'
   import { positions } from '@/models/Match'
   import SquadForm from './Form'
 
-  export default {
+  @Component({
     components: {
       SquadForm,
       FormationView,
       RecordRemove
-    },
-    props: {
-      squad: {
-        type: Object,
-        required: true
-      }
-    },
-    computed: {
-      squadPlayers () {
-        return this.squad.positions_list.map((pos, i) => ({
-          pos: pos,
-          player_id: this.squad.players_list[i]
-        }))
-      },
-      defOVR () {
-        return this.avgOVR('DEF')
-      },
-      midOVR () {
-        return this.avgOVR('MID')
-      },
-      attOVR () {
-        return this.avgOVR('ATT')
-      }
-    },
-    methods: {
-      avgOVR (positionType) {
-        let playerIds = []
+    }
+  })
+  export default class SquadCard extends Vue {
+    @Prop({ type: Object, required: true }) squad
 
-        this.squad.positions_list.forEach((pos, i) => {
-          if (positions[pos] === positionType) {
-            playerIds.push(parseInt(this.squad.players_list[i]))
-          }
-        })
+    get squadPlayers () {
+      return this.squad.positions_list.map((pos, i) => ({
+        pos: pos,
+        player_id: this.squad.players_list[i]
+      }))
+    }
 
-        const totalOvr = Player
-          .query()
-          .whereIdIn(playerIds)
-          .sum('ovr')
+    get defOVR () {
+      return this.avgOVR('DEF')
+    }
 
-        return Math.round(totalOvr / playerIds.length)
-      }
+    get midOVR () {
+      return this.avgOVR('MID')
+    }
+
+    get attOVR () {
+      return this.avgOVR('ATT')
+    }
+
+    avgOVR (positionType) {
+      let playerIds = []
+
+      this.squad.positions_list.forEach((pos, i) => {
+        if (positions[pos] === positionType) {
+          playerIds.push(parseInt(this.squad.players_list[i]))
+        }
+      })
+
+      const totalOvr = Player
+        .query()
+        .whereIdIn(playerIds)
+        .sum('ovr')
+
+      return Math.round(totalOvr / playerIds.length)
     }
   }
 </script>

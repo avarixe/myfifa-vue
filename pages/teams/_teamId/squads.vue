@@ -32,25 +32,27 @@
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import SquadForm from '@/components/Squad/Form'
   import SquadGrid from '@/components/Squad/Grid'
 
-  export default {
-    layout: 'default',
-    middleware: 'authenticated',
-    mixins: [
-      TeamAccessible
-    ],
+  @Component({
+    components: {
+      SquadForm,
+      SquadGrid
+    }
+  })
+  export default class SquadsPage extends mixins(TeamAccessible) {
+    layout = () => 'default'
+    middleware = () => 'authenticated'
+
     head () {
       return {
         title: `${this.team.title} - Squads`
       }
-    },
-    components: {
-      SquadForm,
-      SquadGrid
-    },
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
     }

@@ -187,6 +187,7 @@
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { Competition } from '@/models'
   import { FittyText, RecordRemove } from '@/helpers'
   import CompetitionForm from '@/components/Competition/Form'
@@ -195,12 +196,7 @@
   import TableStage from '@/components/Stage/Table'
   import { TeamAccessible } from '@/mixins'
 
-  export default {
-    layout: 'default',
-    middleware: 'authenticated',
-    mixins: [
-      TeamAccessible
-    ],
+  @Component({
     components: {
       FittyText,
       RecordRemove,
@@ -208,59 +204,61 @@
       RoundStage,
       TableStage,
       StageForm
-    },
-    data: () => ({
-      tab1: 0,
-      tab2: 0
-    }),
+    }
+  })
+  export default class CompetitionPage extends mixins(TeamAccessible) {
+    layout = () => 'default'
+    middleware = () => 'authenticated'
+
     head () {
       return {
         title: `${this.competition.name} (${this.competitionSeason})`
       }
-    },
-    computed: {
-      competition () {
-        return Competition
-          .query()
-          .with('stages.table_rows|fixtures')
-          .find(this.$route.params.competitionId)
-      },
-      stages () {
-        return this.competition.stages
-      },
-      tables () {
-        return this.stages.filter(stage => stage.table)
-      },
-      rounds () {
-        return this.stages.filter(stage => !stage.table)
-      },
-      readonly () {
-        return this.competition.champion &&
-          this.competition.champion.length > 0
-      },
-      competitionSeason () {
-        return this.seasonLabel(this.competition.season)
-      },
-      seasonLink () {
-        return {
-          name: 'teams-teamId-seasons-season',
-          params: {
-            teamId: this.team.id,
-            season: this.competition.season
-          }
+    }
+
+    tab1 = 0
+    tab2 = 0
+
+    get competition () {
+      return Competition
+        .query()
+        .with('stages.table_rows|fixtures')
+        .find(this.$route.params.competitionId)
+    }
+
+    get stages () {
+      return this.competition.stages
+    }
+
+    get tables () {
+      return this.stages.filter(stage => stage.table)
+    }
+
+    get rounds () {
+      return this.stages.filter(stage => !stage.table)
+    }
+
+    get readonly () {
+      return this.competition.champion &&
+        this.competition.champion.length > 0
+    }
+
+    get competitionSeason () {
+      return this.seasonLabel(this.competition.season)
+    }
+
+    get seasonLink () {
+      return {
+        name: 'teams-teamId-seasons-season',
+        params: {
+          teamId: this.team.id,
+          season: this.competition.season
         }
       }
-    },
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
-    },
-    watch: {
-      competition (val) {
-        !val && this.$router.push({
-          name: 'teams-teamId-seasons',
-          params: { teamId: this.team.id }
-        })
-      }
     }
   }
 </script>

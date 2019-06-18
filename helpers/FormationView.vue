@@ -35,75 +35,78 @@
 </template>
 
 <script>
+  import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { FittyText } from '@/helpers'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import { Player } from '@/models'
   import { positions } from '@/models/Match'
 
-  export default {
-    mixins: [
-      TeamAccessible
-    ],
+  @Component({
     components: {
       FittyText
-    },
-    props: {
-      formation: {
-        type: Array,
-        required: true
-      }
-    },
-    data: () => ({
-      windows: {}
-    }),
-    computed: {
-      positions: () => Object.keys(positions),
-      startingEleven () {
-        return this.$_orderBy(
-          this.formation,
-          p => this.positions.indexOf(p)
-        )
-      },
-      posGK () {
-        return [
-          this.startingEleven.find(p => p.pos === 'GK')
-        ]
-      },
-      posDEF () {
-        return ['LWB', 'LB', 'LCB', 'CB', 'RCB', 'RB', 'RWB']
-          .map(pos => this.retrievePos(pos))
-      },
-      posDEFMID () {
-        return ['LM', 'LDM', 'LCM', 'CDM', 'CM', 'RCM', 'RDM', 'RM']
-          .map(pos => this.retrievePos(pos))
-      },
-      posATTMID () {
-        return ['LAM', 'CAM', 'RAM']
-          .map(pos => this.retrievePos(pos))
-      },
-      posATT () {
-        return ['LW', 'CF', 'ST', 'RW']
-          .map(pos => this.retrievePos(pos))
-      }
-    },
+    }
+  })
+  export default class FormationView extends mixins(TeamAccessible) {
+    @Prop({ type: Array, required: true }) formation
+
+    windows = {}
+
+    get positions () {
+      return Object.keys(positions)
+    }
+
+    get startingEleven () {
+      return this.$_orderBy(
+        this.formation,
+        p => this.positions.indexOf(p)
+      )
+    }
+
+    get posGK () {
+      return [
+        this.startingEleven.find(p => p.pos === 'GK')
+      ]
+    }
+
+    get posDEF () {
+      return ['LWB', 'LB', 'LCB', 'CB', 'RCB', 'RB', 'RWB']
+        .map(pos => this.retrievePos(pos))
+    }
+
+    get posDEFMID () {
+      return ['LM', 'LDM', 'LCM', 'CDM', 'CM', 'RCM', 'RDM', 'RM']
+        .map(pos => this.retrievePos(pos))
+    }
+
+    get posATTMID () {
+      return ['LAM', 'CAM', 'RAM']
+        .map(pos => this.retrievePos(pos))
+    }
+
+    get posATT () {
+      return ['LW', 'CF', 'ST', 'RW']
+        .map(pos => this.retrievePos(pos))
+    }
+
     created () {
       this.positions.forEach(p => {
         this.windows[p] = 0
       })
-    },
-    methods: {
-      retrievePos (pos) {
-        return this.startingEleven.find(p => p.pos === pos)
-      },
-      nameOf (playerId) {
-        const player = Player.find(playerId)
-        return player ? player.name : ''
-      },
-      flexAttributes (items) {
-        let attr = {}
-        attr[`xs${parseInt(12 / items.length)}`] = true
-        return attr
-      }
+    }
+
+    retrievePos (pos) {
+      return this.startingEleven.find(p => p.pos === pos)
+    }
+
+    nameOf (playerId) {
+      const player = Player.find(playerId)
+      return player ? player.name : ''
+    }
+
+    flexAttributes (items) {
+      let attr = {}
+      attr[`xs${parseInt(12 / items.length)}`] = true
+      return attr
     }
   }
 </script>

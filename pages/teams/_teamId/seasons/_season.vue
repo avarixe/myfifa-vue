@@ -62,60 +62,65 @@
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import CompetitionForm from '@/components/Competition/Form'
   import SeasonResultsTable from '@/components/Season/ResultsTable'
   import PlayerGrid from '@/components/Season/PlayerGrid'
   import { TeamAccessible } from '@/mixins'
 
-  export default {
-    layout: 'default',
-    middleware: 'authenticated',
+  @Component({
     components: {
       CompetitionForm,
       SeasonResultsTable,
       PlayerGrid
-    },
-    mixins: [
-      TeamAccessible
-    ],
+    }
+  })
+  export default class SeasonPage extends mixins(TeamAccessible) {
+    layout = () => 'default'
+    middleware = () => 'authenticated'
+
     async asyncData ({ store, params }) {
       const { data } = await store.dispatch('teams/ANALYZE_SEASON', params)
       return {
         tab: 0,
         seasonData: data
       }
-    },
+    }
+
     head () {
       return {
         title: this.title
       }
-    },
-    computed: {
-      title () {
-        return `${this.seasonLabel(this.pageSeason)} Season`
-      },
-      pageSeason () {
-        return this.$route.params.season
-      },
-      previousSeasonLink () {
-        return {
-          name: 'teams-teamId-seasons-season',
-          params: {
-            teamId: this.team.id,
-            season: this.pageSeason - 1
-          }
-        }
-      },
-      nextSeasonLink () {
-        return {
-          name: 'teams-teamId-seasons-season',
-          params: {
-            teamId: this.team.id,
-            season: this.pageSeason + 1
-          }
+    }
+
+    get title () {
+      return `${this.seasonLabel(this.pageSeason)} Season`
+    }
+
+    get pageSeason () {
+      return this.$route.params.season
+    }
+
+    get previousSeasonLink () {
+      return {
+        name: 'teams-teamId-seasons-season',
+        params: {
+          teamId: this.team.id,
+          season: this.pageSeason - 1
         }
       }
-    },
+    }
+
+    get nextSeasonLink () {
+      return {
+        name: 'teams-teamId-seasons-season',
+        params: {
+          teamId: this.team.id,
+          season: this.pageSeason + 1
+        }
+      }
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.title)
     }

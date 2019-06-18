@@ -118,123 +118,117 @@
 </template>
 
 <script>
+  import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
   import { InlineField, RecordRemove } from '@/helpers'
   import TableRowForm from '@/components/TableRow/Form'
 
-  export default {
-    mixins: [
-      CompetitionAccessible
-    ],
+  @Component({
     components: {
       InlineField,
       RecordRemove,
       TableRowForm
     },
-    props: {
-      table: {
-        type: Object,
-        required: true
-      },
-      readonly: Boolean
-    },
-    data: () => ({
-      key: 0
-    }),
-    computed: {
-      items () {
-        return Object.values(this.table.table_rows || {})
-      },
-      headers () {
-        const headers = [
-          {
-            text: 'Team',
-            value: 'name',
-            align: 'left',
-            sortable: false
-          },
-          {
-            text: 'W',
-            value: 'wins',
-            align: 'center'
-          },
-          {
-            text: 'D',
-            value: 'draws',
-            align: 'center'
-          },
-          {
-            text: 'L',
-            value: 'losses',
-            align: 'center'
-          },
-          {
-            text: 'GF',
-            value: 'goals_for',
-            align: 'center'
-          },
-          {
-            text: 'GA',
-            value: 'goals_against',
-            align: 'center'
-          },
-          {
-            text: 'GD',
-            value: 'goal_difference',
-            align: 'center'
-          },
-          {
-            text: 'PTS',
-            value: 'points',
-            align: 'center'
-          }
-        ]
+    methods: mapActions({
+      updateStage: 'stages/UPDATE',
+      updateRow: 'tableRows/UPDATE'
+    })
+  })
+  export default class TableStage extends mixins(CompetitionAccessible) {
+    @Prop({ type: Object, required: true }) table
+    @Prop(Boolean) readonly
 
-        if (!this.readonly) {
-          headers.push({
-            text: '',
-            value: 'delete',
-            sortable: false,
-            width: 40
-          })
+    key = 0
+
+    get items () {
+      return Object.values(this.table.table_rows || {})
+    }
+
+    get headers () {
+      const headers = [
+        {
+          text: 'Team',
+          value: 'name',
+          align: 'left',
+          sortable: false
+        },
+        {
+          text: 'W',
+          value: 'wins',
+          align: 'center'
+        },
+        {
+          text: 'D',
+          value: 'draws',
+          align: 'center'
+        },
+        {
+          text: 'L',
+          value: 'losses',
+          align: 'center'
+        },
+        {
+          text: 'GF',
+          value: 'goals_for',
+          align: 'center'
+        },
+        {
+          text: 'GA',
+          value: 'goals_against',
+          align: 'center'
+        },
+        {
+          text: 'GD',
+          value: 'goal_difference',
+          align: 'center'
+        },
+        {
+          text: 'PTS',
+          value: 'points',
+          align: 'center'
         }
+      ]
 
-        return headers
+      if (!this.readonly) {
+        headers.push({
+          text: '',
+          value: 'delete',
+          sortable: false,
+          width: 40
+        })
       }
-    },
-    methods: {
-      ...mapActions({
-        updateStage: 'stages/UPDATE',
-        updateRow: 'tableRows/UPDATE'
-      }),
-      async updateStageAttribute (stageId, attribute, value) {
-        try {
-          await this.updateStage({
-            id: stageId,
-            [attribute]: value
-          })
-        } catch (e) {
-          this.key++
-          this.$store.commit('broadcaster/ANNOUNCE', {
-            message: e.message,
-            color: 'red'
-          })
-        }
-      },
-      async updateRowAttribute (rowId, attribute, value) {
-        try {
-          await this.updateRow({
-            id: rowId,
-            [attribute]: value
-          })
-        } catch (e) {
-          this.key++
-          this.$store.commit('broadcaster/ANNOUNCE', {
-            message: e.message,
-            color: 'red'
-          })
-        }
+
+      return headers
+    }
+
+    async updateStageAttribute (stageId, attribute, value) {
+      try {
+        await this.updateStage({
+          id: stageId,
+          [attribute]: value
+        })
+      } catch (e) {
+        this.key++
+        this.$store.commit('broadcaster/ANNOUNCE', {
+          message: e.message,
+          color: 'red'
+        })
+      }
+    }
+
+    async updateRowAttribute (rowId, attribute, value) {
+      try {
+        await this.updateRow({
+          id: rowId,
+          [attribute]: value
+        })
+      } catch (e) {
+        this.key++
+        this.$store.commit('broadcaster/ANNOUNCE', {
+          message: e.message,
+          color: 'red'
+        })
       }
     }
   }

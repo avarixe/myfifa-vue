@@ -38,45 +38,38 @@
 </template>
 
 <script>
+  import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { positions } from '@/models/Match'
   import { activePlayers } from '@/models/Player'
   import { PlayerSelect } from '@/helpers'
   import { DialogFormable } from '@/mixins'
 
-  export default {
+  @Component({
     components: {
       PlayerSelect
-    },
-    mixins: [
-      DialogFormable
-    ],
-    props: {
-      match: {
-        type: Object,
-        required: true
-      }
-    },
-    data () {
-      return {
-        cap: {
-          player_id: null,
-          pos: ''
-        }
-      }
-    },
-    computed: {
-      positions: () => Object.keys(positions),
-      players () {
-        return activePlayers(parseInt(this.$route.params.teamId))
-      }
-    },
-    methods: {
-      async submit () {
-        await this.$store.dispatch('caps/CREATE', {
-          matchId: this.match.id,
-          cap: this.cap
-        })
-      }
+    }
+  })
+  export default class CapForm extends mixins(DialogFormable) {
+    @Prop({ type: Object, required: true }) match
+
+    cap = {
+      player_id: null,
+      pos: ''
+    }
+
+    get positions () {
+      return Object.keys(positions)
+    }
+
+    get players () {
+      return activePlayers(parseInt(this.$route.params.teamId))
+    }
+
+    async submit () {
+      await this.$store.dispatch('caps/CREATE', {
+        matchId: this.match.id,
+        cap: this.cap
+      })
     }
   }
 </script>
