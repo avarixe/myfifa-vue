@@ -14,23 +14,26 @@
 </template>
 
 <script>
+  import { Vue, Component, Watch } from 'nuxt-property-decorator'
   import { mapState } from 'vuex'
 
-  export default {
-    data: () => ({
-      snackbar: false
-    }),
+  @Component({
     computed: mapState('broadcaster', [
       'message',
       'color'
-    ]),
-    watch: {
-      message (val) {
-        this.snackbar = val.length > 0
-      },
-      snackbar (val) {
-        !val && this.$store.commit('broadcaster/CLEAR')
-      }
+    ])
+  })
+  export default class Broadcaster extends Vue {
+    snackbar = false
+
+    @Watch('message')
+    toggleSnackbar (val) {
+      this.snackbar = val.length > 0
+    }
+
+    @Watch('snackbar')
+    clear (val) {
+      !val && this.$store.commit('broadcaster/CLEAR')
     }
   }
 </script>
