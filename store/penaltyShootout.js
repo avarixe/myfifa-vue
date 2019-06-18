@@ -1,4 +1,5 @@
 import { http, routes } from '@/api'
+import { PenaltyShootout } from '@/models'
 
 // actions
 export const actions = {
@@ -11,11 +12,12 @@ export const actions = {
       data: { penalty_shootout: penaltyShootout }
     })
   },
-  REMOVE ({ rootState }, matchId) {
+  REMOVE ({ rootState }, id) {
+    const ps = PenaltyShootout.find(id)
     return http({
       method: 'delete',
       path: routes.matches.penaltyShootout,
-      pathData: { matchId },
+      pathData: { matchId: ps.match_id },
       token: rootState.token
     })
   }

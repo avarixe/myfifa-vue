@@ -10,20 +10,22 @@
       item: {
         type: Object,
         required: true
+      },
+      type: {
+        type: String,
+        required: true
       }
     },
     render (createElement, context) {
       function contentComponent () {
-        const item = context.props.item
-
-        switch (item.event_type) {
+        switch (context.props.type) {
           case 'Goal':
             return GoalContent
           case 'Booking':
             return BookingContent
           case 'Substitution':
             return SubstitutionContent
-          case 'PenaltyShootout':
+          case 'Penalty Shootout':
             return PenaltyShootoutContent
           default:
             throw new Error('Wrong Timeline Item Type!')
