@@ -92,7 +92,10 @@
         </v-flex>
       </v-layout>
 
-      <v-flex xs12>
+      <v-flex
+        v-if="match.caps.length > 0"
+        xs12
+      >
         <v-card outlined>
           <v-card-text>
             <v-tabs

@@ -70,10 +70,10 @@
         return this.team.current_date !== this.match.date_played
       },
       starters () {
-        return this.sortedCaps.filter(c => c.start === 0)
+        return this.match.caps.filter(c => c.start === 0)
       },
       substitutes () {
-        return this.sortedCaps.filter(c => c.start > 0)
+        return this.match.caps.filter(c => c.start > 0)
       },
       defOVR () {
         return this.avgOVR('DEF')
@@ -89,7 +89,7 @@
       avgOVR (positionType) {
         let playerIds = []
 
-        this.starters.forEach(cap => {
+        this.match.caps.forEach(cap => {
           if (positions[cap.pos] === positionType) {
             playerIds.push(cap.player_id)
           }
