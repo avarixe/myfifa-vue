@@ -19,46 +19,32 @@
         </v-flex>
         <v-flex xs6 sm3>
           <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
-          <div class="subheading">Secondary Position(s)</div>
+          <div class="subheading">
+            <fitty-text
+              text="Secondary Position(s)"
+              :max-size="16"
+            />
+          </div>
         </v-flex>
         <v-flex xs6 sm3>
           <div class="display-1">{{ player.age }}</div>
           <div class="subheading">Age</div>
         </v-flex>
         <v-flex xs6 sm3>
-          <div class="display-1">{{ player.status || '-' }}</div>
-          <div class="subheading">Status</div>
+          <v-icon
+            v-if="player.isActive"
+            :color="player.statusColor"
+            class="display-1"
+          >mdi-{{ player.statusIcon }}</v-icon>
+          <div
+            v-else
+            class="display-1"
+          >-</div>
+
+          <div class="subheading">{{ player.status || 'Status' }}</div>
         </v-flex>
         <v-flex xs12>
-          <player-form
-            :player-data="player"
-            color="orange"
-          >
-            <template #default="{ on: dialog }">
-              <v-tooltip
-                bottom
-                color="orange"
-              >
-                <template #activator="{ on: tooltip }">
-                  <v-btn
-                    v-on="{ ...dialog, ...tooltip }"
-                    icon
-                  >
-                    <v-icon color="orange">mdi-pencil</v-icon>
-                  </v-btn>
-                </template>
-                Edit
-              </v-tooltip>
-            </template>
-          </player-form>
-          <transfer-form :player="player" />
-          <contract-form :player="player" />
-          <template v-if="player.isActive">
-            <injury-form :player="player" />
-            <loan-form :player="player" />
-            <player-retire :player="player" />
-            <player-release :player="player" />
-          </template>
+          <player-actions :player="player" />
           <record-remove
             :record="player"
             store="players"
@@ -197,32 +183,23 @@
   import { mixins, Component } from 'nuxt-property-decorator'
   import { Player } from '@/models'
   import PlayerForm from '@/components/Player/Form'
-  import ContractForm from '@/components/Contract/Form'
-  import InjuryForm from '@/components/Injury/Form'
-  import LoanForm from '@/components/Loan/Form'
-  import TransferForm from '@/components/Transfer/Form'
-  import PlayerRetire from '@/components/Player/Retire'
-  import PlayerRelease from '@/components/Player/Release'
+  import PlayerActions from '@/components/Player/Actions'
   import PlayerTimeline from '@/components/Player/Timeline'
   import PlayerPerformanceTable from '@/components/Player/PerformanceTable'
   import PlayerPartnershipsTable from '@/components/Player/PartnershipsTable'
   import PlayerHistoryChart from '@/components/Charts/PlayerHistoryChart'
-  import { RecordRemove } from '@/helpers'
+  import { FittyText, RecordRemove } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
   @Component({
     components: {
       PlayerForm,
-      ContractForm,
-      InjuryForm,
-      LoanForm,
-      TransferForm,
-      PlayerRetire,
-      PlayerRelease,
+      PlayerActions,
       PlayerTimeline,
       PlayerPerformanceTable,
       PlayerPartnershipsTable,
       PlayerHistoryChart,
+      FittyText,
       RecordRemove
     }
   })

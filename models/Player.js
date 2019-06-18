@@ -60,6 +60,32 @@ class Player extends Model {
     return this.status && this.status.length > 0
   }
 
+  get statusColor () {
+    switch (this.status) {
+      case 'Active':
+        return 'light-green'
+      case 'Loaned':
+        return 'indigo'
+      case 'Injured':
+        return 'pink'
+      case 'Pending':
+        return 'deep-orange'
+    }
+  }
+
+  get statusIcon () {
+    switch (this.status) {
+      case 'Active':
+        return 'account-check'
+      case 'Loaned':
+        return 'transit-transfer'
+      case 'Injured':
+        return 'hospital'
+      case 'Pending':
+        return 'lock-clock'
+    }
+  }
+
   get contract () {
     const contract = this.contracts.slice(-1)[0]
 

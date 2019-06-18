@@ -1,7 +1,7 @@
 <template>
   <v-card outlined>
     <v-card-title :class="`subtitle-1 d-block text-xs-center`">
-      <span class="green--text font-weight-light">{{ title }}</span>
+      <span :class="`${color}--text font-weight-light`">{{ title }}</span>
     </v-card-title>
 
     <v-divider class="mx-3" />
@@ -11,7 +11,7 @@
         <v-btn
           :to="matchLink"
           nuxt
-          color="green"
+          :color="color"
           block
           text
         >View Match</v-btn>
@@ -47,6 +47,7 @@
   export default class MatchCard extends Vue {
     @Prop(Object) match
     @Prop(String) title
+    @Prop(String) color
 
     get matchLink () {
       return {

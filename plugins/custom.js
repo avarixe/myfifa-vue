@@ -55,22 +55,18 @@ Vue.prototype.$_validate = function (field, rules) {
 
 // DISPLAY UTILITY FUNCTIONS
 
-Vue.prototype.$_listArray = function (arr) {
-  return arr && arr.length > 0
-    ? arr.join(', ')
-    : 'N/A'
+Vue.prototype.$_listArray = function (arr, emptyString = 'N/A') {
+  return arr && arr.length > 0 ? arr.join(', ') : emptyString
 }
 
 Vue.prototype.$_formatMoney = function (amount) {
   return amount
-    ? this.team.currency + parseInt(amount).toLocaleString()
+    ? `${this.team.currency}${parseInt(amount).toLocaleString()}`
     : 'N/A'
 }
 
 Vue.prototype.$_formatDate = function (date, dateFormat = 'MMM DD, YYYY') {
-  return date
-    ? this.$_format(this.$_parse(date), dateFormat)
-    : 'N/A'
+  return date ? this.$_format(this.$_parse(date), dateFormat) : 'N/A'
 }
 
 Vue.prototype.$_numberHint = function (num) {

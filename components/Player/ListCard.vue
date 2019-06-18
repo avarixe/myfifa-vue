@@ -18,15 +18,24 @@
         >
           <td>{{ player.name }}</td>
           <td class="text-xs-right">
-            <v-btn
-              :to="playerLink(player)"
-              :color="color"
-              nuxt
-              dark
-              small
-              outlined
-              class="my-0"
-            >View</v-btn>
+            <v-dialog width="500">
+              <template #activator="{ on }">
+                <v-btn
+                  v-on="on"
+                  :color="color"
+                  nuxt
+                  dark
+                  small
+                  outlined
+                  class="my-0"
+                >View</v-btn>
+              </template>
+
+              <player-card
+                :player="player"
+                :color="color"
+              />
+            </v-dialog>
           </td>
         </tr>
       </tbody>
@@ -36,21 +45,16 @@
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
+  import PlayerCard from './Card'
 
-  @Component
+  @Component({
+    components: {
+      PlayerCard
+    }
+  })
   export default class PlayersCard extends Vue {
     @Prop({ type: Array, default: [] }) players
     @Prop({ type: String, default: 'primary' }) color
     @Prop(String) title
-
-    playerLink (player) {
-      return {
-        name: 'teams-teamId-players-playerId',
-        params: {
-          teamId: player.team_id,
-          playerId: player.id
-        }
-      }
-    }
   }
 </script>

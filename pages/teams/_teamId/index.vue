@@ -46,6 +46,7 @@
         <match-card
           title="Latest Match"
           :match="lastMatch"
+          color="success"
         />
       </v-flex>
 
@@ -56,7 +57,7 @@
 
       <!-- Injured Players -->
       <v-flex xs12 md4>
-        <players-card
+        <player-list-card
           :players="injuredPlayers"
           title="Injured Players"
           color="pink"
@@ -65,7 +66,7 @@
 
       <!-- Loaned Players -->
       <v-flex xs12 md4>
-        <players-card
+        <player-list-card
           :players="loanedPlayers"
           title="Loaned Players"
           color="indigo"
@@ -74,7 +75,7 @@
 
       <!-- Expiring Contracts -->
       <v-flex xs12 md4>
-        <players-card
+        <player-list-card
           :players="playersWithExpiringContracts"
           title="Expiring Contracts"
           color="orange"
@@ -106,13 +107,13 @@
   import { mixins, Component } from 'nuxt-property-decorator'
   import { Match, Player } from '@/models'
   import MatchForm from '@/components/Match/Form'
+  import MatchCard from '@/components/Match/Card'
   import PlayerForm from '@/components/Player/Form'
   import SeasonCard from '@/components/Season/Card'
   import TeamDatePicker from '@/components/Team/DatePicker'
   import TeamForm from '@/components/Team/Form'
   import TeamCalendar from '@/components/Team/Calendar'
-  import MatchCard from '@/components/Team/Dashboard/MatchCard'
-  import PlayersCard from '@/components/Team/Dashboard/PlayersCard'
+  import PlayerListCard from '@/components/Player/ListCard'
   import { RecordRemove } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
@@ -121,7 +122,7 @@
       MatchForm,
       MatchCard,
       PlayerForm,
-      PlayersCard,
+      PlayerListCard,
       SeasonCard,
       TeamDatePicker,
       TeamForm,

@@ -14,8 +14,8 @@
   @Component
   export default class FittyText extends Vue {
     @Prop(String) text
-    @Prop({ type: Number, default: 10 }) minSize
-    @Prop({ type: Number, default: 50 }) maxSize
+    @Prop({ type: [Number, String], default: 10 }) minSize
+    @Prop({ type: [Number, String], default: 50 }) maxSize
 
     get options () {
       return {

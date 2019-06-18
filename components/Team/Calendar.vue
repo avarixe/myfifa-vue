@@ -39,16 +39,30 @@
         :show-month-on-first="false"
       >
         <template #day="{ date }">
-          <template v-for="match in matchesOn(date)">
-            <v-btn
-              color="blue"
-              dark
-              block
-            >
-              <v-icon left>mdi-soccer-field</v-icon>
-              {{ match.opponent }}
-            </v-btn>
-          </template>
+          <v-dialog
+            v-for="match in matchesOn(date)"
+            :key="match.id"
+            width="500"
+          >
+            <template #activator="{ on }">
+              <a
+                v-on="on"
+                v-ripple
+                class="d-block text-xs-center"
+              >
+                <fitty-text
+                  :text="match.opponent"
+                  :max-size="14"
+                />
+              </a>
+            </template>
+
+            <match-card
+              :match="match"
+              :title="`${match.home} v ${match.away}`"
+              color="info"
+            />
+          </v-dialog>
         </template>
       </v-calendar>
     </v-flex>
@@ -58,10 +72,17 @@
 <script>
   import { mixins, Component } from 'nuxt-property-decorator'
   import { Match } from '@/models'
+  import MatchCard from '@/components/Match/Card'
+  import { FittyText } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
   import { format } from 'date-fns'
 
-  @Component
+  @Component({
+    components: {
+      FittyText,
+      MatchCard
+    }
+  })
   export default class TeamCalendar extends mixins(TeamAccessible) {
     day = format(new Date(), 'YYYY-MM-DD')
 
@@ -81,6 +102,16 @@
         .where('team_id', this.team.id)
         .where('date_played', date)
         .get()
+    }
+
+    goToMatch (match) {
+      this.$router.push({
+        name: 'teams-teamId-matches-matchId',
+        params: {
+          teamId: this.team.id,
+          matchId: match.id
+        }
+      })
     }
   }
 </script>

@@ -127,15 +127,15 @@
               />
             </template>
             <template #item.status="{ item }">
-              <v-icon :color="statusColor(item)">
-                mdi-{{ statusIcon(item) }}
+              <v-icon :color="item.statusColor">
+                mdi-{{ item.statusIcon }}
               </v-icon>
             </template>
             <template #item.pos_idx="{ item }">
               {{ item.pos }}
             </template>
             <template #item.sec_pos="{ item }">
-              {{ item.sec_pos && item.sec_pos.join(', ') }}
+              {{ $_listArray(item.sec_pos, '-') }}
             </template>
             <template #item.contract.wage="{ item }">
               {{ contractWage(item) }}
@@ -408,32 +408,6 @@
           message: e.message,
           color: 'red'
         })
-      }
-    }
-
-    statusColor (player) {
-      switch (player.status) {
-        case 'Active':
-          return 'light-green'
-        case 'Loaned':
-          return 'indigo'
-        case 'Injured':
-          return 'pink'
-        case 'Pending':
-          return 'deep-orange'
-      }
-    }
-
-    statusIcon (player) {
-      switch (player.status) {
-        case 'Active':
-          return 'account-check'
-        case 'Loaned':
-          return 'transit-transfer'
-        case 'Injured':
-          return 'hospital'
-        case 'Pending':
-          return 'lock-clock'
       }
     }
 
