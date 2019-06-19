@@ -43,21 +43,38 @@
             :items="rows"
             :page.sync="page"
             :loading="loading"
-            sort-by="posIdx"
+            multi-sort
+            :sort-by="['posIdx', 'numMinutes']"
+            :sort-desc="[false, true]"
             :search="search"
             item-key="id"
-            must-sort
             hide-default-footer
-            :mobile-breakpoint="0"
             no-data-text="No Players Recorded"
             @page-count="pageCount = $event"
           >
-            <template #item="{ item }">
-              <player-row
-                :season="season"
-                :player="item"
-                :mode="mode"
-              />
+            <template #item.name="{ item }">
+              <v-btn
+                :to="playerLink(item)"
+                nuxt
+                text
+                color="info"
+              >{{ item.name }}</v-btn>
+            </template>
+            <template #item.posIdx="{ item }">
+              {{ item.pos }}
+            </template>
+            <template #item.ovrChange="{ item }">
+              <span :class="ovrColor(item)">
+                {{ item.ovrChange > 0 ? '+' : '' }}{{ item.ovrChange }}
+              </span>
+            </template>
+            <template #item.endValue="{ item }">
+              {{ $_formatMoney(item.endValue) }}
+            </template>
+            <template #item.valueChange="{ item }">
+              <span :class="valueColor(item)">
+                {{ item.valueChange.toFixed(2) }}%
+              </span>
             </template>
           </v-data-table>
         </template>
@@ -71,12 +88,10 @@
   import { addYears } from 'date-fns'
   import { Team, Player } from '@/models'
   import { PagedTable } from '@/helpers'
-  import PlayerRow from './PlayerRow'
 
   @Component({
     components: {
-      PagedTable,
-      PlayerRow
+      PagedTable
     }
   })
   export default class SeasonPlayerGrid extends Vue {
@@ -85,16 +100,8 @@
 
     mode = 0
     modes = [
-      {
-        text: 'Growth',
-        color: 'green',
-        icon: 'mdi-trending-up'
-      },
-      {
-        text: 'Statistics',
-        color: 'red',
-        icon: 'mdi-numeric'
-      }
+      { text: 'Growth', color: 'green', icon: 'mdi-trending-up' },
+      { text: 'Statistics', color: 'red', icon: 'mdi-numeric' }
     ]
     loading = false
     filterActive = true
@@ -113,78 +120,32 @@
 
     get headers () {
       let headers = [
-        {
-          text: 'Name',
-          value: 'name'
-        },
-        {
-          text: 'Position',
-          value: 'posIdx',
-          align: 'center'
-        },
-        {
-          text: 'Age',
-          value: 'age',
-          align: 'center'
-        }
+        { text: 'Name', value: 'name' },
+        { text: 'Position', value: 'posIdx', align: 'center' },
+        { text: 'Age', value: 'age', align: 'center' }
       ]
 
       switch (this.mode) {
         case 0: // Growth
           return headers.concat([
-            {
-              text: 'OVR',
-              value: 'endOvr',
-              align: 'center'
-            },
-            {
-              text: 'OVR Change',
-              value: 'ovrChange',
-              align: 'end'
-            },
-            {
-              text: 'Value',
-              value: 'endValue',
-              align: 'end'
-            },
-            {
-              text: 'Value Change',
-              value: 'valueChange',
-              align: 'end'
-            }
+            { text: 'OVR', value: 'endOvr', align: 'center' },
+            { text: 'OVR Change', value: 'ovrChange', align: 'end' },
+            { text: 'Value', value: 'endValue', align: 'end' },
+            { text: 'Value Change', value: 'valueChange', align: 'end' }
           ])
         case 1: // Statistics
           return headers.concat([
-            {
-              text: 'Games Played',
-              value: 'numGames',
-              align: 'end'
-            },
-            {
-              text: 'Goals',
-              value: 'numGoals',
-              align: 'end'
-            },
-            {
-              text: 'Assists',
-              value: 'numAssists',
-              align: 'end'
-            },
-            {
-              text: 'Clean Sheets',
-              value: 'numCs',
-              align: 'end'
-            }
+            { text: 'Games Played', value: 'numGames', align: 'end' },
+            { text: 'Minutes', value: 'numMinutes', align: 'end' },
+            { text: 'Goals', value: 'numGoals', align: 'end' },
+            { text: 'Assists', value: 'numAssists', align: 'end' },
+            { text: 'Clean Sheets', value: 'numCs', align: 'end' }
           ])
       }
     }
 
     get rows () {
-      return this.$_orderBy(
-        Object.values(this.playerData),
-        ['pos_idx', 'numMinutes'],
-        ['asc', 'desc']
-      )
+      return Object.values(this.playerData)
     }
 
     get seasonStart () {
@@ -265,6 +226,54 @@
 
     lastSeasonRecord (records) {
       return this.closestRecord(records, this.seasonEnd)
+    }
+
+    playerLink (player) {
+      return {
+        name: 'teams-teamId-players-playerId',
+        params: {
+          teamId: this.$route.params.teamId,
+          playerId: player.id
+        }
+      }
+    }
+
+    ovrColor (player) {
+      switch (true) {
+        case player.ovrChange > 6:
+          return 'green--text text--darken-2'
+        case player.ovrChange > 4:
+          return 'green--text'
+        case player.ovrChange > 2:
+          return 'light-green--text text--darken-2'
+        case player.ovrChange > 0:
+          return 'light-green--text'
+        case player.ovrChange < -2:
+          return 'red--text'
+        case player.ovrChange < 0:
+          return 'orange--text'
+        default:
+          return 'grey--text'
+      }
+    }
+
+    valueColor (player) {
+      switch (true) {
+        case player.valueChange > 100:
+          return 'green--text text--darken-2'
+        case player.valueChange > 50:
+          return 'green--text'
+        case player.valueChange > 25:
+          return 'light-green--text text--darken-2'
+        case player.valueChange > 0:
+          return 'light-green--text'
+        case player.valueChange < -25:
+          return 'red--text'
+        case player.valueChange < 0:
+          return 'orange--text'
+        default:
+          return 'grey--text'
+      }
     }
   }
 </script>

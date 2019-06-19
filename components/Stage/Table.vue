@@ -31,7 +31,6 @@
       :sort-desc="[true, true, true, true]"
       multi-sort
       :items-per-page="-1"
-      :mobile-breakpoint="0"
       hide-default-footer
     >
       <template #item.name="{ item }">
@@ -148,47 +147,14 @@
 
     get headers () {
       const headers = [
-        {
-          text: 'Team',
-          value: 'name',
-          align: 'left',
-          sortable: false
-        },
-        {
-          text: 'W',
-          value: 'wins',
-          align: 'center'
-        },
-        {
-          text: 'D',
-          value: 'draws',
-          align: 'center'
-        },
-        {
-          text: 'L',
-          value: 'losses',
-          align: 'center'
-        },
-        {
-          text: 'GF',
-          value: 'goals_for',
-          align: 'center'
-        },
-        {
-          text: 'GA',
-          value: 'goals_against',
-          align: 'center'
-        },
-        {
-          text: 'GD',
-          value: 'goal_difference',
-          align: 'center'
-        },
-        {
-          text: 'PTS',
-          value: 'points',
-          align: 'center'
-        }
+        { text: 'Team', value: 'name', sortable: false },
+        { text: 'W', value: 'wins', align: 'center' },
+        { text: 'D', value: 'draws', align: 'center' },
+        { text: 'L', value: 'losses', align: 'center' },
+        { text: 'GF', value: 'goals_for', align: 'center' },
+        { text: 'GA', value: 'goals_against', align: 'center' },
+        { text: 'GD', value: 'goal_difference', align: 'center' },
+        { text: 'PTS', value: 'points', align: 'center' }
       ]
 
       if (!this.readonly) {

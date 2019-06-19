@@ -95,62 +95,20 @@
     interval = null
     ellipses = 0
     loaders = {
-      'Players': {
-        loaded: false,
-        cleared: false
-      },
-      'Player Histories': {
-        loaded: false,
-        cleared: false
-      },
-      'Contracts': {
-        loaded: false,
-        cleared: false
-      },
-      'Transfers': {
-        loaded: false,
-        cleared: false
-      },
-      'Loans': {
-        loaded: false,
-        cleared: false
-      },
-      'Injuries': {
-        loaded: false,
-        cleared: false
-      },
-      'Matches': {
-        loaded: false,
-        cleared: false
-      },
-      'Squads': {
-        loaded: false,
-        cleared: false
-      },
-      'Competitions': {
-        loaded: false,
-        cleared: false
-      },
-      'Stages': {
-        loaded: false,
-        cleared: false
-      },
-      'Bookings': {
-        loaded: false,
-        cleared: false
-      },
-      'Goals': {
-        loaded: false,
-        cleared: false
-      },
-      'Caps': {
-        loaded: false,
-        cleared: false
-      },
-      'Substitutions': {
-        loaded: false,
-        cleared: false
-      }
+      'Players': { loaded: false, cleared: false },
+      'Player Histories': { loaded: false, cleared: false },
+      'Contracts': { loaded: false, cleared: false },
+      'Transfers': { loaded: false, cleared: false },
+      'Loans': { loaded: false, cleared: false },
+      'Injuries': { loaded: false, cleared: false },
+      'Matches': { loaded: false, cleared: false },
+      'Squads': { loaded: false, cleared: false },
+      'Competitions': { loaded: false, cleared: false },
+      'Stages': { loaded: false, cleared: false },
+      'Bookings': { loaded: false, cleared: false },
+      'Goals': { loaded: false, cleared: false },
+      'Caps': { loaded: false, cleared: false },
+      'Substitutions': { loaded: false, cleared: false }
     }
 
     get title () {

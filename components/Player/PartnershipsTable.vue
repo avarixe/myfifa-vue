@@ -39,7 +39,6 @@
             sort-by="matches"
             sort-desc
             must-sort
-            :mobile-breakpoint="0"
             hide-default-footer
             :page.sync="page"
             @page-count="pageCount = $event"
@@ -80,25 +79,10 @@
       showAll: false
     }
     headers = [
-      {
-        text: 'Player',
-        value: 'name'
-      },
-      {
-        text: 'Matches',
-        value: 'matches',
-        align: 'center'
-      },
-      {
-        text: 'Goals',
-        value: 'goals',
-        align: 'center'
-      },
-      {
-        text: 'Assists',
-        value: 'assists',
-        align: 'center'
-      }
+      { text: 'Player', value: 'name' },
+      { text: 'Matches', value: 'matches', align: 'center' },
+      { text: 'Goals', value: 'goals', align: 'center' },
+      { text: 'Assists', value: 'assists', align: 'center' }
     ]
     page = 1
     pageCount = 0

@@ -98,18 +98,10 @@
       >
         <v-card outlined>
           <v-card-text>
-            <v-tabs
-              v-model="tab"
-              centered
-            >
+            <v-tabs centered>
               <v-tab>Lineup</v-tab>
               <v-tab>Timeline</v-tab>
-            </v-tabs>
 
-            <v-tabs-items
-              v-model="tab"
-              touchless
-            >
               <v-tab-item>
                 <match-lineup :match="match" />
               </v-tab-item>
@@ -117,7 +109,7 @@
               <v-tab-item>
                 <match-timeline :match="match" />
               </v-tab-item>
-            </v-tabs-items>
+            </v-tabs>
           </v-card-text>
         </v-card>
       </v-flex>

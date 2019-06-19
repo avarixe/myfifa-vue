@@ -32,18 +32,10 @@
       <v-flex xs12>
         <v-card outlined>
           <v-card-text>
-            <v-tabs
-              v-model="tab"
-              centered
-            >
+            <v-tabs centered>
               <v-tab>Competitions</v-tab>
               <v-tab>Players</v-tab>
-            </v-tabs>
 
-            <v-tabs-items
-              v-model="tab"
-              touchless
-            >
               <v-tab-item>
                 <season-results-table :season-data="seasonData" />
               </v-tab-item>
@@ -53,7 +45,7 @@
                   :season-data="seasonData"
                 />
               </v-tab-item>
-            </v-tabs-items>
+            </v-tabs>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -82,7 +74,6 @@
     async asyncData ({ store, params }) {
       const { data } = await store.dispatch('teams/ANALYZE_SEASON', params)
       return {
-        tab: 0,
         seasonData: data
       }
     }

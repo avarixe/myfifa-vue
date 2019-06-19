@@ -92,20 +92,12 @@
               </v-flex>
             </v-layout>
 
-            <v-tabs
-              v-model="tab"
-              centered
-            >
+            <v-tabs centered>
               <v-tab>Timeline</v-tab>
               <v-tab>Growth</v-tab>
               <v-tab>Performance</v-tab>
               <v-tab>Partnerships</v-tab>
-            </v-tabs>
 
-            <v-tabs-items
-              v-model="tab"
-              touchless
-            >
               <!-- Timeline -->
               <v-tab-item>
                 <v-card flat>
@@ -171,7 +163,7 @@
                   </v-card-text>
                 </v-card>
               </v-tab-item>
-            </v-tabs-items>
+            </v-tabs>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -212,8 +204,6 @@
         title: this.player.name
       }
     }
-
-    tab = 0
 
     get player () {
       return Player

@@ -119,7 +119,6 @@
         <v-card outlined>
           <v-card-text>
             <v-tabs
-              v-model="tab1"
               centered
               center-active
             >
@@ -127,12 +126,7 @@
                 v-for="table in tables"
                 :key="table.id"
               >{{ table.name }}</v-tab>
-            </v-tabs>
 
-            <v-tabs-items
-              v-model="tab1"
-              touchless
-            >
               <v-tab-item
                 v-for="table in tables"
                 :key="table.id"
@@ -142,7 +136,7 @@
                   :readonly="readonly"
                 />
               </v-tab-item>
-            </v-tabs-items>
+            </v-tabs>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -155,7 +149,6 @@
         <v-card outlined>
           <v-card-text>
             <v-tabs
-              v-model="tab2"
               centered
               center-active
             >
@@ -163,12 +156,7 @@
                 v-for="round in rounds"
                 :key="round.id"
               >{{ round.name }}</v-tab>
-            </v-tabs>
 
-            <v-tabs-items
-              v-model="tab2"
-              touchless
-            >
               <v-tab-item
                 v-for="round in rounds"
                 :key="round.id"
@@ -178,7 +166,7 @@
                   :readonly="readonly"
                 />
               </v-tab-item>
-            </v-tabs-items>
+            </v-tabs>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -215,9 +203,6 @@
         title: `${this.competition.name} (${this.competitionSeason})`
       }
     }
-
-    tab1 = 0
-    tab2 = 0
 
     get competition () {
       return Competition

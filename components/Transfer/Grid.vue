@@ -38,7 +38,6 @@
             :search="search"
             item-key="id"
             hide-default-footer
-            :mobile-breakpoint="0"
             no-data-text="No Matches Recorded"
             @page-count="pageCount = $event"
           >

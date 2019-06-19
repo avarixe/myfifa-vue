@@ -12,30 +12,23 @@
             :page.sync="page"
             :loading="loading"
             item-key="id"
-            :mobile-breakpoint="0"
             no-data-text="No Teams Recorded"
             hide-default-footer
             @page-count="pageCount = $event"
           >
-            <template #item="{ item: team }">
-              <v-tooltip bottom>
-                <template #activator="{ on }">
-                  <tr
-                    v-on="on"
-                    @click="goToTeam(team)"
-                  >
-                    <td class="text-xs-center">{{ team.title }}</td>
-                    <td class="text-xs-center">
-                      {{ $_format($_parse(team.start_date), 'MMM DD, YYYY') }}
-                    </td>
-                    <td class="text-xs-center">
-                      {{ $_format($_parse(team.current_date), 'MMM DD, YYYY') }}
-                    </td>
-                  </tr>
-                </template>
-                Click to Manage Team: <br>
-                <i>{{ team.title }}</i>
-              </v-tooltip>
+            <template #item.title="{ item }">
+              <v-btn
+                :to="teamLink(item)"
+                nuxt
+                text
+                color="info"
+              >{{ item.title }}</v-btn>
+            </template>
+            <template #item.start_date="{ item }">
+              {{ $_format($_parse(item.start_date), 'MMM DD, YYYY') }}
+            </template>
+            <template #item.current_date="{ item }">
+              {{ $_format($_parse(item.current_date), 'MMM DD, YYYY') }}
             </template>
           </v-data-table>
         </template>
@@ -56,21 +49,9 @@
   })
   export default class TeamGrid extends Vue {
     headers = [
-      {
-        text: 'Team Name',
-        value: 'title',
-        align: 'center'
-      },
-      {
-        text: 'Start Date',
-        value: 'start_date',
-        align: 'center'
-      },
-      {
-        text: 'Current Date',
-        value: 'current_date',
-        align: 'center'
-      }
+      { text: 'Team Name', value: 'title', align: 'center' },
+      { text: 'Start Date', value: 'start_date', align: 'center' },
+      { text: 'Current Date', value: 'current_date', align: 'center' }
     ]
     loading = false
     search = ''
@@ -100,11 +81,11 @@
       }
     }
 
-    goToTeam (team) {
-      this.$router.push({
+    teamLink (team) {
+      return {
         name: 'teams-teamId',
         params: { teamId: team.id }
-      })
+      }
     }
   }
 </script>

@@ -26,7 +26,6 @@
     <v-data-table
       :headers="headers"
       :items="items"
-      :mobile-breakpoint="0"
       :items-per-page="-1"
       hide-default-footer
     >
@@ -117,28 +116,10 @@
 
     get headers () {
       const headers = [
-        {
-          text: 'Home Team',
-          value: 'home_team',
-          align: 'end',
-          sortable: false
-        },
-        {
-          text: 'Home Score',
-          value: 'home_score',
-          align: 'end',
-          sortable: false
-        },
-        {
-          text: 'Away Score',
-          value: 'away_score',
-          sortable: false
-        },
-        {
-          text: 'Away Team',
-          value: 'away_team',
-          sortable: false
-        }
+        { text: 'Home Team', value: 'home_team', align: 'end', sortable: false },
+        { text: 'Home Score', value: 'home_score', align: 'end', sortable: false },
+        { text: 'Away Score', value: 'away_score', sortable: false },
+        { text: 'Away Team', value: 'away_team', sortable: false }
       ]
 
       if (!this.readonly) {

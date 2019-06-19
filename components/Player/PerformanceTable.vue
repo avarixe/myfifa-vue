@@ -30,7 +30,6 @@
             sort-by="season"
             sort-desc
             must-sort
-            :mobile-breakpoint="0"
             hide-default-footer
             :page.sync="page"
             @page-count="pageCount = $event"
@@ -60,34 +59,12 @@
       competition: null
     }
     headers = [
-      {
-        text: 'Season',
-        value: 'season'
-      },
-      {
-        text: 'Competition',
-        value: 'competition'
-      },
-      {
-        text: 'Matches',
-        value: 'matches',
-        align: 'center'
-      },
-      {
-        text: 'Goals',
-        value: 'goals',
-        align: 'center'
-      },
-      {
-        text: 'Assists',
-        value: 'assists',
-        align: 'center'
-      },
-      {
-        text: 'Clean Sheets',
-        value: 'cleanSheets',
-        align: 'center'
-      }
+      { text: 'Season', value: 'season' },
+      { text: 'Competition', value: 'competition' },
+      { text: 'Matches', value: 'matches', align: 'center' },
+      { text: 'Goals', value: 'goals', align: 'center' },
+      { text: 'Assists', value: 'assists', align: 'center' },
+      { text: 'Clean Sheets', value: 'cleanSheets', align: 'center' }
     ]
     page = 1
     pageCount = 0

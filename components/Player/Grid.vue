@@ -89,7 +89,6 @@
             :search="search"
             item-key="id"
             hide-default-footer
-            :mobile-breakpoint="0"
             no-data-text="No Players Found"
             @page-count="pageCount = $event"
           >
@@ -173,62 +172,22 @@
     key = 0
     mode = 0
     modes = [
-      {
-        text: 'Overall',
-        color: 'green',
-        icon: 'trending-up'
-      },
-      {
-        text: 'Edit',
-        color: 'orange',
-        icon: 'pencil'
-      },
-      {
-        text: 'Contract',
-        color: 'blue',
-        icon: 'file-document-outline'
-      },
-      {
-        text: 'Statistics',
-        color: 'red',
-        icon: 'numeric'
-      }
+      { text: 'Overall', color: 'green', icon: 'trending-up' },
+      { text: 'Edit', color: 'orange', icon: 'pencil' },
+      { text: 'Contract', color: 'blue', icon: 'file-document-outline' },
+      { text: 'Statistics', color: 'red', icon: 'numeric' }
     ]
     loading = false
     page = 1
     pageCount = 0
     filter = 2
     filters = [
-      {
-        text: 'All',
-        color: 'blue',
-        icon: 'earth'
-      },
-      {
-        text: 'Youth',
-        color: 'cyan',
-        icon: 'school'
-      },
-      {
-        text: 'Active',
-        color: 'light-green',
-        icon: 'account-check'
-      },
-      {
-        text: 'Injured',
-        color: 'pink',
-        icon: 'hospital'
-      },
-      {
-        text: 'Loaned',
-        color: 'indigo',
-        icon: 'transit-transfer'
-      },
-      {
-        text: 'Pending',
-        color: 'deep-orange',
-        icon: 'lock-clock'
-      }
+      { text: 'All', color: 'blue', icon: 'earth' },
+      { text: 'Youth', color: 'cyan', icon: 'school' },
+      { text: 'Active', color: 'light-green', icon: 'account-check' },
+      { text: 'Injured', color: 'pink', icon: 'hospital' },
+      { text: 'Loaned', color: 'indigo', icon: 'transit-transfer' },
+      { text: 'Pending', color: 'deep-orange', icon: 'lock-clock' }
     ]
     search = ''
 
@@ -251,121 +210,40 @@
 
     get headers () {
       let headers = [
-        {
-          text: 'Name',
-          value: 'name'
-        },
-        {
-          text: 'Status',
-          value: 'status',
-          align: 'center',
-          sortable: false,
-          width: 40
-        },
-        {
-          text: 'Age',
-          value: 'age',
-          align: 'center'
-        },
-        {
-          text: 'Position',
-          value: 'pos_idx',
-          align: 'center'
-        },
-        {
-          text: 'Kit No',
-          value: 'kit_no',
-          align: 'center'
-        }
+        { text: 'Name', value: 'name' },
+        { text: 'Status', value: 'status', align: 'center', sortable: false, width: 40 },
+        { text: 'Age', value: 'age', align: 'center' },
+        { text: 'Position', value: 'pos_idx', align: 'center' },
+        { text: 'Kit No', value: 'kit_no', align: 'center' }
       ]
 
       switch (this.mode) {
         case 0: // Overall
           return headers.concat([
-            {
-              text: '2nd Position(s)',
-              value: 'sec_pos',
-              align: 'center',
-              sortable: false
-            },
-            {
-              text: 'OVR',
-              value: 'ovr',
-              align: 'center'
-            },
-            {
-              text: 'Value',
-              value: 'value',
-              align: 'end'
-            }
+            { text: '2nd Position(s)', value: 'sec_pos', sortable: false, align: 'center' },
+            { text: 'OVR', value: 'ovr', align: 'center' },
+            { text: 'Value', value: 'value', align: 'end' }
           ])
         case 1: // Edit
           return [
-            {
-              text: 'Name',
-              value: 'name'
-            },
-            {
-              text: 'Position',
-              value: 'pos_idx',
-              align: 'center'
-            },
-            {
-              text: 'Kit No',
-              value: 'kit_no',
-              align: 'center'
-            },
-            {
-              text: 'OVR',
-              value: 'ovr',
-              align: 'center'
-            },
-            {
-              text: 'Value',
-              value: 'value',
-              align: 'end'
-            }
+            { text: 'Name', value: 'name' },
+            { text: 'Position', value: 'pos_idx', align: 'center' },
+            { text: 'Kit No', value: 'kit_no', align: 'center' },
+            { text: 'OVR', value: 'ovr', align: 'center' },
+            { text: 'Value', value: 'value', align: 'end' }
           ]
         case 2: // Contract
           return headers.concat([
-            {
-              text: 'Value',
-              value: 'value',
-              align: 'end'
-            },
-            {
-              text: 'Wage',
-              value: 'contract.wage',
-              align: 'end'
-            },
-            {
-              text: 'End Date',
-              value: 'contract.end_date',
-              align: 'end'
-            }
+            { text: 'Value', value: 'value', align: 'end' },
+            { text: 'Wage', value: 'contract.wage', align: 'end' },
+            { text: 'End Date', value: 'contract.end_date', align: 'end' }
           ])
         case 3: // Statistics
           return headers.concat([
-            {
-              text: 'Games Played',
-              value: 'matches.length',
-              align: 'center'
-            },
-            {
-              text: 'Goals',
-              value: 'goals.length',
-              align: 'center'
-            },
-            {
-              text: 'Assists',
-              value: 'assists.length',
-              align: 'center'
-            },
-            {
-              text: 'Clean Sheets',
-              value: 'cleanSheets.length',
-              align: 'center'
-            }
+            { text: 'Games Played', value: 'matches.length', align: 'center' },
+            { text: 'Goals', value: 'goals.length', align: 'center' },
+            { text: 'Assists', value: 'assists.length', align: 'center' },
+            { text: 'Clean Sheets', value: 'cleanSheets.length', align: 'center' }
           ])
       }
     }

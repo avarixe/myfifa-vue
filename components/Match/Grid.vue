@@ -99,30 +99,11 @@
     data () {
       return {
         headers: [
-          {
-            text: 'Competition',
-            value: 'competition',
-            align: 'end'
-          },
-          {
-            text: 'Home',
-            value: 'home',
-            align: 'end'
-          },
-          {
-            text: 'Score',
-            value: 'score',
-            align: 'center',
-            sortable: false
-          },
-          {
-            text: 'Away',
-            value: 'away'
-          },
-          {
-            text: 'Date Played',
-            value: 'date_played'
-          }
+          { text: 'Competition', value: 'competition', align: 'end' },
+          { text: 'Home', value: 'home', align: 'end' },
+          { text: 'Score', value: 'score', align: 'center', sortable: false },
+          { text: 'Away', value: 'away' },
+          { text: 'Date Played', value: 'date_played' }
         ],
         search: '',
         page: 1,
