@@ -48,6 +48,7 @@
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { TeamAccessible, MatchAccessible } from '@/mixins'
   import { FormationView } from '@/helpers'
   import { Player } from '@/models'
@@ -55,58 +56,58 @@
   import CapView from '@/components/Cap/View'
   import CapSubView from '@/components/Cap/SubView'
 
-  export default {
+  @Component({
     components: {
       FormationView,
       CapView,
       CapSubView
-    },
-    mixins: [
-      TeamAccessible,
-      MatchAccessible
-    ],
-    computed: {
-      readonly () {
-        return this.team.current_date !== this.match.date_played
-      },
-      starters () {
-        return this.match.caps.filter(c => c.start === 0)
-      },
-      substitutes () {
-        return this.match.caps.filter(c => c.start > 0)
-      },
-      defOVR () {
-        return this.avgOVR('DEF')
-      },
-      midOVR () {
-        return this.avgOVR('MID')
-      },
-      attOVR () {
-        return this.avgOVR('ATT')
-      }
-    },
-    methods: {
-      avgOVR (positionType) {
-        let playerIds = []
+    }
+  })
+  export default class MatchLineup extends mixins(MatchAccessible, TeamAccessible) {
+    get readonly () {
+      return this.team.current_date !== this.match.date_played
+    }
 
-        this.match.caps.forEach(cap => {
-          if (positions[cap.pos] === positionType) {
-            playerIds.push(cap.player_id)
-          }
-        })
+    get starters () {
+      return this.match.caps.filter(c => c.start === 0)
+    }
 
-        const totalOvr = Player
-          .query()
-          .with('histories')
-          .whereIdIn(playerIds)
-          .get()
-          .reduce(
-            (sum, player) => sum + player.ovrAt(this.match.date_played),
-            0
-          )
+    get substitutes () {
+      return this.match.caps.filter(c => c.start > 0)
+    }
 
-        return Math.round(totalOvr / playerIds.length)
-      }
+    get defOVR () {
+      return this.avgOVR('DEF')
+    }
+
+    get midOVR () {
+      return this.avgOVR('MID')
+    }
+
+    get attOVR () {
+      return this.avgOVR('ATT')
+    }
+
+    avgOVR (positionType) {
+      let playerIds = []
+
+      this.match.caps.forEach(cap => {
+        if (positions[cap.pos] === positionType) {
+          playerIds.push(cap.player_id)
+        }
+      })
+
+      const totalOvr = Player
+        .query()
+        .with('histories')
+        .whereIdIn(playerIds)
+        .get()
+        .reduce(
+          (sum, player) => sum + player.ovrAt(this.match.date_played),
+          0
+        )
+
+      return Math.round(totalOvr / playerIds.length)
     }
   }
 </script>

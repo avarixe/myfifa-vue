@@ -50,30 +50,35 @@
             item-key="id"
             hide-default-footer
             no-data-text="No Matches Recorded"
-            :mobile-breakpoint="0"
             @page-count="pageCount = $event"
           >
-            <template #item="{ item: match }">
-              <v-tooltip bottom>
-                <template #activator="{ on }">
-                  <tr
-                    v-on="on"
-                    @click="$router.push(matchLink(match))"
-                  >
-                    <td class="text-xs-right">{{ match.competition }}</td>
-                    <td class="text-xs-right">{{ match.home }}</td>
-                    <td :class="`${resultColor(match.team_result)} text-xs-center`">
-                      {{ match.score }}
-                    </td>
-                    <td class="text-xs-left">{{ match.away }}</td>
-                    <td>
-                      {{ $_format($_parse(match.date_played), 'MMM DD, YYYY') }}
-                    </td>
-                  </tr>
-                </template>
-                Click to View Match: <br>
-                <i>{{ match.home }} v {{ match.away }}</i>
-              </v-tooltip>
+            <template #item.score="{ item }">
+              <v-btn
+                :to="matchLink(item)"
+                nuxt
+                text
+                :color="resultColor(item.team_result)"
+              >
+                <v-tooltip bottom>
+                  <template #activator="{ on }">
+                    <span v-on="on">
+                      <v-badge color="transparent">
+                        <template #badge>
+                          <v-icon :color="resultColor(item.team_result)">
+                            mdi-link-variant
+                          </v-icon>
+                        </template>
+                        {{ item.score }}
+                      </v-badge>
+                    </span>
+                  </template>
+                  Click to View Match: <br>
+                  <i>{{ item.home }} v {{ item.away }}</i>
+                </v-tooltip>
+              </v-btn>
+            </template>
+            <template #item.date_played="{ item }">
+              {{ $_format($_parse(item.date_played), 'MMM DD, YYYY') }}
             </template>
           </v-data-table>
         </template>
@@ -84,116 +89,114 @@
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { Competition, Match } from '@/models'
   import { PagedTable } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
   import { addYears } from 'date-fns'
 
-  export default {
+  @Component({
     components: {
       PagedTable
-    },
-    mixins: [
-      TeamAccessible
-    ],
-    data () {
-      return {
-        headers: [
-          { text: 'Competition', value: 'competition', align: 'end' },
-          { text: 'Home', value: 'home', align: 'end' },
-          { text: 'Score', value: 'score', align: 'center', sortable: false },
-          { text: 'Away', value: 'away' },
-          { text: 'Date Played', value: 'date_played' }
-        ],
-        search: '',
-        page: 1,
-        pageCount: 0,
-        seasonFilter: null,
-        competition: null
-      }
-    },
-    computed: {
-      matches () {
-        return Match
-          .query()
-          .where('team_id', this.team.id)
-          .get()
-      },
-      rows () {
-        const teamStart = this.$_parse(this.team.start_date)
+    }
+  })
+  export default class MatchGrid extends mixins(TeamAccessible) {
+    headers = [
+      { text: 'Competition', value: 'competition', align: 'end' },
+      { text: 'Home', value: 'home', align: 'end' },
+      { text: 'Score', value: 'score', align: 'center', sortable: false },
+      { text: 'Away', value: 'away' },
+      { text: 'Date Played', value: 'date_played' }
+    ]
+    search = ''
+    page = 1
+    pageCount = 0
+    seasonFilter = null
+    competition = null
 
-        return this.matches
-          .filter(match => {
-            if (typeof this.seasonFilter === 'number') {
-              const datePlayed = this.$_parse(match.date_played)
-              const seasonStart = addYears(teamStart, this.seasonFilter)
-              const seasonEnd = addYears(teamStart, this.seasonFilter + 1)
-              return seasonStart <= datePlayed && datePlayed < seasonEnd
-            } else {
-              return true
-            }
-          })
-          .filter(match => {
-            return typeof this.competition === 'string'
-              ? match.competition === this.competition
-              : true
-          })
-      },
-      seasons () {
-        let seasons = []
+    get matches () {
+      return Match
+        .query()
+        .where('team_id', this.team.id)
+        .get()
+    }
 
-        for (let i = 0; i <= this.season; i++) {
-          seasons.push({
-            id: i,
-            label: this.seasonLabel(i)
-          })
-        }
+    get rows () {
+      const teamStart = this.$_parse(this.team.start_date)
 
-        return seasons
-      },
-      competitions () {
-        return Competition
-          .query()
-          .where('team_id', this.team.id)
-          .where(comp => {
-            return typeof this.seasonFilter === 'number'
-              ? comp.season === this.seasonFilter
-              : true
-          })
-          .get()
-          .map(comp => comp.name)
-      }
-    },
-    methods: {
-      clearAllFilters () {
-        this.seasonFilter = null
-        this.competition = null
-      },
-      viewMatch (match) {
-        this.$router.push({
-          name: 'matches-id',
-          params: { id: match.id }
-        })
-      },
-      resultColor (result) {
-        switch (result) {
-          case 'win':
-            return 'success--text'
-          case 'draw':
-            return 'warning--text'
-          case 'loss':
-            return 'red--text'
-          default:
-            return ''
-        }
-      },
-      matchLink (match) {
-        return {
-          name: 'teams-teamId-matches-matchId',
-          params: {
-            teamId: this.team.id,
-            matchId: match.id
+      return this.matches
+        .filter(match => {
+          if (typeof this.seasonFilter === 'number') {
+            const datePlayed = this.$_parse(match.date_played)
+            const seasonStart = addYears(teamStart, this.seasonFilter)
+            const seasonEnd = addYears(teamStart, this.seasonFilter + 1)
+            return seasonStart <= datePlayed && datePlayed < seasonEnd
+          } else {
+            return true
           }
+        })
+        .filter(match => {
+          return typeof this.competition === 'string'
+            ? match.competition === this.competition
+            : true
+        })
+    }
+
+    get seasons () {
+      let seasons = []
+
+      for (let i = 0; i <= this.season; i++) {
+        seasons.push({
+          id: i,
+          label: this.seasonLabel(i)
+        })
+      }
+
+      return seasons
+    }
+
+    get competitions () {
+      return Competition
+        .query()
+        .where('team_id', this.team.id)
+        .where(comp => {
+          return typeof this.seasonFilter === 'number'
+            ? comp.season === this.seasonFilter
+            : true
+        })
+        .get()
+        .map(comp => comp.name)
+    }
+
+    clearAllFilters () {
+      this.seasonFilter = null
+      this.competition = null
+    }
+
+    viewMatch (match) {
+      this.$router.push({
+        name: 'matches-id',
+        params: { id: match.id }
+      })
+    }
+
+    resultColor (result) {
+      switch (result) {
+        case 'win':
+          return 'success'
+        case 'draw':
+          return 'warning'
+        case 'loss':
+          return 'red'
+      }
+    }
+
+    matchLink (match) {
+      return {
+        name: 'teams-teamId-matches-matchId',
+        params: {
+          teamId: this.team.id,
+          matchId: match.id
         }
       }
     }
