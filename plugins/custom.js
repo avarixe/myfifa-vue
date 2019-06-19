@@ -53,7 +53,7 @@ Vue.prototype.$_validate = function (field, rules) {
   return validators
 }
 
-// DISPLAY UTILITY FUNCTIONS
+// UTILITY FUNCTIONS
 
 Vue.prototype.$_listArray = function (arr, emptyString = 'N/A') {
   return arr && arr.length > 0 ? arr.join(', ') : emptyString
@@ -71,4 +71,8 @@ Vue.prototype.$_formatDate = function (date, dateFormat = 'MMM DD, YYYY') {
 
 Vue.prototype.$_numberHint = function (num) {
   return num && parseInt(num).toLocaleString()
+}
+
+Vue.prototype.$_sum = function (array) {
+  return array.reduce((total, num) => total + num, 0)
 }

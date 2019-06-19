@@ -72,9 +72,9 @@
 </template>
 
 <script>
-  import { Vue, Component } from 'nuxt-property-decorator'
-  import { Team } from '@/models'
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { mapState, mapMutations } from 'vuex'
+  import { TeamAccessible } from '@/mixins'
   import TeamDatePicker from '@/components/Team/DatePicker'
 
   @Component({
@@ -88,13 +88,9 @@
       setDrawer: 'SET_DRAWER'
     })
   })
-  export default class TeamDrawer extends Vue {
+  export default class TeamDrawer extends mixins(TeamAccessible) {
     get teamId () {
       return this.$route.params.teamId
-    }
-
-    get team () {
-      return Team.find(this.teamId)
     }
 
     get teamName () {
@@ -105,27 +101,27 @@
       if (this.teamId) {
         return [
           {
-            to: this.team.linkTo('seasons'),
+            to: this.linkTo('seasons'),
             icon: 'mdi-trophy',
             text: 'Seasons'
           },
           {
-            to: this.team.linkTo('players'),
+            to: this.linkTo('players'),
             icon: 'mdi-account',
             text: 'Players'
           },
           {
-            to: this.team.linkTo('matches'),
+            to: this.linkTo('matches'),
             icon: 'mdi-soccer-field',
             text: 'Matches'
           },
           {
-            to: this.team.linkTo('squads'),
+            to: this.linkTo('squads'),
             icon: 'mdi-clipboard-text',
             text: 'Squads'
           },
           {
-            to: this.team.linkTo('transfers'),
+            to: this.linkTo('transfers'),
             icon: 'mdi-airplane-takeoff',
             text: 'Transfers'
           }

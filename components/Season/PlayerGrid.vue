@@ -44,7 +44,7 @@
             :page.sync="page"
             :loading="loading"
             multi-sort
-            :sort-by="['posIdx', 'numMinutes']"
+            :sort-by="['pos_idx', 'numMinutes']"
             :sort-desc="[false, true]"
             :search="search"
             item-key="id"
@@ -54,7 +54,7 @@
           >
             <template #item.name="{ item }">
               <v-btn
-                :to="playerLink(item)"
+                :to="item.link"
                 nuxt
                 text
                 color="info"
@@ -96,7 +96,6 @@
   })
   export default class SeasonPlayerGrid extends Vue {
     @Prop({ type: [String, Number], required: true }) season
-    @Prop({ type: Object, required: true }) seasonData
 
     mode = 0
     modes = [
@@ -108,7 +107,6 @@
     page = 1
     pageCount = 0
     search = ''
-    playerData = {}
 
     get team () {
       return Team.find(this.$route.params.teamId)
@@ -121,7 +119,7 @@
     get headers () {
       let headers = [
         { text: 'Name', value: 'name' },
-        { text: 'Position', value: 'posIdx', align: 'center' },
+        { text: 'Position', value: 'pos_idx', align: 'center' },
         { text: 'Age', value: 'age', align: 'center' }
       ]
 
@@ -129,7 +127,7 @@
         case 0: // Growth
           return headers.concat([
             { text: 'OVR', value: 'endOvr', align: 'center' },
-            { text: 'OVR Change', value: 'ovrChange', align: 'end' },
+            { text: 'OVR Change', value: 'ovrChange', align: 'center' },
             { text: 'Value', value: 'endValue', align: 'end' },
             { text: 'Value Change', value: 'valueChange', align: 'end' }
           ])
@@ -144,8 +142,69 @@
       }
     }
 
+    get players () {
+      return Player
+        .query()
+        .withAll()
+        .whereHas('contracts', query => {
+          query.where(contract =>
+            this.seasonStart < contract.end_date &&
+            contract.effective_date <= this.seasonEnd
+          )
+        })
+        .get()
+    }
+
     get rows () {
-      return Object.values(this.playerData)
+      return this.players.map(player => {
+        const firstRecord = player.recordAt(this.seasonStart) ||
+                            player.histories[0]
+        const lastRecord = player.recordAt(this.seasonEnd)
+
+        const startOvr = firstRecord.ovr
+        const startValue = firstRecord.value
+        const endOvr = lastRecord.ovr
+        const endValue = lastRecord.value
+
+        const ovrChange = endOvr - startOvr
+        const valueChange = (endValue - startValue) / startValue * 100
+
+        const matchIds = player.matches
+          .filter(m =>
+            this.seasonStart <= m.date_played &&
+            m.date_played <= this.seasonEnd
+          )
+          .map(m => m.id)
+
+        const caps = player.caps.filter(c => matchIds.indexOf(c.match_id) > -1)
+        const numSubs = caps.filter(c => c.start > 0).length
+        const numMinutes = this.$_sum(caps.map(c => c.stop - c.start))
+        const numGoals = player.goals
+          .filter(g => matchIds.indexOf(g.match_id) > -1)
+          .length
+        const numAssists = player.assists
+          .filter(a => matchIds.indexOf(a.match_id) > -1)
+          .length
+        const numCs = player.cleanSheets
+          .filter(cs => matchIds.indexOf(cs.id) > -1)
+          .length
+
+        return {
+          ...player,
+          age: parseInt(this.seasonEnd) - player.birth_year,
+          numGames: caps.length,
+          numSubs,
+          numMinutes,
+          numGoals,
+          numAssists,
+          numCs,
+
+          endOvr,
+          endValue,
+          ovrChange,
+          valueChange
+        }
+      })
     }
 
     get seasonStart () {
@@ -158,84 +217,6 @@
       let date = this.$_parse(this.team.start_date)
       date = addYears(date, parseInt(this.season) + 1)
       return this.$_format(date)
-    }
-
-    async mounted () {
-      await this.$store.dispatch('players/FETCH', {
-        teamId: this.team.id
-      })
-
-      for (let playerId of this.seasonData.player_ids) {
-        const {
-          name,
-          pos,
-          pos_idx: posIdx,
-          birth_year: birthYear
-        } = Player.find(playerId)
-        const playerRecords = this.seasonData.records[playerId]
-
-        const age = parseInt(this.seasonEnd) - birthYear
-
-        const firstRecord = this.firstSeasonRecord(playerRecords)
-        const lastRecord = this.lastSeasonRecord(playerRecords)
-
-        const startOvr = firstRecord.ovr
-        const startValue = firstRecord.value
-        const endOvr = lastRecord.ovr
-        const endValue = lastRecord.value
-
-        const ovrChange = endOvr - startOvr
-        const valueChange = (endValue - startValue) / startValue * 100
-
-        Vue.set(this.playerData, playerId, {
-          id: playerId,
-          name,
-          pos,
-          posIdx,
-          age,
-
-          numGames: this.seasonData.num_games[playerId] || 0,
-          numSubs: this.seasonData.num_subs[playerId] || 0,
-          numMinutes: this.seasonData.num_minutes[playerId] || 0,
-          numGoals: this.seasonData.num_goals[playerId] || 0,
-          numAssists: this.seasonData.num_assists[playerId] || 0,
-          numCs: this.seasonData.num_cs[playerId] || 0,
-
-          endOvr,
-          endValue,
-          ovrChange,
-          valueChange
-        })
-      }
-    }
-
-    closestRecord (records, date) {
-      return this.$_orderBy(
-        records,
-        rec => {
-          const date1 = rec.datestamp.replace(/[^0-9]/g, '')
-          const date2 = date.replace(/[^0-9]/g, '')
-          return Math.abs(date1 - date2)
-        }
-      )[0]
-    }
-
-    firstSeasonRecord (records) {
-      return this.closestRecord(records, this.seasonStart)
-    }
-
-    lastSeasonRecord (records) {
-      return this.closestRecord(records, this.seasonEnd)
-    }
-
-    playerLink (player) {
-      return {
-        name: 'teams-teamId-players-playerId',
-        params: {
-          teamId: this.$route.params.teamId,
-          playerId: player.id
-        }
-      }
     }
 
     ovrColor (player) {

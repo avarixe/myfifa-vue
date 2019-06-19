@@ -12,7 +12,7 @@
       <v-flex xs12>
         <v-btn
           v-if="pageSeason > 0"
-          :to="team.linkToSeason(pageSeason - 1)"
+          :to="linkToSeason(pageSeason - 1)"
           nuxt
           color="blue-grey"
           outlined
@@ -22,7 +22,7 @@
 
         <v-btn
           v-else
-          :to="team.linkToSeason(pageSeason + 1)"
+          :to="linkToSeason(pageSeason + 1)"
           nuxt
           color="blue-grey"
           outlined
@@ -37,13 +37,10 @@
               <v-tab>Players</v-tab>
 
               <v-tab-item>
-                <season-results-table :season-data="seasonData" />
+                <season-results-table :season="pageSeason" />
               </v-tab-item>
               <v-tab-item>
-                <player-grid
-                  :season="pageSeason"
-                  :season-data="seasonData"
-                />
+                <player-grid :season="pageSeason" />
               </v-tab-item>
             </v-tabs>
           </v-card-text>
@@ -71,13 +68,6 @@
     layout = () => 'default'
     middleware = () => 'authenticated'
 
-    async asyncData ({ store, params }) {
-      const { data } = await store.dispatch('teams/ANALYZE_SEASON', params)
-      return {
-        seasonData: data
-      }
-    }
-
     head () {
       return {
         title: this.title
@@ -89,11 +79,21 @@
     }
 
     get pageSeason () {
-      return this.$route.params.season
+      return parseInt(this.$route.params.season)
     }
 
     mounted () {
       this.$store.commit('app/SET_TITLE', this.title)
+    }
+
+    linkToSeason (season) {
+      return {
+        name: 'teams-teamId-seasons-season',
+        params: {
+          teamId: this.team.id,
+          season
+        }
+      }
     }
   }
 </script>

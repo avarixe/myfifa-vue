@@ -49,7 +49,7 @@
             :record="player"
             store="players"
             :label="player.name"
-            :redirect="team.linkTo('players')"
+            :redirect="linkTo('players')"
           />
         </v-flex>
       </v-layout>

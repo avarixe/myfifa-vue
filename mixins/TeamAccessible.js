@@ -14,21 +14,16 @@ export default class TeamAccessible extends Vue {
     return parseInt((currentDate - date) / (525600 * 60 * 1000))
   }
 
-  get seasonStart () {
-    let date = this.$_parse(this.team.start_date)
-    date = addYears(date, this.season)
-    return this.$_format(date, 'YYYY-MM-DD')
-  }
-
-  get seasonEnd () {
-    let date = this.$_parse(this.seasonStart)
-    date = addYears(date, 1)
-    return this.$_format(date, 'YYYY-MM-DD')
-  }
-
   seasonLabel (season) {
     let start = addYears(this.team.start_date, season)
     const end = addYears(start, 1)
     return `${this.$_format(start, 'YYYY')} - ${this.$_format(end, 'YYYY')}`
+  }
+
+  linkTo (page) {
+    return {
+      name: `teams-teamId-${page}`,
+      params: { teamId: this.team.id }
+    }
   }
 }

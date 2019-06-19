@@ -113,9 +113,17 @@ class Player extends Model {
     )
   }
 
-  ovrAt (date) {
+  recordAt (date) {
     const historyBefore = this.histories.filter(h => h.datestamp <= date)
-    return historyBefore[historyBefore.length - 1].ovr
+    return historyBefore[historyBefore.length - 1]
+  }
+
+  ovrAt (date) {
+    return this.recordAt(date).ovr
+  }
+
+  valueAt (date) {
+    return this.recordAt(date).value
   }
 }
 

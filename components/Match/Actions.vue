@@ -166,7 +166,7 @@
       :record="match"
       store="matches"
       :label="`${match.home} v ${match.away}`"
-      :redirect="team.linkTo('matches')"
+      :redirect="linkTo('matches')"
     />
   </div>
 </template>
