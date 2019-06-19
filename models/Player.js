@@ -56,6 +56,16 @@ class Player extends Model {
     }
   }
 
+  get link () {
+    return {
+      name: 'teams-teamId-players-playerId',
+      params: {
+        teamId: this.team_id,
+        playerId: this.id
+      }
+    }
+  }
+
   get isActive () {
     return this.status && this.status.length > 0
   }

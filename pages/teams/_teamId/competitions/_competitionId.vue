@@ -14,7 +14,7 @@
 
       <v-flex xs12>
         <v-btn
-          :to="seasonLink"
+          :to="competition.linkToSeason"
           nuxt
           outlined
           color="blue-grey"
@@ -100,7 +100,7 @@
               :record="competition"
               store="competitions"
               :label="`${competitionSeason} ${competition.name}`"
-              :redirect="seasonLink"
+              :redirect="competition.linkToSeason"
             >
               <v-btn
                 dark
@@ -230,16 +230,6 @@
 
     get competitionSeason () {
       return this.seasonLabel(this.competition.season)
-    }
-
-    get seasonLink () {
-      return {
-        name: 'teams-teamId-seasons-season',
-        params: {
-          teamId: this.team.id,
-          season: this.competition.season
-        }
-      }
     }
 
     mounted () {

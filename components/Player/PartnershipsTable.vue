@@ -45,7 +45,7 @@
           >
             <template #item.name="{ item: player }">
               <v-btn
-                :to="playerLink(player)"
+                :to="player.link"
                 nuxt
                 small
                 text
@@ -154,16 +154,6 @@
         .where('player_id', player.id)
         .where('assist_id', this.player.id)
         .count()
-    }
-
-    playerLink (player) {
-      return {
-        name: 'teams-teamId-players-playerId',
-        params: {
-          teamId: this.team.id,
-          playerId: player.id
-        }
-      }
     }
   }
 </script>

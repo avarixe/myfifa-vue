@@ -19,7 +19,7 @@
       >
         <template v-if="teamId">
           <v-list-item
-            :to="{ name: 'teams-teamId', params: { teamId } }"
+            :to="team.link"
             active-class=""
             exact
           >
@@ -105,42 +105,27 @@
       if (this.teamId) {
         return [
           {
-            to: {
-              name: 'teams-teamId-seasons',
-              params: { teamId: this.teamId }
-            },
+            to: this.team.linkTo('seasons'),
             icon: 'mdi-trophy',
             text: 'Seasons'
           },
           {
-            to: {
-              name: 'teams-teamId-players',
-              params: { teamId: this.teamId }
-            },
+            to: this.team.linkTo('players'),
             icon: 'mdi-account',
             text: 'Players'
           },
           {
-            to: {
-              name: 'teams-teamId-matches',
-              params: { teamId: this.teamId }
-            },
+            to: this.team.linkTo('matches'),
             icon: 'mdi-soccer-field',
             text: 'Matches'
           },
           {
-            to: {
-              name: 'teams-teamId-squads',
-              params: { teamId: this.teamId }
-            },
+            to: this.team.linkTo('squads'),
             icon: 'mdi-clipboard-text',
             text: 'Squads'
           },
           {
-            to: {
-              name: 'teams-teamId-transfers',
-              params: { teamId: this.teamId }
-            },
+            to: this.team.linkTo('transfers'),
             icon: 'mdi-airplane-takeoff',
             text: 'Transfers'
           }

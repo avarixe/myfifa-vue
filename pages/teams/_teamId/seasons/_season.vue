@@ -12,7 +12,7 @@
       <v-flex xs12>
         <v-btn
           v-if="pageSeason > 0"
-          :to="previousSeasonLink"
+          :to="team.linkToSeason(pageSeason - 1)"
           nuxt
           color="blue-grey"
           outlined
@@ -22,7 +22,7 @@
 
         <v-btn
           v-else
-          :to="nextSeasonLink"
+          :to="team.linkToSeason(pageSeason + 1)"
           nuxt
           color="blue-grey"
           outlined
@@ -90,26 +90,6 @@
 
     get pageSeason () {
       return this.$route.params.season
-    }
-
-    get previousSeasonLink () {
-      return {
-        name: 'teams-teamId-seasons-season',
-        params: {
-          teamId: this.team.id,
-          season: this.pageSeason - 1
-        }
-      }
-    }
-
-    get nextSeasonLink () {
-      return {
-        name: 'teams-teamId-seasons-season',
-        params: {
-          teamId: this.team.id,
-          season: this.pageSeason + 1
-        }
-      }
     }
 
     mounted () {

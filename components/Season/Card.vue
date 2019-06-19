@@ -8,7 +8,7 @@
 
     <v-card-actions>
         <v-btn
-          :to="seasonLink"
+          :to="team.linkToSeason(season)"
           color="primary"
           text
           nuxt
@@ -36,7 +36,7 @@
           </td>
           <td class="text-xs-center">
             <v-btn
-              :to="competitionLink(competition)"
+              :to="competition.link"
               nuxt
               color="primary"
               outlined
@@ -80,26 +80,6 @@
       let start = addYears(this.team.start_date, this.season)
       const end = addYears(start, 1)
       return `${this.$_format(start, 'YYYY')} - ${this.$_format(end, 'YYYY')}`
-    }
-
-    get seasonLink () {
-      return {
-        name: 'teams-teamId-seasons-season',
-        params: {
-          teamId: this.team.id,
-          season: this.season
-        }
-      }
-    }
-
-    competitionLink (competition) {
-      return {
-        name: 'teams-teamId-competitions-competitionId',
-        params: {
-          teamId: this.team.id,
-          competitionId: competition.id
-        }
-      }
     }
 
     competitionStatus (competition) {

@@ -48,6 +48,16 @@ class Match extends Model {
     }
   }
 
+  get link () {
+    return {
+      name: 'teams-teamId-matches-matchId',
+      params: {
+        teamId: this.team_id,
+        matchId: this.id
+      }
+    }
+  }
+
   get opponent () {
     return this.home === this.team.title
       ? this.away
@@ -58,6 +68,19 @@ class Match extends Model {
     const startDate = parse(this.team.start_date)
     const datePlayed = parse(this.date_played)
     return parseInt((datePlayed - startDate) / (525600 * 60 * 1000))
+  }
+
+  get resultColor () {
+    switch (this.team_result) {
+      case 'win':
+        return 'success'
+      case 'draw':
+        return 'warning'
+      case 'loss':
+        return 'red'
+      default:
+        return ''
+    }
   }
 }
 

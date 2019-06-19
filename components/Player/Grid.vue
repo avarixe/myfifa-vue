@@ -94,7 +94,7 @@
           >
             <template #item.name="{ item }">
               <v-btn
-                :to="playerLink(item)"
+                :to="item.link"
                 small
                 text
                 nuxt
@@ -157,7 +157,7 @@
 </template>
 
 <script>
-  import { mixins, Component, Watch } from 'nuxt-property-decorator'
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
   import { InlineField, PagedTable } from '@/helpers'
@@ -263,21 +263,6 @@
             return player.status === this.currentFilter.text
         }
       })
-    }
-
-    @Watch('filterActive')
-    resetPage () {
-      this.page = 1
-    }
-
-    playerLink (player) {
-      return {
-        name: 'teams-teamId-players-playerId',
-        params: {
-          teamId: this.team.id,
-          playerId: player.id
-        }
-      }
     }
 
     async updatePlayerAttribute (playerId, attribute, value) {

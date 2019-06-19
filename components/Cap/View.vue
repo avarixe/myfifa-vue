@@ -28,7 +28,7 @@
 
       <nuxt-link
         v-else
-        :to="playerLink"
+        :to="cap.playerLink"
         class="black--text"
       >
         <v-tooltip bottom>
@@ -71,16 +71,6 @@
     @Prop({ type: Object, required: true }) cap
     @Prop({ type: Object, required: true }) match
     @Prop(Boolean) readonly
-
-    get playerLink () {
-      return {
-        name: 'teams-teamId-players-playerId',
-        params: {
-          teamId: this.match.team_id,
-          playerId: this.cap.player_id
-        }
-      }
-    }
 
     get positions () {
       return Object.keys(positions)

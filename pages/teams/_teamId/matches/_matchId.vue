@@ -63,7 +63,7 @@
             class="font-weight-thin pa-3"
           >
             <fitty-text :text="match.home" />
-            <div :class="`${resultColor}--text font-weight-bold`">
+            <div :class="`${match.resultColor}--text font-weight-bold`">
               {{ match.home_score }}
               <span v-if="match.penalty_shootout">
                 ({{ match.penalty_shootout.home_score }})
@@ -75,7 +75,7 @@
             class="font-weight-thin pa-3"
           >
             <fitty-text :text="match.away" />
-            <div :class="`${resultColor}--text font-weight-bold`">
+            <div :class="`${match.resultColor}--text font-weight-bold`">
               {{ match.away_score }}
               <span v-if="match.penalty_shootout">
                 ({{ match.penalty_shootout.away_score }})
@@ -163,32 +163,13 @@
         .get()
     }
 
-    get resultColor () {
-      switch (this.match.team_result) {
-        case 'win':
-          return 'success'
-        case 'draw':
-          return 'warning'
-        case 'loss':
-          return 'red'
-        default:
-          return ''
-      }
-    }
-
     get prevMatchLink () {
       const prevMatch = Match
         .query()
         .where('date_played', date => date < this.match.date_played)
         .orderBy('date_played')
         .last()
-      return prevMatch && {
-        name: 'teams-teamId-matches-matchId',
-        params: {
-          teamId: this.team.id,
-          matchId: prevMatch.id
-        }
-      }
+      return prevMatch && prevMatch.link
     }
 
     get nextMatchLink () {
@@ -197,13 +178,7 @@
         .where('date_played', date => date > this.match.date_played)
         .orderBy('date_played')
         .first()
-      return nextMatch && {
-        name: 'teams-teamId-matches-matchId',
-        params: {
-          teamId: this.team.id,
-          matchId: nextMatch.id
-        }
-      }
+      return nextMatch && nextMatch.link
     }
 
     mounted () {

@@ -35,4 +35,28 @@ export default class Team extends Model {
       competitions: this.hasMany(Competition, 'team_id')
     }
   }
+
+  get link () {
+    return {
+      name: 'teams-teamId',
+      params: { teamId: this.id }
+    }
+  }
+
+  linkTo (page) {
+    return {
+      name: `teams-teamId-${page}`,
+      params: { teamId: this.id }
+    }
+  }
+
+  linkToSeason (season) {
+    return {
+      name: 'teams-teamId-seasons-season',
+      params: {
+        teamId: this.id,
+        season
+      }
+    }
+  }
 }

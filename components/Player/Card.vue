@@ -8,7 +8,7 @@
 
     <v-card-actions>
       <v-btn
-        :to="playerLink"
+        :to="player.link"
         nuxt
         :color="color"
         block
@@ -75,16 +75,6 @@
 
     get team () {
       return Team.find(this.$route.params.teamId)
-    }
-
-    get playerLink () {
-      return {
-        name: 'teams-teamId-players-playerId',
-        params: {
-          teamId: this.player.team_id,
-          playerId: this.player.id
-        }
-      }
     }
   }
 </script>

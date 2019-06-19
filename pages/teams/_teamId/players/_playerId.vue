@@ -49,7 +49,7 @@
             :record="player"
             store="players"
             :label="player.name"
-            :redirect="playersPage"
+            :redirect="team.linkTo('players')"
           />
         </v-flex>
       </v-layout>
@@ -211,13 +211,6 @@
         .withAll()
         .with('matches.team')
         .find(this.$route.params.playerId)
-    }
-
-    get playersPage () {
-      return {
-        name: 'teams-teamId-players',
-        params: { teamId: this.team.id }
-      }
     }
 
     mounted () {

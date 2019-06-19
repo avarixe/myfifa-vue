@@ -31,6 +31,26 @@ class Competition extends Model {
     }
   }
 
+  get link () {
+    return {
+      name: 'teams-teamId-competitions-competitionId',
+      params: {
+        teamId: this.team_id,
+        competitionId: this.id
+      }
+    }
+  }
+
+  get linkToSeason () {
+    return {
+      name: 'teams-teamId-seasons-season',
+      params: {
+        teamId: this.team_id,
+        season: this.season
+      }
+    }
+  }
+
   get teamOptions () {
     let array = this.stages.reduce((arr, stage) => {
       return [

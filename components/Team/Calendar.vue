@@ -102,16 +102,6 @@
         .where('date_played', date)
         .get()
     }
-
-    goToMatch (match) {
-      this.$router.push({
-        name: 'teams-teamId-matches-matchId',
-        params: {
-          teamId: this.team.id,
-          matchId: match.id
-        }
-      })
-    }
   }
 </script>
 

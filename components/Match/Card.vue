@@ -9,7 +9,7 @@
     <template v-if="match">
       <v-card-actions>
         <v-btn
-          :to="matchLink"
+          :to="match.link"
           nuxt
           :color="color"
           block
@@ -48,15 +48,5 @@
     @Prop(Object) match
     @Prop(String) title
     @Prop({ type: String, default: 'info' }) color
-
-    get matchLink () {
-      return {
-        name: 'teams-teamId-matches-matchId',
-        params: {
-          teamId: this.match.team_id,
-          matchId: this.match.id
-        }
-      }
-    }
   }
 </script>

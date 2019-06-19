@@ -18,7 +18,7 @@
     >{{ cap.name }}</span>
     <nuxt-link
       v-else
-      :to="playerLink"
+      :to="cap.playerLink"
       class="font-weight-thin body-2 black--text mr-4"
     >
       <v-tooltip bottom>
@@ -64,16 +64,6 @@
 
     get positions () {
       return Object.keys(positions)
-    }
-
-    get playerLink () {
-      return {
-        name: 'teams-teamId-players-playerId',
-        params: {
-          teamId: this.match.team_id,
-          playerId: this.cap.player_id
-        }
-      }
     }
 
     setPosition (position) {

@@ -124,124 +124,125 @@
 </template>
 
 <script>
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { mapActions } from 'vuex'
   import { Competition } from '@/models'
   import { teams } from '@/models/Match'
   import { VDateField } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
-  export default {
+  @Component({
     components: {
       VDateField
     },
-    mixins: [
-      DialogFormable,
-      TeamAccessible
-    ],
-    props: {
-      matchData: Object
-    },
-    data: () => ({
-      valid: false,
-      match: {
-        date_played: null,
-        competition: '',
-        home: '',
-        away: '',
-        extra_time: false
-      }
-    }),
-    computed: {
-      teams () {
-        return teams(this.team.id)
-      },
-      title () {
-        return this.match.id ? 'Edit Match' : 'New Match'
-      },
-      isTeamGame () {
-        return this.match.home === this.team.title ||
-               this.match.away === this.team.title
-      },
-      season () {
-        const startDate = this.$_parse(this.team.start_date)
-        const datePlayed = this.$_parse(this.match.date_played)
-        return parseInt((datePlayed - startDate) / (525600 * 60 * 1000))
-      },
-      competitions () {
-        return Competition
-          .query()
-          .where('season', this.season)
-          .where('champion', null)
-          .get()
-          .map(competition => competition.name)
-      },
-      stages () {
-        const competition = Competition
-          .query()
-          .with('stages')
-          .where('season', this.season)
-          .where('name', this.match.competition)
-          .first()
+    methods: mapActions('matches', {
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
+  })
+  export default class MatchForm extends mixins(DialogFormable, TeamAccessible) {
+    @Prop(Object) matchData
 
-        if (competition) {
-          return competition.stages
-            .filter(stage => !stage.table)
-            .map(stage => stage.name)
-        } else {
-          return []
-        }
+    valid = false
+    match = {
+      date_played: null,
+      competition: '',
+      home: '',
+      away: '',
+      extra_time: false
+    }
+
+    get teams () {
+      return teams(this.team.id)
+    }
+
+    get title () {
+      return this.match.id ? 'Edit Match' : 'New Match'
+    }
+
+    get isTeamGame () {
+      return this.match.home === this.team.title ||
+             this.match.away === this.team.title
+    }
+
+    get season () {
+      const startDate = this.$_parse(this.team.start_date)
+      const datePlayed = this.$_parse(this.match.date_played)
+      return parseInt((datePlayed - startDate) / (525600 * 60 * 1000))
+    }
+
+    get competitions () {
+      return Competition
+        .query()
+        .where('season', this.season)
+        .where('champion', null)
+        .get()
+        .map(competition => competition.name)
+    }
+
+    get stages () {
+      const competition = Competition
+        .query()
+        .with('stages')
+        .where('season', this.season)
+        .where('name', this.match.competition)
+        .first()
+
+      if (competition) {
+        return competition.stages
+          .filter(stage => !stage.table)
+          .map(stage => stage.name)
+      } else {
+        return []
       }
-    },
-    watch: {
-      dialog (val) {
-        if (val && this.matchData) {
-          Object.assign(this.match, this.$_pick(this.matchData, [
-            'id',
-            'date_played',
-            'competition',
-            'stage',
-            'home',
-            'away',
-            'extra_time'
-          ]))
-        } else {
-          this.match.date_played = this.team.current_date
-        }
+    }
+
+    @Watch('dialog')
+    setMatch (val) {
+      if (val && this.matchData) {
+        Object.assign(this.match, this.$_pick(this.matchData, [
+          'id',
+          'date_played',
+          'competition',
+          'stage',
+          'home',
+          'away',
+          'extra_time'
+        ]))
+      } else {
+        this.match.date_played = this.team.current_date
       }
-    },
-    methods: {
-      ...mapActions('matches', {
-        create: 'CREATE',
-        update: 'UPDATE'
-      }),
-      setHome () {
-        this.match.home = this.team.title
-        if (this.match.away === this.team.title) {
-          this.match.away = ''
-        }
-      },
-      setAway () {
-        this.match.away = this.team.title
-        if (this.match.home === this.team.title) {
-          this.match.home = ''
-        }
-      },
-      async submit () {
-        if ('id' in this.match) {
-          await this.update(this.match)
-        } else {
-          const { data } = await this.create({
+    }
+
+    setHome () {
+      this.match.home = this.team.title
+      if (this.match.away === this.team.title) {
+        this.match.away = ''
+      }
+    }
+
+    setAway () {
+      this.match.away = this.team.title
+      if (this.match.home === this.team.title) {
+        this.match.home = ''
+      }
+    }
+
+    async submit () {
+      if ('id' in this.match) {
+        await this.update(this.match)
+      } else {
+        const { data } = await this.create({
+          teamId: this.team.id,
+          match: this.match
+        })
+        this.$router.push({
+          name: 'teams-teamId-matches-matchId',
+          params: {
             teamId: this.team.id,
-            match: this.match
-          })
-          this.$router.push({
-            name: 'teams-teamId-matches-matchId',
-            params: {
-              teamId: this.team.id,
-              matchId: data.id
-            }
-          })
-        }
+            matchId: data.id
+          }
+        })
       }
     }
   }

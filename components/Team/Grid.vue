@@ -18,7 +18,7 @@
           >
             <template #item.title="{ item }">
               <v-btn
-                :to="teamLink(item)"
+                :to="item.link"
                 nuxt
                 text
                 color="info"
@@ -78,13 +78,6 @@
         alert(e.message)
       } finally {
         this.loading = false
-      }
-    }
-
-    teamLink (team) {
-      return {
-        name: 'teams-teamId',
-        params: { teamId: team.id }
       }
     }
   }

@@ -166,13 +166,13 @@
       :record="match"
       store="matches"
       :label="`${match.home} v ${match.away}`"
-      :redirect="matchesPage"
+      :redirect="team.linkTo('matches')"
     />
   </div>
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import { Squad } from '@/models'
   import MatchForm from './Form'
@@ -183,7 +183,7 @@
   import PenaltyShootoutForm from '@/components/PenaltyShootout/Form'
   import { RecordRemove } from '@/helpers'
 
-  export default {
+  @Component({
     components: {
       MatchForm,
       CapForm,
@@ -192,56 +192,42 @@
       SubstitutionForm,
       PenaltyShootoutForm,
       RecordRemove
-    },
-    mixins: [
-      TeamAccessible
-    ],
-    props: {
-      match: {
-        type: Object,
-        required: true
-      }
-    },
-    computed: {
-      squads () {
-        return Squad
-          .query()
-          .where('team_id', this.team.id)
-          .get()
-      },
-      active () {
-        return this.match.status && this.match.status.length > 0
-      },
-      validMatch () {
-        return !this.match.team_result || this.numPlayers >= 11
-      },
-      matchDraw () {
-        return this.match.home_score === this.match.away_score
-      },
-      numPlayers () {
-        return this.match.caps.length
-      },
-      matchesPage () {
-        return {
-          name: 'teams-teamId-matches',
-          params: { teamId: this.match.team_id }
-        }
-      }
-    },
-    methods: {
-      ...mapActions('matches', {
-        applySquad: 'APPLY_SQUAD',
-        remove: 'REMOVE'
-      }),
-      async applySquadToMatch (squadId) {
-        try {
-          await this.applySquad({
-            matchId: this.match.id,
-            squadId: squadId
-          })
-        } catch (e) {
-          alert(e.message)
-        }
+    }
+  })
+  export default class MatchActions extends mixins(TeamAccessible) {
+    @Prop({ type: Object, required: true }) match
+
+    get squads () {
+      return Squad
+        .query()
+        .where('team_id', this.team.id)
+        .get()
+    }
+
+    get active () {
+      return this.match.status && this.match.status.length > 0
+    }
+
+    get validMatch () {
+      return !this.match.team_result || this.numPlayers >= 11
+    }
+
+    get matchDraw () {
+      return this.match.home_score === this.match.away_score
+    }
+
+    get numPlayers () {
+      return this.match.caps.length
+    }
+
+    async applySquadToMatch (squadId) {
+      try {
+        await this.$store.dispatch('matches/APPLY_SQUAD', {
+          matchId: this.match.id,
+          squadId
+        })
+      } catch (e) {
+        alert(e.message)
       }
     }
   }

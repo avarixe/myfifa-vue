@@ -54,17 +54,17 @@
           >
             <template #item.score="{ item }">
               <v-btn
-                :to="matchLink(item)"
+                :to="item.link"
                 nuxt
                 text
-                :color="resultColor(item.team_result)"
+                :color="item.resultColor"
               >
                 <v-tooltip bottom>
                   <template #activator="{ on }">
                     <span v-on="on">
                       <v-badge color="transparent">
                         <template #badge>
-                          <v-icon :color="resultColor(item.team_result)">
+                          <v-icon :color="item.resultColor">
                             mdi-link-variant
                           </v-icon>
                         </template>
@@ -171,34 +171,6 @@
     clearAllFilters () {
       this.seasonFilter = null
       this.competition = null
-    }
-
-    viewMatch (match) {
-      this.$router.push({
-        name: 'matches-id',
-        params: { id: match.id }
-      })
-    }
-
-    resultColor (result) {
-      switch (result) {
-        case 'win':
-          return 'success'
-        case 'draw':
-          return 'warning'
-        case 'loss':
-          return 'red'
-      }
-    }
-
-    matchLink (match) {
-      return {
-        name: 'teams-teamId-matches-matchId',
-        params: {
-          teamId: this.team.id,
-          matchId: match.id
-        }
-      }
     }
   }
 </script>

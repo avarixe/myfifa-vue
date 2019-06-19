@@ -86,27 +86,11 @@
   })
   export default class TransferGrid extends mixins(TeamAccessible) {
     headers = [
-      {
-        text: 'Date',
-        value: 'effective_date'
-      },
-      {
-        text: 'Player',
-        value: 'player.name'
-      },
-      {
-        text: 'Origin',
-        value: 'origin'
-      },
-      {
-        text: 'Destination',
-        value: 'destination'
-      },
-      {
-        text: 'Fee',
-        value: 'fee',
-        align: 'end'
-      }
+      { text: 'Date', value: 'effective_date' },
+      { text: 'Player', value: 'player.name' },
+      { text: 'Origin', value: 'origin' },
+      { text: 'Destination', value: 'destination' },
+      { text: 'Fee', value: 'fee', align: 'end' }
     ]
     search = ''
     page = 1
@@ -155,16 +139,6 @@
 
     isTransferOut (transfer) {
       return transfer.origin === this.team.title
-    }
-
-    playerLink (transfer) {
-      return {
-        name: 'teams-teamId-players-playerId',
-        params: {
-          teamId: this.team.id,
-          playerId: transfer.player_id
-        }
-      }
     }
   }
 </script>
