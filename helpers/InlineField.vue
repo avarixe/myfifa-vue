@@ -8,7 +8,20 @@
         @open="open"
         @close="close"
       >
-        <span :class="displayClass">{{ humanizedDisplay }}</span>
+        <v-tooltip bottom>
+          <template #activator="{ on }">
+            <span v-on="on">
+              <v-badge color="transparent">
+                <template #badge>
+                  <v-icon>mdi-circle-edit-outline</v-icon>
+                </template>
+                <span :class="displayClass">{{ humanizedDisplay }}</span>
+              </v-badge>
+            </span>
+          </template>
+          Click to Edit {{ label }}
+        </v-tooltip>
+
         <template #input>
           <v-combobox
             v-if="inputType === 'combobox'"

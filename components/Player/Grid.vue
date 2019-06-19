@@ -94,7 +94,13 @@
             @page-count="pageCount = $event"
           >
             <template #item.name="{ item }">
-              <a @click="goToPlayer(item)">{{ item.name }}</a>
+              <v-btn
+                :to="playerLink(item)"
+                small
+                text
+                nuxt
+                color="info"
+              >{{ item.name }}</v-btn>
             </template>
             <template #item.kit_no="{ item }">
               <inline-field
@@ -386,14 +392,14 @@
       this.page = 1
     }
 
-    goToPlayer (player) {
-      this.$router.push({
+    playerLink (player) {
+      return {
         name: 'teams-teamId-players-playerId',
         params: {
           teamId: this.team.id,
           playerId: player.id
         }
-      })
+      }
     }
 
     async updatePlayerAttribute (playerId, attribute, value) {

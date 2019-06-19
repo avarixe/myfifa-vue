@@ -16,9 +16,12 @@
         :key="item.competition"
       >
         <td class="text-xs-left">
-          <a @click="competitionLink(item.competition)">
-            {{ item.competition }}
-          </a>
+          <v-btn
+            :to="competitionLink(item.competition)"
+            nuxt
+            text
+            color="info"
+          >{{ item.competition }}</v-btn>
         </td>
         <td>{{ item.wins + item.draws + item.losses }}</td>
         <td>{{ item.wins }}</td>
@@ -56,13 +59,13 @@
         .get()
 
       if (record.length > 0) {
-        this.$router.push({
+        return {
           name: 'teams-teamId-competitions-competitionId',
           params: {
             teamId: this.$route.params.teamId,
             competitionId: record[0].id
           }
-        })
+        }
       }
     }
   }

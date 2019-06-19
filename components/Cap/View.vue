@@ -5,7 +5,7 @@
         :item="cap"
         attribute="pos"
         input-type="select"
-        label="Position"
+        :label="`${cap.name} Position`"
         :options="positions"
         @close="setPosition($event)"
         :readonly="readonly"
@@ -17,7 +17,7 @@
         :item="cap"
         attribute="player_id"
         input-type="select"
-        label="Player"
+        :label="`${cap.pos} Player`"
         :options="players"
         option-avatar="pos"
         option-text="name"
@@ -26,11 +26,25 @@
         @close="setPlayer($event)"
       />
 
-      <a
+      <nuxt-link
         v-else
+        :to="playerLink"
         class="black--text"
-        @click="goToPlayer"
-      >{{ cap.name }}</a>
+      >
+        <v-tooltip bottom>
+          <template #activator="{ on }">
+            <span v-on="on">
+              <v-badge color="transparent">
+                <template #badge>
+                  <v-icon>mdi-link-variant</v-icon>
+                </template>
+                {{ cap.name }}
+              </v-badge>
+            </span>
+          </template>
+          View Player {{ cap.name }}
+        </v-tooltip>
+      </nuxt-link>
     </div>
 
     <cap-events
@@ -57,6 +71,16 @@
     @Prop({ type: Object, required: true }) cap
     @Prop({ type: Object, required: true }) match
     @Prop(Boolean) readonly
+
+    get playerLink () {
+      return {
+        name: 'teams-teamId-players-playerId',
+        params: {
+          teamId: this.match.team_id,
+          playerId: this.cap.player_id
+        }
+      }
+    }
 
     get positions () {
       return Object.keys(positions)
@@ -86,16 +110,6 @@
 
     async setPlayer (playerId) {
       await this.updateCap('player_id', playerId)
-    }
-
-    goToPlayer () {
-      this.$router.push({
-        name: 'teams-teamId-players-playerId',
-        params: {
-          teamId: this.match.team_id,
-          playerId: this.cap.player_id
-        }
-      })
     }
 
     playerName (id) {

@@ -47,7 +47,7 @@
   export default class MatchCard extends Vue {
     @Prop(Object) match
     @Prop(String) title
-    @Prop(String) color
+    @Prop({ type: String, default: 'info' }) color
 
     get matchLink () {
       return {

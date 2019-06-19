@@ -1,31 +1,47 @@
 <template>
-  <v-list-item>
+  <v-list-item two-line>
     <v-list-item-action class="font-weight-bold">
       <inline-field
         :item="cap"
         attribute="pos"
         input-type="select"
-        label="Position"
+        :label="`${cap.name} Position`"
         :options="positions"
         @close="setPosition($event)"
         :readonly="readonly"
       />
     </v-list-item-action>
 
-    <v-list-item-content>
-      <v-list-item-title>
-        <a
-          class="font-weight-thin body-2 black--text"
-          @click="goToPlayer"
-        >{{ cap.name }}</a>
+    <span
+      v-if="!readonly"
+      class="font-weight-thin body-2 mr-4"
+    >{{ cap.name }}</span>
+    <nuxt-link
+      v-else
+      :to="playerLink"
+      class="font-weight-thin body-2 black--text mr-4"
+    >
+      <v-tooltip bottom>
+        <template #activator="{ on }">
+          <span v-on="on">
+            <v-badge color="transparent">
+              <template #badge>
+                <v-icon>mdi-link-variant</v-icon>
+              </template>
+              {{ cap.name }}
+            </v-badge>
+          </span>
+        </template>
+        View Player {{ cap.name }}
+      </v-tooltip>
+    </nuxt-link>
 
-        <cap-events
-          :cap="cap"
-          :match="match"
-          class="d-inline-block"
-        />
-      </v-list-item-title>
-    </v-list-item-content>
+    <cap-events
+      :cap="cap"
+      :match="match"
+      class="d-inline-block"
+    />
+
   </v-list-item>
 </template>
 
@@ -50,20 +66,20 @@
       return Object.keys(positions)
     }
 
-    setPosition (position) {
-      this.$store.dispatch('caps/UPDATE', {
-        ...this.cap,
-        pos: position
-      })
-    }
-
-    goToPlayer () {
-      this.$router.push({
+    get playerLink () {
+      return {
         name: 'teams-teamId-players-playerId',
         params: {
           teamId: this.match.team_id,
           playerId: this.cap.player_id
         }
+      }
+    }
+
+    setPosition (position) {
+      this.$store.dispatch('caps/UPDATE', {
+        ...this.cap,
+        pos: position
       })
     }
   }

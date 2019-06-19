@@ -71,7 +71,7 @@
   })
   export default class PlayerCard extends Vue {
     @Prop({ type: Object, required: true }) player
-    @Prop(String) color
+    @Prop({ type: String, default: 'info' }) color
 
     get team () {
       return Team.find(this.$route.params.teamId)

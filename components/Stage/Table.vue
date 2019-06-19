@@ -5,6 +5,7 @@
         :key="key"
         :item="table"
         attribute="name"
+        :label="table.name"
         :readonly="readonly"
         @close="updateStageAttribute(table.id, 'name', $event)"
         display-class="font-weight-light"
@@ -49,7 +50,7 @@
         <inline-field
           :item="item"
           attribute="wins"
-          label="W"
+          label="Wins"
           input-type="number"
           @close="updateRowAttribute(item.id, 'wins', $event)"
           :readonly="readonly"
@@ -60,7 +61,7 @@
         <inline-field
           :item="item"
           attribute="draws"
-          label="D"
+          label="Draws"
           input-type="number"
           @close="updateRowAttribute(item.id, 'draws', $event)"
           :readonly="readonly"
@@ -71,7 +72,7 @@
         <inline-field
           :item="item"
           attribute="losses"
-          label="L"
+          label="Losses"
           input-type="number"
           @close="updateRowAttribute(item.id, 'losses', $event)"
           :readonly="readonly"
@@ -82,7 +83,7 @@
         <inline-field
           :item="item"
           attribute="goals_for"
-          label="GF"
+          label="Goals For"
           input-type="number"
           @close="updateRowAttribute(item.id, 'goals_for', $event)"
           :readonly="readonly"
@@ -93,7 +94,7 @@
         <inline-field
           :item="item"
           attribute="goals_against"
-          label="GA"
+          label="Goals Against"
           input-type="number"
           @close="updateRowAttribute(item.id, 'goals_against', $event)"
           :readonly="readonly"

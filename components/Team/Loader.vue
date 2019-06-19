@@ -12,11 +12,20 @@
           <v-card-title class="font-weight-light">
             <span v-if="!finished">{{ title }}</span>
             <template v-else>
-              Team Assets have been loaded!
-
-              <v-spacer />
-
-              <v-icon color="success">mdi-check</v-icon>
+              <v-layout
+                class="text-xs-center"
+                wrap
+              >
+                <v-flex xs12>
+                  <v-icon
+                    large
+                    color="success"
+                  >mdi-check</v-icon>
+                </v-flex>
+                <v-flex xs12>
+                  Team Assets have been loaded!
+                </v-flex>
+              </v-layout>
             </template>
           </v-card-title>
 

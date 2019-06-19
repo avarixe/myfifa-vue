@@ -5,6 +5,7 @@
         :key="key"
         :item="round"
         attribute="name"
+        :label="round.name"
         :readonly="readonly"
         @close="updateStageAttribute(round.id, 'name', $event)"
         display-class="font-weight-light"

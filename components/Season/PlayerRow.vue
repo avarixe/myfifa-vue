@@ -1,7 +1,12 @@
 <template>
   <tr>
     <td class="text-xs-left">
-      <a @click="goToPlayer">{{ player.name }}</a>
+      <v-btn
+        :to="playerLink"
+        nuxt
+        text
+        color="info"
+      >{{ player.name }}</v-btn>
     </td>
     <td class="text-xs-center">{{ player.pos }}</td>
     <td class="text-xs-center">{{ player.age }}</td>
@@ -112,14 +117,14 @@
       }
     }
 
-    goToPlayer () {
-      this.$router.push({
+    get playerLink () {
+      return {
         name: 'teams-teamId-players-playerId',
         params: {
           teamId: this.$route.params.teamId,
           playerId: this.player.id
         }
-      })
+      }
     }
   }
 </script>

@@ -60,7 +60,6 @@
             <match-card
               :match="match"
               :title="`${match.home} v ${match.away}`"
-              color="info"
             />
           </v-dialog>
         </template>

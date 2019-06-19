@@ -45,9 +45,13 @@
             @page-count="pageCount = $event"
           >
             <template #item.name="{ item: player }">
-              <a @click="goToPlayer(player)">
-                {{ player.name }}
-              </a>
+              <v-btn
+                :to="playerLink(player)"
+                nuxt
+                small
+                text
+                color="info"
+              >{{ player.name }}</v-btn>
             </template>
           </v-data-table>
         </template>
@@ -168,14 +172,14 @@
         .count()
     }
 
-    goToPlayer (player) {
-      this.$router.push({
+    playerLink (player) {
+      return {
         name: 'teams-teamId-players-playerId',
         params: {
           teamId: this.team.id,
           playerId: player.id
         }
-      })
+      }
     }
   }
 </script>
