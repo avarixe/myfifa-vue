@@ -61,6 +61,7 @@
           :players="injuredPlayers"
           title="Injured Players"
           color="pink"
+          :attributes="[{ text: 'Injury', value: 'injury' }]"
         />
       </v-flex>
 
@@ -70,6 +71,7 @@
           :players="loanedPlayers"
           title="Loaned Players"
           color="indigo"
+          :attributes="[{ text: 'Loaned To', value: 'loanedTo' }]"
         />
       </v-flex>
 
@@ -79,6 +81,7 @@
           :players="playersWithExpiringContracts"
           title="Expiring Contracts"
           color="orange"
+          :attributes="[{ text: 'OVR', value: 'ovr' }]"
         />
       </v-flex>
 
@@ -172,6 +175,7 @@
     getPlayersByStatus (status) {
       return Player
         .query()
+        .withAll()
         .where('team_id', this.team.id)
         .where('status', status)
         .get()

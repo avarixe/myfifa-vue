@@ -1,5 +1,5 @@
 import { Vue, Component } from 'nuxt-property-decorator'
-import { addYears } from 'date-fns'
+import { format, parse, addYears } from 'date-fns'
 import { Team } from '@/models'
 
 @Component
@@ -12,6 +12,16 @@ export default class TeamAccessible extends Vue {
     const date = this.$_parse(this.team.start_date)
     const currentDate = this.$_parse(this.team.current_date)
     return parseInt((currentDate - date) / (525600 * 60 * 1000))
+  }
+
+  get seasonStart () {
+    const date = parse(this.team.start_date)
+    return format(addYears(date, this.season), 'YYYY-MM-DD')
+  }
+
+  get seasonEnd () {
+    const date = parse(this.seasonStart)
+    return format(addYears(date, 1), 'YYYY-MM-DD')
   }
 
   seasonLabel (season) {

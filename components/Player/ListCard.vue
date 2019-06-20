@@ -8,34 +8,46 @@
 
     <v-simple-table>
       <thead>
-        <th>Player</th>
-        <th></th>
+        <th class="text-xs-center">Player</th>
+        <th class="text-xs-center">Position</th>
+        <th
+          v-for="(attribute, i) in attributes"
+          :key="i"
+          class="text-xs-center"
+        >{{ attribute.text }}</th>
       </thead>
-      <tbody>
+      <tbody class="text-xs-center">
         <tr
           v-for="player in players"
           :key="player.id"
         >
-          <td>{{ player.name }}</td>
-          <td class="text-xs-right">
+          <td>
             <v-dialog width="500">
               <template #activator="{ on }">
-                <v-btn
+                <a
                   v-on="on"
-                  :color="color"
-                  nuxt
-                  dark
-                  small
-                  outlined
-                  class="my-0"
-                >View</v-btn>
+                  :class="`my-0 ${color}--text`"
+                >
+                  <badged-link
+                    :text="player.name"
+                    :hint="`View ${player.name}`"
+                    :color="color"
+                  />
+                </a>
               </template>
 
               <player-card
-                :player="player"
+                :player-id="player.id"
                 :color="color"
               />
             </v-dialog>
+          </td>
+          <td>{{ player.pos }}</td>
+          <td
+            v-for="(attribute, i) in attributes"
+            :key="i"
+          >
+            {{ player[attribute.value] }}
           </td>
         </tr>
       </tbody>
@@ -46,15 +58,18 @@
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import PlayerCard from './Card'
+  import { BadgedLink } from '@/helpers'
 
   @Component({
     components: {
+      BadgedLink,
       PlayerCard
     }
   })
-  export default class PlayersCard extends Vue {
+  export default class PlayersListCard extends Vue {
     @Prop({ type: Array, default: [] }) players
     @Prop({ type: String, default: 'primary' }) color
     @Prop(String) title
+    @Prop({ type: Array, default: [] }) attributes
   }
 </script>

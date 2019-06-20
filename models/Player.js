@@ -113,6 +113,28 @@ class Player extends Model {
     )
   }
 
+  get injury () {
+    const lastInjury = Injury
+      .query()
+      .where('player_id', this.id)
+      .orderBy('start_date', 'asc')
+      .last()
+    return this.status === 'Injured' && lastInjury && lastInjury.description
+  }
+
+  get loanedTo () {
+    const lastLoan = Loan
+      .query()
+      .where('player_id', this.id)
+      .orderBy('start_date', 'asc')
+      .last()
+    return this.status === 'Loaned' && lastLoan && lastLoan.destination
+  }
+
+  get expiresOn () {
+    return this.contract.end_date
+  }
+
   recordAt (date) {
     const historyBefore = this.histories.filter(h => h.datestamp <= date)
     return historyBefore[historyBefore.length - 1]

@@ -13,13 +13,18 @@
           text
           nuxt
           block
-        >View Season</v-btn>
+        >
+          <badged-link
+            text="View Season"
+            color="primary"
+          />
+        </v-btn>
     </v-card-actions>
 
     <v-simple-table>
       <thead>
-        <th>Competitions</th>
         <th />
+        <th>Competitions</th>
       </thead>
       <tbody>
         <tr
@@ -32,15 +37,19 @@
               :color="competitionStatus(competition).color"
               small
             >{{ competitionStatus(competition).icon }}</v-icon>
-            {{ competition.name }}
           </td>
-          <td class="text-xs-center">
-            <v-btn
+
+          <td>
+            <nuxt-link
               :to="competition.link"
-              nuxt
-              color="primary"
-              outlined
-            >View</v-btn>
+              class="black--text"
+            >
+              <badged-link
+                :text="competition.name"
+                :hint="`View ${competition.name}`"
+                color="black"
+              />
+            </nuxt-link>
           </td>
         </tr>
       </tbody>
@@ -51,9 +60,14 @@
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { addYears } from 'date-fns'
+  import { BadgedLink } from '@/helpers'
   import { Team, Competition } from '@/models'
 
-  @Component
+  @Component({
+    components: {
+      BadgedLink
+    }
+  })
   export default class SeasonCard extends Vue {
     @Prop({ type: Number, required: true }) season
     @Prop(Boolean) compact

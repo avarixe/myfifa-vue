@@ -53,12 +53,23 @@
             @page-count="pageCount = $event"
           >
             <template #item.name="{ item }">
-              <v-btn
-                :to="item.link"
-                nuxt
-                text
-                color="info"
-              >{{ item.name }}</v-btn>
+              <v-dialog width="500px">
+                <template #activator="{ on }">
+                  <v-btn
+                    v-on="on"
+                    text
+                    color="info"
+                  >
+                    <badged-link
+                      :text="item.name"
+                      :hint="`View ${item.name}`"
+                      color="info"
+                    />
+                  </v-btn>
+                </template>
+
+                <player-card :player-id="item.id" />
+              </v-dialog>
             </template>
             <template #item.posIdx="{ item }">
               {{ item.pos }}
@@ -87,11 +98,14 @@
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { addYears } from 'date-fns'
   import { Team, Player } from '@/models'
-  import { PagedTable } from '@/helpers'
+  import { BadgedLink, PagedTable } from '@/helpers'
+  import PlayerCard from '@/components/Player/Card'
 
   @Component({
     components: {
-      PagedTable
+      BadgedLink,
+      PagedTable,
+      PlayerCard
     }
   })
   export default class SeasonPlayerGrid extends Vue {

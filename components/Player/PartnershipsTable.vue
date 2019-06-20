@@ -44,13 +44,23 @@
             @page-count="pageCount = $event"
           >
             <template #item.name="{ item: player }">
-              <v-btn
-                :to="player.link"
-                nuxt
-                small
-                text
-                color="info"
-              >{{ player.name }}</v-btn>
+              <v-dialog width="500px">
+                <template #activator="{ on }">
+                  <v-btn
+                    v-on="on"
+                    small
+                    text
+                    color="info"
+                  >
+                    <badged-link
+                      :text="player.name"
+                      color="info"
+                    />
+                  </v-btn>
+                </template>
+
+                <player-card :player-id="player.id" />
+              </v-dialog>
             </template>
           </v-data-table>
         </template>
@@ -63,11 +73,14 @@
   import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { Goal, Player } from '@/models'
   import { TeamAccessible } from '@/mixins'
-  import { PagedTable } from '@/helpers'
+  import { BadgedLink, PagedTable } from '@/helpers'
+  import PlayerCard from './Card'
 
   @Component({
     components: {
-      PagedTable
+      BadgedLink,
+      PagedTable,
+      PlayerCard
     }
   })
   export default class PlayerPartnershipsTable extends mixins(TeamAccessible) {

@@ -16,25 +16,24 @@
       v-if="!readonly"
       class="font-weight-thin body-2 mr-4"
     >{{ cap.name }}</span>
-    <nuxt-link
+    <v-dialog
       v-else
-      :to="cap.playerLink"
-      class="font-weight-thin body-2 black--text mr-4"
+      width="500"
     >
-      <v-tooltip bottom>
-        <template #activator="{ on }">
-          <span v-on="on">
-            <v-badge color="transparent">
-              <template #badge>
-                <v-icon>mdi-link-variant</v-icon>
-              </template>
-              {{ cap.name }}
-            </v-badge>
-          </span>
-        </template>
-        View Player {{ cap.name }}
-      </v-tooltip>
-    </nuxt-link>
+      <template #activator="{ on }">
+        <a
+          v-on="on"
+          class="font-weight-thin body-2 black--text mr-4"
+        >
+          <badged-link
+            :text="cap.name"
+            :hint="`View Player ${cap.name}`"
+          />
+        </a>
+      </template>
+
+      <player-card :player-id="cap.player_id" />
+    </v-dialog>
 
     <cap-events
       :cap="cap"
@@ -48,13 +47,16 @@
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { positions } from '@/models/Match'
-  import { InlineField } from '@/helpers'
+  import { BadgedLink, InlineField } from '@/helpers'
   import CapEvents from './Events'
+  import PlayerCard from '@/components/Player/Card'
 
   @Component({
     components: {
       CapEvents,
-      InlineField
+      BadgedLink,
+      InlineField,
+      PlayerCard
     }
   })
   export default class CapSubView extends Vue {

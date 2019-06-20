@@ -32,20 +32,22 @@ export default class Cap extends Model {
   }
 
   get matchLink () {
+    const match = Match.find(this.match_id)
     return {
       name: 'teams-teamId-matches-matchId',
       params: {
-        teamId: this.match.team_id,
+        teamId: match.team_id,
         matchId: this.match_id
       }
     }
   }
 
   get playerLink () {
+    const match = Match.find(this.match_id)
     return {
       name: 'teams-teamId-players-playerId',
       params: {
-        teamId: this.match.team_id,
+        teamId: match.team_id,
         playerId: this.player_id
       }
     }

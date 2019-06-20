@@ -1,3 +1,4 @@
+export { default as BadgedLink } from './BadgedLink'
 export { default as DialogForm } from './DialogForm'
 export { default as FittyText } from './FittyText'
 export { default as FormationView } from './FormationView'

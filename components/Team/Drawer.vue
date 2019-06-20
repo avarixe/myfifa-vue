@@ -19,7 +19,7 @@
       >
         <template v-if="teamId">
           <v-list-item
-            :to="team.link"
+            :to="{ name: 'teams-teamId', params: { teamId }}"
             active-class=""
             exact
           >

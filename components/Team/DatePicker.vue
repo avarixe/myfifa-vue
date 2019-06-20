@@ -33,7 +33,7 @@
 <script>
   import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
-  import { format, parse, addYears } from 'date-fns'
+  import { format } from 'date-fns'
 
   @Component
   export default class TeamDatePicker extends mixins(TeamAccessible) {
@@ -42,16 +42,6 @@
 
     calendar = false
     currentDate = format(new Date(), 'YYYY-MM-DD')
-
-    get seasonStart () {
-      const date = parse(this.team.start_date)
-      return format(addYears(date, this.season), 'YYYY-MM-DD')
-    }
-
-    get seasonEnd () {
-      const date = parse(this.seasonStart)
-      return format(addYears(date, 1), 'YYYY-MM-DD')
-    }
 
     @Watch('team', { immediate: true })
     setCurrentDate () {

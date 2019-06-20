@@ -59,22 +59,15 @@
                 text
                 :color="item.resultColor"
               >
-                <v-tooltip bottom>
-                  <template #activator="{ on }">
-                    <span v-on="on">
-                      <v-badge color="transparent">
-                        <template #badge>
-                          <v-icon :color="item.resultColor">
-                            mdi-link-variant
-                          </v-icon>
-                        </template>
-                        {{ item.score }}
-                      </v-badge>
-                    </span>
+                <badged-link
+                  :color="item.resultColor"
+                  :text="item.score"
+                >
+                  <template #tooltip>
+                    Click to View Match: <br>
+                    <i>{{ item.home }} v {{ item.away }}</i>
                   </template>
-                  Click to View Match: <br>
-                  <i>{{ item.home }} v {{ item.away }}</i>
-                </v-tooltip>
+                </badged-link>
               </v-btn>
             </template>
             <template #item.date_played="{ item }">
@@ -91,12 +84,13 @@
 <script>
   import { mixins, Component } from 'nuxt-property-decorator'
   import { Competition, Match } from '@/models'
-  import { PagedTable } from '@/helpers'
+  import { BadgedLink, PagedTable } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
   import { addYears } from 'date-fns'
 
   @Component({
     components: {
+      BadgedLink,
       PagedTable
     }
   })

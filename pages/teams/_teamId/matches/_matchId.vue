@@ -153,6 +153,7 @@
       return Match
         .query()
         .withAll()
+        .with('caps|match')
         .find(this.$route.params.matchId)
     }
 

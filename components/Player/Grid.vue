@@ -99,7 +99,13 @@
                 text
                 nuxt
                 color="info"
-              >{{ item.name }}</v-btn>
+              >
+                <badged-link
+                  :text="item.name"
+                  color="info"
+                  :hint="`View ${item.name}`"
+                />
+              </v-btn>
             </template>
             <template #item.kit_no="{ item }">
               <inline-field
@@ -160,10 +166,11 @@
   import { mixins, Component } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
-  import { InlineField, PagedTable } from '@/helpers'
+  import { BadgedLink, InlineField, PagedTable } from '@/helpers'
 
   @Component({
     components: {
+      BadgedLink,
       InlineField,
       PagedTable
     }

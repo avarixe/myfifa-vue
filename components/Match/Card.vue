@@ -14,7 +14,12 @@
           :color="color"
           block
           text
-        >View Match</v-btn>
+        >
+          <badged-link
+            text="View Match"
+            :color="color"
+          />
+        </v-btn>
       </v-card-actions>
 
       <v-card-text class="text-xs-center">
@@ -41,9 +46,14 @@
 </template>
 
 <script>
+  import { BadgedLink } from '@/helpers'
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
 
-  @Component
+  @Component({
+    components: {
+      BadgedLink
+    }
+  })
   export default class MatchCard extends Vue {
     @Prop(Object) match
     @Prop(String) title
