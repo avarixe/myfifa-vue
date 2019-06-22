@@ -93,7 +93,7 @@
       </v-layout>
 
       <v-flex
-        v-if="match.caps.length > 0"
+        v-if="match.caps.length >= 11"
         xs12
       >
         <v-card outlined>
@@ -153,7 +153,6 @@
       return Match
         .query()
         .withAll()
-        .with('caps|match')
         .find(this.$route.params.matchId)
     }
 

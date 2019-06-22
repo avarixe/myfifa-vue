@@ -20,6 +20,7 @@
     </template>
     <v-date-picker
       v-model="date"
+      ref="picker"
       :color="color"
       :min="min"
       :max="max"
@@ -40,6 +41,7 @@
     @Prop(String) color
     @Prop(String) prependIcon
     @Prop(Array) rules
+    @Prop(Boolean) startWithYear
 
     menu = false
     date = null
@@ -52,6 +54,15 @@
     @Watch('date')
     emitValue (value) {
       this.$emit('input', value)
+    }
+
+    @Watch('menu')
+    setPicker (val) {
+      if (val && this.startWithYear) {
+        this.$nextTick(() => {
+          this.$refs.picker.activePicker = 'YEAR'
+        })
+      }
     }
   }
 </script>

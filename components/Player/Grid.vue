@@ -148,10 +148,10 @@
             <template #item.sec_pos="{ item }">
               {{ $_listArray(item.sec_pos, '-') }}
             </template>
-            <template #item.contract.wage="{ item }">
+            <template #item.wage="{ item }">
               {{ contractWage(item) }}
             </template>
-            <template #item.contract.end_date="{ item }">
+            <template #item.endDate="{ item }">
               {{ contractDate(item) }}
             </template>
           </v-data-table>
@@ -201,7 +201,7 @@
     get players () {
       return Player
         .query()
-        .withAll()
+        .with('team|goals|assists|matches')
         .where('team_id', parseInt(this.$route.params.teamId))
         .orderBy('ovr', 'desc')
         .get()
@@ -242,34 +242,47 @@
         case 2: // Contract
           return headers.concat([
             { text: 'Value', value: 'value', align: 'end' },
-            { text: 'Wage', value: 'contract.wage', align: 'end' },
-            { text: 'End Date', value: 'contract.end_date', align: 'end' }
+            { text: 'Wage', value: 'wage', align: 'end' },
+            { text: 'End Date', value: 'endDate', align: 'end' }
           ])
         case 3: // Statistics
           return headers.concat([
             { text: 'Games Played', value: 'matches.length', align: 'center' },
             { text: 'Goals', value: 'goals.length', align: 'center' },
             { text: 'Assists', value: 'assists.length', align: 'center' },
-            { text: 'Clean Sheets', value: 'cleanSheets.length', align: 'center' }
+            { text: 'Clean Sheets', value: 'cleanSheets', align: 'center' }
           ])
       }
     }
 
     get rows () {
-      return this.players.filter(player => {
-        switch (this.filter) {
-          case 0: // All
-            return true
-          case 1: // Youth
-            return player.youth && player.contracts.length === 0
-          case 2: // Active
-            return player.status
-          case 3: // Injured
-          case 4: // Loaned
-          case 5: // Pending
-            return player.status === this.currentFilter.text
-        }
-      })
+      return this.players
+        .filter(player => {
+          switch (this.filter) {
+            case 0: // All
+              return true
+            case 1: // Youth
+              return player.youth && player.contracts.length === 0
+            case 2: // Active
+              return player.status
+            case 3: // Injured
+            case 4: // Loaned
+            case 5: // Pending
+              return player.status === this.currentFilter.text
+          }
+        })
+        .map(player => {
+          const cleanSheets = player.cleanSheets().length
+          const contract = player.contract()
+
+          return {
+            ...player,
+            link: player.link,
+            cleanSheets,
+            wage: contract.wage,
+            endDate: contract.end_date
+          }
+        })
     }
 
     async updatePlayerAttribute (playerId, attribute, value) {
@@ -288,12 +301,12 @@
     }
 
     contractWage (player) {
-      const value = this.$_get(player, 'contract.wage', '')
+      const value = player.wage
       return value && this.$_formatMoney(value)
     }
 
     contractDate (player) {
-      const value = this.$_get(player, 'contract.end_date', '')
+      const value = player.endDate
       return value && this.$_format(this.$_parse(value), 'MMM D, YYYY')
     }
   }

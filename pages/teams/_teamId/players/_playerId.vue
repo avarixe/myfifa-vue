@@ -77,7 +77,7 @@
               </v-flex>
 
               <v-flex xs6 sm3>
-                <div class="display-1 pink--text">{{ player.cleanSheets.length }}</div>
+                <div class="display-1 pink--text">{{ player.cleanSheets().length }}</div>
                 <div class="subheading">Clean Sheets</div>
               </v-flex>
 

@@ -152,20 +152,26 @@
     }
 
     get injuredPlayers () {
-      return this.getPlayersByStatus('Injured')
+      return this.getPlayersByStatus('Injured').map(player => ({
+        ...player,
+        injury: player.injury()
+      }))
     }
 
     get loanedPlayers () {
-      return this.getPlayersByStatus('Loaned')
+      return this.getPlayersByStatus('Loaned').map(player => ({
+        ...player,
+        loanedTo: player.loanedTo()
+      }))
     }
 
     get playersWithExpiringContracts () {
       return Player
         .query()
-        .with('contracts|team')
+        .with('team')
         .where('team_id', this.team.id)
         .get()
-        .filter(player => player.contract.end_date <= this.seasonEnd)
+        .filter(player => player.contract().end_date <= this.seasonEnd)
     }
 
     mounted () {
@@ -175,7 +181,7 @@
     getPlayersByStatus (status) {
       return Player
         .query()
-        .withAll()
+        .with('team')
         .where('team_id', this.team.id)
         .where('status', status)
         .get()

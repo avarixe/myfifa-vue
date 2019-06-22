@@ -99,7 +99,6 @@
 
       const totalOvr = Player
         .query()
-        .with('histories')
         .whereIdIn(playerIds)
         .get()
         .reduce(

@@ -47,6 +47,7 @@
               :rules="$_validate('End Date', ['required', 'date'])"
               :min="contract.effective_date"
               :max="maxEndDate"
+              start-with-year
             />
           </v-flex>
 
@@ -187,19 +188,13 @@
       if (val) {
         Object.assign(this.contract, {
           ...this.currentContract,
-          effective_date: this.team.current_date
+          effective_date: this.team.current_date,
+          end_date: this.team.current_date
         })
       } else {
         Object.assign(this.$data, this.$options.data.apply(this))
         // this.$refs.form.reset()
       }
-    }
-
-    @Watch('menus.end_date')
-    setPicker (val, oldVal) {
-      return !oldVal &&
-        val &&
-        this.$nextTick(() => (this.$refs.picker2.activePicker = 'YEAR'))
     }
 
     async submit () {

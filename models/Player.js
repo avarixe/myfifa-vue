@@ -96,24 +96,24 @@ class Player extends Model {
     }
   }
 
-  get contract () {
-    const contract = this.contracts.slice(-1)[0]
-
-    return contract &&
-           contract.effective_date <= this.team.current_date &&
-           this.team.current_date < contract.end_date
-      ? contract
-      : {}
+  contract () {
+    const contract = Contract
+      .query()
+      .where('player_id', this.id)
+      .where('effective_date', date => date <= this.team.current_date)
+      .where('end_date', date => this.team.current_date < date)
+      .last()
+    return contract || {}
   }
 
-  get cleanSheets () {
+  cleanSheets () {
     return this.matches.filter(m =>
       (m.home === this.team.title && m.away_score === 0) ||
       (m.away === this.team.title && m.home_score === 0)
     )
   }
 
-  get injury () {
+  injury () {
     const lastInjury = Injury
       .query()
       .where('player_id', this.id)
@@ -122,7 +122,7 @@ class Player extends Model {
     return this.status === 'Injured' && lastInjury && lastInjury.description
   }
 
-  get loanedTo () {
+  loanedTo () {
     const lastLoan = Loan
       .query()
       .where('player_id', this.id)
@@ -131,13 +131,16 @@ class Player extends Model {
     return this.status === 'Loaned' && lastLoan && lastLoan.destination
   }
 
-  get expiresOn () {
+  expiresOn () {
     return this.contract.end_date
   }
 
   recordAt (date) {
-    const historyBefore = this.histories.filter(h => h.datestamp <= date)
-    return historyBefore[historyBefore.length - 1]
+    return PlayerHistory
+      .query()
+      .where('player_id', this.id)
+      .where('datestamp', datestamp => datestamp <= date)
+      .last()
   }
 
   ovrAt (date) {

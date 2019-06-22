@@ -199,7 +199,7 @@
         const numAssists = player.assists
           .filter(a => matchIds.indexOf(a.match_id) > -1)
           .length
-        const numCs = player.cleanSheets
+        const numCs = player.cleanSheets()
           .filter(cs => matchIds.indexOf(cs.id) > -1)
           .length
 
