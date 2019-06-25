@@ -193,7 +193,8 @@
       PlayerHistoryChart,
       FittyText,
       RecordRemove
-    }
+    },
+    transition: 'fade-transition'
   })
   export default class PlayerPage extends mixins(TeamAccessible) {
     layout = () => 'default'

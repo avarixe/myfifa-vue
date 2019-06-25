@@ -30,7 +30,8 @@
     components: {
       PlayerForm,
       PlayerGrid
-    }
+    },
+    transition: 'fade-transition'
   })
   export default class PlayersPage extends mixins(TeamAccessible) {
     layout = () => 'default'

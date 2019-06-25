@@ -36,7 +36,7 @@ export default {
   /*
   ** Customize the progress bar color
   */
-  loading: '~/components/App/LoadingOverlay.vue', // { color: '#3B8070' },
+  // loading: '~/components/App/LoadingOverlay.vue', // { color: '#3B8070' },
 
   devModules: [
     '@nuxtjs/vuetify'

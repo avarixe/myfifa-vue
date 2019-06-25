@@ -30,7 +30,8 @@
     components: {
       MatchForm,
       MatchGrid
-    }
+    },
+    transition: 'fade-transition'
   })
   export default class MatchesPage extends mixins(TeamAccessible) {
     layout = () => 'default'

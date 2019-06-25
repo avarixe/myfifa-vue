@@ -41,7 +41,8 @@
     components: {
       SquadForm,
       SquadGrid
-    }
+    },
+    transition: 'fade-transition'
   })
   export default class SquadsPage extends mixins(TeamAccessible) {
     layout = () => 'default'

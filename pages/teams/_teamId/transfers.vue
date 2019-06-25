@@ -24,7 +24,8 @@
   @Component({
     components: {
       TransferGrid
-    }
+    },
+    transition: 'fade-transition'
   })
   export default class TransfersPage extends mixins(TeamAccessible) {
     layout = () => 'default'

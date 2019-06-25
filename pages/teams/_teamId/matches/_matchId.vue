@@ -16,7 +16,6 @@
         <v-btn
           v-if="prevMatchLink"
           :to="prevMatchLink"
-          nuxt
           color="blue-grey"
           outlined
         >Previous Match</v-btn>
@@ -24,7 +23,6 @@
         <v-btn
           v-if="nextMatchLink"
           :to="nextMatchLink"
-          nuxt
           color="blue-grey"
           outlined
         >Next Match</v-btn>
@@ -135,7 +133,8 @@
       MatchActions,
       MatchLineup,
       MatchTimeline
-    }
+    },
+    transition: 'fade-transition'
   })
   export default class MatchPage extends mixins(TeamAccessible) {
     layout = () => 'default'
@@ -152,7 +151,7 @@
     get match () {
       return Match
         .query()
-        .withAll()
+        .with('team|caps|goals|bookings|substitutions|penalty_shootout')
         .find(this.$route.params.matchId)
     }
 
@@ -166,6 +165,7 @@
     get prevMatchLink () {
       const prevMatch = Match
         .query()
+        .where('team_id', this.match.team_id)
         .where('date_played', date => date < this.match.date_played)
         .orderBy('date_played')
         .last()
@@ -175,6 +175,7 @@
     get nextMatchLink () {
       const nextMatch = Match
         .query()
+        .where('team_id', this.match.team_id)
         .where('date_played', date => date > this.match.date_played)
         .orderBy('date_played')
         .first()

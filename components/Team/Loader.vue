@@ -140,7 +140,7 @@
       if (val) {
         setTimeout(() => {
           this.$emit('loaded')
-        }, 1000)
+        }, 500)
       }
     }
 

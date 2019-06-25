@@ -62,7 +62,8 @@
       CompetitionForm,
       SeasonResultsTable,
       PlayerGrid
-    }
+    },
+    transition: 'fade-transition'
   })
   export default class SeasonPage extends mixins(TeamAccessible) {
     layout = () => 'default'

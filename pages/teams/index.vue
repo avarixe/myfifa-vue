@@ -36,7 +36,8 @@
     components: {
       TeamForm,
       TeamGrid
-    }
+    },
+    transition: 'fade-transition'
   })
   export default class TeamsPage extends Vue {
     layout = () => 'default'

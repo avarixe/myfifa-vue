@@ -192,7 +192,8 @@
       RoundStage,
       TableStage,
       StageForm
-    }
+    },
+    transition: 'fade-transition'
   })
   export default class CompetitionPage extends mixins(TeamAccessible) {
     layout = () => 'default'

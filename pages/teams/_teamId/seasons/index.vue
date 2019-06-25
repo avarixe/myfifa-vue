@@ -40,7 +40,8 @@
     components: {
       CompetitionForm,
       SeasonGrid
-    }
+    },
+    transition: 'fade-transition'
   })
   export default class SeasonsPage extends mixins(TeamAccessible) {
     layout = () => 'default'

@@ -27,7 +27,8 @@
     components: {
       LoginForm
     },
-    computed: mapGetters(['authenticated'])
+    computed: mapGetters(['authenticated']),
+    transition: 'fade-transition'
   })
   export default class IndexPage extends Vue {
     layout = () => 'default'
