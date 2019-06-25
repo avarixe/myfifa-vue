@@ -27,6 +27,7 @@
       :headers="headers"
       :items="items"
       :items-per-page="-1"
+      disable-sort
       hide-default-footer
     >
       <template #item.home_team="{ item }">
@@ -116,17 +117,16 @@
 
     get headers () {
       const headers = [
-        { text: 'Home Team', value: 'home_team', align: 'end', sortable: false },
-        { text: 'Home Score', value: 'home_score', align: 'end', sortable: false },
-        { text: 'Away Score', value: 'away_score', sortable: false },
-        { text: 'Away Team', value: 'away_team', sortable: false }
+        { text: 'Home Team', value: 'home_team', align: 'end' },
+        { text: 'Home Score', value: 'home_score', align: 'end' },
+        { text: 'Away Score', value: 'away_score' },
+        { text: 'Away Team', value: 'away_team' }
       ]
 
       if (!this.readonly) {
         headers.push({
           text: '',
           value: 'delete',
-          sortable: false,
           width: 40
         })
       }

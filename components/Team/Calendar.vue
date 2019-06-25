@@ -39,34 +39,38 @@
         :show-month-on-first="false"
       >
         <template #day="{ date }">
-          <v-dialog
+          <v-sheet
             v-for="match in matchesOn(date)"
             :key="match.id"
-            width="500"
+            tile
+            class="pa-1"
+            style="background:transparent;"
           >
-            <template #activator="{ on }">
-              <a
-                v-on="on"
-                v-ripple
-                class="d-block text-xs-center"
-              >
-                <fitty-text
-                  :text="match.opponent"
-                  :max-size="14"
+            <v-dialog width="500">
+              <template #activator="{ on }">
+                <a
+                  v-on="on"
+                  v-ripple
+                  class="d-block text-xs-center"
                 >
-                  <badged-link
+                  <fitty-text
                     :text="match.opponent"
-                    color="info"
-                  />
-                </fitty-text>
-              </a>
-            </template>
+                    :max-size="14"
+                  >
+                    <badged-link
+                      :text="match.opponent"
+                      color="info"
+                    />
+                  </fitty-text>
+                </a>
+              </template>
 
-            <match-card
-              :match="match"
-              :title="`${match.home} v ${match.away}`"
-            />
-          </v-dialog>
+              <match-card
+                :match="match"
+                :title="`${match.home} v ${match.away}`"
+              />
+            </v-dialog>
+          </v-sheet>
         </template>
       </v-calendar>
     </v-flex>
@@ -110,26 +114,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .v-calendar .v-btn {
-    padding: 3px 5px;
-    text-align: left;
-  }
-  >>> .v-calendar .v-btn .v-btn__content {
-    justify-content: normal;
-    text-transform: none;
-  }
-
-  .calendar-event {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    border-radius: 2px;
-    width: 100%;
-    font-size: 12px;
-    padding: 3px;
-    cursor: pointer;
-    margin-bottom: 1px;
-  }
-</style>
