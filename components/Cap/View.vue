@@ -55,7 +55,7 @@
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
-  import Player, { activePlayers } from '@/models/Player'
+  import { activePlayers } from '@/models/Player'
   import { positions } from '@/models/Match'
   import { BadgedLink, InlineField } from '@/helpers'
   import CapEvents from './Events'
@@ -102,10 +102,6 @@
 
     async setPlayer (playerId) {
       await this.updateCap('player_id', playerId)
-    }
-
-    playerName (id) {
-      return Player.find(id).name
     }
   }
 </script>

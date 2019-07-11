@@ -48,8 +48,8 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
-  import { TeamAccessible, MatchAccessible } from '@/mixins'
+  import { mixins, Component, Prop } from 'nuxt-property-decorator'
+  import { TeamAccessible } from '@/mixins'
   import { FormationView } from '@/helpers'
   import { Player } from '@/models'
   import { positions } from '@/models/Match'
@@ -63,7 +63,9 @@
       CapSubView
     }
   })
-  export default class MatchLineup extends mixins(MatchAccessible, TeamAccessible) {
+  export default class MatchLineup extends mixins(TeamAccessible) {
+    @Prop({ type: Object, required: true }) match
+
     get readonly () {
       return this.team.current_date !== this.match.date_played
     }

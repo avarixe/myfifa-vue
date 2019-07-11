@@ -95,8 +95,6 @@
             <v-tabs centered>
               <v-tab>Timeline</v-tab>
               <v-tab>Growth</v-tab>
-              <v-tab>Performance</v-tab>
-              <v-tab>Partnerships</v-tab>
 
               <!-- Timeline -->
               <v-tab-item>
@@ -145,24 +143,6 @@
                   </v-card-text>
                 </v-card>
               </v-tab-item>
-
-              <!-- Performance -->
-              <v-tab-item>
-                <v-card flat>
-                  <v-card-text>
-                    <player-performance-table :player="player" />
-                  </v-card-text>
-                </v-card>
-              </v-tab-item>
-
-              <!-- Partnerships -->
-              <v-tab-item>
-                <v-card flat>
-                  <v-card-text>
-                    <player-partnerships-table :player="player" />
-                  </v-card-text>
-                </v-card>
-              </v-tab-item>
             </v-tabs>
           </v-card-text>
         </v-card>
@@ -177,8 +157,6 @@
   import PlayerForm from '@/components/Player/Form'
   import PlayerActions from '@/components/Player/Actions'
   import PlayerTimeline from '@/components/Player/Timeline'
-  import PlayerPerformanceTable from '@/components/Player/PerformanceTable'
-  import PlayerPartnershipsTable from '@/components/Player/PartnershipsTable'
   import PlayerHistoryChart from '@/components/Charts/PlayerHistoryChart'
   import { FittyText, RecordRemove } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
@@ -188,8 +166,6 @@
       PlayerForm,
       PlayerActions,
       PlayerTimeline,
-      PlayerPerformanceTable,
-      PlayerPartnershipsTable,
       PlayerHistoryChart,
       FittyText,
       RecordRemove
@@ -210,7 +186,6 @@
       return Player
         .query()
         .withAll()
-        .with('matches.team')
         .find(this.$route.params.playerId)
     }
 

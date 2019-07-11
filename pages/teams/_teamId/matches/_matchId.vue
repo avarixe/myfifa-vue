@@ -117,7 +117,7 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
+  import { mixins, Component, Watch } from 'nuxt-property-decorator'
   import { Match, Player } from '@/models'
   import MatchForm from '@/components/Match/Form'
   import MatchActions from '@/components/Match/Actions'
@@ -184,6 +184,11 @@
 
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
+    }
+
+    @Watch('match.caps')
+    logCaps () {
+      console.log(this.match.caps)
     }
   }
 </script>

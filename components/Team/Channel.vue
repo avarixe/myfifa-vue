@@ -27,14 +27,8 @@
           id: this.$route.params.teamId
         }, {
           received: ({ type, data, destroyed }) => {
-            // console.log(type, data, destroyed)
-            if (type in models) {
-              if (destroyed) {
-                models[type].delete(data.id)
-              } else {
-                models[type].insert({ data })
-              }
-            }
+            console.log(type, data, destroyed)
+            this.updateStore({ type, data, destroyed })
           },
           connected: () => {}
         })
@@ -47,6 +41,16 @@
       this.subscriptions.forEach((sub) => {
         sub && this.cable.subscriptions.remove(sub)
       })
+    }
+
+    async updateStore ({ type, data, destroyed }) {
+      if (type in models) {
+        if (destroyed) {
+          models[type].delete(data.id)
+        } else {
+          models[type].insert({ data })
+        }
+      }
     }
   }
 </script>
