@@ -50,10 +50,10 @@ export function create ({ model, parent }) {
     success ({ data }) {
       model.insert({ data })
 
-      commit('broadcaster/ANNOUNCE', {
-        message: `${model.title} has been added.`,
-        color: 'success'
-      }, { root: true })
+      // commit('broadcaster/ANNOUNCE', {
+      //   message: `${model.title} has been added.`,
+      //   color: 'success'
+      // }, { root: true })
     }
   })
 }
@@ -70,10 +70,10 @@ export function update ({ model }) {
     success ({ data }) {
       model.insert({ data })
 
-      commit('broadcaster/ANNOUNCE', {
-        message: `${model.title} has been updated.`,
-        color: 'success'
-      }, { root: true })
+      // commit('broadcaster/ANNOUNCE', {
+      //   message: `${model.title} has been updated.`,
+      //   color: 'success'
+      // }, { root: true })
     }
   })
 }
@@ -88,10 +88,10 @@ export function remove ({ model }) {
     success ({ data }) {
       model.delete(data.id)
 
-      commit('broadcaster/ANNOUNCE', {
-        message: `${model.title} has been removed.`,
-        color: 'success'
-      }, { root: true })
+      // commit('broadcaster/ANNOUNCE', {
+      //   message: `${model.title} has been removed.`,
+      //   color: 'success'
+      // }, { root: true })
     }
   })
 }
