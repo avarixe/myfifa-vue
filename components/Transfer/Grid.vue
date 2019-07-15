@@ -52,12 +52,7 @@
                     small
                     text
                     color="info"
-                  >
-                    <badged-link
-                      :text="transfer.player.name"
-                      color="info"
-                    />
-                  </v-btn>
+                  >{{ transfer.player.name }}</v-btn>
                 </template>
 
                 <player-card :player-id="transfer.player_id" />
@@ -79,13 +74,12 @@
   import { mixins, Component } from 'nuxt-property-decorator'
   import { Player, Transfer } from '@/models'
   import PlayerCard from '@/components/Player/Card'
-  import { BadgedLink, PagedTable } from '@/helpers'
+  import { PagedTable } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
   import { addYears } from 'date-fns'
 
   @Component({
     components: {
-      BadgedLink,
       PagedTable,
       PlayerCard
     }

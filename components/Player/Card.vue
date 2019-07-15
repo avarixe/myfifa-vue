@@ -13,12 +13,7 @@
         :color="color"
         block
         text
-      >
-        <badged-link
-          :color="color"
-          text="View Player"
-        />
-      </v-btn>
+      >View Player</v-btn>
     </v-card-actions>
 
     <v-card-text class="text-xs-center">
@@ -67,11 +62,10 @@
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { Player, Team } from '@/models'
-  import { BadgedLink, FittyText } from '@/helpers'
+  import { FittyText } from '@/helpers'
 
   @Component({
     components: {
-      BadgedLink,
       FittyText
     }
   })

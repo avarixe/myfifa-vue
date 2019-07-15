@@ -59,13 +59,7 @@
                     v-on="on"
                     text
                     color="info"
-                  >
-                    <badged-link
-                      :text="item.name"
-                      :hint="`View ${item.name}`"
-                      color="info"
-                    />
-                  </v-btn>
+                  >{{ item.name }}</v-btn>
                 </template>
 
                 <player-card :player-id="item.id" />
@@ -98,12 +92,11 @@
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { addYears } from 'date-fns'
   import { Team, Player } from '@/models'
-  import { BadgedLink, PagedTable } from '@/helpers'
+  import { PagedTable } from '@/helpers'
   import PlayerCard from '@/components/Player/Card'
 
   @Component({
     components: {
-      BadgedLink,
       PagedTable,
       PlayerCard
     }

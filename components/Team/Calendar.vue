@@ -50,18 +50,12 @@
               <template #activator="{ on }">
                 <a
                   v-on="on"
-                  v-ripple
                   class="d-block text-xs-center"
                 >
                   <fitty-text
                     :text="match.opponent"
                     :max-size="14"
-                  >
-                    <badged-link
-                      :text="match.opponent"
-                      color="info"
-                    />
-                  </fitty-text>
+                  >{{ match.opponent }}</fitty-text>
                 </a>
               </template>
 
@@ -81,13 +75,12 @@
   import { mixins, Component } from 'nuxt-property-decorator'
   import { Match } from '@/models'
   import MatchCard from '@/components/Match/Card'
-  import { BadgedLink, FittyText } from '@/helpers'
+  import { FittyText } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
   import { format } from 'date-fns'
 
   @Component({
     components: {
-      BadgedLink,
       FittyText,
       MatchCard
     }

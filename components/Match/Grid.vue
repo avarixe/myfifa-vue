@@ -58,17 +58,7 @@
                 nuxt
                 text
                 :color="item.resultColor"
-              >
-                <badged-link
-                  :color="item.resultColor"
-                  :text="item.score"
-                >
-                  <template #tooltip>
-                    Click to View Match: <br>
-                    <i>{{ item.home }} v {{ item.away }}</i>
-                  </template>
-                </badged-link>
-              </v-btn>
+              >{{ item.score }}</v-btn>
             </template>
             <template #item.date_played="{ item }">
               {{ $_format($_parse(item.date_played), 'MMM DD, YYYY') }}
@@ -84,13 +74,12 @@
 <script>
   import { mixins, Component } from 'nuxt-property-decorator'
   import { Competition, Match } from '@/models'
-  import { BadgedLink, PagedTable } from '@/helpers'
+  import { PagedTable } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
   import { addYears } from 'date-fns'
 
   @Component({
     components: {
-      BadgedLink,
       PagedTable
     }
   })

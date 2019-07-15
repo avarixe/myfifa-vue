@@ -24,12 +24,7 @@
         <a
           v-on="on"
           class="font-weight-thin body-2 black--text mr-4"
-        >
-          <badged-link
-            :text="cap.name"
-            :hint="`View Player ${cap.name}`"
-          />
-        </a>
+        >{{ cap.name }}</a>
       </template>
 
       <player-card :player-id="cap.player_id" />
@@ -47,14 +42,13 @@
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { positions } from '@/models/Match'
-  import { BadgedLink, InlineField } from '@/helpers'
+  import { InlineField } from '@/helpers'
   import CapEvents from './Events'
   import PlayerCard from '@/components/Player/Card'
 
   @Component({
     components: {
       CapEvents,
-      BadgedLink,
       InlineField,
       PlayerCard
     }

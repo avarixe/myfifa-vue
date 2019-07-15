@@ -26,14 +26,9 @@
               <template #activator="{ on }">
                 <a
                   v-on="on"
+                  v-ripple
                   :class="`my-0 ${color}--text`"
-                >
-                  <badged-link
-                    :text="player.name"
-                    :hint="`View ${player.name}`"
-                    :color="color"
-                  />
-                </a>
+                >{{ player.name }}</a>
               </template>
 
               <player-card
@@ -58,11 +53,9 @@
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import PlayerCard from './Card'
-  import { BadgedLink } from '@/helpers'
 
   @Component({
     components: {
-      BadgedLink,
       PlayerCard
     }
   })

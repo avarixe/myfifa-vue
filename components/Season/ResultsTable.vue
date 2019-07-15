@@ -12,13 +12,7 @@
         nuxt
         text
         color="info"
-      >
-        <badged-link
-          :text="item.name"
-          :hint="`View ${item.name}`"
-          color="info"
-        />
-      </v-btn>
+      >{{ item.name }}</v-btn>
     </template>
   </v-data-table>
 </template>
@@ -26,13 +20,8 @@
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { Competition, Team } from '@/models'
-  import { BadgedLink } from '@/helpers'
 
-  @Component({
-    components: {
-      BadgedLink
-    }
-  })
+  @Component
   export default class SeasonResultsTable extends Vue {
     @Prop({ type: Number, required: true }) season
 
