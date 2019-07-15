@@ -167,6 +167,7 @@
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
   import { BadgedLink, InlineField, PagedTable } from '@/helpers'
+  import { positions } from '@/models/Player'
 
   @Component({
     components: {
@@ -203,7 +204,6 @@
         .query()
         .with('team|goals|assists|matches')
         .where('team_id', parseInt(this.$route.params.teamId))
-        .orderBy('ovr', 'desc')
         .get()
     }
 
@@ -220,7 +220,7 @@
         { text: 'Name', value: 'name' },
         { text: 'Status', value: 'status', align: 'center', sortable: false, width: 40 },
         { text: 'Age', value: 'age', align: 'center' },
-        { text: 'Position', value: 'pos_idx', align: 'center' },
+        { text: 'Position', value: 'pos', align: 'center', sort: this.sortPos },
         { text: 'Kit No', value: 'kit_no', align: 'center' }
       ]
 
@@ -234,7 +234,7 @@
         case 1: // Edit
           return [
             { text: 'Name', value: 'name' },
-            { text: 'Position', value: 'pos_idx', align: 'center' },
+            { text: 'Position', value: 'pos', align: 'center', sort: this.sortPos },
             { text: 'Kit No', value: 'kit_no', align: 'center' },
             { text: 'OVR', value: 'ovr', align: 'center' },
             { text: 'Value', value: 'value', align: 'end' }
@@ -298,6 +298,10 @@
           color: 'red'
         })
       }
+    }
+
+    sortPos (posA, posB) {
+      return positions.indexOf(posA) - positions.indexOf(posB)
     }
 
     contractWage (player) {

@@ -108,15 +108,13 @@
 
 <script>
   import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapState, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
   import { DialogFormable, TeamAccessible } from '@/mixins'
+  import { positions } from '@/models/Player'
 
   const mix = mixins(DialogFormable, TeamAccessible)
 
   @Component({
-    computed: mapState('players', [
-      'positions'
-    ]),
     methods: mapActions('players', {
       create: 'CREATE',
       update: 'UPDATE'
@@ -139,6 +137,10 @@
 
     get title () {
       return this.player.id ? 'Edit ' + this.player.name : 'New Player'
+    }
+
+    get positions () {
+      return positions
     }
 
     @Watch('dialog')

@@ -1,27 +1,6 @@
 import { crud, http, routes } from '@/api'
 import { Player, PlayerHistory } from '@/models'
 
-// initial state
-export const state = () => ({
-  positions: [
-    'GK',
-    'RB',
-    'RWB',
-    'CB',
-    'LB',
-    'LWB',
-    'RM',
-    'CDM',
-    'CM',
-    'CAM',
-    'LM',
-    'RW',
-    'CF',
-    'ST',
-    'LW'
-  ]
-})
-
 // actions
 export const actions = {
   ...crud({

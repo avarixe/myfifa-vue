@@ -170,3 +170,21 @@ export function activePlayers (teamId) {
 }
 
 export default Player
+
+export const positions = [
+  'GK',
+  'RB',
+  'RWB',
+  'CB',
+  'LB',
+  'LWB',
+  'RM',
+  'CDM',
+  'CM',
+  'CAM',
+  'LM',
+  'RW',
+  'CF',
+  'ST',
+  'LW'
+]
