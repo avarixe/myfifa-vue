@@ -84,6 +84,7 @@ class Competition extends Model {
     return Match
       .query()
       .where('competition', this.name)
+      .where('team_id', this.team_id)
       .where('date_played', date => start <= date && date <= end)
       .get()
   }

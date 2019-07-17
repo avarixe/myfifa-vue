@@ -44,6 +44,7 @@
       return Competition
         .query()
         .with('team')
+        .where('team_id', this.team.id)
         .where('season', this.season)
         .get()
     }
