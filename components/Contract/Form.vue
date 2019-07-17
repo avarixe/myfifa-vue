@@ -52,47 +52,35 @@
           </v-flex>
 
           <v-flex xs12>
-            <v-text-field
+            <v-money-field
               v-model="contract.wage"
-              :rules="$_validate('Wage', ['required'])"
-              type="number"
               label="Wage"
               :prefix="team.currency"
-              :hint="$_numberHint(contract.wage)"
-              persistent-hint
+              :rules="$_validate('Wage', ['required'])"
             />
           </v-flex>
 
           <v-flex xs12>
-            <v-text-field
+            <v-money-field
               v-model="contract.signing_bonus"
-              type="number"
               label="Signing Bonus"
               :prefix="team.currency"
-              :hint="$_numberHint(contract.signing_bonus)"
-              persistent-hint
             />
           </v-flex>
 
           <v-flex xs12>
-            <v-text-field
+            <v-money-field
               v-model="contract.release_clause"
-              type="number"
               label="Release Clause"
               :prefix="team.currency"
-              :hint="$_numberHint(contract.release_clause)"
-              persistent-hint
             />
           </v-flex>
 
           <v-flex xs12>
-            <v-text-field
+            <v-money-field
               v-model="contract.performance_bonus"
-              type="number"
               label="Performance Bonus"
               :prefix="team.currency"
-              :hint="$_numberHint(contract.performance_bonus)"
-              persistent-hint
             />
           </v-flex>
 
@@ -136,14 +124,15 @@
   import { mapState } from 'vuex'
   import { addYears } from 'date-fns'
   import { Contract } from '@/models'
-  import { VDateField } from '@/helpers'
+  import { VDateField, VMoneyField } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
 
   @Component({
     components: {
-      VDateField
+      VDateField,
+      VMoneyField
     },
     computed: mapState('contracts', [
       'bonusRequirementTypes'

@@ -90,14 +90,11 @@
             />
           </v-flex>
           <v-flex xs12>
-            <v-text-field
+            <v-money-field
               v-model="player.value"
-              :rules="$_validate('Value', ['required'])"
-              type="number"
               label="Value"
               :prefix="team.currency"
-              :hint="$_numberHint(player.value)"
-              persistent-hint
+              :rules="$_validate('Value', ['required'])"
             />
           </v-flex>
         </v-layout>
@@ -111,10 +108,14 @@
   import { mapActions } from 'vuex'
   import { DialogFormable, TeamAccessible } from '@/mixins'
   import { positions } from '@/models/Player'
+  import { VMoneyField } from '@/helpers'
 
   const mix = mixins(DialogFormable, TeamAccessible)
 
   @Component({
+    components: {
+      VMoneyField
+    },
     methods: mapActions('players', {
       create: 'CREATE',
       update: 'UPDATE'

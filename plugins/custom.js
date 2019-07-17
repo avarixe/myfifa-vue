@@ -69,10 +69,6 @@ Vue.prototype.$_formatDate = function (date, dateFormat = 'MMM DD, YYYY') {
   return date ? this.$_format(this.$_parse(date), dateFormat) : 'N/A'
 }
 
-Vue.prototype.$_numberHint = function (num) {
-  return num && parseInt(num).toLocaleString()
-}
-
 Vue.prototype.$_sum = function (array) {
   return array.reduce((total, num) => total + num, 0)
 }
