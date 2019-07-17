@@ -24,10 +24,7 @@
           <slot
             name="item"
             :player="player"
-          >
-            <div class="font-weight-bold">{{ player.pos }}</div>
-            <div class="font-weight-thin">{{ nameOf(player.player_id) }}</div>
-          </slot>
+          />
         </v-flex>
       </v-layout>
     </v-flex>
@@ -38,7 +35,6 @@
   import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { FittyText } from '@/helpers'
   import TeamAccessible from '@/mixins/TeamAccessible'
-  import { Player } from '@/models'
   import { positions } from '@/models/Match'
 
   @Component({
@@ -96,11 +92,6 @@
 
     retrievePos (pos) {
       return this.startingEleven.find(p => p.pos === pos)
-    }
-
-    nameOf (playerId) {
-      const player = Player.find(playerId)
-      return player ? player.name : ''
     }
 
     flexAttributes (items) {

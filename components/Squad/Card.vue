@@ -52,7 +52,14 @@
 
       <v-divider class="mx-3" />
 
-      <formation-view :formation="squadPlayers" />
+      <formation-view :formation="squadPlayers">
+        <template #item="{ player }">
+          <div class="font-weight-bold">{{ player.pos }}</div>
+          <div :class="`font-weight-thin ${statusColor(player.player_id)}`">
+            {{ nameOf(player.player_id) }}
+          </div>
+        </template>
+      </formation-view>
     </v-card-text>
   </v-card>
 </template>
@@ -108,6 +115,20 @@
         .sum('ovr')
 
       return Math.round(totalOvr / playerIds.length)
+    }
+
+    nameOf (playerId) {
+      const player = Player.find(playerId)
+      return player ? player.name : ''
+    }
+
+    statusColor (playerId) {
+      const player = Player.find(playerId)
+      if (player && player.status === 'Active') {
+        return ''
+      } else {
+        return 'red--text'
+      }
     }
   }
 </script>
