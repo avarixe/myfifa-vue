@@ -139,7 +139,7 @@ class Player extends Model {
     return PlayerHistory
       .query()
       .where('player_id', this.id)
-      .where('recorded_on', recorded_on => recorded_on <= date)
+      .where('recorded_on', recordedOn => recordedOn <= date)
       .last()
   }
 
