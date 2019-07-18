@@ -196,7 +196,7 @@
     get players () {
       return Player
         .query()
-        .with('team|goals|assists|matches')
+        .with('team|contracts|goals|assists|matches')
         .where('team_id', parseInt(this.$route.params.teamId))
         .get()
     }

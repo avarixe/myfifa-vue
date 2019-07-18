@@ -45,18 +45,13 @@
               {{ $_format($_parse(transfer.effective_date), 'MMM DD, YYYY') }}
             </template>
             <template #item.player.name="{ item: transfer }">
-              <v-dialog width="500">
-                <template #activator="{ on }">
-                  <v-btn
-                    v-on="on"
-                    small
-                    text
-                    color="info"
-                  >{{ transfer.player.name }}</v-btn>
-                </template>
-
-                <player-card :player-id="transfer.player_id" />
-              </v-dialog>
+              <v-btn
+                :to="transfer.player.link"
+                nuxt
+                small
+                text
+                color="info"
+              >{{ transfer.player.name }}</v-btn>
             </template>
             <template #item.fee="{ item: transfer }">
               <span :class="`${isTransferOut(transfer) ? 'green' : 'red'}--text`">
@@ -73,15 +68,13 @@
 <script>
   import { mixins, Component } from 'nuxt-property-decorator'
   import { Player, Transfer } from '@/models'
-  import PlayerCard from '@/components/Player/Card'
   import { PagedTable } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
   import { addYears } from 'date-fns'
 
   @Component({
     components: {
-      PagedTable,
-      PlayerCard
+      PagedTable
     }
   })
   export default class TransferGrid extends mixins(TeamAccessible) {
