@@ -8,7 +8,7 @@
       :key="i"
       :event="event"
       :match="match"
-      :readonly="team.current_date !== match.date_played"
+      :readonly="team.currently_on !== match.played_on"
     />
   </v-timeline>
 </template>

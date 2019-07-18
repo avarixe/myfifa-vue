@@ -16,8 +16,9 @@ export default class Loan extends Model {
       player_id: this.number(null),
 
       // Database fields
-      start_date: this.string(''),
-      end_date: this.string('').nullable(),
+      started_on: this.string(''),
+      signed_on: this.string(''),
+      ended_on: this.string('').nullable(),
       destination: this.string(''),
       returned: this.boolean(false)
     }

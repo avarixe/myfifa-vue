@@ -24,11 +24,11 @@
                 color="info"
               >{{ item.title }}</v-btn>
             </template>
-            <template #item.start_date="{ item }">
-              {{ $_format($_parse(item.start_date), 'MMM DD, YYYY') }}
+            <template #item.started_on="{ item }">
+              {{ $_format($_parse(item.started_on), 'MMM DD, YYYY') }}
             </template>
-            <template #item.current_date="{ item }">
-              {{ $_format($_parse(item.current_date), 'MMM DD, YYYY') }}
+            <template #item.currently_on="{ item }">
+              {{ $_format($_parse(item.currently_on), 'MMM DD, YYYY') }}
             </template>
           </v-data-table>
         </template>
@@ -50,8 +50,8 @@
   export default class TeamGrid extends Vue {
     headers = [
       { text: 'Team Name', value: 'title', align: 'center' },
-      { text: 'Start Date', value: 'start_date', align: 'center' },
-      { text: 'Current Date', value: 'current_date', align: 'center' }
+      { text: 'Start Date', value: 'started_on', align: 'center' },
+      { text: 'Current Date', value: 'currently_on', align: 'center' }
     ]
     loading = false
     search = ''

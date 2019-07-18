@@ -9,13 +9,13 @@ export default class TeamAccessible extends Vue {
   }
 
   get season () {
-    const date = this.$_parse(this.team.start_date)
-    const currentDate = this.$_parse(this.team.current_date)
+    const date = this.$_parse(this.team.started_on)
+    const currentDate = this.$_parse(this.team.currently_on)
     return parseInt((currentDate - date) / (525600 * 60 * 1000))
   }
 
   get seasonStart () {
-    const date = parse(this.team.start_date)
+    const date = parse(this.team.started_on)
     return format(addYears(date, this.season), 'YYYY-MM-DD')
   }
 
@@ -25,7 +25,7 @@ export default class TeamAccessible extends Vue {
   }
 
   seasonLabel (season) {
-    let start = addYears(this.team.start_date, season)
+    let start = addYears(this.team.started_on, season)
     const end = addYears(start, 1)
     return `${this.$_format(start, 'YYYY')} - ${this.$_format(end, 'YYYY')}`
   }

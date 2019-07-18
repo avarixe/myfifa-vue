@@ -28,7 +28,7 @@ class Match extends Model {
       away: this.string(''),
       competition: this.string(''),
       stage: this.string('').nullable(),
-      date_played: this.string(''),
+      played_on: this.string(''),
       extra_time: this.boolean(false),
       home_score: this.number(0),
       away_score: this.number(0),
@@ -65,8 +65,8 @@ class Match extends Model {
   }
 
   get season () {
-    const startDate = parse(this.team.start_date)
-    const datePlayed = parse(this.date_played)
+    const startDate = parse(this.team.started_on)
+    const datePlayed = parse(this.played_on)
     return parseInt((datePlayed - startDate) / (525600 * 60 * 1000))
   }
 
@@ -88,7 +88,7 @@ function allByRecency (teamId) {
   return Match
     .query()
     .where('team_id', teamId)
-    .orderBy('date_played', 'desc')
+    .orderBy('played_on', 'desc')
     .get()
 }
 

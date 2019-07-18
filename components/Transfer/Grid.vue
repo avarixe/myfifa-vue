@@ -33,7 +33,7 @@
             :headers="headers"
             :items="rows"
             :page.sync="page"
-            sort-by="effective_date"
+            sort-by="moved_on"
             sort-desc
             :search="search"
             item-key="id"
@@ -41,8 +41,8 @@
             no-data-text="No Matches Recorded"
             @page-count="pageCount = $event"
           >
-            <template #item.effective_date="{ item: transfer }">
-              {{ $_format($_parse(transfer.effective_date), 'MMM DD, YYYY') }}
+            <template #item.moved_on="{ item: transfer }">
+              {{ $_format($_parse(transfer.moved_on), 'MMM DD, YYYY') }}
             </template>
             <template #item.player.name="{ item: transfer }">
               <v-btn
@@ -79,7 +79,7 @@
   })
   export default class TransferGrid extends mixins(TeamAccessible) {
     headers = [
-      { text: 'Date', value: 'effective_date' },
+      { text: 'Date', value: 'moved_on' },
       { text: 'Player', value: 'player.name' },
       { text: 'Origin', value: 'origin' },
       { text: 'Destination', value: 'destination' },
@@ -103,11 +103,11 @@
     }
 
     get rows () {
-      const teamStart = this.$_parse(this.team.start_date)
+      const teamStart = this.$_parse(this.team.started_on)
 
       return this.transfers.filter(transfer => {
         if (typeof this.seasonFilter === 'number') {
-          const transferDate = this.$_parse(transfer.effective_date)
+          const transferDate = this.$_parse(transfer.moved_on)
           const seasonStart = addYears(teamStart, this.seasonFilter)
           const seasonEnd = addYears(teamStart, this.seasonFilter + 1)
           return seasonStart <= transferDate && transferDate < seasonEnd

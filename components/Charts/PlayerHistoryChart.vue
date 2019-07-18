@@ -15,6 +15,7 @@
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
+  import { Contract, Team } from '@/models'
 
   @Component
   export default class PlayerHistoryChart extends Vue {
@@ -30,11 +31,32 @@
     @Prop(String) prefix
     @Prop(String) thousands
 
+    get team () {
+      return Team.find(this.$route.params.teamId)
+    }
+
+    get lastContract () {
+      return Contract
+        .query()
+        .orderBy('ended_on')
+        .where('player_id', this.player.id)
+        .last()
+    }
+
+    get lastDate () {
+      const contractEnd = this.lastContract && this.lastContract.ended_on
+      return contractEnd && this.team.currently_on >= contractEnd
+        ? contractEnd
+        : this.team.currently_on
+    }
+
     get chartData () {
       return this.player.histories.reduce((data, history) => {
-        data[history.datestamp] = history[this.attribute]
+        data[history.recorded_on] = history[this.attribute]
         return data
-      }, {})
+      }, {
+        [this.lastDate]: this.player[this.attribute]
+      })
     }
   }
 </script>

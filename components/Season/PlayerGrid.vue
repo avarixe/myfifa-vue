@@ -155,8 +155,8 @@
         .withAll()
         .whereHas('contracts', query => {
           query.where(contract =>
-            this.seasonStart < contract.end_date &&
-            contract.effective_date <= this.seasonEnd
+            this.seasonStart < contract.ended_on &&
+            contract.started_on <= this.seasonEnd
           )
         })
         .get()
@@ -178,8 +178,8 @@
 
         const matchIds = player.matches
           .filter(m =>
-            this.seasonStart <= m.date_played &&
-            m.date_played <= this.seasonEnd
+            this.seasonStart <= m.played_on &&
+            m.played_on <= this.seasonEnd
           )
           .map(m => m.id)
 
@@ -215,13 +215,13 @@
     }
 
     get seasonStart () {
-      let date = this.$_parse(this.team.start_date)
+      let date = this.$_parse(this.team.started_on)
       date = addYears(date, parseInt(this.season))
       return this.$_format(date)
     }
 
     get seasonEnd () {
-      let date = this.$_parse(this.team.start_date)
+      let date = this.$_parse(this.team.started_on)
       date = addYears(date, parseInt(this.season) + 1)
       return this.$_format(date)
     }

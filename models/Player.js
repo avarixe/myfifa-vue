@@ -100,8 +100,8 @@ class Player extends Model {
     const contract = Contract
       .query()
       .where('player_id', this.id)
-      .where('effective_date', date => date <= this.team.current_date)
-      .where('end_date', date => this.team.current_date < date)
+      .where('started_on', date => date <= this.team.currently_on)
+      .where('ended_on', date => this.team.currently_on < date)
       .last()
     return contract || {}
   }
@@ -117,7 +117,7 @@ class Player extends Model {
     const lastInjury = Injury
       .query()
       .where('player_id', this.id)
-      .orderBy('start_date', 'asc')
+      .orderBy('started_on', 'asc')
       .last()
     return this.status === 'Injured' && lastInjury && lastInjury.description
   }
@@ -126,20 +126,20 @@ class Player extends Model {
     const lastLoan = Loan
       .query()
       .where('player_id', this.id)
-      .orderBy('start_date', 'asc')
+      .orderBy('started_on', 'asc')
       .last()
     return this.status === 'Loaned' && lastLoan && lastLoan.destination
   }
 
   expiresOn () {
-    return this.contract.end_date
+    return this.contract.ended_on
   }
 
   recordAt (date) {
     return PlayerHistory
       .query()
       .where('player_id', this.id)
-      .where('datestamp', datestamp => datestamp <= date)
+      .where('recorded_on', recordedOn => recordedOn <= date)
       .last()
   }
 

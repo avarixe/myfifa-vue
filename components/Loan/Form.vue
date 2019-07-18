@@ -93,7 +93,7 @@
       return Loan
         .query()
         .where('player_id', this.player.id)
-        .orderBy('start_date')
+        .orderBy('started_on')
         .last()
     }
 

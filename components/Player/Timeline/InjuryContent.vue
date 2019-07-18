@@ -24,8 +24,8 @@
 
     get length () {
       return distanceInWords(
-        this.injury.start_date,
-        this.injury.end_date || this.team.current_date
+        this.injury.started_on,
+        this.injury.ended_on || this.team.currently_on
       )
     }
   }

@@ -27,14 +27,14 @@
         </v-layout>
 
         <v-layout
-          v-for="(position, i) in squad.positions_list"
+          v-for="(squadPlayer, i) in squad.squad_players_attributes"
           :key="i"
           row
           wrap
         >
           <v-flex xs4>
             <v-select
-              v-model="squad.positions_list[i]"
+              v-model="squadPlayer.pos"
               :items="positions"
               label="Position"
               prepend-icon="mdi-run"
@@ -44,7 +44,7 @@
 
           <v-flex xs8>
             <player-select
-              v-model="squad.players_list[i]"
+              v-model="squadPlayer.player_id"
               :players="players"
               item-value="id"
               label="Player"
@@ -82,8 +82,10 @@
     valid = false
     squad = {
       name: '',
-      players_list: new Array(11),
-      positions_list: new Array(11)
+      squad_players_attributes: new Array(11).fill().map(x => ({
+        player_id: null,
+        pos: null
+      }))
     }
 
     get positions () {
@@ -106,9 +108,12 @@
           'id',
           'name'
         ]))
-        this.squad.positions_list = [...this.squadData.positions_list]
-        this.squad.players_list = this.squadData.players_list
-          .map(id => parseInt(id))
+        this.squad.squad_players_attributes = this.squadData.squad_players
+          .map(squadPlayer => ({
+            id: squadPlayer.id,
+            player_id: squadPlayer.player_id,
+            pos: squadPlayer.pos
+          }))
       }
     }
 

@@ -48,7 +48,7 @@
             />
           </div>
           <div class="subheading">
-            {{ $_formatDate(match.date_played) }}
+            {{ $_formatDate(match.played_on) }}
           </div>
         </v-flex>
         <v-layout
@@ -84,7 +84,7 @@
 
         <v-flex xs12>
           <match-actions
-            v-if="match.date_played === team.current_date"
+            v-if="match.played_on === team.currently_on"
             :match="match"
           />
         </v-flex>
@@ -166,8 +166,8 @@
       const prevMatch = Match
         .query()
         .where('team_id', this.match.team_id)
-        .where('date_played', date => date < this.match.date_played)
-        .orderBy('date_played')
+        .where('played_on', date => date < this.match.played_on)
+        .orderBy('played_on')
         .last()
       return prevMatch && prevMatch.link
     }
@@ -176,8 +176,8 @@
       const nextMatch = Match
         .query()
         .where('team_id', this.match.team_id)
-        .where('date_played', date => date > this.match.date_played)
-        .orderBy('date_played')
+        .where('played_on', date => date > this.match.played_on)
+        .orderBy('played_on')
         .first()
       return nextMatch && nextMatch.link
     }

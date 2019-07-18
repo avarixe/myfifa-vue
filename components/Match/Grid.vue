@@ -44,7 +44,7 @@
             :headers="headers"
             :items="rows"
             :page.sync="page"
-            sort-by="date_played"
+            sort-by="played_on"
             sort-desc
             :search="search"
             item-key="id"
@@ -60,8 +60,8 @@
                 :color="item.resultColor"
               >{{ item.score }}</v-btn>
             </template>
-            <template #item.date_played="{ item }">
-              {{ $_format($_parse(item.date_played), 'MMM DD, YYYY') }}
+            <template #item.played_on="{ item }">
+              {{ $_format($_parse(item.played_on), 'MMM DD, YYYY') }}
             </template>
           </v-data-table>
         </template>
@@ -89,7 +89,7 @@
       { text: 'Home', value: 'home', align: 'end' },
       { text: 'Score', value: 'score', align: 'center', sortable: false },
       { text: 'Away', value: 'away' },
-      { text: 'Date Played', value: 'date_played' }
+      { text: 'Date Played', value: 'played_on' }
     ]
     search = ''
     page = 1
@@ -105,12 +105,12 @@
     }
 
     get rows () {
-      const teamStart = this.$_parse(this.team.start_date)
+      const teamStart = this.$_parse(this.team.started_on)
 
       return this.matches
         .filter(match => {
           if (typeof this.seasonFilter === 'number') {
-            const datePlayed = this.$_parse(match.date_played)
+            const datePlayed = this.$_parse(match.played_on)
             const seasonStart = addYears(teamStart, this.seasonFilter)
             const seasonEnd = addYears(teamStart, this.seasonFilter + 1)
             return seasonStart <= datePlayed && datePlayed < seasonEnd

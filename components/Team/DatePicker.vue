@@ -45,7 +45,7 @@
 
     @Watch('team', { immediate: true })
     setCurrentDate () {
-      this.currentDate = this.team.current_date
+      this.currentDate = this.team.currently_on
     }
 
     @Watch('currentDate')
@@ -53,7 +53,7 @@
       if (oldVal) {
         await this.$store.dispatch('teams/UPDATE', {
           id: this.team.id,
-          current_date: val
+          currently_on: val
         })
         this.calendar = false
       }

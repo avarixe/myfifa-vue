@@ -148,7 +148,7 @@
         .query()
         .with('team')
         .where('team_id', this.team.id)
-        .orderBy('date_played', 'desc')
+        .orderBy('played_on', 'desc')
         .first()
     }
 
@@ -172,7 +172,7 @@
         .with('team')
         .where('team_id', this.team.id)
         .get()
-        .filter(player => player.contract().end_date <= this.seasonEnd)
+        .filter(player => player.contract().ended_on <= this.seasonEnd)
     }
 
     mounted () {
