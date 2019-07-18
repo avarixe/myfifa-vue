@@ -24,6 +24,7 @@
     "lodash.pick": "^4.4.0",
     "nuxt": "^2.5.1",
     "nuxt-property-decorator": "^2.3.0",
+    "v-money": "^0.8.1",
     "vue-chartkick": "^0.5.1",
     "vue-class-component": "^7.1.0",
     "vue-fitty": "^0.1.7",

@@ -35,9 +35,9 @@
               v-model="transfer.effective_date"
               label="Effective Date"
               prepend-icon="mdi-calendar-today"
-              :rules="$_validate('Effective Date', ['required', 'date'])"
               :min="team.current_date"
               :color="transferColor"
+              required
             />
           </v-flex>
           <v-flex xs12>
@@ -67,13 +67,10 @@
             />
           </v-flex>
           <v-flex xs12>
-            <v-text-field
+            <v-money-field
               v-model="transfer.fee"
-              type="number"
               label="Fee"
               :prefix="team.currency"
-              :hint="$_numberHint(transfer.fee)"
-              persistent-hint
             />
           </v-flex>
           <v-flex xs12>
@@ -103,14 +100,15 @@
 
 <script>
   import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { VDateField } from '@/helpers'
+  import { VDateField, VMoneyField } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
 
   @Component({
     components: {
-      VDateField
+      VDateField,
+      VMoneyField
     }
   })
   export default class TransferForm extends mix {

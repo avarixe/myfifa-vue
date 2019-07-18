@@ -26,9 +26,9 @@
               v-model="match.date_played"
               label="Date Played"
               prepend-icon="mdi-calendar-today"
-              :rules="$_validate('Date Played', ['required', 'date'])"
               :min="match.id ? null : team.current_date"
               :color="color"
+              required
             />
           </v-flex>
           <v-flex xs12>

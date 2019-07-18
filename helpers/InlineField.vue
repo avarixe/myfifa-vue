@@ -76,15 +76,12 @@
               </slot>
             </template>
           </v-select>
-          <v-text-field
+          <v-money-field
             v-else-if="inputType === 'money'"
             v-model="value"
-            :rules="rules"
             :label="label"
-            :hint="$_formatMoney(value)"
             :prefix="team.currency"
-            persistent-hint
-            type="number"
+            :required="required"
             autofocus
           />
           <v-text-field
@@ -106,10 +103,12 @@
   import { Watch } from 'vue-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import ListOption from './ListOption'
+  import VMoneyField from './VMoneyField'
 
   @Component({
     components: {
-      ListOption
+      ListOption,
+      VMoneyField
     }
   })
   export default class InlineField extends mixins(TeamAccessible) {
@@ -124,7 +123,8 @@
     @Prop(String) inputType
     @Prop([String, Number]) display
     @Prop(String) displayClass
-    @Prop(Boolean) readonly
+    @Prop({ type: Boolean, default: false }) readonly
+    @Prop({ type: Boolean, default: false }) required
 
     value = null
     original = null

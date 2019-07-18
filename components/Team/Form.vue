@@ -29,8 +29,8 @@
               v-model="team.start_date"
               label="Start Date"
               prepend-icon="mdi-calendar-today"
-              :rules="$_validate('Start Date', ['required', 'date'])"
               :color="color"
+              required
             />
           </v-flex>
           <v-flex xs12>
