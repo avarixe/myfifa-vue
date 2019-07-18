@@ -1,4 +1,6 @@
 import { Model } from '@vuex-orm/core'
+import SquadPlayer from './SquadPlayer'
+import Player from './Player'
 
 export default class Squad extends Model {
   static get entity () {
@@ -17,8 +19,10 @@ export default class Squad extends Model {
 
       // Database fields
       name: this.string(''),
-      players_list: this.attr([]),
-      positions_list: this.attr([])
+
+      // Associations
+      squad_players: this.hasMany(SquadPlayer, 'squad_id'),
+      players: this.belongsToMany(Player, SquadPlayer, 'squad_id', 'player_id')
     }
   }
 }

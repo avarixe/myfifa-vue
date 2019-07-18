@@ -52,7 +52,7 @@
 
       <v-divider class="mx-3" />
 
-      <formation-view :formation="squadPlayers">
+      <formation-view :formation="squad.squad_players">
         <template #item="{ player }">
           <div class="font-weight-bold">{{ player.pos }}</div>
           <div :class="`font-weight-thin ${statusColor(player.player_id)}`">
@@ -68,7 +68,6 @@
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { FormationView, RecordRemove } from '@/helpers'
   import { Player } from '@/models'
-  import { positions } from '@/models/Match'
   import SquadForm from './Form'
 
   @Component({
@@ -80,13 +79,6 @@
   })
   export default class SquadCard extends Vue {
     @Prop({ type: Object, required: true }) squad
-
-    get squadPlayers () {
-      return this.squad.positions_list.map((pos, i) => ({
-        pos: pos,
-        player_id: this.squad.players_list[i]
-      }))
-    }
 
     get defOVR () {
       return this.avgOVR('DEF')
@@ -103,9 +95,9 @@
     avgOVR (positionType) {
       let playerIds = []
 
-      this.squad.positions_list.forEach((pos, i) => {
-        if (positions[pos] === positionType) {
-          playerIds.push(parseInt(this.squad.players_list[i]))
+      this.squad.squad_players.forEach(squadPlayer => {
+        if (squadPlayer.positionType === positionType) {
+          playerIds.push(squadPlayer.player_id)
         }
       })
 
@@ -113,6 +105,8 @@
         .query()
         .whereIdIn(playerIds)
         .sum('ovr')
+
+      console.log(positionType, playerIds, totalOvr)
 
       return Math.round(totalOvr / playerIds.length)
     }
