@@ -32,10 +32,10 @@
         <v-layout wrap>
           <v-flex xs12>
             <v-date-field
-              v-model="transfer.effective_date"
+              v-model="transfer.moved_on"
               label="Effective Date"
               prepend-icon="mdi-calendar-today"
-              :min="team.current_date"
+              :min="team.currently_on"
               :color="transferColor"
               required
             />
@@ -117,7 +117,7 @@
     @Prop(Function) submitCb
 
     transfer = {
-      effective_date: null,
+      moved_on: null,
       origin: '',
       destination: '',
       fee: null,
@@ -140,7 +140,7 @@
     @Watch('dialog')
     setTransfer (val) {
       if (val) {
-        this.transfer.effective_date = this.team.current_date
+        this.transfer.moved_on = this.team.currently_on
         if (this.transferOut) {
           this.transfer.origin = this.team.title
         } else {

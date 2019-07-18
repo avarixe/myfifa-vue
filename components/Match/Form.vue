@@ -23,10 +23,10 @@
         <v-layout wrap>
           <v-flex xs12>
             <v-date-field
-              v-model="match.date_played"
+              v-model="match.played_on"
               label="Date Played"
               prepend-icon="mdi-calendar-today"
-              :min="match.id ? null : team.current_date"
+              :min="match.id ? null : team.currently_on"
               :color="color"
               required
             />
@@ -145,7 +145,7 @@
 
     valid = false
     match = {
-      date_played: null,
+      played_on: null,
       competition: '',
       home: '',
       away: '',
@@ -166,8 +166,8 @@
     }
 
     get season () {
-      const startDate = this.$_parse(this.team.start_date)
-      const datePlayed = this.$_parse(this.match.date_played)
+      const startDate = this.$_parse(this.team.started_on)
+      const datePlayed = this.$_parse(this.match.played_on)
       return parseInt((datePlayed - startDate) / (525600 * 60 * 1000))
     }
 
@@ -202,7 +202,7 @@
       if (val && this.matchData) {
         Object.assign(this.match, this.$_pick(this.matchData, [
           'id',
-          'date_played',
+          'played_on',
           'competition',
           'stage',
           'home',
@@ -210,7 +210,7 @@
           'extra_time'
         ]))
       } else {
-        this.match.date_played = this.team.current_date
+        this.match.played_on = this.team.currently_on
       }
     }
 

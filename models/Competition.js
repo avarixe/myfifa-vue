@@ -69,7 +69,7 @@ class Competition extends Model {
   }
 
   get seasonStart () {
-    const date = parse(this.team.start_date)
+    const date = parse(this.team.started_on)
     return format(addYears(date, this.season), 'YYYY-MM-DD')
   }
 
@@ -85,7 +85,7 @@ class Competition extends Model {
       .query()
       .where('competition', this.name)
       .where('team_id', this.team_id)
-      .where('date_played', date => start <= date && date <= end)
+      .where('played_on', date => start <= date && date <= end)
       .get()
   }
 }

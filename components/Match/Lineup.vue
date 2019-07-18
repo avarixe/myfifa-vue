@@ -67,7 +67,7 @@
     @Prop({ type: Object, required: true }) match
 
     get readonly () {
-      return this.team.current_date !== this.match.date_played
+      return this.team.currently_on !== this.match.played_on
     }
 
     get starters () {
@@ -104,7 +104,7 @@
         .whereIdIn(playerIds)
         .get()
         .reduce(
-          (sum, player) => sum + player.ovrAt(this.match.date_played),
+          (sum, player) => sum + player.ovrAt(this.match.played_on),
           0
         )
 

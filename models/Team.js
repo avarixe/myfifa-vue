@@ -20,8 +20,8 @@ export default class Team extends Model {
 
       // Database fields
       title: this.string(''),
-      start_date: this.string(''),
-      current_date: this.string(''),
+      started_on: this.string(''),
+      currently_on: this.string(''),
       active: this.boolean(true),
       currency: this.string('$'),
 

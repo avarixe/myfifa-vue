@@ -75,7 +75,7 @@
     }
 
     get seasonLabel () {
-      let start = addYears(this.team.start_date, this.season)
+      let start = addYears(this.team.started_on, this.season)
       const end = addYears(start, 1)
       return `${this.$_format(start, 'YYYY')} - ${this.$_format(end, 'YYYY')}`
     }

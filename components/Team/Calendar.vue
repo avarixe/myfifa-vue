@@ -34,8 +34,8 @@
         ref="calendar"
         v-model="day"
         type="month"
-        :now="team.current_date"
-        :start="team.start_date"
+        :now="team.currently_on"
+        :start="team.started_on"
         :show-month-on-first="false"
       >
         <template #day="{ date }">
@@ -94,7 +94,7 @@
     }
 
     mounted () {
-      this.day = this.team.current_date
+      this.day = this.team.currently_on
     }
 
     matchesOn (date) {
@@ -102,7 +102,7 @@
         .query()
         .with('team')
         .where('team_id', this.team.id)
-        .where('date_played', date)
+        .where('played_on', date)
         .get()
     }
   }

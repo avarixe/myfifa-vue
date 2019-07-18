@@ -24,8 +24,8 @@
 
     get length () {
       return distanceInWords(
-        this.loan.start_date,
-        this.loan.end_date || this.team.current_date
+        this.loan.started_on,
+        this.loan.ended_on || this.team.currently_on
       )
     }
   }

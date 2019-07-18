@@ -26,7 +26,7 @@
           </v-flex>
           <v-flex xs12>
             <v-date-field
-              v-model="team.start_date"
+              v-model="team.started_on"
               label="Start Date"
               prepend-icon="mdi-calendar-today"
               :color="color"
@@ -69,7 +69,7 @@
 
     team = {
       title: '',
-      start_date: format(new Date(), 'YYYY-MM-DD'),
+      started_on: format(new Date(), 'YYYY-MM-DD'),
       currency: '$'
     }
 
@@ -85,7 +85,7 @@
         Object.assign(
           this.team,
           this.$_pick(Team.find(this.teamId), [
-            'id', 'title', 'start_date', 'currency'
+            'id', 'title', 'started_on', 'currency'
           ])
         )
       }

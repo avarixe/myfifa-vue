@@ -32,7 +32,7 @@
 
     get chartData () {
       return this.player.histories.reduce((data, history) => {
-        data[history.datestamp] = history[this.attribute]
+        data[history.recorded_on] = history[this.attribute]
         return data
       }, {})
     }

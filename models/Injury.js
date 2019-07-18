@@ -16,8 +16,8 @@ export default class Injury extends Model {
       player_id: this.number(0),
 
       // Database fields
-      start_date: this.string(''),
-      end_date: this.string('').nullable(),
+      started_on: this.string(''),
+      ended_on: this.string('').nullable(),
       description: this.string(''),
       recovered: this.boolean(false)
     }

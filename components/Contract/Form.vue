@@ -30,21 +30,21 @@
         <v-layout wrap>
           <v-flex xs12>
             <v-date-field
-              v-model="contract.effective_date"
+              v-model="contract.started_on"
               label="Effective Date"
               prepend-icon="mdi-calendar-today"
-              :min="team.current_date"
-              :max="contract.end_date"
+              :min="team.currently_on"
+              :max="contract.ended_on"
               required
             />
           </v-flex>
 
           <v-flex xs12>
             <v-date-field
-              v-model="contract.end_date"
+              v-model="contract.ended_on"
               label="End Date"
               prepend-icon="mdi-calendar"
-              :min="contract.effective_date"
+              :min="contract.started_on"
               :max="maxEndDate"
               required
               start-with-year
@@ -147,8 +147,8 @@
     valid = false
     title = 'Sign New Contract'
     contract = {
-      effective_date: null,
-      end_date: null,
+      started_on: null,
+      ended_on: null,
       wage: null,
       signing_bonus: null,
       release_clause: null,
@@ -159,7 +159,7 @@
 
     get maxEndDate () {
       return this.$_format(
-        addYears(this.$_parse(this.contract.effective_date), 6)
+        addYears(this.$_parse(this.contract.started_on), 6)
       )
     }
 
@@ -167,8 +167,8 @@
       return Contract
         .query()
         .where('player_id', this.player.id)
-        .where('effective_date', date => date <= this.team.current_date)
-        .where('end_date', date => this.team.current_date < date)
+        .where('started_on', date => date <= this.team.currently_on)
+        .where('ended_on', date => this.team.currently_on < date)
         .last()
     }
 
@@ -177,8 +177,8 @@
       if (val) {
         Object.assign(this.contract, {
           ...this.currentContract,
-          effective_date: this.team.current_date,
-          end_date: this.team.current_date
+          started_on: this.team.currently_on,
+          ended_on: this.team.currently_on
         })
       } else {
         Object.assign(this.$data, this.$options.data.apply(this))

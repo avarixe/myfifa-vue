@@ -274,7 +274,7 @@
             link: player.link,
             cleanSheets,
             wage: contract.wage,
-            endDate: contract.end_date
+            endDate: contract.ended_on
           }
         })
     }

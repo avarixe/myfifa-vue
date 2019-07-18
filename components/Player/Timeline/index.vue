@@ -63,22 +63,22 @@
           type: 'Contract',
           color: 'blue',
           icon: 'file-document',
-          date: contract.effective_date,
+          date: contract.started_on,
           dateRange:
-            this.$_formatDate(contract.effective_date) +
+            this.$_formatDate(contract.started_on) +
             ' - ' +
-            this.$_formatDate(contract.end_date),
+            this.$_formatDate(contract.ended_on),
           data: contract
         })),
         ...this.injuries.map(injury => ({
           type: 'Injury',
           color: 'pink',
           icon: 'hospital',
-          date: injury.start_date,
+          date: injury.started_on,
           dateRange:
-            this.$_formatDate(injury.start_date) +
+            this.$_formatDate(injury.started_on) +
             ' - ' +
-            this.$_formatDate(injury.end_date),
+            this.$_formatDate(injury.ended_on),
           title: `${injury.description} Injury`,
           data: injury
         })),
@@ -86,11 +86,11 @@
           type: 'Loan',
           color: 'indigo',
           icon: 'transit-transfer',
-          date: loan.start_date,
+          date: loan.started_on,
           dateRange:
-            this.$_formatDate(loan.start_date) +
+            this.$_formatDate(loan.started_on) +
             ' - ' +
-            this.$_formatDate(loan.end_date),
+            this.$_formatDate(loan.ended_on),
           title: `On Loan at ${loan.destination}`,
           data: loan
         })),
@@ -100,8 +100,8 @@
             type: 'Transfer',
             color: transferOut ? 'red' : 'green',
             icon: `airplane-${transferOut ? 'takeoff' : 'landing'}`,
-            date: transfer.effective_date,
-            dateRange: this.$_formatDate(transfer.effective_date),
+            date: transfer.moved_on,
+            dateRange: this.$_formatDate(transfer.moved_on),
             data: transfer
           }
         })
