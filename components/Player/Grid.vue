@@ -129,6 +129,7 @@
                 input-type="money"
                 :display="$_formatMoney(item.value)"
                 @close="updatePlayerAttribute(item.id, 'value', $event)"
+                required
               />
             </template>
             <template #item.status="{ item }">

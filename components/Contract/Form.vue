@@ -33,9 +33,9 @@
               v-model="contract.effective_date"
               label="Effective Date"
               prepend-icon="mdi-calendar-today"
-              :rules="$_validate('Effective Date', ['required', 'date'])"
               :min="team.current_date"
               :max="contract.end_date"
+              required
             />
           </v-flex>
 
@@ -44,9 +44,9 @@
               v-model="contract.end_date"
               label="End Date"
               prepend-icon="mdi-calendar"
-              :rules="$_validate('End Date', ['required', 'date'])"
               :min="contract.effective_date"
               :max="maxEndDate"
+              required
               start-with-year
             />
           </v-flex>
@@ -56,7 +56,7 @@
               v-model="contract.wage"
               label="Wage"
               :prefix="team.currency"
-              :rules="$_validate('Wage', ['required'])"
+              required
             />
           </v-flex>
 

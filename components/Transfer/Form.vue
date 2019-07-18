@@ -35,9 +35,9 @@
               v-model="transfer.effective_date"
               label="Effective Date"
               prepend-icon="mdi-calendar-today"
-              :rules="$_validate('Effective Date', ['required', 'date'])"
               :min="team.current_date"
               :color="transferColor"
+              required
             />
           </v-flex>
           <v-flex xs12>

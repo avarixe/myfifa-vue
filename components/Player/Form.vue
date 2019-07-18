@@ -94,7 +94,7 @@
               v-model="player.value"
               label="Value"
               :prefix="team.currency"
-              :rules="$_validate('Value', ['required'])"
+              required
             />
           </v-flex>
         </v-layout>

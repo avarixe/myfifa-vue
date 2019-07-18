@@ -5,7 +5,7 @@
     :label="label"
     :prefix="prefix"
     :rules="rules"
-    clearable
+    :clearable="!required"
   />
 </template>
 
@@ -22,7 +22,7 @@
     @Prop([String, Number]) value
     @Prop({ type: String, required: true }) label
     @Prop(String) prefix
-    @Prop(Array) rules
+    @Prop({ type: Boolean, default: false }) required
 
     money = null
     config = {
@@ -31,14 +31,28 @@
       precision: 0
     }
 
+    get rules () {
+      return this.required
+        ? this.$_validate(this.label, ['required'])
+        : []
+    }
+
+    get moneyNum () {
+      return this.money && this.money.length > 0
+        ? parseInt(this.money.replace(/,/g, ''))
+        : null
+    }
+
     @Watch('value', { immediate: true })
     setMoney () {
       this.money = this.value
+        ? this.value.toString()
+        : ''
     }
 
     @Watch('money')
     emitValue (value) {
-      this.$emit('input', value)
+      this.$emit('input', this.moneyNum)
     }
   }
 </script>

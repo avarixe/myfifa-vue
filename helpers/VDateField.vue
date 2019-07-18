@@ -40,11 +40,17 @@
     @Prop(String) max
     @Prop(String) color
     @Prop(String) prependIcon
-    @Prop(Array) rules
-    @Prop(Boolean) startWithYear
+    @Prop({ type: Boolean, default: false }) required
+    @Prop({ type: Boolean, default: false }) startWithYear
 
     menu = false
     date = null
+
+    get rules () {
+      return this.required
+        ? this.$_validate(this.label, ['required', 'date'])
+        : []
+    }
 
     @Watch('value', { immediate: true })
     setDate () {

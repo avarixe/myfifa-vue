@@ -81,7 +81,7 @@
             v-model="value"
             :label="label"
             :prefix="team.currency"
-            :rules="rules"
+            :required="required"
             autofocus
           />
           <v-text-field
@@ -123,7 +123,8 @@
     @Prop(String) inputType
     @Prop([String, Number]) display
     @Prop(String) displayClass
-    @Prop(Boolean) readonly
+    @Prop({ type: Boolean, default: false }) readonly
+    @Prop({ type: Boolean, default: false }) required
 
     value = null
     original = null
