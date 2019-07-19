@@ -16,6 +16,10 @@ class Player extends Model {
     return 'players'
   }
 
+  static get title () {
+    return 'Player'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys
@@ -45,21 +49,106 @@ class Player extends Model {
       contracts: this.hasMany(Contract, 'player_id'),
       transfers: this.hasMany(Transfer, 'player_id'),
       caps: this.hasMany(Cap, 'player_id'),
-      matches: this.hasManyThrough(Match, Cap, 'player_id', 'match_id'),
+      matches: this.belongsToMany(Match, Cap, 'player_id', 'match_id'),
       goals: this.hasMany(Goal, 'player_id'),
       assists: this.hasMany(Goal, 'assist_id'),
       bookings: this.hasMany(Booking, 'player_id')
     }
   }
 
-  get contract () {
-    const contract = this.contracts.slice(-1)[0]
+  get link () {
+    return {
+      name: 'teams-teamId-players-playerId',
+      params: {
+        teamId: this.team_id,
+        playerId: this.id
+      }
+    }
+  }
 
-    return contract &&
-           contract.effective_date <= this.team.current_date &&
-           this.team.current_date < contract.end_date
-      ? contract
-      : {}
+  get isActive () {
+    return this.status && this.status.length > 0
+  }
+
+  get statusColor () {
+    switch (this.status) {
+      case 'Active':
+        return 'light-green'
+      case 'Loaned':
+        return 'indigo'
+      case 'Injured':
+        return 'pink'
+      case 'Pending':
+        return 'deep-orange'
+    }
+  }
+
+  get statusIcon () {
+    switch (this.status) {
+      case 'Active':
+        return 'account-check'
+      case 'Loaned':
+        return 'transit-transfer'
+      case 'Injured':
+        return 'hospital'
+      case 'Pending':
+        return 'lock-clock'
+    }
+  }
+
+  contract () {
+    const contract = Contract
+      .query()
+      .where('player_id', this.id)
+      .where('started_on', date => date <= this.team.currently_on)
+      .where('ended_on', date => this.team.currently_on < date)
+      .last()
+    return contract || {}
+  }
+
+  cleanSheets () {
+    return this.matches.filter(m =>
+      (m.home === this.team.title && m.away_score === 0) ||
+      (m.away === this.team.title && m.home_score === 0)
+    )
+  }
+
+  injury () {
+    const lastInjury = Injury
+      .query()
+      .where('player_id', this.id)
+      .orderBy('started_on', 'asc')
+      .last()
+    return this.status === 'Injured' && lastInjury && lastInjury.description
+  }
+
+  loanedTo () {
+    const lastLoan = Loan
+      .query()
+      .where('player_id', this.id)
+      .orderBy('started_on', 'asc')
+      .last()
+    return this.status === 'Loaned' && lastLoan && lastLoan.destination
+  }
+
+  expiresOn () {
+    return this.contract.ended_on
+  }
+
+  recordAt (date) {
+    return PlayerHistory
+      .query()
+      .where('player_id', this.id)
+      .where('recorded_on', recordedOn => recordedOn <= date)
+      .last()
+  }
+
+  ovrAt (date) {
+    return this.recordAt(date).ovr
+  }
+
+  valueAt (date) {
+    return this.recordAt(date).value
   }
 }
 
@@ -81,3 +170,21 @@ export function activePlayers (teamId) {
 }
 
 export default Player
+
+export const positions = [
+  'GK',
+  'RB',
+  'RWB',
+  'CB',
+  'LB',
+  'LWB',
+  'RM',
+  'CDM',
+  'CM',
+  'CAM',
+  'LM',
+  'RW',
+  'CF',
+  'ST',
+  'LW'
+]

@@ -1,33 +1,30 @@
-import { mapState } from 'vuex'
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import { positions } from '@/models/Match'
 
-export default {
-  props: {
-    match: {
-      type: Object,
-      required: true
-    }
-  },
-  data: () => ({
-    minute: 0
-  }),
-  computed: {
-    ...mapState('matches', [
-      'positions'
-    ]),
-    sortedCaps () {
-      return this.$_orderBy(
-        this.match.caps,
-        [ c => this.positions.indexOf(c.pos), 'start' ]
-      )
-    },
-    unsubbedPlayers () {
-      if (this.minute) {
-        return this.sortedCaps.filter(c => {
-          return c.start <= this.minute && this.minute <= c.stop
-        })
-      } else {
-        return this.sortedCaps.filter(c => !c.subbed_out)
-      }
+@Component
+export default class MatchAccessible extends Vue {
+  @Prop(Object, { required: true }) match
+
+  minute = 0
+
+  get positions () {
+    return Object.keys(positions)
+  }
+
+  get sortedCaps () {
+    return this.$_orderBy(
+      this.match.caps,
+      [ c => this.positions.indexOf(c.pos), 'start' ]
+    )
+  }
+
+  get unsubbedPlayers () {
+    if (this.minute) {
+      return this.sortedCaps.filter(c => {
+        return c.start <= this.minute && this.minute <= c.stop
+      })
+    } else {
+      return this.sortedCaps.filter(c => !c.subbed_out)
     }
   }
 }

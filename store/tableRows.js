@@ -1,15 +1,8 @@
-import http from '@/api'
-import myfifa from '@/api/myfifa'
+import { crud } from '@/api'
+import { TableRow } from '@/models'
 
 // actions
-export const actions = {
-  UPDATE ({ rootState }, tableRow) {
-    return http({
-      method: 'patch',
-      path: myfifa.tableRows.record,
-      pathData: { rowId: tableRow.id },
-      token: rootState.token,
-      data: { table_row: tableRow }
-    })
-  }
-}
+export const actions = crud({
+  model: TableRow,
+  parent: 'stage'
+})

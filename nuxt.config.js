@@ -1,9 +1,13 @@
 import pkg from './package'
 import nodeExternals from 'webpack-node-externals'
-import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin'
 
 export default {
   mode: 'universal',
+
+  server: {
+    host: '0.0.0.0',
+    port: '8080'
+  },
 
   /*
   ** Headers of the page
@@ -26,24 +30,35 @@ export default {
   ** Global CSS
   */
   css: [
-    'vuetify/dist/vuetify.min.css',
     '@/styles/index.scss'
   ],
 
   /*
   ** Customize the progress bar color
   */
-  loading: '~/components/App/AppLoadingOverlay.vue', // { color: '#3B8070' },
+  // loading: '~/components/App/LoadingOverlay.vue', // { color: '#3B8070' },
+
+  devModules: [
+    '@nuxtjs/vuetify'
+  ],
+
+  modules: [
+    '@nuxtjs/moment'
+  ],
+
+  vuetify: {
+    assets: false
+  },
 
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/vuetify.js',
     '@/plugins/lodash.js',
     '@/plugins/custom.js',
     '@/plugins/date-fns.js',
-    '@/plugins/chartist.client.js'
+    '@/plugins/chartkick.client.js',
+    '@/plugins/fitty.js'
   ],
 
   /*
@@ -52,11 +67,14 @@ export default {
   build: {
     // analyze: true,
 
-    transpile: [/^vuetify/],
+    babel: {
+      plugins: [
+        ['@babel/plugin-proposal-decorators', { legacy: true }],
+        ['@babel/plugin-proposal-class-properties', { loose: true }]
+      ]
+    },
 
-    plugins: [
-      new VuetifyLoaderPlugin()
-    ],
+    transpile: [/^vuetify/],
 
     postcss: {},
 

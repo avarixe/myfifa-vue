@@ -1,33 +1,75 @@
 <template>
   <v-app>
     <no-ssr>
-      <app-bar />
+      <app-bar v-if="$store.getters.authenticated" />
 
-      <app-drawer
-        v-if="$store.getters.authenticated"
-      />
+      <team-drawer v-if="teamPage && loaded" />
     </no-ssr>
 
-    <v-content>
-      <app-broadcaster />
+    <app-broadcaster />
 
-      <nuxt />
+    <v-content>
+      <template v-if="teamPage">
+        <template v-if="loaded">
+          <team-channel />
+          <nuxt />
+        </template>
+        <team-loader
+          v-else
+          :key="key"
+          :team="team"
+          @loaded="loaded = true"
+        />
+      </template>
+      <template v-else>
+        <nuxt />
+      </template>
     </v-content>
+
+    <!-- <team-bottom-navigation /> -->
+
   </v-app>
 </template>
 
 <script>
-  import AppBar from '@/components/App/AppBar'
-  import AppBroadcaster from '@/components/App/AppBroadcaster'
-  import AppDrawer from '@/components/App/AppDrawer'
+  import { Vue, Component, Watch } from 'vue-property-decorator'
+  import { mapState } from 'vuex'
+  import { Team } from '@/models'
+  import AppBar from '@/components/App/Bar'
+  import AppBroadcaster from '@/components/App/Broadcaster'
+  import TeamChannel from '@/components/Team/Channel'
+  import TeamLoader from '@/components/Team/Loader'
+  import TeamDrawer from '@/components/Team/Drawer'
+  // import TeamBottomNavigation from '@/components/Team/TeamBottomNavigation'
 
-  export default {
+  @Component({
     name: 'App',
-    // middleware: ['responsive'],
     components: {
       AppBar,
       AppBroadcaster,
-      AppDrawer
+      TeamChannel,
+      TeamLoader,
+      TeamDrawer
+      // TeamBottomNavigation
+    },
+    computed: mapState('app', ['drawer'])
+  })
+  export default class Layout extends Vue {
+    loaded = false
+    key = 0
+
+    get teamPage () {
+      return 'teamId' in this.$route.params
+    }
+
+    get team () {
+      return Team.find(this.$route.params.teamId)
+    }
+
+    @Watch('teamPage')
+    resetLoader () {
+      this.loaded = false
+      this.key++
     }
   }
 </script>

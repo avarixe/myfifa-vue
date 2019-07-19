@@ -1,8 +1,13 @@
 import { Model } from '@vuex-orm/core'
+import Player from './Player'
 
 export default class Contract extends Model {
   static get entity () {
     return 'contracts'
+  }
+
+  static get title () {
+    return 'Contract'
   }
 
   static fields () {
@@ -12,15 +17,18 @@ export default class Contract extends Model {
       player_id: this.number(0),
 
       // Database fields
-      signed_date: this.string(''),
+      signed_on: this.string(''),
       wage: this.number(null).nullable(),
       signing_bonus: this.number(null).nullable(),
       release_clause: this.number(null).nullable(),
       performance_bonus: this.number(null).nullable(),
       bonus_req: this.number(null).nullable(),
       bonus_req_type: this.string(null).nullable(),
-      end_date: this.string(''),
-      effective_date: this.string('')
+      ended_on: this.string(''),
+      started_on: this.string(''),
+
+      // Associations
+      player: this.belongsTo(Player, 'player_id', 'id')
     }
   }
 }

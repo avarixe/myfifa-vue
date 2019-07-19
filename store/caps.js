@@ -1,40 +1,21 @@
-import http from '@/api'
-import myfifa from '@/api/myfifa'
+import { crud, http, routes } from '@/api'
 import { Cap } from '@/models'
 
 // actions
 export const actions = {
-  FETCH ({ rootState }, { matchId }) {
-    return http({
-      path: myfifa.caps.index,
-      pathData: { matchId },
-      token: rootState.token,
-      success: ({ data }) => { Cap.insert({ data }) }
-    })
-  },
-  GET ({ rootState }, { capId }) {
-    return http({
-      path: myfifa.caps.record,
-      pathData: { capId },
-      token: rootState.token
-    })
-  },
-  CREATE ({ rootState }, { matchId, cap }) {
+  ...crud({
+    model: Cap,
+    parent: 'match'
+  }),
+  SEARCH ({ rootState }, { teamId }) {
     return http({
       method: 'post',
-      path: myfifa.caps.index,
-      pathData: { matchId },
+      path: routes.caps.search,
+      pathData: { teamId },
       token: rootState.token,
-      data: { cap }
-    })
-  },
-  UPDATE ({ rootState }, cap) {
-    return http({
-      method: 'patch',
-      path: myfifa.caps.record,
-      pathData: { capId: cap.id },
-      token: rootState.token,
-      data: { cap }
+      success ({ data }) {
+        Cap.insert({ data })
+      }
     })
   }
 }

@@ -3,21 +3,14 @@
     fluid
     grid-list-lg
   >
-    <v-layout
-      row
-      wrap
-    >
+    <v-layout wrap>
       <v-flex xs12>
-        <team-date-picker>
-          <template #default="{ on }">
-            <v-btn
-              v-on="on"
-              color="accent"
-              outline
-              dark
-            >{{ $_format(team.current_date, 'MMM DD, YYYY') }}</v-btn>
-          </template>
-        </team-date-picker>
+        <div class="overline">{{ team.title }}</div>
+        <div class="headline font-weight-thin">Dashboard</div>
+      </v-flex>
+
+      <v-flex xs12>
+        <team-date-picker />
 
         <team-form
           :team-id="team.id"
@@ -27,15 +20,25 @@
             <v-btn
               v-on="on"
               color="orange darken-2"
-              outline
+              outlined
               dark
             >Edit</v-btn>
           </template>
         </team-form>
 
+        <record-remove
+          :record="team"
+          store="teams"
+          :label="team.title"
+          :redirect="{ name: 'teams' }"
+        >
+          <v-btn outlined>Remove</v-btn>
+        </record-remove>
+      </v-flex>
+
+      <v-flex xs12>
         <match-form />
         <player-form />
-        <team-remove :team="team" />
       </v-flex>
 
       <!-- Latest Match -->
@@ -43,41 +46,42 @@
         <match-card
           title="Latest Match"
           :match="lastMatch"
+          color="success"
         />
       </v-flex>
 
       <!-- Current Season -->
       <v-flex xs12 md6>
-        <season-item
-          :season="season"
-          color="green"
-        />
+        <season-card :season="season" />
       </v-flex>
 
       <!-- Injured Players -->
       <v-flex xs12 md4>
-        <players-card
+        <player-list-card
           :players="injuredPlayers"
           title="Injured Players"
           color="pink"
+          :attributes="[{ text: 'Injury', value: 'injury' }]"
         />
       </v-flex>
 
       <!-- Loaned Players -->
       <v-flex xs12 md4>
-        <players-card
+        <player-list-card
           :players="loanedPlayers"
           title="Loaned Players"
           color="indigo"
+          :attributes="[{ text: 'Loaned To', value: 'loanedTo' }]"
         />
       </v-flex>
 
       <!-- Expiring Contracts -->
       <v-flex xs12 md4>
-        <players-card
+        <player-list-card
           :players="playersWithExpiringContracts"
           title="Expiring Contracts"
           color="orange"
+          :attributes="[{ text: 'OVR', value: 'ovr' }]"
         />
       </v-flex>
 
@@ -86,89 +90,102 @@
         hidden-sm-and-down
         xs12
       >
-        <material-card
-          title="Calendar"
-          color="blue"
-        >
-          <team-calendar />
-        </material-card>
+        <v-card outlined>
+          <v-card-title :class="`subtitle-1 d-block text-xs-center`">
+            <span class="blue--text font-weight-light">Calendar</span>
+          </v-card-title>
+
+          <v-divider class="mx-3" />
+
+          <v-card-text>
+            <team-calendar />
+          </v-card-text>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { Match, Player } from '@/models'
-  import MatchForm from '@/components/Match/MatchForm'
-  import PlayerForm from '@/components/Player/PlayerForm'
-  import SeasonItem from '@/components/Season/SeasonItem'
-  import TeamDatePicker from '@/components/Team/TeamDatePicker'
-  import TeamForm from '@/components/Team/TeamForm'
-  import TeamRemove from '@/components/Team/TeamRemove'
-  import MaterialCard from '@/components/theme/Card'
-  import TeamCalendar from '@/components/Team/Dashboard/TeamCalendar'
-  import MatchCard from '@/components/Team/Dashboard/MatchCard'
-  import PlayersCard from '@/components/Team/Dashboard/PlayersCard'
+  import MatchForm from '@/components/Match/Form'
+  import MatchCard from '@/components/Match/Card'
+  import PlayerForm from '@/components/Player/Form'
+  import SeasonCard from '@/components/Season/Card'
+  import TeamDatePicker from '@/components/Team/DatePicker'
+  import TeamForm from '@/components/Team/Form'
+  import TeamCalendar from '@/components/Team/Calendar'
+  import PlayerListCard from '@/components/Player/ListCard'
+  import { RecordRemove } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
-  export default {
-    layout: 'team',
-    middleware: 'authenticated',
+  @Component({
     components: {
       MatchForm,
       MatchCard,
       PlayerForm,
-      PlayersCard,
-      SeasonItem,
+      PlayerListCard,
+      SeasonCard,
       TeamDatePicker,
       TeamForm,
-      TeamRemove,
       TeamCalendar,
-      MaterialCard
+      RecordRemove
     },
-    mixins: [
-      TeamAccessible
-    ],
+    transition: 'fade-transition'
+  })
+  export default class TeamPage extends mixins(TeamAccessible) {
+    layout = () => 'default'
+    middleware = () => 'authenticated'
     head () {
       return {
         title: this.team.title
       }
-    },
-    computed: {
-      lastMatch () {
-        return Match
-          .query()
-          .with('team')
-          .where('team_id', this.team.id)
-          .orderBy('date_played', 'desc')
-          .first()
-      },
-      injuredPlayers () {
-        return this.getPlayersByStatus('Injured')
-      },
-      loanedPlayers () {
-        return this.getPlayersByStatus('Loaned')
-      },
-      playersWithExpiringContracts () {
-        return Player
-          .query()
-          .with('contracts|team')
-          .where('team_id', this.team.id)
-          .get()
-          .filter(player => player.contract.end_date <= this.seasonEnd)
-      }
-    },
+    }
+
+    get lastMatch () {
+      return Match
+        .query()
+        .with('team')
+        .where('team_id', this.team.id)
+        .orderBy('played_on', 'desc')
+        .first()
+    }
+
+    get injuredPlayers () {
+      return this.getPlayersByStatus('Injured').map(player => ({
+        ...player,
+        injury: player.injury()
+      }))
+    }
+
+    get loanedPlayers () {
+      return this.getPlayersByStatus('Loaned').map(player => ({
+        ...player,
+        loanedTo: player.loanedTo()
+      }))
+    }
+
+    get playersWithExpiringContracts () {
+      return Player
+        .query()
+        .with('team')
+        .where('team_id', this.team.id)
+        .get()
+        .filter(player => player.contract().ended_on <= this.seasonEnd)
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
-    },
-    methods: {
-      getPlayersByStatus (status) {
-        return Player
-          .query()
-          .where('team_id', this.team.id)
-          .where('status', status)
-          .get()
-      }
+    }
+
+    getPlayersByStatus (status) {
+      return Player
+        .query()
+        .with('team')
+        .where('team_id', this.team.id)
+        .where('status', status)
+        .get()
     }
   }
 </script>

@@ -4,6 +4,11 @@ export default class PlayerHistory extends Model {
   static get entity () {
     return 'playerHistories'
   }
+
+  static get title () {
+    return 'Player History'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys
@@ -11,7 +16,7 @@ export default class PlayerHistory extends Model {
       player_id: this.number(0),
 
       // Database fields
-      datestamp: this.string(''),
+      recorded_on: this.string(''),
       ovr: this.number(60),
       value: this.number(0),
       kit_no: this.number(0).nullable()

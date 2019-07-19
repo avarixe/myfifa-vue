@@ -1,24 +1,8 @@
-import http from '@/api'
-import myfifa from '@/api/myfifa'
+import { crud } from '@/api'
+import { Fixture } from '@/models'
 
 // actions
-export const actions = {
-  CREATE ({ rootState }, { stageId, fixture }) {
-    return http({
-      method: 'post',
-      path: myfifa.fixtures.index,
-      pathData: { stageId },
-      token: rootState.token,
-      data: { fixture }
-    })
-  },
-  UPDATE ({ rootState }, fixture) {
-    return http({
-      method: 'patch',
-      path: myfifa.fixtures.record,
-      pathData: { fixtureId: fixture.id },
-      token: rootState.token,
-      data: { fixture }
-    })
-  }
-}
+export const actions = crud({
+  model: Fixture,
+  parent: 'stage'
+})

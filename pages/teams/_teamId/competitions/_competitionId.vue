@@ -3,95 +3,112 @@
     fluid
     grid-list-lg
   >
-    <v-layout
-      row
-      wrap
-    >
+    <v-layout wrap>
+      <v-flex xs12>
+        <div class="overline">{{ team.title }}</div>
+        <div class="headline font-weight-thin">
+          {{ competition.name }}
+          ({{ competitionSeason }})
+        </div>
+      </v-flex>
+
       <v-flex xs12>
         <v-btn
-          :to="seasonLink"
+          :to="competition.linkToSeason"
           nuxt
+          outlined
+          color="blue-grey"
         >View Season</v-btn>
       </v-flex>
+
       <v-flex xs12>
-        <material-card>
-          <template #header>
-            <v-layout
-              class="text-xs-center"
-              row
-              wrap
+        <v-layout
+          class="text-xs-center"
+          wrap
+        >
+          <v-flex xs12>
+            <div class="subheading">
+              {{ competitionSeason }}
+            </div>
+            <div class="display-1 primary--text">
+              <fitty-text :text="competition.name" />
+            </div>
+            <div
+              v-if="readonly"
+              class="title"
             >
-              <v-flex xs12>
-                <div class="subheading">
-                  {{ seasonLabel(competition.season) }}
-                </div>
-                <div class="display-1">{{ competition.name }}</div>
-              </v-flex>
-            </v-layout>
-          </template>
+              <v-icon
+                color="yellow darken-2"
+                left
+              >mdi-crown</v-icon>
+              {{ competition.champion }}
+              <v-icon
+                color="yellow darken-2"
+                right
+              >mdi-crown</v-icon>
+            </div>
+          </v-flex>
 
-          <v-layout
-            class="text-xs-center"
-            row
-            wrap
+          <v-flex
+            v-if="!readonly"
+            xs12
           >
-            <v-flex
-              v-if="competition.champion"
-              xs12
+            <competition-form
+              :competition-data="competition"
+              color="orange"
             >
-              <div class="title">
-                <v-icon
-                  color="yellow darken-2"
-                  left
-                >mdi-crown</v-icon>
-                {{ competition.champion }}
-                <v-icon
-                  color="yellow darken-2"
-                  right
-                >mdi-crown</v-icon>
-              </div>
-            </v-flex>
+              <template #default="{ on }">
+                <v-btn
+                  v-on="on"
+                  dark
+                  color="orange"
+                  class="my-1"
+                >Edit</v-btn>
+              </template>
+            </competition-form>
 
-            <v-flex
-              v-if="!readonly"
-              xs12
+            <competition-form
+              :competition-data="competition"
+              color="red"
+              close
             >
-              <edit-competition-form
-                :competition-data="competition"
-                color="orange"
-              >
-                <template #default="{ on }">
-                  <v-btn
-                    v-on="on"
-                    dark
-                    color="orange"
-                  >Edit</v-btn>
-                </template>
-              </edit-competition-form>
-              <stage-form
-                :competition="competition"
-                color="teal"
-              >
-                <template #default="{ on }">
-                  <v-btn
-                    v-on="on"
-                    dark
-                    color="teal"
-                  >Add Stage</v-btn>
-                </template>
-              </stage-form>
-              <competition-remove :competition="competition">
-                <template #default="{ on }">
-                  <v-btn
-                    v-on="on"
-                    dark
-                  >Remove</v-btn>
-                </template>
-              </competition-remove>
-            </v-flex>
-          </v-layout>
+              <template #default="{ on }">
+                <v-btn
+                  v-on="on"
+                  dark
+                  color="red"
+                  class="my-1"
+                >Close</v-btn>
+              </template>
+            </competition-form>
 
-        </material-card>
+            <stage-form
+              :competition="competition"
+              color="teal"
+            >
+              <template #default="{ on }">
+                <v-btn
+                  v-on="on"
+                  dark
+                  color="teal"
+                  class="my-1"
+                >Add Stage</v-btn>
+              </template>
+            </stage-form>
+
+            <record-remove
+              :record="competition"
+              store="competitions"
+              :label="`${competitionSeason} ${competition.name}`"
+              :redirect="competition.linkToSeason"
+            >
+              <v-btn
+                dark
+                class="my-1"
+              >Remove</v-btn>
+            </record-remove>
+          </v-flex>
+        </v-layout>
       </v-flex>
 
       <!-- Table Stages -->
@@ -99,17 +116,29 @@
         v-if="tables.length > 0"
         xs12
       >
-        <v-expansion-panel
-          v-model="stage"
-          popout
-        >
-          <competition-table
-            v-for="(table, i) in tables"
-            :key="i"
-            :table="table"
-            :readonly="readonly"
-          />
-        </v-expansion-panel>
+        <v-card outlined>
+          <v-card-text>
+            <v-tabs
+              centered
+              center-active
+            >
+              <v-tab
+                v-for="table in tables"
+                :key="table.id"
+              >{{ table.name }}</v-tab>
+
+              <v-tab-item
+                v-for="table in tables"
+                :key="table.id"
+              >
+                <table-stage
+                  :table="table"
+                  :readonly="readonly"
+                />
+              </v-tab-item>
+            </v-tabs>
+          </v-card-text>
+        </v-card>
       </v-flex>
 
       <!-- Elimination Round Stages -->
@@ -117,96 +146,95 @@
         v-if="rounds.length > 0"
         xs12
       >
-        <competition-round
-          v-for="(round, i) in rounds"
-          :key="i"
-          :round="round"
-          :readonly="readonly"
-        />
+        <v-card outlined>
+          <v-card-text>
+            <v-tabs
+              centered
+              center-active
+            >
+              <v-tab
+                v-for="round in rounds"
+                :key="round.id"
+              >{{ round.name }}</v-tab>
+
+              <v-tab-item
+                v-for="round in rounds"
+                :key="round.id"
+              >
+                <round-stage
+                  :round="round"
+                  :readonly="readonly"
+                />
+              </v-tab-item>
+            </v-tabs>
+          </v-card-text>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { Competition } from '@/models'
-  import MaterialCard from '@/components/theme/Card'
-  import EditCompetitionForm from '@/components/Competition/EditCompetitionForm'
-  import CompetitionTable from '@/components/Competition/CompetitionTable'
-  import CompetitionRound from '@/components/Competition/CompetitionRound'
-  import CompetitionRemove from '@/components/Competition/CompetitionRemove'
-  import StageForm from '@/components/Competition/StageForm'
+  import { FittyText, RecordRemove } from '@/helpers'
+  import CompetitionForm from '@/components/Competition/Form'
+  import StageForm from '@/components/Stage/Form'
+  import RoundStage from '@/components/Stage/Round'
+  import TableStage from '@/components/Stage/Table'
   import { TeamAccessible } from '@/mixins'
 
-  export default {
-    layout: 'team',
-    middleware: 'authenticated',
-    mixins: [
-      TeamAccessible
-    ],
+  @Component({
     components: {
-      MaterialCard,
-      EditCompetitionForm,
-      CompetitionTable,
-      CompetitionRound,
-      CompetitionRemove,
+      FittyText,
+      RecordRemove,
+      CompetitionForm,
+      RoundStage,
+      TableStage,
       StageForm
     },
-    data: () => ({
-      stage: 0
-    }),
+    transition: 'fade-transition'
+  })
+  export default class CompetitionPage extends mixins(TeamAccessible) {
+    layout = () => 'default'
+    middleware = () => 'authenticated'
+
     head () {
       return {
-        title:
-          this.competition.name +
-          ` (${this.seasonLabel(this.competition.season)})`
+        title: `${this.competition.name} (${this.competitionSeason})`
       }
-    },
-    computed: {
-      competition () {
-        return Competition
-          .query()
-          .with('stages.table_rows|fixtures')
-          .find(this.$route.params.competitionId)
-      },
-      stages () {
-        return this.competition.stages
-      },
-      tables () {
-        return this.stages.filter(stage => stage.table)
-      },
-      rounds () {
-        return this.stages.filter(stage => !stage.table)
-      },
-      readonly () {
-        return this.competition.season !== this.season
-      },
-      seasonLink () {
-        return {
-          name: 'teams-teamId-seasons-season',
-          params: {
-            teamId: this.team.id,
-            season: this.competition.season
-          }
-        }
-      }
-    },
-    async fetch ({ store, params }) {
-      await Promise.all([
-        store.dispatch('competitions/GET', params),
-        store.dispatch('stages/FETCH', params)
-      ])
-    },
+    }
+
+    get competition () {
+      return Competition
+        .query()
+        .with('stages.table_rows|fixtures')
+        .find(this.$route.params.competitionId)
+    }
+
+    get stages () {
+      return this.competition.stages
+    }
+
+    get tables () {
+      return this.stages.filter(stage => stage.table)
+    }
+
+    get rounds () {
+      return this.stages.filter(stage => !stage.table)
+    }
+
+    get readonly () {
+      return this.competition.champion &&
+        this.competition.champion.length > 0
+    }
+
+    get competitionSeason () {
+      return this.seasonLabel(this.competition.season)
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
-    },
-    watch: {
-      competition (val) {
-        !val && this.$router.push({
-          name: 'teams-teamId-seasons',
-          params: { teamId: this.team.id }
-        })
-      }
     }
   }
 </script>

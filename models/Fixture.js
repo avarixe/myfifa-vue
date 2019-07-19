@@ -4,6 +4,11 @@ export default class Fixture extends Model {
   static get entity () {
     return 'fixtures'
   }
+
+  static get title () {
+    return 'Fixture'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys

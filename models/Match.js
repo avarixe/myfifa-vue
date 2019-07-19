@@ -1,4 +1,5 @@
 import { Model } from '@vuex-orm/core'
+import { parse } from 'date-fns'
 import Team from './Team'
 import PenaltyShootout from './PenaltyShootout'
 import Goal from './Goal'
@@ -12,6 +13,10 @@ class Match extends Model {
     return 'matches'
   }
 
+  static get title () {
+    return 'Match'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys
@@ -22,7 +27,8 @@ class Match extends Model {
       home: this.string(''),
       away: this.string(''),
       competition: this.string(''),
-      date_played: this.string(''),
+      stage: this.string('').nullable(),
+      played_on: this.string(''),
       extra_time: this.boolean(false),
       home_score: this.number(0),
       away_score: this.number(0),
@@ -38,7 +44,17 @@ class Match extends Model {
       substitutions: this.hasMany(Substitution, 'match_id'),
       bookings: this.hasMany(Booking, 'match_id'),
       caps: this.hasMany(Cap, 'match_id'),
-      players: this.hasManyThrough(Player, Cap, 'match_id', 'player_id')
+      players: this.belongsToMany(Player, Cap, 'match_id', 'player_id')
+    }
+  }
+
+  get link () {
+    return {
+      name: 'teams-teamId-matches-matchId',
+      params: {
+        teamId: this.team_id,
+        matchId: this.id
+      }
     }
   }
 
@@ -47,13 +63,32 @@ class Match extends Model {
       ? this.away
       : this.home
   }
+
+  get season () {
+    const startDate = parse(this.team.started_on)
+    const datePlayed = parse(this.played_on)
+    return parseInt((datePlayed - startDate) / (525600 * 60 * 1000))
+  }
+
+  get resultColor () {
+    switch (this.team_result) {
+      case 'win':
+        return 'success'
+      case 'draw':
+        return 'warning'
+      case 'loss':
+        return 'red'
+      default:
+        return ''
+    }
+  }
 }
 
 function allByRecency (teamId) {
   return Match
     .query()
     .where('team_id', teamId)
-    .orderBy('date_played', 'desc')
+    .orderBy('played_on', 'desc')
     .get()
 }
 
@@ -71,6 +106,34 @@ export function teams (teamId) {
       ...matches.map(match => match.away)
     ])
   ]
+}
+
+export const positions = {
+  GK: 'DEF',
+  LB: 'DEF',
+  LWB: 'DEF',
+  LCB: 'DEF',
+  CB: 'DEF',
+  RCB: 'DEF',
+  RB: 'DEF',
+  RWB: 'DEF',
+  LM: 'MID',
+  LDM: 'MID',
+  LCM: 'MID',
+  CDM: 'MID',
+  CM: 'MID',
+  RDM: 'MID',
+  RCM: 'MID',
+  RM: 'MID',
+  LAM: 'MID',
+  CAM: 'MID',
+  RAM: 'MID',
+  LW: 'ATT',
+  CF: 'ATT',
+  LS: 'ATT',
+  ST: 'ATT',
+  RS: 'ATT',
+  RW: 'ATT'
 }
 
 export default Match

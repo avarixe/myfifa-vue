@@ -19,27 +19,28 @@
 </template>
 
 <script>
+  import { Vue, Component, Watch } from 'nuxt-property-decorator'
   import { mapGetters } from 'vuex'
   import LoginForm from '@/components/App/LoginForm'
 
-  export default {
-    layout: 'default',
-    middleware: 'home',
+  @Component({
     components: {
       LoginForm
     },
-    data: () => ({
-      mode: 'login'
-    }),
     computed: mapGetters(['authenticated']),
-    watch: {
-      authenticated: {
-        immediate: true,
-        handler (val) {
-          val && this.$router.push({ name: 'teams' })
-        }
-      }
-    },
+    transition: 'fade-transition'
+  })
+  export default class IndexPage extends Vue {
+    layout = () => 'default'
+    middleware = () => 'home'
+
+    mode = 'login'
+
+    @Watch('authenticated', { immediate: true })
+    goToTeams (val) {
+      val && this.$router.push({ name: 'teams' })
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', '')
     }

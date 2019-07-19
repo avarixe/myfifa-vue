@@ -3,23 +3,24 @@
     fluid
     grid-list-lg
   >
-    <v-layout
-      row
-      wrap
-    >
+    <v-layout wrap>
       <v-flex xs12>
-        <new-competition-form>
+        <div class="overline">{{ team.title }}</div>
+        <div class="headline font-weight-thin">Seasons</div>
+      </v-flex>
+      <v-flex xs12>
+        <competition-form>
           <template #default="{ on }">
             <v-btn
               v-on="on"
               color="blue-grey"
-              outline
+              outlined
             >
               <v-icon left>mdi-plus-circle-outline</v-icon>
               Competition
             </v-btn>
           </template>
-        </new-competition-form>
+        </competition-form>
       </v-flex>
 
       <v-flex xs12>
@@ -30,25 +31,28 @@
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
-  import SeasonGrid from '@/components/Season/SeasonGrid'
-  import NewCompetitionForm from '@/components/Competition/NewCompetitionForm'
+  import SeasonGrid from '@/components/Season/Grid'
+  import CompetitionForm from '@/components/Competition/Form'
 
-  export default {
-    layout: 'team',
-    middleware: 'authenticated',
-    mixins: [
-      TeamAccessible
-    ],
+  @Component({
+    components: {
+      CompetitionForm,
+      SeasonGrid
+    },
+    transition: 'fade-transition'
+  })
+  export default class SeasonsPage extends mixins(TeamAccessible) {
+    layout = () => 'default'
+    middleware = () => 'authenticated'
+
     head () {
       return {
         title: `${this.team.title} - Seasons`
       }
-    },
-    components: {
-      NewCompetitionForm,
-      SeasonGrid
-    },
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
     }

@@ -6,6 +6,10 @@ export default class Goal extends Model {
     return 'goals'
   }
 
+  static get title () {
+    return 'Goal'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys
@@ -26,6 +30,7 @@ export default class Goal extends Model {
       event_type: this.string('Goal'),
 
       // Associations
+      player: this.belongsTo(Player, 'player_id', 'id'),
       assisting_player: this.belongsTo(Player, 'assist_id', 'id')
     }
   }

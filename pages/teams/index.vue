@@ -1,16 +1,17 @@
 <template>
   <v-container grid-list-lg>
-    <v-layout
-      row
-      wrap
-    >
+    <v-layout wrap>
+      <v-flex xs12>
+        <div class="headline font-weight-thin">Teams</div>
+      </v-flex>
+
       <v-flex xs12>
         <team-form>
           <template #default="{ on }">
             <v-btn
               v-on="on"
               color="blue-grey"
-              outline
+              outlined
             >
               <v-icon left>mdi-plus-circle-outline</v-icon>
               Team
@@ -27,16 +28,21 @@
 </template>
 
 <script>
-  import TeamForm from '@/components/Team/TeamForm'
-  import TeamGrid from '@/components/Team/TeamGrid'
+  import { Vue, Component } from 'nuxt-property-decorator'
+  import TeamForm from '@/components/Team/Form'
+  import TeamGrid from '@/components/Team/Grid'
 
-  export default {
-    layout: 'default',
-    middleware: 'home',
+  @Component({
     components: {
       TeamForm,
       TeamGrid
     },
+    transition: 'fade-transition'
+  })
+  export default class TeamsPage extends Vue {
+    layout = () => 'default'
+    middleware = () => 'home'
+
     mounted () {
       this.$store.commit('app/SET_TITLE', 'Teams')
     }

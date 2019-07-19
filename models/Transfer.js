@@ -6,6 +6,10 @@ export default class Transfer extends Model {
     return 'transfers'
   }
 
+  static get title () {
+    return 'Transfer'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys
@@ -13,8 +17,8 @@ export default class Transfer extends Model {
       player_id: this.number(0),
 
       // Database fields
-      signed_date: this.string(''),
-      effective_date: this.string(''),
+      signed_on: this.string(''),
+      moved_on: this.string(''),
       origin: this.string(''),
       destination: this.string(''),
       fee: this.number(null).nullable(),

@@ -3,17 +3,19 @@
     fluid
     grid-list-lg
   >
-    <v-layout
-      row
-      wrap
-    >
+    <v-layout wrap>
+      <v-flex xs12>
+        <div class="overline">{{ team.title }}</div>
+        <div class="headline font-weight-thin">Squads</div>
+      </v-flex>
+
       <v-flex xs12>
         <squad-form>
           <template #default="{ on }">
             <v-btn
               v-on="on"
               color="blue-grey"
-              outline
+              outlined
             >
               <v-icon left>mdi-plus-circle-outline</v-icon>
               Squad
@@ -30,25 +32,28 @@
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
-  import SquadForm from '@/components/Squad/SquadForm'
-  import SquadGrid from '@/components/Squad/SquadGrid'
+  import SquadForm from '@/components/Squad/Form'
+  import SquadGrid from '@/components/Squad/Grid'
 
-  export default {
-    layout: 'team',
-    middleware: 'authenticated',
-    mixins: [
-      TeamAccessible
-    ],
-    head () {
-      return {
-        title: `${this.team.title} - Squads`
-      }
-    },
+  @Component({
     components: {
       SquadForm,
       SquadGrid
     },
+    transition: 'fade-transition'
+  })
+  export default class SquadsPage extends mixins(TeamAccessible) {
+    layout = () => 'default'
+    middleware = () => 'authenticated'
+
+    head () {
+      return {
+        title: `${this.team.title} - Squads`
+      }
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
     }

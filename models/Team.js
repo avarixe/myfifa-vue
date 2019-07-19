@@ -9,6 +9,10 @@ export default class Team extends Model {
     return 'teams'
   }
 
+  static get title () {
+    return 'Team'
+  }
+
   static fields () {
     return {
       // Primary/Foreign keys
@@ -16,8 +20,8 @@ export default class Team extends Model {
 
       // Database fields
       title: this.string(''),
-      start_date: this.string(''),
-      current_date: this.string(''),
+      started_on: this.string(''),
+      currently_on: this.string(''),
       active: this.boolean(true),
       currency: this.string('$'),
 
@@ -29,6 +33,30 @@ export default class Team extends Model {
       matches: this.hasMany(Match, 'team_id'),
       squads: this.hasMany(Squad, 'team_id'),
       competitions: this.hasMany(Competition, 'team_id')
+    }
+  }
+
+  get link () {
+    return {
+      name: 'teams-teamId',
+      params: { teamId: this.id }
+    }
+  }
+
+  linkTo (page) {
+    return {
+      name: `teams-teamId-${page}`,
+      params: { teamId: this.id }
+    }
+  }
+
+  linkToSeason (season) {
+    return {
+      name: 'teams-teamId-seasons-season',
+      params: {
+        teamId: this.id,
+        season
+      }
     }
   }
 }

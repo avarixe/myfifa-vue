@@ -3,171 +3,187 @@
     fluid
     grid-list-lg
   >
-    <v-layout
-      row
-      wrap
-    >
+    <v-layout wrap>
       <v-flex xs12>
-        <match-form />
+        <div class="overline">{{ team.title }}</div>
+        <div class="headline font-weight-thin">
+          Match
+          <small>v {{ match.opponent }}</small>
+        </div>
       </v-flex>
 
       <v-flex xs12>
-        <material-card :color="resultColor">
-          <template #header>
-            <v-layout
-              class="text-xs-center"
-              row
-              wrap
-            >
-              <v-flex xs12>
-                <div class="display-2">{{ match.competition }}</div>
-                <div class="subheading">
-                  {{ $_formatDate(match.date_played) }}
-                </div>
-              </v-flex>
-              <v-layout
-                class="display-1"
-                row
-              >
-                <v-flex
-                  align-self-center
-                  class="font-weight-thin pa-1"
-                  style="flex-basis:0"
-                >{{ match.home }}</v-flex>
-                <v-flex
-                  align-self-center
-                  class="pa-1"
-                  shrink
-                >v</v-flex>
-                <v-flex
-                  align-self-center
-                  class="font-weight-thin pa-1"
-                  style="flex-basis:0"
-                >{{ match.away }}</v-flex>
-              </v-layout>
-              <v-flex xs12>
-                <div class="display-1">
-                  {{ match.score }}
-                  {{ match.extra_time && !match.penalty_shootout ? '(AET)' : '' }}
-                </div>
-              </v-flex>
-            </v-layout>
-          </template>
+        <v-btn
+          v-if="prevMatchLink"
+          :to="prevMatchLink"
+          color="blue-grey"
+          outlined
+        >Previous Match</v-btn>
 
-          <v-layout
-            row
-            wrap
+        <v-btn
+          v-if="nextMatchLink"
+          :to="nextMatchLink"
+          color="blue-grey"
+          outlined
+        >Next Match</v-btn>
+
+        <match-form v-else />
+      </v-flex>
+
+      <v-layout
+        class="text-xs-center"
+        wrap
+      >
+        <v-flex xs12>
+          <div class="display-2">
+            <fitty-text :text="match.competition" />
+          </div>
+          <div
+            v-if="match.stage"
+            class="display-1"
           >
-            <v-flex xs12>
-              <match-actions
-                v-if="match.date_played === team.current_date"
-                :match="match"
-              />
-            </v-flex>
-            <v-flex
-              xs12
-              sm6
-            >
-              <match-timeline :match="match" />
-            </v-flex>
-            <v-flex
-              xs12
-              sm6
-            >
-              <match-lineup :match="match" />
-            </v-flex>
-          </v-layout>
-        </material-card>
+            <fitty-text
+              :text="match.stage"
+              :max-size="30"
+            />
+          </div>
+          <div class="subheading">
+            {{ $_formatDate(match.played_on) }}
+          </div>
+        </v-flex>
+        <v-layout
+          class="display-1"
+          justify-space-between
+          align-center
+        >
+          <v-flex
+            xs5
+            class="font-weight-thin pa-3"
+          >
+            <fitty-text :text="match.home" />
+            <div :class="`${match.resultColor}--text font-weight-bold`">
+              {{ match.home_score }}
+              <span v-if="match.penalty_shootout">
+                ({{ match.penalty_shootout.home_score }})
+              </span>
+            </div>
+          </v-flex>
+          <v-flex
+            xs5
+            class="font-weight-thin pa-3"
+          >
+            <fitty-text :text="match.away" />
+            <div :class="`${match.resultColor}--text font-weight-bold`">
+              {{ match.away_score }}
+              <span v-if="match.penalty_shootout">
+                ({{ match.penalty_shootout.away_score }})
+              </span>
+            </div>
+          </v-flex>
+        </v-layout>
 
+        <v-flex xs12>
+          <match-actions
+            v-if="match.played_on === team.currently_on"
+            :match="match"
+          />
+        </v-flex>
+      </v-layout>
+
+      <v-flex
+        v-if="match.caps.length >= 11"
+        xs12
+      >
+        <v-card outlined>
+          <v-card-text>
+            <v-tabs centered>
+              <v-tab>Lineup</v-tab>
+              <v-tab>Timeline</v-tab>
+
+              <v-tab-item>
+                <match-lineup :match="match" />
+              </v-tab-item>
+
+              <v-tab-item>
+                <match-timeline :match="match" />
+              </v-tab-item>
+            </v-tabs>
+          </v-card-text>
+        </v-card>
       </v-flex>
+
     </v-layout>
   </v-container>
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import {
-    Match,
-    Player
-  } from '@/models'
-  import MatchForm from '@/components/Match/MatchForm'
-  import MatchActions from '@/components/Match/MatchActions'
-  import MatchLineup from '@/components/Match/MatchLineup'
+  import { mixins, Component } from 'nuxt-property-decorator'
+  import { Match, Player } from '@/models'
+  import MatchForm from '@/components/Match/Form'
+  import MatchActions from '@/components/Match/Actions'
+  import MatchLineup from '@/components/Match/Lineup'
   import MatchTimeline from '@/components/Match/Timeline'
-  import MaterialCard from '@/components/theme/Card'
+  import { FittyText } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
-  export default {
-    layout: 'team',
+  @Component({
     components: {
+      FittyText,
       MatchForm,
       MatchActions,
       MatchLineup,
-      MatchTimeline,
-      MaterialCard
+      MatchTimeline
     },
-    middleware: 'authenticated',
-    mixins: [
-      TeamAccessible
-    ],
+    transition: 'fade-transition'
+  })
+  export default class MatchPage extends mixins(TeamAccessible) {
+    layout = () => 'default'
+    middleware = () => 'authenticated'
+
     head () {
       return {
         title: `${this.match.home} vs ${this.match.away}`
       }
-    },
-    computed: {
-      match () {
-        return Match
-          .query()
-          .withAll()
-          .find(this.$route.params.matchId)
-      },
-      players () {
-        return Player
-          .query()
-          .where('team_id', this.team.id)
-          .get()
-      },
-      resultColor () {
-        switch (this.match.team_result) {
-          case 'win':
-            return 'success'
-          case 'draw':
-            return 'warning'
-          case 'loss':
-            return 'red'
-          default:
-            return ''
-        }
-      }
-    },
-    async fetch ({ store, params }) {
-      await Promise.all([
-        store.dispatch('matches/GET', params),
-        store.dispatch('caps/FETCH', params),
-        store.dispatch('bookings/FETCH', params),
-        store.dispatch('goals/FETCH', params),
-        store.dispatch('substitutions/FETCH', params)
-      ])
-    },
+    }
+
+    tab = 0
+
+    get match () {
+      return Match
+        .query()
+        .with('team|caps|goals|bookings|substitutions|penalty_shootout')
+        .find(this.$route.params.matchId)
+    }
+
+    get players () {
+      return Player
+        .query()
+        .where('team_id', this.team.id)
+        .get()
+    }
+
+    get prevMatchLink () {
+      const prevMatch = Match
+        .query()
+        .where('team_id', this.match.team_id)
+        .where('played_on', date => date < this.match.played_on)
+        .orderBy('played_on')
+        .last()
+      return prevMatch && prevMatch.link
+    }
+
+    get nextMatchLink () {
+      const nextMatch = Match
+        .query()
+        .where('team_id', this.match.team_id)
+        .where('played_on', date => date > this.match.played_on)
+        .orderBy('played_on')
+        .first()
+      return nextMatch && nextMatch.link
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
-      this.getPlayers({ teamId: this.team.id })
-      this.getSquads({ teamId: this.team.id })
-    },
-    watch: {
-      match (val) {
-        !val && this.$router.push({
-          name: 'teams-teamId-matches',
-          params: { teamId: this.team.id }
-        })
-      }
-    },
-    methods: {
-      ...mapActions({
-        getPlayers: 'players/FETCH',
-        getSquads: 'squads/FETCH'
-      })
     }
   }
 </script>

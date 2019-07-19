@@ -3,10 +3,12 @@
     fluid
     grid-list-lg
   >
-    <v-layout
-      row
-      wrap
-    >
+    <v-layout wrap>
+      <v-flex xs12>
+        <div class="overline">{{ team.title }}</div>
+        <div class="headline font-weight-thin">Players</div>
+      </v-flex>
+
       <v-flex xs12>
         <player-form />
       </v-flex>
@@ -19,25 +21,28 @@
 </template>
 
 <script>
+  import { mixins, Component } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
-  import PlayerForm from '@/components/Player/PlayerForm'
-  import PlayerGrid from '@/components/Player/PlayerGrid'
+  import PlayerForm from '@/components/Player/Form'
+  import PlayerGrid from '@/components/Player/Grid'
 
-  export default {
-    layout: 'team',
-    middleware: 'authenticated',
-    mixins: [
-      TeamAccessible
-    ],
+  @Component({
     components: {
       PlayerForm,
       PlayerGrid
     },
+    transition: 'fade-transition'
+  })
+  export default class PlayersPage extends mixins(TeamAccessible) {
+    layout = () => 'default'
+    middleware = () => 'authenticated'
+
     head () {
       return {
         title: `${this.team.title} - Players`
       }
-    },
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
     }
