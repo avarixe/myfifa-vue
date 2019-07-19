@@ -53,15 +53,21 @@
       return this.competitions.map(competition => {
         const matches = competition.matches
 
-        const wins = matches.filter(m => m.team_result === 'win').length
-        const draws = matches.filter(m => m.team_result === 'draw').length
-        const losses = matches.filter(m => m.team_result === 'loss').length
+        const wins = matches
+          .filter(match => match.team_result === 'win')
+          .length
+        const draws = matches
+          .filter(match => match.team_result === 'draw')
+          .length
+        const losses = matches
+          .filter(match => match.team_result === 'loss')
+          .length
 
-        const gf = this.$_sum(matches.map(m =>
-          m.home === this.team.title ? m.home_score : m.away_score
+        const gf = this.$_sum(matches.map(match =>
+          match.home === this.team.title ? match.home_score : match.away_score
         ))
-        const ga = this.$_sum(matches.map(m =>
-          m.home === this.team.title ? m.away_score : m.home_score
+        const ga = this.$_sum(matches.map(match =>
+          match.home === this.team.title ? match.away_score : match.home_score
         ))
 
         return {

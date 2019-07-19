@@ -84,7 +84,7 @@
             :items="rows"
             :page.sync="page"
             :loading="loading"
-            sort-by="pos_idx"
+            sort-by="pos"
             must-sort
             :search="search"
             item-key="id"
@@ -136,9 +136,6 @@
               <v-icon :color="item.statusColor">
                 mdi-{{ item.statusIcon }}
               </v-icon>
-            </template>
-            <template #item.pos_idx="{ item }">
-              {{ item.pos }}
             </template>
             <template #item.sec_pos="{ item }">
               {{ $_listArray(item.sec_pos, '-') }}

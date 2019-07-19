@@ -43,9 +43,7 @@
             :items="rows"
             :page.sync="page"
             :loading="loading"
-            multi-sort
-            :sort-by="['pos_idx', 'numMinutes']"
-            :sort-desc="[false, true]"
+            sort-by="pos"
             :search="search"
             item-key="id"
             hide-default-footer
@@ -64,9 +62,6 @@
 
                 <player-card :player-id="item.id" />
               </v-dialog>
-            </template>
-            <template #item.posIdx="{ item }">
-              {{ item.pos }}
             </template>
             <template #item.ovrChange="{ item }">
               <span :class="ovrColor(item)">
@@ -92,6 +87,7 @@
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { addYears } from 'date-fns'
   import { Team, Player } from '@/models'
+  import { positions } from '@/models/Player'
   import { PagedTable } from '@/helpers'
   import PlayerCard from '@/components/Player/Card'
 
@@ -126,7 +122,7 @@
     get headers () {
       let headers = [
         { text: 'Name', value: 'name' },
-        { text: 'Position', value: 'pos_idx', align: 'center' },
+        { text: 'Position', value: 'pos', align: 'center', sort: this.sortPos },
         { text: 'Age', value: 'age', align: 'center' }
       ]
 
@@ -224,6 +220,10 @@
       let date = this.$_parse(this.team.started_on)
       date = addYears(date, parseInt(this.season) + 1)
       return this.$_format(date)
+    }
+
+    sortPos (posA, posB) {
+      return positions.indexOf(posA) - positions.indexOf(posB)
     }
 
     ovrColor (player) {
