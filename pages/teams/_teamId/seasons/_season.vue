@@ -33,9 +33,13 @@
         <v-card outlined>
           <v-card-text>
             <v-tabs centered>
+              <v-tab>Summary</v-tab>
               <v-tab>Competitions</v-tab>
               <v-tab>Players</v-tab>
 
+              <v-tab-item>
+                <season-summary :season="pageSeason" />
+              </v-tab-item>
               <v-tab-item>
                 <season-results-table :season="pageSeason" />
               </v-tab-item>
@@ -53,6 +57,7 @@
 <script>
   import { mixins, Component } from 'nuxt-property-decorator'
   import CompetitionForm from '@/components/Competition/Form'
+  import SeasonSummary from '@/components/Season/Summary'
   import SeasonResultsTable from '@/components/Season/ResultsTable'
   import PlayerGrid from '@/components/Season/PlayerGrid'
   import { TeamAccessible } from '@/mixins'
@@ -60,6 +65,7 @@
   @Component({
     components: {
       CompetitionForm,
+      SeasonSummary,
       SeasonResultsTable,
       PlayerGrid
     },
