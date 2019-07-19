@@ -5,6 +5,30 @@
       justify-space-around
       wrap
     >
+      <v-flex xs6>
+        <season-team-growth
+          label="Team Value"
+          attribute="value"
+          :formatter="$_formatMoney"
+          :season-start="seasonStart"
+          :season-end="seasonEnd"
+        />
+      </v-flex>
+      <v-flex xs6>
+        <season-team-growth
+          label="Team OVR"
+          attribute="ovr"
+          :formatter="parseInt"
+          average
+          :season-start="seasonStart"
+          :season-end="seasonEnd"
+        />
+      </v-flex>
+
+      <v-flex xs12>
+        <v-divider />
+      </v-flex>
+
       <v-flex xs4 sm2>
         <div class="display-1 success--text">{{ numWins }}</div>
         <div class="subheading">Wins</div>
@@ -33,8 +57,13 @@
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { addYears } from 'date-fns'
   import { Match, Team } from '@/models'
+  import SeasonTeamGrowth from './TeamGrowth'
 
-  @Component
+  @Component({
+    components: {
+      SeasonTeamGrowth
+    }
+  })
   export default class SeasonSummary extends Vue {
     @Prop({ type: [String, Number], required: true }) season
 

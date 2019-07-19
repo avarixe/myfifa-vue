@@ -149,6 +149,7 @@
       return Player
         .query()
         .withAll()
+        .where('team_id', this.team.id)
         .whereHas('contracts', query => {
           query.where(contract =>
             this.seasonStart < contract.ended_on &&
