@@ -1,45 +1,27 @@
 <template>
-  <div>
-    <v-tooltip
-      :color="color"
-      bottom
-    >
-      <template #activator="{ on }">
-        <div
-          v-on="on"
-          :class="`display-1 ${color}--text`"
-        >
-          <v-icon
-            class="display-1"
-            :color="color"
-          >mdi-{{ icon }}</v-icon>
-          {{ formatter(endValue) }}
-        </div>
-      </template>
-
-      {{ startValue < endValue ? 'Increased' : 'Decreased' }} from
-      {{ formatter(startValue) }} by {{ percentage.toFixed(2) }}%
-    </v-tooltip>
-
-    <div class="subheading">
-      {{ label }}
-    </div>
-  </div>
+  <delta-statistic
+    :label="label"
+    :formatter="formatter"
+    :start-value="startValue"
+    :end-value="endValue"
+  />
 </template>
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { Player, Team } from '@/models'
+  import { DeltaStatistic } from '@/helpers'
 
-  @Component
+  @Component({
+    components: {
+      DeltaStatistic
+    }
+  })
   export default class SeasonTeamGrowth extends Vue {
     @Prop({ type: String, required: true }) attribute
     @Prop({ type: String, required: true }) label
     @Prop({ type: Boolean, default: false }) average
-    @Prop({
-      type: Function,
-      default: x => x
-    }) formatter
+    @Prop({ type: Function, default: x => x }) formatter
     @Prop(String) seasonStart
     @Prop(String) seasonEnd
 
