@@ -34,71 +34,22 @@
       hide-default-footer
     >
       <template #item.name="{ item }">
-        <inline-field
-          :item="item"
-          attribute="name"
-          label="Team"
-          input-type="combobox"
-          :options="competitionTeams"
-          @close="updateRowAttribute(item.id, 'name', $event)"
-          :readonly="readonly"
-          :display-class="teamClass(item.name)"
-        />
+        <span :class="teamClass(item.name)">{{ item.name }}</span>
       </template>
       <template #item.wins="{ item }">
-        <inline-field
-          :item="item"
-          attribute="wins"
-          label="Wins"
-          input-type="number"
-          @close="updateRowAttribute(item.id, 'wins', $event)"
-          :readonly="readonly"
-          :display-class="teamClass(item.name)"
-        />
+        <span :class="teamClass(item.name)">{{ item.wins }}</span>
       </template>
       <template #item.draws="{ item }">
-        <inline-field
-          :item="item"
-          attribute="draws"
-          label="Draws"
-          input-type="number"
-          @close="updateRowAttribute(item.id, 'draws', $event)"
-          :readonly="readonly"
-          :display-class="teamClass(item.name)"
-        />
+        <span :class="teamClass(item.name)">{{ item.draws }}</span>
       </template>
       <template #item.losses="{ item }">
-        <inline-field
-          :item="item"
-          attribute="losses"
-          label="Losses"
-          input-type="number"
-          @close="updateRowAttribute(item.id, 'losses', $event)"
-          :readonly="readonly"
-          :display-class="teamClass(item.name)"
-        />
+        <span :class="teamClass(item.name)">{{ item.losses }}</span>
       </template>
       <template #item.goals_for="{ item }">
-        <inline-field
-          :item="item"
-          attribute="goals_for"
-          label="Goals For"
-          input-type="number"
-          @close="updateRowAttribute(item.id, 'goals_for', $event)"
-          :readonly="readonly"
-          :display-class="teamClass(item.name)"
-        />
+        <span :class="teamClass(item.name)">{{ item.goals_for }}</span>
       </template>
       <template #item.goals_against="{ item }">
-        <inline-field
-          :item="item"
-          attribute="goals_against"
-          label="Goals Against"
-          input-type="number"
-          @close="updateRowAttribute(item.id, 'goals_against', $event)"
-          :readonly="readonly"
-          :display-class="teamClass(item.name)"
-        />
+        <span :class="teamClass(item.name)">{{ item.goals_against }}</span>
       </template>
       <template #item.goal_difference="{ item }">
         <span :class="teamClass(item.name)">{{ item.goal_difference }}</span>
@@ -106,7 +57,25 @@
       <template #item.points="{ item }">
         <span :class="teamClass(item.name)">{{ item.points }}</span>
       </template>
-      <template #item.delete="{ item }">
+      <template #item.actions="{ item }">
+        <table-row-form
+          :stage="table"
+          :row-data="item"
+        >
+          <template #default="{ on }">
+            <v-tooltip bottom>
+              <template #activator="{ on: tooltip }">
+                <v-btn
+                  v-on="{ ...on, ...tooltip }"
+                  icon
+                >
+                  <v-icon color="orange">mdi-pencil</v-icon>
+                </v-btn>
+              </template>
+              Edit Table Row
+            </v-tooltip>
+          </template>
+        </table-row-form>
         <record-remove
           :record="item"
           store="tableRows"
@@ -160,9 +129,9 @@
       if (!this.readonly) {
         headers.push({
           text: '',
-          value: 'delete',
+          value: 'actions',
           sortable: false,
-          width: 40
+          width: 120
         })
       }
 
