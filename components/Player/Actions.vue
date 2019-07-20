@@ -22,10 +22,10 @@
       </template>
     </player-form>
     <transfer-form :player="player" />
+    <loan-form :player="player" />
     <contract-form :player="player" />
     <template v-if="player.isActive">
       <injury-form :player="player" />
-      <loan-form :player="player" />
       <player-retire :player="player" />
       <player-release :player="player" />
     </template>

@@ -2,6 +2,14 @@
   <table>
     <tbody>
       <tr>
+        <td class="font-weight-bold">Origin</td>
+        <td class="pl-1">{{ loan.origin }}</td>
+      </tr>
+      <tr>
+        <td class="font-weight-bold">Destination</td>
+        <td class="pl-1">{{ loan.destination }}</td>
+      </tr>
+      <tr>
         <td class="font-weight-bold">Duration</td>
         <td class="pl-1">Away for {{ length }}</td>
       </tr>

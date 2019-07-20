@@ -28,11 +28,35 @@
       <v-container grid-list-xs>
         <v-layout wrap>
           <v-flex xs12>
+            <v-date-field
+              v-model="loan.started_on"
+              label="Start Date"
+              prepend-icon="mdi-calendar-today"
+              :min="team.currently_on"
+              color="indigo"
+              required
+            />
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field
+              v-model="loan.origin"
+              :rules="$_validate('Origin', ['required'])"
+              label="Origin"
+              prepend-icon="mdi-airplane-takeoff"
+              :disabled="loanOut"
+              spellcheck="false"
+              autocapitalize="words"
+              autocomplete="off"
+              autocorrect="off"
+            />
+          </v-flex>
+          <v-flex xs12>
             <v-text-field
               v-model="loan.destination"
               :rules="$_validate('Destination', ['required'])"
               label="Destination"
-              prepend-icon="mdi-transit-transfer"
+              prepend-icon="mdi-airplane-landing"
+              :disabled="!loanOut"
               spellcheck="false"
               autocapitalize="words"
               autocomplete="off"
@@ -60,15 +84,21 @@
   import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { mapActions } from 'vuex'
   import { Loan } from '@/models'
-  import { DialogFormable } from '@/mixins'
+  import { VDateField } from '@/helpers'
+  import { TeamAccessible, DialogFormable } from '@/mixins'
+
+  const mix = mixins(DialogFormable, TeamAccessible)
 
   @Component({
+    components: {
+      VDateField
+    },
     methods: mapActions('loans', {
       create: 'CREATE',
       update: 'UPDATE'
     })
   })
-  export default class LoanForm extends mixins(DialogFormable) {
+  export default class LoanForm extends mix {
     @Prop({ type: Object, required: true }) player
     @Prop(String) color
     @Prop(Boolean) dark
@@ -77,6 +107,10 @@
     loan = {
       destination: '',
       returned: false
+    }
+
+    get loanOut () {
+      return this.player.status && this.player.status.length > 0
     }
 
     get playerLoaned () {
@@ -98,10 +132,18 @@
     }
 
     @Watch('dialog')
-    async setLoan (val) {
+    setLoan (val) {
       if (val) {
-        const { id, destination } = this.currentLoan
-        Object.assign(this.loan, { id, destination })
+        if (this.currentLoan) {
+          const { id, destination } = this.currentLoan
+          Object.assign(this.loan, { id, destination })
+        }
+        this.loan.started_on = this.team.currently_on
+        if (this.loanOut) {
+          this.loan.origin = this.team.title
+        } else {
+          this.loan.destination = this.team.title
+        }
       } else {
         Object.assign(this.$data, this.$options.data.apply(this))
         // this.$refs.form.reset()
