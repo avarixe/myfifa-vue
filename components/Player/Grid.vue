@@ -271,7 +271,9 @@
             link: player.link,
             cleanSheets,
             wage: contract.wage,
-            endDate: contract.ended_on
+            endDate: contract.ended_on,
+            statusIcon: player.statusIcon,
+            statusColor: player.statusColor
           }
         })
     }

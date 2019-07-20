@@ -19,6 +19,7 @@ export default class Loan extends Model {
       started_on: this.string(''),
       signed_on: this.string(''),
       ended_on: this.string('').nullable(),
+      origin: this.string(''),
       destination: this.string(''),
       returned: this.boolean(false)
     }

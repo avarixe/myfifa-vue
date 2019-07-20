@@ -85,13 +85,6 @@
               max="25"
             />
           </v-flex>
-          <v-flex xs12>
-            <v-checkbox
-              v-model="transfer.loan"
-              label="Loan"
-              :disabled="transferOut"
-            />
-          </v-flex>
         </v-layout>
       </v-container>
     </template>
@@ -121,8 +114,7 @@
       origin: '',
       destination: '',
       fee: null,
-      addon_clause: 0,
-      loan: false
+      addon_clause: 0
     }
 
     get transferOut () {

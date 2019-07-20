@@ -7,10 +7,7 @@
       </tr>
       <tr>
         <td class="font-weight-bold">Destination</td>
-        <td class="pl-1">
-          {{ transfer.destination }}
-          <span v-if="transfer.loan">(Loan)</span>
-        </td>
+        <td class="pl-1">{{ transfer.destination }}</td>
       </tr>
       <tr>
         <td class="font-weight-bold">Transfer Fee</td>
