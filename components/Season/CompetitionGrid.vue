@@ -14,6 +14,12 @@
         color="info"
       >{{ item.name }}</v-btn>
     </template>
+    <template #item.status="{ item }">
+      <v-icon
+        :color="item.statusColor"
+        small
+      >{{ item.statusIcon }}</v-icon>
+    </template>
   </v-data-table>
 </template>
 
@@ -22,11 +28,12 @@
   import { Competition, Team } from '@/models'
 
   @Component
-  export default class SeasonResultsTable extends Vue {
+  export default class SeasonCompetitionGrid extends Vue {
     @Prop({ type: Number, required: true }) season
 
     headers = [
       { text: 'Competition', value: 'name' },
+      { text: '', value: 'status' },
       { text: 'GP', value: 'gp', align: 'center' },
       { text: 'W', value: 'wins', align: 'center' },
       { text: 'D', value: 'draws', align: 'center' },
@@ -73,6 +80,8 @@
         return {
           name: competition.name,
           link: competition.link,
+          statusIcon: competition.statusIcon,
+          statusColor: competition.statusColor,
           gp: wins + draws + losses,
           wins,
           draws,

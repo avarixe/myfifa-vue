@@ -26,7 +26,6 @@
               <template #activator="{ on }">
                 <a
                   v-on="on"
-                  v-ripple
                   :class="`my-0 ${color}--text`"
                 >{{ player.name }}</a>
               </template>

@@ -55,6 +55,26 @@ class Competition extends Model {
     }
   }
 
+  get statusIcon () {
+    if (this.champion === this.team.title) {
+      return 'mdi-trophy'
+    } else if (this.champion) {
+      return 'mdi-check'
+    } else {
+      return 'mdi-timelapse'
+    }
+  }
+
+  get statusColor () {
+    if (this.champion === this.team.title) {
+      return 'yellow darken-2'
+    } else if (this.champion) {
+      return 'green'
+    } else {
+      return 'gray'
+    }
+  }
+
   get teamOptions () {
     let array = this.stages.reduce((arr, stage) => {
       return [

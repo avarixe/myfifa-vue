@@ -30,6 +30,12 @@
       disable-sort
       hide-default-footer
     >
+      <template #item.home_team="{ item }">
+        <span :class="teamClass(item.home_team)">{{ item.home_team }}</span>
+      </template>
+      <template #item.away_team="{ item }">
+        <span :class="teamClass(item.away_team)">{{ item.away_team }}</span>
+      </template>
       <template #item.actions="{ item }">
         <fixture-form
           :stage="round"
@@ -62,7 +68,6 @@
 
 <script>
   import { mixins, Component, Prop } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
   import { InlineField, RecordRemove } from '@/helpers'
   import FixtureForm from '@/components/Fixture/Form'
@@ -72,12 +77,7 @@
       InlineField,
       RecordRemove,
       FixtureForm
-    },
-    methods: mapActions({
-      createFixture: 'fixtures/CREATE',
-      updateFixture: 'fixtures/UPDATE',
-      updateStage: 'stages/UPDATE'
-    })
+    }
   })
   export default class RoundStage extends mixins(CompetitionAccessible) {
     @Prop({ type: Object, required: true }) round
@@ -109,7 +109,7 @@
 
     async updateStageAttribute (stageId, attribute, value) {
       try {
-        await this.updateStage({
+        await this.$store.dispatch('stages/UPDATE', {
           id: stageId,
           [attribute]: value
         })
@@ -120,13 +120,6 @@
           color: 'red'
         })
       }
-    }
-
-    updateFixtureAttribute (fixtureId, attribute, value) {
-      this.updateFixture({
-        id: fixtureId,
-        [attribute]: value
-      })
     }
   }
 </script>
