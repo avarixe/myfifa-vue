@@ -30,51 +30,25 @@
       disable-sort
       hide-default-footer
     >
-      <template #item.home_team="{ item }">
-        <inline-field
-          :item="item"
-          attribute="home_team"
-          label="Home Team"
-          input-type="combobox"
-          :options="competitionTeams"
-          @close="updateFixtureAttribute(item.id, 'home_team', $event)"
-          :readonly="readonly"
-          :display-class="teamClass(item.home_team)"
-        />
-      </template>
-      <template #item.home_score="{ item }">
-        <inline-field
-          :item="item"
-          attribute="home_score"
-          label="Home Score"
-          @close="updateFixtureAttribute(item.id, 'home_score', $event)"
-          :readonly="readonly"
-          :display-class="teamClass(item.home_team)"
-        />
-      </template>
-      <template #item.away_score="{ item }">
-        <inline-field
-          :item="item"
-          attribute="away_score"
-          label="Away Score"
-          @close="updateFixtureAttribute(item.id, 'away_score', $event)"
-          :readonly="readonly"
-          :display-class="teamClass(item.away_team)"
-        />
-      </template>
-      <template #item.away_team="{ item }">
-        <inline-field
-          :item="item"
-          attribute="away_team"
-          label="Away Team"
-          input-type="combobox"
-          :options="competitionTeams"
-          @close="updateFixtureAttribute(item.id, 'away_team', $event)"
-          :readonly="readonly"
-          :display-class="teamClass(item.away_team)"
-        />
-      </template>
-      <template #item.delete="{ item }">
+      <template #item.actions="{ item }">
+        <fixture-form
+          :stage="round"
+          :fixture-data="item"
+        >
+          <template #default="{ on }">
+            <v-tooltip bottom>
+              <template #activator="{ on: tooltip }">
+                <v-btn
+                  v-on="{ ...on, ...tooltip }"
+                  icon
+                >
+                  <v-icon color="orange">mdi-pencil</v-icon>
+                </v-btn>
+              </template>
+              Edit Fixture
+            </v-tooltip>
+          </template>
+        </fixture-form>
         <record-remove
           :record="item"
           store="fixtures"
@@ -118,16 +92,15 @@
     get headers () {
       const headers = [
         { text: 'Home Team', value: 'home_team', align: 'end' },
-        { text: 'Home Score', value: 'home_score', align: 'end' },
-        { text: 'Away Score', value: 'away_score' },
+        { text: 'Score', value: 'score', align: 'center' },
         { text: 'Away Team', value: 'away_team' }
       ]
 
       if (!this.readonly) {
         headers.push({
           text: '',
-          value: 'delete',
-          width: 40
+          value: 'actions',
+          width: 120
         })
       }
 
@@ -147,13 +120,6 @@
           color: 'red'
         })
       }
-    }
-
-    addFixture () {
-      this.createFixture({
-        stageId: this.round.id,
-        fixture: { home_team: '', away_team: '' }
-      })
     }
 
     updateFixtureAttribute (fixtureId, attribute, value) {

@@ -61,14 +61,21 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop } from 'nuxt-property-decorator'
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
   import { CompetitionAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(CompetitionAccessible, DialogFormable)
 
-  @Component
+  @Component({
+    methods: mapActions('fixtures', {
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
+  })
   export default class FixtureForm extends mix {
     @Prop({ type: Object, required: true }) stage
+    @Prop(Object) fixtureData
 
     fixture = {
       home_team: '',
@@ -77,11 +84,28 @@
       away_team: ''
     }
 
+    @Watch('dialog')
+    setFixture (val) {
+      if (val && this.fixtureData) {
+        Object.assign(this.fixture, this.$_pick(this.fixtureData, [
+          'id',
+          'home_team',
+          'home_score',
+          'away_score',
+          'away_team'
+        ]))
+      }
+    }
+
     async submit () {
-      await this.$store.dispatch('fixtures/CREATE', {
-        stageId: this.stage.id,
-        fixture: this.fixture
-      })
+      if (this.fixtureData) {
+        await this.update(this.fixture)
+      } else {
+        await this.create({
+          stageId: this.stage.id,
+          fixture: this.fixture
+        })
+      }
     }
   }
 </script>

@@ -22,4 +22,8 @@ export default class Fixture extends Model {
       away_score: this.string('').nullable()
     }
   }
+
+  get score () {
+    return `${this.home_score} - ${this.away_score}`
+  }
 }

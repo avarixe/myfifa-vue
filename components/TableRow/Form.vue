@@ -76,14 +76,21 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop } from 'nuxt-property-decorator'
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
   import { CompetitionAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(DialogFormable, CompetitionAccessible)
 
-  @Component
+  @Component({
+    methods: mapActions('tableRows', {
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
+  })
   export default class TableRowForm extends mix {
     @Prop({ type: Object, required: true }) stage
+    @Prop(Object) rowData
 
     row = {
       name: '',
@@ -94,7 +101,30 @@
       goals_against: null
     }
 
+    @Watch('dialog')
+    setTableRow (val) {
+      if (val && this.rowData) {
+        Object.assign(this.row, this.$_pick(this.rowData, [
+          'id',
+          'name',
+          'wins',
+          'draws',
+          'losses',
+          'goals_for',
+          'goals_against'
+        ]))
+      }
+    }
+
     async submit () {
+      if (this.rowData) {
+        await this.update(this.row)
+      } else {
+        await this.create({
+          stageId: this.stage.id,
+          tableRow: this.row
+        })
+      }
       await this.$store.dispatch('tableRows/CREATE', {
         stageId: this.stage.id,
         tableRow: this.row
