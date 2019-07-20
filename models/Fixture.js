@@ -24,6 +24,6 @@ export default class Fixture extends Model {
   }
 
   get score () {
-    return `${this.home_score} - ${this.away_score}`
+    return `${this.home_score || ''} - ${this.away_score || ''}`
   }
 }

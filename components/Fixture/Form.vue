@@ -40,14 +40,14 @@
               prepend-icon="mdi-shield-half-full"
             />
           </v-flex>
-          <v-flex xs12 sm6>
+          <v-flex xs6>
             <v-text-field
               v-model="fixture.home_score"
               label="Home Score"
               prepend-icon="mdi-soccer"
             />
           </v-flex>
-          <v-flex xs12 sm6>
+          <v-flex xs6>
             <v-text-field
               v-model="fixture.away_score"
               label="Away Score"
