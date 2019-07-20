@@ -1,7 +1,7 @@
 <template>
   <dialog-form
     v-model="dialog"
-    title="Add Table Row"
+    :title="title"
     :submit="submit"
     :color="color"
   >
@@ -16,7 +16,7 @@
               <v-icon>mdi-table-row-plus-after</v-icon>
             </v-btn>
           </template>
-          Add Table Row
+          {{ title }}
         </v-tooltip>
       </slot>
     </template>
@@ -103,6 +103,10 @@
       losses: null,
       goals_for: null,
       goals_against: null
+    }
+
+    get title () {
+      return this.rowData ? 'Edit Table Row' : 'Add Table Row'
     }
 
     @Watch('dialog')

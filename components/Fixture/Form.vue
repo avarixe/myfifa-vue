@@ -1,7 +1,7 @@
 <template>
   <dialog-form
     v-model="dialog"
-    title="Add Fixture"
+    :title="title"
     :submit="submit"
     :color="color"
   >
@@ -16,7 +16,7 @@
               <v-icon>mdi-table-row-plus-after</v-icon>
             </v-btn>
           </template>
-          Add Fixture
+          {{ title }}
         </v-tooltip>
       </slot>
     </template>
@@ -90,6 +90,10 @@
       home_score: '',
       away_score: '',
       away_team: ''
+    }
+
+    get title () {
+      return this.rowData ? 'Edit Fixture' : 'Add Fixture'
     }
 
     @Watch('dialog')
