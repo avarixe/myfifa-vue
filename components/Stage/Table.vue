@@ -88,7 +88,6 @@
 
 <script>
   import { mixins, Component, Prop } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
   import { InlineField, RecordRemove } from '@/helpers'
   import TableRowForm from '@/components/TableRow/Form'
@@ -98,11 +97,7 @@
       InlineField,
       RecordRemove,
       TableRowForm
-    },
-    methods: mapActions({
-      updateStage: 'stages/UPDATE',
-      updateRow: 'tableRows/UPDATE'
-    })
+    }
   })
   export default class TableStage extends mixins(CompetitionAccessible) {
     @Prop({ type: Object, required: true }) table
@@ -140,23 +135,8 @@
 
     async updateStageAttribute (stageId, attribute, value) {
       try {
-        await this.updateStage({
+        await this.$store.dispatch('stages/UPDATE', {
           id: stageId,
-          [attribute]: value
-        })
-      } catch (e) {
-        this.key++
-        this.$store.commit('broadcaster/ANNOUNCE', {
-          message: e.message,
-          color: 'red'
-        })
-      }
-    }
-
-    async updateRowAttribute (rowId, attribute, value) {
-      try {
-        await this.updateRow({
-          id: rowId,
           [attribute]: value
         })
       } catch (e) {

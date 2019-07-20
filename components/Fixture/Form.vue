@@ -30,6 +30,10 @@
               label="Home Team"
               :items="competitionTeams"
               prepend-icon="mdi-shield-half-full"
+              spellcheck="false"
+              autocapitalize="words"
+              autocomplete="off"
+              autocorrect="off"
             />
           </v-flex>
           <v-flex xs12>
@@ -38,6 +42,10 @@
               label="Away Team"
               :items="competitionTeams"
               prepend-icon="mdi-shield-half-full"
+              spellcheck="false"
+              autocapitalize="words"
+              autocomplete="off"
+              autocorrect="off"
             />
           </v-flex>
           <v-flex xs6>

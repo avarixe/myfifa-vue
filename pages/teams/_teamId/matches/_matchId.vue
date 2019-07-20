@@ -90,10 +90,7 @@
         </v-flex>
       </v-layout>
 
-      <v-flex
-        v-if="match.caps.length >= 11"
-        xs12
-      >
+      <v-flex xs12>
         <v-card outlined>
           <v-card-text>
             <v-tabs centered>

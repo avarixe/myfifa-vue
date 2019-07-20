@@ -30,6 +30,10 @@
               label="Team"
               :items="competitionTeams"
               prepend-icon="mdi-shield-half-full"
+              spellcheck="false"
+              autocapitalize="words"
+              autocomplete="off"
+              autocorrect="off"
             />
           </v-flex>
           <v-flex xs4>
@@ -125,10 +129,6 @@
           tableRow: this.row
         })
       }
-      await this.$store.dispatch('tableRows/CREATE', {
-        stageId: this.stage.id,
-        tableRow: this.row
-      })
     }
   }
 </script>

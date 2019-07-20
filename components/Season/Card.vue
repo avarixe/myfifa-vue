@@ -28,10 +28,9 @@
         >
           <td>
             <v-icon
-              left
-              :color="competitionStatus(competition).color"
+              :color="competition.statusColor"
               small
-            >{{ competitionStatus(competition).icon }}</v-icon>
+            >{{ competition.statusIcon }}</v-icon>
           </td>
 
           <td>
@@ -63,6 +62,7 @@
     get competitions () {
       return Competition
         .query()
+        .with('team')
         .where('team_id', this.team.id)
         .where('season', this.season)
         .get()
@@ -86,25 +86,6 @@
         params: {
           teamId: this.team.id,
           season: this.season
-        }
-      }
-    }
-
-    competitionStatus (competition) {
-      if (competition.champion === this.team.title) {
-        return {
-          icon: 'mdi-trophy',
-          color: 'yellow darken-2'
-        }
-      } else if (competition.champion) {
-        return {
-          icon: 'mdi-check',
-          color: 'green'
-        }
-      } else {
-        return {
-          icon: 'mdi-timelapse',
-          color: 'gray'
         }
       }
     }

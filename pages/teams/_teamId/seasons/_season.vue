@@ -37,7 +37,7 @@
               <v-tab>Players</v-tab>
 
               <v-tab-item>
-                <season-results-table :season="pageSeason" />
+                <competition-grid :season="pageSeason" />
               </v-tab-item>
               <v-tab-item>
                 <player-grid :season="pageSeason" />
@@ -53,14 +53,14 @@
 <script>
   import { mixins, Component } from 'nuxt-property-decorator'
   import CompetitionForm from '@/components/Competition/Form'
-  import SeasonResultsTable from '@/components/Season/ResultsTable'
+  import CompetitionGrid from '@/components/Season/CompetitionGrid'
   import PlayerGrid from '@/components/Season/PlayerGrid'
   import { TeamAccessible } from '@/mixins'
 
   @Component({
     components: {
       CompetitionForm,
-      SeasonResultsTable,
+      CompetitionGrid,
       PlayerGrid
     },
     transition: 'fade-transition'

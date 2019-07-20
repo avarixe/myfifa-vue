@@ -106,8 +106,6 @@
         .whereIdIn(playerIds)
         .sum('ovr')
 
-      console.log(positionType, playerIds, totalOvr)
-
       return Math.round(totalOvr / playerIds.length)
     }
 
