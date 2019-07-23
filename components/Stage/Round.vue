@@ -27,11 +27,18 @@
       :headers="headers"
       :items="items"
       :items-per-page="-1"
+      :mobile-breakpoint="0"
       disable-sort
       hide-default-footer
     >
       <template #item.home_team="{ item }">
         <span :class="teamClass(item.home_team)">{{ item.home_team }}</span>
+      </template>
+      <template #item.score="{ item }">
+        <div
+          v-for="leg in item.legs"
+          :key="leg.id"
+        >{{ leg.score }}</div>
       </template>
       <template #item.away_team="{ item }">
         <span :class="teamClass(item.away_team)">{{ item.away_team }}</span>
