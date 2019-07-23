@@ -952,15 +952,15 @@
     moment-locales-webpack-plugin "^1.0.7"
 
 "@nuxtjs/vuetify@^1.0.0-beta.8":
-  version "1.0.0-beta.8"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/vuetify/-/vuetify-1.0.0-beta.8.tgz#c94d0046f7266b75ad912258fee32117555764a8"
-  integrity sha512-o4TaKwUmUf1OVEDdNjwyX40CsGoFMlJeQ/dWZ0YjDgu4zyrpd2lhknMbj2nUQUpQHYjm5yGVuQaUu9TjRCizow==
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/vuetify/-/vuetify-1.0.0.tgz#07044ba86083d4cbed29e7d67c8b609b51a9766d"
+  integrity sha512-mpHepLF6r02R1nUBYV2J14tQkeOcVMv1O/PclqKCDeEEzc+3MKRcXylEzVtKhB+zGlSWXtNeyA2Fj641lVBCxQ==
   dependencies:
     deepmerge "^4.0.0"
     fibers "^4.0.1"
     sass "^1.22.7"
     sass-loader "^7.1.0"
-    vuetify next
+    vuetify "^2.0.0"
     vuetify-loader "^1.2.2"
 
 "@nuxtjs/youch@^4.2.3":
@@ -5397,9 +5397,9 @@ node-pre-gyp@^0.12.0:
     tar "^4"
 
 node-releases@^1.1.25:
-  version "1.1.25"
-  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.1.25.tgz#0c2d7dbc7fed30fbe02a9ee3007b8c90bf0133d3"
-  integrity sha512-fI5BXuk83lKEoZDdH3gRhtsNgh05/wZacuXkgbiYkceE7+QIMXOg98n9ZV7mz27B+kFHnqHcUpscZZlGRSmTpQ==
+  version "1.1.26"
+  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.1.26.tgz#f30563edc5c7dc20cf524cc8652ffa7be0762937"
+  integrity sha512-fZPsuhhUHMTlfkhDLGtfY80DSJTjOcx+qD1j5pqPkuhUHVS7xHZIg9EE4DHK8O3f0zTxXHX5VIkDG8pu98/wfQ==
   dependencies:
     semver "^5.3.0"
 
@@ -8372,10 +8372,10 @@ vuetify-loader@^1.2.2:
   dependencies:
     loader-utils "^1.1.0"
 
-vuetify@next:
-  version "2.0.0-beta.9"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.0.0-beta.9.tgz#bdb5430eac5f4d2c8f16ed046787f227343827bf"
-  integrity sha512-4xEqiwor93TDeDDTpp846ik6UvQEUk2TP7cRBt4cZpE5xIhpMjOM2oo4CajOoHOBkYKd6kNslYnsIXINkIYCSw==
+vuetify@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.0.0.tgz#58c72247251412b5e804c8c38a0e12bcb736d949"
+  integrity sha512-AbtHkWdvxF3QrR/xCpu2XL+KJ59Z7/KQQmbV4gPn6Q3VlQ5tXaGR4AJO1uNrvGCTlLlQxWHGcwMGOiHU7aIlqg==
 
 vuex-class@^0.3.2:
   version "0.3.2"
