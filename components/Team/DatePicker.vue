@@ -12,11 +12,12 @@
         :date="currentDate"
       >
         <v-btn
-          v-on="on"
           color="accent"
           outlined
           dark
-        >{{ $_format(currentDate, 'MMM DD, YYYY') }}</v-btn>
+          v-on="on"
+          v-text="$_format(currentDate, 'MMM DD, YYYY')"
+        />
       </slot>
     </template>
 

@@ -5,7 +5,7 @@
 
       <v-spacer />
 
-      <squad-form :squad-data="squad" >
+      <squad-form :squad-data="squad">
         <template #default="{ on: dialog }">
           <v-tooltip
             bottom
@@ -13,9 +13,9 @@
           >
             <template #activator="{ on: tooltip }">
               <v-btn
-                v-on="{ ...dialog, ...tooltip }"
                 text
                 icon
+                v-on="{ ...dialog, ...tooltip }"
               >
                 <v-icon color="orange">mdi-pencil</v-icon>
               </v-btn>
@@ -35,7 +35,7 @@
     <v-divider class="mx-3" />
 
     <v-card-text>
-      <v-layout class="text-xs-center">
+      <v-layout class="text-center">
         <v-flex>
           <div class="display-1 primary--text">{{ defOVR }}</div>
           <div class="subheading">DEF</div>

@@ -6,8 +6,8 @@
     >
       <template #activator="{ on }">
         <v-btn
-          v-on="on"
           icon
+          v-on="on"
           @click.stop="snackbar = true"
         >
           <v-icon color="brown">mdi-door-open</v-icon>
@@ -25,12 +25,16 @@
         dark
         text
         @click="$store.dispatch('players/RELEASE', player.id)"
-      >Yes</v-btn>
+      >
+        Yes
+      </v-btn>
       <v-btn
         dark
         text
         @click.stop="snackbar = false"
-      >No</v-btn>
+      >
+        No
+      </v-btn>
     </v-snackbar>
   </div>
 </template>

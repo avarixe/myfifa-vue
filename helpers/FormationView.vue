@@ -1,8 +1,5 @@
 <template>
-  <v-layout
-    row
-    wrap
-  >
+  <v-layout wrap>
     <v-flex
       v-for="(positions, i) in [
         posATT,
@@ -18,7 +15,7 @@
         <v-flex
           v-for="(player, j) in $_compact(positions)"
           :key="j"
-          class="text-xs-center"
+          class="text-center"
           v-bind="flexAttributes($_compact(positions))"
         >
           <slot

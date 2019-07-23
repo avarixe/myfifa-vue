@@ -10,8 +10,8 @@
         <v-tooltip bottom>
           <template #activator="{ on: tooltip }">
             <v-btn
-              v-on="{ ...on, ...tooltip }"
               icon
+              v-on="{ ...on, ...tooltip }"
             >
               <v-icon>mdi-table-row-plus-after</v-icon>
             </v-btn>
@@ -50,11 +50,11 @@
           </v-flex>
           <v-flex
             xs12
-            class="text-xs-center"
+            class="text-center"
           >
             <v-btn
-              @click="addLeg"
               outlined
+              @click="addLeg"
             >
               Add Fixture Leg
             </v-btn>
@@ -91,8 +91,8 @@
               class="pt-2 mt-1"
             >
               <v-btn
-                @click="leg._destroy = true"
                 icon
+                @click="leg._destroy = true"
               >
                 <v-icon>mdi-delete</v-icon>
               </v-btn>

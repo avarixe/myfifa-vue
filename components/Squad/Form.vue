@@ -29,7 +29,6 @@
         <v-layout
           v-for="(squadPlayer, i) in squad.squad_players_attributes"
           :key="i"
-          row
           wrap
         >
           <v-flex xs4>

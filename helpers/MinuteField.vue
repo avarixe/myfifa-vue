@@ -1,11 +1,11 @@
 <template>
   <v-select
     :value="value"
-    @input="updateValue"
     :items="minutes"
     :rules="$_validate('Minute', ['required'])"
     label="Minute"
     prepend-icon="mdi-timer"
+    @input="updateValue"
   />
 </template>
 

@@ -7,8 +7,8 @@
         attribute="name"
         :label="table.name"
         :readonly="readonly"
-        @close="updateStageAttribute(table.id, 'name', $event)"
         display-class="font-weight-light"
+        @close="updateStageAttribute(table.id, 'name', $event)"
       />
 
       <v-spacer />
@@ -66,8 +66,8 @@
             <v-tooltip bottom>
               <template #activator="{ on: tooltip }">
                 <v-btn
-                  v-on="{ ...on, ...tooltip }"
                   icon
+                  v-on="{ ...on, ...tooltip }"
                 >
                   <v-icon color="orange">mdi-pencil</v-icon>
                 </v-btn>

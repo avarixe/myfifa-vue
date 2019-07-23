@@ -18,11 +18,13 @@
         >
           <template #default="{ on }">
             <v-btn
-              v-on="on"
               color="orange darken-2"
               outlined
               dark
-            >Edit</v-btn>
+              v-on="on"
+            >
+              Edit
+            </v-btn>
           </template>
         </team-form>
 
@@ -42,7 +44,10 @@
       </v-flex>
 
       <!-- Latest Match -->
-      <v-flex xs12 md6>
+      <v-flex
+        xs12
+        md6
+      >
         <match-card
           title="Latest Match"
           :match="lastMatch"
@@ -51,12 +56,18 @@
       </v-flex>
 
       <!-- Current Season -->
-      <v-flex xs12 md6>
+      <v-flex
+        xs12
+        md6
+      >
         <season-card :season="season" />
       </v-flex>
 
       <!-- Injured Players -->
-      <v-flex xs12 md4>
+      <v-flex
+        xs12
+        md4
+      >
         <player-list-card
           :players="injuredPlayers"
           title="Injured Players"
@@ -66,7 +77,10 @@
       </v-flex>
 
       <!-- Loaned Players -->
-      <v-flex xs12 md4>
+      <v-flex
+        xs12
+        md4
+      >
         <player-list-card
           :players="loanedPlayers"
           title="Loaned Players"
@@ -76,7 +90,10 @@
       </v-flex>
 
       <!-- Expiring Contracts -->
-      <v-flex xs12 md4>
+      <v-flex
+        xs12
+        md4
+      >
         <player-list-card
           :players="playersWithExpiringContracts"
           title="Expiring Contracts"

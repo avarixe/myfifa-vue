@@ -1,6 +1,6 @@
 <template>
   <v-card outlined>
-    <v-card-title :class="`subtitle-1 d-block text-xs-center`">
+    <v-card-title :class="`subtitle-1 d-block text-center`">
       <span :class="`${color}--text font-weight-light`">{{ title }}</span>
     </v-card-title>
 
@@ -8,15 +8,16 @@
 
     <v-simple-table>
       <thead>
-        <th class="text-xs-center">Player</th>
-        <th class="text-xs-center">Position</th>
+        <th class="text-center">Player</th>
+        <th class="text-center">Position</th>
         <th
           v-for="(attribute, i) in attributes"
           :key="i"
-          class="text-xs-center"
-        >{{ attribute.text }}</th>
+          class="text-center"
+          v-text="attribute.text"
+        />
       </thead>
-      <tbody class="text-xs-center">
+      <tbody class="text-center">
         <tr
           v-for="player in players"
           :key="player.id"
@@ -25,8 +26,8 @@
             <v-dialog width="500">
               <template #activator="{ on }">
                 <a
-                  v-on="on"
                   :class="`my-0 ${color}--text`"
+                  v-on="on"
                 >{{ player.name }}</a>
               </template>
 
@@ -40,9 +41,8 @@
           <td
             v-for="(attribute, i) in attributes"
             :key="i"
-          >
-            {{ player[attribute.value] }}
-          </td>
+            v-text="player[attribute.value]"
+          />
         </tr>
       </tbody>
     </v-simple-table>

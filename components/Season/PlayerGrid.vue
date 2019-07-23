@@ -54,10 +54,11 @@
               <v-dialog width="500px">
                 <template #activator="{ on }">
                   <v-btn
-                    v-on="on"
                     text
                     color="info"
-                  >{{ item.name }}</v-btn>
+                    v-on="on"
+                    v-text="item.name"
+                  />
                 </template>
 
                 <player-card :player-id="item.id" />

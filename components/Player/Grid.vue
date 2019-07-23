@@ -13,9 +13,9 @@
           >
             <template #activator="{ on: menu }">
               <v-btn
-                v-on="{ ...menu, ...tooltip }"
                 class="px-1"
                 text
+                v-on="{ ...menu, ...tooltip }"
               >
                 <v-icon :color="currentFilter.color">
                   mdi-{{ currentFilter.icon }}
@@ -56,7 +56,8 @@
       </v-btn-toggle>
 
       <div
-        :class="`hidden-sm-and-down subheading ${currentMode.color}--text`">
+        :class="`hidden-sm-and-down subheading ${currentMode.color}--text`"
+      >
         {{ currentMode.text }}
       </div>
 
@@ -99,7 +100,8 @@
                 text
                 nuxt
                 color="info"
-              >{{ item.name }}</v-btn>
+                v-text="item.name"
+              />
             </template>
             <template #item.kit_no="{ item }">
               <inline-field
@@ -128,8 +130,8 @@
                 label="Value"
                 input-type="money"
                 :display="$_formatMoney(item.value)"
-                @close="updatePlayerAttribute(item.id, 'value', $event)"
                 required
+                @close="updatePlayerAttribute(item.id, 'value', $event)"
               />
             </template>
             <template #item.status="{ item }">
@@ -150,7 +152,6 @@
         </template>
       </paged-table>
     </v-card-text>
-
   </v-card>
 </template>
 

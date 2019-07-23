@@ -16,7 +16,9 @@
           nuxt
           color="blue-grey"
           outlined
-        >Previous Season</v-btn>
+        >
+          Previous Season
+        </v-btn>
 
         <competition-form v-if="pageSeason === season" />
 
@@ -26,7 +28,9 @@
           nuxt
           color="blue-grey"
           outlined
-        >Next Season</v-btn>
+        >
+          Next Season
+        </v-btn>
       </v-flex>
 
       <v-flex xs12>

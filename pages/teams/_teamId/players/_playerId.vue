@@ -10,14 +10,20 @@
       </v-flex>
 
       <v-layout
-        class="text-xs-center"
+        class="text-center"
         wrap
       >
-        <v-flex xs6 sm3>
+        <v-flex
+          xs6
+          sm3
+        >
           <div class="display-1">{{ player.pos }}</div>
           <div class="subheading">Position</div>
         </v-flex>
-        <v-flex xs6 sm3>
+        <v-flex
+          xs6
+          sm3
+        >
           <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
           <div class="subheading">
             <fitty-text
@@ -26,22 +32,27 @@
             />
           </div>
         </v-flex>
-        <v-flex xs6 sm3>
+        <v-flex
+          xs6
+          sm3
+        >
           <div class="display-1">{{ player.age }}</div>
           <div class="subheading">Age</div>
         </v-flex>
-        <v-flex xs6 sm3>
+        <v-flex
+          xs6
+          sm3
+        >
           <v-icon
-            v-if="player.isActive"
             :color="player.statusColor"
             class="display-1"
-          >mdi-{{ player.statusIcon }}</v-icon>
-          <div
-            v-else
-            class="display-1"
-          >-</div>
+          >
+            mdi-{{ player.statusIcon }}
+          </v-icon>
 
-          <div class="subheading">{{ player.status || 'Status' }}</div>
+          <div class="subheading">
+            {{ player.status || 'Status' }}
+          </div>
         </v-flex>
         <v-flex xs12>
           <player-actions :player="player" />
@@ -58,36 +69,64 @@
         <v-card outlined>
           <v-card-text>
             <v-layout
-              class="text-xs-center"
+              class="text-center"
               wrap
             >
-              <v-flex xs12 sm6>
+              <v-flex
+                xs12
+                sm6
+              >
                 <div class="display-1 success--text">{{ player.ovr }}</div>
                 <div class="subheading">OVR</div>
               </v-flex>
 
-              <v-flex xs12 sm6>
-                <div class="display-1 primary--text">{{ $_formatMoney(player.value) }}</div>
+              <v-flex
+                xs12
+                sm6
+              >
+                <div class="display-1 primary--text">
+                  {{ $_formatMoney(player.value) }}
+                </div>
                 <div class="subheading">Value</div>
               </v-flex>
 
-              <v-flex xs6 sm3>
-                <div class="display-1 teal--text">{{ player.matches.length }}</div>
+              <v-flex
+                xs6
+                sm3
+              >
+                <div class="display-1 teal--text">
+                  {{ player.matches.length }}
+                </div>
                 <div class="subheading">Matches</div>
               </v-flex>
 
-              <v-flex xs6 sm3>
-                <div class="display-1 pink--text">{{ player.cleanSheets().length }}</div>
+              <v-flex
+                xs6
+                sm3
+              >
+                <div class="display-1 pink--text">
+                  {{ player.cleanSheets().length }}
+                </div>
                 <div class="subheading">Clean Sheets</div>
               </v-flex>
 
-              <v-flex xs6 sm3>
-                <div class="display-1 blue--text">{{ player.goals.length }}</div>
+              <v-flex
+                xs6
+                sm3
+              >
+                <div class="display-1 blue--text">
+                  {{ player.goals.length }}
+                </div>
                 <div class="subheading">Goals</div>
               </v-flex>
 
-              <v-flex xs6 sm3>
-                <div class="display-1 orange--text">{{ player.assists.length }}</div>
+              <v-flex
+                xs6
+                sm3
+              >
+                <div class="display-1 orange--text">
+                  {{ player.assists.length }}
+                </div>
                 <div class="subheading">Assists</div>
               </v-flex>
             </v-layout>
@@ -115,7 +154,7 @@
                 <v-card flat>
                   <v-card-text>
                     <v-layout
-                      class="text-xs-center"
+                      class="text-center"
                       wrap
                     >
                       <v-flex xs12>

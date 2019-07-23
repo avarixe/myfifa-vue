@@ -80,6 +80,8 @@ class Player extends Model {
         return 'pink'
       case 'Pending':
         return 'deep-orange'
+      default:
+        return 'black'
     }
   }
 
@@ -93,6 +95,8 @@ class Player extends Model {
         return 'hospital'
       case 'Pending':
         return 'lock-clock'
+      default:
+        return 'minus'
     }
   }
 

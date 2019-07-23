@@ -12,9 +12,9 @@
         <competition-form>
           <template #default="{ on }">
             <v-btn
-              v-on="on"
               color="blue-grey"
               outlined
+              v-on="on"
             >
               <v-icon left>mdi-plus-circle-outline</v-icon>
               Competition

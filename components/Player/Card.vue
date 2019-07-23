@@ -1,6 +1,6 @@
 <template>
   <v-card outlined>
-    <v-card-title :class="`subtitle-1 d-block text-xs-center`">
+    <v-card-title :class="`subtitle-1 d-block text-center`">
       <span :class="`${color}--text font-weight-light`">{{ player.name }}</span>
     </v-card-title>
 
@@ -13,10 +13,12 @@
         :color="color"
         block
         text
-      >View Player</v-btn>
+      >
+        View Player
+      </v-btn>
     </v-card-actions>
 
-    <v-card-text class="text-xs-center">
+    <v-card-text class="text-center">
       <v-layout wrap>
         <v-flex xs3>
           <div class="display-1">{{ player.pos }}</div>
@@ -34,14 +36,11 @@
         </v-flex>
         <v-flex xs3>
           <v-icon
-            v-if="player.isActive"
             :color="player.statusColor"
             class="display-1"
-          >mdi-{{ player.statusIcon }}</v-icon>
-          <div
-            v-else
-            class="display-1"
-          >-</div>
+          >
+            mdi-{{ player.statusIcon }}
+          </v-icon>
 
           <div class="subheading">{{ player.status || 'Status' }}</div>
         </v-flex>
@@ -53,7 +52,6 @@
           <div class="display-1 primary--text">{{ $_formatMoney(player.value) }}</div>
           <div class="subheading">Value</div>
         </v-flex>
-
       </v-layout>
     </v-card-text>
   </v-card>

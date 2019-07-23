@@ -51,7 +51,8 @@
                 small
                 text
                 color="info"
-              >{{ transfer.player.name }}</v-btn>
+                v-text="transfer.player.name"
+              />
             </template>
             <template #item.fee="{ item: transfer }">
               <span :class="`${isTransferOut(transfer) ? 'green' : 'red'}--text`">

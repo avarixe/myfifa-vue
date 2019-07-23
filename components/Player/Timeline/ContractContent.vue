@@ -15,7 +15,7 @@
           {{ $_formatMoney(contract.performance_bonus) }}
           if
           {{ contract.bonus_req }}
-          {{contract.bonus_req_type }}
+          {{ contract.bonus_req_type }}
         </td>
       </tr>
       <tr v-if="contract.release_clause">

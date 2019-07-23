@@ -83,16 +83,16 @@
           </v-flex>
           <v-flex xs12>
             <v-checkbox
-              label="Penalty"
               v-model="goal.penalty"
+              label="Penalty"
               :disabled="goal.own_goal"
               hide-details
             />
           </v-flex>
           <v-flex xs12>
             <v-checkbox
-              label="Own Goal"
               v-model="goal.own_goal"
+              label="Own Goal"
               :disabled="goal.penalty"
               hide-details
             />

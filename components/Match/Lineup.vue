@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout class="text-xs-center">
+    <v-layout class="text-center">
       <v-flex>
         <div class="display-1 primary--text">{{ defOVR }}</div>
         <div class="subheading">DEF</div>

@@ -14,8 +14,8 @@
         >
           <template #activator="{ on: tooltip }">
             <v-btn
-              v-on="{ ...on, ...tooltip }"
               icon
+              v-on="{ ...on, ...tooltip }"
             >
               <v-icon color="indigo">mdi-transit-transfer</v-icon>
             </v-btn>

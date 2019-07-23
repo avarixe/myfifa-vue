@@ -7,20 +7,25 @@
       align-center
       justify-center
     >
-      <v-flex xs12 sm6>
+      <v-flex
+        xs12
+        sm6
+      >
         <v-card flat>
           <v-card-title class="font-weight-light">
             <span v-if="!finished">{{ title }}</span>
             <template v-else>
               <v-layout
-                class="text-xs-center"
+                class="text-center"
                 wrap
               >
                 <v-flex xs12>
                   <v-icon
                     large
                     color="success"
-                  >mdi-check</v-icon>
+                  >
+                    mdi-check
+                  </v-icon>
                 </v-flex>
                 <v-flex xs12>
                   Team Assets have been loaded!
@@ -52,7 +57,9 @@
                     <v-icon
                       v-else
                       color="success"
-                    >mdi-check</v-icon>
+                    >
+                      mdi-check
+                    </v-icon>
                   </v-list-item-icon>
                   <v-list-item-content>
                     {{ resource }}

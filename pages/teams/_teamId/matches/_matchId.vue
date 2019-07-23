@@ -18,20 +18,24 @@
           :to="prevMatchLink"
           color="blue-grey"
           outlined
-        >Previous Match</v-btn>
+        >
+          Previous Match
+        </v-btn>
 
         <v-btn
           v-if="nextMatchLink"
           :to="nextMatchLink"
           color="blue-grey"
           outlined
-        >Next Match</v-btn>
+        >
+          Next Match
+        </v-btn>
 
         <match-form v-else />
       </v-flex>
 
       <v-layout
-        class="text-xs-center"
+        class="text-center"
         wrap
       >
         <v-flex xs12>
@@ -108,7 +112,6 @@
           </v-card-text>
         </v-card>
       </v-flex>
-
     </v-layout>
   </v-container>
 </template>

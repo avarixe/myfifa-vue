@@ -26,21 +26,25 @@
       </v-card-text>
 
       <v-alert
-        type="error"
         v-model="formError"
+        type="error"
         dismissible
-      >{{ errorMessage }}</v-alert>
+      >
+        {{ errorMessage }}
+      </v-alert>
 
       <v-card-actions>
-        <v-spacer/>
+        <v-spacer />
         <user-form>
           <template #default="{ on }">
             <v-btn
-              v-on="on"
               color="orange"
               text
               large
-            >Register</v-btn>
+              v-on="on"
+            >
+              Register
+            </v-btn>
           </template>
         </user-form>
 
@@ -51,7 +55,9 @@
           large
           :loading="loading"
           @click="loading = true"
-        >Log In</v-btn>
+        >
+          Log In
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-form>

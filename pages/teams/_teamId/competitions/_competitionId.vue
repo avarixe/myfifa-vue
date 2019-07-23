@@ -18,12 +18,14 @@
           nuxt
           outlined
           color="blue-grey"
-        >View Season</v-btn>
+        >
+          View Season
+        </v-btn>
       </v-flex>
 
       <v-flex xs12>
         <v-layout
-          class="text-xs-center"
+          class="text-center"
           wrap
         >
           <v-flex xs12>
@@ -40,12 +42,16 @@
               <v-icon
                 color="yellow darken-2"
                 left
-              >mdi-crown</v-icon>
+              >
+                mdi-crown
+              </v-icon>
               {{ competition.champion }}
               <v-icon
                 color="yellow darken-2"
                 right
-              >mdi-crown</v-icon>
+              >
+                mdi-crown
+              </v-icon>
             </div>
           </v-flex>
 
@@ -59,11 +65,13 @@
             >
               <template #default="{ on }">
                 <v-btn
-                  v-on="on"
                   dark
                   color="orange"
                   class="my-1"
-                >Edit</v-btn>
+                  v-on="on"
+                >
+                  Edit
+                </v-btn>
               </template>
             </competition-form>
 
@@ -74,11 +82,13 @@
             >
               <template #default="{ on }">
                 <v-btn
-                  v-on="on"
                   dark
                   color="red"
                   class="my-1"
-                >Close</v-btn>
+                  v-on="on"
+                >
+                  Close
+                </v-btn>
               </template>
             </competition-form>
 
@@ -88,11 +98,13 @@
             >
               <template #default="{ on }">
                 <v-btn
-                  v-on="on"
                   dark
                   color="teal"
                   class="my-1"
-                >Add Stage</v-btn>
+                  v-on="on"
+                >
+                  Add Stage
+                </v-btn>
               </template>
             </stage-form>
 
@@ -105,7 +117,9 @@
               <v-btn
                 dark
                 class="my-1"
-              >Remove</v-btn>
+              >
+                Remove
+              </v-btn>
             </record-remove>
           </v-flex>
         </v-layout>
@@ -125,7 +139,9 @@
               <v-tab
                 v-for="table in tables"
                 :key="table.id"
-              >{{ table.name }}</v-tab>
+              >
+                {{ table.name }}
+              </v-tab>
 
               <v-tab-item
                 v-for="table in tables"
@@ -155,7 +171,9 @@
               <v-tab
                 v-for="round in rounds"
                 :key="round.id"
-              >{{ round.name }}</v-tab>
+              >
+                {{ round.name }}
+              </v-tab>
 
               <v-tab-item
                 v-for="round in rounds"

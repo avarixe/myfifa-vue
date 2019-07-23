@@ -7,8 +7,8 @@
       <v-tooltip bottom>
         <template #activator="{ on }">
           <v-btn
-            v-on="on"
             icon
+            v-on="on"
           >
             <v-icon>mdi-delete</v-icon>
           </v-btn>
@@ -26,12 +26,16 @@
         dark
         text
         @click="remove"
-      >Yes</v-btn>
+      >
+        Yes
+      </v-btn>
       <v-btn
         dark
         text
         @click.stop="snackbar = false"
-      >No</v-btn>
+      >
+        No
+      </v-btn>
     </v-snackbar>
   </div>
 </template>

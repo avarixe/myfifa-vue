@@ -8,9 +8,9 @@
     <template #activator="{ on }">
       <slot :on="on">
         <v-btn
-          v-on="on"
           outlined
           color="blue-grey"
+          v-on="on"
         >
           <v-icon left>mdi-plus-circle-outline</v-icon>
           Match
@@ -79,7 +79,9 @@
                     <v-icon
                       v-on="on"
                       @click.stop="setHome"
-                    >mdi-arrow-left</v-icon>
+                    >
+                      mdi-arrow-left
+                    </v-icon>
                   </template>
                   Home Match for {{ team.title }}
                 </v-tooltip>
@@ -104,7 +106,9 @@
                     <v-icon
                       v-on="on"
                       @click.stop="setAway"
-                    >mdi-arrow-left</v-icon>
+                    >
+                      mdi-arrow-left
+                    </v-icon>
                   </template>
                   Away Match for {{ team.title }}
                 </v-tooltip>

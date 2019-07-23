@@ -12,13 +12,16 @@
         nuxt
         text
         color="info"
-      >{{ item.name }}</v-btn>
+        v-text="item.name"
+      />
     </template>
     <template #item.status="{ item }">
       <v-icon
         :color="item.statusColor"
         small
-      >{{ item.statusIcon }}</v-icon>
+      >
+        {{ item.statusIcon }}
+      </v-icon>
     </template>
   </v-data-table>
 </template>

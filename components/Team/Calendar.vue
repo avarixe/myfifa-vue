@@ -2,7 +2,7 @@
   <v-layout wrap>
     <v-flex
       xs3
-      class="text-xs-left"
+      class="text-left"
     >
       <v-btn
         icon
@@ -13,13 +13,13 @@
     </v-flex>
     <v-flex
       xs6
-      class="text-xs-center"
+      class="text-center"
     >
       <v-btn text>{{ currentMonth }}</v-btn>
     </v-flex>
     <v-flex
       xs3
-      class="text-xs-right"
+      class="text-right"
     >
       <v-btn
         icon
@@ -49,8 +49,8 @@
             <v-dialog width="500">
               <template #activator="{ on }">
                 <a
+                  class="d-block text-center"
                   v-on="on"
-                  class="d-block text-xs-center"
                 >
                   <fitty-text
                     :text="match.opponent"

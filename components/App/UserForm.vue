@@ -64,7 +64,9 @@
         text
         color="blue"
         @click="changePassword = !changePassword"
-      >{{ changePassword ? 'Profile' : 'Change Password' }}</v-btn>
+      >
+        {{ changePassword ? 'Profile' : 'Change Password' }}
+      </v-btn>
     </template>
   </dialog-form>
 </template>

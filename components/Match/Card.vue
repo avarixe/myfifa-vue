@@ -1,6 +1,6 @@
 <template>
   <v-card outlined>
-    <v-card-title :class="`subtitle-1 d-block text-xs-center`">
+    <v-card-title :class="`subtitle-1 d-block text-center`">
       <span :class="`${color}--text font-weight-light`">{{ title }}</span>
     </v-card-title>
 
@@ -14,10 +14,12 @@
           :color="color"
           block
           text
-        >View Match</v-btn>
+        >
+          View Match
+        </v-btn>
       </v-card-actions>
 
-      <v-card-text class="text-xs-center">
+      <v-card-text class="text-center">
         <p class="font-weight-thin mb-0">{{ match.competition }}</p>
         <h4 class="title font-weight-light mt-0 mb-3">
           {{ match.home }} v {{ match.away }}
@@ -31,7 +33,7 @@
     </template>
     <div
       v-else
-      class="text-xs-center"
+      class="text-center"
     >
       <p class="category font-weight-thin">
         No Matches have been Recorded.

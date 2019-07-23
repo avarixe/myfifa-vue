@@ -39,8 +39,8 @@
           </v-flex>
           <v-flex xs12>
             <v-checkbox
-              label="Injury"
               v-model="substitution.injury"
+              label="Injury"
               hide-details
             />
           </v-flex>

@@ -10,8 +10,8 @@
         <v-tooltip bottom>
           <template #activator="{ on: tooltip }">
             <v-btn
-              v-on="{ ...on, ...tooltip }"
               icon
+              v-on="{ ...on, ...tooltip }"
             >
               <v-icon>mdi-table-row-plus-after</v-icon>
             </v-btn>
