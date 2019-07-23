@@ -48,20 +48,56 @@
               autocorrect="off"
             />
           </v-flex>
-          <v-flex xs6>
-            <v-text-field
-              v-model="fixture.home_score"
-              label="Home Score"
-              prepend-icon="mdi-soccer"
-            />
+          <v-flex
+            xs12
+            class="text-xs-center"
+          >
+            <v-btn
+              @click="addLeg"
+              outlined
+            >
+              Add Fixture Leg
+            </v-btn>
           </v-flex>
-          <v-flex xs6>
-            <v-text-field
-              v-model="fixture.away_score"
-              label="Away Score"
-              prepend-icon="mdi-soccer"
-            />
-          </v-flex>
+          <v-layout
+            v-for="(leg, i) in fixture.legs_attributes"
+            v-show="!leg._destroy"
+            :key="i"
+          >
+            <v-flex
+              xs1
+              class="pt-3 mt-1"
+            >
+              <v-icon>mdi-numeric-{{ i + 1 }}</v-icon>
+            </v-flex>
+            <v-flex xs5>
+              <v-text-field
+                v-model="leg.home_score"
+                label="Home Score"
+                prepend-icon="mdi-soccer"
+                hide-details
+              />
+            </v-flex>
+            <v-flex xs5>
+              <v-text-field
+                v-model="leg.away_score"
+                label="Away Score"
+                prepend-icon="mdi-soccer"
+                hide-details
+              />
+            </v-flex>
+            <v-flex
+              xs1
+              class="pt-2 mt-1"
+            >
+              <v-btn
+                @click="leg._destroy = true"
+                icon
+              >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-flex>
+          </v-layout>
         </v-layout>
       </v-container>
     </template>
@@ -87,13 +123,16 @@
 
     fixture = {
       home_team: '',
-      home_score: '',
-      away_score: '',
-      away_team: ''
+      away_team: '',
+      legs_attributes: [{
+        home_score: '',
+        away_score: '',
+        _destroy: false
+      }]
     }
 
     get title () {
-      return this.rowData ? 'Edit Fixture' : 'Add Fixture'
+      return this.fixtureData ? 'Edit Fixture' : 'Add Fixture'
     }
 
     @Watch('dialog')
@@ -102,11 +141,23 @@
         Object.assign(this.fixture, this.$_pick(this.fixtureData, [
           'id',
           'home_team',
-          'home_score',
-          'away_score',
           'away_team'
         ]))
+        this.fixture.legs_attributes = this.fixtureData.legs.map(leg => ({
+          id: leg.id,
+          home_score: leg.home_score,
+          away_score: leg.away_score,
+          _destroy: false
+        }))
       }
+    }
+
+    addLeg () {
+      this.fixture.legs_attributes.push({
+        home_score: '',
+        away_score: '',
+        _destroy: false
+      })
     }
 
     async submit () {

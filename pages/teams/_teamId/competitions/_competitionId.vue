@@ -208,7 +208,8 @@
     get competition () {
       return Competition
         .query()
-        .with('stages.table_rows|fixtures')
+        .with('stages.table_rows')
+        .with('stages.fixtures.legs')
         .find(this.$route.params.competitionId)
     }
 

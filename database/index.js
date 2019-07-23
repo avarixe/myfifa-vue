@@ -6,6 +6,7 @@ import {
   Competition,
   Contract,
   Fixture,
+  FixtureLeg,
   Goal,
   Injury,
   Loan,
@@ -29,6 +30,7 @@ database.register(Cap, {})
 database.register(Competition, {})
 database.register(Contract, {})
 database.register(Fixture, {})
+database.register(FixtureLeg, {})
 database.register(Goal, {})
 database.register(Injury, {})
 database.register(Loan, {})
