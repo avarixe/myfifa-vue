@@ -55,6 +55,7 @@
               <template #activator="{ on: tooltip }">
                 <v-btn
                   icon
+                  small
                   v-on="{ ...on, ...tooltip }"
                 >
                   <v-icon color="orange">mdi-pencil</v-icon>
@@ -68,6 +69,7 @@
           :record="item"
           store="fixtures"
           label="Fixture"
+          small
         />
       </template>
     </v-data-table>

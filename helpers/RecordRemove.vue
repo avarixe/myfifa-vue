@@ -8,6 +8,7 @@
         <template #activator="{ on }">
           <v-btn
             icon
+            :small="small"
             v-on="on"
           >
             <v-icon>mdi-delete</v-icon>
@@ -49,6 +50,7 @@
     @Prop({ type: String, required: true }) store
     @Prop([String, Object]) redirect
     @Prop(String) label
+    @Prop({ type: Boolean, default: false }) small
 
     snackbar = false
 

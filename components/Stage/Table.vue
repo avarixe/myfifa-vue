@@ -67,6 +67,7 @@
               <template #activator="{ on: tooltip }">
                 <v-btn
                   icon
+                  small
                   v-on="{ ...on, ...tooltip }"
                 >
                   <v-icon color="orange">mdi-pencil</v-icon>
@@ -80,6 +81,7 @@
           :record="item"
           store="tableRows"
           label="Table Row"
+          small
         />
       </template>
     </v-data-table>

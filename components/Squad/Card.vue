@@ -13,8 +13,8 @@
           >
             <template #activator="{ on: tooltip }">
               <v-btn
-                text
                 icon
+                small
                 v-on="{ ...dialog, ...tooltip }"
               >
                 <v-icon color="orange">mdi-pencil</v-icon>
@@ -29,6 +29,7 @@
         :record="squad"
         store="squads"
         :label="`Squad: ${ squad.name }`"
+        small
       />
     </v-card-title>
 
