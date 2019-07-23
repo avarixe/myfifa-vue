@@ -10,9 +10,9 @@
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
+      <v-container>
+        <v-row>
+          <v-col cols="12">
             <v-text-field
               v-model="stage.name"
               :rules="$_validate('Name', ['required'])"
@@ -23,8 +23,8 @@
               autocomplete="off"
               autocorrect="off"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-text-field
               v-model="stage.num_teams"
               :rules="$_validate('Number of Teams', ['required'])"
@@ -32,8 +32,8 @@
               prepend-icon="mdi-account-group"
               type="number"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-text-field
               v-model="stage.num_fixtures"
               :rules="stage.table
@@ -44,8 +44,8 @@
               type="number"
               :disabled="stage.table"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-radio-group
               v-model="stage.table"
               hide-details
@@ -60,8 +60,8 @@
                 :value="false"
               />
             </v-radio-group>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </template>
   </dialog-form>

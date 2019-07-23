@@ -1,6 +1,6 @@
 <template>
   <v-card outlined>
-    <v-card-title :class="`subtitle-1 d-block text-xs-center`">
+    <v-card-title class="subtitle-1 d-block text-center">
       <span class="primary--text font-weight-light">{{ cardTitle }}</span>
     </v-card-title>
 

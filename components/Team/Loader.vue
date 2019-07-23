@@ -1,36 +1,33 @@
 <template>
   <v-container
     fluid
-    fill-height
+    class="fill-height"
   >
-    <v-layout
-      align-center
-      justify-center
+    <v-row
+      align="center"
+      justify="center"
     >
-      <v-flex
-        xs12
-        sm6
+      <v-col
+        cols="12"
+        sm="6"
       >
         <v-card flat>
           <v-card-title class="font-weight-light">
             <span v-if="!finished">{{ title }}</span>
             <template v-else>
-              <v-layout
-                class="text-center"
-                wrap
-              >
-                <v-flex xs12>
+              <v-row class="text-center">
+                <v-col cols="12">
                   <v-icon
                     large
                     color="success"
                   >
                     mdi-check
                   </v-icon>
-                </v-flex>
-                <v-flex xs12>
+                </v-col>
+                <v-col cols="12">
                   Team Assets have been loaded!
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
             </template>
           </v-card-title>
 
@@ -69,8 +66,8 @@
             </v-list>
           </v-fade-transition>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

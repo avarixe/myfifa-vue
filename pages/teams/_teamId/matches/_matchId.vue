@@ -1,18 +1,15 @@
 <template>
-  <v-container
-    fluid
-    grid-list-lg
-  >
-    <v-layout wrap>
-      <v-flex xs12>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12">
         <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">
           Match
           <small>v {{ match.opponent }}</small>
         </div>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <v-btn
           v-if="prevMatchLink"
           :to="prevMatchLink"
@@ -32,13 +29,10 @@
         </v-btn>
 
         <match-form v-else />
-      </v-flex>
+      </v-col>
 
-      <v-layout
-        class="text-center"
-        wrap
-      >
-        <v-flex xs12>
+      <v-row class="text-center">
+        <v-col cols="12">
           <div class="display-2">
             <fitty-text :text="match.competition" />
           </div>
@@ -54,14 +48,14 @@
           <div class="subheading">
             {{ $_formatDate(match.played_on) }}
           </div>
-        </v-flex>
-        <v-layout
+        </v-col>
+        <v-row
           class="display-1"
-          justify-space-between
-          align-center
+          justify="space-between"
+          align="center"
         >
-          <v-flex
-            xs5
+          <v-col
+            cols="5"
             class="font-weight-thin pa-3"
           >
             <fitty-text :text="match.home" />
@@ -71,9 +65,9 @@
                 ({{ match.penalty_shootout.home_score }})
               </span>
             </div>
-          </v-flex>
-          <v-flex
-            xs5
+          </v-col>
+          <v-col
+            cols="5"
             class="font-weight-thin pa-3"
           >
             <fitty-text :text="match.away" />
@@ -83,18 +77,18 @@
                 ({{ match.penalty_shootout.away_score }})
               </span>
             </div>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
 
-        <v-flex xs12>
+        <v-col cols="12">
           <match-actions
             v-if="match.played_on === team.currently_on"
             :match="match"
           />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <v-card outlined>
           <v-card-text>
             <v-tabs centered>
@@ -111,8 +105,8 @@
             </v-tabs>
           </v-card-text>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

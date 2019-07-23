@@ -25,9 +25,9 @@
       </slot>
     </template>
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
+      <v-container>
+        <v-row>
+          <v-col cols="12">
             <v-date-field
               v-model="loan.started_on"
               label="Start Date"
@@ -36,8 +36,8 @@
               color="indigo"
               required
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-text-field
               v-model="loan.origin"
               :rules="$_validate('Origin', ['required'])"
@@ -49,8 +49,8 @@
               autocomplete="off"
               autocorrect="off"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-text-field
               v-model="loan.destination"
               :rules="$_validate('Destination', ['required'])"
@@ -62,19 +62,19 @@
               autocomplete="off"
               autocorrect="off"
             />
-          </v-flex>
+          </v-col>
           <v-scroll-y-transition mode="out-in">
-            <v-flex
+            <v-col
               v-if="playerLoaned"
-              xs12
+              cols="12"
             >
               <v-checkbox
                 v-model="loan.returned"
                 label="Player Returned"
               />
-            </v-flex>
+            </v-col>
           </v-scroll-y-transition>
-        </v-layout>
+        </v-row>
       </v-container>
     </template>
   </dialog-form>

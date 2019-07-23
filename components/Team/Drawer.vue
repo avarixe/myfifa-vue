@@ -12,11 +12,7 @@
       src=""
       height="100%"
     >
-      <v-layout
-        class="fill-height"
-        tag="v-list"
-        column
-      >
+      <v-list nav>
         <template v-if="teamId">
           <v-list-item
             :to="{ name: 'teams-teamId', params: { teamId }}"
@@ -68,7 +64,7 @@
             <v-list-item-title>{{ link.text }}</v-list-item-title>
           </v-list-item>
         </template>
-      </v-layout>
+      </v-list>
     </v-img>
   </v-navigation-drawer>
 </template>

@@ -1,14 +1,11 @@
 <template>
-  <v-container
-    fluid
-    grid-list-lg
-  >
-    <v-layout wrap>
-      <v-flex xs12>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12">
         <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">Seasons</div>
-      </v-flex>
-      <v-flex xs12>
+      </v-col>
+      <v-col cols="12">
         <competition-form>
           <template #default="{ on }">
             <v-btn
@@ -21,12 +18,12 @@
             </v-btn>
           </template>
         </competition-form>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <season-grid />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

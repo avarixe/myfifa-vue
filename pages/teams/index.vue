@@ -1,11 +1,11 @@
 <template>
-  <v-container grid-list-lg>
-    <v-layout wrap>
-      <v-flex xs12>
+  <v-container>
+    <v-row>
+      <v-col cols="12">
         <div class="headline font-weight-thin">Teams</div>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <team-form>
           <template #default="{ on }">
             <v-btn
@@ -18,12 +18,12 @@
             </v-btn>
           </template>
         </team-form>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <team-grid />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

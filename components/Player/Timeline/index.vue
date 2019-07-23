@@ -30,11 +30,11 @@
           </span>
         </v-card-title>
         <v-container>
-          <v-layout>
-            <v-flex xs12>
+          <v-row>
+            <v-col cols="12">
               <timeline-content :item="item" />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-container>
       </v-card>
     </v-timeline-item>

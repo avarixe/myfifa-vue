@@ -35,20 +35,20 @@
     <v-divider class="mx-3" />
 
     <v-card-text>
-      <v-layout class="text-center">
-        <v-flex>
+      <v-row class="text-center">
+        <v-col>
           <div class="display-1 primary--text">{{ defOVR }}</div>
           <div class="subheading">DEF</div>
-        </v-flex>
-        <v-flex>
+        </v-col>
+        <v-col>
           <div class="display-1 success--text">{{ midOVR }}</div>
           <div class="subheading">MID</div>
-        </v-flex>
-        <v-flex>
+        </v-col>
+        <v-col>
           <div class="display-1 warning--text">{{ attOVR }}</div>
           <div class="subheading">ATT</div>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
       <v-divider class="mx-3" />
 

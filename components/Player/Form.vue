@@ -20,9 +20,9 @@
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
+      <v-container>
+        <v-row>
+          <v-col cols="12">
             <v-text-field
               v-model="player.name"
               :rules="$_validate('Name', ['required'])"
@@ -33,8 +33,8 @@
               autocomplete="off"
               autocorrect="off"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-select
               v-model="player.pos"
               :rules="$_validate('Position', ['required'])"
@@ -42,8 +42,8 @@
               label="Position"
               prepend-icon="mdi-run"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-select
               v-model="player.sec_pos"
               :items="positions"
@@ -53,8 +53,8 @@
               chips
               deletable-chips
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-text-field
               v-model="player.birth_year"
               label="Birth Year"
@@ -62,25 +62,25 @@
               mask="####"
               :rules="$_validate('Birth Year', ['required'])"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-checkbox
               v-model="player.youth"
               label="Youth Player"
               :disabled="player.id > 0"
               hide-details
             />
-          </v-flex>
+          </v-col>
 
-          <v-flex xs12>
+          <v-col cols="12">
             <v-select
               v-model="player.kit_no"
               :items="Array.from({ length: 99 }, (v, k) => k + 1)"
               label="Kit Number"
               prepend-icon="mdi-tshirt-crew"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-select
               v-model="player.ovr"
               :items="Array.from({ length: 61 }, (v, k) => k + 40)"
@@ -88,16 +88,16 @@
               label="OVR"
               prepend-icon="mdi-trending-up"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-money-field
               v-model="player.value"
               label="Value"
               :prefix="team.currency"
               required
             />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </template>
   </dialog-form>

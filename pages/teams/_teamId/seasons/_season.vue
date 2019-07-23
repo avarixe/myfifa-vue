@@ -1,15 +1,12 @@
 <template>
-  <v-container
-    fluid
-    grid-list-lg
-  >
-    <v-layout wrap>
-      <v-flex xs12>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12">
         <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">{{ title }}</div>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <v-btn
           v-if="pageSeason > 0"
           :to="linkToSeason(pageSeason - 1)"
@@ -31,9 +28,9 @@
         >
           Next Season
         </v-btn>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <v-card outlined>
           <v-card-text>
             <v-tabs centered>
@@ -49,8 +46,8 @@
             </v-tabs>
           </v-card-text>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

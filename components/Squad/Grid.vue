@@ -6,16 +6,16 @@
     hide-default-footer
   >
     <template #default="{ items }">
-      <v-layout wrap>
-        <v-flex
+      <v-row>
+        <v-col
           v-for="squad in items"
           :key="squad.id"
-          xs12
-          md6
+          cols="12"
+          md="6"
         >
           <squad-card :squad="squad" />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </template>
   </v-data-iterator>
 </template>

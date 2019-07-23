@@ -1,22 +1,19 @@
 <template>
-  <v-container
-    fluid
-    grid-list-lg
-  >
-    <v-layout wrap>
-      <v-flex xs12>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12">
         <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">Players</div>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <player-form />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <player-grid />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

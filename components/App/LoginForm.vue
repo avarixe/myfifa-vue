@@ -6,15 +6,15 @@
     <v-card>
       <v-card-title>MyFIFA Manager</v-card-title>
       <v-card-text>
-        <v-flex xs12>
+        <v-col cols="12">
           <v-text-field
             v-model="credentials.username"
             label="Username"
             autofocus
             autocapitalize="off"
           />
-        </v-flex>
-        <v-flex xs12>
+        </v-col>
+        <v-col cols="12">
           <v-text-field
             v-model="credentials.password"
             label="Password"
@@ -22,7 +22,7 @@
             :append-icon="`mdi-eye${visible ? '-off' : ''}`"
             @click:append="visible = !visible"
           />
-        </v-flex>
+        </v-col>
       </v-card-text>
 
       <v-alert

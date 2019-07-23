@@ -1,15 +1,12 @@
 <template>
-  <v-container
-    fluid
-    grid-list-lg
-  >
-    <v-layout wrap>
-      <v-flex xs12>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12">
         <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">Dashboard</div>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <team-date-picker />
 
         <team-form
@@ -36,37 +33,37 @@
         >
           <v-btn outlined>Remove</v-btn>
         </record-remove>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <match-form />
         <player-form />
-      </v-flex>
+      </v-col>
 
       <!-- Latest Match -->
-      <v-flex
-        xs12
-        md6
+      <v-col
+        cols="12"
+        md="6"
       >
         <match-card
           title="Latest Match"
           :match="lastMatch"
           color="success"
         />
-      </v-flex>
+      </v-col>
 
       <!-- Current Season -->
-      <v-flex
-        xs12
-        md6
+      <v-col
+        cols="12"
+        md="6"
       >
         <season-card :season="season" />
-      </v-flex>
+      </v-col>
 
       <!-- Injured Players -->
-      <v-flex
-        xs12
-        md4
+      <v-col
+        cols="12"
+        md="4"
       >
         <player-list-card
           :players="injuredPlayers"
@@ -74,12 +71,12 @@
           color="pink"
           :attributes="[{ text: 'Injury', value: 'injury' }]"
         />
-      </v-flex>
+      </v-col>
 
       <!-- Loaned Players -->
-      <v-flex
-        xs12
-        md4
+      <v-col
+        cols="12"
+        md="4"
       >
         <player-list-card
           :players="loanedPlayers"
@@ -87,12 +84,12 @@
           color="indigo"
           :attributes="[{ text: 'Loaned To', value: 'loanedTo' }]"
         />
-      </v-flex>
+      </v-col>
 
       <!-- Expiring Contracts -->
-      <v-flex
-        xs12
-        md4
+      <v-col
+        cols="12"
+        md="4"
       >
         <player-list-card
           :players="playersWithExpiringContracts"
@@ -100,15 +97,15 @@
           color="orange"
           :attributes="[{ text: 'OVR', value: 'ovr' }]"
         />
-      </v-flex>
+      </v-col>
 
       <!-- Team Calendar -->
-      <v-flex
-        hidden-sm-and-down
-        xs12
+      <v-col
+        class="hidden-sm-and-down"
+        cols="12"
       >
         <v-card outlined>
-          <v-card-title :class="`subtitle-1 d-block text-xs-center`">
+          <v-card-title class="subtitle-1 d-block text-center">
             <span class="blue--text font-weight-light">Calendar</span>
           </v-card-title>
 
@@ -118,8 +115,8 @@
             <team-calendar />
           </v-card-text>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

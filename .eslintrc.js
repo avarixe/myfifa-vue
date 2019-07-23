@@ -34,8 +34,8 @@ module.exports = {
     'vue/singleline-html-element-content-newline': 'off',
 
     'vuetify/no-deprecated-classes': 'error',
-    // 'vuetify/grid-unknown-attributes': 'error',
-    // 'vuetify/no-legacy-grid': 'error',
+    'vuetify/grid-unknown-attributes': 'warn',
+    'vuetify/no-legacy-grid': 'warn',
 
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'

@@ -22,9 +22,9 @@
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
+      <v-container>
+        <v-row>
+          <v-col cols="12">
             <v-combobox
               v-model="fixture.home_team"
               label="Home Team"
@@ -35,8 +35,8 @@
               autocomplete="off"
               autocorrect="off"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-combobox
               v-model="fixture.away_team"
               label="Away Team"
@@ -47,9 +47,9 @@
               autocomplete="off"
               autocorrect="off"
             />
-          </v-flex>
-          <v-flex
-            xs12
+          </v-col>
+          <v-col
+            cols="12"
             class="text-center"
           >
             <v-btn
@@ -58,36 +58,36 @@
             >
               Add Fixture Leg
             </v-btn>
-          </v-flex>
-          <v-layout
+          </v-col>
+          <v-row
             v-for="(leg, i) in fixture.legs_attributes"
             v-show="!leg._destroy"
             :key="i"
           >
-            <v-flex
-              xs1
+            <v-col
+              cols="1"
               class="pt-3 mt-1"
             >
               <v-icon>mdi-numeric-{{ i + 1 }}</v-icon>
-            </v-flex>
-            <v-flex xs5>
+            </v-col>
+            <v-col cols="5">
               <v-text-field
                 v-model="leg.home_score"
                 label="Home Score"
                 prepend-icon="mdi-soccer"
                 hide-details
               />
-            </v-flex>
-            <v-flex xs5>
+            </v-col>
+            <v-col cols="5">
               <v-text-field
                 v-model="leg.away_score"
                 label="Away Score"
                 prepend-icon="mdi-soccer"
                 hide-details
               />
-            </v-flex>
-            <v-flex
-              xs1
+            </v-col>
+            <v-col
+              cols="1"
               class="pt-2 mt-1"
             >
               <v-btn
@@ -96,9 +96,9 @@
               >
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
-            </v-flex>
-          </v-layout>
-        </v-layout>
+            </v-col>
+          </v-row>
+        </v-row>
       </v-container>
     </template>
   </dialog-form>
