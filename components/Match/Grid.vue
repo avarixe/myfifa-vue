@@ -58,7 +58,8 @@
                 nuxt
                 text
                 :color="item.resultColor"
-              >{{ item.score }}</v-btn>
+                v-text="item.score"
+              />
             </template>
             <template #item.played_on="{ item }">
               {{ $_format($_parse(item.played_on), 'MMM DD, YYYY') }}
@@ -67,7 +68,6 @@
         </template>
       </paged-table>
     </v-card-text>
-
   </v-card>
 </template>
 

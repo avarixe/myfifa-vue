@@ -25,9 +25,6 @@
         <nuxt />
       </template>
     </v-content>
-
-    <!-- <team-bottom-navigation /> -->
-
   </v-app>
 </template>
 

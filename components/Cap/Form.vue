@@ -11,8 +11,8 @@
 
     <template #form>
       <v-container>
-        <v-layout wrap>
-          <v-flex xs12>
+        <v-row>
+          <v-col cols="12">
             <v-select
               v-model="cap.pos"
               :items="positions"
@@ -20,8 +20,8 @@
               label="Position"
               prepend-icon="mdi-run"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <player-select
               v-model="cap.player_id"
               :players="players"
@@ -30,8 +30,8 @@
               :disabled="cap.start > 0"
               label="Player"
             />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </template>
   </dialog-form>

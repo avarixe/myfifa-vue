@@ -1,5 +1,5 @@
 <template>
-  <div class="text-xs-center">
+  <div class="text-center">
     <match-form
       :match-data="match"
       color="orange"
@@ -11,8 +11,8 @@
         >
           <template #activator="{ on: tooltip }">
             <v-btn
-              v-on="{ ...dialog, ...tooltip }"
               icon
+              v-on="{ ...dialog, ...tooltip }"
             >
               <v-icon color="orange">mdi-pencil</v-icon>
             </v-btn>
@@ -30,8 +30,8 @@
         <v-tooltip bottom>
           <template #activator="{ on: tooltip }">
             <v-btn
-              v-on="{ ...dialog, ...tooltip }"
               icon
+              v-on="{ ...dialog, ...tooltip }"
             >
               <v-icon>mdi-plus-circle-outline</v-icon>
             </v-btn>
@@ -52,8 +52,8 @@
         >
           <template #activator="{ on: menu }">
             <v-btn
-              v-on="{ ...menu, ...tooltip }"
               icon
+              v-on="{ ...menu, ...tooltip }"
             >
               <v-icon color="cyan">mdi-clipboard-text</v-icon>
             </v-btn>
@@ -63,7 +63,9 @@
               v-for="squad in squads"
               :key="squad.id"
               @click="applySquadToMatch(squad.id)"
-            >{{ squad.name }}</v-list-item>
+            >
+              {{ squad.name }}
+            </v-list-item>
           </v-list>
         </v-menu>
       </template>
@@ -82,8 +84,8 @@
         >
           <template #activator="{ on: tooltip }">
             <v-btn
-              v-on="{ ...dialog, ...tooltip }"
               icon
+              v-on="{ ...dialog, ...tooltip }"
             >
               <v-icon color="green">mdi-repeat</v-icon>
             </v-btn>
@@ -105,8 +107,8 @@
         >
           <template #activator="{ on: tooltip }">
             <v-btn
-              v-on="{ ...dialog, ...tooltip }"
               icon
+              v-on="{ ...dialog, ...tooltip }"
             >
               <v-icon color="blue">mdi-soccer</v-icon>
             </v-btn>
@@ -128,8 +130,8 @@
         >
           <template #activator="{ on: tooltip }">
             <v-btn
-              v-on="{ ...dialog, ...tooltip }"
               icon
+              v-on="{ ...dialog, ...tooltip }"
             >
               <v-icon color="red">mdi-book</v-icon>
             </v-btn>
@@ -151,8 +153,8 @@
         >
           <template #activator="{ on: tooltip }">
             <v-btn
-              v-on="{ ...dialog, ...tooltip }"
               icon
+              v-on="{ ...dialog, ...tooltip }"
             >
               <v-icon color="indigo">mdi-human</v-icon>
             </v-btn>

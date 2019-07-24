@@ -1,23 +1,23 @@
 <template>
-  <v-container
-    fluid
-    grid-list-lg
-  >
-    <v-layout wrap>
-      <v-flex xs12>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12">
         <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">{{ player.name }}</div>
-      </v-flex>
+      </v-col>
 
-      <v-layout
-        class="text-xs-center"
-        wrap
-      >
-        <v-flex xs6 sm3>
+      <v-row class="text-center">
+        <v-col
+          cols="6"
+          sm="3"
+        >
           <div class="display-1">{{ player.pos }}</div>
           <div class="subheading">Position</div>
-        </v-flex>
-        <v-flex xs6 sm3>
+        </v-col>
+        <v-col
+          cols="6"
+          sm="3"
+        >
           <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
           <div class="subheading">
             <fitty-text
@@ -25,25 +25,30 @@
               :max-size="16"
             />
           </div>
-        </v-flex>
-        <v-flex xs6 sm3>
+        </v-col>
+        <v-col
+          cols="6"
+          sm="3"
+        >
           <div class="display-1">{{ player.age }}</div>
           <div class="subheading">Age</div>
-        </v-flex>
-        <v-flex xs6 sm3>
+        </v-col>
+        <v-col
+          cols="6"
+          sm="3"
+        >
           <v-icon
-            v-if="player.isActive"
             :color="player.statusColor"
             class="display-1"
-          >mdi-{{ player.statusIcon }}</v-icon>
-          <div
-            v-else
-            class="display-1"
-          >-</div>
+          >
+            mdi-{{ player.statusIcon }}
+          </v-icon>
 
-          <div class="subheading">{{ player.status || 'Status' }}</div>
-        </v-flex>
-        <v-flex xs12>
+          <div class="subheading">
+            {{ player.status || 'Status' }}
+          </div>
+        </v-col>
+        <v-col cols="12">
           <player-actions :player="player" />
           <record-remove
             :record="player"
@@ -51,46 +56,71 @@
             :label="player.name"
             :redirect="linkTo('players')"
           />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <v-card outlined>
           <v-card-text>
-            <v-layout
-              class="text-xs-center"
-              wrap
-            >
-              <v-flex xs12 sm6>
+            <v-row class="text-center">
+              <v-col
+                cols="12"
+                sm="6"
+              >
                 <div class="display-1 success--text">{{ player.ovr }}</div>
                 <div class="subheading">OVR</div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs12 sm6>
-                <div class="display-1 primary--text">{{ $_formatMoney(player.value) }}</div>
+              <v-col
+                cols="12"
+                sm="6"
+              >
+                <div class="display-1 primary--text">
+                  {{ $_formatMoney(player.value) }}
+                </div>
                 <div class="subheading">Value</div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs6 sm3>
-                <div class="display-1 teal--text">{{ player.matches.length }}</div>
+              <v-col
+                cols="6"
+                sm="3"
+              >
+                <div class="display-1 teal--text">
+                  {{ player.matches.length }}
+                </div>
                 <div class="subheading">Matches</div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs6 sm3>
-                <div class="display-1 pink--text">{{ player.cleanSheets().length }}</div>
+              <v-col
+                cols="6"
+                sm="3"
+              >
+                <div class="display-1 pink--text">
+                  {{ player.cleanSheets().length }}
+                </div>
                 <div class="subheading">Clean Sheets</div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs6 sm3>
-                <div class="display-1 blue--text">{{ player.goals.length }}</div>
+              <v-col
+                cols="6"
+                sm="3"
+              >
+                <div class="display-1 blue--text">
+                  {{ player.goals.length }}
+                </div>
                 <div class="subheading">Goals</div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs6 sm3>
-                <div class="display-1 orange--text">{{ player.assists.length }}</div>
+              <v-col
+                cols="6"
+                sm="3"
+              >
+                <div class="display-1 orange--text">
+                  {{ player.assists.length }}
+                </div>
                 <div class="subheading">Assists</div>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
             <v-tabs centered>
               <v-tab>Timeline</v-tab>
@@ -114,11 +144,8 @@
               <v-tab-item>
                 <v-card flat>
                   <v-card-text>
-                    <v-layout
-                      class="text-xs-center"
-                      wrap
-                    >
-                      <v-flex xs12>
+                    <v-row class="text-center">
+                      <v-col cols="12">
                         <player-history-chart
                           :player="player"
                           attribute="ovr"
@@ -127,9 +154,9 @@
                           :min="40"
                           :max="100"
                         />
-                      </v-flex>
+                      </v-col>
 
-                      <v-flex xs12>
+                      <v-col cols="12">
                         <player-history-chart
                           :player="player"
                           attribute="value"
@@ -138,16 +165,16 @@
                           :prefix="team.currency"
                           thousands=","
                         />
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </v-card-text>
                 </v-card>
               </v-tab-item>
             </v-tabs>
           </v-card-text>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

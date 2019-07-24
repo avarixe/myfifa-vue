@@ -26,8 +26,8 @@
       <user-form>
         <template #default="{ on }">
           <v-btn
-            v-on="on"
             icon
+            v-on="on"
           >
             <v-icon color="tertiary">mdi-account</v-icon>
           </v-btn>

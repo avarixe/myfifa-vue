@@ -5,7 +5,7 @@
 
       <v-spacer />
 
-      <squad-form :squad-data="squad" >
+      <squad-form :squad-data="squad">
         <template #default="{ on: dialog }">
           <v-tooltip
             bottom
@@ -13,9 +13,9 @@
           >
             <template #activator="{ on: tooltip }">
               <v-btn
-                v-on="{ ...dialog, ...tooltip }"
-                text
                 icon
+                small
+                v-on="{ ...dialog, ...tooltip }"
               >
                 <v-icon color="orange">mdi-pencil</v-icon>
               </v-btn>
@@ -29,26 +29,27 @@
         :record="squad"
         store="squads"
         :label="`Squad: ${ squad.name }`"
+        small
       />
     </v-card-title>
 
     <v-divider class="mx-3" />
 
     <v-card-text>
-      <v-layout class="text-xs-center">
-        <v-flex>
+      <v-row class="text-center">
+        <v-col>
           <div class="display-1 primary--text">{{ defOVR }}</div>
           <div class="subheading">DEF</div>
-        </v-flex>
-        <v-flex>
+        </v-col>
+        <v-col>
           <div class="display-1 success--text">{{ midOVR }}</div>
           <div class="subheading">MID</div>
-        </v-flex>
-        <v-flex>
+        </v-col>
+        <v-col>
           <div class="display-1 warning--text">{{ attOVR }}</div>
           <div class="subheading">ATT</div>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
       <v-divider class="mx-3" />
 

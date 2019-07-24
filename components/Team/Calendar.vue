@@ -1,8 +1,8 @@
 <template>
-  <v-layout wrap>
-    <v-flex
-      xs3
-      class="text-xs-left"
+  <v-row>
+    <v-col
+      cols="3"
+      class="text-left"
     >
       <v-btn
         icon
@@ -10,16 +10,16 @@
       >
         <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
-    </v-flex>
-    <v-flex
-      xs6
-      class="text-xs-center"
+    </v-col>
+    <v-col
+      cols="6"
+      class="text-center"
     >
       <v-btn text>{{ currentMonth }}</v-btn>
-    </v-flex>
-    <v-flex
-      xs3
-      class="text-xs-right"
+    </v-col>
+    <v-col
+      cols="3"
+      class="text-right"
     >
       <v-btn
         icon
@@ -27,9 +27,9 @@
       >
         <v-icon>mdi-chevron-right</v-icon>
       </v-btn>
-    </v-flex>
+    </v-col>
 
-    <v-flex xs12>
+    <v-col cols="12">
       <v-calendar
         ref="calendar"
         v-model="day"
@@ -49,8 +49,8 @@
             <v-dialog width="500">
               <template #activator="{ on }">
                 <a
+                  class="d-block text-center"
                   v-on="on"
-                  class="d-block text-xs-center"
                 >
                   <fitty-text
                     :text="match.opponent"
@@ -67,8 +67,8 @@
           </v-sheet>
         </template>
       </v-calendar>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

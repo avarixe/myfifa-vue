@@ -1,33 +1,30 @@
 <template>
-  <v-container
-    fluid
-    grid-list-lg
-  >
-    <v-layout wrap>
-      <v-flex xs12>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12">
         <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">Squads</div>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <squad-form>
           <template #default="{ on }">
             <v-btn
-              v-on="on"
               color="blue-grey"
               outlined
+              v-on="on"
             >
               <v-icon left>mdi-plus-circle-outline</v-icon>
               Squad
             </v-btn>
           </template>
         </squad-form>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <squad-grid />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

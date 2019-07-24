@@ -11,9 +11,9 @@
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
+      <v-container>
+        <v-row>
+          <v-col cols="12">
             <v-radio-group
               v-model="booking.red_card"
               row
@@ -30,21 +30,21 @@
                 color="red darken-2"
               />
             </v-radio-group>
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <minute-field
               v-model="minute"
               :extra-time="match.extra_time"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <player-select
               v-model="booking.player_id"
               :players="unsubbedPlayers"
               required
             />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </template>
   </dialog-form>

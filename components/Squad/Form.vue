@@ -10,9 +10,9 @@
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
+      <v-container>
+        <v-row>
+          <v-col cols="12">
             <v-text-field
               v-model="squad.name"
               :rules="$_validate('Name', ['required'])"
@@ -23,16 +23,14 @@
               autocomplete="off"
               autocorrect="off"
             />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
 
-        <v-layout
+        <v-row
           v-for="(squadPlayer, i) in squad.squad_players_attributes"
           :key="i"
-          row
-          wrap
         >
-          <v-flex xs4>
+          <v-col cols="4">
             <v-select
               v-model="squadPlayer.pos"
               :items="positions"
@@ -40,9 +38,9 @@
               prepend-icon="mdi-run"
               hide-details
             />
-          </v-flex>
+          </v-col>
 
-          <v-flex xs8>
+          <v-col cols="8">
             <player-select
               v-model="squadPlayer.player_id"
               :players="players"
@@ -50,8 +48,8 @@
               label="Player"
               hide-details
             />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </template>
   </dialog-form>

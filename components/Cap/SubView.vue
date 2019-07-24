@@ -7,8 +7,8 @@
         input-type="select"
         :label="`${cap.name} Position`"
         :options="positions"
-        @close="setPosition($event)"
         :readonly="readonly"
+        @close="setPosition($event)"
       />
     </v-list-item-action>
 
@@ -22,8 +22,8 @@
     >
       <template #activator="{ on }">
         <a
-          v-on="on"
           class="font-weight-thin body-2 black--text mr-4"
+          v-on="on"
         >{{ cap.name }}</a>
       </template>
 
@@ -35,7 +35,6 @@
       :match="match"
       class="d-inline-block"
     />
-
   </v-list-item>
 </template>
 

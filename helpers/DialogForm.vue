@@ -13,10 +13,10 @@
     </template>
 
     <v-form
-      v-model="valid"
       ref="form"
-      @submit.prevent="submitForm"
+      v-model="valid"
       style="width:100%"
+      @submit.prevent="submitForm"
     >
       <v-card>
         <v-card-title
@@ -38,10 +38,11 @@
         </v-card-text>
 
         <v-alert
-          type="error"
           v-model="formError"
+          type="error"
           dismissible
-        >{{ errorMessage }}</v-alert>
+          v-text="errorMessage"
+        />
 
         <v-divider />
 
@@ -52,7 +53,9 @@
             text
             large
             @click="dialog = false"
-          >Cancel</v-btn>
+          >
+            Cancel
+          </v-btn>
 
           <slot name="additional-actions" />
 
@@ -64,7 +67,9 @@
             large
             :loading="loading"
             @click="loading = true"
-          >Save</v-btn>
+          >
+            Save
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-form>

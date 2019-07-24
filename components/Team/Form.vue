@@ -10,9 +10,9 @@
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
+      <v-container>
+        <v-row>
+          <v-col cols="12">
             <v-text-field
               v-model="team.title"
               :rules="$_validate('Team', ['required'])"
@@ -23,8 +23,8 @@
               autocomplete="off"
               autocorrect="off"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-date-field
               v-model="team.started_on"
               label="Start Date"
@@ -32,16 +32,16 @@
               :color="color"
               required
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-text-field
               v-model="team.currency"
               :rules="$_validate('Currency', ['required'])"
               label="Currency"
               prepend-icon="mdi-cash"
             />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </template>
   </dialog-form>

@@ -1,9 +1,6 @@
 <template>
-  <v-layout
-    row
-    wrap
-  >
-    <v-flex
+  <v-row>
+    <v-col
       v-for="(positions, i) in [
         posATT,
         posATTMID,
@@ -12,23 +9,23 @@
         posGK
       ]"
       :key="i"
-      xs12
+      cols="12"
     >
-      <v-layout justify-space-around>
-        <v-flex
+      <v-row justify="space-around">
+        <v-col
           v-for="(player, j) in $_compact(positions)"
           :key="j"
-          class="text-xs-center"
-          v-bind="flexAttributes($_compact(positions))"
+          class="text-center"
+          :cols="parseInt(12 / $_compact(positions).length)"
         >
           <slot
             name="item"
             :player="player"
           />
-        </v-flex>
-      </v-layout>
-    </v-flex>
-  </v-layout>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -92,12 +89,6 @@
 
     retrievePos (pos) {
       return this.startingEleven.find(p => p.pos === pos)
-    }
-
-    flexAttributes (items) {
-      let attr = {}
-      attr[`xs${parseInt(12 / items.length)}`] = true
-      return attr
     }
   }
 </script>

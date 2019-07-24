@@ -1,32 +1,28 @@
 <template>
-  <v-container
-    fluid
-    grid-list-lg
-  >
-    <v-layout wrap>
-      <v-flex xs12>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12">
         <div class="overline">{{ team.title }}</div>
         <div class="headline font-weight-thin">
           {{ competition.name }}
           ({{ competitionSeason }})
         </div>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <v-btn
           :to="competition.linkToSeason"
           nuxt
           outlined
           color="blue-grey"
-        >View Season</v-btn>
-      </v-flex>
-
-      <v-flex xs12>
-        <v-layout
-          class="text-xs-center"
-          wrap
         >
-          <v-flex xs12>
+          View Season
+        </v-btn>
+      </v-col>
+
+      <v-col cols="12">
+        <v-row class="text-center">
+          <v-col cols="12">
             <div class="subheading">
               {{ competitionSeason }}
             </div>
@@ -40,18 +36,22 @@
               <v-icon
                 color="yellow darken-2"
                 left
-              >mdi-crown</v-icon>
+              >
+                mdi-crown
+              </v-icon>
               {{ competition.champion }}
               <v-icon
                 color="yellow darken-2"
                 right
-              >mdi-crown</v-icon>
+              >
+                mdi-crown
+              </v-icon>
             </div>
-          </v-flex>
+          </v-col>
 
-          <v-flex
+          <v-col
             v-if="!readonly"
-            xs12
+            cols="12"
           >
             <competition-form
               :competition-data="competition"
@@ -59,11 +59,13 @@
             >
               <template #default="{ on }">
                 <v-btn
-                  v-on="on"
                   dark
                   color="orange"
                   class="my-1"
-                >Edit</v-btn>
+                  v-on="on"
+                >
+                  Edit
+                </v-btn>
               </template>
             </competition-form>
 
@@ -74,11 +76,13 @@
             >
               <template #default="{ on }">
                 <v-btn
-                  v-on="on"
                   dark
                   color="red"
                   class="my-1"
-                >Close</v-btn>
+                  v-on="on"
+                >
+                  Close
+                </v-btn>
               </template>
             </competition-form>
 
@@ -88,11 +92,13 @@
             >
               <template #default="{ on }">
                 <v-btn
-                  v-on="on"
                   dark
                   color="teal"
                   class="my-1"
-                >Add Stage</v-btn>
+                  v-on="on"
+                >
+                  Add Stage
+                </v-btn>
               </template>
             </stage-form>
 
@@ -105,16 +111,18 @@
               <v-btn
                 dark
                 class="my-1"
-              >Remove</v-btn>
+              >
+                Remove
+              </v-btn>
             </record-remove>
-          </v-flex>
-        </v-layout>
-      </v-flex>
+          </v-col>
+        </v-row>
+      </v-col>
 
       <!-- Table Stages -->
-      <v-flex
+      <v-col
         v-if="tables.length > 0"
-        xs12
+        cols="12"
       >
         <v-card outlined>
           <v-card-text>
@@ -125,7 +133,9 @@
               <v-tab
                 v-for="table in tables"
                 :key="table.id"
-              >{{ table.name }}</v-tab>
+              >
+                {{ table.name }}
+              </v-tab>
 
               <v-tab-item
                 v-for="table in tables"
@@ -139,12 +149,12 @@
             </v-tabs>
           </v-card-text>
         </v-card>
-      </v-flex>
+      </v-col>
 
       <!-- Elimination Round Stages -->
-      <v-flex
+      <v-col
         v-if="rounds.length > 0"
-        xs12
+        cols="12"
       >
         <v-card outlined>
           <v-card-text>
@@ -155,7 +165,9 @@
               <v-tab
                 v-for="round in rounds"
                 :key="round.id"
-              >{{ round.name }}</v-tab>
+              >
+                {{ round.name }}
+              </v-tab>
 
               <v-tab-item
                 v-for="round in rounds"
@@ -169,8 +181,8 @@
             </v-tabs>
           </v-card-text>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

@@ -22,7 +22,8 @@
                 nuxt
                 text
                 color="info"
-              >{{ item.title }}</v-btn>
+                v-text="item.title"
+              />
             </template>
             <template #item.started_on="{ item }">
               {{ $_format($_parse(item.started_on), 'MMM DD, YYYY') }}

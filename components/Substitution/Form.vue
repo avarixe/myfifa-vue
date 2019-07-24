@@ -11,23 +11,23 @@
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
+      <v-container>
+        <v-row>
+          <v-col cols="12">
             <minute-field
               v-model="minute"
               :extra-time="match.extra_time"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <player-select
               v-model="substitution.player_id"
               :players="unsubbedPlayers"
               icon="mdi-subdirectory-arrow-left"
               required
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <player-select
               v-model="substitution.replacement_id"
               :players="availablePlayers"
@@ -36,15 +36,15 @@
               icon="mdi-subdirectory-arrow-right"
               required
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-checkbox
-              label="Injury"
               v-model="substitution.injury"
+              label="Injury"
               hide-details
             />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </template>
   </dialog-form>

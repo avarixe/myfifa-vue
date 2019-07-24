@@ -9,7 +9,7 @@
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
+      <v-container>
         <template v-if="!changePassword">
           <v-text-field
             v-model="user.full_name"
@@ -64,7 +64,9 @@
         text
         color="blue"
         @click="changePassword = !changePassword"
-      >{{ changePassword ? 'Profile' : 'Change Password' }}</v-btn>
+      >
+        {{ changePassword ? 'Profile' : 'Change Password' }}
+      </v-btn>
     </template>
   </dialog-form>
 </template>

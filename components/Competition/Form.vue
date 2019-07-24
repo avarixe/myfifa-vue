@@ -8,9 +8,9 @@
     <template #activator="{ on }">
       <slot :on="on">
         <v-btn
-          v-on="on"
           color="blue-grey"
           outlined
+          v-on="on"
         >
           <v-icon left>mdi-plus-circle-outline</v-icon>
           Competition
@@ -19,10 +19,10 @@
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
+      <v-container>
+        <v-row>
           <template v-if="close">
-            <v-flex xs12>
+            <v-col cols="12">
               <v-select
                 v-model="competition.champion"
                 :items="teams"
@@ -30,18 +30,18 @@
                 prepend-icon="mdi-crown"
                 :rules="$_validate('Champion', ['required'])"
               />
-            </v-flex>
+            </v-col>
           </template>
           <template v-else>
-            <v-flex xs12>
+            <v-col cols="12">
               <v-text-field
                 :value="seasonLabel(season)"
                 label="Season"
                 prepend-icon="mdi-calendar-text"
                 disabled
               />
-            </v-flex>
-            <v-flex xs12>
+            </v-col>
+            <v-col cols="12">
               <v-combobox
                 v-model="competition.name"
                 :items="competitions"
@@ -53,9 +53,9 @@
                 autocomplete="off"
                 autocorrect="off"
               />
-            </v-flex>
+            </v-col>
             <template v-if="!competitionData">
-              <v-flex xs12>
+              <v-col cols="12">
                 <v-select
                   v-model="competition.preset_format"
                   :items="presetFormats"
@@ -63,11 +63,11 @@
                   prepend-icon="mdi-cogs"
                   clearable
                 />
-              </v-flex>
+              </v-col>
               <v-scroll-y-transition mode="out-in">
-                <v-flex
+                <v-col
                   v-if="competition.preset_format"
-                  xs12
+                  cols="12"
                 >
                   <v-text-field
                     v-model="competition.num_teams"
@@ -76,12 +76,12 @@
                     prepend-icon="mdi-account-multiple"
                     type="number"
                   />
-                </v-flex>
+                </v-col>
               </v-scroll-y-transition>
               <v-scroll-y-transition mode="out-in">
-                <v-flex
+                <v-col
                   v-if="competition.preset_format === 'Group + Knockout'"
-                  xs12
+                  cols="12"
                 >
                   <v-text-field
                     v-model="competition.num_teams_per_group"
@@ -90,12 +90,12 @@
                     prepend-icon="mdi-account-group"
                     type="number"
                   />
-                </v-flex>
+                </v-col>
               </v-scroll-y-transition>
               <v-scroll-y-transition mode="out-in">
-                <v-flex
+                <v-col
                   v-if="competition.preset_format === 'Group + Knockout'"
-                  xs12
+                  cols="12"
                 >
                   <v-text-field
                     v-model="competition.num_advances_from_group"
@@ -104,7 +104,7 @@
                     prepend-icon="mdi-forward"
                     type="number"
                   />
-                </v-flex>
+                </v-col>
               </v-scroll-y-transition>
               <v-scroll-y-transition mode="out-in">
                 <v-text-field
@@ -118,7 +118,7 @@
               </v-scroll-y-transition>
             </template>
           </template>
-        </v-layout>
+        </v-row>
       </v-container>
     </template>
   </dialog-form>

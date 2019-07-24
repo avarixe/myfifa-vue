@@ -7,8 +7,8 @@
         input-type="select"
         :label="`${cap.name} Position`"
         :options="positions"
-        @close="setPosition($event)"
         :readonly="readonly"
+        @close="setPosition($event)"
       />
     </div>
     <div class="font-weight-thin">
@@ -32,8 +32,8 @@
       >
         <template #activator="{ on }">
           <a
-            v-on="on"
             class="black--text"
+            v-on="on"
           >{{ cap.name }}</a>
         </template>
 

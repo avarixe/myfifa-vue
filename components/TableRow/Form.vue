@@ -10,8 +10,8 @@
         <v-tooltip bottom>
           <template #activator="{ on: tooltip }">
             <v-btn
-              v-on="{ ...on, ...tooltip }"
               icon
+              v-on="{ ...on, ...tooltip }"
             >
               <v-icon>mdi-table-row-plus-after</v-icon>
             </v-btn>
@@ -22,9 +22,9 @@
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
+      <v-container>
+        <v-row>
+          <v-col cols="12">
             <v-combobox
               v-model="row.name"
               label="Team"
@@ -35,45 +35,45 @@
               autocomplete="off"
               autocorrect="off"
             />
-          </v-flex>
-          <v-flex xs4>
+          </v-col>
+          <v-col cols="4">
             <v-text-field
               v-model="row.wins"
               prepend-icon="mdi-alpha-w"
               type="number"
             />
-          </v-flex>
-          <v-flex xs4>
+          </v-col>
+          <v-col cols="4">
             <v-text-field
               v-model="row.draws"
               prepend-icon="mdi-alpha-d"
               type="number"
             />
-          </v-flex>
-          <v-flex xs4>
+          </v-col>
+          <v-col cols="4">
             <v-text-field
               v-model="row.losses"
               prepend-icon="mdi-alpha-l"
               type="number"
             />
-          </v-flex>
-          <v-flex xs6>
+          </v-col>
+          <v-col cols="6">
             <v-text-field
               v-model="row.goals_for"
               label="GF"
               prepend-icon="mdi-soccer"
               type="number"
             />
-          </v-flex>
-          <v-flex xs6>
+          </v-col>
+          <v-col cols="6">
             <v-text-field
               v-model="row.goals_against"
               label="GA"
               prepend-icon="mdi-soccer"
               type="number"
             />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </template>
   </dialog-form>

@@ -7,8 +7,8 @@
         attribute="name"
         :label="round.name"
         :readonly="readonly"
-        @close="updateStageAttribute(round.id, 'name', $event)"
         display-class="font-weight-light"
+        @close="updateStageAttribute(round.id, 'name', $event)"
       />
 
       <v-spacer />
@@ -38,7 +38,9 @@
         <div
           v-for="leg in item.legs"
           :key="leg.id"
-        >{{ leg.score }}</div>
+        >
+          {{ leg.score }}
+        </div>
       </template>
       <template #item.away_team="{ item }">
         <span :class="teamClass(item.away_team)">{{ item.away_team }}</span>
@@ -52,8 +54,9 @@
             <v-tooltip bottom>
               <template #activator="{ on: tooltip }">
                 <v-btn
-                  v-on="{ ...on, ...tooltip }"
                   icon
+                  small
+                  v-on="{ ...on, ...tooltip }"
                 >
                   <v-icon color="orange">mdi-pencil</v-icon>
                 </v-btn>
@@ -66,10 +69,10 @@
           :record="item"
           store="fixtures"
           label="Fixture"
+          small
         />
       </template>
     </v-data-table>
-
   </v-card>
 </template>
 

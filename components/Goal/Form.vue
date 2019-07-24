@@ -11,9 +11,9 @@
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
+      <v-container>
+        <v-row>
+          <v-col cols="12">
             <v-radio-group
               v-model="goal.home"
               row
@@ -30,14 +30,14 @@
                 color="pink"
               />
             </v-radio-group>
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <minute-field
               v-model="minute"
               :extra-time="match.extra_time"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <player-select
               v-if="teamGoal"
               v-model="goal.player_id"
@@ -56,8 +56,8 @@
               autocomplete="off"
               autocorrect="off"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <player-select
               v-if="teamGoal"
               v-model="goal.assist_id"
@@ -80,24 +80,24 @@
               autocomplete="off"
               autocorrect="off"
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-checkbox
-              label="Penalty"
               v-model="goal.penalty"
+              label="Penalty"
               :disabled="goal.own_goal"
               hide-details
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-checkbox
-              label="Own Goal"
               v-model="goal.own_goal"
+              label="Own Goal"
               :disabled="goal.penalty"
               hide-details
             />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </template>
   </dialog-form>

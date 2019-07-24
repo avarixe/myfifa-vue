@@ -1,20 +1,20 @@
 <template>
   <v-container
     fluid
-    fill-height
+    class="fill-height"
   >
-    <v-layout
-      align-center
-      justify-center
+    <v-row
+      align="center"
+      justify="center"
     >
-      <v-flex
-        xs12
-        sm8
-        md4
+      <v-col
+        cols="12"
+        sm="8"
+        md="4"
       >
         <login-form v-if="!authenticated" />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

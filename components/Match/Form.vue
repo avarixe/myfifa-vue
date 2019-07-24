@@ -8,9 +8,9 @@
     <template #activator="{ on }">
       <slot :on="on">
         <v-btn
-          v-on="on"
           outlined
           color="blue-grey"
+          v-on="on"
         >
           <v-icon left>mdi-plus-circle-outline</v-icon>
           Match
@@ -19,9 +19,9 @@
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
+      <v-container>
+        <v-row>
+          <v-col cols="12">
             <v-date-field
               v-model="match.played_on"
               label="Date Played"
@@ -30,8 +30,8 @@
               :color="color"
               required
             />
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-select
               v-model="match.competition"
               :items="competitions"
@@ -43,11 +43,11 @@
               autocomplete="off"
               autocorrect="off"
             />
-          </v-flex>
+          </v-col>
           <v-scroll-y-transition mode="out-in">
-            <v-flex
+            <v-col
               v-if="stages.length > 0"
-              xs12
+              cols="12"
             >
               <v-select
                 v-model="match.stage"
@@ -59,9 +59,9 @@
                 autocomplete="off"
                 autocorrect="off"
               />
-            </v-flex>
+            </v-col>
           </v-scroll-y-transition>
-          <v-flex xs12>
+          <v-col cols="12">
             <v-combobox
               v-model="match.home"
               :items="teams"
@@ -79,14 +79,16 @@
                     <v-icon
                       v-on="on"
                       @click.stop="setHome"
-                    >mdi-arrow-left</v-icon>
+                    >
+                      mdi-arrow-left
+                    </v-icon>
                   </template>
                   Home Match for {{ team.title }}
                 </v-tooltip>
               </template>
             </v-combobox>
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-combobox
               v-model="match.away"
               :items="teams"
@@ -104,20 +106,22 @@
                     <v-icon
                       v-on="on"
                       @click.stop="setAway"
-                    >mdi-arrow-left</v-icon>
+                    >
+                      mdi-arrow-left
+                    </v-icon>
                   </template>
                   Away Match for {{ team.title }}
                 </v-tooltip>
               </template>
             </v-combobox>
-          </v-flex>
-          <v-flex xs12>
+          </v-col>
+          <v-col cols="12">
             <v-checkbox
               v-model="match.extra_time"
               label="Extra Time Required"
             />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </template>
   </dialog-form>

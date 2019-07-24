@@ -1,19 +1,21 @@
 <template>
   <v-card outlined>
-    <v-card-title :class="`subtitle-1 d-block text-xs-center`">
+    <v-card-title class="subtitle-1 d-block text-center">
       <span class="primary--text font-weight-light">{{ cardTitle }}</span>
     </v-card-title>
 
     <v-divider class="mx-3" />
 
     <v-card-actions>
-        <v-btn
-          :to="link"
-          color="primary"
-          text
-          nuxt
-          block
-        >View Season</v-btn>
+      <v-btn
+        :to="link"
+        color="primary"
+        text
+        nuxt
+        block
+      >
+        View Season
+      </v-btn>
     </v-card-actions>
 
     <v-simple-table>
@@ -30,14 +32,17 @@
             <v-icon
               :color="competition.statusColor"
               small
-            >{{ competition.statusIcon }}</v-icon>
+            >
+              {{ competition.statusIcon }}
+            </v-icon>
           </td>
 
           <td>
             <nuxt-link
               :to="competition.link"
               class="black--text"
-            >{{ competition.name }}</nuxt-link>
+              v-text="competition.name"
+            />
           </td>
         </tr>
       </tbody>

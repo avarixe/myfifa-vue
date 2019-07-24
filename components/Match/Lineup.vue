@@ -1,19 +1,19 @@
 <template>
   <v-container>
-    <v-layout class="text-xs-center">
-      <v-flex>
+    <v-row class="text-center">
+      <v-col>
         <div class="display-1 primary--text">{{ defOVR }}</div>
         <div class="subheading">DEF</div>
-      </v-flex>
-      <v-flex>
+      </v-col>
+      <v-col>
         <div class="display-1 success--text">{{ midOVR }}</div>
         <div class="subheading">MID</div>
-      </v-flex>
-      <v-flex>
+      </v-col>
+      <v-col>
         <div class="display-1 warning--text">{{ attOVR }}</div>
         <div class="subheading">ATT</div>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
     <v-divider class="mx-3" />
 
@@ -27,11 +27,8 @@
       </template>
     </formation-view>
 
-    <v-layout
-      v-if="substitutes.length > 0"
-      wrap
-    >
-      <v-flex xs12>
+    <v-row v-if="substitutes.length > 0">
+      <v-col cols="12">
         <v-list dense>
           <v-subheader>Substitutes</v-subheader>
           <cap-sub-view
@@ -42,8 +39,8 @@
             :readonly="readonly"
           />
         </v-list>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

@@ -2,12 +2,12 @@
   <div>
     <slot name="table" />
 
-    <div class="text-xs-center pt-2">
+    <div class="text-center pt-2">
       <v-pagination
         v-if="pageCount > 1"
         :value="value"
-        @input="updateValue"
         :length="pageCount"
+        @input="updateValue"
       />
     </div>
   </div>

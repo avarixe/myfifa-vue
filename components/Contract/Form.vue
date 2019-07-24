@@ -14,8 +14,8 @@
         >
           <template #activator="{ on: tooltip }">
             <v-btn
-              v-on="{ ...on, ...tooltip }"
               icon
+              v-on="{ ...on, ...tooltip }"
             >
               <v-icon color="blue">mdi-file-document-outline</v-icon>
             </v-btn>
@@ -26,9 +26,9 @@
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
+      <v-container>
+        <v-row>
+          <v-col cols="12">
             <v-date-field
               v-model="contract.started_on"
               label="Effective Date"
@@ -37,9 +37,9 @@
               :max="contract.ended_on"
               required
             />
-          </v-flex>
+          </v-col>
 
-          <v-flex xs12>
+          <v-col cols="12">
             <v-date-field
               v-model="contract.ended_on"
               label="End Date"
@@ -49,46 +49,46 @@
               required
               start-with-year
             />
-          </v-flex>
+          </v-col>
 
-          <v-flex xs12>
+          <v-col cols="12">
             <v-money-field
               v-model="contract.wage"
               label="Wage"
               :prefix="team.currency"
               required
             />
-          </v-flex>
+          </v-col>
 
-          <v-flex xs12>
+          <v-col cols="12">
             <v-money-field
               v-model="contract.signing_bonus"
               label="Signing Bonus"
               :prefix="team.currency"
             />
-          </v-flex>
+          </v-col>
 
-          <v-flex xs12>
+          <v-col cols="12">
             <v-money-field
               v-model="contract.release_clause"
               label="Release Clause"
               :prefix="team.currency"
             />
-          </v-flex>
+          </v-col>
 
-          <v-flex xs12>
+          <v-col cols="12">
             <v-money-field
               v-model="contract.performance_bonus"
               label="Performance Bonus"
               :prefix="team.currency"
             />
-          </v-flex>
+          </v-col>
 
           <v-scroll-y-transition mode="out-in">
-            <v-flex
+            <v-col
               v-if="contract.performance_bonus"
-              xs12
-              sm6
+              cols="12"
+              sm="6"
             >
               <v-text-field
                 v-model="contract.bonus_req"
@@ -96,14 +96,14 @@
                 type="number"
                 prefix="if"
               />
-            </v-flex>
+            </v-col>
           </v-scroll-y-transition>
 
           <v-scroll-y-transition mode="out-in">
-            <v-flex
+            <v-col
               v-if="contract.performance_bonus"
-              xs12
-              sm6
+              cols="12"
+              sm="6"
             >
               <v-select
                 v-model="contract.bonus_req_type"
@@ -111,9 +111,9 @@
                 :items="bonusRequirementTypes"
                 clearable
               />
-            </v-flex>
+            </v-col>
           </v-scroll-y-transition>
-        </v-layout>
+        </v-row>
       </v-container>
     </template>
   </dialog-form>

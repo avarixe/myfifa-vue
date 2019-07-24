@@ -1,7 +1,6 @@
 <template>
   <v-select
     :value="value"
-    @change="updateValue"
     :rules="rules"
     :items="players"
     :item-value="itemValue"
@@ -11,6 +10,7 @@
     :disabled="disabled"
     :clearable="clearable"
     :hide-details="hideDetails"
+    @change="updateValue"
   >
     <template #item="{ item }">
       <v-list-item-action>

@@ -11,8 +11,8 @@
         >
           <template #activator="{ on: tooltip }">
             <v-btn
-              v-on="{ ...dialog, ...tooltip }"
               icon
+              v-on="{ ...dialog, ...tooltip }"
             >
               <v-icon color="orange">mdi-pencil</v-icon>
             </v-btn>

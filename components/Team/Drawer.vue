@@ -1,22 +1,18 @@
 <template>
   <v-navigation-drawer
-    :value="drawer"
-    @input="setDrawer"
     id="app-drawer"
+    :value="drawer"
     app
     clipped
     mobile-break-point="991"
     width="260px"
+    @input="setDrawer"
   >
     <v-img
       src=""
       height="100%"
     >
-      <v-layout
-        class="fill-height"
-        tag="v-list"
-        column
-      >
+      <v-list nav>
         <template v-if="teamId">
           <v-list-item
             :to="{ name: 'teams-teamId', params: { teamId }}"
@@ -29,19 +25,21 @@
             <v-list-item-title
               class="title"
               color="primary"
-            >{{ teamName }}</v-list-item-title>
+            >
+              {{ teamName }}
+            </v-list-item-title>
           </v-list-item>
 
-          <v-divider/>
+          <v-divider />
 
           <team-date-picker>
             <template #default="{ on, date }">
               <v-list-item
                 v-ripple
-                v-on="on"
                 color="accent"
                 class="v-list-item"
                 style="width: 100%"
+                v-on="on"
               >
                 <v-list-item-action>
                   <v-icon>mdi-calendar</v-icon>
@@ -66,7 +64,7 @@
             <v-list-item-title>{{ link.text }}</v-list-item-title>
           </v-list-item>
         </template>
-      </v-layout>
+      </v-list>
     </v-img>
   </v-navigation-drawer>
 </template>

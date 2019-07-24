@@ -11,9 +11,9 @@
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs6>
+      <v-container>
+        <v-row>
+          <v-col cols="6">
             <v-text-field
               v-model="penaltyShootout.home_score"
               :rules="$_validate('Home Score', ['required'])"
@@ -21,8 +21,8 @@
               :label="match.home"
               prepend-icon="mdi-soccer"
             />
-          </v-flex>
-          <v-flex xs6>
+          </v-col>
+          <v-col cols="6">
             <v-text-field
               v-model="penaltyShootout.away_score"
               :rules="$_validate('Away Score', ['required'])"
@@ -30,8 +30,8 @@
               :label="match.away"
               prepend-icon="mdi-soccer"
             />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </template>
   </dialog-form>
