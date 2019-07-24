@@ -64,13 +64,7 @@
             v-show="!leg._destroy"
             :key="i"
           >
-            <v-col
-              cols="1"
-              class="pt-3 mt-1"
-            >
-              <v-icon>mdi-numeric-{{ i + 1 }}</v-icon>
-            </v-col>
-            <v-col cols="5">
+            <v-col cols="6">
               <v-text-field
                 v-model="leg.home_score"
                 label="Home Score"
@@ -78,24 +72,15 @@
                 hide-details
               />
             </v-col>
-            <v-col cols="5">
+            <v-col cols="6">
               <v-text-field
                 v-model="leg.away_score"
                 label="Away Score"
                 prepend-icon="mdi-soccer"
+                append-outer-icon="mdi-delete"
                 hide-details
+                @click:append-outer="leg._destroy = true"
               />
-            </v-col>
-            <v-col
-              cols="1"
-              class="pt-2 mt-1"
-            >
-              <v-btn
-                icon
-                @click="leg._destroy = true"
-              >
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
             </v-col>
           </v-row>
         </v-row>

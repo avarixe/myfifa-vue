@@ -32,7 +32,9 @@
       hide-default-footer
     >
       <template #item.home_team="{ item }">
-        <span :class="teamClass(item.home_team)">{{ item.home_team }}</span>
+        <span :class="teamClass(item.home_team)">
+          {{ item.home_team }}
+        </span>
       </template>
       <template #item.score="{ item }">
         <div
@@ -43,9 +45,11 @@
         </div>
       </template>
       <template #item.away_team="{ item }">
-        <span :class="teamClass(item.away_team)">{{ item.away_team }}</span>
+        <span :class="teamClass(item.away_team)">
+          {{ item.away_team }}
+        </span>
       </template>
-      <template #item.actions="{ item }">
+      <template #item.edit="{ item }">
         <fixture-form
           :stage="round"
           :fixture-data="item"
@@ -65,6 +69,8 @@
             </v-tooltip>
           </template>
         </fixture-form>
+      </template>
+      <template #item.delete="{ item }">
         <record-remove
           :record="item"
           store="fixtures"
@@ -101,7 +107,7 @@
 
     get headers () {
       const headers = [
-        { text: 'Home Team', value: 'home_team', align: 'end' },
+        { text: 'Home Team', value: 'home_team', align: 'right' },
         { text: 'Score', value: 'score', align: 'center' },
         { text: 'Away Team', value: 'away_team' }
       ]
@@ -109,8 +115,13 @@
       if (!this.readonly) {
         headers.push({
           text: '',
-          value: 'actions',
-          width: 120
+          value: 'edit',
+          width: 40
+        })
+        headers.push({
+          text: '',
+          value: 'delete',
+          width: 40
         })
       }
 

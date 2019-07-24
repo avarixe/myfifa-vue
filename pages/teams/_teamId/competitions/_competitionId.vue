@@ -127,6 +127,7 @@
         <v-card outlined>
           <v-card-text>
             <v-tabs
+              v-model="table"
               centered
               center-active
             >
@@ -136,7 +137,12 @@
               >
                 {{ table.name }}
               </v-tab>
+            </v-tabs>
 
+            <v-tabs-items
+              v-model="table"
+              touchless
+            >
               <v-tab-item
                 v-for="table in tables"
                 :key="table.id"
@@ -146,7 +152,7 @@
                   :readonly="readonly"
                 />
               </v-tab-item>
-            </v-tabs>
+            </v-tabs-items>
           </v-card-text>
         </v-card>
       </v-col>
@@ -216,6 +222,8 @@
         title: `${this.competition.name} (${this.competitionSeason})`
       }
     }
+
+    table = 0
 
     get competition () {
       return Competition

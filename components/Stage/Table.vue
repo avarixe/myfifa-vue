@@ -27,6 +27,7 @@
       :key="key"
       :headers="headers"
       :items="items"
+      :mobile-breakpoint="0"
       :sort-by="['points', 'goal_difference', 'goals_for', 'goals_against']"
       :sort-desc="[true, true, true, true]"
       multi-sort
@@ -57,7 +58,7 @@
       <template #item.points="{ item }">
         <span :class="teamClass(item.name)">{{ item.points }}</span>
       </template>
-      <template #item.actions="{ item }">
+      <template #item.edit="{ item }">
         <table-row-form
           :stage="table"
           :row-data="item"
@@ -77,6 +78,8 @@
             </v-tooltip>
           </template>
         </table-row-form>
+      </template>
+      <template #item.delete="{ item }">
         <record-remove
           :record="item"
           store="tableRows"
@@ -126,9 +129,15 @@
       if (!this.readonly) {
         headers.push({
           text: '',
-          value: 'actions',
+          value: 'edit',
           sortable: false,
-          width: 120
+          width: 40
+        })
+        headers.push({
+          text: '',
+          value: 'delete',
+          sortable: false,
+          width: 40
         })
       }
 
