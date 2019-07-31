@@ -254,6 +254,15 @@
       return this.seasonLabel(this.competition.season)
     }
 
+    async fetch ({ store, params }) {
+      await Promise.all([
+        store.dispatch('competitions/GET', {
+          competitionId: params.competitionId
+        }),
+        store.dispatch('stages/FETCH', { competitionId: params.competitionId })
+      ])
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
     }
