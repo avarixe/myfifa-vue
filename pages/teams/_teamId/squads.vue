@@ -51,6 +51,13 @@
       }
     }
 
+    async fetch ({ store, params }) {
+      await Promise.all([
+        store.dispatch('squads/FETCH', { teamId: params.teamId }),
+        store.dispatch('players/FETCH', { teamId: params.teamId })
+      ])
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
     }
