@@ -1,20 +1,11 @@
 <template>
   <div class="d-inline-block">
-    <v-tooltip
-      bottom
+    <tooltip-button
+      label="Retire"
+      icon="mdi-human-greeting"
       color="purple"
-    >
-      <template #activator="{ on }">
-        <v-btn
-          icon
-          v-on="on"
-          @click.stop="snackbar = true"
-        >
-          <v-icon color="purple">mdi-human-greeting</v-icon>
-        </v-btn>
-      </template>
-      Retire
-    </v-tooltip>
+      @click="snackbar = true"
+    />
 
     <v-snackbar
       v-model="snackbar"
@@ -41,8 +32,13 @@
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
+  import { TooltipButton } from '@/helpers'
 
-  @Component
+  @Component({
+    components: {
+      TooltipButton
+    }
+  })
   export default class PlayerRetire extends Vue {
     @Prop({ type: Object, required: true }) player
 

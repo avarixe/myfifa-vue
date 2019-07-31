@@ -8,20 +8,12 @@
   >
     <template #activator="{ on }">
       <slot :on="on">
-        <v-tooltip
-          bottom
+        <tooltip-button
+          :label="title"
+          icon="mdi-hospital"
           color="pink"
-        >
-          <template #activator="{ on: tooltip }">
-            <v-btn
-              icon
-              v-on="{ ...on, ...tooltip }"
-            >
-              <v-icon color="pink">mdi-hospital</v-icon>
-            </v-btn>
-          </template>
-          {{ title }}
-        </v-tooltip>
+          :on="on"
+        />
       </slot>
     </template>
 
@@ -62,8 +54,12 @@
   import { mapActions } from 'vuex'
   import { Injury } from '@/models'
   import { DialogFormable } from '@/mixins'
+  import { TooltipButton } from '@/helpers'
 
   @Component({
+    components: {
+      TooltipButton
+    },
     methods: mapActions('injuries', {
       create: 'CREATE',
       update: 'UPDATE'

@@ -8,20 +8,12 @@
   >
     <template #activator="{ on }">
       <slot :on="on">
-        <v-tooltip
-          bottom
+        <tooltip-button
+          :label="title"
+          icon="mdi-file-document-outline"
           color="blue"
-        >
-          <template #activator="{ on: tooltip }">
-            <v-btn
-              icon
-              v-on="{ ...on, ...tooltip }"
-            >
-              <v-icon color="blue">mdi-file-document-outline</v-icon>
-            </v-btn>
-          </template>
-          {{ title }}
-        </v-tooltip>
+          :on="on"
+        />
       </slot>
     </template>
 
@@ -124,7 +116,7 @@
   import { mapState } from 'vuex'
   import { addYears } from 'date-fns'
   import { Contract } from '@/models'
-  import { VDateField, VMoneyField } from '@/helpers'
+  import { VDateField, VMoneyField, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
@@ -132,7 +124,8 @@
   @Component({
     components: {
       VDateField,
-      VMoneyField
+      VMoneyField,
+      TooltipButton
     },
     computed: mapState('contracts', [
       'bonusRequirementTypes'

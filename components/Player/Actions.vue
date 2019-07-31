@@ -4,21 +4,13 @@
       :player-data="player"
       color="orange"
     >
-      <template #default="{ on: dialog }">
-        <v-tooltip
-          bottom
+      <template #default="{ on }">
+        <tooltip-button
+          label="Edit"
+          icon="mdi-pencil"
           color="orange"
-        >
-          <template #activator="{ on: tooltip }">
-            <v-btn
-              icon
-              v-on="{ ...dialog, ...tooltip }"
-            >
-              <v-icon color="orange">mdi-pencil</v-icon>
-            </v-btn>
-          </template>
-          Edit
-        </v-tooltip>
+          :on="on"
+        />
       </template>
     </player-form>
     <transfer-form :player="player" />
@@ -41,6 +33,7 @@
   import PlayerRetire from './Retire'
   import PlayerRelease from './Release'
   import PlayerForm from './Form'
+  import { TooltipButton } from '@/helpers'
 
   @Component({
     components: {
@@ -50,7 +43,8 @@
       TransferForm,
       PlayerRetire,
       PlayerRelease,
-      PlayerForm
+      PlayerForm,
+      TooltipButton
     }
   })
   export default class PlayerActions extends Vue {
