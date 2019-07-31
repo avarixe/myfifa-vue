@@ -189,6 +189,15 @@
         .filter(player => player.contract().ended_on <= this.seasonEnd)
     }
 
+    async fetch ({ store, params }) {
+      await Promise.all([
+        store.dispatch('matches/FETCH', { teamId: params.teamId }),
+        store.dispatch('players/FETCH', { teamId: params.teamId }),
+        store.dispatch('competitions/FETCH', { teamId: params.teamId }),
+        store.dispatch('contracts/TEAM_FETCH', { teamId: params.teamId })
+      ])
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
     }

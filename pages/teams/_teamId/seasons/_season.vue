@@ -85,7 +85,6 @@
     }
 
     async fetch ({ store, params }) {
-      console.log('in _season.vue fetch')
       await Promise.all([
         store.dispatch('competitions/FETCH', { teamId: params.teamId }),
         store.dispatch('players/FETCH', { teamId: params.teamId }),
