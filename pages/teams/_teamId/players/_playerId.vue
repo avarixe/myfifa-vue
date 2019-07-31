@@ -216,6 +216,20 @@
         .find(this.$route.params.playerId)
     }
 
+    async fetch ({ store, params }) {
+      await Promise.all([
+        store.dispatch('players/GET', { playerId: params.playerId }),
+        store.dispatch('playerHistories/SEARCH', { teamId: params.teamId }),
+        store.dispatch('contracts/FETCH', { playerId: params.playerId }),
+        store.dispatch('injuries/FETCH', { playerId: params.playerId }),
+        store.dispatch('loans/FETCH', { playerId: params.playerId }),
+        store.dispatch('transfers/FETCH', { playerId: params.playerId }),
+
+        store.dispatch('caps/SEARCH', { teamId: params.teamId }),
+        store.dispatch('goals/SEARCH', { teamId: params.teamId })
+      ])
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
     }
