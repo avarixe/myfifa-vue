@@ -111,6 +111,13 @@
     page = 1
     pageCount = 0
     search = ''
+    stats = {
+      num_games: {},
+      num_minutes: {},
+      num_goals: {},
+      num_assists: {},
+      num_cs: {}
+    }
 
     get team () {
       return Team.find(this.$route.params.teamId)
@@ -132,16 +139,16 @@
           return headers.concat([
             { text: 'OVR', value: 'endOvr', align: 'center' },
             { text: 'OVR Change', value: 'ovrChange', align: 'center' },
-            { text: 'Value', value: 'endValue', align: 'end' },
-            { text: 'Value Change', value: 'valueChange', align: 'end' }
+            { text: 'Value', value: 'endValue', align: 'right' },
+            { text: 'Value Change', value: 'valueChange', align: 'right' }
           ])
         case 1: // Statistics
           return headers.concat([
-            { text: 'Games Played', value: 'numGames', align: 'end' },
-            { text: 'Minutes', value: 'numMinutes', align: 'end' },
-            { text: 'Goals', value: 'numGoals', align: 'end' },
-            { text: 'Assists', value: 'numAssists', align: 'end' },
-            { text: 'Clean Sheets', value: 'numCs', align: 'end' }
+            { text: 'Games Played', value: 'numGames', align: 'right' },
+            { text: 'Minutes', value: 'numMinutes', align: 'right' },
+            { text: 'Goals', value: 'numGoals', align: 'right' },
+            { text: 'Assists', value: 'numAssists', align: 'right' },
+            { text: 'Clean Sheets', value: 'numCs', align: 'right' }
           ])
       }
     }
@@ -173,31 +180,16 @@
         const ovrChange = endOvr - startOvr
         const valueChange = (endValue - startValue) / startValue * 100
 
-        const matchIds = player.matches
-          .filter(m =>
-            this.seasonStart <= m.played_on &&
-            m.played_on <= this.seasonEnd
-          )
-          .map(m => m.id)
-
-        const caps = player.caps.filter(c => matchIds.indexOf(c.match_id) > -1)
-        const numSubs = caps.filter(c => c.start > 0).length
-        const numMinutes = this.$_sum(caps.map(c => c.stop - c.start))
-        const numGoals = player.goals
-          .filter(g => matchIds.indexOf(g.match_id) > -1)
-          .length
-        const numAssists = player.assists
-          .filter(a => matchIds.indexOf(a.match_id) > -1)
-          .length
-        const numCs = player.cleanSheets()
-          .filter(cs => matchIds.indexOf(cs.id) > -1)
-          .length
+        const numGames = this.stats.num_games[player.id] || 0
+        const numMinutes = this.stats.num_minutes[player.id] || 0
+        const numGoals = this.stats.num_goals[player.id] || 0
+        const numAssists = this.stats.num_assists[player.id] || 0
+        const numCs = this.stats.num_cs[player.id] || 0
 
         return {
           ...player,
           age: parseInt(this.seasonEnd) - player.birth_year,
-          numGames: caps.length,
-          numSubs,
+          numGames,
           numMinutes,
           numGoals,
           numAssists,
@@ -221,6 +213,15 @@
       let date = this.$_parse(this.team.started_on)
       date = addYears(date, parseInt(this.season) + 1)
       return this.$_format(date)
+    }
+
+    async mounted () {
+      const { data } = await this.$store.dispatch('teams/ANALYZE_SEASON', {
+        teamId: this.team.id,
+        season: this.season
+      })
+
+      this.stats = data
     }
 
     sortPos (posA, posB) {
