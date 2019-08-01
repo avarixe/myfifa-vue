@@ -34,6 +34,12 @@
     layout = () => 'default'
     middleware = () => 'authenticated'
 
+    async fetch ({ store, params }) {
+      store.dispatch('matches/FETCH', { teamId: params.teamId })
+      store.dispatch('competitions/FETCH', { teamId: params.teamId })
+      store.dispatch('stages/TEAM_FETCH', { teamId: params.teamId })
+    }
+
     head () {
       return {
         title: `${this.team.title} - Matches`

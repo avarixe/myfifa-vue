@@ -190,11 +190,17 @@
       { text: 'Pending', color: 'deep-orange', icon: 'lock-clock' }
     ]
     search = ''
+    stats = {
+      num_games: {},
+      num_goals: {},
+      num_assists: {},
+      num_cs: {}
+    }
 
     get players () {
       return Player
         .query()
-        .with('team|contracts|goals|assists|matches')
+        .with('team|contracts')
         .where('team_id', parseInt(this.$route.params.teamId))
         .get()
     }
@@ -239,10 +245,10 @@
           ])
         case 3: // Statistics
           return headers.concat([
-            { text: 'Games Played', value: 'matches.length', align: 'center' },
-            { text: 'Goals', value: 'goals.length', align: 'center' },
-            { text: 'Assists', value: 'assists.length', align: 'center' },
-            { text: 'Clean Sheets', value: 'cleanSheets', align: 'center' }
+            { text: 'Games Played', value: 'numGames', align: 'center' },
+            { text: 'Goals', value: 'numGoals', align: 'center' },
+            { text: 'Assists', value: 'numAssists', align: 'center' },
+            { text: 'Clean Sheets', value: 'numCs', align: 'center' }
           ])
       }
     }
@@ -264,17 +270,26 @@
           }
         })
         .map(player => {
-          const cleanSheets = player.cleanSheets().length
           const contract = player.contract()
+
+          const numGames = this.stats.num_games[player.id] || 0
+          const numGoals = this.stats.num_goals[player.id] || 0
+          const numAssists = this.stats.num_assists[player.id] || 0
+          const numCs = this.stats.num_cs[player.id] || 0
 
           return {
             ...player,
             link: player.link,
-            cleanSheets,
+            statusIcon: player.statusIcon,
+            statusColor: player.statusColor,
+
             wage: contract.wage,
             endDate: contract.ended_on,
-            statusIcon: player.statusIcon,
-            statusColor: player.statusColor
+
+            numGames,
+            numGoals,
+            numAssists,
+            numCs
           }
         })
     }
@@ -292,6 +307,15 @@
           color: 'red'
         })
       }
+    }
+
+    async mounted () {
+      const { data } = await this.$store.dispatch('players/ANALYZE', {
+        teamId: this.team.id,
+        playerIds: this.players.map(player => player.id)
+      })
+
+      this.stats = data
     }
 
     sortPos (posA, posB) {

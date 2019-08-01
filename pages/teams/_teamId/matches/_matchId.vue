@@ -176,6 +176,22 @@
       return nextMatch && nextMatch.link
     }
 
+    async fetch ({ store, params }) {
+      await Promise.all([
+        store.dispatch('matches/GET', { matchId: params.matchId }),
+
+        store.dispatch('caps/FETCH', { matchId: params.matchId }),
+        store.dispatch('goals/FETCH', { matchId: params.matchId }),
+        store.dispatch('substitutions/FETCH', { matchId: params.matchId }),
+        store.dispatch('bookings/FETCH', { matchId: params.matchId }),
+
+        store.dispatch('competitions/FETCH', { teamId: params.teamId }),
+        store.dispatch('players/FETCH', { teamId: params.teamId }),
+        store.dispatch('playerHistories/SEARCH', { teamId: params.teamId }),
+        store.dispatch('squads/FETCH', { teamId: params.teamId })
+      ])
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
     }

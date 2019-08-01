@@ -50,6 +50,10 @@
       }
     }
 
+    async fetch ({ store, params }) {
+      await store.dispatch('competitions/FETCH', { teamId: params.teamId })
+    }
+
     mounted () {
       this.$store.commit('app/SET_TITLE', this.team.title)
     }
