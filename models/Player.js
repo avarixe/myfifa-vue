@@ -110,13 +110,6 @@ class Player extends Model {
     return contract || {}
   }
 
-  cleanSheets () {
-    return this.matches.filter(m =>
-      (m.home === this.team.title && m.away_score === 0) ||
-      (m.away === this.team.title && m.home_score === 0)
-    )
-  }
-
   injury () {
     const lastInjury = Injury
       .query()

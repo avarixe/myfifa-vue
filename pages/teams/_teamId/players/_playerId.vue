@@ -86,7 +86,7 @@
                 sm="3"
               >
                 <div class="display-1 teal--text">
-                  {{ player.matches.length }}
+                  {{ numGames || 0 }}
                 </div>
                 <div class="subheading">Matches</div>
               </v-col>
@@ -96,7 +96,7 @@
                 sm="3"
               >
                 <div class="display-1 pink--text">
-                  {{ player.cleanSheets().length }}
+                  {{ numCs || 0 }}
                 </div>
                 <div class="subheading">Clean Sheets</div>
               </v-col>
@@ -106,7 +106,7 @@
                 sm="3"
               >
                 <div class="display-1 blue--text">
-                  {{ player.goals.length }}
+                  {{ numGoals || 0 }}
                 </div>
                 <div class="subheading">Goals</div>
               </v-col>
@@ -116,7 +116,7 @@
                 sm="3"
               >
                 <div class="display-1 orange--text">
-                  {{ player.assists.length }}
+                  {{ numAssists || 0 }}
                 </div>
                 <div class="subheading">Assists</div>
               </v-col>
@@ -214,6 +214,20 @@
         .query()
         .withAll()
         .find(this.$route.params.playerId)
+    }
+
+    async asyncData ({ store, params }) {
+      const { data } = await store.dispatch('players/ANALYZE', {
+        teamId: params.teamId,
+        playerIds: [params.playerId]
+      })
+
+      return {
+        numGames: data.num_games[params.playerId],
+        numCs: data.num_cs[params.playerId],
+        numGoals: data.num_goals[params.playerId],
+        numAssists: data.num_assists[params.playerId]
+      }
     }
 
     async fetch ({ store, params }) {
