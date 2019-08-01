@@ -8,7 +8,7 @@
         <template #table>
           <v-data-table
             :headers="headers"
-            :items="rows"
+            :items="teams"
             :page.sync="page"
             :loading="loading"
             item-key="id"
@@ -60,11 +60,7 @@
     pageCount = 0
 
     get teams () {
-      return Team.all()
-    }
-
-    get rows () {
-      return this.$_orderBy(this.teams, ['id'], ['desc'])
+      return Team.query().orderBy('id', 'desc').get()
     }
 
     mounted () {
