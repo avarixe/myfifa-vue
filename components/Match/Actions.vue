@@ -4,21 +4,13 @@
       :match-data="match"
       color="orange"
     >
-      <template #default="{ on: dialog }">
-        <v-tooltip
+      <template #default="{ on }">
+        <tooltip-button
+          label="Edit"
+          icon="mdi-pencil"
           color="orange"
-          bottom
-        >
-          <template #activator="{ on: tooltip }">
-            <v-btn
-              icon
-              v-on="{ ...dialog, ...tooltip }"
-            >
-              <v-icon color="orange">mdi-pencil</v-icon>
-            </v-btn>
-          </template>
-          Edit
-        </v-tooltip>
+          :on="on"
+        />
       </template>
     </match-form>
 
@@ -26,18 +18,12 @@
       v-if="numPlayers < 11"
       :match="match"
     >
-      <template #default="{ on: dialog }">
-        <v-tooltip bottom>
-          <template #activator="{ on: tooltip }">
-            <v-btn
-              icon
-              v-on="{ ...dialog, ...tooltip }"
-            >
-              <v-icon>mdi-plus-circle-outline</v-icon>
-            </v-btn>
-          </template>
-          Add Player
-        </v-tooltip>
+      <template #default="{ on }">
+        <tooltip-button
+          label="Add Player"
+          icon="mdi-plus-circle-outline"
+          :on="on"
+        />
       </template>
     </cap-form>
 
@@ -77,21 +63,13 @@
       :match="match"
       color="green"
     >
-      <template #default="{ on: dialog }">
-        <v-tooltip
-          bottom
+      <template #default="{ on }">
+        <tooltip-button
+          label="Substitution"
+          icon="mdi-repeat"
           color="green"
-        >
-          <template #activator="{ on: tooltip }">
-            <v-btn
-              icon
-              v-on="{ ...dialog, ...tooltip }"
-            >
-              <v-icon color="green">mdi-repeat</v-icon>
-            </v-btn>
-          </template>
-          Substitution
-        </v-tooltip>
+          :on="on"
+        />
       </template>
     </substitution-form>
 
@@ -100,21 +78,13 @@
       :match="match"
       color="blue"
     >
-      <template #default="{ on: dialog }">
-        <v-tooltip
-          bottom
+      <template #default="{ on }">
+        <tooltip-button
+          label="Goal"
+          icon="mdi-soccer"
           color="blue"
-        >
-          <template #activator="{ on: tooltip }">
-            <v-btn
-              icon
-              v-on="{ ...dialog, ...tooltip }"
-            >
-              <v-icon color="blue">mdi-soccer</v-icon>
-            </v-btn>
-          </template>
-          Goal
-        </v-tooltip>
+          :on="on"
+        />
       </template>
     </goal-form>
 
@@ -123,21 +93,13 @@
       :match="match"
       color="red"
     >
-      <template #default="{ on: dialog }">
-        <v-tooltip
-          bottom
+      <template #default="{ on }">
+        <tooltip-button
+          label="Booking"
+          icon="mdi-book"
           color="red"
-        >
-          <template #activator="{ on: tooltip }">
-            <v-btn
-              icon
-              v-on="{ ...dialog, ...tooltip }"
-            >
-              <v-icon color="red">mdi-book</v-icon>
-            </v-btn>
-          </template>
-          Booking
-        </v-tooltip>
+          :on="on"
+        />
       </template>
     </booking-form>
 
@@ -146,21 +108,13 @@
       :match="match"
       color="indigo"
     >
-      <template #default="{ on: dialog }">
-        <v-tooltip
-          bottom
+      <template #default="{ on }">
+        <tooltip-button
+          label="Penalty Shootout"
+          icon="mdi-human"
           color="indigo"
-        >
-          <template #activator="{ on: tooltip }">
-            <v-btn
-              icon
-              v-on="{ ...dialog, ...tooltip }"
-            >
-              <v-icon color="indigo">mdi-human</v-icon>
-            </v-btn>
-          </template>
-          Penalty Shootout
-        </v-tooltip>
+          :on="on"
+        />
       </template>
     </penalty-shootout-form>
 
@@ -183,7 +137,7 @@
   import BookingForm from '@/components/Booking/Form'
   import SubstitutionForm from '@/components/Substitution/Form'
   import PenaltyShootoutForm from '@/components/PenaltyShootout/Form'
-  import { RecordRemove } from '@/helpers'
+  import { RecordRemove, TooltipButton } from '@/helpers'
 
   @Component({
     components: {
@@ -193,7 +147,8 @@
       BookingForm,
       SubstitutionForm,
       PenaltyShootoutForm,
-      RecordRemove
+      RecordRemove,
+      TooltipButton
     }
   })
   export default class MatchActions extends mixins(TeamAccessible) {

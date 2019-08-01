@@ -55,18 +55,13 @@
           :fixture-data="item"
         >
           <template #default="{ on }">
-            <v-tooltip bottom>
-              <template #activator="{ on: tooltip }">
-                <v-btn
-                  icon
-                  small
-                  v-on="{ ...on, ...tooltip }"
-                >
-                  <v-icon color="orange">mdi-pencil</v-icon>
-                </v-btn>
-              </template>
-              Edit Fixture
-            </v-tooltip>
+            <tooltip-button
+              label="Edit Fixture"
+              icon="mdi-pencil"
+              color="orange"
+              :on="on"
+              small
+            />
           </template>
         </fixture-form>
       </template>
@@ -85,14 +80,15 @@
 <script>
   import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { CompetitionAccessible } from '@/mixins'
-  import { InlineField, RecordRemove } from '@/helpers'
+  import { InlineField, RecordRemove, TooltipButton } from '@/helpers'
   import FixtureForm from '@/components/Fixture/Form'
 
   @Component({
     components: {
       InlineField,
       RecordRemove,
-      FixtureForm
+      FixtureForm,
+      TooltipButton
     }
   })
   export default class RoundStage extends mixins(CompetitionAccessible) {

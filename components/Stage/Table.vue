@@ -64,18 +64,13 @@
           :row-data="item"
         >
           <template #default="{ on }">
-            <v-tooltip bottom>
-              <template #activator="{ on: tooltip }">
-                <v-btn
-                  icon
-                  small
-                  v-on="{ ...on, ...tooltip }"
-                >
-                  <v-icon color="orange">mdi-pencil</v-icon>
-                </v-btn>
-              </template>
-              Edit Table Row
-            </v-tooltip>
+            <tooltip-button
+              label="Edit Table Row"
+              icon="mdi-pencil"
+              color="orange"
+              :on="on"
+              small
+            />
           </template>
         </table-row-form>
       </template>
@@ -94,14 +89,15 @@
 <script>
   import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { CompetitionAccessible } from '@/mixins'
-  import { InlineField, RecordRemove } from '@/helpers'
+  import { InlineField, RecordRemove, TooltipButton } from '@/helpers'
   import TableRowForm from '@/components/TableRow/Form'
 
   @Component({
     components: {
       InlineField,
       RecordRemove,
-      TableRowForm
+      TableRowForm,
+      TooltipButton
     }
   })
   export default class TableStage extends mixins(CompetitionAccessible) {

@@ -8,20 +8,12 @@
   >
     <template #activator="{ on }">
       <slot :on="on">
-        <v-tooltip
-          bottom
+        <tooltip-button
+          :label="title"
+          icon="mdi-transit-transfer"
           color="indigo"
-        >
-          <template #activator="{ on: tooltip }">
-            <v-btn
-              icon
-              v-on="{ ...on, ...tooltip }"
-            >
-              <v-icon color="indigo">mdi-transit-transfer</v-icon>
-            </v-btn>
-          </template>
-          {{ title }}
-        </v-tooltip>
+          :on="on"
+        />
       </slot>
     </template>
     <template #form>
@@ -84,14 +76,15 @@
   import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { mapActions } from 'vuex'
   import { Loan } from '@/models'
-  import { VDateField } from '@/helpers'
+  import { VDateField, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
 
   @Component({
     components: {
-      VDateField
+      VDateField,
+      TooltipButton
     },
     methods: mapActions('loans', {
       create: 'CREATE',

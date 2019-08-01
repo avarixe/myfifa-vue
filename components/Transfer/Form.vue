@@ -8,22 +8,12 @@
   >
     <template #activator="{ on }">
       <slot :on="on">
-        <v-tooltip
-          bottom
+        <tooltip-button
+          :label="`Transfer ${transferOut ? 'Out' : 'In'}`"
+          :icon="`mdi-airplane-${transferOut ? 'takeoff' : 'landing'}`"
           :color="transferColor"
-        >
-          <template #activator="{ on: tooltip }">
-            <v-btn
-              icon
-              v-on="{ ...on, ...tooltip }"
-            >
-              <v-icon :color="transferColor">
-                mdi-airplane-{{ transferOut ? 'takeoff' : 'landing' }}
-              </v-icon>
-            </v-btn>
-          </template>
-          Transfer {{ transferOut ? 'Out' : 'In' }}
-        </v-tooltip>
+          :on="on"
+        />
       </slot>
     </template>
 
@@ -93,7 +83,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { VDateField, VMoneyField } from '@/helpers'
+  import { VDateField, VMoneyField, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
@@ -101,7 +91,8 @@
   @Component({
     components: {
       VDateField,
-      VMoneyField
+      VMoneyField,
+      TooltipButton
     }
   })
   export default class TransferForm extends mix {

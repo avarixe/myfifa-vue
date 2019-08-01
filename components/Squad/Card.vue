@@ -6,22 +6,13 @@
       <v-spacer />
 
       <squad-form :squad-data="squad">
-        <template #default="{ on: dialog }">
-          <v-tooltip
-            bottom
+        <template #default="{ on }">
+          <tooltip-button
+            label="Edit"
+            icon="mdi-pencil"
             color="orange"
-          >
-            <template #activator="{ on: tooltip }">
-              <v-btn
-                icon
-                small
-                v-on="{ ...dialog, ...tooltip }"
-              >
-                <v-icon color="orange">mdi-pencil</v-icon>
-              </v-btn>
-            </template>
-            Edit
-          </v-tooltip>
+            :on="on"
+          />
         </template>
       </squad-form>
 
@@ -67,7 +58,7 @@
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
-  import { FormationView, RecordRemove } from '@/helpers'
+  import { FormationView, RecordRemove, TooltipButton } from '@/helpers'
   import { Player } from '@/models'
   import SquadForm from './Form'
 
@@ -75,7 +66,8 @@
     components: {
       SquadForm,
       FormationView,
-      RecordRemove
+      RecordRemove,
+      TooltipButton
     }
   })
   export default class SquadCard extends Vue {

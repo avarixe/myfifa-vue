@@ -7,17 +7,11 @@
   >
     <template #activator="{ on }">
       <slot :on="on">
-        <v-tooltip bottom>
-          <template #activator="{ on: tooltip }">
-            <v-btn
-              icon
-              v-on="{ ...on, ...tooltip }"
-            >
-              <v-icon>mdi-table-row-plus-after</v-icon>
-            </v-btn>
-          </template>
-          {{ title }}
-        </v-tooltip>
+        <tooltip-button
+          :label="title"
+          icon="mdi-table-row-plus-after"
+          :on="on"
+        />
       </slot>
     </template>
 
@@ -83,10 +77,14 @@
   import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { mapActions } from 'vuex'
   import { CompetitionAccessible, DialogFormable } from '@/mixins'
+  import { TooltipButton } from '@/helpers'
 
   const mix = mixins(DialogFormable, CompetitionAccessible)
 
   @Component({
+    components: {
+      TooltipButton
+    },
     methods: mapActions('tableRows', {
       create: 'CREATE',
       update: 'UPDATE'

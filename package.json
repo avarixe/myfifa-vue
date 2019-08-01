@@ -26,9 +26,7 @@
     "nuxt-property-decorator": "^2.3.0",
     "v-money": "^0.8.1",
     "vue-chartkick": "^0.5.1",
-    "vue-class-component": "^7.1.0",
-    "vue-fitty": "^0.1.7",
-    "vue-property-decorator": "^8.2.1"
+    "vue-fitty": "^0.1.7"
   },
   "devDependencies": {
     "@babel/traverse": "^7.1.5",
@@ -44,8 +42,6 @@
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
-    "eslint-plugin-vuetify": "^1.0.0-beta.2",
-    "node-sass": "^4.11.0",
-    "sass-loader": "^7.1.0"
+    "eslint-plugin-vuetify": "^1.0.0-beta.2"
   }
 }

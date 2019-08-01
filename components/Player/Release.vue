@@ -1,20 +1,11 @@
 <template>
   <div class="d-inline-block">
-    <v-tooltip
-      bottom
+    <tooltip-button
+      label="Release"
+      icon="mdi-door-open"
       color="brown"
-    >
-      <template #activator="{ on }">
-        <v-btn
-          icon
-          v-on="on"
-          @click.stop="snackbar = true"
-        >
-          <v-icon color="brown">mdi-door-open</v-icon>
-        </v-btn>
-      </template>
-      Release
-    </v-tooltip>
+      @click="snackbar = true"
+    />
 
     <v-snackbar
       v-model="snackbar"
@@ -41,8 +32,13 @@
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
+  import { TooltipButton } from '@/helpers'
 
-  @Component
+  @Component({
+    components: {
+      TooltipButton
+    }
+  })
   export default class PlayerRelease extends Vue {
     @Prop({ type: Object, required: true }) player
 
