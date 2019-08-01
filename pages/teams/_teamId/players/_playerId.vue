@@ -225,8 +225,18 @@
         store.dispatch('loans/FETCH', { playerId: params.playerId }),
         store.dispatch('transfers/FETCH', { playerId: params.playerId }),
 
-        store.dispatch('caps/SEARCH', { teamId: params.teamId }),
-        store.dispatch('goals/SEARCH', { teamId: params.teamId })
+        store.dispatch('caps/SEARCH', {
+          teamId: params.teamId,
+          filters: { player_id: params.playerId }
+        }),
+        store.dispatch('goals/SEARCH', {
+          teamId: params.teamId,
+          filters: { player_id: params.playerId }
+        }),
+        store.dispatch('goals/SEARCH', {
+          teamId: params.teamId,
+          filters: { assist_id: params.playerId }
+        })
       ])
     }
 
