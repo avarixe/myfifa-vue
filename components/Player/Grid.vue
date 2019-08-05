@@ -104,23 +104,25 @@
               />
             </template>
             <template #item.kit_no="{ item }">
-              <inline-field
+              <inline-select
                 :item="item"
                 attribute="kit_no"
                 label="Kit No"
                 input-type="select"
                 :options="Array.from({ length: 98 }, (v, k) => k + 1)"
-                @close="updatePlayerAttribute(item.id, 'kit_no', $event)"
+                dense
+                @change="updatePlayerAttribute(item.id, 'kit_no', $event)"
               />
             </template>
             <template #item.ovr="{ item }">
-              <inline-field
+              <inline-select
                 :item="item"
                 attribute="ovr"
                 label="OVR"
                 input-type="select"
                 :options="Array.from({ length: 61 }, (v, k) => k + 40)"
-                @close="updatePlayerAttribute(item.id, 'ovr', $event)"
+                dense
+                @change="updatePlayerAttribute(item.id, 'ovr', $event)"
               />
             </template>
             <template #item.value="{ item }">
@@ -159,12 +161,13 @@
   import { mixins, Component } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
-  import { InlineField, PagedTable } from '@/helpers'
+  import { InlineField, InlineSelect, PagedTable } from '@/helpers'
   import { positions } from '@/models/Player'
 
   @Component({
     components: {
       InlineField,
+      InlineSelect,
       PagedTable
     }
   })

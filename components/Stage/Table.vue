@@ -5,7 +5,7 @@
         :key="key"
         :item="table"
         attribute="name"
-        :label="table.name"
+        label="Table Name"
         :readonly="readonly"
         display-class="font-weight-light"
         @close="updateStageAttribute(table.id, 'name', $event)"
