@@ -1,5 +1,10 @@
 <template>
-  <v-list-item>
+  <v-list-item
+    :input-value="selected"
+    :dense="dense"
+    ripple
+    @click="$emit('click')"
+  >
     <v-list-item-action v-if="optionAvatar">
       <v-list-item-action-text>
         {{ item[optionAvatar] }}
@@ -21,5 +26,7 @@
     @Prop(null) item
     @Prop(String) optionAvatar
     @Prop(String) optionText
+    @Prop({ type: Boolean, default: false }) selected
+    @Prop({ type: Boolean, default: false }) dense
   }
 </script>

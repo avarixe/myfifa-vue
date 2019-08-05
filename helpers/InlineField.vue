@@ -51,31 +51,6 @@
               </slot>
             </template>
           </v-combobox>
-          <v-select
-            v-else-if="inputType === 'select'"
-            v-model="value"
-            :items="options"
-            :item-avatar="optionAvatar"
-            :item-text="optionText"
-            :item-value="optionValue"
-            :rules="rules"
-            :label="label"
-            menu-props="auto"
-            @change="close"
-          >
-            <template #item="{ item }">
-              <slot
-                name="option"
-                :item="item"
-              >
-                <list-option
-                  :item="item"
-                  :option-avatar="optionAvatar"
-                  :option-text="optionText"
-                />
-              </slot>
-            </template>
-          </v-select>
           <v-money-field
             v-else-if="inputType === 'money'"
             v-model="value"
