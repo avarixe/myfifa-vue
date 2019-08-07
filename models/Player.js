@@ -110,24 +110,6 @@ class Player extends Model {
     return contract || {}
   }
 
-  injury () {
-    const lastInjury = Injury
-      .query()
-      .where('player_id', this.id)
-      .orderBy('started_on', 'asc')
-      .last()
-    return this.status === 'Injured' && lastInjury && lastInjury.description
-  }
-
-  loanedTo () {
-    const lastLoan = Loan
-      .query()
-      .where('player_id', this.id)
-      .orderBy('started_on', 'asc')
-      .last()
-    return this.status === 'Loaned' && lastLoan && lastLoan.destination
-  }
-
   expiresOn () {
     return this.contract.ended_on
   }

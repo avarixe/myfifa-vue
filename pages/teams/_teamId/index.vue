@@ -69,7 +69,6 @@
           :players="injuredPlayers"
           title="Injured Players"
           color="pink"
-          :attributes="[{ text: 'Injury', value: 'injury' }]"
         />
       </v-col>
 
@@ -82,7 +81,6 @@
           :players="loanedPlayers"
           title="Loaned Players"
           color="indigo"
-          :attributes="[{ text: 'Loaned To', value: 'loanedTo' }]"
         />
       </v-col>
 
@@ -167,17 +165,11 @@
     }
 
     get injuredPlayers () {
-      return this.getPlayersByStatus('Injured').map(player => ({
-        ...player,
-        injury: player.injury()
-      }))
+      return this.getPlayersByStatus('Injured')
     }
 
     get loanedPlayers () {
-      return this.getPlayersByStatus('Loaned').map(player => ({
-        ...player,
-        loanedTo: player.loanedTo()
-      }))
+      return this.getPlayersByStatus('Loaned')
     }
 
     get playersWithExpiringContracts () {

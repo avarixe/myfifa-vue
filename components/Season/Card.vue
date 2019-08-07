@@ -18,35 +18,29 @@
       </v-btn>
     </v-card-actions>
 
-    <v-simple-table>
-      <thead>
-        <th />
-        <th>Competitions</th>
-      </thead>
-      <tbody>
-        <tr
-          v-for="competition in competitions"
-          :key="competition.id"
-        >
-          <td>
-            <v-icon
-              :color="competition.statusColor"
-              small
-            >
-              {{ competition.statusIcon }}
-            </v-icon>
-          </td>
-
-          <td>
-            <nuxt-link
-              :to="competition.link"
-              class="black--text"
-              v-text="competition.name"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </v-simple-table>
+    <v-list
+      nav
+      dense
+      subheader
+    >
+      <v-subheader>Competitions</v-subheader>
+      <v-list-item
+        v-for="competition in competitions"
+        :key="competition.id"
+        :to="competition.link"
+        nuxt
+      >
+        <v-list-item-icon>
+          <v-icon
+            :color="competition.statusColor"
+            v-text="competition.statusIcon"
+          />
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>{{ competition.name }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
   </v-card>
 </template>
 
