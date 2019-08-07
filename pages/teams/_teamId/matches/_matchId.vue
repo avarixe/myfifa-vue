@@ -6,7 +6,7 @@
           v-if="prevMatchLink"
           :to="prevMatchLink"
           color="blue-grey"
-          outlined
+          dark
         >
           Previous Match
         </v-btn>
@@ -15,7 +15,7 @@
           v-if="nextMatchLink"
           :to="nextMatchLink"
           color="blue-grey"
-          outlined
+          dark
         >
           Next Match
         </v-btn>
@@ -81,7 +81,7 @@
       </v-row>
 
       <v-col cols="12">
-        <v-card outlined>
+        <v-card>
           <v-card-text>
             <v-tabs centered>
               <v-tab>Lineup</v-tab>

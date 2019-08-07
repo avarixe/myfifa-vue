@@ -14,30 +14,11 @@
     >
       <v-list nav>
         <template v-if="teamId">
-          <v-list-item
-            :to="{ name: 'teams-teamId', params: { teamId }}"
-            active-class=""
-            exact
-          >
-            <v-list-item-avatar>
-              <v-icon>mdi-shield-half-full</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-title
-              class="title"
-              color="primary"
-            >
-              {{ teamName }}
-            </v-list-item-title>
-          </v-list-item>
-
-          <v-divider />
-
-          <team-date-picker>
+          <team-date-picker menu-class="d-block">
             <template #default="{ on, date }">
               <v-list-item
                 v-ripple
                 color="accent"
-                class="v-list-item"
                 style="width: 100%"
                 v-on="on"
               >
@@ -55,6 +36,7 @@
             v-for="(link, i) in teamLinks"
             :key="i"
             :to="link.to"
+            :exact="link.exact"
             active-class=""
             class="v-list-item"
           >
@@ -99,6 +81,15 @@
       if (this.teamId) {
         return [
           {
+            to: {
+              name: 'teams-teamId',
+              params: { teamId: this.teamId }
+            },
+            icon: 'mdi-view-dashboard',
+            text: 'Dashboard',
+            exact: true
+          },
+          {
             to: this.linkTo('seasons'),
             icon: 'mdi-trophy',
             text: 'Seasons'
@@ -129,24 +120,3 @@
     }
   }
 </script>
-
-<style lang="scss">
-  #app-drawer {
-    .v-list__item {
-      border-radius: 4px;
-      &--buy {
-        margin-top: auto;
-        margin-bottom: 17px;
-      }
-    }
-    .v-image__image--contain {
-      top: 9px;
-      height: 60%;
-    }
-    .search-input {
-      margin-bottom: 30px !important;
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-  }
-</style>

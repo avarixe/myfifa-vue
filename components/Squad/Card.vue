@@ -1,7 +1,13 @@
 <template>
-  <v-card outlined>
-    <v-card-title>
-      <span class="subtitle-1 font-weight-light">{{ squad.name }}</span>
+  <v-card>
+    <v-toolbar
+      color="blue"
+      dark
+      flat
+    >
+      <v-toolbar-title class="font-weight-light">
+        {{ squad.name }}
+      </v-toolbar-title>
 
       <v-spacer />
 
@@ -22,9 +28,7 @@
         :label="`Squad: ${ squad.name }`"
         small
       />
-    </v-card-title>
-
-    <v-divider class="mx-3" />
+    </v-toolbar>
 
     <v-card-text>
       <v-row class="text-center">

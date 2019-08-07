@@ -5,7 +5,7 @@
         <v-btn
           :to="competition.linkToSeason"
           nuxt
-          outlined
+          dark
           color="blue-grey"
         >
           View Season

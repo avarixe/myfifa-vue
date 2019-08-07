@@ -7,7 +7,7 @@
           :to="linkToSeason(pageSeason - 1)"
           nuxt
           color="blue-grey"
-          outlined
+          dark
         >
           Previous Season
         </v-btn>
@@ -19,14 +19,14 @@
           :to="linkToSeason(pageSeason + 1)"
           nuxt
           color="blue-grey"
-          outlined
+          dark
         >
           Next Season
         </v-btn>
       </v-col>
 
       <v-col cols="12">
-        <v-card outlined>
+        <v-card>
           <v-card-text>
             <v-tabs centered>
               <v-tab>Competitions</v-tab>

@@ -55,7 +55,7 @@
       </v-row>
 
       <v-col cols="12">
-        <v-card outlined>
+        <v-card>
           <v-card-text>
             <v-row class="text-center">
               <v-col
