@@ -117,11 +117,6 @@
             to: this.linkTo('squads'),
             icon: 'mdi-clipboard-text',
             text: 'Squads'
-          },
-          {
-            to: this.linkTo('transfers'),
-            icon: 'mdi-airplane-takeoff',
-            text: 'Transfers'
           }
         ]
       } else {

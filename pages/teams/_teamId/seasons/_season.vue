@@ -2,11 +2,6 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <div class="overline">{{ team.title }}</div>
-        <div class="headline font-weight-thin">{{ title }}</div>
-      </v-col>
-
-      <v-col cols="12">
         <v-btn
           v-if="pageSeason > 0"
           :to="linkToSeason(pageSeason - 1)"
@@ -94,8 +89,12 @@
       ])
     }
 
-    mounted () {
-      this.$store.commit('app/SET_TITLE', this.title)
+    beforeMount () {
+      this.$store.commit('app/SET_PAGE', {
+        title: this.title,
+        overline: this.team.title,
+        headline: this.title,
+      })
     }
 
     linkToSeason (season) {

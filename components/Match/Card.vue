@@ -3,7 +3,6 @@
     <v-toolbar
       :color="color"
       dark
-      flat
       dense
     >
       <v-toolbar-title class="font-weight-light">

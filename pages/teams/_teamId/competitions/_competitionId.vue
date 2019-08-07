@@ -2,14 +2,6 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <div class="overline">{{ team.title }}</div>
-        <div class="headline font-weight-thin">
-          {{ competition.name }}
-          ({{ competitionSeason }})
-        </div>
-      </v-col>
-
-      <v-col cols="12">
         <v-btn
           :to="competition.linkToSeason"
           nuxt
@@ -233,6 +225,10 @@
         .find(this.$route.params.competitionId)
     }
 
+    get title () {
+      return `${this.competition.name} (${this.competitionSeason})`
+    }
+
     get stages () {
       return this.competition.stages
     }
@@ -264,7 +260,11 @@
     }
 
     mounted () {
-      this.$store.commit('app/SET_TITLE', this.team.title)
+      this.$store.commit('app/SET_PAGE', {
+        title: this.title,
+        overline: this.team.title,
+        headline: this.title
+      })
     }
   }
 </script>

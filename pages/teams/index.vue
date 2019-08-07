@@ -2,10 +2,6 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <div class="headline font-weight-thin">Teams</div>
-      </v-col>
-
-      <v-col cols="12">
         <team-form>
           <template #default="{ on }">
             <v-btn
@@ -29,6 +25,7 @@
 
 <script>
   import { Vue, Component } from 'nuxt-property-decorator'
+  import { Team } from '@/models'
   import TeamForm from '@/components/Team/Form'
   import TeamGrid from '@/components/Team/Grid'
 
@@ -43,8 +40,10 @@
     layout = () => 'default'
     middleware = () => 'home'
 
-    mounted () {
-      this.$store.commit('app/SET_TITLE', 'Teams')
+    beforeMount () {
+      this.$store.commit('app/SET_PAGE', {
+        headline: 'Teams'
+      })
     }
   }
 </script>

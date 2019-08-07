@@ -2,10 +2,6 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <div class="overline">{{ team.title }}</div>
-        <div class="headline font-weight-thin">Seasons</div>
-      </v-col>
-      <v-col cols="12">
         <competition-form>
           <template #default="{ on }">
             <v-btn
@@ -44,18 +40,16 @@
     layout = () => 'default'
     middleware = () => 'authenticated'
 
-    head () {
-      return {
-        title: `${this.team.title} - Seasons`
-      }
-    }
-
     async fetch ({ store, params }) {
       await store.dispatch('competitions/FETCH', { teamId: params.teamId })
     }
 
-    mounted () {
-      this.$store.commit('app/SET_TITLE', this.team.title)
+    beforeMount () {
+      this.$store.commit('app/SET_PAGE', {
+        title: `${this.team.title} - Seasons`,
+        overline: this.team.title,
+        headline: 'Seasons'
+      })
     }
   }
 </script>

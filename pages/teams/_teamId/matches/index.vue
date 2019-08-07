@@ -2,11 +2,6 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <div class="overline">{{ team.title }}</div>
-        <div class="headline font-weight-thin">Matches</div>
-      </v-col>
-
-      <v-col cols="12">
         <match-form />
       </v-col>
 
@@ -40,14 +35,12 @@
       store.dispatch('stages/TEAM_FETCH', { teamId: params.teamId })
     }
 
-    head () {
-      return {
-        title: `${this.team.title} - Matches`
-      }
-    }
-
-    mounted () {
-      this.$store.commit('app/SET_TITLE', this.team.title)
+    beforeMount () {
+      this.$store.commit('app/SET_PAGE', {
+        title: `${this.team.title} - Matches`,
+        overline: this.team.title,
+        headline: 'Matches'
+      })
     }
   }
 </script>

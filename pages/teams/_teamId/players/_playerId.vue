@@ -1,11 +1,6 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="12">
-        <div class="overline">{{ team.title }}</div>
-        <div class="headline font-weight-thin">{{ player.name }}</div>
-      </v-col>
-
       <v-row class="text-center">
         <v-col
           cols="6"
@@ -203,12 +198,6 @@
     layout = () => 'default'
     middleware = () => 'authenticated'
 
-    head () {
-      return {
-        title: this.player.name
-      }
-    }
-
     get player () {
       return Player
         .query()
@@ -241,8 +230,12 @@
       ])
     }
 
-    mounted () {
-      this.$store.commit('app/SET_TITLE', this.team.title)
+    beforeMount () {
+      this.$store.commit('app/SET_PAGE', {
+        title: this.player.name,
+        overline: this.team.title,
+        headline: this.player.name
+      })
     }
   }
 </script>

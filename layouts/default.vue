@@ -9,6 +9,8 @@
     <app-broadcaster />
 
     <v-content>
+      <app-banner />
+
       <template v-if="teamPage">
         <team-channel />
         <nuxt />
@@ -22,24 +24,32 @@
 
 <script>
   import { Vue, Component, Watch } from 'vue-property-decorator'
-  import { mapState } from 'vuex'
   import { Team } from '@/models'
   import AppBar from '@/components/App/Bar'
+  import AppBanner from '@/components/App/Banner'
   import AppBroadcaster from '@/components/App/Broadcaster'
   import TeamChannel from '@/components/Team/Channel'
   import TeamDrawer from '@/components/Team/Drawer'
+  // import AppDrawer from '@/components/App/Drawer'
 
   @Component({
     name: 'App',
     components: {
       AppBar,
+      AppBanner,
       AppBroadcaster,
       TeamChannel,
       TeamDrawer
-    },
-    computed: mapState('app', ['drawer'])
+      // AppDrawer
+    }
   })
   export default class Layout extends Vue {
+    head () {
+      return {
+        title: this.$store.state.app.title
+      }
+    }
+
     get teamPage () {
       return 'teamId' in this.$route.params
     }

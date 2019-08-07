@@ -2,14 +2,6 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <div class="overline">{{ team.title }}</div>
-        <div class="headline font-weight-thin">
-          Match
-          <small>v {{ match.opponent }}</small>
-        </div>
-      </v-col>
-
-      <v-col cols="12">
         <v-btn
           v-if="prevMatchLink"
           :to="prevMatchLink"
@@ -134,12 +126,6 @@
     layout = () => 'default'
     middleware = () => 'authenticated'
 
-    head () {
-      return {
-        title: `${this.match.home} vs ${this.match.away}`
-      }
-    }
-
     tab = 0
 
     get match () {
@@ -192,8 +178,13 @@
       ])
     }
 
-    mounted () {
-      this.$store.commit('app/SET_TITLE', this.team.title)
+    beforeMount () {
+      this.$store.commit('app/SET_PAGE', {
+        title: `${this.match.home} vs ${this.match.away}`,
+        overline: this.team.title,
+        headline: 'Match',
+        caption: `v ${this.match.opponent}`
+      })
     }
   }
 </script>
