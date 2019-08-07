@@ -10,7 +10,7 @@
       <slot :on="on">
         <v-btn
           color="blue-grey"
-          outlined
+          dark
           v-on="on"
         >
           <v-icon left>mdi-plus-circle-outline</v-icon>

@@ -8,8 +8,8 @@
     <template #activator="{ on }">
       <slot :on="on">
         <v-btn
-          outlined
           color="blue-grey"
+          dark
           v-on="on"
         >
           <v-icon left>mdi-plus-circle-outline</v-icon>

@@ -1,22 +1,25 @@
 <template>
-  <v-card outlined>
-    <v-card-title class="subtitle-1 d-block text-center">
-      <span class="primary--text font-weight-light">{{ cardTitle }}</span>
-    </v-card-title>
+  <v-card>
+    <v-toolbar
+      color="blue"
+      dark
+      dense
+    >
+      <v-toolbar-title class="font-weight-light">
+        {{ cardTitle }}
+      </v-toolbar-title>
 
-    <v-divider class="mx-3" />
+      <v-spacer />
 
-    <v-card-actions>
       <v-btn
         :to="link"
-        color="primary"
+        dark
         text
         nuxt
-        block
       >
         View Season
       </v-btn>
-    </v-card-actions>
+    </v-toolbar>
 
     <v-list
       nav

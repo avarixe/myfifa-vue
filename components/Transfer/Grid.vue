@@ -1,6 +1,6 @@
 <template>
-  <v-card outlined>
-    <v-card-title>
+  <v-card>
+    <v-toolbar flat>
       <v-select
         v-model="seasonFilter"
         label="Season"
@@ -20,7 +20,7 @@
         append-icon="mdi-magnify"
         hide-details
       />
-    </v-card-title>
+    </v-toolbar>
 
     <!-- Match History Grid -->
     <v-card-text>

@@ -8,7 +8,7 @@
       @click.stop="toggleDrawer"
     />
 
-    <v-toolbar-title class="tertiary--text font-weight-light">
+    <v-toolbar-title class="font-weight-light">
       MyFIFA Manager
     </v-toolbar-title>
 
@@ -20,7 +20,7 @@
         nuxt
         icon
       >
-        <v-icon color="tertiary">mdi-home</v-icon>
+        <v-icon>mdi-home</v-icon>
       </v-btn>
 
       <user-form>
@@ -29,7 +29,7 @@
             icon
             v-on="on"
           >
-            <v-icon color="tertiary">mdi-account</v-icon>
+            <v-icon>mdi-account</v-icon>
           </v-btn>
         </template>
       </user-form>
@@ -38,7 +38,7 @@
         icon
         @click="logout"
       >
-        <v-icon color="tertiary">mdi-exit-to-app</v-icon>
+        <v-icon>mdi-exit-to-app</v-icon>
       </v-btn>
     </template>
   </v-app-bar>

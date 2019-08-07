@@ -55,13 +55,16 @@
                   <fitty-text
                     :text="match.opponent"
                     :max-size="14"
-                  >{{ match.opponent }}</fitty-text>
+                  >
+                    {{ match.opponent }}
+                  </fitty-text>
                 </a>
               </template>
 
               <match-card
                 :match="match"
                 :title="`${match.home} v ${match.away}`"
+                color="light-blue"
               />
             </v-dialog>
           </v-sheet>
