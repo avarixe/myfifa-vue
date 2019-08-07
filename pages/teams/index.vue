@@ -40,6 +40,10 @@
     layout = () => 'default'
     middleware = () => 'home'
 
+    async fetch ({ store }) {
+      await store.dispatch('teams/FETCH')
+    }
+
     beforeMount () {
       this.$store.commit('app/SET_PAGE', {
         headline: 'Teams'

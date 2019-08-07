@@ -84,7 +84,6 @@
             :headers="headers"
             :items="rows"
             :page.sync="page"
-            :loading="loading"
             sort-by="pos"
             must-sort
             :search="search"
@@ -180,7 +179,6 @@
       { text: 'Contract', color: 'blue', icon: 'file-document-outline' },
       { text: 'Statistics', color: 'red', icon: 'numeric' }
     ]
-    loading = false
     page = 1
     pageCount = 0
     filter = 2

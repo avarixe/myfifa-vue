@@ -3,19 +3,6 @@
     app
     grow
   >
-    <team-date-picker
-      v-if="teamId"
-      origin="bottom left"
-      menu-class="d-flex"
-    >
-      <template #default="{ on, date }">
-        <v-btn v-on="on">
-          <span>{{ $_format(date, 'MMM DD, YYYY') }}</span>
-          <v-icon>mdi-calendar</v-icon>
-        </v-btn>
-      </template>
-    </team-date-picker>
-
     <v-btn
       v-for="(link, i) in links"
       :key="i"
@@ -33,13 +20,8 @@
 <script>
   import { Vue, Component } from 'nuxt-property-decorator'
   import { Team } from '@/models'
-  import TeamDatePicker from '@/components/Team/DatePicker'
 
-  @Component({
-    components: {
-      TeamDatePicker
-    }
-  })
+  @Component
   export default class TeamBottomNavigation extends Vue {
     get teamId () {
       return this.$route.params.teamId
@@ -54,8 +36,8 @@
         return [
           {
             to: this.team.link,
-            icon: 'mdi-shield-half-full',
-            text: this.team.title,
+            icon: 'mdi-view-dashboard',
+            text: 'Dashboard',
             exact: true
           },
           {
@@ -77,11 +59,6 @@
             to: this.team.linkTo('squads'),
             icon: 'mdi-clipboard-text',
             text: 'Squads'
-          },
-          {
-            to: this.team.linkTo('transfers'),
-            icon: 'mdi-airplane-takeoff',
-            text: 'Transfers'
           }
         ]
       } else {
