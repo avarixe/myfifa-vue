@@ -7,11 +7,7 @@
   >
     <template #activator="{ on }">
       <slot :on="on">
-        <v-btn
-          color="blue-grey"
-          dark
-          v-on="on"
-        >
+        <v-btn v-on="on">
           <v-icon left>mdi-plus-circle-outline</v-icon>
           Competition
         </v-btn>

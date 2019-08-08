@@ -17,15 +17,7 @@
     <cap-form
       v-if="numPlayers < 11"
       :match="match"
-    >
-      <template #default="{ on }">
-        <tooltip-button
-          label="Add Player"
-          icon="mdi-plus-circle-outline"
-          :on="on"
-        />
-      </template>
-    </cap-form>
+    />
 
     <v-tooltip
       color="cyan"
@@ -62,61 +54,25 @@
       v-if="validMatch"
       :match="match"
       color="green"
-    >
-      <template #default="{ on }">
-        <tooltip-button
-          label="Substitution"
-          icon="mdi-repeat"
-          color="green"
-          :on="on"
-        />
-      </template>
-    </substitution-form>
+    />
 
     <goal-form
       v-if="validMatch"
       :match="match"
       color="blue"
-    >
-      <template #default="{ on }">
-        <tooltip-button
-          label="Goal"
-          icon="mdi-soccer"
-          color="blue"
-          :on="on"
-        />
-      </template>
-    </goal-form>
+    />
 
     <booking-form
       v-if="validMatch"
       :match="match"
       color="red"
-    >
-      <template #default="{ on }">
-        <tooltip-button
-          label="Booking"
-          icon="mdi-book"
-          color="red"
-          :on="on"
-        />
-      </template>
-    </booking-form>
+    />
 
     <penalty-shootout-form
       v-if="validMatch && matchDraw && !match.penalty_shootout"
       :match="match"
       color="indigo"
-    >
-      <template #default="{ on }">
-        <tooltip-button
-          label="Penalty Shootout"
-          icon="mdi-human"
-          color="indigo"
-          :on="on"
-        />
-      </template>
-    </penalty-shootout-form>
+    />
 
     <record-remove
       :record="match"

@@ -2,9 +2,11 @@ import VuexORM from '@vuex-orm/core'
 import database from '@/database'
 import cookieparser from 'cookieparser'
 import { http, routes } from '@/api'
+import pkg from '@/package.json'
 
 // initial state
 export const state = () => ({
+  version: pkg.version,
   token: null
 })
 

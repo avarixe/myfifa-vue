@@ -5,8 +5,6 @@
         <v-btn
           v-if="prevMatchLink"
           :to="prevMatchLink"
-          color="blue-grey"
-          dark
         >
           Previous Match
         </v-btn>
@@ -14,8 +12,6 @@
         <v-btn
           v-if="nextMatchLink"
           :to="nextMatchLink"
-          color="blue-grey"
-          dark
         >
           Next Match
         </v-btn>

@@ -7,7 +7,14 @@
     :color="color"
   >
     <template #activator="{ on }">
-      <slot :on="on" />
+      <slot :on="on">
+        <tooltip-button
+          label="Booking"
+          icon="mdi-book"
+          color="red"
+          :on="on"
+        />
+      </slot>
     </template>
 
     <template #form>
@@ -53,14 +60,15 @@
 <script>
   import { mixins, Component } from 'nuxt-property-decorator'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
-  import { MinuteField, PlayerSelect } from '@/helpers'
+  import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
 
   const mix = mixins(DialogFormable, TeamAccessible, MatchAccessible)
 
   @Component({
     components: {
       MinuteField,
-      PlayerSelect
+      PlayerSelect,
+      TooltipButton
     }
   })
   export default class BookingForm extends mix {

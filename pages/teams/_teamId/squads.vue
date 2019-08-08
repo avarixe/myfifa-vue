@@ -2,18 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <squad-form>
-          <template #default="{ on }">
-            <v-btn
-              color="blue-grey"
-              dark
-              v-on="on"
-            >
-              <v-icon left>mdi-plus-circle-outline</v-icon>
-              Squad
-            </v-btn>
-          </template>
-        </squad-form>
+        <squad-form />
       </v-col>
 
       <v-col cols="12">

@@ -6,7 +6,16 @@
     :color="color"
   >
     <template #activator="{ on }">
-      <slot :on="on" />
+      <slot :on="on">
+        <v-btn
+          dark
+          color="teal"
+          class="my-1"
+          v-on="on"
+        >
+          Add Stage
+        </v-btn>
+      </slot>
     </template>
 
     <template #form>

@@ -6,8 +6,6 @@
           v-if="pageSeason > 0"
           :to="linkToSeason(pageSeason - 1)"
           nuxt
-          color="blue-grey"
-          dark
         >
           Previous Season
         </v-btn>
@@ -18,8 +16,6 @@
           v-else
           :to="linkToSeason(pageSeason + 1)"
           nuxt
-          color="blue-grey"
-          dark
         >
           Next Season
         </v-btn>

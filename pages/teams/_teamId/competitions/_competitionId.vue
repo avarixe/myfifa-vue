@@ -5,8 +5,6 @@
         <v-btn
           :to="competition.linkToSeason"
           nuxt
-          dark
-          color="blue-grey"
         >
           View Season
         </v-btn>
@@ -81,18 +79,7 @@
             <stage-form
               :competition="competition"
               color="teal"
-            >
-              <template #default="{ on }">
-                <v-btn
-                  dark
-                  color="teal"
-                  class="my-1"
-                  v-on="on"
-                >
-                  Add Stage
-                </v-btn>
-              </template>
-            </stage-form>
+            />
 
             <record-remove
               :record="competition"
@@ -242,8 +229,9 @@
     }
 
     get readonly () {
-      return this.competition.champion &&
-        this.competition.champion.length > 0
+      return false
+      // return this.competition.champion &&
+      //   this.competition.champion.length > 0
     }
 
     get competitionSeason () {

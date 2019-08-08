@@ -2,18 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <team-form>
-          <template #default="{ on }">
-            <v-btn
-              color="blue-grey"
-              outlined
-              v-on="on"
-            >
-              <v-icon left>mdi-plus-circle-outline</v-icon>
-              Team
-            </v-btn>
-          </template>
-        </team-form>
+        <team-form />
       </v-col>
 
       <v-col cols="12">
