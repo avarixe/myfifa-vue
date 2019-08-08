@@ -6,7 +6,13 @@
     :color="color"
   >
     <template #activator="{ on }">
-      <slot :on="on" />
+      <slot :on="on">
+        <tooltip-button
+          label="Add Player"
+          icon="mdi-plus-circle-outline"
+          :on="on"
+        />
+      </slot>
     </template>
 
     <template #form>
@@ -41,12 +47,13 @@
   import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { positions } from '@/models/Match'
   import { activePlayers } from '@/models/Player'
-  import { PlayerSelect } from '@/helpers'
+  import { PlayerSelect, TooltipButton } from '@/helpers'
   import { DialogFormable } from '@/mixins'
 
   @Component({
     components: {
-      PlayerSelect
+      PlayerSelect,
+      TooltipButton
     }
   })
   export default class CapForm extends mixins(DialogFormable) {

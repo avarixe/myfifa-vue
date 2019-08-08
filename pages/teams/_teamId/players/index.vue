@@ -2,11 +2,6 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <div class="overline">{{ team.title }}</div>
-        <div class="headline font-weight-thin">Players</div>
-      </v-col>
-
-      <v-col cols="12">
         <player-form />
       </v-col>
 
@@ -34,12 +29,6 @@
     layout = () => 'default'
     middleware = () => 'authenticated'
 
-    head () {
-      return {
-        title: `${this.team.title} - Players`
-      }
-    }
-
     async fetch ({ store, params }) {
       await Promise.all([
         store.dispatch('players/FETCH', { teamId: params.teamId }),
@@ -47,8 +36,12 @@
       ])
     }
 
-    mounted () {
-      this.$store.commit('app/SET_TITLE', this.team.title)
+    beforeMount () {
+      this.$store.commit('app/SET_PAGE', {
+        title: `${this.team.title} - Players`,
+        overline: this.team.title,
+        headline: 'Players'
+      })
     }
   }
 </script>

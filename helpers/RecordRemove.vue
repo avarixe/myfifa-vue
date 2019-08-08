@@ -7,6 +7,7 @@
       <tooltip-button
         icon="mdi-delete"
         :label="`Remove ${label}`"
+        color="black"
         small
       />
     </slot>

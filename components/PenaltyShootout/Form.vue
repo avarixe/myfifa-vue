@@ -7,7 +7,14 @@
     :color="color"
   >
     <template #activator="{ on }">
-      <slot :on="on" />
+      <slot :on="on">
+        <tooltip-button
+          label="Penalty Shootout"
+          icon="mdi-human"
+          color="indigo"
+          :on="on"
+        />
+      </slot>
     </template>
 
     <template #form>
@@ -39,11 +46,16 @@
 
 <script>
   import { mixins, Component } from 'nuxt-property-decorator'
+  import { TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
   const mix = mixins(TeamAccessible, DialogFormable, MatchAccessible)
 
-  @Component
+  @Component({
+    components: {
+      TooltipButton
+    }
+  })
   export default class PenaltyShootoutForm extends mix {
     penaltyShootout = {
       home_score: null,

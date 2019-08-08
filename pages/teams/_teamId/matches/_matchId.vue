@@ -2,19 +2,9 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <div class="overline">{{ team.title }}</div>
-        <div class="headline font-weight-thin">
-          Match
-          <small>v {{ match.opponent }}</small>
-        </div>
-      </v-col>
-
-      <v-col cols="12">
         <v-btn
           v-if="prevMatchLink"
           :to="prevMatchLink"
-          color="blue-grey"
-          outlined
         >
           Previous Match
         </v-btn>
@@ -22,8 +12,6 @@
         <v-btn
           v-if="nextMatchLink"
           :to="nextMatchLink"
-          color="blue-grey"
-          outlined
         >
           Next Match
         </v-btn>
@@ -89,7 +77,7 @@
       </v-row>
 
       <v-col cols="12">
-        <v-card outlined>
+        <v-card>
           <v-card-text>
             <v-tabs centered>
               <v-tab>Lineup</v-tab>
@@ -133,12 +121,6 @@
   export default class MatchPage extends mixins(TeamAccessible) {
     layout = () => 'default'
     middleware = () => 'authenticated'
-
-    head () {
-      return {
-        title: `${this.match.home} vs ${this.match.away}`
-      }
-    }
 
     tab = 0
 
@@ -192,8 +174,13 @@
       ])
     }
 
-    mounted () {
-      this.$store.commit('app/SET_TITLE', this.team.title)
+    beforeMount () {
+      this.$store.commit('app/SET_PAGE', {
+        title: `${this.match.home} vs ${this.match.away}`,
+        overline: this.team.title,
+        headline: 'Match',
+        caption: `v ${this.match.opponent}`
+      })
     }
   }
 </script>

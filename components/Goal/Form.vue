@@ -7,7 +7,14 @@
     :color="color"
   >
     <template #activator="{ on }">
-      <slot :on="on" />
+      <slot :on="on">
+        <tooltip-button
+          label="Goal"
+          icon="mdi-soccer"
+          color="blue"
+          :on="on"
+        />
+      </slot>
     </template>
 
     <template #form>
@@ -105,7 +112,7 @@
 
 <script>
   import { mixins, Component, Watch } from 'nuxt-property-decorator'
-  import { MinuteField, PlayerSelect } from '@/helpers'
+  import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
   const mix = mixins(TeamAccessible, DialogFormable, MatchAccessible)
@@ -113,7 +120,8 @@
   @Component({
     components: {
       MinuteField,
-      PlayerSelect
+      PlayerSelect,
+      TooltipButton
     }
   })
   export default class GoalForm extends mix {

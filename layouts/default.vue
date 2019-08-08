@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <no-ssr>
-      <app-bar v-if="$store.getters.authenticated" />
+    <no-ssr v-if="authenticated">
+      <app-bar />
 
-      <team-drawer v-if="teamPage" />
+      <app-drawer />
     </no-ssr>
 
     <app-broadcaster />
@@ -22,12 +22,12 @@
 
 <script>
   import { Vue, Component, Watch } from 'vue-property-decorator'
-  import { mapState } from 'vuex'
+  import { mapGetters } from 'vuex'
   import { Team } from '@/models'
   import AppBar from '@/components/App/Bar'
   import AppBroadcaster from '@/components/App/Broadcaster'
   import TeamChannel from '@/components/Team/Channel'
-  import TeamDrawer from '@/components/Team/Drawer'
+  import AppDrawer from '@/components/App/Drawer'
 
   @Component({
     name: 'App',
@@ -35,11 +35,19 @@
       AppBar,
       AppBroadcaster,
       TeamChannel,
-      TeamDrawer
+      AppDrawer
     },
-    computed: mapState('app', ['drawer'])
+    computed: mapGetters([
+      'authenticated'
+    ])
   })
   export default class Layout extends Vue {
+    head () {
+      return {
+        title: this.$store.state.app.title
+      }
+    }
+
     get teamPage () {
       return 'teamId' in this.$route.params
     }

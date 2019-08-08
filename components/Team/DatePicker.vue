@@ -12,8 +12,7 @@
         :date="currentDate"
       >
         <v-btn
-          color="accent"
-          outlined
+          color="cyan"
           dark
           v-on="on"
           v-text="$_format(currentDate, 'MMM DD, YYYY')"
@@ -23,7 +22,7 @@
 
     <v-date-picker
       v-model="currentDate"
-      color="accent"
+      color="cyan"
       :min="seasonStart"
       :max="seasonEnd"
       @input="calendar = false"

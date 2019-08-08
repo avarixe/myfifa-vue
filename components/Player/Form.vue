@@ -8,11 +8,7 @@
   >
     <template #activator="{ on }">
       <slot :on="on">
-        <v-btn
-          color="blue-grey"
-          outlined
-          v-on="on"
-        >
+        <v-btn v-on="on">
           <v-icon left>mdi-plus-circle-outline</v-icon>
           Player
         </v-btn>

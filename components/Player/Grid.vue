@@ -1,6 +1,6 @@
 <template>
-  <v-card outlined>
-    <v-card-title>
+  <v-card>
+    <v-toolbar flat>
       <!-- Display Menu -->
       <v-tooltip
         bottom
@@ -57,9 +57,8 @@
 
       <div
         :class="`hidden-sm-and-down subheading ${currentMode.color}--text`"
-      >
-        {{ currentMode.text }}
-      </div>
+        v-text="currentMode.text"
+      />
 
       <v-spacer />
 
@@ -70,7 +69,7 @@
         append-icon="mdi-magnify"
         hide-details
       />
-    </v-card-title>
+    </v-toolbar>
 
     <!-- Player Information Grid -->
     <v-card-text>
@@ -84,7 +83,6 @@
             :headers="headers"
             :items="rows"
             :page.sync="page"
-            :loading="loading"
             sort-by="pos"
             must-sort
             :search="search"
@@ -180,7 +178,6 @@
       { text: 'Contract', color: 'blue', icon: 'file-document-outline' },
       { text: 'Statistics', color: 'red', icon: 'numeric' }
     ]
-    loading = false
     page = 1
     pageCount = 0
     filter = 2

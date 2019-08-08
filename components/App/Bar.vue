@@ -4,58 +4,31 @@
     clipped-left
   >
     <v-app-bar-nav-icon
-      v-show="responsive && $route.params.teamId"
+      v-show="responsive"
       @click.stop="toggleDrawer"
     />
 
-    <v-toolbar-title class="tertiary--text font-weight-light">
-      MyFIFA Manager
+    <v-toolbar-title>
+      <div class="overline">{{ overline }}</div>
+      <div class="headline font-weight-thin">
+        {{ headline }}
+        <small v-if="caption">
+          {{ caption }}
+        </small>
+      </div>
     </v-toolbar-title>
-
-    <v-spacer />
-
-    <template v-if="authenticated">
-      <v-btn
-        to="/"
-        nuxt
-        icon
-      >
-        <v-icon color="tertiary">mdi-home</v-icon>
-      </v-btn>
-
-      <user-form>
-        <template #default="{ on }">
-          <v-btn
-            icon
-            v-on="on"
-          >
-            <v-icon color="tertiary">mdi-account</v-icon>
-          </v-btn>
-        </template>
-      </user-form>
-
-      <v-btn
-        icon
-        @click="logout"
-      >
-        <v-icon color="tertiary">mdi-exit-to-app</v-icon>
-      </v-btn>
-    </template>
   </v-app-bar>
 </template>
 
 <script>
   import { Vue, Component } from 'nuxt-property-decorator'
-  import UserForm from './UserForm'
-  import { mapGetters, mapMutations } from 'vuex'
-  import Cookie from 'js-cookie'
+  import { mapState, mapMutations } from 'vuex'
 
   @Component({
-    components: {
-      UserForm
-    },
-    computed: mapGetters([
-      'authenticated'
+    computed: mapState('app', [
+      'overline',
+      'headline',
+      'caption'
     ]),
     methods: mapMutations('app', {
       toggleDrawer: 'TOGGLE_DRAWER'
@@ -73,11 +46,6 @@
       window.removeEventListener('resize', this.updateResponsiveState)
       this.$store.dispatch('entities/deleteAll')
       this.$router.push({ name: 'index' })
-    }
-
-    async logout () {
-      await this.$store.dispatch('logout')
-      Cookie.remove('token')
     }
 
     updateResponsiveState () {

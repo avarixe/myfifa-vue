@@ -2,19 +2,9 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <div class="overline">{{ team.title }}</div>
-        <div class="headline font-weight-thin">
-          {{ competition.name }}
-          ({{ competitionSeason }})
-        </div>
-      </v-col>
-
-      <v-col cols="12">
         <v-btn
           :to="competition.linkToSeason"
           nuxt
-          outlined
-          color="blue-grey"
         >
           View Season
         </v-btn>
@@ -89,18 +79,7 @@
             <stage-form
               :competition="competition"
               color="teal"
-            >
-              <template #default="{ on }">
-                <v-btn
-                  dark
-                  color="teal"
-                  class="my-1"
-                  v-on="on"
-                >
-                  Add Stage
-                </v-btn>
-              </template>
-            </stage-form>
+            />
 
             <record-remove
               :record="competition"
@@ -233,6 +212,10 @@
         .find(this.$route.params.competitionId)
     }
 
+    get title () {
+      return `${this.competition.name} (${this.competitionSeason})`
+    }
+
     get stages () {
       return this.competition.stages
     }
@@ -246,8 +229,9 @@
     }
 
     get readonly () {
-      return this.competition.champion &&
-        this.competition.champion.length > 0
+      return false
+      // return this.competition.champion &&
+      //   this.competition.champion.length > 0
     }
 
     get competitionSeason () {
@@ -264,7 +248,11 @@
     }
 
     mounted () {
-      this.$store.commit('app/SET_TITLE', this.team.title)
+      this.$store.commit('app/SET_PAGE', {
+        title: this.title,
+        overline: this.team.title,
+        headline: this.title
+      })
     }
   }
 </script>

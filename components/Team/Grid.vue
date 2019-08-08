@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined>
+  <v-card>
     <v-card-text>
       <paged-table
         v-model="page"
@@ -10,7 +10,6 @@
             :headers="headers"
             :items="teams"
             :page.sync="page"
-            :loading="loading"
             item-key="id"
             no-data-text="No Teams Recorded"
             hide-default-footer
@@ -54,28 +53,12 @@
       { text: 'Start Date', value: 'started_on', align: 'center' },
       { text: 'Current Date', value: 'currently_on', align: 'center' }
     ]
-    loading = false
     search = ''
     page = 1
     pageCount = 0
 
     get teams () {
       return Team.query().orderBy('id', 'desc').get()
-    }
-
-    mounted () {
-      this.reloadTable()
-    }
-
-    async reloadTable () {
-      this.loading = true
-      try {
-        await this.$store.dispatch('teams/FETCH')
-      } catch (e) {
-        alert(e.message)
-      } finally {
-        this.loading = false
-      }
     }
   }
 </script>

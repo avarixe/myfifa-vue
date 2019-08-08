@@ -4,7 +4,15 @@
     @submit.prevent="authenticate"
   >
     <v-card>
-      <v-card-title>MyFIFA Manager</v-card-title>
+      <v-toolbar
+        flat
+      >
+        <v-toolbar-title>
+          <div class="headline font-weight-light">MyFIFA Manager</div>
+          <div class="caption">v{{ $store.state.version }}</div>
+        </v-toolbar-title>
+      </v-toolbar>
+
       <v-card-text>
         <v-col cols="12">
           <v-text-field

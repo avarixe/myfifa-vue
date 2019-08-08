@@ -1,14 +1,19 @@
 <template>
-  <v-card outlined>
-    <v-card-title :class="`subtitle-1 d-block text-center`">
-      <span :class="`${color}--text font-weight-light`">{{ title }}</span>
-    </v-card-title>
-
-    <v-divider class="mx-3" />
+  <v-card>
+    <v-toolbar
+      :color="color"
+      dark
+      dense
+    >
+      <v-toolbar-title class="font-weight-light">
+        {{ title }}
+      </v-toolbar-title>
+    </v-toolbar>
 
     <v-list
       nav
       dense
+      subheader
     >
       <v-subheader>Player</v-subheader>
       <v-list-item

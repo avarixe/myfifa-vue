@@ -6,7 +6,12 @@
     :color="color"
   >
     <template #activator="{ on }">
-      <slot :on="on" />
+      <slot :on="on">
+        <v-btn v-on="on">
+          <v-icon left>mdi-plus-circle-outline</v-icon>
+          Team
+        </v-btn>
+      </slot>
     </template>
 
     <template #form>

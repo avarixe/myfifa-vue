@@ -7,7 +7,14 @@
     :color="color"
   >
     <template #activator="{ on }">
-      <slot :on="on" />
+      <slot :on="on">
+        <tooltip-button
+          label="Substitution"
+          icon="mdi-repeat"
+          color="green"
+          :on="on"
+        />
+      </slot>
     </template>
 
     <template #form>
@@ -53,7 +60,7 @@
 <script>
   import { mixins, Component } from 'nuxt-property-decorator'
   import { activePlayers } from '@/models/Player'
-  import { MinuteField, PlayerSelect } from '@/helpers'
+  import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
   const mix = mixins(DialogFormable, MatchAccessible, TeamAccessible)
@@ -61,7 +68,8 @@
   @Component({
     components: {
       MinuteField,
-      PlayerSelect
+      PlayerSelect,
+      TooltipButton
     }
   })
   export default class SubstitutionForm extends mix {
