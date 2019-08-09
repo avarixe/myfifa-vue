@@ -18,95 +18,91 @@
     </template>
 
     <template #form>
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            <v-radio-group
-              v-model="goal.home"
-              row
-              hide-details
-              @change="clearNames"
-            >
-              <v-radio
-                :label="match.home"
-                :value="true"
-                color="teal"
-              />
-              <v-radio
-                :label="match.away"
-                :value="false"
-                color="pink"
-              />
-            </v-radio-group>
-          </v-col>
-          <v-col cols="12">
-            <minute-field
-              v-model="minute"
-              :extra-time="match.extra_time"
-            />
-          </v-col>
-          <v-col cols="12">
-            <player-select
-              v-if="teamGoal"
-              v-model="goal.player_id"
-              :players="scorerOptions"
-              label="Goal Scorer"
-              required
-            />
-            <v-text-field
-              v-else
-              v-model="goal.player_name"
-              :rules="$_validate('Goal Scorer', ['required'])"
-              label="Goal Scorer"
-              prepend-icon="mdi-account"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-col>
-          <v-col cols="12">
-            <player-select
-              v-if="teamGoal"
-              v-model="goal.assist_id"
-              :players="assistOptions"
-              label="Assisted By"
-              icon="mdi-human-greeting"
-              :disabled="goal.penalty || goal.own_goal"
-              clearable
-              hide-details
-            />
-            <v-text-field
-              v-else
-              v-model="goal.assisted_by"
-              label="Assisted By"
-              prepend-icon="mdi-human-greeting"
-              :disabled="goal.penalty || goal.own_goal"
-              hide-details
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-checkbox
-              v-model="goal.penalty"
-              label="Penalty"
-              :disabled="goal.own_goal"
-              hide-details
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-checkbox
-              v-model="goal.own_goal"
-              label="Own Goal"
-              :disabled="goal.penalty"
-              hide-details
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-col cols="12">
+        <v-radio-group
+          v-model="goal.home"
+          row
+          hide-details
+          @change="clearNames"
+        >
+          <v-radio
+            :label="match.home"
+            :value="true"
+            color="teal"
+          />
+          <v-radio
+            :label="match.away"
+            :value="false"
+            color="pink"
+          />
+        </v-radio-group>
+      </v-col>
+      <v-col cols="12">
+        <minute-field
+          v-model="minute"
+          :extra-time="match.extra_time"
+        />
+      </v-col>
+      <v-col cols="12">
+        <player-select
+          v-if="teamGoal"
+          v-model="goal.player_id"
+          :players="scorerOptions"
+          label="Goal Scorer"
+          required
+        />
+        <v-text-field
+          v-else
+          v-model="goal.player_name"
+          :rules="$_validate('Goal Scorer', ['required'])"
+          label="Goal Scorer"
+          prepend-icon="mdi-account"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <player-select
+          v-if="teamGoal"
+          v-model="goal.assist_id"
+          :players="assistOptions"
+          label="Assisted By"
+          icon="mdi-human-greeting"
+          :disabled="goal.penalty || goal.own_goal"
+          clearable
+          hide-details
+        />
+        <v-text-field
+          v-else
+          v-model="goal.assisted_by"
+          label="Assisted By"
+          prepend-icon="mdi-human-greeting"
+          :disabled="goal.penalty || goal.own_goal"
+          hide-details
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-checkbox
+          v-model="goal.penalty"
+          label="Penalty"
+          :disabled="goal.own_goal"
+          hide-details
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-checkbox
+          v-model="goal.own_goal"
+          label="Own Goal"
+          :disabled="goal.penalty"
+          hide-details
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>

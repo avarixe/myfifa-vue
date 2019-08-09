@@ -16,59 +16,61 @@
     </template>
 
     <template #form>
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            <v-combobox
-              v-model="row.name"
-              label="Team"
-              :items="competitionTeams"
-              prepend-icon="mdi-shield-half-full"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-col>
-          <v-col cols="4">
-            <v-text-field
-              v-model="row.wins"
-              prepend-icon="mdi-alpha-w"
-              type="number"
-            />
-          </v-col>
-          <v-col cols="4">
-            <v-text-field
-              v-model="row.draws"
-              prepend-icon="mdi-alpha-d"
-              type="number"
-            />
-          </v-col>
-          <v-col cols="4">
-            <v-text-field
-              v-model="row.losses"
-              prepend-icon="mdi-alpha-l"
-              type="number"
-            />
-          </v-col>
-          <v-col cols="6">
-            <v-text-field
-              v-model="row.goals_for"
-              label="GF"
-              prepend-icon="mdi-soccer"
-              type="number"
-            />
-          </v-col>
-          <v-col cols="6">
-            <v-text-field
-              v-model="row.goals_against"
-              label="GA"
-              prepend-icon="mdi-soccer"
-              type="number"
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-col cols="12">
+        <v-combobox
+          v-model="row.name"
+          label="Team"
+          :items="competitionTeams"
+          prepend-icon="mdi-shield-half-full"
+          hide-details
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="4">
+        <v-text-field
+          v-model="row.wins"
+          prepend-icon="mdi-alpha-w"
+          type="number"
+          hide-details
+        />
+      </v-col>
+      <v-col cols="4">
+        <v-text-field
+          v-model="row.draws"
+          prepend-icon="mdi-alpha-d"
+          type="number"
+          hide-details
+        />
+      </v-col>
+      <v-col cols="4">
+        <v-text-field
+          v-model="row.losses"
+          prepend-icon="mdi-alpha-l"
+          type="number"
+          hide-details
+        />
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          v-model="row.goals_for"
+          label="GF"
+          prepend-icon="mdi-soccer"
+          type="number"
+          hide-details
+        />
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          v-model="row.goals_against"
+          label="GA"
+          prepend-icon="mdi-soccer"
+          type="number"
+          hide-details
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>

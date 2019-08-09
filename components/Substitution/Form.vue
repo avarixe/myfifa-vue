@@ -18,41 +18,37 @@
     </template>
 
     <template #form>
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            <minute-field
-              v-model="minute"
-              :extra-time="match.extra_time"
-            />
-          </v-col>
-          <v-col cols="12">
-            <player-select
-              v-model="substitution.player_id"
-              :players="unsubbedPlayers"
-              icon="mdi-subdirectory-arrow-left"
-              required
-            />
-          </v-col>
-          <v-col cols="12">
-            <player-select
-              v-model="substitution.replacement_id"
-              :players="availablePlayers"
-              item-value="id"
-              label="Replaced By"
-              icon="mdi-subdirectory-arrow-right"
-              required
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-checkbox
-              v-model="substitution.injury"
-              label="Injury"
-              hide-details
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-col cols="12">
+        <minute-field
+          v-model="minute"
+          :extra-time="match.extra_time"
+        />
+      </v-col>
+      <v-col cols="12">
+        <player-select
+          v-model="substitution.player_id"
+          :players="unsubbedPlayers"
+          icon="mdi-subdirectory-arrow-left"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <player-select
+          v-model="substitution.replacement_id"
+          :players="availablePlayers"
+          item-value="id"
+          label="Replaced By"
+          icon="mdi-subdirectory-arrow-right"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-checkbox
+          v-model="substitution.injury"
+          label="Injury"
+          hide-details
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>

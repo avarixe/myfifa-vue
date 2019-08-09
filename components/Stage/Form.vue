@@ -19,59 +19,55 @@
     </template>
 
     <template #form>
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            <v-text-field
-              v-model="stage.name"
-              :rules="$_validate('Name', ['required'])"
-              label="Name"
-              prepend-icon="mdi-table"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-text-field
-              v-model="stage.num_teams"
-              :rules="$_validate('Number of Teams', ['required'])"
-              label="Number of Teams"
-              prepend-icon="mdi-account-group"
-              type="number"
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-text-field
-              v-model="stage.num_fixtures"
-              :rules="stage.table
-                ? []
-                : $_validate('Number of Fixtures', ['required'])"
-              label="Number of Fixtures"
-              prepend-icon="mdi-sword-cross"
-              type="number"
-              :disabled="stage.table"
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-radio-group
-              v-model="stage.table"
-              hide-details
-              row
-            >
-              <v-radio
-                label="Table"
-                :value="true"
-              />
-              <v-radio
-                label="Elimination Round"
-                :value="false"
-              />
-            </v-radio-group>
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-col cols="12">
+        <v-text-field
+          v-model="stage.name"
+          :rules="$_validate('Name', ['required'])"
+          label="Name"
+          prepend-icon="mdi-table"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="stage.num_teams"
+          :rules="$_validate('Number of Teams', ['required'])"
+          label="Number of Teams"
+          prepend-icon="mdi-account-group"
+          type="number"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="stage.num_fixtures"
+          :rules="stage.table
+            ? []
+            : $_validate('Number of Fixtures', ['required'])"
+          label="Number of Fixtures"
+          prepend-icon="mdi-sword-cross"
+          type="number"
+          :disabled="stage.table"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-radio-group
+          v-model="stage.table"
+          hide-details
+          row
+        >
+          <v-radio
+            label="Table"
+            :value="true"
+          />
+          <v-radio
+            label="Elimination Round"
+            :value="false"
+          />
+        </v-radio-group>
+      </v-col>
     </template>
   </dialog-form>
 </template>

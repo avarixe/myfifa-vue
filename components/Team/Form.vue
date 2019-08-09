@@ -15,39 +15,35 @@
     </template>
 
     <template #form>
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            <v-text-field
-              v-model="team.title"
-              :rules="$_validate('Team', ['required'])"
-              label="Team"
-              prepend-icon="mdi-shield-half-full"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-date-field
-              v-model="team.started_on"
-              label="Start Date"
-              prepend-icon="mdi-calendar-today"
-              :color="color"
-              required
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-text-field
-              v-model="team.currency"
-              :rules="$_validate('Currency', ['required'])"
-              label="Currency"
-              prepend-icon="mdi-cash"
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-col cols="12">
+        <v-text-field
+          v-model="team.title"
+          :rules="$_validate('Team', ['required'])"
+          label="Team"
+          prepend-icon="mdi-shield-half-full"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-date-field
+          v-model="team.started_on"
+          label="Start Date"
+          prepend-icon="mdi-calendar-today"
+          :color="color"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="team.currency"
+          :rules="$_validate('Currency', ['required'])"
+          label="Currency"
+          prepend-icon="mdi-cash"
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>

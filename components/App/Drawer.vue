@@ -46,8 +46,8 @@
         v-for="(link, i) in teamLinks"
         :key="i"
         :to="link.to"
-        :exact="link.exact"
         active-class=""
+        exact
       >
         <v-list-item-action>
           <v-icon>{{ link.icon }}</v-icon>
@@ -136,8 +136,7 @@
               params: { teamId: this.teamId }
             },
             icon: 'mdi-view-dashboard',
-            text: 'Dashboard',
-            exact: true
+            text: 'Dashboard'
           },
           {
             to: this.linkTo('seasons'),

@@ -18,65 +18,65 @@
     </template>
 
     <template #form>
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            <v-date-field
-              v-model="transfer.moved_on"
-              label="Effective Date"
-              prepend-icon="mdi-calendar-today"
-              :min="team.currently_on"
-              :color="transferColor"
-              required
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-text-field
-              v-model="transfer.origin"
-              :rules="$_validate('Origin', ['required'])"
-              label="Origin"
-              prepend-icon="mdi-airplane-takeoff"
-              :disabled="transferOut"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-text-field
-              v-model="transfer.destination"
-              :rules="$_validate('Destination', ['required'])"
-              label="Destination"
-              prepend-icon="mdi-airplane-landing"
-              :disabled="!transferOut"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-money-field
-              v-model="transfer.fee"
-              label="Fee"
-              :prefix="team.currency"
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-text-field
-              v-model="transfer.addon_clause"
-              label="Add-On Clause (%)"
-              :rules="$_validate(
-                'Add-On Clause',
-                [{ type: 'range', options: { min: 0, max: 25 }}])"
-              type="number"
-              min="0"
-              max="25"
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-col cols="12">
+        <v-date-field
+          v-model="transfer.moved_on"
+          label="Effective Date"
+          prepend-icon="mdi-calendar-today"
+          :min="team.currently_on"
+          :color="transferColor"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="transfer.origin"
+          :rules="$_validate('Origin', ['required'])"
+          label="Origin"
+          prepend-icon="mdi-airplane-takeoff"
+          :disabled="transferOut"
+          :hide-details="transferOut"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="transfer.destination"
+          :rules="$_validate('Destination', ['required'])"
+          label="Destination"
+          prepend-icon="mdi-airplane-landing"
+          :disabled="!transferOut"
+          :hide-details="!transferOut"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-money-field
+          v-model="transfer.fee"
+          label="Fee"
+          :prefix="team.currency"
+          hide-details
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="transfer.addon_clause"
+          label="Add-On Clause (%)"
+          :rules="$_validate(
+            'Add-On Clause',
+            [{ type: 'range', options: { min: 0, max: 25 }}])"
+          type="number"
+          min="0"
+          max="25"
+          hide-details
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>

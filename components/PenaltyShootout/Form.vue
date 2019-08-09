@@ -18,28 +18,24 @@
     </template>
 
     <template #form>
-      <v-container>
-        <v-row>
-          <v-col cols="6">
-            <v-text-field
-              v-model="penaltyShootout.home_score"
-              :rules="$_validate('Home Score', ['required'])"
-              type="number"
-              :label="match.home"
-              prepend-icon="mdi-soccer"
-            />
-          </v-col>
-          <v-col cols="6">
-            <v-text-field
-              v-model="penaltyShootout.away_score"
-              :rules="$_validate('Away Score', ['required'])"
-              type="number"
-              :label="match.away"
-              prepend-icon="mdi-soccer"
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-col cols="6">
+        <v-text-field
+          v-model="penaltyShootout.home_score"
+          :rules="$_validate('Home Score', ['required'])"
+          type="number"
+          :label="match.home"
+          prepend-icon="mdi-soccer"
+        />
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          v-model="penaltyShootout.away_score"
+          :rules="$_validate('Away Score', ['required'])"
+          type="number"
+          :label="match.away"
+          prepend-icon="mdi-soccer"
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>

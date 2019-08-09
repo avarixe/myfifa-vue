@@ -16,29 +16,25 @@
     </template>
 
     <template #form>
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            <v-select
-              v-model="cap.pos"
-              :items="positions"
-              :rules="$_validate('Position', ['required'])"
-              label="Position"
-              prepend-icon="mdi-run"
-            />
-          </v-col>
-          <v-col cols="12">
-            <player-select
-              v-model="cap.player_id"
-              :players="players"
-              item-value="id"
-              :rules="$_validate('Player', ['required'])"
-              :disabled="cap.start > 0"
-              label="Player"
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-col cols="12">
+        <v-select
+          v-model="cap.pos"
+          :items="positions"
+          :rules="$_validate('Position', ['required'])"
+          label="Position"
+          prepend-icon="mdi-run"
+        />
+      </v-col>
+      <v-col cols="12">
+        <player-select
+          v-model="cap.player_id"
+          :players="players"
+          item-value="id"
+          :rules="$_validate('Player', ['required'])"
+          :disabled="cap.start > 0"
+          label="Player"
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>

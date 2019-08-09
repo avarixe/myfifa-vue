@@ -9,37 +9,46 @@
     </template>
 
     <template #form>
-      <v-container>
-        <template v-if="!changePassword">
+      <template v-if="!changePassword">
+        <v-col cols="12">
           <v-text-field
             v-model="user.full_name"
             label="Name"
             :rules="$_validate('Name', ['required'])"
           />
+        </v-col>
+        <v-col cols="12">
           <v-text-field
             v-model="user.username"
             label="Username"
             :rules="$_validate('Username', ['required'])"
             autocapitalize="off"
           />
+        </v-col>
+        <v-col cols="12">
           <v-text-field
             v-model="user.email"
             label="Email"
             type="email"
             :rules="$_validate('Email', ['required', 'email'])"
           />
-        </template>
-        <template v-else>
-          <v-text-field
-            v-model="user.current_password"
-            label="Current Password"
-            :type="visible ? 'text' : 'password'"
-            :append-icon="`mdi-eye${visible ? '-off' : ''}`"
-            @click:append="visible = !visible"
-          />
-        </template>
+        </v-col>
+      </template>
+      <v-col
+        v-else
+        cols="12"
+      >
+        <v-text-field
+          v-model="user.current_password"
+          label="Current Password"
+          :type="visible ? 'text' : 'password'"
+          :append-icon="`mdi-eye${visible ? '-off' : ''}`"
+          @click:append="visible = !visible"
+        />
+      </v-col>
 
-        <template v-if="!user.id || changePassword">
+      <template v-if="!authenticated || changePassword">
+        <v-col cols="12">
           <v-text-field
             v-model="user.password"
             :label="passwordLabel"
@@ -47,6 +56,8 @@
             :append-icon="`mdi-eye${visible ? '-off' : ''}`"
             @click:append="visible = !visible"
           />
+        </v-col>
+        <v-col cols="12">
           <v-text-field
             v-model="user.password_confirmation"
             label="Confirm Password"
@@ -54,8 +65,8 @@
             :append-icon="`mdi-eye${visible ? '-off' : ''}`"
             @click:append="visible = !visible"
           />
-        </template>
-      </v-container>
+        </v-col>
+      </template>
     </template>
 
     <template #additional-actions>
@@ -73,10 +84,13 @@
 
 <script>
   import { mixins, Component, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
   import { DialogFormable } from '@/mixins'
 
   @Component({
+    computed: mapGetters([
+      'authenticated'
+    ]),
     methods: mapActions('user', {
       get: 'GET',
       create: 'CREATE',
@@ -95,7 +109,7 @@
     }
 
     get title () {
-      return this.user.id ? 'Edit Account' : 'New Account'
+      return this.authenticated ? 'Edit Account' : 'New Account'
     }
 
     get passwordLabel () {
@@ -110,7 +124,7 @@
 
     @Watch('dialog')
     async getUser (val) {
-      if (val && this.$store.getters.authenticated) {
+      if (val && this.authenticated) {
         const { data } = await this.get()
         this.user = data
       }
@@ -118,7 +132,7 @@
 
     async submit () {
       try {
-        if (!this.user.id) {
+        if (!this.authenticated) {
           await this.create(this.user)
         } else {
           let params = {}

@@ -15,47 +15,42 @@
     </template>
 
     <template #form>
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            <v-text-field
-              v-model="squad.name"
-              :rules="$_validate('Name', ['required'])"
-              label="Name"
-              prepend-icon="mdi-clipboard-text"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-col>
-        </v-row>
-
-        <v-row
-          v-for="(squadPlayer, i) in squad.squad_players_attributes"
-          :key="i"
-        >
-          <v-col cols="4">
-            <v-select
-              v-model="squadPlayer.pos"
-              :items="positions"
-              label="Position"
-              prepend-icon="mdi-run"
-              hide-details
-            />
-          </v-col>
-
-          <v-col cols="8">
-            <player-select
-              v-model="squadPlayer.player_id"
-              :players="players"
-              item-value="id"
-              label="Player"
-              hide-details
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-col cols="12">
+        <v-text-field
+          v-model="squad.name"
+          :rules="$_validate('Name', ['required'])"
+          label="Name"
+          prepend-icon="mdi-clipboard-text"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-row
+        v-for="(squadPlayer, i) in squad.squad_players_attributes"
+        :key="i"
+        dense
+      >
+        <v-col cols="4">
+          <v-select
+            v-model="squadPlayer.pos"
+            :items="positions"
+            label="Position"
+            prepend-icon="mdi-run"
+            hide-details
+          />
+        </v-col>
+        <v-col cols="8">
+          <player-select
+            v-model="squadPlayer.player_id"
+            :players="players"
+            item-value="id"
+            label="Player"
+            hide-details
+          />
+        </v-col>
+      </v-row>
     </template>
   </dialog-form>
 </template>
@@ -96,7 +91,7 @@
     }
 
     get title () {
-      return this.squad.id ? 'Edit Squad' : 'New Squad'
+      return this.squadData ? 'Edit Squad' : 'New Squad'
     }
 
     get players () {

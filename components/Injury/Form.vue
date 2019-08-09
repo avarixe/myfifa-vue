@@ -18,33 +18,29 @@
     </template>
 
     <template #form>
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            <v-text-field
-              v-model="injury.description"
-              :rules="$_validate('Description', ['required'])"
-              label="Description"
-              prepend-icon="mdi-hospital"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-col>
-          <v-scroll-y-transition mode="out-in">
-            <v-col
-              v-if="playerInjured"
-              cols="12"
-            >
-              <v-checkbox
-                v-model="injury.recovered"
-                label="Player Recovered"
-              />
-            </v-col>
-          </v-scroll-y-transition>
-        </v-row>
-      </v-container>
+      <v-col cols="12">
+        <v-text-field
+          v-model="injury.description"
+          :rules="$_validate('Description', ['required'])"
+          label="Description"
+          prepend-icon="mdi-hospital"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-scroll-y-transition mode="out-in">
+        <v-col
+          v-if="playerInjured"
+          cols="12"
+        >
+          <v-checkbox
+            v-model="injury.recovered"
+            label="Player Recovered"
+          />
+        </v-col>
+      </v-scroll-y-transition>
     </template>
   </dialog-form>
 </template>

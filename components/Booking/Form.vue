@@ -18,41 +18,37 @@
     </template>
 
     <template #form>
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            <v-radio-group
-              v-model="booking.red_card"
-              row
-              hide-details
-            >
-              <v-radio
-                label="Yellow Card"
-                :value="false"
-                color="orange darken-2"
-              />
-              <v-radio
-                label="Red Card"
-                :value="true"
-                color="red darken-2"
-              />
-            </v-radio-group>
-          </v-col>
-          <v-col cols="12">
-            <minute-field
-              v-model="minute"
-              :extra-time="match.extra_time"
-            />
-          </v-col>
-          <v-col cols="12">
-            <player-select
-              v-model="booking.player_id"
-              :players="unsubbedPlayers"
-              required
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-col cols="12">
+        <v-radio-group
+          v-model="booking.red_card"
+          row
+          hide-details
+        >
+          <v-radio
+            label="Yellow Card"
+            :value="false"
+            color="orange darken-2"
+          />
+          <v-radio
+            label="Red Card"
+            :value="true"
+            color="red darken-2"
+          />
+        </v-radio-group>
+      </v-col>
+      <v-col cols="12">
+        <minute-field
+          v-model="minute"
+          :extra-time="match.extra_time"
+        />
+      </v-col>
+      <v-col cols="12">
+        <player-select
+          v-model="booking.player_id"
+          :players="unsubbedPlayers"
+          required
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>
