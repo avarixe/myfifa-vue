@@ -150,7 +150,7 @@
         store.dispatch('matches/FETCH', { teamId: params.teamId }),
         store.dispatch('players/FETCH', { teamId: params.teamId }),
         store.dispatch('competitions/FETCH', { teamId: params.teamId }),
-        store.dispatch('contracts/TEAM_FETCH', { teamId: params.teamId })
+        store.dispatch('contracts/SEARCH', { teamId: params.teamId })
       ])
     }
 

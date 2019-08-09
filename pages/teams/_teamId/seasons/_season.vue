@@ -81,7 +81,7 @@
         store.dispatch('players/FETCH', { teamId: params.teamId }),
         store.dispatch('playerHistories/SEARCH', { teamId: params.teamId }),
         store.dispatch('matches/FETCH', { teamId: params.teamId }),
-        store.dispatch('contracts/TEAM_FETCH', { teamId: params.teamId })
+        store.dispatch('contracts/SEARCH', { teamId: params.teamId })
       ])
     }
 

@@ -32,7 +32,7 @@
     async fetch ({ store, params }) {
       await Promise.all([
         store.dispatch('players/FETCH', { teamId: params.teamId }),
-        store.dispatch('contracts/TEAM_FETCH', { teamId: params.teamId })
+        store.dispatch('contracts/SEARCH', { teamId: params.teamId })
       ])
     }
 
