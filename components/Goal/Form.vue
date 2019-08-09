@@ -2,7 +2,7 @@
   <dialog-form
     v-model="dialog"
     title-icon="mdi-soccer"
-    title="Record Goal"
+    :title="title"
     :submit="submit"
     :color="color"
   >
@@ -25,6 +25,7 @@
               v-model="goal.home"
               row
               hide-details
+              @change="clearNames"
             >
               <v-radio
                 :label="match.home"
@@ -111,7 +112,8 @@
 </template>
 
 <script>
-  import { mixins, Component, Watch } from 'nuxt-property-decorator'
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
   import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
@@ -122,9 +124,15 @@
       MinuteField,
       PlayerSelect,
       TooltipButton
-    }
+    },
+    methods: mapActions('goals', {
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
   })
   export default class GoalForm extends mix {
+    @Prop(Object) record
+
     goal = {
       home: true, // default to Team side
       player_id: null,
@@ -133,6 +141,10 @@
       assist_id: '',
       own_goal: false,
       penalty: false
+    }
+
+    get title () {
+      return `${this.record ? 'Edit' : 'Record'} Goal`
     }
 
     get scoredTeam () {
@@ -155,32 +167,52 @@
       )
     }
 
-    @Watch('goal.home')
+    @Watch('dialog')
+    setGoal (val) {
+      if (val && this.record) {
+        Object.assign(this.goal, this.$_pick(this.record, [
+          'id',
+          'home',
+          'player_id',
+          'player_name',
+          'assisted_by',
+          'assist_id',
+          'own_goal',
+          'penalty'
+        ]))
+        this.minute = this.record.minute
+      }
+    }
+
     clearNames () {
-      this.clearPlayerName()
-      this.clearAssistedBy()
+      this.goal.player_id = null
+      this.goal.player_name = ''
+      this.clearAssistedBy(true)
     }
 
     @Watch('goal.penalty')
     @Watch('goal.own_goal')
-    clearAssistedBy () {
-      this.goal.assist_id = null
-      this.goal.assisted_by = null
-    }
-
-    clearPlayerName () {
-      this.goal.player_name = ''
-      this.goal.assisted_by = ''
+    clearAssistedBy (val) {
+      if (val) {
+        this.goal.assist_id = null
+        this.goal.assisted_by = null
+      }
     }
 
     async submit () {
-      await this.$store.dispatch('goals/CREATE', {
-        matchId: this.match.id,
-        goal: {
-          ...this.goal,
-          minute: this.minute
-        }
-      })
+      const goal = {
+        ...this.goal,
+        minute: this.minute
+      }
+
+      if (this.record) {
+        await this.update(goal)
+      } else {
+        await this.create({
+          matchId: this.match.id,
+          goal
+        })
+      }
     }
   }
 </script>

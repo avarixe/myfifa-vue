@@ -2,7 +2,7 @@
   <dialog-form
     v-model="dialog"
     title-icon="mdi-book"
-    title="Record Booking"
+    :title="title"
     :submit="submit"
     :color="color"
   >
@@ -58,7 +58,8 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
   import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
 
@@ -69,22 +70,50 @@
       MinuteField,
       PlayerSelect,
       TooltipButton
-    }
+    },
+    methods: mapActions('bookings', {
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
   })
   export default class BookingForm extends mix {
+    @Prop(Object) record
+
     booking = {
       player_id: null,
       red_card: false
     }
 
+    get title () {
+      return `${this.record ? 'Edit' : 'Record'} Booking`
+    }
+
+    @Watch('dialog')
+    setBooking (val) {
+      if (val && this.record) {
+        Object.assign(this.booking, this.$_pick(this.record, [
+          'id',
+          'player_id',
+          'red_card'
+        ]))
+        this.minute = this.record.minute
+      }
+    }
+
     async submit () {
-      await this.$store.dispatch('bookings/CREATE', {
-        matchId: this.match.id,
-        booking: {
-          ...this.booking,
-          minute: this.minute
-        }
-      })
+      const booking = {
+        ...this.booking,
+        minute: this.minute
+      }
+
+      if (this.record) {
+        await this.update(booking)
+      } else {
+        await this.create({
+          matchId: this.match.id,
+          booking
+        })
+      }
     }
   }
 </script>

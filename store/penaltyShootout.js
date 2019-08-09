@@ -12,6 +12,15 @@ export const actions = {
       data: { penalty_shootout: penaltyShootout }
     })
   },
+  UPDATE ({ rootState }, { matchId, penaltyShootout }) {
+    return http({
+      method: 'patch',
+      path: routes.matches.penaltyShootout,
+      pathData: { matchId },
+      token: rootState.token,
+      data: { penalty_shootout: penaltyShootout }
+    })
+  },
   REMOVE ({ rootState }, id) {
     const ps = PenaltyShootout.find(id)
     return http({

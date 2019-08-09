@@ -11,6 +11,24 @@
         {{ caption }}
       </span>
 
+      <record-form
+        v-if="!readonly"
+        :record="event"
+        :match="match"
+        :type="type"
+        color="orange"
+      >
+        <template #default="{ on }">
+          <tooltip-button
+            :label="`Edit ${type}`"
+            icon="mdi-pencil"
+            color="orange"
+            small
+            :on="on"
+          />
+        </template>
+      </record-form>
+
       <record-remove
         v-if="!readonly"
         :record="event"
@@ -28,13 +46,16 @@
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
-  import { RecordRemove } from '@/helpers'
+  import { RecordRemove, TooltipButton } from '@/helpers'
+  import RecordForm from '@/helpers/RecordForm'
   import TimelineContent from './Content'
 
   @Component({
     components: {
+      RecordForm,
       RecordRemove,
-      TimelineContent
+      TimelineContent,
+      TooltipButton
     }
   })
   export default class MatchTimelineItem extends Vue {

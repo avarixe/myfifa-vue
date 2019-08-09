@@ -5,7 +5,7 @@
   >
     <match-timeline-item
       v-for="(event, i) in events"
-      :key="i"
+      :key="`${event.id}_${i}`"
       :event="event"
       :match="match"
       :readonly="team.currently_on !== match.played_on"

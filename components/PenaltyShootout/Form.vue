@@ -2,7 +2,7 @@
   <dialog-form
     v-model="dialog"
     title-icon="mdi-human"
-    title="Record Penalty Shootout"
+    :title="title"
     :submit="submit"
     :color="color"
   >
@@ -45,7 +45,8 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
   import { TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
@@ -54,16 +55,39 @@
   @Component({
     components: {
       TooltipButton
-    }
+    },
+    methods: mapActions('penaltyShootout', {
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
   })
   export default class PenaltyShootoutForm extends mix {
+    @Prop(Object) record
+
     penaltyShootout = {
       home_score: null,
       away_score: null
     }
 
+    get title () {
+      return `${this.record ? 'Edit' : 'Record'} Penalty Shootout`
+    }
+
+    @Watch('dialog')
+    setPenaltyShootout (val) {
+      if (val && this.record) {
+        Object.assign(this.penaltyShootout, this.$_pick(this.record, [
+          'id',
+          'home_score',
+          'away_score'
+        ]))
+      }
+    }
+
     async submit () {
-      await this.$store.dispatch('penaltyShootout/CREATE', {
+      const save = this.record ? this.update : this.create
+
+      await save({
         matchId: this.match.id,
         penaltyShootout: this.penaltyShootout
       })
