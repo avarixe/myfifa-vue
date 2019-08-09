@@ -31,7 +31,10 @@
     </v-toolbar>
 
     <v-card-text>
-      <v-row class="text-center">
+      <v-row
+        dense
+        class="text-center"
+      >
         <v-col>
           <div class="display-1 primary--text">{{ defOVR }}</div>
           <div class="subheading">DEF</div>
