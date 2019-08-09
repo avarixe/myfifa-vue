@@ -6,7 +6,7 @@
       dense
     >
       <v-toolbar-title class="font-weight-light">
-        {{ cardTitle }}
+        {{ seasonLabel }}
       </v-toolbar-title>
 
       <v-spacer />
@@ -55,7 +55,6 @@
   @Component
   export default class SeasonCard extends Vue {
     @Prop({ type: Number, required: true }) season
-    @Prop(Boolean) compact
 
     get team () {
       return Team.find(this.$route.params.teamId)
@@ -68,12 +67,6 @@
         .where('team_id', this.team.id)
         .where('season', this.season)
         .get()
-    }
-
-    get cardTitle () {
-      return this.compact
-        ? this.seasonLabel
-        : `${this.seasonLabel} Season`
     }
 
     get seasonLabel () {

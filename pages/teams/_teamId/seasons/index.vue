@@ -13,7 +13,7 @@
       </v-col>
 
       <v-col cols="12">
-        <season-grid />
+        <season-timeline />
       </v-col>
     </v-row>
   </v-container>
@@ -22,13 +22,13 @@
 <script>
   import { mixins, Component } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
-  import SeasonGrid from '@/components/Season/Grid'
+  import SeasonTimeline from '@/components/Season/Timeline'
   import CompetitionForm from '@/components/Competition/Form'
 
   @Component({
     components: {
       CompetitionForm,
-      SeasonGrid
+      SeasonTimeline
     },
     transition: 'fade-transition'
   })

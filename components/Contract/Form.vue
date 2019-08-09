@@ -18,95 +18,79 @@
     </template>
 
     <template #form>
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            <v-date-field
-              v-model="contract.started_on"
-              label="Effective Date"
-              prepend-icon="mdi-calendar-today"
-              :min="team.currently_on"
-              :max="contract.ended_on"
-              required
+      <v-col cols="12">
+        <v-date-field
+          v-model="contract.started_on"
+          label="Effective Date"
+          prepend-icon="mdi-calendar-today"
+          :min="team.currently_on"
+          :max="contract.ended_on"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-date-field
+          v-model="contract.ended_on"
+          label="End Date"
+          prepend-icon="mdi-calendar"
+          :min="contract.started_on"
+          :max="maxEndDate"
+          required
+          start-with-year
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-money-field
+          v-model="contract.wage"
+          label="Wage"
+          :prefix="team.currency"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-money-field
+          v-model="contract.signing_bonus"
+          label="Signing Bonus"
+          :prefix="team.currency"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-money-field
+          v-model="contract.release_clause"
+          label="Release Clause"
+          :prefix="team.currency"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-money-field
+          v-model="contract.performance_bonus"
+          label="Performance Bonus"
+          :prefix="team.currency"
+        />
+      </v-col>
+      <v-scroll-y-transition mode="out-in">
+        <v-row
+          v-if="contract.performance_bonus"
+          dense
+        >
+          <v-col cols="6">
+            <v-text-field
+              v-model="contract.bonus_req"
+              label="Bonus Req."
+              type="number"
+              prefix="if"
             />
           </v-col>
-
-          <v-col cols="12">
-            <v-date-field
-              v-model="contract.ended_on"
-              label="End Date"
-              prepend-icon="mdi-calendar"
-              :min="contract.started_on"
-              :max="maxEndDate"
-              required
-              start-with-year
+          <v-col cols="6">
+            <v-select
+              v-model="contract.bonus_req_type"
+              label="Bonus Req. Type"
+              :items="bonusRequirementTypes"
+              clearable
             />
           </v-col>
-
-          <v-col cols="12">
-            <v-money-field
-              v-model="contract.wage"
-              label="Wage"
-              :prefix="team.currency"
-              required
-            />
-          </v-col>
-
-          <v-col cols="12">
-            <v-money-field
-              v-model="contract.signing_bonus"
-              label="Signing Bonus"
-              :prefix="team.currency"
-            />
-          </v-col>
-
-          <v-col cols="12">
-            <v-money-field
-              v-model="contract.release_clause"
-              label="Release Clause"
-              :prefix="team.currency"
-            />
-          </v-col>
-
-          <v-col cols="12">
-            <v-money-field
-              v-model="contract.performance_bonus"
-              label="Performance Bonus"
-              :prefix="team.currency"
-            />
-          </v-col>
-
-          <v-scroll-y-transition mode="out-in">
-            <v-col
-              v-if="contract.performance_bonus"
-              cols="12"
-              sm="6"
-            >
-              <v-text-field
-                v-model="contract.bonus_req"
-                label="Bonus Req."
-                type="number"
-                prefix="if"
-              />
-            </v-col>
-          </v-scroll-y-transition>
-
-          <v-scroll-y-transition mode="out-in">
-            <v-col
-              v-if="contract.performance_bonus"
-              cols="12"
-              sm="6"
-            >
-              <v-select
-                v-model="contract.bonus_req_type"
-                label="Bonus Req. Type"
-                :items="bonusRequirementTypes"
-                clearable
-              />
-            </v-col>
-          </v-scroll-y-transition>
         </v-row>
-      </v-container>
+      </v-scroll-y-transition>
     </template>
   </dialog-form>
 </template>

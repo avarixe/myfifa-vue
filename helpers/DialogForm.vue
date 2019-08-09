@@ -19,22 +19,24 @@
       @submit.prevent="submitForm"
     >
       <v-card>
-        <v-card-title
-          primary-title
+        <v-toolbar
           :class="formColor"
+          dense
         >
           <slot name="header">
-            <div class="headline">
+            <v-toolbar-title>
               <v-icon left>{{ titleIcon }}</v-icon>
               {{ title }}
-            </div>
+            </v-toolbar-title>
           </slot>
-        </v-card-title>
+        </v-toolbar>
 
         <v-divider />
 
         <v-card-text>
-          <slot name="form" />
+          <v-row dense>
+            <slot name="form" />
+          </v-row>
         </v-card-text>
 
         <v-alert

@@ -16,85 +16,80 @@
     </template>
 
     <template #form>
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            <v-text-field
-              v-model="player.name"
-              :rules="$_validate('Name', ['required'])"
-              label="Name"
-              prepend-icon="mdi-account"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-select
-              v-model="player.pos"
-              :rules="$_validate('Position', ['required'])"
-              :items="positions"
-              label="Position"
-              prepend-icon="mdi-run"
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-select
-              v-model="player.sec_pos"
-              :items="positions"
-              label="Secondary Position(s)"
-              prepend-icon="mdi-walk"
-              multiple
-              chips
-              deletable-chips
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-text-field
-              v-model="player.birth_year"
-              label="Birth Year"
-              prepend-icon="mdi-calendar"
-              mask="####"
-              :rules="$_validate('Birth Year', ['required'])"
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-checkbox
-              v-model="player.youth"
-              label="Youth Player"
-              :disabled="player.id > 0"
-              hide-details
-            />
-          </v-col>
-
-          <v-col cols="12">
-            <v-select
-              v-model="player.kit_no"
-              :items="Array.from({ length: 99 }, (v, k) => k + 1)"
-              label="Kit Number"
-              prepend-icon="mdi-tshirt-crew"
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-select
-              v-model="player.ovr"
-              :items="Array.from({ length: 61 }, (v, k) => k + 40)"
-              :rules="$_validate('OVR', ['required'])"
-              label="OVR"
-              prepend-icon="mdi-trending-up"
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-money-field
-              v-model="player.value"
-              label="Value"
-              :prefix="team.currency"
-              required
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-col cols="12">
+        <v-text-field
+          v-model="player.name"
+          :rules="$_validate('Name', ['required'])"
+          label="Name"
+          prepend-icon="mdi-account"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-select
+          v-model="player.pos"
+          :rules="$_validate('Position', ['required'])"
+          :items="positions"
+          label="Position"
+          prepend-icon="mdi-run"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-select
+          v-model="player.sec_pos"
+          :items="positions"
+          label="Secondary Position(s)"
+          prepend-icon="mdi-walk"
+          multiple
+          chips
+          deletable-chips
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="player.birth_year"
+          label="Birth Year"
+          prepend-icon="mdi-calendar"
+          mask="####"
+          :rules="$_validate('Birth Year', ['required'])"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-checkbox
+          v-model="player.youth"
+          label="Youth Player"
+          :disabled="player.id > 0"
+          hide-details
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-select
+          v-model="player.kit_no"
+          :items="Array.from({ length: 99 }, (v, k) => k + 1)"
+          label="Kit Number"
+          prepend-icon="mdi-tshirt-crew"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-select
+          v-model="player.ovr"
+          :items="Array.from({ length: 61 }, (v, k) => k + 40)"
+          :rules="$_validate('OVR', ['required'])"
+          label="OVR"
+          prepend-icon="mdi-trending-up"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-money-field
+          v-model="player.value"
+          label="Value"
+          :prefix="team.currency"
+          required
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>
@@ -133,7 +128,7 @@
     }
 
     get title () {
-      return this.player.id ? 'Edit ' + this.player.name : 'New Player'
+      return this.playerData ? 'Edit ' + this.player.name : 'New Player'
     }
 
     get positions () {
@@ -159,7 +154,7 @@
     }
 
     async submit () {
-      if ('id' in this.player) {
+      if (this.playerData) {
         await this.update(this.player)
       } else {
         const { data } = await this.create({

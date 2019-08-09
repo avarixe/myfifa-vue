@@ -15,97 +15,91 @@
     </template>
 
     <template #form>
-      <v-container>
-        <v-row>
-          <template v-if="close">
-            <v-col cols="12">
-              <v-select
-                v-model="competition.champion"
-                :items="teams"
-                label="Champion"
-                prepend-icon="mdi-crown"
-                :rules="$_validate('Champion', ['required'])"
-              />
-            </v-col>
-          </template>
-          <template v-else>
-            <v-col cols="12">
+      <v-col
+        v-if="close"
+        cols="12"
+      >
+        <v-select
+          v-model="competition.champion"
+          :items="teams"
+          label="Champion"
+          prepend-icon="mdi-crown"
+          :rules="$_validate('Champion', ['required'])"
+        />
+      </v-col>
+      <template v-else>
+        <v-col cols="12">
+          <v-text-field
+            :value="seasonLabel(season)"
+            label="Season"
+            prepend-icon="mdi-calendar-text"
+            disabled
+          />
+        </v-col>
+        <v-col cols="12">
+          <v-combobox
+            v-model="competition.name"
+            :items="competitions"
+            :rules="$_validate('Name', ['required'])"
+            label="Name"
+            prepend-icon="mdi-trophy"
+            spellcheck="false"
+            autocapitalize="words"
+            autocomplete="off"
+            autocorrect="off"
+          />
+        </v-col>
+        <template v-if="!competitionData">
+          <v-col cols="12">
+            <v-select
+              v-model="competition.preset_format"
+              :items="presetFormats"
+              label="Preset Format"
+              prepend-icon="mdi-cogs"
+              clearable
+            />
+          </v-col>
+          <v-scroll-y-transition mode="out-in">
+            <v-col
+              v-if="competition.preset_format"
+              cols="12"
+            >
               <v-text-field
-                :value="seasonLabel(season)"
-                label="Season"
-                prepend-icon="mdi-calendar-text"
-                disabled
+                v-model="competition.num_teams"
+                :rules="$_validate('Number of Teams', ['required'])"
+                label="Number of Teams"
+                prepend-icon="mdi-account-multiple"
+                type="number"
               />
             </v-col>
-            <v-col cols="12">
-              <v-combobox
-                v-model="competition.name"
-                :items="competitions"
-                :rules="$_validate('Name', ['required'])"
-                label="Name"
-                prepend-icon="mdi-trophy"
-                spellcheck="false"
-                autocapitalize="words"
-                autocomplete="off"
-                autocorrect="off"
-              />
-            </v-col>
-            <template v-if="!competitionData">
+          </v-scroll-y-transition>
+          <v-scroll-y-transition mode="out-in">
+            <v-row
+              v-if="competition.preset_format === 'Group + Knockout'"
+              dense
+            >
               <v-col cols="12">
-                <v-select
-                  v-model="competition.preset_format"
-                  :items="presetFormats"
-                  label="Preset Format"
-                  prepend-icon="mdi-cogs"
-                  clearable
+                <v-text-field
+                  v-model="competition.num_teams_per_group"
+                  :rules="$_validate('Teams per Group', ['required'])"
+                  label="Teams per Group"
+                  prepend-icon="mdi-account-group"
+                  type="number"
                 />
               </v-col>
-              <v-scroll-y-transition mode="out-in">
-                <v-col
-                  v-if="competition.preset_format"
-                  cols="12"
-                >
-                  <v-text-field
-                    v-model="competition.num_teams"
-                    :rules="$_validate('Number of Teams', ['required'])"
-                    label="Number of Teams"
-                    prepend-icon="mdi-account-multiple"
-                    type="number"
-                  />
-                </v-col>
-              </v-scroll-y-transition>
-              <v-scroll-y-transition mode="out-in">
-                <v-col
-                  v-if="competition.preset_format === 'Group + Knockout'"
-                  cols="12"
-                >
-                  <v-text-field
-                    v-model="competition.num_teams_per_group"
-                    :rules="$_validate('Teams per Group', ['required'])"
-                    label="Teams per Group"
-                    prepend-icon="mdi-account-group"
-                    type="number"
-                  />
-                </v-col>
-              </v-scroll-y-transition>
-              <v-scroll-y-transition mode="out-in">
-                <v-col
-                  v-if="competition.preset_format === 'Group + Knockout'"
-                  cols="12"
-                >
-                  <v-text-field
-                    v-model="competition.num_advances_from_group"
-                    :rules="$_validate('Teams Advancing per Group', ['required'])"
-                    label="Teams Advance per Group"
-                    prepend-icon="mdi-forward"
-                    type="number"
-                  />
-                </v-col>
-              </v-scroll-y-transition>
-            </template>
-          </template>
-        </v-row>
-      </v-container>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="competition.num_advances_from_group"
+                  :rules="$_validate('Teams Advancing per Group', ['required'])"
+                  label="Teams Advance per Group"
+                  prepend-icon="mdi-forward"
+                  type="number"
+                />
+              </v-col>
+            </v-row>
+          </v-scroll-y-transition>
+        </template>
+      </template>
     </template>
   </dialog-form>
 </template>

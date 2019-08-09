@@ -17,57 +17,55 @@
       </slot>
     </template>
     <template #form>
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            <v-date-field
-              v-model="loan.started_on"
-              label="Start Date"
-              prepend-icon="mdi-calendar-today"
-              :min="team.currently_on"
-              color="indigo"
-              required
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-text-field
-              v-model="loan.origin"
-              :rules="$_validate('Origin', ['required'])"
-              label="Origin"
-              prepend-icon="mdi-airplane-takeoff"
-              :disabled="loanOut"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-col>
-          <v-col cols="12">
-            <v-text-field
-              v-model="loan.destination"
-              :rules="$_validate('Destination', ['required'])"
-              label="Destination"
-              prepend-icon="mdi-airplane-landing"
-              :disabled="!loanOut"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-col>
-          <v-scroll-y-transition mode="out-in">
-            <v-col
-              v-if="playerLoaned"
-              cols="12"
-            >
-              <v-checkbox
-                v-model="loan.returned"
-                label="Player Returned"
-              />
-            </v-col>
-          </v-scroll-y-transition>
-        </v-row>
-      </v-container>
+      <v-col cols="12">
+        <v-date-field
+          v-model="loan.started_on"
+          label="Start Date"
+          prepend-icon="mdi-calendar-today"
+          :min="team.currently_on"
+          color="indigo"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="loan.origin"
+          :rules="$_validate('Origin', ['required'])"
+          label="Origin"
+          prepend-icon="mdi-airplane-takeoff"
+          :disabled="loanOut"
+          :hide-details="loanOut"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="loan.destination"
+          :rules="$_validate('Destination', ['required'])"
+          label="Destination"
+          prepend-icon="mdi-airplane-landing"
+          :disabled="!loanOut"
+          :hide-details="!loanOut"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-scroll-y-transition mode="out-in">
+        <v-col
+          v-if="playerLoaned"
+          cols="12"
+        >
+          <v-checkbox
+            v-model="loan.returned"
+            label="Player Returned"
+          />
+        </v-col>
+      </v-scroll-y-transition>
     </template>
   </dialog-form>
 </template>

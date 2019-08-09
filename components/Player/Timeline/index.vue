@@ -107,9 +107,11 @@
         })
       ]
     }
+
     get sortedItems () {
       return this.$_orderBy(this.items, ['date'], ['desc'])
     }
+
     get dense () {
       switch (this.$vuetify.breakpoint.name) {
         case 'xs':

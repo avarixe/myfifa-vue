@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row dense>
     <v-col
       v-for="(positions, i) in [
         posATT,
@@ -11,7 +11,10 @@
       :key="i"
       cols="12"
     >
-      <v-row justify="space-around">
+      <v-row
+        justify="space-around"
+        dense
+      >
         <v-col
           v-for="(player, j) in $_compact(positions)"
           :key="j"
