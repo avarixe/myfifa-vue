@@ -7,10 +7,12 @@ export const actions = {
     model: Loan,
     parent: 'player'
   }),
-  TEAM_FETCH ({ rootState }, { teamId }) {
+  SEARCH ({ rootState }, { teamId, filters }) {
     return http({
-      path: routes.loans.teamIndex,
+      method: 'post',
+      path: routes.loans.search,
       pathData: { teamId },
+      data: { filters },
       token: rootState.token,
       success ({ data }) {
         Loan.insert({ data })

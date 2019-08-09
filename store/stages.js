@@ -7,10 +7,12 @@ export const actions = {
     model: Stage,
     parent: 'competition'
   }),
-  TEAM_FETCH ({ rootState }, { teamId }) {
+  SEARCH ({ rootState }, { teamId, filters }) {
     return http({
-      path: routes.stages.teamIndex,
+      method: 'post',
+      path: routes.stages.search,
       pathData: { teamId },
+      data: { filters },
       token: rootState.token,
       success ({ data }) {
         Stage.insert({ data })

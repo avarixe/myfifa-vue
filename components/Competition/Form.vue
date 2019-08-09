@@ -102,16 +102,6 @@
                   />
                 </v-col>
               </v-scroll-y-transition>
-              <v-scroll-y-transition mode="out-in">
-                <v-text-field
-                  v-if="competition.preset_format !== 'League'"
-                  v-model="competition.num_matches_per_fixture"
-                  :rules="$_validate('Matches per Fixture', ['required'])"
-                  label="Matches per Fixture"
-                  prepend-icon="mdi-sword-cross"
-                  type="number"
-                />
-              </v-scroll-y-transition>
             </template>
           </template>
         </v-row>
@@ -186,8 +176,7 @@
           preset_format: null,
           num_teams: null,
           num_teams_per_group: null,
-          num_advances_from_group: null,
-          num_matches_per_fixture: null
+          num_advances_from_group: null
         }
       }
     }

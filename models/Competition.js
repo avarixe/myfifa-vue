@@ -27,7 +27,6 @@ class Competition extends Model {
       num_teams: this.number(null).nullable(),
       num_teams_per_group: this.number(null).nullable(),
       num_advances_from_group: this.number(null).nullable(),
-      num_matches_per_fixture: this.number(null).nullable(),
 
       // Associations
       team: this.belongsTo(Team, 'team_id'),

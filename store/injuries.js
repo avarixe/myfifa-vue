@@ -7,10 +7,12 @@ export const actions = {
     model: Injury,
     parent: 'player'
   }),
-  TEAM_FETCH ({ rootState }, { teamId }) {
+  SEARCH ({ rootState }, { teamId, filters }) {
     return http({
-      path: routes.injuries.teamIndex,
+      method: 'post',
+      path: routes.injuries.search,
       pathData: { teamId },
+      data: { filters },
       token: rootState.token,
       success ({ data }) {
         Injury.insert({ data })
