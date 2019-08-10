@@ -19,62 +19,67 @@
         <match-form v-else />
       </v-col>
 
-      <v-row class="text-center">
-        <v-col cols="12">
-          <div class="display-2">
-            <fitty-text :text="match.competition" />
-          </div>
-          <div
-            v-if="match.stage"
-            class="display-1"
-          >
-            <fitty-text
-              :text="match.stage"
-              :max-size="30"
-            />
-          </div>
-          <div class="subheading">
-            {{ $_formatDate(match.played_on) }}
-          </div>
-        </v-col>
-        <v-row
-          class="display-1"
-          justify="space-between"
-          align="center"
-        >
-          <v-col
-            cols="5"
-            class="font-weight-thin pa-3"
-          >
-            <fitty-text :text="match.home" />
-            <div :class="`${match.resultColor}--text font-weight-bold`">
-              {{ match.home_score }}
-              <span v-if="match.penalty_shootout">
-                ({{ match.penalty_shootout.home_score }})
-              </span>
+      <v-container>
+        <v-row class="text-center">
+          <v-col cols="12">
+            <div class="display-2">
+              <fitty-text :text="match.competition" />
+            </div>
+            <div
+              v-if="match.stage"
+              class="display-1"
+            >
+              <fitty-text
+                :text="match.stage"
+                :max-size="30"
+              />
+            </div>
+            <div class="subheading">
+              {{ $_formatDate(match.played_on) }}
             </div>
           </v-col>
-          <v-col
-            cols="5"
-            class="font-weight-thin pa-3"
-          >
-            <fitty-text :text="match.away" />
-            <div :class="`${match.resultColor}--text font-weight-bold`">
-              {{ match.away_score }}
-              <span v-if="match.penalty_shootout">
-                ({{ match.penalty_shootout.away_score }})
-              </span>
-            </div>
+
+          <v-container>
+            <v-row
+              class="display-1"
+              justify="space-between"
+              align="center"
+            >
+              <v-col
+                cols="5"
+                class="font-weight-thin pa-3"
+              >
+                <fitty-text :text="match.home" />
+                <div :class="`${match.resultColor}--text font-weight-bold`">
+                  {{ match.home_score }}
+                  <span v-if="match.penalty_shootout">
+                    ({{ match.penalty_shootout.home_score }})
+                  </span>
+                </div>
+              </v-col>
+              <v-col
+                cols="5"
+                class="font-weight-thin pa-3"
+              >
+                <fitty-text :text="match.away" />
+                <div :class="`${match.resultColor}--text font-weight-bold`">
+                  {{ match.away_score }}
+                  <span v-if="match.penalty_shootout">
+                    ({{ match.penalty_shootout.away_score }})
+                  </span>
+                </div>
+              </v-col>
+            </v-row>
+          </v-container>
+
+          <v-col cols="12">
+            <match-actions
+              v-if="match.played_on === team.currently_on"
+              :match="match"
+            />
           </v-col>
         </v-row>
-
-        <v-col cols="12">
-          <match-actions
-            v-if="match.played_on === team.currently_on"
-            :match="match"
-          />
-        </v-col>
-      </v-row>
+      </v-container>
 
       <v-col cols="12">
         <v-card>

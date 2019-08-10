@@ -1,58 +1,54 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-row class="text-center">
-        <v-col
-          cols="6"
-          sm="3"
-        >
-          <div class="display-1">{{ player.pos }}</div>
-          <div class="subheading">Position</div>
-        </v-col>
-        <v-col
-          cols="6"
-          sm="3"
-        >
-          <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
-          <div class="subheading">
-            <fitty-text
-              text="Secondary Position(s)"
-              :max-size="16"
-            />
-          </div>
-        </v-col>
-        <v-col
-          cols="6"
-          sm="3"
-        >
-          <div class="display-1">{{ player.age }}</div>
-          <div class="subheading">Age</div>
-        </v-col>
-        <v-col
-          cols="6"
-          sm="3"
-        >
-          <v-icon
-            :color="player.statusColor"
-            class="display-1"
+      <v-container>
+        <v-row class="text-center">
+          <v-col
+            cols="6"
+            sm="3"
           >
-            mdi-{{ player.statusIcon }}
-          </v-icon>
+            <div class="display-1">{{ player.pos }}</div>
+            <div class="subheading">Position</div>
+          </v-col>
+          <v-col
+            cols="6"
+            sm="3"
+          >
+            <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
+            <div class="subheading">
+              <fitty-text
+                text="Secondary Position(s)"
+                :max-size="16"
+              />
+            </div>
+          </v-col>
+          <v-col
+            cols="6"
+            sm="3"
+          >
+            <div class="display-1">{{ player.age }}</div>
+            <div class="subheading">Age</div>
+          </v-col>
+          <v-col
+            cols="6"
+            sm="3"
+          >
+            <v-icon
+              :color="player.statusColor"
+              class="display-1"
+            >
+              mdi-{{ player.statusIcon }}
+            </v-icon>
 
-          <div class="subheading">
-            {{ player.status || 'Status' }}
-          </div>
-        </v-col>
-        <v-col cols="12">
-          <player-actions :player="player" />
-          <record-remove
-            :record="player"
-            store="players"
-            :label="player.name"
-            :redirect="linkTo('players')"
-          />
-        </v-col>
-      </v-row>
+            <div class="subheading">
+              {{ player.status || 'Status' }}
+            </div>
+          </v-col>
+          <v-col cols="12">
+            <player-actions :player="player" />
+          </v-col>
+        </v-row>
+      </v-container>
 
       <v-col cols="12">
         <v-card>
@@ -180,7 +176,7 @@
   import PlayerActions from '@/components/Player/Actions'
   import PlayerTimeline from '@/components/Player/Timeline'
   import PlayerHistoryChart from '@/components/Charts/PlayerHistoryChart'
-  import { FittyText, RecordRemove } from '@/helpers'
+  import { FittyText } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
   @Component({
@@ -189,8 +185,7 @@
       PlayerActions,
       PlayerTimeline,
       PlayerHistoryChart,
-      FittyText,
-      RecordRemove
+      FittyText
     },
     transition: 'fade-transition'
   })

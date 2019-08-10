@@ -21,6 +21,12 @@
       <player-retire :player="player" />
       <player-release :player="player" />
     </template>
+    <record-remove
+      :record="player"
+      store="players"
+      :label="player.name"
+      :redirect="playersLink"
+    />
   </div>
 </template>
 
@@ -33,7 +39,7 @@
   import PlayerRetire from './Retire'
   import PlayerRelease from './Release'
   import PlayerForm from './Form'
-  import { TooltipButton } from '@/helpers'
+  import { RecordRemove, TooltipButton } from '@/helpers'
 
   @Component({
     components: {
@@ -44,10 +50,20 @@
       PlayerRetire,
       PlayerRelease,
       PlayerForm,
+      RecordRemove,
       TooltipButton
     }
   })
   export default class PlayerActions extends Vue {
     @Prop({ type: Object, required: true }) player
+
+    get playersLink () {
+      return {
+        name: 'teams-teamId-players',
+        params: {
+          teamId: this.player.team_id
+        }
+      }
+    }
   }
 </script>

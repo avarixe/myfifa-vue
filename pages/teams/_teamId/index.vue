@@ -58,7 +58,6 @@
         md="6"
       >
         <!-- Injured Players -->
-
         <v-col cols="12">
           <player-list-card
             :players="injuredPlayers"

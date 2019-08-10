@@ -10,92 +10,92 @@
         </v-btn>
       </v-col>
 
-      <v-col cols="12">
-        <v-row class="text-center">
-          <v-col cols="12">
-            <div class="subheading">
-              {{ competitionSeason }}
-            </div>
-            <div class="display-1 primary--text">
-              <fitty-text :text="competition.name" />
-            </div>
-            <div
-              v-if="readonly"
-              class="title"
-            >
-              <v-icon
-                color="yellow darken-2"
-                left
-              >
-                mdi-crown
-              </v-icon>
-              {{ competition.champion }}
-              <v-icon
-                color="yellow darken-2"
-                right
-              >
-                mdi-crown
-              </v-icon>
-            </div>
-          </v-col>
-
-          <v-col
-            v-if="!readonly"
-            cols="12"
+      <v-col
+        cols="12"
+        class="text-center"
+      >
+        <div class="subheading">
+          {{ competitionSeason }}
+        </div>
+        <div class="display-1 primary--text">
+          <fitty-text :text="competition.name" />
+        </div>
+        <div
+          v-if="readonly"
+          class="title"
+        >
+          <v-icon
+            color="yellow darken-2"
+            left
           >
-            <competition-form
-              :competition-data="competition"
+            mdi-crown
+          </v-icon>
+          {{ competition.champion }}
+          <v-icon
+            color="yellow darken-2"
+            right
+          >
+            mdi-crown
+          </v-icon>
+        </div>
+      </v-col>
+
+      <v-col
+        v-if="!readonly"
+        cols="12"
+        class="text-center"
+      >
+        <competition-form
+          :competition-data="competition"
+          color="orange"
+        >
+          <template #default="{ on }">
+            <v-btn
+              dark
               color="orange"
+              class="my-1"
+              v-on="on"
             >
-              <template #default="{ on }">
-                <v-btn
-                  dark
-                  color="orange"
-                  class="my-1"
-                  v-on="on"
-                >
-                  Edit
-                </v-btn>
-              </template>
-            </competition-form>
+              Edit
+            </v-btn>
+          </template>
+        </competition-form>
 
-            <competition-form
-              :competition-data="competition"
+        <competition-form
+          :competition-data="competition"
+          color="red"
+          close
+        >
+          <template #default="{ on }">
+            <v-btn
+              dark
               color="red"
-              close
+              class="my-1"
+              v-on="on"
             >
-              <template #default="{ on }">
-                <v-btn
-                  dark
-                  color="red"
-                  class="my-1"
-                  v-on="on"
-                >
-                  Close
-                </v-btn>
-              </template>
-            </competition-form>
+              Close
+            </v-btn>
+          </template>
+        </competition-form>
 
-            <stage-form
-              :competition="competition"
-              color="teal"
-            />
+        <stage-form
+          :competition="competition"
+          color="teal"
+        />
 
-            <record-remove
-              :record="competition"
-              store="competitions"
-              :label="`${competitionSeason} ${competition.name}`"
-              :redirect="competition.linkToSeason"
-            >
-              <v-btn
-                dark
-                class="my-1"
-              >
-                Remove
-              </v-btn>
-            </record-remove>
-          </v-col>
-        </v-row>
+        <record-remove
+          :record="competition"
+          store="competitions"
+          :label="`${competitionSeason} ${competition.name}`"
+          :redirect="competition.linkToSeason"
+        >
+          <v-btn
+            dark
+            class="my-1"
+          >
+            Remove
+          </v-btn>
+        </record-remove>
       </v-col>
 
       <!-- Table Stages -->
