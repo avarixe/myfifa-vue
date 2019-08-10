@@ -35,6 +35,7 @@
           :items="positions"
           label="Position"
           prepend-icon="mdi-run"
+          menu-props="auto"
         />
       </v-col>
       <v-col cols="12">
@@ -71,6 +72,7 @@
           :items="Array.from({ length: 99 }, (v, k) => k + 1)"
           label="Kit Number"
           prepend-icon="mdi-tshirt-crew"
+          menu-props="auto"
         />
       </v-col>
       <v-col cols="12">
@@ -80,6 +82,7 @@
           :rules="$_validate('OVR', ['required'])"
           label="OVR"
           prepend-icon="mdi-trending-up"
+          menu-props="auto"
         />
       </v-col>
       <v-col cols="12">
@@ -123,6 +126,7 @@
       sec_pos: [],
       ovr: 60,
       value: '',
+      kit_no: null,
       birth_year: null,
       youth: false
     }
@@ -146,6 +150,7 @@
           'sec_pos',
           'ovr',
           'value',
+          'kit_no',
           'birth_year',
           'youth'
         ]))
