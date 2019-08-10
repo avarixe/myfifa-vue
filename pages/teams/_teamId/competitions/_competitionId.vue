@@ -229,9 +229,8 @@
     }
 
     get readonly () {
-      return false
-      // return this.competition.champion &&
-      //   this.competition.champion.length > 0
+      return this.competition.champion &&
+        this.competition.champion.length > 0
     }
 
     get competitionSeason () {
