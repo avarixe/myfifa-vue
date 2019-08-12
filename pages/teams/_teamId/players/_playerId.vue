@@ -1,6 +1,10 @@
 <template>
   <v-container fluid>
     <v-row>
+      <v-col cols="12">
+        <player-form />
+      </v-col>
+
       <v-container>
         <v-row class="text-center">
           <v-col
