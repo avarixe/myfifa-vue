@@ -141,9 +141,8 @@
 
     @Watch('dialog')
     setPlayer (val) {
-      this.valid = !!this.playerData
-      if (this.playerData) {
-        Object.assign(this.player, this.$_pick(this.playerData, [
+      if (val && this.playerData) {
+        this.player = this.$_pick(this.playerData, [
           'id',
           'name',
           'pos',
@@ -153,7 +152,7 @@
           'kit_no',
           'birth_year',
           'youth'
-        ]))
+        ])
         this.player.sec_pos = [...this.playerData.sec_pos]
       }
     }

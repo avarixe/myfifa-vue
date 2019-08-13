@@ -72,11 +72,11 @@
     @Watch('dialog')
     setPenaltyShootout (val) {
       if (val && this.record) {
-        Object.assign(this.penaltyShootout, this.$_pick(this.record, [
+        this.penaltyShootout = this.$_pick(this.record, [
           'id',
           'home_score',
           'away_score'
-        ]))
+        ])
       }
     }
 

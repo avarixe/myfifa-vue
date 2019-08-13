@@ -14,10 +14,16 @@
       </template>
     </player-form>
     <transfer-form :player="player" />
-    <loan-form :player="player" />
+    <loan-form
+      :player="player"
+      :record="player.status === 'Loaned' ? loan : null"
+    />
     <contract-form :player="player" />
     <template v-if="player.isActive">
-      <injury-form :player="player" />
+      <injury-form
+        :player="player"
+        :record="player.status === 'Injured' ? injury : null"
+      />
       <player-retire :player="player" />
       <player-release :player="player" />
     </template>
@@ -32,6 +38,7 @@
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
+  import { Loan, Injury, Contract } from '@/models'
   import ContractForm from '@/components/Contract/Form'
   import InjuryForm from '@/components/Injury/Form'
   import LoanForm from '@/components/Loan/Form'
@@ -64,6 +71,20 @@
           teamId: this.player.team_id
         }
       }
+    }
+
+    get injury () {
+      return Injury
+        .query()
+        .where('player_id', this.player.id)
+        .last()
+    }
+
+    get loan () {
+      return Loan
+        .query()
+        .where('player_id', this.player.id)
+        .last()
     }
   }
 </script>

@@ -87,11 +87,11 @@
     @Watch('dialog')
     setBooking (val) {
       if (val && this.record) {
-        Object.assign(this.booking, this.$_pick(this.record, [
+        this.booking = this.$_pick(this.record, [
           'id',
           'player_id',
           'red_card'
-        ]))
+        ])
         this.minute = this.record.minute
       }
     }

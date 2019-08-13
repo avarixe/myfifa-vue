@@ -195,18 +195,20 @@
 
     @Watch('dialog')
     setMatch (val) {
-      if (val && this.matchData) {
-        Object.assign(this.match, this.$_pick(this.matchData, [
-          'id',
-          'played_on',
-          'competition',
-          'stage',
-          'home',
-          'away',
-          'extra_time'
-        ]))
-      } else {
-        this.match.played_on = this.team.currently_on
+      if (val) {
+        if (this.matchData) {
+          this.match = this.$_pick(this.matchData, [
+            'id',
+            'played_on',
+            'competition',
+            'stage',
+            'home',
+            'away',
+            'extra_time'
+          ])
+        } else {
+          this.match.played_on = this.team.currently_on
+        }
       }
     }
 

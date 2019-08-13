@@ -100,12 +100,11 @@
 
     @Watch('dialog')
     setSquad (val) {
-      this.valid = !!this.squadData
-      if (this.squadData) {
-        Object.assign(this.squad, this.$_pick(this.squadData, [
+      if (val && this.squadData) {
+        this.squad = this.$_pick(this.squadData, [
           'id',
           'name'
-        ]))
+        ])
         this.squad.squad_players_attributes = this.squadData.squad_players
           .map(squadPlayer => ({
             id: squadPlayer.id,

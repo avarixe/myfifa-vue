@@ -83,12 +83,12 @@
     @Watch('dialog')
     setTeam (val) {
       if (val && this.teamId) {
-        Object.assign(
-          this.team,
-          this.$_pick(Team.find(this.teamId), [
-            'id', 'title', 'started_on', 'currency'
-          ])
-        )
+        this.team = this.$_pick(Team.find(this.teamId), [
+          'id',
+          'title',
+          'started_on',
+          'currency'
+        ])
       }
     }
 

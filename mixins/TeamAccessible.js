@@ -1,5 +1,5 @@
 import { Vue, Component } from 'nuxt-property-decorator'
-import { format, parse, addYears } from 'date-fns'
+import { format, parse, addYears, differenceInYears } from 'date-fns'
 import { Team } from '@/models'
 
 @Component
@@ -11,7 +11,7 @@ export default class TeamAccessible extends Vue {
   get season () {
     const date = this.$_parse(this.team.started_on)
     const currentDate = this.$_parse(this.team.currently_on)
-    return parseInt((currentDate - date) / (525600 * 60 * 1000))
+    return differenceInYears(currentDate, date)
   }
 
   get seasonStart () {

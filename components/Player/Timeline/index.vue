@@ -29,13 +29,30 @@
             {{ item.dateRange }}
           </span>
         </v-card-title>
-        <v-container>
-          <v-row>
-            <v-col cols="12">
-              <timeline-content :item="item" />
-            </v-col>
-          </v-row>
-        </v-container>
+        <v-card-text>
+          <record-form
+            :player="player"
+            :record="item.data"
+            :type="item.type"
+          >
+            <template #default="{ on }">
+              <v-btn
+                absolute
+                dark
+                fab
+                top
+                right
+                x-small
+                color="orange"
+                v-on="on"
+              >
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+            </template>
+          </record-form>
+
+          <timeline-content :item="item" />
+        </v-card-text>
       </v-card>
     </v-timeline-item>
   </v-timeline>
@@ -44,22 +61,21 @@
 <script>
   import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import TimelineContent from './Content'
+  import RecordForm from '@/helpers/RecordForm'
   import { TeamAccessible } from '@/mixins'
 
   @Component({
     components: {
-      TimelineContent
+      TimelineContent,
+      RecordForm
     }
   })
   export default class PlayerTimeline extends mixins(TeamAccessible) {
-    @Prop(Array) contracts
-    @Prop(Array) injuries
-    @Prop(Array) loans
-    @Prop(Array) transfers
+    @Prop({ type: Object, required: true }) player
 
     get items () {
       return [
-        ...this.contracts.map(contract => ({
+        ...this.player.contracts.map(contract => ({
           type: 'Contract',
           color: 'blue',
           icon: 'file-document',
@@ -70,7 +86,7 @@
             this.$_formatDate(contract.ended_on),
           data: contract
         })),
-        ...this.injuries.map(injury => ({
+        ...this.player.injuries.map(injury => ({
           type: 'Injury',
           color: 'pink',
           icon: 'hospital',
@@ -82,7 +98,7 @@
           title: `${injury.description} Injury`,
           data: injury
         })),
-        ...this.loans.map(loan => ({
+        ...this.player.loans.map(loan => ({
           type: 'Loan',
           color: 'indigo',
           icon: 'transit-transfer',
@@ -94,7 +110,7 @@
           title: `On Loan at ${loan.destination}`,
           data: loan
         })),
-        ...this.transfers.map(transfer => {
+        ...this.player.transfers.map(transfer => {
           const transferOut = transfer.origin === this.team.title
           return {
             type: 'Transfer',

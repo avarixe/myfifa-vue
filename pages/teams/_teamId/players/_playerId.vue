@@ -125,12 +125,7 @@
               <v-tab-item>
                 <v-card flat>
                   <v-card-text>
-                    <player-timeline
-                      :contracts="player.contracts"
-                      :injuries="player.injuries"
-                      :loans="player.loans"
-                      :transfers="player.transfers"
-                    />
+                    <player-timeline :player="player" />
                   </v-card-text>
                 </v-card>
               </v-tab-item>
