@@ -205,7 +205,7 @@
             'home',
             'away',
             'extra_time'
-          ]))
+          ])
         } else {
           this.match.played_on = this.team.currently_on
         }

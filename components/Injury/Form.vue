@@ -18,6 +18,26 @@
     </template>
 
     <template #form>
+      <template v-if="record && record.ended_on">
+        <v-col cols="12">
+          <v-date-field
+            v-model="injury.started_on"
+            label="Injury Date"
+            prepend-icon="mdi-calendar-today"
+            color="pink"
+            required
+          />
+        </v-col>
+        <v-col cols="12">
+          <v-date-field
+            v-model="injury.ended_on"
+            label="Recovery Date"
+            prepend-icon="mdi-calendar-today"
+            color="pink"
+            required
+          />
+        </v-col>
+      </template>
       <v-col cols="12">
         <v-text-field
           v-model="injury.description"
@@ -32,7 +52,7 @@
       </v-col>
       <v-scroll-y-transition mode="out-in">
         <v-col
-          v-if="playerInjured"
+          v-if="record && !record.ended_on"
           cols="12"
         >
           <v-checkbox
@@ -48,13 +68,13 @@
 <script>
   import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { mapActions } from 'vuex'
-  import { Injury } from '@/models'
   import { DialogFormable } from '@/mixins'
-  import { TooltipButton } from '@/helpers'
+  import { TooltipButton, VDateField } from '@/helpers'
 
   @Component({
     components: {
-      TooltipButton
+      TooltipButton,
+      VDateField
     },
     methods: mapActions('injuries', {
       create: 'CREATE',
@@ -63,6 +83,7 @@
   })
   export default class InjuryForm extends mixins(DialogFormable) {
     @Prop({ type: Object, required: true }) player
+    @Prop(Object) record
     @Prop(String) color
     @Prop(Boolean) dark
     @Prop(Function) submitCb
@@ -72,37 +93,26 @@
       recovered: false
     }
 
-    get playerInjured () {
-      return this.player.status && this.player.status === 'Injured'
-    }
-
     get title () {
-      return this.playerInjured
+      return this.record
         ? 'Update Injury'
         : 'Record New Injury'
     }
 
-    get currentInjury () {
-      return Injury
-        .query()
-        .where('player_id', this.player.id)
-        .orderBy('started_on')
-        .last()
-    }
-
     @Watch('dialog')
     async setInjury (val) {
-      if (val) {
-        const { id, description } = this.currentInjury
-        Object.assign(this.injury, { id, description })
-      } else {
-        Object.assign(this.$data, this.$options.data.apply(this))
-        // this.$refs.form.reset()
+      if (val && this.record) {
+        this.injury = this.$_pick(this.record, [
+          'id',
+          'started_on',
+          'ended_on',
+          'description'
+        ])
       }
     }
 
     async submit () {
-      if (this.playerInjured) {
+      if (this.record) {
         await this.update(this.injury)
       } else {
         await this.create({

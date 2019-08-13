@@ -97,9 +97,8 @@
 
 <script>
   import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapState } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   import { addYears } from 'date-fns'
-  import { Contract } from '@/models'
   import { VDateField, VMoneyField, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
@@ -113,16 +112,20 @@
     },
     computed: mapState('contracts', [
       'bonusRequirementTypes'
-    ])
+    ]),
+    methods: mapActions('contracts', {
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
   })
   export default class ContractForm extends mix {
     @Prop({ type: Object, required: true }) player
+    @Prop(Object) record
     @Prop(String) color
     @Prop(Boolean) dark
     @Prop(Function) submitCb
 
     valid = false
-    title = 'Sign New Contract'
     contract = {
       started_on: null,
       ended_on: null,
@@ -134,40 +137,49 @@
       bonus_req_type: null
     }
 
+    get title () {
+      return this.record
+        ? 'Edit Contract'
+        : 'Sign New Contract'
+    }
+
     get maxEndDate () {
       return this.$_format(
         addYears(this.$_parse(this.contract.started_on), 6)
       )
     }
 
-    get currentContract () {
-      return Contract
-        .query()
-        .where('player_id', this.player.id)
-        .where('started_on', date => date <= this.team.currently_on)
-        .where('ended_on', date => this.team.currently_on < date)
-        .last()
-    }
-
     @Watch('dialog')
     setContract (val) {
       if (val) {
-        Object.assign(this.contract, {
-          ...this.currentContract,
-          started_on: this.team.currently_on,
-          ended_on: this.team.currently_on
-        })
-      } else {
-        Object.assign(this.$data, this.$options.data.apply(this))
-        // this.$refs.form.reset()
+        if (this.record) {
+          this.contract = this.$_pick(this.record, [
+            'id',
+            'started_on',
+            'ended_on',
+            'wage',
+            'signing_bonus',
+            'release_clause',
+            'performance_bonus',
+            'bonus_req',
+            'bonus_req_type'
+          ])
+        } else {
+          this.contract.started_on = this.team.currently_on
+          this.contract.ended_on = this.team.currently_on
+        }
       }
     }
 
     async submit () {
-      await this.$store.dispatch('contracts/CREATE', {
-        playerId: this.player.id,
-        contract: this.contract
-      })
+      if (this.record) {
+        await this.update(this.contract)
+      } else {
+        await this.create({
+          playerId: this.player.id,
+          contract: this.contract
+        })
+      }
     }
   }
 </script>

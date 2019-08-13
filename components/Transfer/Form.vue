@@ -23,7 +23,7 @@
           v-model="transfer.moved_on"
           label="Effective Date"
           prepend-icon="mdi-calendar-today"
-          :min="team.currently_on"
+          :min="record ? null : team.currently_on"
           :color="transferColor"
           required
         />
@@ -35,7 +35,6 @@
           label="Origin"
           prepend-icon="mdi-airplane-takeoff"
           :disabled="transferOut"
-          :hide-details="transferOut"
           spellcheck="false"
           autocapitalize="words"
           autocomplete="off"
@@ -49,7 +48,6 @@
           label="Destination"
           prepend-icon="mdi-airplane-landing"
           :disabled="!transferOut"
-          :hide-details="!transferOut"
           spellcheck="false"
           autocapitalize="words"
           autocomplete="off"
@@ -83,6 +81,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
   import { VDateField, VMoneyField, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
@@ -93,10 +92,15 @@
       VDateField,
       VMoneyField,
       TooltipButton
-    }
+    },
+    methods: mapActions('transfers', {
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
   })
   export default class TransferForm extends mix {
     @Prop({ type: Object, required: true }) player
+    @Prop(Object) record
     @Prop(Boolean) dark
     @Prop(Function) submitCb
 
@@ -109,7 +113,9 @@
     }
 
     get transferOut () {
-      return this.player.status && this.player.status.length > 0
+      return this.record
+        ? this.team.title === this.record.origin
+        : this.player.status && this.player.status.length > 0
     }
 
     get title () {
@@ -123,20 +129,35 @@
     @Watch('dialog')
     setTransfer (val) {
       if (val) {
-        this.transfer.moved_on = this.team.currently_on
-        if (this.transferOut) {
-          this.transfer.origin = this.team.title
+        if (this.record) {
+          this.transfer = this.$_pick(this.record, [
+            'id',
+            'moved_on',
+            'origin',
+            'destination',
+            'fee',
+            'addon_clause'
+          ])
         } else {
-          this.transfer.destination = this.team.title
+          this.transfer.moved_on = this.team.currently_on
+          if (this.transferOut) {
+            this.transfer.origin = this.team.title
+          } else {
+            this.transfer.destination = this.team.title
+          }
         }
       }
     }
 
     async submit () {
-      await this.$store.dispatch('transfers/CREATE', {
-        playerId: this.player.id,
-        transfer: this.transfer
-      })
+      if (this.record) {
+        await this.update(this.transfer)
+      } else {
+        await this.create({
+          playerId: this.player.id,
+          transfer: this.transfer
+        })
+      }
     }
   }
 </script>

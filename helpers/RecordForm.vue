@@ -3,6 +3,10 @@
   import BookingForm from '@/components/Booking/Form'
   import SubstitutionForm from '@/components/Substitution/Form'
   import PenaltyShootoutForm from '@/components/PenaltyShootout/Form'
+  import ContractForm from '@/components/Contract/Form'
+  import InjuryForm from '@/components/Injury/Form'
+  import LoanForm from '@/components/Loan/Form'
+  import TransferForm from '@/components/Transfer/Form'
 
   export default {
     functional: true,
@@ -27,6 +31,14 @@
             return SubstitutionForm
           case 'Penalty Shootout':
             return PenaltyShootoutForm
+          case 'Contract':
+            return ContractForm
+          case 'Injury':
+            return InjuryForm
+          case 'Loan':
+            return LoanForm
+          case 'Transfer':
+            return TransferForm
           default:
             throw new Error('Invalid Record Type!')
         }
