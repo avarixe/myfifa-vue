@@ -33,7 +33,7 @@
 
         <v-divider />
 
-        <v-card-text>
+        <v-card-text :key="key">
           <v-row dense>
             <slot name="form" />
           </v-row>
@@ -92,6 +92,7 @@
     @Prop(Boolean) fullWidth
 
     dialog = null
+    key = 0
     valid = false
     loading = false
     errorMessage = ''
@@ -101,7 +102,7 @@
     }
 
     set formError (val) {
-      this.errMessage = val
+      this.errorMessage = val
     }
 
     get buttonColor () {
@@ -119,6 +120,15 @@
     @Watch('dialog')
     emitValue (val) {
       this.$emit('input', val)
+
+      if (!val && this.$refs.form) {
+        this.resetForm()
+      }
+    }
+
+    async resetForm () {
+      this.key++
+      this.$refs.form.reset()
     }
 
     async submitForm () {

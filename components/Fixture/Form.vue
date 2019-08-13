@@ -117,11 +117,11 @@
     @Watch('dialog')
     setFixture (val) {
       if (val && this.fixtureData) {
-        Object.assign(this.fixture, this.$_pick(this.fixtureData, [
+        this.fixture = this.$_pick(this.fixtureData, [
           'id',
           'home_team',
           'away_team'
-        ]))
+        ])
         this.fixture.legs_attributes = this.fixtureData.legs.map(leg => ({
           id: leg.id,
           home_score: leg.home_score,

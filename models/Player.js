@@ -111,7 +111,7 @@ class Player extends Model {
   }
 
   expiresOn () {
-    return this.contract.ended_on
+    return this.contract().ended_on
   }
 
   recordAt (date) {

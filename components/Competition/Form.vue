@@ -128,7 +128,13 @@
       'Knockout',
       'Group + Knockout'
     ]
-    competition = {}
+    competition = {
+      season: null,
+      preset_format: null,
+      num_teams: null,
+      num_teams_per_group: null,
+      num_advances_from_group: null
+    }
 
     get title () {
       if (this.close) {
@@ -162,16 +168,11 @@
         this.competition = this.$_pick(this.competitionData, [
           'id',
           'name',
-          'champion'
+          'champion',
+          'season'
         ])
       } else {
-        this.competition = {
-          season: this.season,
-          preset_format: null,
-          num_teams: null,
-          num_teams_per_group: null,
-          num_advances_from_group: null
-        }
+        this.competition.season = this.season
       }
     }
 

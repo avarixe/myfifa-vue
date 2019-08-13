@@ -112,7 +112,7 @@
     @Watch('dialog')
     setTableRow (val) {
       if (val && this.rowData) {
-        Object.assign(this.row, this.$_pick(this.rowData, [
+        this.row = this.$_pick(this.rowData, [
           'id',
           'name',
           'wins',
@@ -120,7 +120,7 @@
           'losses',
           'goals_for',
           'goals_against'
-        ]))
+        ])
       }
     }
 

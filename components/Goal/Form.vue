@@ -166,7 +166,7 @@
     @Watch('dialog')
     setGoal (val) {
       if (val && this.record) {
-        Object.assign(this.goal, this.$_pick(this.record, [
+        this.goal = this.$_pick(this.record, [
           'id',
           'home',
           'player_id',
@@ -175,7 +175,7 @@
           'assist_id',
           'own_goal',
           'penalty'
-        ]))
+        ])
         this.minute = this.record.minute
       }
     }

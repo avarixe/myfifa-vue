@@ -106,12 +106,12 @@
     @Watch('dialog')
     setSubstitution (val) {
       if (val && this.record) {
-        Object.assign(this.substitution, this.$_pick(this.record, [
+        this.substitution = this.$_pick(this.record, [
           'id',
           'player_id',
           'replacement_id',
           'injury'
-        ]))
+        ])
         this.minute = this.record.minute
       }
     }
