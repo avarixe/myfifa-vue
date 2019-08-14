@@ -6,12 +6,15 @@
     <template #activator="{ on: tooltip }">
       <v-btn
         icon
-        :small="small"
         :to="to"
         v-on="on ? { ...on, ...tooltip } : tooltip"
         @click="$emit('click')"
       >
-        <v-icon :color="color">{{ icon }}</v-icon>
+        <v-icon
+          :color="color"
+          :dark="dark"
+          v-text="icon"
+        />
       </v-btn>
     </template>
     {{ label }}
@@ -26,7 +29,7 @@
     @Prop(String) label
     @Prop(String) icon
     @Prop(String) color
-    @Prop(Boolean) small
+    @Prop(Boolean) dark
     @Prop(Object) to
     @Prop() on
   }

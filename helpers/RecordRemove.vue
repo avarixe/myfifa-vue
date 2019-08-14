@@ -7,8 +7,7 @@
       <tooltip-button
         icon="mdi-delete"
         :label="`Remove ${label}`"
-        color="black"
-        small
+        dark
       />
     </slot>
 
@@ -49,7 +48,6 @@
     @Prop({ type: String, required: true }) store
     @Prop([String, Object]) redirect
     @Prop(String) label
-    @Prop({ type: Boolean, default: false }) small
 
     snackbar = false
 

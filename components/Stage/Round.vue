@@ -60,7 +60,6 @@
               icon="mdi-pencil"
               color="orange"
               :on="on"
-              small
             />
           </template>
         </fixture-form>
@@ -70,7 +69,6 @@
           :record="item"
           store="fixtures"
           label="Fixture"
-          small
         />
       </template>
     </v-data-table>
