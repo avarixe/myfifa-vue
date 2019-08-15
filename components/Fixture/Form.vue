@@ -50,31 +50,33 @@
           Add Fixture Leg
         </v-btn>
       </v-col>
-      <v-row
-        v-for="(leg, i) in fixture.legs_attributes"
-        v-show="!leg._destroy"
-        :key="i"
-        dense
-      >
-        <v-col cols="6">
-          <v-text-field
-            v-model="leg.home_score"
-            label="Home Score"
-            prepend-icon="mdi-soccer"
-            hide-details
-          />
-        </v-col>
-        <v-col cols="6">
-          <v-text-field
-            v-model="leg.away_score"
-            label="Away Score"
-            prepend-icon="mdi-soccer"
-            append-outer-icon="mdi-delete"
-            hide-details
-            @click:append-outer="leg._destroy = true"
-          />
-        </v-col>
-      </v-row>
+      <v-container :key="key">
+        <v-row
+          v-for="(leg, i) in fixture.legs_attributes"
+          v-show="!leg._destroy"
+          :key="i"
+          dense
+        >
+          <v-col cols="6">
+            <v-text-field
+              v-model="leg.home_score"
+              label="Home Score"
+              prepend-icon="mdi-soccer"
+              hide-details
+            />
+          </v-col>
+          <v-col cols="6">
+            <v-text-field
+              v-model="leg.away_score"
+              label="Away Score"
+              prepend-icon="mdi-soccer"
+              append-outer-icon="mdi-delete"
+              hide-details
+              @click:append-outer="leg._destroy = true; key++"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
     </template>
   </dialog-form>
 </template>
@@ -100,6 +102,7 @@
     @Prop({ type: Object, required: true }) stage
     @Prop(Object) fixtureData
 
+    key = 0
     fixture = {
       home_team: '',
       away_team: '',
@@ -123,9 +126,7 @@
           'away_team'
         ])
         this.fixture.legs_attributes = this.fixtureData.legs.map(leg => ({
-          id: leg.id,
-          home_score: leg.home_score,
-          away_score: leg.away_score,
+          ...leg,
           _destroy: false
         }))
       }
@@ -137,6 +138,7 @@
         away_score: '',
         _destroy: false
       })
+      this.key++
     }
 
     async submit () {
