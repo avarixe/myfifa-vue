@@ -9,7 +9,7 @@
     </template>
 
     <template #form>
-      <template v-if="!changePassword">
+      <template v-if="!passwordMode">
         <v-col cols="12">
           <v-text-field
             v-model="user.full_name"
@@ -47,7 +47,7 @@
         />
       </v-col>
 
-      <template v-if="!authenticated || changePassword">
+      <template v-if="!authenticated || passwordMode">
         <v-col cols="12">
           <v-text-field
             v-model="user.password"
@@ -74,9 +74,9 @@
         v-if="user.id"
         text
         color="blue"
-        @click="changePassword = !changePassword"
+        @click="passwordMode = !passwordMode"
       >
-        {{ changePassword ? 'Profile' : 'Change Password' }}
+        {{ passwordMode ? 'Profile' : 'Change Password' }}
       </v-btn>
     </template>
   </dialog-form>
@@ -99,7 +99,7 @@
   })
   export default class UserForm extends mixins(DialogFormable) {
     visible = false
-    changePassword = false
+    passwordMode = false
     user = {
       full_name: '',
       username: '',
@@ -109,15 +109,21 @@
     }
 
     get title () {
-      return this.authenticated ? 'Edit Account' : 'New Account'
+      if (this.passwordMode) {
+        return 'Change Password'
+      } else if (this.authenticated) {
+        return 'Edit Account'
+      } else {
+        return 'New Account'
+      }
     }
 
     get passwordLabel () {
-      return this.changePassword ? 'New Password' : 'Password'
+      return this.passwordMode ? 'New Password' : 'Password'
     }
 
     get editParams () {
-      return this.changePassword
+      return this.passwordMode
         ? ['current_password', 'password', 'password_confirmation']
         : ['full_name', 'username', 'email']
     }
@@ -131,24 +137,16 @@
     }
 
     async submit () {
-      try {
-        if (!this.authenticated) {
-          await this.create(this.user)
-        } else {
-          let params = {}
+      if (!this.authenticated) {
+        await this.create(this.user)
+      } else {
+        let params = {}
 
-          this.editParams.forEach(attr => {
-            params[attr] = this.user[attr]
-          })
-
-          await this.update(params)
-        }
-      } catch (e) {
-        this.$store.commit('broadcaster/ANNOUNCE', {
-          message: 'Could not save Account',
-          color: 'error'
+        this.editParams.forEach(attr => {
+          params[attr] = this.user[attr]
         })
-        throw e
+
+        await this.update(params)
       }
     }
   }
