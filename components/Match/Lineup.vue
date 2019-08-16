@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <v-row
+      v-if="match.caps.length >= 11"
       dense
       class="text-center"
     >
