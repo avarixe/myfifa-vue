@@ -1,11 +1,7 @@
 <template>
   <v-card>
-    <v-toolbar
-      color="blue"
-      dark
-      flat
-    >
-      <v-toolbar-title class="font-weight-light">
+    <v-toolbar color="blue">
+      <v-toolbar-title class="font-weight-light white--text">
         {{ squad.name }}
       </v-toolbar-title>
 

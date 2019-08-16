@@ -72,11 +72,11 @@
             </v-row>
           </v-container>
 
-          <v-col cols="12">
-            <match-actions
-              v-if="match.played_on === team.currently_on"
-              :match="match"
-            />
+          <v-col
+            v-if="match.played_on === team.currently_on"
+            cols="12"
+          >
+            <match-actions :match="match" />
           </v-col>
         </v-row>
       </v-container>

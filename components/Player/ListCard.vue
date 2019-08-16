@@ -13,7 +13,6 @@
     <v-list
       nav
       dense
-      subheader
     >
       <v-subheader>Player</v-subheader>
       <v-list-item

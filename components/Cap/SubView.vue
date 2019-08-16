@@ -1,5 +1,5 @@
 <template>
-  <v-list-item two-line>
+  <v-list-item>
     <v-list-item-action class="font-weight-bold">
       <inline-select
         :item="cap"

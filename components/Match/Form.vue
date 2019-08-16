@@ -171,7 +171,7 @@
       return Competition
         .query()
         .where('season', this.season)
-        .where('champion', null)
+        .where(comp => this.match.competition === comp.name || !comp.champion)
         .get()
         .map(competition => competition.name)
     }

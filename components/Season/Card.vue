@@ -24,7 +24,6 @@
     <v-list
       nav
       dense
-      subheader
     >
       <v-subheader>Competitions</v-subheader>
       <v-list-item
