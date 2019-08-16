@@ -33,53 +33,43 @@
 
     <!-- Player Information Grid -->
     <v-card-text>
-      <paged-table
-        v-model="page"
-        :page-count="pageCount"
+      <v-data-table
+        :headers="headers"
+        :items="rows"
+        :loading="loading"
+        sort-by="pos"
+        :search="search"
+        item-key="id"
+        no-data-text="No Players Recorded"
       >
-        <template #table>
-          <v-data-table
-            :headers="headers"
-            :items="rows"
-            :page.sync="page"
-            :loading="loading"
-            sort-by="pos"
-            :search="search"
-            item-key="id"
-            hide-default-footer
-            no-data-text="No Players Recorded"
-            @page-count="pageCount = $event"
-          >
-            <template #item.name="{ item }">
-              <v-dialog width="500px">
-                <template #activator="{ on }">
-                  <v-btn
-                    text
-                    color="info"
-                    v-on="on"
-                    v-text="item.name"
-                  />
-                </template>
+        <template #item.name="{ item }">
+          <v-dialog width="500px">
+            <template #activator="{ on }">
+              <v-btn
+                text
+                color="info"
+                v-on="on"
+                v-text="item.name"
+              />
+            </template>
 
-                <player-card :player-id="item.id" />
-              </v-dialog>
-            </template>
-            <template #item.ovrChange="{ item }">
-              <span :class="ovrColor(item)">
-                {{ item.ovrChange > 0 ? '+' : '' }}{{ item.ovrChange }}
-              </span>
-            </template>
-            <template #item.endValue="{ item }">
-              {{ $_formatMoney(item.endValue) }}
-            </template>
-            <template #item.valueChange="{ item }">
-              <span :class="valueColor(item)">
-                {{ item.valueChange.toFixed(2) }}%
-              </span>
-            </template>
-          </v-data-table>
+            <player-card :player-id="item.id" />
+          </v-dialog>
         </template>
-      </paged-table>
+        <template #item.ovrChange="{ item }">
+          <span :class="ovrColor(item)">
+            {{ item.ovrChange > 0 ? '+' : '' }}{{ item.ovrChange }}
+          </span>
+        </template>
+        <template #item.endValue="{ item }">
+          {{ $_formatMoney(item.endValue) }}
+        </template>
+        <template #item.valueChange="{ item }">
+          <span :class="valueColor(item)">
+            {{ item.valueChange.toFixed(2) }}%
+          </span>
+        </template>
+      </v-data-table>
     </v-card-text>
   </v-card>
 </template>
@@ -89,12 +79,10 @@
   import { addYears } from 'date-fns'
   import { Team, Player } from '@/models'
   import { positions } from '@/models/Player'
-  import { PagedTable } from '@/helpers'
   import PlayerCard from '@/components/Player/Card'
 
   @Component({
     components: {
-      PagedTable,
       PlayerCard
     }
   })
@@ -108,8 +96,6 @@
     ]
     loading = false
     filterActive = true
-    page = 1
-    pageCount = 0
     search = ''
     stats = {
       num_games: {},

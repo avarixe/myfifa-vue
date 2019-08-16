@@ -73,84 +73,74 @@
 
     <!-- Player Information Grid -->
     <v-card-text>
-      <paged-table
-        v-model="page"
-        :page-count="pageCount"
+      <v-data-table
+        :key="key"
+        :headers="headers"
+        :items="rows"
+        sort-by="pos"
+        must-sort
+        :search="search"
+        item-key="id"
+        no-data-text="No Players Found"
       >
-        <template #table>
-          <v-data-table
-            :key="key"
-            :headers="headers"
-            :items="rows"
-            :page.sync="page"
-            sort-by="pos"
-            must-sort
-            :search="search"
-            item-key="id"
-            hide-default-footer
-            no-data-text="No Players Found"
-            @page-count="pageCount = $event"
-          >
-            <template #item.name="{ item }">
-              <v-btn
-                :to="item.link"
-                small
-                text
-                nuxt
-                color="info"
-                v-text="item.name"
-              />
-            </template>
-            <template #item.kit_no="{ item }">
-              <inline-select
-                :item="item"
-                attribute="kit_no"
-                label="Kit No"
-                input-type="select"
-                :options="Array.from({ length: 98 }, (v, k) => k + 1)"
-                dense
-                @change="updatePlayerAttribute(item.id, 'kit_no', $event)"
-              />
-            </template>
-            <template #item.ovr="{ item }">
-              <inline-select
-                :item="item"
-                attribute="ovr"
-                label="OVR"
-                input-type="select"
-                :options="Array.from({ length: 61 }, (v, k) => k + 40)"
-                dense
-                @change="updatePlayerAttribute(item.id, 'ovr', $event)"
-              />
-            </template>
-            <template #item.value="{ item }">
-              <inline-field
-                :item="item"
-                attribute="value"
-                label="Value"
-                input-type="money"
-                :display="$_formatMoney(item.value)"
-                required
-                @close="updatePlayerAttribute(item.id, 'value', $event)"
-              />
-            </template>
-            <template #item.status="{ item }">
-              <v-icon :color="item.statusColor">
-                mdi-{{ item.statusIcon }}
-              </v-icon>
-            </template>
-            <template #item.sec_pos="{ item }">
-              {{ $_listArray(item.sec_pos, '-') }}
-            </template>
-            <template #item.wage="{ item }">
-              {{ contractWage(item) }}
-            </template>
-            <template #item.endDate="{ item }">
-              {{ contractDate(item) }}
-            </template>
-          </v-data-table>
+        <template #item.name="{ item }">
+          <v-btn
+            :to="item.link"
+            small
+            text
+            nuxt
+            color="info"
+            v-text="item.name"
+          />
         </template>
-      </paged-table>
+        <template #item.kit_no="{ item }">
+          <inline-select
+            :item="item"
+            attribute="kit_no"
+            label="Kit No"
+            input-type="select"
+            :options="Array.from({ length: 98 }, (v, k) => k + 1)"
+            dense
+            @change="updatePlayerAttribute(item.id, 'kit_no', $event)"
+          />
+        </template>
+        <template #item.ovr="{ item }">
+          <inline-select
+            :item="item"
+            attribute="ovr"
+            label="OVR"
+            input-type="select"
+            :options="Array.from({ length: 61 }, (v, k) => k + 40)"
+            dense
+            @change="updatePlayerAttribute(item.id, 'ovr', $event)"
+          />
+        </template>
+        <template #item.value="{ item }">
+          <inline-field
+            :item="item"
+            attribute="value"
+            label="Value"
+            input-type="money"
+            :display="$_formatMoney(item.value)"
+            required
+            @close="updatePlayerAttribute(item.id, 'value', $event)"
+          />
+        </template>
+        <template #item.status="{ item }">
+          <v-icon :color="item.statusColor">
+            mdi-{{ item.statusIcon }}
+          </v-icon>
+        </template>
+        <template #item.sec_pos="{ item }">
+          {{ $_listArray(item.sec_pos, '-') }}
+        </template>
+        <template #item.wage="{ item }">
+          {{ contractWage(item) }}
+        </template>
+        <template #item.endDate="{ item }">
+          {{ contractDate(item) }}
+        </template>
+      </v-data-table>
     </v-card-text>
   </v-card>
 </template>
@@ -159,14 +149,13 @@
   import { mixins, Component } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
-  import { InlineField, InlineSelect, PagedTable } from '@/helpers'
+  import { InlineField, InlineSelect } from '@/helpers'
   import { positions } from '@/models/Player'
 
   @Component({
     components: {
       InlineField,
-      InlineSelect,
-      PagedTable
+      InlineSelect
     }
   })
   export default class PlayerGrid extends mixins(TeamAccessible) {
@@ -178,8 +167,6 @@
       { text: 'Contract', color: 'blue', icon: 'file-document-outline' },
       { text: 'Statistics', color: 'red', icon: 'numeric' }
     ]
-    page = 1
-    pageCount = 0
     filter = 2
     filters = [
       { text: 'All', color: 'blue', icon: 'earth' },

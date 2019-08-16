@@ -35,38 +35,28 @@
 
     <!-- Match History Grid -->
     <v-card-text>
-      <paged-table
-        v-model="page"
-        :page-count="pageCount"
+      <v-data-table
+        :headers="headers"
+        :items="rows"
+        sort-by="played_on"
+        sort-desc
+        :search="search"
+        item-key="id"
+        no-data-text="No Matches Recorded"
       >
-        <template #table>
-          <v-data-table
-            :headers="headers"
-            :items="rows"
-            :page.sync="page"
-            sort-by="played_on"
-            sort-desc
-            :search="search"
-            item-key="id"
-            hide-default-footer
-            no-data-text="No Matches Recorded"
-            @page-count="pageCount = $event"
-          >
-            <template #item.score="{ item }">
-              <v-btn
-                :to="item.link"
-                nuxt
-                text
-                :color="item.resultColor"
-                v-text="item.score"
-              />
-            </template>
-            <template #item.played_on="{ item }">
-              {{ $_format($_parse(item.played_on), 'MMM DD, YYYY') }}
-            </template>
-          </v-data-table>
+        <template #item.score="{ item }">
+          <v-btn
+            :to="item.link"
+            nuxt
+            text
+            :color="item.resultColor"
+            v-text="item.score"
+          />
         </template>
-      </paged-table>
+        <template #item.played_on="{ item }">
+          {{ $_format($_parse(item.played_on), 'MMM DD, YYYY') }}
+        </template>
+      </v-data-table>
     </v-card-text>
   </v-card>
 </template>
@@ -74,15 +64,10 @@
 <script>
   import { mixins, Component } from 'nuxt-property-decorator'
   import { Competition, Match } from '@/models'
-  import { PagedTable } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
   import { addYears } from 'date-fns'
 
-  @Component({
-    components: {
-      PagedTable
-    }
-  })
+  @Component
   export default class MatchGrid extends mixins(TeamAccessible) {
     headers = [
       { text: 'Competition', value: 'competition', align: 'end' },
@@ -92,8 +77,6 @@
       { text: 'Date Played', value: 'played_on' }
     ]
     search = ''
-    page = 1
-    pageCount = 0
     seasonFilter = null
     competition = null
 
