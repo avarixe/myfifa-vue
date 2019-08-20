@@ -38,7 +38,7 @@ export default {
   */
   // loading: '~/components/App/LoadingOverlay.vue', // { color: '#3B8070' },
 
-  devModules: [
+  buildModules: [
     '@nuxtjs/vuetify'
   ],
 

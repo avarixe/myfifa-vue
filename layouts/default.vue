@@ -1,10 +1,10 @@
 <template>
   <v-app>
-    <no-ssr v-if="authenticated">
+    <client-only v-if="authenticated">
       <app-bar />
 
       <app-drawer />
-    </no-ssr>
+    </client-only>
 
     <app-broadcaster />
 
