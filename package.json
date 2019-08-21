@@ -11,6 +11,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@nuxtjs/dotenv": "^1.4.0",
     "@nuxtjs/moment": "^1.2.0",
     "@vuex-orm/core": "^0.31.0",
     "actioncable": "^5.2.1",

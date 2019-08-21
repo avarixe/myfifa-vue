@@ -942,6 +942,14 @@
     webpack-node-externals "^1.7.2"
     webpackbar "^4.0.0"
 
+"@nuxtjs/dotenv@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/dotenv/-/dotenv-1.4.0.tgz#900dae02dd6f89800374dcf4f1a559ee5dbfe911"
+  integrity sha512-uD0jLbNJcgmifByVwT6nhTwFWPPPe4DjXC3AvHAOQtR6msT9g1n9ckBZaBY+pJZsQLcYtwoA6EDJNP1a6Ja42g==
+  dependencies:
+    consola "^2.9.0"
+    dotenv "^8.0.0"
+
 "@nuxtjs/moment@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@nuxtjs/moment/-/moment-1.2.0.tgz#f34c6e90786cff5d8906058adfb8f312a454f6ce"
@@ -2805,6 +2813,11 @@ dot-prop@^4.1.1:
   integrity sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==
   dependencies:
     is-obj "^1.0.0"
+
+dotenv@^8.0.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.1.0.tgz#d811e178652bfb8a1e593c6dd704ec7e90d85ea2"
+  integrity sha512-GUE3gqcDCaMltj2++g6bRQ5rBJWtkWTmqmD0fo1RnnMuUqHNCt2oTPeDnS9n6fKYvlhn7AeBkb38lymBtWBQdA==
 
 duplexer@^0.1.1:
   version "0.1.1"

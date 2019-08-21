@@ -43,7 +43,8 @@ export default {
   ],
 
   modules: [
-    '@nuxtjs/moment'
+    '@nuxtjs/moment',
+    '@nuxtjs/dotenv'
   ],
 
   vuetify: {

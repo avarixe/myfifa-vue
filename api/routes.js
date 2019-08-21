@@ -1,12 +1,6 @@
-const domain = 'myfifa-api.jhyuk.com'
+export const baseURL = process.env.BASE_URL
 
-export const baseURL = process.env.NODE_ENV === 'production'
-  ? `https://${domain}`
-  : `http://${domain}:3000`
-
-export const cableURL = process.env.NODE_ENV === 'production'
-  ? `wss://${domain}/cable`
-  : `ws://${domain}:3000/cable`
+export const cableURL = process.env.CABLE_URL
 
 export const routes = {
   teams: {
