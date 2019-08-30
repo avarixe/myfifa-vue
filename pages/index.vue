@@ -24,6 +24,7 @@
   import LoginForm from '@/components/App/LoginForm'
 
   @Component({
+    middleware: ['authenticated'],
     components: {
       LoginForm
     },
@@ -31,11 +32,6 @@
     transition: 'fade-transition'
   })
   export default class IndexPage extends Vue {
-    layout = () => 'default'
-    middleware = () => 'home'
-
-    mode = 'login'
-
     @Watch('authenticated', { immediate: true })
     goToTeams (val) {
       val && this.$router.push({ name: 'teams' })

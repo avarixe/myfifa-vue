@@ -26,6 +26,7 @@
   import CompetitionForm from '@/components/Competition/Form'
 
   @Component({
+    middleware: ['authenticated'],
     components: {
       CompetitionForm,
       SeasonTimeline
@@ -33,9 +34,6 @@
     transition: 'fade-transition'
   })
   export default class SeasonsPage extends mixins(TeamAccessible) {
-    layout = () => 'default'
-    middleware = () => 'authenticated'
-
     async fetch ({ store, params }) {
       await store.dispatch('competitions/FETCH', { teamId: params.teamId })
     }

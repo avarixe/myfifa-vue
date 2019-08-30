@@ -19,6 +19,7 @@
   import TeamGrid from '@/components/Team/Grid'
 
   @Component({
+    middleware: ['authenticated'],
     components: {
       TeamForm,
       TeamGrid
@@ -26,9 +27,6 @@
     transition: 'fade-transition'
   })
   export default class TeamsPage extends Vue {
-    layout = () => 'default'
-    middleware = () => 'home'
-
     async fetch ({ store }) {
       await store.dispatch('teams/FETCH')
     }

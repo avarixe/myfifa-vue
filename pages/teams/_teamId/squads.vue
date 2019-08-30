@@ -19,6 +19,7 @@
   import SquadGrid from '@/components/Squad/Grid'
 
   @Component({
+    middleware: ['authenticated'],
     components: {
       SquadForm,
       SquadGrid
@@ -26,9 +27,6 @@
     transition: 'fade-transition'
   })
   export default class SquadsPage extends mixins(TeamAccessible) {
-    layout = () => 'default'
-    middleware = () => 'authenticated'
-
     async fetch ({ store, params }) {
       await Promise.all([
         store.dispatch('squads/FETCH', { teamId: params.teamId }),

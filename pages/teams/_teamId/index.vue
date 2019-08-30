@@ -102,6 +102,7 @@
   import { TeamAccessible } from '@/mixins'
 
   @Component({
+    middleware: ['authenticated'],
     components: {
       MatchForm,
       MatchCard,
@@ -115,9 +116,6 @@
     transition: 'fade-transition'
   })
   export default class TeamPage extends mixins(TeamAccessible) {
-    layout = () => 'default'
-    middleware = () => 'authenticated'
-
     get lastMatch () {
       return Match
         .query()

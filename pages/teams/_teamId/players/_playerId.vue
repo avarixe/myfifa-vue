@@ -179,6 +179,7 @@
   import { TeamAccessible } from '@/mixins'
 
   @Component({
+    middleware: ['authenticated'],
     components: {
       PlayerForm,
       PlayerActions,
@@ -189,9 +190,6 @@
     transition: 'fade-transition'
   })
   export default class PlayerPage extends mixins(TeamAccessible) {
-    layout = () => 'default'
-    middleware = () => 'authenticated'
-
     get player () {
       return Player
         .query()

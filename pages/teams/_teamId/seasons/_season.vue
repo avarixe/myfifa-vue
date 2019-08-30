@@ -50,6 +50,7 @@
   import { TeamAccessible } from '@/mixins'
 
   @Component({
+    middleware: ['authenticated'],
     components: {
       CompetitionForm,
       CompetitionGrid,
@@ -58,9 +59,6 @@
     transition: 'fade-transition'
   })
   export default class SeasonPage extends mixins(TeamAccessible) {
-    layout = () => 'default'
-    middleware = () => 'authenticated'
-
     head () {
       return {
         title: this.title

@@ -19,6 +19,7 @@
   import PlayerGrid from '@/components/Player/Grid'
 
   @Component({
+    middleware: ['authenticated'],
     components: {
       PlayerForm,
       PlayerGrid
@@ -26,9 +27,6 @@
     transition: 'fade-transition'
   })
   export default class PlayersPage extends mixins(TeamAccessible) {
-    layout = () => 'default'
-    middleware = () => 'authenticated'
-
     async fetch ({ store, params }) {
       await Promise.all([
         store.dispatch('players/FETCH', { teamId: params.teamId }),

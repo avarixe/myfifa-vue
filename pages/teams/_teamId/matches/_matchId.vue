@@ -114,6 +114,7 @@
   import { TeamAccessible } from '@/mixins'
 
   @Component({
+    middleware: ['authenticated'],
     components: {
       FittyText,
       MatchForm,
@@ -124,11 +125,6 @@
     transition: 'fade-transition'
   })
   export default class MatchPage extends mixins(TeamAccessible) {
-    layout = () => 'default'
-    middleware = () => 'authenticated'
-
-    tab = 0
-
     get match () {
       return Match
         .query()

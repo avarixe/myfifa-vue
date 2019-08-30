@@ -182,6 +182,7 @@
   import { TeamAccessible } from '@/mixins'
 
   @Component({
+    middleware: ['authenticated'],
     components: {
       FittyText,
       RecordRemove,
@@ -193,9 +194,6 @@
     transition: 'fade-transition'
   })
   export default class CompetitionPage extends mixins(TeamAccessible) {
-    layout = () => 'default'
-    middleware = () => 'authenticated'
-
     head () {
       return {
         title: `${this.competition.name} (${this.competitionSeason})`
