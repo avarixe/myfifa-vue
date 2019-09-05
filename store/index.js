@@ -18,17 +18,24 @@ export const getters = {
 // actions
 export const actions = {
   async nuxtServerInit ({ commit, dispatch }, { req, params }) {
-    // load authentication token, if present
-    let accessToken = null
     if (req.headers.cookie) {
       var parsed = cookieparser.parse(req.headers.cookie)
-      accessToken = parsed.token
-    }
-    commit('SET_TOKEN', accessToken)
 
-    // load current Team, if present
-    if (accessToken && 'teamId' in params) {
-      await dispatch('teams/GET', params)
+      if ('token' in parsed) {
+        const accessToken = parsed.token
+        commit('SET_TOKEN', accessToken)
+
+        try {
+          await dispatch('user/GET')
+
+          // load current Team, if present
+          if ('teamId' in params) {
+            await dispatch('teams/GET', params)
+          }
+        } catch (e) {
+          commit('SET_TOKEN', null)
+        }
+      }
     }
   },
   login ({ commit }, payload) {
