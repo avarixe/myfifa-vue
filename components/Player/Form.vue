@@ -3,7 +3,6 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
-    :submit-cb="submitCb"
     :color="color"
   >
     <template #activator="{ on }">
@@ -104,8 +103,6 @@
   import { positions } from '@/models/Player'
   import { VMoneyField } from '@/helpers'
 
-  const mix = mixins(DialogFormable, TeamAccessible)
-
   @Component({
     components: {
       VMoneyField
@@ -115,9 +112,8 @@
       update: 'UPDATE'
     })
   })
-  export default class PlayerForm extends mix {
+  export default class PlayerForm extends mixins(DialogFormable, TeamAccessible) {
     @Prop(Object) playerData
-    @Prop(Function) submitCb
 
     valid = false
     player = {
@@ -146,7 +142,6 @@
           'id',
           'name',
           'pos',
-          'sec_pos',
           'ovr',
           'value',
           'kit_no',
