@@ -5,7 +5,6 @@
     :close-on-content-click="false"
     :return-value.sync="date"
     transition="scale-transition"
-    full-width
     min-width="290px"
   >
     <template #activator="{ on }">

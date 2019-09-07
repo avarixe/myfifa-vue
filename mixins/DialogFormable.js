@@ -1,4 +1,4 @@
-import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
 import DialogForm from '@/helpers/DialogForm'
 
 @Component({
