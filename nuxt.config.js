@@ -77,8 +77,6 @@ export default {
 
     transpile: [/^vuetify/],
 
-    postcss: {},
-
     extractCSS: true,
 
     extend (config, { isDev, isClient }) {
