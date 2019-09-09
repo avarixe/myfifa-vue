@@ -176,6 +176,17 @@
         .map(competition => competition.name)
     }
 
+    get competitionId () {
+      if (this.match.competition) {
+        const competition = Competition
+          .query()
+          .where('season', this.season)
+          .where('name', this.match.competition)
+          .first()
+        return competition ? competition.id : null
+      }
+    }
+
     get stages () {
       const competition = Competition
         .query()
@@ -209,6 +220,14 @@
         } else {
           this.match.played_on = this.team.currently_on
         }
+      }
+    }
+
+    @Watch('competitionId', { immediate: true })
+    loadStages (competitionId) {
+      console.log('in loadStages')
+      if (competitionId) {
+        this.$store.dispatch('stages/FETCH', { competitionId })
       }
     }
 

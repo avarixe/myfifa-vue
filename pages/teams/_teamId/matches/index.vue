@@ -30,7 +30,6 @@
     async fetch ({ store, params }) {
       store.dispatch('matches/FETCH', { teamId: params.teamId })
       store.dispatch('competitions/FETCH', { teamId: params.teamId })
-      store.dispatch('stages/SEARCH', { teamId: params.teamId })
     }
 
     beforeMount () {
