@@ -12,9 +12,10 @@
             :to="item.link"
             nuxt
             text
-            color="info"
-            v-text="item.title"
-          />
+            color="primary"
+          >
+            {{ item.title }}
+          </v-btn>
         </template>
         <template #item.started_on="{ item }">
           {{ $_format($_parse(item.started_on), 'MMM DD, YYYY') }}
