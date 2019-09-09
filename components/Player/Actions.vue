@@ -38,7 +38,7 @@
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
-  import { Loan, Injury, Contract } from '@/models'
+  import { Loan, Injury } from '@/models'
   import ContractForm from '@/components/Contract/Form'
   import InjuryForm from '@/components/Injury/Form'
   import LoanForm from '@/components/Loan/Form'

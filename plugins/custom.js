@@ -1,7 +1,4 @@
 import Vue from 'vue'
-import objectify from './objectify'
-
-Vue.prototype.$_objectify = objectify
 
 // FORM VALIDATION FUNCTIONS
 

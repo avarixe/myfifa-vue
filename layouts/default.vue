@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  import { Vue, Component, Watch } from 'vue-property-decorator'
+  import { Vue, Component } from 'vue-property-decorator'
   import { mapGetters } from 'vuex'
   import { Team } from '@/models'
   import AppBar from '@/components/App/Bar'

@@ -89,17 +89,19 @@
     get availablePlayers () {
       const selectedIds = this.sortedCaps.map(cap => cap.player_id)
       return activePlayers(this.team.id)
-        .filter(player =>
-          selectedIds.indexOf(player.id) < 0 ||
-          this.record && player.id === this.record.replacement_id
-        )
+        .filter(player => {
+          if (selectedIds.indexOf(player.id) < 0) {
+            return true
+          } else if (this.record) {
+            return player.id === this.record.replacement_id
+          }
+        })
     }
 
     get unsubbedPlayers () {
       return this.sortedCaps.filter(cap =>
-        cap.player_id !== this.substitution.replacement_id &&
-        !cap.subbed_out ||
-        this.record && cap.player_id === this.record.player_id
+        (cap.player_id !== this.substitution.replacement_id && !cap.subbed_out) ||
+        (this.record && cap.player_id === this.record.player_id)
       )
     }
 

@@ -3,17 +3,14 @@
 module.exports = {
   root: true,
   env: {
-    browser: true,
     node: true
   },
-  // https://github.com/standard/standard/blob/master/docs/RULES-en.md
   extends: [
-    // 'standard'
-    'plugin:vue/recommended'
+    'standard',
+    'plugin:vue/recommended',
+    'eslint:recommended'
   ],
-  // required to lint *.vue files
   plugins: [
-    // 'html'
     'vuetify'
   ],
   // add your custom rules here
@@ -33,14 +30,9 @@ module.exports = {
 
     'vue/singleline-html-element-content-newline': 'off',
 
-    'vuetify/no-deprecated-classes': 'error',
-    'vuetify/grid-unknown-attributes': 'warn',
-    'vuetify/no-legacy-grid': 'warn',
-
-    // allow debugger during development
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   },
-
   parserOptions: {
     parser: 'babel-eslint',
     ecmaFeatures: {

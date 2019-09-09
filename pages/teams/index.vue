@@ -14,7 +14,6 @@
 
 <script>
   import { Vue, Component } from 'nuxt-property-decorator'
-  import { Team } from '@/models'
   import TeamForm from '@/components/Team/Form'
   import TeamGrid from '@/components/Team/Grid'
 

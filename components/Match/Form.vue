@@ -185,6 +185,7 @@
           .first()
         return competition ? competition.id : null
       }
+      return null
     }
 
     get stages () {
@@ -225,7 +226,6 @@
 
     @Watch('competitionId', { immediate: true })
     loadStages (competitionId) {
-      console.log('in loadStages')
       if (competitionId) {
         this.$store.dispatch('stages/FETCH', { competitionId })
       }

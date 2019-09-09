@@ -218,7 +218,7 @@
         store.dispatch('contracts/FETCH', { playerId: params.playerId }),
         store.dispatch('injuries/FETCH', { playerId: params.playerId }),
         store.dispatch('loans/FETCH', { playerId: params.playerId }),
-        store.dispatch('transfers/FETCH', { playerId: params.playerId }),
+        store.dispatch('transfers/FETCH', { playerId: params.playerId })
       ])
     }
 

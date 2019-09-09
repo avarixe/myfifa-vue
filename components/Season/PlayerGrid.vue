@@ -136,6 +136,8 @@
             { text: 'Assists', value: 'numAssists', align: 'right' },
             { text: 'Clean Sheets', value: 'numCs', align: 'right' }
           ])
+        default:
+          return headers
       }
     }
 

@@ -4,7 +4,7 @@ export const state = () => ({
   title: 'MyFIFA Manager',
   overline: '',
   headline: '',
-  caption: '',
+  caption: ''
 })
 
 // mutations

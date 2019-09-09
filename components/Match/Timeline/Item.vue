@@ -77,6 +77,8 @@
           return this.event.injury ? 'pink' : 'green'
         case 'Penalty Shootout':
           return 'indigo'
+        default:
+          return ''
       }
     }
 
@@ -90,6 +92,8 @@
           return this.event.injury ? 'hospital' : 'repeat'
         case 'Penalty Shootout':
           return 'human'
+        default:
+          return ''
       }
     }
 
@@ -118,6 +122,8 @@
           return 'substitutions'
         case 'Penalty Shootout':
           return 'penaltyShootout'
+        default:
+          return ''
       }
     }
 

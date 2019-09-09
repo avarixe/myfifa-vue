@@ -87,7 +87,7 @@
       this.$store.commit('app/SET_PAGE', {
         title: this.title,
         overline: this.team.title,
-        headline: this.title,
+        headline: this.title
       })
     }
 
