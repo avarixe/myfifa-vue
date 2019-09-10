@@ -90,8 +90,9 @@
             text
             nuxt
             color="info"
-            v-text="item.name"
-          />
+          >
+            {{ item.name }}
+          </v-btn>
         </template>
         <template #item.kit_no="{ item }">
           <inline-select

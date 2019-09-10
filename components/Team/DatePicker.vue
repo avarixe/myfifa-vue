@@ -15,8 +15,9 @@
           color="cyan"
           dark
           v-on="on"
-          v-text="$_format(currentDate, 'MMM DD, YYYY')"
-        />
+        >
+          {{ $_format(currentDate, 'MMM DD, YYYY') }}
+        </v-btn>
       </slot>
     </template>
 

@@ -50,8 +50,9 @@
             nuxt
             text
             :color="item.resultColor"
-            v-text="item.score"
-          />
+          >
+            {{ item.score }}
+          </v-btn>
         </template>
         <template #item.played_on="{ item }">
           {{ $_format($_parse(item.played_on), 'MMM DD, YYYY') }}

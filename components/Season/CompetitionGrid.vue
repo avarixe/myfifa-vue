@@ -12,8 +12,9 @@
         nuxt
         text
         color="info"
-        v-text="item.name"
-      />
+      >
+        {{ item.name }}
+      </v-btn>
     </template>
     <template #item.status="{ item }">
       <v-icon

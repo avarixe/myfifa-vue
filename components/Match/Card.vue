@@ -12,6 +12,7 @@
       <v-spacer />
 
       <v-btn
+        v-if="match"
         :to="match.link"
         dark
         nuxt
@@ -36,9 +37,9 @@
     </template>
     <div
       v-else
-      class="text-center"
+      class="text-center pa-4"
     >
-      <p class="category font-weight-thin">
+      <p class="category font-weight-thin ma-0">
         No Matches have been Recorded.
       </p>
     </div>

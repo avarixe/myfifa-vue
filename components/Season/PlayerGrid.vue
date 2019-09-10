@@ -49,8 +49,9 @@
                 text
                 color="info"
                 v-on="on"
-                v-text="item.name"
-              />
+              >
+                {{ item.name }}
+              </v-btn>
             </template>
 
             <player-card :player-id="item.id" />
