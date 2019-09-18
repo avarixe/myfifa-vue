@@ -8,6 +8,18 @@
       @click.stop="toggleDrawer"
     />
 
+    <span
+      v-if="team"
+      class="mr-2"
+    >
+      <v-img
+        :src="badgeUrl"
+        height="32px"
+        width="32px"
+        contain
+      />
+    </span>
+
     <v-toolbar-title>
       <div class="overline">{{ overline }}</div>
       <div class="headline font-weight-thin">
@@ -23,6 +35,8 @@
 <script>
   import { Vue, Component } from 'nuxt-property-decorator'
   import { mapState, mapMutations } from 'vuex'
+  import { Team } from '@/models'
+  import { baseURL } from '@/api'
 
   @Component({
     computed: mapState('app', [
@@ -36,6 +50,16 @@
   })
   export default class AppBar extends Vue {
     responsive = false
+
+    get team () {
+      return this.$route.params.teamId
+        ? Team.find(this.$route.params.teamId)
+        : null
+    }
+
+    get badgeUrl () {
+      return this.team ? `${baseURL}${this.team.badge_path}` : null
+    }
 
     mounted () {
       this.updateResponsiveState()

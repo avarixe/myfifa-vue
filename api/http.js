@@ -28,12 +28,12 @@ async function sendRequest ({
   try {
     const res = await axios({
       method: method || 'get',
-      baseURL: baseURL,
+      baseURL,
       url: urlFor(path, pathData),
-      params: params,
-      data: data,
+      params,
+      data,
       credentials: false,
-      headers: token ? { 'Authorization': 'Bearer ' + token } : null
+      headers: token ? { Authorization: `Bearer ${token}` } : null
     })
     success && await success(res)
     return res

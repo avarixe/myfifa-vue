@@ -17,6 +17,16 @@
             {{ item.title }}
           </v-btn>
         </template>
+        <template #item.badge_path="{ item }">
+          <v-img
+            v-if="item.badge_path"
+            :src="item.badgeUrl"
+            height="32px"
+            width="32px"
+            contain
+            class="text-center"
+          />
+        </template>
         <template #item.started_on="{ item }">
           {{ $_format($_parse(item.started_on), 'MMM DD, YYYY') }}
         </template>
@@ -36,6 +46,7 @@
   export default class TeamGrid extends Vue {
     headers = [
       { text: 'Team Name', value: 'title', align: 'center' },
+      { text: 'Badge', value: 'badge_path', align: 'center', width: '32px', sortable: false },
       { text: 'Start Date', value: 'started_on', align: 'center' },
       { text: 'Current Date', value: 'currently_on', align: 'center' }
     ]

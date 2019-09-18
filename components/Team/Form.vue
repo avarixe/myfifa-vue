@@ -27,7 +27,10 @@
           autocorrect="off"
         />
       </v-col>
-      <v-col cols="12">
+      <v-col
+        v-if="!teamId"
+        cols="12"
+      >
         <v-date-field
           v-model="team.started_on"
           label="Start Date"
@@ -42,6 +45,12 @@
           :rules="$_validate('Currency', ['required'])"
           label="Currency"
           prepend-icon="mdi-cash"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-file-input
+          v-model="team.badge"
+          label="Badge"
         />
       </v-col>
     </template>
@@ -71,7 +80,8 @@
     team = {
       title: '',
       started_on: format(new Date(), 'YYYY-MM-DD'),
-      currency: '$'
+      currency: '$',
+      badge: null
     }
 
     get title () {
@@ -87,16 +97,26 @@
           'id',
           'title',
           'started_on',
-          'currency'
+          'currency',
+          'badge'
         ])
       }
     }
 
     async submit () {
+      const formData = new FormData()
+
+      for (let k in this.team) {
+        formData.append(`team[${k}]`, this.team[k])
+      }
+
       if ('id' in this.team) {
-        await this.update(this.team)
+        await this.update({
+          id: this.team.id,
+          formData
+        })
       } else {
-        const { data } = await this.create(this.team)
+        const { data } = await this.create(formData)
 
         this.$router.push({
           name: 'teams-teamId',
