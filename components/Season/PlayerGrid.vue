@@ -149,7 +149,7 @@
         .whereHas('contracts', query => {
           query.where(contract =>
             this.seasonStart < contract.ended_on &&
-            contract.started_on <= this.seasonEnd
+            contract.started_on < this.seasonEnd
           )
         })
         .get()
