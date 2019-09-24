@@ -28,8 +28,10 @@
   })
   export default class MatchesPage extends mixins(TeamAccessible) {
     async fetch ({ store, params }) {
-      store.dispatch('matches/FETCH', { teamId: params.teamId })
-      store.dispatch('competitions/FETCH', { teamId: params.teamId })
+      await Promise.all([
+        store.dispatch('matches/FETCH', { teamId: params.teamId }),
+        store.dispatch('competitions/FETCH', { teamId: params.teamId })
+      ])
     }
 
     beforeMount () {
