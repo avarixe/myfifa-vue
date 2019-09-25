@@ -3,18 +3,12 @@
     :headers="headers"
     :items="rows"
     :items-per-page="-1"
+    :mobile-breakpoint="0"
     disable-sort
     hide-default-footer
   >
     <template #item.name="{ item }">
-      <v-btn
-        :to="item.link"
-        nuxt
-        text
-        color="info"
-      >
-        {{ item.name }}
-      </v-btn>
+      <nuxt-link :to="item.link">{{ item.name }}</nuxt-link>
     </template>
     <template #item.status="{ item }">
       <v-icon

@@ -40,22 +40,11 @@
         sort-by="pos"
         :search="search"
         item-key="id"
+        :mobile-breakpoint="0"
         no-data-text="No Players Recorded"
       >
         <template #item.name="{ item }">
-          <v-dialog width="500px">
-            <template #activator="{ on }">
-              <v-btn
-                text
-                color="info"
-                v-on="on"
-              >
-                {{ item.name }}
-              </v-btn>
-            </template>
-
-            <player-card :player-id="item.id" />
-          </v-dialog>
+          <nuxt-link :to="item.link">{{ item.name }}</nuxt-link>
         </template>
         <template #item.ovrChange="{ item }">
           <span :class="ovrColor(item)">
@@ -80,13 +69,8 @@
   import { addYears } from 'date-fns'
   import { Team, Player } from '@/models'
   import { positions } from '@/models/Player'
-  import PlayerCard from '@/components/Player/Card'
 
-  @Component({
-    components: {
-      PlayerCard
-    }
-  })
+  @Component
   export default class SeasonPlayerGrid extends Vue {
     @Prop({ type: [String, Number], required: true }) season
 
@@ -99,6 +83,7 @@
     filterActive = true
     search = ''
     stats = {
+      player_ids: [],
       num_games: {},
       num_minutes: {},
       num_goals: {},
@@ -145,13 +130,8 @@
     get players () {
       return Player
         .query()
-        .withAll()
-        .whereHas('contracts', query => {
-          query.where(contract =>
-            this.seasonStart < contract.ended_on &&
-            contract.started_on < this.seasonEnd
-          )
-        })
+        .with('contracts|histories')
+        .whereIdIn(this.stats.player_ids.map(id => parseInt(id)))
         .get()
     }
 
@@ -177,6 +157,7 @@
 
         return {
           ...player,
+          link: player.link,
           age: parseInt(this.seasonEnd) - player.birth_year,
           numGames,
           numMinutes,

@@ -24,17 +24,25 @@
       <v-col cols="12">
         <v-card>
           <v-card-text>
-            <v-tabs centered>
+            <v-tabs
+              v-model="tab"
+              centered
+            >
               <v-tab>Competitions</v-tab>
               <v-tab>Players</v-tab>
+            </v-tabs>
 
+            <v-tabs-items
+              v-model="tab"
+              touchless
+            >
               <v-tab-item>
                 <competition-grid :season="pageSeason" />
               </v-tab-item>
               <v-tab-item>
                 <player-grid :season="pageSeason" />
               </v-tab-item>
-            </v-tabs>
+            </v-tabs-items>
           </v-card-text>
         </v-card>
       </v-col>
@@ -64,6 +72,8 @@
         title: this.title
       }
     }
+
+    tab = 0
 
     get title () {
       return `${this.seasonLabel(this.pageSeason)} Season`
