@@ -58,7 +58,9 @@
     }
 
     get badgeUrl () {
-      return this.team ? `${baseURL}${this.team.badge_path}` : null
+      return this.team && this.team.badge_path
+        ? `${baseURL}${this.team.badge_path}`
+        : null
     }
 
     mounted () {
