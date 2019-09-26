@@ -17,10 +17,9 @@
 
     <template #form>
       <v-col cols="12">
-        <v-combobox
+        <v-text-field
           v-model="row.name"
           label="Team"
-          :items="competitionTeams"
           prepend-icon="mdi-shield-half-full"
           hide-details
           spellcheck="false"
@@ -78,10 +77,8 @@
 <script>
   import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { mapActions } from 'vuex'
-  import { CompetitionAccessible, DialogFormable } from '@/mixins'
+  import { DialogFormable } from '@/mixins'
   import { TooltipButton } from '@/helpers'
-
-  const mix = mixins(DialogFormable, CompetitionAccessible)
 
   @Component({
     components: {
@@ -92,7 +89,7 @@
       update: 'UPDATE'
     })
   })
-  export default class TableRowForm extends mix {
+  export default class TableRowForm extends mixins(DialogFormable) {
     @Prop({ type: Object, required: true }) stage
     @Prop(Object) rowData
 
