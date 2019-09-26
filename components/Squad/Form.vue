@@ -6,53 +6,51 @@
     :color="color"
   >
     <template #activator="{ on }">
-      <slot :on="on" />
+      <slot :on="on">
+        <v-btn v-on="on">
+          <v-icon left>mdi-plus-circle-outline</v-icon>
+          Squad
+        </v-btn>
+      </slot>
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
-            <v-text-field
-              v-model="squad.name"
-              :rules="$_validate('Name', ['required'])"
-              label="Name"
-              prepend-icon="mdi-clipboard-text"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-flex>
-        </v-layout>
-
-        <v-layout
-          v-for="(squadPlayer, i) in squad.squad_players_attributes"
-          :key="i"
-          row
-          wrap
-        >
-          <v-flex xs4>
-            <v-select
-              v-model="squadPlayer.pos"
-              :items="positions"
-              label="Position"
-              prepend-icon="mdi-run"
-              hide-details
-            />
-          </v-flex>
-
-          <v-flex xs8>
-            <player-select
-              v-model="squadPlayer.player_id"
-              :players="players"
-              item-value="id"
-              label="Player"
-              hide-details
-            />
-          </v-flex>
-        </v-layout>
-      </v-container>
+      <v-col cols="12">
+        <v-text-field
+          v-model="squad.name"
+          :rules="$_validate('Name', ['required'])"
+          label="Name"
+          prepend-icon="mdi-clipboard-text"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-row
+        v-for="(squadPlayer, i) in squad.squad_players_attributes"
+        :key="i"
+        dense
+      >
+        <v-col cols="4">
+          <v-select
+            v-model="squadPlayer.pos"
+            :items="positions"
+            label="Position"
+            prepend-icon="mdi-run"
+            hide-details
+          />
+        </v-col>
+        <v-col cols="8">
+          <player-select
+            v-model="squadPlayer.player_id"
+            :players="players"
+            item-value="id"
+            label="Player"
+            hide-details
+          />
+        </v-col>
+      </v-row>
     </template>
   </dialog-form>
 </template>
@@ -93,7 +91,7 @@
     }
 
     get title () {
-      return this.squad.id ? 'Edit Squad' : 'New Squad'
+      return this.squadData ? 'Edit Squad' : 'New Squad'
     }
 
     get players () {
@@ -102,12 +100,11 @@
 
     @Watch('dialog')
     setSquad (val) {
-      this.valid = !!this.squadData
-      if (this.squadData) {
-        Object.assign(this.squad, this.$_pick(this.squadData, [
+      if (val && this.squadData) {
+        this.squad = this.$_pick(this.squadData, [
           'id',
           'name'
-        ]))
+        ])
         this.squad.squad_players_attributes = this.squadData.squad_players
           .map(squadPlayer => ({
             id: squadPlayer.id,

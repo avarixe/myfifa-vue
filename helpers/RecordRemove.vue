@@ -4,17 +4,11 @@
     @click.stop="snackbar = true"
   >
     <slot>
-      <v-tooltip bottom>
-        <template #activator="{ on }">
-          <v-btn
-            v-on="on"
-            icon
-          >
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
-        </template>
-        Remove {{ label }}
-      </v-tooltip>
+      <tooltip-button
+        icon="mdi-delete"
+        :label="`Remove ${label}`"
+        dark
+      />
     </slot>
 
     <v-snackbar
@@ -26,20 +20,29 @@
         dark
         text
         @click="remove"
-      >Yes</v-btn>
+      >
+        Yes
+      </v-btn>
       <v-btn
         dark
         text
         @click.stop="snackbar = false"
-      >No</v-btn>
+      >
+        No
+      </v-btn>
     </v-snackbar>
   </div>
 </template>
 
 <script>
   import { Vue, Prop, Component } from 'nuxt-property-decorator'
+  import TooltipButton from './TooltipButton'
 
-  @Component
+  @Component({
+    components: {
+      TooltipButton
+    }
+  })
   export default class RecordRemove extends Vue {
     @Prop({ type: Object, required: true }) record
     @Prop({ type: String, required: true }) store

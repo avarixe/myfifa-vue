@@ -17,10 +17,12 @@ export const actions = {
     model: Contract,
     parent: 'player'
   }),
-  TEAM_FETCH ({ rootState }, { teamId }) {
+  SEARCH ({ rootState }, { teamId, filters }) {
     return http({
-      path: routes.contracts.teamIndex,
+      method: 'post',
+      path: routes.contracts.search,
       pathData: { teamId },
+      data: { filters },
       token: rootState.token,
       success ({ data }) {
         Contract.insert({ data })

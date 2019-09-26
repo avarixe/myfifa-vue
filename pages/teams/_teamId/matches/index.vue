@@ -1,22 +1,14 @@
 <template>
-  <v-container
-    fluid
-    grid-list-lg
-  >
-    <v-layout wrap>
-      <v-flex xs12>
-        <div class="overline">{{ team.title }}</div>
-        <div class="headline font-weight-thin">Matches</div>
-      </v-flex>
-
-      <v-flex xs12>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12">
         <match-form />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <match-grid />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -27,6 +19,7 @@
   import MatchGrid from '@/components/Match/Grid'
 
   @Component({
+    middleware: ['authenticated'],
     components: {
       MatchForm,
       MatchGrid
@@ -34,17 +27,19 @@
     transition: 'fade-transition'
   })
   export default class MatchesPage extends mixins(TeamAccessible) {
-    layout = () => 'default'
-    middleware = () => 'authenticated'
-
-    head () {
-      return {
-        title: `${this.team.title} - Matches`
-      }
+    async fetch ({ store, params }) {
+      await Promise.all([
+        store.dispatch('matches/FETCH', { teamId: params.teamId }),
+        store.dispatch('competitions/FETCH', { teamId: params.teamId })
+      ])
     }
 
-    mounted () {
-      this.$store.commit('app/SET_TITLE', this.team.title)
+    beforeMount () {
+      this.$store.commit('app/SET_PAGE', {
+        title: `${this.team.title} - Matches`,
+        overline: this.team.title,
+        headline: 'Matches'
+      })
     }
   }
 </script>

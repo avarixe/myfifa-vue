@@ -1,4 +1,5 @@
 import { Model } from '@vuex-orm/core'
+import FixtureLeg from './FixtureLeg'
 
 export default class Fixture extends Model {
   static get entity () {
@@ -18,8 +19,16 @@ export default class Fixture extends Model {
       // Database fields
       home_team: this.string('').nullable(),
       away_team: this.string('').nullable(),
-      home_score: this.string('').nullable(),
-      away_score: this.string('').nullable()
+
+      // Associations
+      legs: this.hasMany(FixtureLeg, 'fixture_id', 'id')
     }
   }
+
+  get score () {
+    return ''
+  }
+  // get score () {
+  //   return `${this.home_score || ''} - ${this.away_score || ''}`
+  // }
 }

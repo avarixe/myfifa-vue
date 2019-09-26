@@ -1,100 +1,88 @@
 <template>
-  <v-container
-    fluid
-    grid-list-lg
-  >
-    <v-layout wrap>
-      <v-flex xs12>
-        <div class="overline">{{ team.title }}</div>
-        <div class="headline font-weight-thin">
-          Match
-          <small>v {{ match.opponent }}</small>
-        </div>
-      </v-flex>
-
-      <v-flex xs12>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12">
         <v-btn
           v-if="prevMatchLink"
           :to="prevMatchLink"
-          color="blue-grey"
-          outlined
-        >Previous Match</v-btn>
+        >
+          Previous Match
+        </v-btn>
 
         <v-btn
           v-if="nextMatchLink"
           :to="nextMatchLink"
-          color="blue-grey"
-          outlined
-        >Next Match</v-btn>
+        >
+          Next Match
+        </v-btn>
 
         <match-form v-else />
-      </v-flex>
+      </v-col>
 
-      <v-layout
-        class="text-xs-center"
-        wrap
-      >
-        <v-flex xs12>
-          <div class="display-2">
-            <fitty-text :text="match.competition" />
-          </div>
-          <div
-            v-if="match.stage"
-            class="display-1"
-          >
-            <fitty-text
-              :text="match.stage"
-              :max-size="30"
-            />
-          </div>
-          <div class="subheading">
-            {{ $_formatDate(match.played_on) }}
-          </div>
-        </v-flex>
-        <v-layout
-          class="display-1"
-          justify-space-between
-          align-center
-        >
-          <v-flex
-            xs5
-            class="font-weight-thin pa-3"
-          >
-            <fitty-text :text="match.home" />
-            <div :class="`${match.resultColor}--text font-weight-bold`">
-              {{ match.home_score }}
-              <span v-if="match.penalty_shootout">
-                ({{ match.penalty_shootout.home_score }})
-              </span>
+      <v-container>
+        <v-row class="text-center">
+          <v-col cols="12">
+            <div class="display-2">
+              <fitty-text :text="match.competition" />
             </div>
-          </v-flex>
-          <v-flex
-            xs5
-            class="font-weight-thin pa-3"
-          >
-            <fitty-text :text="match.away" />
-            <div :class="`${match.resultColor}--text font-weight-bold`">
-              {{ match.away_score }}
-              <span v-if="match.penalty_shootout">
-                ({{ match.penalty_shootout.away_score }})
-              </span>
+            <div
+              v-if="match.stage"
+              class="display-1"
+            >
+              <fitty-text
+                :text="match.stage"
+                :max-size="30"
+              />
             </div>
-          </v-flex>
-        </v-layout>
+            <div class="subheading">
+              {{ $_formatDate(match.played_on) }}
+            </div>
+          </v-col>
 
-        <v-flex xs12>
-          <match-actions
+          <v-container>
+            <v-row
+              class="display-1"
+              justify="space-between"
+              align="center"
+            >
+              <v-col
+                cols="5"
+                class="font-weight-thin pa-3"
+              >
+                <fitty-text :text="match.home" />
+                <div :class="`${match.resultColor}--text font-weight-bold`">
+                  {{ match.home_score }}
+                  <span v-if="match.penalty_shootout">
+                    ({{ match.penalty_shootout.home_score }})
+                  </span>
+                </div>
+              </v-col>
+              <v-col
+                cols="5"
+                class="font-weight-thin pa-3"
+              >
+                <fitty-text :text="match.away" />
+                <div :class="`${match.resultColor}--text font-weight-bold`">
+                  {{ match.away_score }}
+                  <span v-if="match.penalty_shootout">
+                    ({{ match.penalty_shootout.away_score }})
+                  </span>
+                </div>
+              </v-col>
+            </v-row>
+          </v-container>
+
+          <v-col
             v-if="match.played_on === team.currently_on"
-            :match="match"
-          />
-        </v-flex>
-      </v-layout>
+            cols="12"
+          >
+            <match-actions :match="match" />
+          </v-col>
+        </v-row>
+      </v-container>
 
-      <v-flex
-        v-if="match.caps.length >= 11"
-        xs12
-      >
-        <v-card outlined>
+      <v-col cols="12">
+        <v-card>
           <v-card-text>
             <v-tabs centered>
               <v-tab>Lineup</v-tab>
@@ -110,9 +98,8 @@
             </v-tabs>
           </v-card-text>
         </v-card>
-      </v-flex>
-
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -127,6 +114,7 @@
   import { TeamAccessible } from '@/mixins'
 
   @Component({
+    middleware: ['authenticated'],
     components: {
       FittyText,
       MatchForm,
@@ -137,17 +125,6 @@
     transition: 'fade-transition'
   })
   export default class MatchPage extends mixins(TeamAccessible) {
-    layout = () => 'default'
-    middleware = () => 'authenticated'
-
-    head () {
-      return {
-        title: `${this.match.home} vs ${this.match.away}`
-      }
-    }
-
-    tab = 0
-
     get match () {
       return Match
         .query()
@@ -182,8 +159,29 @@
       return nextMatch && nextMatch.link
     }
 
-    mounted () {
-      this.$store.commit('app/SET_TITLE', this.team.title)
+    async fetch ({ store, params }) {
+      await Promise.all([
+        store.dispatch('matches/GET', { matchId: params.matchId }),
+
+        store.dispatch('caps/FETCH', { matchId: params.matchId }),
+        store.dispatch('goals/FETCH', { matchId: params.matchId }),
+        store.dispatch('substitutions/FETCH', { matchId: params.matchId }),
+        store.dispatch('bookings/FETCH', { matchId: params.matchId }),
+
+        store.dispatch('competitions/FETCH', { teamId: params.teamId }),
+        store.dispatch('players/FETCH', { teamId: params.teamId }),
+        store.dispatch('playerHistories/SEARCH', { teamId: params.teamId }),
+        store.dispatch('squads/FETCH', { teamId: params.teamId })
+      ])
+    }
+
+    beforeMount () {
+      this.$store.commit('app/SET_PAGE', {
+        title: `${this.match.home} vs ${this.match.away}`,
+        overline: this.team.title,
+        headline: 'Match',
+        caption: `v ${this.match.opponent}`
+      })
     }
   }
 </script>

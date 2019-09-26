@@ -1,6 +1,6 @@
 {
   "name": "nuxt-myfifa",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JoonDEV | MyFIFA Manager",
   "author": "Joon Lee <l33j00n325@gmail.com>",
   "private": true,
@@ -11,6 +11,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@nuxtjs/dotenv": "^1.4.0",
     "@nuxtjs/moment": "^1.2.0",
     "@vuex-orm/core": "^0.31.0",
     "actioncable": "^5.2.1",
@@ -26,25 +27,23 @@
     "nuxt-property-decorator": "^2.3.0",
     "v-money": "^0.8.1",
     "vue-chartkick": "^0.5.1",
-    "vue-class-component": "^7.1.0",
-    "vue-fitty": "^0.1.7",
-    "vue-property-decorator": "^8.2.1"
+    "vue-fitty": "^0.1.7"
   },
   "devDependencies": {
     "@babel/traverse": "^7.1.5",
     "@babel/types": "^7.1.5",
-    "@nuxtjs/vuetify": "^1.0.0-alpha.6",
-    "babel-eslint": "^10.0.1",
+    "@nuxtjs/vuetify": "^1.0.0-beta.8",
+    "babel-eslint": "^10.0.3",
     "babel-plugin-transform-imports": "^1.5.1",
-    "eslint": "^5.7.0",
+    "eslint": "^6.3.0",
     "eslint-config-standard": "^12.0.0",
-    "eslint-loader": "^2.1.1",
+    "eslint-loader": "^3.0.0",
     "eslint-plugin-html": "^4.0.6",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
-    "node-sass": "^4.11.0",
-    "sass-loader": "^7.1.0"
+    "eslint-plugin-vue": "^5.2.3",
+    "eslint-plugin-vuetify": "^1.0.0-beta.2"
   }
 }

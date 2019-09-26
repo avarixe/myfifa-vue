@@ -1,48 +1,48 @@
 <template>
-  <v-card outlined>
-    <v-card-title :class="`subtitle-1 d-block text-xs-center`">
-      <span class="primary--text font-weight-light">{{ cardTitle }}</span>
-    </v-card-title>
+  <v-card>
+    <v-toolbar
+      color="blue"
+      dark
+      dense
+    >
+      <v-toolbar-title class="font-weight-light">
+        {{ seasonLabel }}
+      </v-toolbar-title>
 
-    <v-divider class="mx-3" />
+      <v-spacer />
 
-    <v-card-actions>
-        <v-btn
-          :to="link"
-          color="primary"
-          text
-          nuxt
-          block
-        >View Season</v-btn>
-    </v-card-actions>
+      <v-btn
+        :to="link"
+        dark
+        text
+        nuxt
+      >
+        View Season
+      </v-btn>
+    </v-toolbar>
 
-    <v-simple-table>
-      <thead>
-        <th />
-        <th>Competitions</th>
-      </thead>
-      <tbody>
-        <tr
-          v-for="competition in competitions"
-          :key="competition.id"
-        >
-          <td>
-            <v-icon
-              left
-              :color="competitionStatus(competition).color"
-              small
-            >{{ competitionStatus(competition).icon }}</v-icon>
-          </td>
-
-          <td>
-            <nuxt-link
-              :to="competition.link"
-              class="black--text"
-            >{{ competition.name }}</nuxt-link>
-          </td>
-        </tr>
-      </tbody>
-    </v-simple-table>
+    <v-list
+      nav
+      dense
+    >
+      <v-subheader>Competitions</v-subheader>
+      <v-list-item
+        v-for="competition in competitions"
+        :key="competition.id"
+        :to="competition.link"
+        nuxt
+      >
+        <v-list-item-icon>
+          <v-icon
+            :color="competition.statusColor"
+            v-text="competition.statusIcon"
+          />
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>{{ competition.name }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
   </v-card>
 </template>
 
@@ -54,7 +54,6 @@
   @Component
   export default class SeasonCard extends Vue {
     @Prop({ type: Number, required: true }) season
-    @Prop(Boolean) compact
 
     get team () {
       return Team.find(this.$route.params.teamId)
@@ -63,15 +62,10 @@
     get competitions () {
       return Competition
         .query()
+        .with('team')
         .where('team_id', this.team.id)
         .where('season', this.season)
         .get()
-    }
-
-    get cardTitle () {
-      return this.compact
-        ? this.seasonLabel
-        : `${this.seasonLabel} Season`
     }
 
     get seasonLabel () {
@@ -86,25 +80,6 @@
         params: {
           teamId: this.team.id,
           season: this.season
-        }
-      }
-    }
-
-    competitionStatus (competition) {
-      if (competition.champion === this.team.title) {
-        return {
-          icon: 'mdi-trophy',
-          color: 'yellow darken-2'
-        }
-      } else if (competition.champion) {
-        return {
-          icon: 'mdi-check',
-          color: 'green'
-        }
-      } else {
-        return {
-          icon: 'mdi-timelapse',
-          color: 'gray'
         }
       }
     }

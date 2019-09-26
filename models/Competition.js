@@ -27,7 +27,6 @@ class Competition extends Model {
       num_teams: this.number(null).nullable(),
       num_teams_per_group: this.number(null).nullable(),
       num_advances_from_group: this.number(null).nullable(),
-      num_matches_per_fixture: this.number(null).nullable(),
 
       // Associations
       team: this.belongsTo(Team, 'team_id'),
@@ -52,6 +51,26 @@ class Competition extends Model {
         teamId: this.team_id,
         season: this.season
       }
+    }
+  }
+
+  get statusIcon () {
+    if (this.champion === this.team.title) {
+      return 'mdi-trophy'
+    } else if (this.champion) {
+      return 'mdi-check'
+    } else {
+      return 'mdi-timelapse'
+    }
+  }
+
+  get statusColor () {
+    if (this.champion === this.team.title) {
+      return 'yellow darken-2'
+    } else if (this.champion) {
+      return 'green'
+    } else {
+      return 'gray'
     }
   }
 

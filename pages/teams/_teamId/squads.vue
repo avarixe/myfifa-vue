@@ -1,33 +1,14 @@
 <template>
-  <v-container
-    fluid
-    grid-list-lg
-  >
-    <v-layout wrap>
-      <v-flex xs12>
-        <div class="overline">{{ team.title }}</div>
-        <div class="headline font-weight-thin">Squads</div>
-      </v-flex>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12">
+        <squad-form />
+      </v-col>
 
-      <v-flex xs12>
-        <squad-form>
-          <template #default="{ on }">
-            <v-btn
-              v-on="on"
-              color="blue-grey"
-              outlined
-            >
-              <v-icon left>mdi-plus-circle-outline</v-icon>
-              Squad
-            </v-btn>
-          </template>
-        </squad-form>
-      </v-flex>
-
-      <v-flex xs12>
+      <v-col cols="12">
         <squad-grid />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -38,6 +19,7 @@
   import SquadGrid from '@/components/Squad/Grid'
 
   @Component({
+    middleware: ['authenticated'],
     components: {
       SquadForm,
       SquadGrid
@@ -45,17 +27,19 @@
     transition: 'fade-transition'
   })
   export default class SquadsPage extends mixins(TeamAccessible) {
-    layout = () => 'default'
-    middleware = () => 'authenticated'
-
-    head () {
-      return {
-        title: `${this.team.title} - Squads`
-      }
+    async fetch ({ store, params }) {
+      await Promise.all([
+        store.dispatch('squads/FETCH', { teamId: params.teamId }),
+        store.dispatch('players/FETCH', { teamId: params.teamId })
+      ])
     }
 
-    mounted () {
-      this.$store.commit('app/SET_TITLE', this.team.title)
+    beforeMount () {
+      this.$store.commit('app/SET_PAGE', {
+        title: `${this.team.title} - Squads`,
+        overline: this.team.title,
+        headline: 'Squads'
+      })
     }
   }
 </script>

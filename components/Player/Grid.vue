@@ -1,6 +1,6 @@
 <template>
-  <v-card outlined>
-    <v-card-title>
+  <v-card>
+    <v-toolbar flat>
       <!-- Display Menu -->
       <v-tooltip
         bottom
@@ -13,9 +13,9 @@
           >
             <template #activator="{ on: menu }">
               <v-btn
-                v-on="{ ...menu, ...tooltip }"
                 class="px-1"
                 text
+                v-on="{ ...menu, ...tooltip }"
               >
                 <v-icon :color="currentFilter.color">
                   mdi-{{ currentFilter.icon }}
@@ -56,9 +56,9 @@
       </v-btn-toggle>
 
       <div
-        :class="`hidden-sm-and-down subheading ${currentMode.color}--text`">
-        {{ currentMode.text }}
-      </div>
+        :class="`hidden-sm-and-down subheading ${currentMode.color}--text`"
+        v-text="currentMode.text"
+      />
 
       <v-spacer />
 
@@ -69,88 +69,82 @@
         append-icon="mdi-magnify"
         hide-details
       />
-    </v-card-title>
+    </v-toolbar>
 
     <!-- Player Information Grid -->
     <v-card-text>
-      <paged-table
-        v-model="page"
-        :page-count="pageCount"
-      >
-        <template #table>
-          <v-data-table
-            :key="key"
-            :headers="headers"
-            :items="rows"
-            :page.sync="page"
-            :loading="loading"
-            sort-by="pos"
-            must-sort
-            :search="search"
-            item-key="id"
-            hide-default-footer
-            no-data-text="No Players Found"
-            @page-count="pageCount = $event"
-          >
-            <template #item.name="{ item }">
-              <v-btn
-                :to="item.link"
-                small
-                text
-                nuxt
-                color="info"
-              >{{ item.name }}</v-btn>
-            </template>
-            <template #item.kit_no="{ item }">
-              <inline-field
-                :item="item"
-                attribute="kit_no"
-                label="Kit No"
-                input-type="select"
-                :options="Array.from({ length: 98 }, (v, k) => k + 1)"
-                @close="updatePlayerAttribute(item.id, 'kit_no', $event)"
-              />
-            </template>
-            <template #item.ovr="{ item }">
-              <inline-field
-                :item="item"
-                attribute="ovr"
-                label="OVR"
-                input-type="select"
-                :options="Array.from({ length: 61 }, (v, k) => k + 40)"
-                @close="updatePlayerAttribute(item.id, 'ovr', $event)"
-              />
-            </template>
-            <template #item.value="{ item }">
-              <inline-field
-                :item="item"
-                attribute="value"
-                label="Value"
-                input-type="money"
-                :display="$_formatMoney(item.value)"
-                @close="updatePlayerAttribute(item.id, 'value', $event)"
-                required
-              />
-            </template>
-            <template #item.status="{ item }">
-              <v-icon :color="item.statusColor">
-                mdi-{{ item.statusIcon }}
-              </v-icon>
-            </template>
-            <template #item.sec_pos="{ item }">
-              {{ $_listArray(item.sec_pos, '-') }}
-            </template>
-            <template #item.wage="{ item }">
-              {{ contractWage(item) }}
-            </template>
-            <template #item.endDate="{ item }">
-              {{ contractDate(item) }}
-            </template>
-          </v-data-table>
-        </template>
-      </paged-table>
+      <client-only>
+        <v-data-table
+          :key="key"
+          :headers="headers"
+          :items="rows"
+          sort-by="pos"
+          must-sort
+          :search="search"
+          item-key="id"
+          no-data-text="No Players Found"
+        >
+          <template #item.name="{ item }">
+            <v-btn
+              :to="item.link"
+              small
+              text
+              nuxt
+              color="info"
+            >
+              {{ item.name }}
+            </v-btn>
+          </template>
+          <template #item.kit_no="{ item }">
+            <inline-select
+              :item="item"
+              attribute="kit_no"
+              label="Kit No"
+              input-type="select"
+              :options="Array.from({ length: 98 }, (v, k) => k + 1)"
+              dense
+              @change="updatePlayerAttribute(item.id, 'kit_no', $event)"
+            />
+          </template>
+          <template #item.ovr="{ item }">
+            <inline-select
+              :item="item"
+              attribute="ovr"
+              label="OVR"
+              input-type="select"
+              :options="Array.from({ length: 61 }, (v, k) => k + 40)"
+              dense
+              @change="updatePlayerAttribute(item.id, 'ovr', $event)"
+            />
+          </template>
+          <template #item.value="{ item }">
+            <inline-field
+              :item="item"
+              attribute="value"
+              label="Value"
+              input-type="money"
+              :display="$_formatMoney(item.value)"
+              required
+              @close="updatePlayerAttribute(item.id, 'value', $event)"
+            />
+          </template>
+          <template #item.status="{ item }">
+            <v-icon :color="item.statusColor">
+              mdi-{{ item.statusIcon }}
+            </v-icon>
+          </template>
+          <template #item.sec_pos="{ item }">
+            {{ $_listArray(item.sec_pos, '-') }}
+          </template>
+          <template #item.wage="{ item }">
+            {{ contractWage(item) }}
+          </template>
+          <template #item.endDate="{ item }">
+            {{ contractDate(item) }}
+          </template>
+        </v-data-table>
+      </client-only>
     </v-card-text>
-
   </v-card>
 </template>
 
@@ -158,13 +152,13 @@
   import { mixins, Component } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
-  import { InlineField, PagedTable } from '@/helpers'
+  import { InlineField, InlineSelect } from '@/helpers'
   import { positions } from '@/models/Player'
 
   @Component({
     components: {
       InlineField,
-      PagedTable
+      InlineSelect
     }
   })
   export default class PlayerGrid extends mixins(TeamAccessible) {
@@ -176,9 +170,6 @@
       { text: 'Contract', color: 'blue', icon: 'file-document-outline' },
       { text: 'Statistics', color: 'red', icon: 'numeric' }
     ]
-    loading = false
-    page = 1
-    pageCount = 0
     filter = 2
     filters = [
       { text: 'All', color: 'blue', icon: 'earth' },
@@ -189,11 +180,17 @@
       { text: 'Pending', color: 'deep-orange', icon: 'lock-clock' }
     ]
     search = ''
+    stats = {
+      num_games: {},
+      num_goals: {},
+      num_assists: {},
+      num_cs: {}
+    }
 
     get players () {
       return Player
         .query()
-        .with('team|contracts|goals|assists|matches')
+        .with('team|contracts')
         .where('team_id', parseInt(this.$route.params.teamId))
         .get()
     }
@@ -238,11 +235,13 @@
           ])
         case 3: // Statistics
           return headers.concat([
-            { text: 'Games Played', value: 'matches.length', align: 'center' },
-            { text: 'Goals', value: 'goals.length', align: 'center' },
-            { text: 'Assists', value: 'assists.length', align: 'center' },
-            { text: 'Clean Sheets', value: 'cleanSheets', align: 'center' }
+            { text: 'Games Played', value: 'numGames', align: 'center' },
+            { text: 'Goals', value: 'numGoals', align: 'center' },
+            { text: 'Assists', value: 'numAssists', align: 'center' },
+            { text: 'Clean Sheets', value: 'numCs', align: 'center' }
           ])
+        default:
+          return headers
       }
     }
 
@@ -263,15 +262,26 @@
           }
         })
         .map(player => {
-          const cleanSheets = player.cleanSheets().length
           const contract = player.contract()
+
+          const numGames = this.stats.num_games[player.id] || 0
+          const numGoals = this.stats.num_goals[player.id] || 0
+          const numAssists = this.stats.num_assists[player.id] || 0
+          const numCs = this.stats.num_cs[player.id] || 0
 
           return {
             ...player,
             link: player.link,
-            cleanSheets,
+            statusIcon: player.statusIcon,
+            statusColor: player.statusColor,
+
             wage: contract.wage,
-            endDate: contract.ended_on
+            endDate: contract.ended_on,
+
+            numGames,
+            numGoals,
+            numAssists,
+            numCs
           }
         })
     }
@@ -289,6 +299,15 @@
           color: 'red'
         })
       }
+    }
+
+    async mounted () {
+      const { data } = await this.$store.dispatch('players/ANALYZE', {
+        teamId: this.team.id,
+        playerIds: this.players.map(player => player.id)
+      })
+
+      this.stats = data
     }
 
     sortPos (posA, posB) {

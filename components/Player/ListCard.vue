@@ -1,68 +1,46 @@
 <template>
-  <v-card outlined>
-    <v-card-title :class="`subtitle-1 d-block text-xs-center`">
-      <span :class="`${color}--text font-weight-light`">{{ title }}</span>
-    </v-card-title>
+  <v-card>
+    <v-toolbar
+      :color="color"
+      dark
+      dense
+    >
+      <v-toolbar-title class="font-weight-light">
+        {{ title }}
+      </v-toolbar-title>
+    </v-toolbar>
 
-    <v-divider class="mx-3" />
-
-    <v-simple-table>
-      <thead>
-        <th class="text-xs-center">Player</th>
-        <th class="text-xs-center">Position</th>
-        <th
-          v-for="(attribute, i) in attributes"
-          :key="i"
-          class="text-xs-center"
-        >{{ attribute.text }}</th>
-      </thead>
-      <tbody class="text-xs-center">
-        <tr
-          v-for="player in players"
-          :key="player.id"
-        >
-          <td>
-            <v-dialog width="500">
-              <template #activator="{ on }">
-                <a
-                  v-on="on"
-                  v-ripple
-                  :class="`my-0 ${color}--text`"
-                >{{ player.name }}</a>
-              </template>
-
-              <player-card
-                :player-id="player.id"
-                :color="color"
-              />
-            </v-dialog>
-          </td>
-          <td>{{ player.pos }}</td>
-          <td
-            v-for="(attribute, i) in attributes"
-            :key="i"
-          >
-            {{ player[attribute.value] }}
-          </td>
-        </tr>
-      </tbody>
-    </v-simple-table>
+    <v-list
+      nav
+      dense
+    >
+      <v-subheader>Player</v-subheader>
+      <v-list-item
+        v-for="player in players"
+        :key="player.id"
+        :to="player.link"
+        nuxt
+      >
+        <v-list-item-action>
+          <v-list-item-action-text>
+            {{ player.pos }}
+          </v-list-item-action-text>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>{{ player.name }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
   </v-card>
 </template>
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
-  import PlayerCard from './Card'
 
-  @Component({
-    components: {
-      PlayerCard
-    }
-  })
+  @Component
   export default class PlayersListCard extends Vue {
     @Prop({ type: Array, default: [] }) players
     @Prop({ type: String, default: 'primary' }) color
     @Prop(String) title
-    @Prop({ type: Array, default: [] }) attributes
   }
 </script>

@@ -1,29 +1,27 @@
 <template>
   <div>
     <div class="font-weight-bold">
-      <inline-field
+      <inline-select
         :item="cap"
         attribute="pos"
-        input-type="select"
         :label="`${cap.name} Position`"
         :options="positions"
-        @close="setPosition($event)"
         :readonly="readonly"
+        @change="setPosition($event)"
       />
     </div>
     <div class="font-weight-thin">
-      <inline-field
+      <inline-select
         v-if="!readonly"
         :item="cap"
         attribute="player_id"
-        input-type="select"
         :label="`${cap.pos} Player`"
         :options="players"
         option-avatar="pos"
         option-text="name"
         option-value="id"
         :display="cap.name"
-        @close="setPlayer($event)"
+        @change="setPlayer($event)"
       />
 
       <v-dialog
@@ -32,9 +30,10 @@
       >
         <template #activator="{ on }">
           <a
-            v-on="on"
             class="black--text"
-          >{{ cap.name }}</a>
+            v-on="on"
+            v-text="cap.name"
+          />
         </template>
 
         <player-card :player-id="cap.player_id" />
@@ -52,14 +51,14 @@
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { activePlayers } from '@/models/Player'
   import { positions } from '@/models/Match'
-  import { InlineField } from '@/helpers'
+  import { InlineSelect } from '@/helpers'
   import CapEvents from './Events'
   import PlayerCard from '@/components/Player/Card'
 
   @Component({
     components: {
       CapEvents,
-      InlineField,
+      InlineSelect,
       PlayerCard
     }
   })

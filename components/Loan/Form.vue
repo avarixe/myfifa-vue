@@ -8,50 +8,74 @@
   >
     <template #activator="{ on }">
       <slot :on="on">
-        <v-tooltip
-          bottom
+        <tooltip-button
+          :label="title"
+          icon="mdi-transit-transfer"
           color="indigo"
-        >
-          <template #activator="{ on: tooltip }">
-            <v-btn
-              v-on="{ ...on, ...tooltip }"
-              icon
-            >
-              <v-icon color="indigo">mdi-transit-transfer</v-icon>
-            </v-btn>
-          </template>
-          {{ title }}
-        </v-tooltip>
+          :on="on"
+        />
       </slot>
     </template>
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
-            <v-text-field
-              v-model="loan.destination"
-              :rules="$_validate('Destination', ['required'])"
-              label="Destination"
-              prepend-icon="mdi-transit-transfer"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-flex>
-          <v-scroll-y-transition mode="out-in">
-            <v-flex
-              v-if="playerLoaned"
-              xs12
-            >
-              <v-checkbox
-                v-model="loan.returned"
-                label="Player Returned"
-              />
-            </v-flex>
-          </v-scroll-y-transition>
-        </v-layout>
-      </v-container>
+      <v-col cols="12">
+        <v-date-field
+          v-model="loan.started_on"
+          label="Start Date"
+          prepend-icon="mdi-calendar-today"
+          :min="record ? null: team.currently_on"
+          color="indigo"
+          required
+        />
+      </v-col>
+      <v-col
+        v-if="record && record.ended_on"
+        cols="12"
+      >
+        <v-date-field
+          v-model="loan.ended_on"
+          label="Return Date"
+          prepend-icon="mdi-calendar-today"
+          color="indigo"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="loan.origin"
+          :rules="$_validate('Origin', ['required'])"
+          label="Origin"
+          prepend-icon="mdi-airplane-takeoff"
+          :disabled="loanOut"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="loan.destination"
+          :rules="$_validate('Destination', ['required'])"
+          label="Destination"
+          prepend-icon="mdi-airplane-landing"
+          :disabled="!loanOut"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-scroll-y-transition mode="out-in">
+        <v-col
+          v-if="record && !record.ended_on"
+          cols="12"
+        >
+          <v-checkbox
+            v-model="loan.returned"
+            label="Player Returned"
+          />
+        </v-col>
+      </v-scroll-y-transition>
     </template>
   </dialog-form>
 </template>
@@ -59,57 +83,71 @@
 <script>
   import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { mapActions } from 'vuex'
-  import { Loan } from '@/models'
-  import { DialogFormable } from '@/mixins'
+  import { VDateField, TooltipButton } from '@/helpers'
+  import { TeamAccessible, DialogFormable } from '@/mixins'
+
+  const mix = mixins(DialogFormable, TeamAccessible)
 
   @Component({
+    components: {
+      VDateField,
+      TooltipButton
+    },
     methods: mapActions('loans', {
       create: 'CREATE',
       update: 'UPDATE'
     })
   })
-  export default class LoanForm extends mixins(DialogFormable) {
+  export default class LoanForm extends mix {
     @Prop({ type: Object, required: true }) player
+    @Prop(Object) record
     @Prop(String) color
     @Prop(Boolean) dark
     @Prop(Function) submitCb
 
     loan = {
+      started_on: '',
+      origin: '',
       destination: '',
       returned: false
     }
 
-    get playerLoaned () {
-      return this.player.status && this.player.status === 'Loaned'
+    get loanOut () {
+      return this.record
+        ? this.team.title === this.record.origin
+        : this.player.status && this.player.status.length > 0
     }
 
     get title () {
-      return this.playerLoaned
+      return this.record
         ? 'Update Loan'
         : 'Record New Loan'
     }
 
-    get currentLoan () {
-      return Loan
-        .query()
-        .where('player_id', this.player.id)
-        .orderBy('started_on')
-        .last()
-    }
-
     @Watch('dialog')
-    async setLoan (val) {
+    setLoan (val) {
       if (val) {
-        const { id, destination } = this.currentLoan
-        Object.assign(this.loan, { id, destination })
-      } else {
-        Object.assign(this.$data, this.$options.data.apply(this))
-        // this.$refs.form.reset()
+        if (this.record) {
+          this.loan = this.$_pick(this.record, [
+            'id',
+            'started_on',
+            'ended_on',
+            'origin',
+            'destination'
+          ])
+        } else {
+          this.loan.started_on = this.team.currently_on
+          if (this.loanOut) {
+            this.loan.origin = this.team.title
+          } else {
+            this.loan.destination = this.team.title
+          }
+        }
       }
     }
 
     async submit () {
-      if (this.playerLoaned) {
+      if (this.record) {
         await this.update(this.loan)
       } else {
         await this.create({

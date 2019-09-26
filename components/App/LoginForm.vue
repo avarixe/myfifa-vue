@@ -4,17 +4,25 @@
     @submit.prevent="authenticate"
   >
     <v-card>
-      <v-card-title>MyFIFA Manager</v-card-title>
+      <v-toolbar
+        flat
+      >
+        <v-toolbar-title>
+          <div class="headline font-weight-light">MyFIFA Manager</div>
+          <div class="caption">v{{ $store.state.version }}</div>
+        </v-toolbar-title>
+      </v-toolbar>
+
       <v-card-text>
-        <v-flex xs12>
+        <v-col cols="12">
           <v-text-field
             v-model="credentials.username"
             label="Username"
             autofocus
             autocapitalize="off"
           />
-        </v-flex>
-        <v-flex xs12>
+        </v-col>
+        <v-col cols="12">
           <v-text-field
             v-model="credentials.password"
             label="Password"
@@ -22,25 +30,29 @@
             :append-icon="`mdi-eye${visible ? '-off' : ''}`"
             @click:append="visible = !visible"
           />
-        </v-flex>
+        </v-col>
       </v-card-text>
 
       <v-alert
-        type="error"
         v-model="formError"
+        type="error"
         dismissible
-      >{{ errorMessage }}</v-alert>
+      >
+        {{ errorMessage }}
+      </v-alert>
 
       <v-card-actions>
-        <v-spacer/>
+        <v-spacer />
         <user-form>
           <template #default="{ on }">
             <v-btn
-              v-on="on"
               color="orange"
               text
               large
-            >Register</v-btn>
+              v-on="on"
+            >
+              Register
+            </v-btn>
           </template>
         </user-form>
 
@@ -51,7 +63,9 @@
           large
           :loading="loading"
           @click="loading = true"
-        >Log In</v-btn>
+        >
+          Log In
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-form>

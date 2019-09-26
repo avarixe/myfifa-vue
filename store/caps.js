@@ -7,11 +7,12 @@ export const actions = {
     model: Cap,
     parent: 'match'
   }),
-  SEARCH ({ rootState }, { teamId }) {
+  SEARCH ({ rootState }, { teamId, filters }) {
     return http({
       method: 'post',
       path: routes.caps.search,
       pathData: { teamId },
+      data: { filters },
       token: rootState.token,
       success ({ data }) {
         Cap.insert({ data })

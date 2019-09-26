@@ -23,7 +23,6 @@ export default class SquadPlayer extends Model {
   }
 
   get positionType () {
-    console.log(this.pos)
     return positions[this.pos]
   }
 }

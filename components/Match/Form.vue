@@ -7,11 +7,7 @@
   >
     <template #activator="{ on }">
       <slot :on="on">
-        <v-btn
-          v-on="on"
-          outlined
-          color="blue-grey"
-        >
+        <v-btn v-on="on">
           <v-icon left>mdi-plus-circle-outline</v-icon>
           Match
         </v-btn>
@@ -19,106 +15,106 @@
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
-            <v-date-field
-              v-model="match.played_on"
-              label="Date Played"
-              prepend-icon="mdi-calendar-today"
-              :min="match.id ? null : team.currently_on"
-              :color="color"
-              required
-            />
-          </v-flex>
-          <v-flex xs12>
-            <v-select
-              v-model="match.competition"
-              :items="competitions"
-              :rules="$_validate('Competition', ['required'])"
-              label="Competition"
-              prepend-icon="mdi-trophy"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-flex>
-          <v-scroll-y-transition mode="out-in">
-            <v-flex
-              v-if="stages.length > 0"
-              xs12
-            >
-              <v-select
-                v-model="match.stage"
-                :items="stages"
-                label="Stage"
-                prepend-icon="mdi-trophy"
-                spellcheck="false"
-                autocapitalize="words"
-                autocomplete="off"
-                autocorrect="off"
-              />
-            </v-flex>
-          </v-scroll-y-transition>
-          <v-flex xs12>
-            <v-combobox
-              v-model="match.home"
-              :items="teams"
-              :rules="$_validate('Home Team', ['required'])"
-              label="Home Team"
-              prepend-icon="mdi-shield-half-full"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            >
-              <template #append>
-                <v-tooltip bottom>
-                  <template #activator="{ on }">
-                    <v-icon
-                      v-on="on"
-                      @click.stop="setHome"
-                    >mdi-arrow-left</v-icon>
-                  </template>
-                  Home Match for {{ team.title }}
-                </v-tooltip>
+      <v-col cols="12">
+        <v-date-field
+          v-model="match.played_on"
+          label="Date Played"
+          prepend-icon="mdi-calendar-today"
+          :min="match.id ? null : team.currently_on"
+          :color="color"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-select
+          v-model="match.competition"
+          :items="competitions"
+          :rules="$_validate('Competition', ['required'])"
+          label="Competition"
+          prepend-icon="mdi-trophy"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-scroll-y-transition mode="out-in">
+        <v-col
+          v-if="stages.length > 0"
+          cols="12"
+        >
+          <v-select
+            v-model="match.stage"
+            :items="stages"
+            label="Stage"
+            prepend-icon="mdi-trophy"
+            spellcheck="false"
+            autocapitalize="words"
+            autocomplete="off"
+            autocorrect="off"
+          />
+        </v-col>
+      </v-scroll-y-transition>
+      <v-col cols="12">
+        <v-combobox
+          v-model="match.home"
+          :items="teams"
+          :rules="$_validate('Home Team', ['required'])"
+          label="Home Team"
+          prepend-icon="mdi-shield-half-full"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        >
+          <template #append>
+            <v-tooltip bottom>
+              <template #activator="{ on }">
+                <v-icon
+                  v-on="on"
+                  @click.stop="setHome"
+                >
+                  mdi-arrow-left
+                </v-icon>
               </template>
-            </v-combobox>
-          </v-flex>
-          <v-flex xs12>
-            <v-combobox
-              v-model="match.away"
-              :items="teams"
-              :rules="$_validate('Away Team', ['required'])"
-              label="Away Team"
-              prepend-icon="mdi-shield-half-full"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            >
-              <template #append>
-                <v-tooltip bottom>
-                  <template #activator="{ on }">
-                    <v-icon
-                      v-on="on"
-                      @click.stop="setAway"
-                    >mdi-arrow-left</v-icon>
-                  </template>
-                  Away Match for {{ team.title }}
-                </v-tooltip>
+              Home Match for {{ team.title }}
+            </v-tooltip>
+          </template>
+        </v-combobox>
+      </v-col>
+      <v-col cols="12">
+        <v-combobox
+          v-model="match.away"
+          :items="teams"
+          :rules="$_validate('Away Team', ['required'])"
+          label="Away Team"
+          prepend-icon="mdi-shield-half-full"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        >
+          <template #append>
+            <v-tooltip bottom>
+              <template #activator="{ on }">
+                <v-icon
+                  v-on="on"
+                  @click.stop="setAway"
+                >
+                  mdi-arrow-left
+                </v-icon>
               </template>
-            </v-combobox>
-          </v-flex>
-          <v-flex xs12>
-            <v-checkbox
-              v-model="match.extra_time"
-              label="Extra Time Required"
-            />
-          </v-flex>
-        </v-layout>
-      </v-container>
+              Away Match for {{ team.title }}
+            </v-tooltip>
+          </template>
+        </v-combobox>
+      </v-col>
+      <v-col cols="12">
+        <v-checkbox
+          v-model="match.extra_time"
+          label="Extra Time Required"
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>
@@ -157,7 +153,7 @@
     }
 
     get title () {
-      return this.match.id ? 'Edit Match' : 'New Match'
+      return this.matchData ? 'Edit Match' : 'New Match'
     }
 
     get isTeamGame () {
@@ -175,9 +171,21 @@
       return Competition
         .query()
         .where('season', this.season)
-        .where('champion', null)
+        .where(comp => this.match.competition === comp.name || !comp.champion)
         .get()
         .map(competition => competition.name)
+    }
+
+    get competitionId () {
+      if (this.match.competition) {
+        const competition = Competition
+          .query()
+          .where('season', this.season)
+          .where('name', this.match.competition)
+          .first()
+        return competition ? competition.id : null
+      }
+      return null
     }
 
     get stages () {
@@ -199,18 +207,27 @@
 
     @Watch('dialog')
     setMatch (val) {
-      if (val && this.matchData) {
-        Object.assign(this.match, this.$_pick(this.matchData, [
-          'id',
-          'played_on',
-          'competition',
-          'stage',
-          'home',
-          'away',
-          'extra_time'
-        ]))
-      } else {
-        this.match.played_on = this.team.currently_on
+      if (val) {
+        if (this.matchData) {
+          this.match = this.$_pick(this.matchData, [
+            'id',
+            'played_on',
+            'competition',
+            'stage',
+            'home',
+            'away',
+            'extra_time'
+          ])
+        } else {
+          this.match.played_on = this.team.currently_on
+        }
+      }
+    }
+
+    @Watch('competitionId', { immediate: true })
+    loadStages (competitionId) {
+      if (competitionId) {
+        this.$store.dispatch('stages/FETCH', { competitionId })
       }
     }
 
@@ -229,7 +246,7 @@
     }
 
     async submit () {
-      if ('id' in this.match) {
+      if (this.matchData) {
         await this.update(this.match)
       } else {
         const { data } = await this.create({

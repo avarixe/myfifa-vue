@@ -6,43 +6,53 @@
     :color="color"
   >
     <template #activator="{ on }">
-      <slot :on="on" />
+      <slot :on="on">
+        <v-btn v-on="on">
+          <v-icon left>mdi-plus-circle-outline</v-icon>
+          Team
+        </v-btn>
+      </slot>
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
-            <v-text-field
-              v-model="team.title"
-              :rules="$_validate('Team', ['required'])"
-              label="Team"
-              prepend-icon="mdi-shield-half-full"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-flex>
-          <v-flex xs12>
-            <v-date-field
-              v-model="team.started_on"
-              label="Start Date"
-              prepend-icon="mdi-calendar-today"
-              :color="color"
-              required
-            />
-          </v-flex>
-          <v-flex xs12>
-            <v-text-field
-              v-model="team.currency"
-              :rules="$_validate('Currency', ['required'])"
-              label="Currency"
-              prepend-icon="mdi-cash"
-            />
-          </v-flex>
-        </v-layout>
-      </v-container>
+      <v-col cols="12">
+        <v-text-field
+          v-model="team.title"
+          :rules="$_validate('Team', ['required'])"
+          label="Team"
+          prepend-icon="mdi-shield-half-full"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col
+        v-if="!teamId"
+        cols="12"
+      >
+        <v-date-field
+          v-model="team.started_on"
+          label="Start Date"
+          prepend-icon="mdi-calendar-today"
+          :color="color"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="team.currency"
+          :rules="$_validate('Currency', ['required'])"
+          label="Currency"
+          prepend-icon="mdi-cash"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-file-input
+          v-model="team.badge"
+          label="Badge"
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>
@@ -70,7 +80,8 @@
     team = {
       title: '',
       started_on: format(new Date(), 'YYYY-MM-DD'),
-      currency: '$'
+      currency: '$',
+      badge: null
     }
 
     get title () {
@@ -82,20 +93,30 @@
     @Watch('dialog')
     setTeam (val) {
       if (val && this.teamId) {
-        Object.assign(
-          this.team,
-          this.$_pick(Team.find(this.teamId), [
-            'id', 'title', 'started_on', 'currency'
-          ])
-        )
+        this.team = this.$_pick(Team.find(this.teamId), [
+          'id',
+          'title',
+          'started_on',
+          'currency',
+          'badge'
+        ])
       }
     }
 
     async submit () {
+      const formData = new FormData()
+
+      for (let k in this.team) {
+        formData.append(`team[${k}]`, this.team[k])
+      }
+
       if ('id' in this.team) {
-        await this.update(this.team)
+        await this.update({
+          id: this.team.id,
+          formData
+        })
       } else {
-        const { data } = await this.create(this.team)
+        const { data } = await this.create(formData)
 
         this.$router.push({
           name: 'teams-teamId',

@@ -1,96 +1,121 @@
 <template>
-  <v-container
-    fluid
-    grid-list-lg
-  >
-    <v-layout wrap>
-      <v-flex xs12>
-        <div class="overline">{{ team.title }}</div>
-        <div class="headline font-weight-thin">{{ player.name }}</div>
-      </v-flex>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12">
+        <player-form />
+      </v-col>
 
-      <v-layout
-        class="text-xs-center"
-        wrap
-      >
-        <v-flex xs6 sm3>
-          <div class="display-1">{{ player.pos }}</div>
-          <div class="subheading">Position</div>
-        </v-flex>
-        <v-flex xs6 sm3>
-          <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
-          <div class="subheading">
-            <fitty-text
-              text="Secondary Position(s)"
-              :max-size="16"
-            />
-          </div>
-        </v-flex>
-        <v-flex xs6 sm3>
-          <div class="display-1">{{ player.age }}</div>
-          <div class="subheading">Age</div>
-        </v-flex>
-        <v-flex xs6 sm3>
-          <v-icon
-            v-if="player.isActive"
-            :color="player.statusColor"
-            class="display-1"
-          >mdi-{{ player.statusIcon }}</v-icon>
-          <div
-            v-else
-            class="display-1"
-          >-</div>
-
-          <div class="subheading">{{ player.status || 'Status' }}</div>
-        </v-flex>
-        <v-flex xs12>
-          <player-actions :player="player" />
-          <record-remove
-            :record="player"
-            store="players"
-            :label="player.name"
-            :redirect="linkTo('players')"
-          />
-        </v-flex>
-      </v-layout>
-
-      <v-flex xs12>
-        <v-card outlined>
-          <v-card-text>
-            <v-layout
-              class="text-xs-center"
-              wrap
+      <v-container>
+        <v-row class="text-center">
+          <v-col
+            cols="6"
+            sm="3"
+          >
+            <div class="display-1">{{ player.pos }}</div>
+            <div class="subheading">Position</div>
+          </v-col>
+          <v-col
+            cols="6"
+            sm="3"
+          >
+            <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
+            <div class="subheading">
+              <fitty-text
+                text="Secondary Position(s)"
+                :max-size="16"
+              />
+            </div>
+          </v-col>
+          <v-col
+            cols="6"
+            sm="3"
+          >
+            <div class="display-1">{{ player.age }}</div>
+            <div class="subheading">Age</div>
+          </v-col>
+          <v-col
+            cols="6"
+            sm="3"
+          >
+            <v-icon
+              :color="player.statusColor"
+              class="display-1"
             >
-              <v-flex xs12 sm6>
+              mdi-{{ player.statusIcon }}
+            </v-icon>
+
+            <div class="subheading">
+              {{ player.status || 'Status' }}
+            </div>
+          </v-col>
+          <v-col cols="12">
+            <player-actions :player="player" />
+          </v-col>
+        </v-row>
+      </v-container>
+
+      <v-col cols="12">
+        <v-card>
+          <v-card-text>
+            <v-row class="text-center">
+              <v-col
+                cols="12"
+                sm="6"
+              >
                 <div class="display-1 success--text">{{ player.ovr }}</div>
                 <div class="subheading">OVR</div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs12 sm6>
-                <div class="display-1 primary--text">{{ $_formatMoney(player.value) }}</div>
+              <v-col
+                cols="12"
+                sm="6"
+              >
+                <div class="display-1 primary--text">
+                  {{ $_formatMoney(player.value) }}
+                </div>
                 <div class="subheading">Value</div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs6 sm3>
-                <div class="display-1 teal--text">{{ player.matches.length }}</div>
+              <v-col
+                cols="6"
+                sm="3"
+              >
+                <div class="display-1 teal--text">
+                  {{ numGames || 0 }}
+                </div>
                 <div class="subheading">Matches</div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs6 sm3>
-                <div class="display-1 pink--text">{{ player.cleanSheets().length }}</div>
+              <v-col
+                cols="6"
+                sm="3"
+              >
+                <div class="display-1 pink--text">
+                  {{ numCs || 0 }}
+                </div>
                 <div class="subheading">Clean Sheets</div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs6 sm3>
-                <div class="display-1 blue--text">{{ player.goals.length }}</div>
+              <v-col
+                cols="6"
+                sm="3"
+              >
+                <div class="display-1 blue--text">
+                  {{ numGoals || 0 }}
+                </div>
                 <div class="subheading">Goals</div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs6 sm3>
-                <div class="display-1 orange--text">{{ player.assists.length }}</div>
+              <v-col
+                cols="6"
+                sm="3"
+              >
+                <div class="display-1 orange--text">
+                  {{ numAssists || 0 }}
+                </div>
                 <div class="subheading">Assists</div>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
             <v-tabs centered>
               <v-tab>Timeline</v-tab>
@@ -100,12 +125,7 @@
               <v-tab-item>
                 <v-card flat>
                   <v-card-text>
-                    <player-timeline
-                      :contracts="player.contracts"
-                      :injuries="player.injuries"
-                      :loans="player.loans"
-                      :transfers="player.transfers"
-                    />
+                    <player-timeline :player="player" />
                   </v-card-text>
                 </v-card>
               </v-tab-item>
@@ -114,11 +134,8 @@
               <v-tab-item>
                 <v-card flat>
                   <v-card-text>
-                    <v-layout
-                      class="text-xs-center"
-                      wrap
-                    >
-                      <v-flex xs12>
+                    <v-row class="text-center">
+                      <v-col cols="12">
                         <player-history-chart
                           :player="player"
                           attribute="ovr"
@@ -127,9 +144,9 @@
                           :min="40"
                           :max="100"
                         />
-                      </v-flex>
+                      </v-col>
 
-                      <v-flex xs12>
+                      <v-col cols="12">
                         <player-history-chart
                           :player="player"
                           attribute="value"
@@ -138,16 +155,16 @@
                           :prefix="team.currency"
                           thousands=","
                         />
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </v-card-text>
                 </v-card>
               </v-tab-item>
             </v-tabs>
           </v-card-text>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -158,30 +175,21 @@
   import PlayerActions from '@/components/Player/Actions'
   import PlayerTimeline from '@/components/Player/Timeline'
   import PlayerHistoryChart from '@/components/Charts/PlayerHistoryChart'
-  import { FittyText, RecordRemove } from '@/helpers'
+  import { FittyText } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
   @Component({
+    middleware: ['authenticated'],
     components: {
       PlayerForm,
       PlayerActions,
       PlayerTimeline,
       PlayerHistoryChart,
-      FittyText,
-      RecordRemove
+      FittyText
     },
     transition: 'fade-transition'
   })
   export default class PlayerPage extends mixins(TeamAccessible) {
-    layout = () => 'default'
-    middleware = () => 'authenticated'
-
-    head () {
-      return {
-        title: this.player.name
-      }
-    }
-
     get player () {
       return Player
         .query()
@@ -189,8 +197,37 @@
         .find(this.$route.params.playerId)
     }
 
-    mounted () {
-      this.$store.commit('app/SET_TITLE', this.team.title)
+    async asyncData ({ store, params }) {
+      const { data } = await store.dispatch('players/ANALYZE', {
+        teamId: params.teamId,
+        playerIds: [params.playerId]
+      })
+
+      return {
+        numGames: data.num_games[params.playerId],
+        numCs: data.num_cs[params.playerId],
+        numGoals: data.num_goals[params.playerId],
+        numAssists: data.num_assists[params.playerId]
+      }
+    }
+
+    async fetch ({ store, params }) {
+      await Promise.all([
+        store.dispatch('players/GET', { playerId: params.playerId }),
+        store.dispatch('playerHistories/SEARCH', { teamId: params.teamId }),
+        store.dispatch('contracts/FETCH', { playerId: params.playerId }),
+        store.dispatch('injuries/FETCH', { playerId: params.playerId }),
+        store.dispatch('loans/FETCH', { playerId: params.playerId }),
+        store.dispatch('transfers/FETCH', { playerId: params.playerId })
+      ])
+    }
+
+    beforeMount () {
+      this.$store.commit('app/SET_PAGE', {
+        title: this.player.name,
+        overline: this.team.title,
+        headline: this.player.name
+      })
     }
   }
 </script>

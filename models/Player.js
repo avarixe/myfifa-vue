@@ -80,6 +80,8 @@ class Player extends Model {
         return 'pink'
       case 'Pending':
         return 'deep-orange'
+      default:
+        return 'black'
     }
   }
 
@@ -93,6 +95,8 @@ class Player extends Model {
         return 'hospital'
       case 'Pending':
         return 'lock-clock'
+      default:
+        return 'minus'
     }
   }
 
@@ -106,33 +110,8 @@ class Player extends Model {
     return contract || {}
   }
 
-  cleanSheets () {
-    return this.matches.filter(m =>
-      (m.home === this.team.title && m.away_score === 0) ||
-      (m.away === this.team.title && m.home_score === 0)
-    )
-  }
-
-  injury () {
-    const lastInjury = Injury
-      .query()
-      .where('player_id', this.id)
-      .orderBy('started_on', 'asc')
-      .last()
-    return this.status === 'Injured' && lastInjury && lastInjury.description
-  }
-
-  loanedTo () {
-    const lastLoan = Loan
-      .query()
-      .where('player_id', this.id)
-      .orderBy('started_on', 'asc')
-      .last()
-    return this.status === 'Loaned' && lastLoan && lastLoan.destination
-  }
-
   expiresOn () {
-    return this.contract.ended_on
+    return this.contract().ended_on
   }
 
   recordAt (date) {

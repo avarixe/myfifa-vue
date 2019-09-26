@@ -1,26 +1,25 @@
 <template>
   <v-menu
-    v-model="menu"
     ref="menu"
+    v-model="menu"
     :close-on-content-click="false"
     :return-value.sync="date"
     transition="scale-transition"
-    full-width
     min-width="290px"
   >
     <template #activator="{ on }">
       <v-text-field
         v-model="date"
-        v-on="on"
         :label="label"
         :prepend-icon="prependIcon"
         :rules="rules"
         readonly
+        v-on="on"
       />
     </template>
     <v-date-picker
-      v-model="date"
       ref="picker"
+      v-model="date"
       :color="color"
       :min="min"
       :max="max"

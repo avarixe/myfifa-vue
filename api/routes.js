@@ -1,12 +1,6 @@
-const domain = 'myfifa-api.jhyuk.com'
+export const baseURL = process.env.BASE_URL
 
-export const baseURL = process.env.NODE_ENV === 'production'
-  ? `https://${domain}`
-  : `http://${domain}:3000`
-
-export const cableURL = process.env.NODE_ENV === 'production'
-  ? `wss://${domain}/cable`
-  : `ws://${domain}:3000/cable`
+export const cableURL = process.env.CABLE_URL
 
 export const routes = {
   teams: {
@@ -34,27 +28,27 @@ export const routes = {
   },
 
   transfers: {
-    teamIndex: 'teams/{{ teamId }}/transfers',
     index: 'players/{{ playerId }}/transfers',
-    record: 'transfers/{{ transferId }}'
+    record: 'transfers/{{ transferId }}',
+    search: 'teams/{{ teamId }}/transfers/search'
   },
 
   contracts: {
-    teamIndex: 'teams/{{ teamId }}/contracts',
     index: 'players/{{ playerId }}/contracts',
-    record: 'contracts/{{ contractId }}'
+    record: 'contracts/{{ contractId }}',
+    search: 'teams/{{ teamId }}/contracts/search'
   },
 
   injuries: {
-    teamIndex: 'teams/{{ teamId }}/injuries',
     index: 'players/{{ playerId }}/injuries',
-    record: 'injuries/{{ injuryId }}'
+    record: 'injuries/{{ injuryId }}',
+    search: 'teams/{{ teamId }}/injuries/search'
   },
 
   loans: {
-    teamIndex: 'teams/{{ teamId }}/loans',
     index: 'players/{{ playerId }}/loans',
-    record: 'loans/{{ loanId }}'
+    record: 'loans/{{ loanId }}',
+    search: 'teams/{{ teamId }}/loans/search'
   },
 
   squads: {
@@ -99,9 +93,9 @@ export const routes = {
   },
 
   stages: {
-    teamIndex: 'teams/{{ teamId }}/stages',
     index: 'competitions/{{ competitionId }}/stages',
-    record: 'stages/{{ stageId }}'
+    record: 'stages/{{ stageId }}',
+    search: 'teams/{{ teamId }}/stages/search'
   },
 
   tableRows: {

@@ -1,27 +1,20 @@
 <template>
-  <v-card outlined>
-    <v-card-title>
-      <span class="subtitle-1 font-weight-light">{{ squad.name }}</span>
+  <v-card>
+    <v-toolbar color="blue">
+      <v-toolbar-title class="font-weight-light white--text">
+        {{ squad.name }}
+      </v-toolbar-title>
 
       <v-spacer />
 
-      <squad-form :squad-data="squad" >
-        <template #default="{ on: dialog }">
-          <v-tooltip
-            bottom
+      <squad-form :squad-data="squad">
+        <template #default="{ on }">
+          <tooltip-button
+            label="Edit"
+            icon="mdi-pencil"
             color="orange"
-          >
-            <template #activator="{ on: tooltip }">
-              <v-btn
-                v-on="{ ...dialog, ...tooltip }"
-                text
-                icon
-              >
-                <v-icon color="orange">mdi-pencil</v-icon>
-              </v-btn>
-            </template>
-            Edit
-          </v-tooltip>
+            :on="on"
+          />
         </template>
       </squad-form>
 
@@ -29,26 +22,28 @@
         :record="squad"
         store="squads"
         :label="`Squad: ${ squad.name }`"
+        small
       />
-    </v-card-title>
-
-    <v-divider class="mx-3" />
+    </v-toolbar>
 
     <v-card-text>
-      <v-layout class="text-xs-center">
-        <v-flex>
+      <v-row
+        dense
+        class="text-center"
+      >
+        <v-col>
           <div class="display-1 primary--text">{{ defOVR }}</div>
           <div class="subheading">DEF</div>
-        </v-flex>
-        <v-flex>
+        </v-col>
+        <v-col>
           <div class="display-1 success--text">{{ midOVR }}</div>
           <div class="subheading">MID</div>
-        </v-flex>
-        <v-flex>
+        </v-col>
+        <v-col>
           <div class="display-1 warning--text">{{ attOVR }}</div>
           <div class="subheading">ATT</div>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
       <v-divider class="mx-3" />
 
@@ -66,7 +61,7 @@
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
-  import { FormationView, RecordRemove } from '@/helpers'
+  import { FormationView, RecordRemove, TooltipButton } from '@/helpers'
   import { Player } from '@/models'
   import SquadForm from './Form'
 
@@ -74,7 +69,8 @@
     components: {
       SquadForm,
       FormationView,
-      RecordRemove
+      RecordRemove,
+      TooltipButton
     }
   })
   export default class SquadCard extends Vue {
@@ -105,8 +101,6 @@
         .query()
         .whereIdIn(playerIds)
         .sum('ovr')
-
-      console.log(positionType, playerIds, totalOvr)
 
       return Math.round(totalOvr / playerIds.length)
     }

@@ -5,10 +5,10 @@
         :key="key"
         :item="round"
         attribute="name"
-        :label="round.name"
+        label="Stage Name"
         :readonly="readonly"
-        @close="updateStageAttribute(round.id, 'name', $event)"
         display-class="font-weight-light"
+        @close="updateStageAttribute(round.id, 'name', $event)"
       />
 
       <v-spacer />
@@ -27,52 +27,42 @@
       :headers="headers"
       :items="items"
       :items-per-page="-1"
+      :mobile-breakpoint="0"
       disable-sort
       hide-default-footer
     >
       <template #item.home_team="{ item }">
-        <inline-field
-          :item="item"
-          attribute="home_team"
-          label="Home Team"
-          input-type="combobox"
-          :options="competitionTeams"
-          @close="updateFixtureAttribute(item.id, 'home_team', $event)"
-          :readonly="readonly"
-          :display-class="teamClass(item.home_team)"
-        />
+        <span :class="teamClass(item.home_team)">
+          {{ item.home_team }}
+        </span>
       </template>
-      <template #item.home_score="{ item }">
-        <inline-field
-          :item="item"
-          attribute="home_score"
-          label="Home Score"
-          @close="updateFixtureAttribute(item.id, 'home_score', $event)"
-          :readonly="readonly"
-          :display-class="teamClass(item.home_team)"
-        />
-      </template>
-      <template #item.away_score="{ item }">
-        <inline-field
-          :item="item"
-          attribute="away_score"
-          label="Away Score"
-          @close="updateFixtureAttribute(item.id, 'away_score', $event)"
-          :readonly="readonly"
-          :display-class="teamClass(item.away_team)"
-        />
+      <template #item.score="{ item }">
+        <div
+          v-for="leg in item.legs"
+          :key="leg.id"
+        >
+          {{ leg.score }}
+        </div>
       </template>
       <template #item.away_team="{ item }">
-        <inline-field
-          :item="item"
-          attribute="away_team"
-          label="Away Team"
-          input-type="combobox"
-          :options="competitionTeams"
-          @close="updateFixtureAttribute(item.id, 'away_team', $event)"
-          :readonly="readonly"
-          :display-class="teamClass(item.away_team)"
-        />
+        <span :class="teamClass(item.away_team)">
+          {{ item.away_team }}
+        </span>
+      </template>
+      <template #item.edit="{ item }">
+        <fixture-form
+          :stage="round"
+          :fixture-data="item"
+        >
+          <template #default="{ on }">
+            <tooltip-button
+              label="Edit Fixture"
+              icon="mdi-pencil"
+              color="orange"
+              :on="on"
+            />
+          </template>
+        </fixture-form>
       </template>
       <template #item.delete="{ item }">
         <record-remove
@@ -82,28 +72,22 @@
         />
       </template>
     </v-data-table>
-
   </v-card>
 </template>
 
 <script>
   import { mixins, Component, Prop } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
-  import { InlineField, RecordRemove } from '@/helpers'
+  import { InlineField, RecordRemove, TooltipButton } from '@/helpers'
   import FixtureForm from '@/components/Fixture/Form'
 
   @Component({
     components: {
       InlineField,
       RecordRemove,
-      FixtureForm
-    },
-    methods: mapActions({
-      createFixture: 'fixtures/CREATE',
-      updateFixture: 'fixtures/UPDATE',
-      updateStage: 'stages/UPDATE'
-    })
+      FixtureForm,
+      TooltipButton
+    }
   })
   export default class RoundStage extends mixins(CompetitionAccessible) {
     @Prop({ type: Object, required: true }) round
@@ -117,13 +101,17 @@
 
     get headers () {
       const headers = [
-        { text: 'Home Team', value: 'home_team', align: 'end' },
-        { text: 'Home Score', value: 'home_score', align: 'end' },
-        { text: 'Away Score', value: 'away_score' },
+        { text: 'Home Team', value: 'home_team', align: 'right' },
+        { text: 'Score', value: 'score', align: 'center' },
         { text: 'Away Team', value: 'away_team' }
       ]
 
       if (!this.readonly) {
+        headers.push({
+          text: '',
+          value: 'edit',
+          width: 40
+        })
         headers.push({
           text: '',
           value: 'delete',
@@ -136,7 +124,7 @@
 
     async updateStageAttribute (stageId, attribute, value) {
       try {
-        await this.updateStage({
+        await this.$store.dispatch('stages/UPDATE', {
           id: stageId,
           [attribute]: value
         })
@@ -147,20 +135,6 @@
           color: 'red'
         })
       }
-    }
-
-    addFixture () {
-      this.createFixture({
-        stageId: this.round.id,
-        fixture: { home_team: '', away_team: '' }
-      })
-    }
-
-    updateFixtureAttribute (fixtureId, attribute, value) {
-      this.updateFixture({
-        id: fixtureId,
-        [attribute]: value
-      })
     }
   }
 </script>

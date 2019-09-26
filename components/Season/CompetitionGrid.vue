@@ -3,16 +3,20 @@
     :headers="headers"
     :items="rows"
     :items-per-page="-1"
+    :mobile-breakpoint="0"
     disable-sort
     hide-default-footer
   >
     <template #item.name="{ item }">
-      <v-btn
-        :to="item.link"
-        nuxt
-        text
-        color="info"
-      >{{ item.name }}</v-btn>
+      <nuxt-link :to="item.link">{{ item.name }}</nuxt-link>
+    </template>
+    <template #item.status="{ item }">
+      <v-icon
+        :color="item.statusColor"
+        small
+      >
+        {{ item.statusIcon }}
+      </v-icon>
     </template>
   </v-data-table>
 </template>
@@ -22,11 +26,12 @@
   import { Competition, Team } from '@/models'
 
   @Component
-  export default class SeasonResultsTable extends Vue {
+  export default class SeasonCompetitionGrid extends Vue {
     @Prop({ type: Number, required: true }) season
 
     headers = [
       { text: 'Competition', value: 'name' },
+      { text: '', value: 'status' },
       { text: 'GP', value: 'gp', align: 'center' },
       { text: 'W', value: 'wins', align: 'center' },
       { text: 'D', value: 'draws', align: 'center' },
@@ -73,6 +78,8 @@
         return {
           name: competition.name,
           link: competition.link,
+          statusIcon: competition.statusIcon,
+          statusColor: competition.statusColor,
           gp: wins + draws + losses,
           wins,
           draws,

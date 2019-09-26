@@ -46,7 +46,7 @@ export function create ({ model, parent }) {
     path: routes[model.entity].index,
     pathData: { [$parentId]: data[$parentId] },
     token: rootState.token,
-    data: { [$data]: data[$data] },
+    data: data.formData || { [$data]: data[$data] },
     success ({ data }) {
       model.insert({ data })
 
@@ -66,7 +66,7 @@ export function update ({ model }) {
     path: routes[model.entity].record,
     pathData: { [$id]: data.id },
     token: rootState.token,
-    data: { [$data]: data },
+    data: data.formData || { [$data]: data },
     success ({ data }) {
       model.insert({ data })
 

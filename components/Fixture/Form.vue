@@ -1,87 +1,155 @@
 <template>
   <dialog-form
     v-model="dialog"
-    title="Add Fixture"
+    :title="title"
     :submit="submit"
     :color="color"
   >
     <template #activator="{ on }">
       <slot :on="on">
-        <v-tooltip bottom>
-          <template #activator="{ on: tooltip }">
-            <v-btn
-              v-on="{ ...on, ...tooltip }"
-              icon
-            >
-              <v-icon>mdi-table-row-plus-after</v-icon>
-            </v-btn>
-          </template>
-          Add Fixture
-        </v-tooltip>
+        <tooltip-button
+          :label="title"
+          icon="mdi-table-row-plus-after"
+          :on="on"
+        />
       </slot>
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
-            <v-combobox
-              v-model="fixture.home_team"
-              label="Home Team"
-              :items="competitionTeams"
-              prepend-icon="mdi-shield-half-full"
-            />
-          </v-flex>
-          <v-flex xs12>
-            <v-combobox
-              v-model="fixture.away_team"
-              label="Away Team"
-              :items="competitionTeams"
-              prepend-icon="mdi-shield-half-full"
-            />
-          </v-flex>
-          <v-flex xs12 sm6>
+      <v-col cols="12">
+        <v-combobox
+          v-model="fixture.home_team"
+          label="Home Team"
+          :items="competitionTeams"
+          prepend-icon="mdi-shield-half-full"
+          hide-details
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-combobox
+          v-model="fixture.away_team"
+          label="Away Team"
+          :items="competitionTeams"
+          hide-details
+          prepend-icon="mdi-shield-half-full"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        class="mt-3 text-center"
+      >
+        <v-btn @click="addLeg">
+          Add Fixture Leg
+        </v-btn>
+      </v-col>
+      <v-container :key="key">
+        <v-row
+          v-for="(leg, i) in fixture.legs_attributes"
+          v-show="!leg._destroy"
+          :key="i"
+          dense
+        >
+          <v-col cols="6">
             <v-text-field
-              v-model="fixture.home_score"
+              v-model="leg.home_score"
               label="Home Score"
               prepend-icon="mdi-soccer"
+              hide-details
             />
-          </v-flex>
-          <v-flex xs12 sm6>
+          </v-col>
+          <v-col cols="6">
             <v-text-field
-              v-model="fixture.away_score"
+              v-model="leg.away_score"
               label="Away Score"
               prepend-icon="mdi-soccer"
+              append-outer-icon="mdi-delete"
+              hide-details
+              @click:append-outer="leg._destroy = true; key++"
             />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </template>
   </dialog-form>
 </template>
 
 <script>
-  import { mixins, Component, Prop } from 'nuxt-property-decorator'
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
   import { CompetitionAccessible, DialogFormable } from '@/mixins'
+  import { TooltipButton } from '@/helpers'
 
   const mix = mixins(CompetitionAccessible, DialogFormable)
 
-  @Component
+  @Component({
+    components: {
+      TooltipButton
+    },
+    methods: mapActions('fixtures', {
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
+  })
   export default class FixtureForm extends mix {
     @Prop({ type: Object, required: true }) stage
+    @Prop(Object) fixtureData
 
+    key = 0
     fixture = {
       home_team: '',
-      home_score: '',
-      away_score: '',
-      away_team: ''
+      away_team: '',
+      legs_attributes: [{
+        home_score: '',
+        away_score: '',
+        _destroy: false
+      }]
+    }
+
+    get title () {
+      return this.fixtureData ? 'Edit Fixture' : 'Add Fixture'
+    }
+
+    @Watch('dialog')
+    setFixture (val) {
+      if (val && this.fixtureData) {
+        this.fixture = this.$_pick(this.fixtureData, [
+          'id',
+          'home_team',
+          'away_team'
+        ])
+        this.fixture.legs_attributes = this.fixtureData.legs.map(leg => ({
+          ...leg,
+          _destroy: false
+        }))
+      }
+    }
+
+    addLeg () {
+      this.fixture.legs_attributes.push({
+        home_score: '',
+        away_score: '',
+        _destroy: false
+      })
+      this.key++
     }
 
     async submit () {
-      await this.$store.dispatch('fixtures/CREATE', {
-        stageId: this.stage.id,
-        fixture: this.fixture
-      })
+      if (this.fixtureData) {
+        await this.update(this.fixture)
+      } else {
+        await this.create({
+          stageId: this.stage.id,
+          fixture: this.fixture
+        })
+      }
     }
   }
 </script>

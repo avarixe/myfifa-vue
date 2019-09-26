@@ -2,110 +2,112 @@
   <dialog-form
     v-model="dialog"
     title-icon="mdi-soccer"
-    title="Record Goal"
+    :title="title"
     :submit="submit"
     :color="color"
   >
     <template #activator="{ on }">
-      <slot :on="on" />
+      <slot :on="on">
+        <tooltip-button
+          label="Goal"
+          icon="mdi-soccer"
+          color="blue"
+          :on="on"
+        />
+      </slot>
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
-            <v-radio-group
-              v-model="goal.home"
-              row
-              hide-details
-            >
-              <v-radio
-                :label="match.home"
-                :value="true"
-                color="teal"
-              />
-              <v-radio
-                :label="match.away"
-                :value="false"
-                color="pink"
-              />
-            </v-radio-group>
-          </v-flex>
-          <v-flex xs12>
-            <minute-field
-              v-model="minute"
-              :extra-time="match.extra_time"
-            />
-          </v-flex>
-          <v-flex xs12>
-            <player-select
-              v-if="teamGoal"
-              v-model="goal.player_id"
-              :players="scorerOptions"
-              label="Goal Scorer"
-              required
-            />
-            <v-text-field
-              v-else
-              v-model="goal.player_name"
-              :rules="$_validate('Goal Scorer', ['required'])"
-              label="Goal Scorer"
-              prepend-icon="mdi-account"
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-flex>
-          <v-flex xs12>
-            <player-select
-              v-if="teamGoal"
-              v-model="goal.assist_id"
-              :players="assistOptions"
-              label="Assisted By"
-              icon="mdi-human-greeting"
-              :disabled="goal.penalty || goal.own_goal"
-              clearable
-              hide-details
-            />
-            <v-text-field
-              v-else
-              v-model="goal.assisted_by"
-              label="Assisted By"
-              prepend-icon="mdi-human-greeting"
-              :disabled="goal.penalty || goal.own_goal"
-              hide-details
-              spellcheck="false"
-              autocapitalize="words"
-              autocomplete="off"
-              autocorrect="off"
-            />
-          </v-flex>
-          <v-flex xs12>
-            <v-checkbox
-              label="Penalty"
-              v-model="goal.penalty"
-              :disabled="goal.own_goal"
-              hide-details
-            />
-          </v-flex>
-          <v-flex xs12>
-            <v-checkbox
-              label="Own Goal"
-              v-model="goal.own_goal"
-              :disabled="goal.penalty"
-              hide-details
-            />
-          </v-flex>
-        </v-layout>
-      </v-container>
+      <v-col cols="12">
+        <v-radio-group
+          v-model="goal.home"
+          row
+          hide-details
+          @change="clearNames"
+        >
+          <v-radio
+            :label="match.home"
+            :value="true"
+            color="teal"
+          />
+          <v-radio
+            :label="match.away"
+            :value="false"
+            color="pink"
+          />
+        </v-radio-group>
+      </v-col>
+      <v-col cols="12">
+        <minute-field v-model="minute" />
+      </v-col>
+      <v-col cols="12">
+        <player-select
+          v-if="teamGoal"
+          v-model="goal.player_id"
+          :players="scorerOptions"
+          label="Goal Scorer"
+          required
+        />
+        <v-text-field
+          v-else
+          v-model="goal.player_name"
+          :rules="$_validate('Goal Scorer', ['required'])"
+          label="Goal Scorer"
+          prepend-icon="mdi-account"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <player-select
+          v-if="teamGoal"
+          v-model="goal.assist_id"
+          :players="assistOptions"
+          label="Assisted By"
+          icon="mdi-human-greeting"
+          :disabled="goal.penalty || goal.own_goal"
+          clearable
+          hide-details
+        />
+        <v-text-field
+          v-else
+          v-model="goal.assisted_by"
+          label="Assisted By"
+          prepend-icon="mdi-human-greeting"
+          :disabled="goal.penalty || goal.own_goal"
+          hide-details
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-checkbox
+          v-model="goal.penalty"
+          label="Penalty"
+          :disabled="goal.own_goal"
+          hide-details
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-checkbox
+          v-model="goal.own_goal"
+          label="Own Goal"
+          :disabled="goal.penalty"
+          hide-details
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>
 
 <script>
-  import { mixins, Component, Watch } from 'nuxt-property-decorator'
-  import { MinuteField, PlayerSelect } from '@/helpers'
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
+  import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
   const mix = mixins(TeamAccessible, DialogFormable, MatchAccessible)
@@ -113,10 +115,17 @@
   @Component({
     components: {
       MinuteField,
-      PlayerSelect
-    }
+      PlayerSelect,
+      TooltipButton
+    },
+    methods: mapActions('goals', {
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
   })
   export default class GoalForm extends mix {
+    @Prop(Object) record
+
     goal = {
       home: true, // default to Team side
       player_id: null,
@@ -125,6 +134,10 @@
       assist_id: '',
       own_goal: false,
       penalty: false
+    }
+
+    get title () {
+      return `${this.record ? 'Edit' : 'Record'} Goal`
     }
 
     get scoredTeam () {
@@ -147,32 +160,52 @@
       )
     }
 
-    @Watch('goal.home')
+    @Watch('dialog')
+    setGoal (val) {
+      if (val && this.record) {
+        this.goal = this.$_pick(this.record, [
+          'id',
+          'home',
+          'player_id',
+          'player_name',
+          'assisted_by',
+          'assist_id',
+          'own_goal',
+          'penalty'
+        ])
+        this.minute = this.record.minute
+      }
+    }
+
     clearNames () {
-      this.clearPlayerName()
-      this.clearAssistedBy()
+      this.goal.player_id = null
+      this.goal.player_name = ''
+      this.clearAssistedBy(true)
     }
 
     @Watch('goal.penalty')
     @Watch('goal.own_goal')
-    clearAssistedBy () {
-      this.goal.assist_id = null
-      this.goal.assisted_by = null
-    }
-
-    clearPlayerName () {
-      this.goal.player_name = ''
-      this.goal.assisted_by = ''
+    clearAssistedBy (val) {
+      if (val) {
+        this.goal.assist_id = null
+        this.goal.assisted_by = null
+      }
     }
 
     async submit () {
-      await this.$store.dispatch('goals/CREATE', {
-        matchId: this.match.id,
-        goal: {
-          ...this.goal,
-          minute: this.minute
-        }
-      })
+      const goal = {
+        ...this.goal,
+        minute: this.minute
+      }
+
+      if (this.record) {
+        await this.update(goal)
+      } else {
+        await this.create({
+          matchId: this.match.id,
+          goal
+        })
+      }
     }
   }
 </script>

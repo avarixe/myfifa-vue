@@ -4,36 +4,41 @@
       :player-data="player"
       color="orange"
     >
-      <template #default="{ on: dialog }">
-        <v-tooltip
-          bottom
+      <template #default="{ on }">
+        <tooltip-button
+          label="Edit"
+          icon="mdi-pencil"
           color="orange"
-        >
-          <template #activator="{ on: tooltip }">
-            <v-btn
-              v-on="{ ...dialog, ...tooltip }"
-              icon
-            >
-              <v-icon color="orange">mdi-pencil</v-icon>
-            </v-btn>
-          </template>
-          Edit
-        </v-tooltip>
+          :on="on"
+        />
       </template>
     </player-form>
     <transfer-form :player="player" />
+    <loan-form
+      :player="player"
+      :record="player.status === 'Loaned' ? loan : null"
+    />
     <contract-form :player="player" />
     <template v-if="player.isActive">
-      <injury-form :player="player" />
-      <loan-form :player="player" />
+      <injury-form
+        :player="player"
+        :record="player.status === 'Injured' ? injury : null"
+      />
       <player-retire :player="player" />
       <player-release :player="player" />
     </template>
+    <record-remove
+      :record="player"
+      store="players"
+      :label="player.name"
+      :redirect="playersLink"
+    />
   </div>
 </template>
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
+  import { Loan, Injury } from '@/models'
   import ContractForm from '@/components/Contract/Form'
   import InjuryForm from '@/components/Injury/Form'
   import LoanForm from '@/components/Loan/Form'
@@ -41,6 +46,7 @@
   import PlayerRetire from './Retire'
   import PlayerRelease from './Release'
   import PlayerForm from './Form'
+  import { RecordRemove, TooltipButton } from '@/helpers'
 
   @Component({
     components: {
@@ -50,10 +56,35 @@
       TransferForm,
       PlayerRetire,
       PlayerRelease,
-      PlayerForm
+      PlayerForm,
+      RecordRemove,
+      TooltipButton
     }
   })
   export default class PlayerActions extends Vue {
     @Prop({ type: Object, required: true }) player
+
+    get playersLink () {
+      return {
+        name: 'teams-teamId-players',
+        params: {
+          teamId: this.player.team_id
+        }
+      }
+    }
+
+    get injury () {
+      return Injury
+        .query()
+        .where('player_id', this.player.id)
+        .last()
+    }
+
+    get loan () {
+      return Loan
+        .query()
+        .where('player_id', this.player.id)
+        .last()
+    }
   }
 </script>

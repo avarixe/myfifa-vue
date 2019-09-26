@@ -6,7 +6,7 @@ export default {
 
   server: {
     host: '0.0.0.0',
-    port: '8080'
+    port: process.env.NODE_ENV === 'production' ? '8080' : '4000'
   },
 
   /*
@@ -38,12 +38,13 @@ export default {
   */
   // loading: '~/components/App/LoadingOverlay.vue', // { color: '#3B8070' },
 
-  devModules: [
+  buildModules: [
     '@nuxtjs/vuetify'
   ],
 
   modules: [
-    '@nuxtjs/moment'
+    '@nuxtjs/moment',
+    '@nuxtjs/dotenv'
   ],
 
   vuetify: {
@@ -75,8 +76,6 @@ export default {
     },
 
     transpile: [/^vuetify/],
-
-    postcss: {},
 
     extractCSS: true,
 

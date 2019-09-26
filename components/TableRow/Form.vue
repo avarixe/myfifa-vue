@@ -1,89 +1,97 @@
 <template>
   <dialog-form
     v-model="dialog"
-    title="Add Table Row"
+    :title="title"
     :submit="submit"
     :color="color"
   >
     <template #activator="{ on }">
       <slot :on="on">
-        <v-tooltip bottom>
-          <template #activator="{ on: tooltip }">
-            <v-btn
-              v-on="{ ...on, ...tooltip }"
-              icon
-            >
-              <v-icon>mdi-table-row-plus-after</v-icon>
-            </v-btn>
-          </template>
-          Add Table Row
-        </v-tooltip>
+        <tooltip-button
+          :label="title"
+          icon="mdi-table-row-plus-after"
+          :on="on"
+        />
       </slot>
     </template>
 
     <template #form>
-      <v-container grid-list-xs>
-        <v-layout wrap>
-          <v-flex xs12>
-            <v-combobox
-              v-model="row.name"
-              label="Team"
-              :items="competitionTeams"
-              prepend-icon="mdi-shield-half-full"
-            />
-          </v-flex>
-          <v-flex xs4>
-            <v-text-field
-              v-model="row.wins"
-              prepend-icon="mdi-alpha-w"
-              type="number"
-            />
-          </v-flex>
-          <v-flex xs4>
-            <v-text-field
-              v-model="row.draws"
-              prepend-icon="mdi-alpha-d"
-              type="number"
-            />
-          </v-flex>
-          <v-flex xs4>
-            <v-text-field
-              v-model="row.losses"
-              prepend-icon="mdi-alpha-l"
-              type="number"
-            />
-          </v-flex>
-          <v-flex xs6>
-            <v-text-field
-              v-model="row.goals_for"
-              label="GF"
-              prepend-icon="mdi-soccer"
-              type="number"
-            />
-          </v-flex>
-          <v-flex xs6>
-            <v-text-field
-              v-model="row.goals_against"
-              label="GA"
-              prepend-icon="mdi-soccer"
-              type="number"
-            />
-          </v-flex>
-        </v-layout>
-      </v-container>
+      <v-col cols="12">
+        <v-text-field
+          v-model="row.name"
+          label="Team"
+          prepend-icon="mdi-shield-half-full"
+          hide-details
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="4">
+        <v-text-field
+          v-model="row.wins"
+          prepend-icon="mdi-alpha-w"
+          type="number"
+          hide-details
+        />
+      </v-col>
+      <v-col cols="4">
+        <v-text-field
+          v-model="row.draws"
+          prepend-icon="mdi-alpha-d"
+          type="number"
+          hide-details
+        />
+      </v-col>
+      <v-col cols="4">
+        <v-text-field
+          v-model="row.losses"
+          prepend-icon="mdi-alpha-l"
+          type="number"
+          hide-details
+        />
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          v-model="row.goals_for"
+          label="GF"
+          prepend-icon="mdi-soccer"
+          type="number"
+          hide-details
+        />
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          v-model="row.goals_against"
+          label="GA"
+          prepend-icon="mdi-soccer"
+          type="number"
+          hide-details
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>
 
 <script>
-  import { mixins, Component, Prop } from 'nuxt-property-decorator'
-  import { CompetitionAccessible, DialogFormable } from '@/mixins'
+  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
+  import { DialogFormable } from '@/mixins'
+  import { TooltipButton } from '@/helpers'
 
-  const mix = mixins(DialogFormable, CompetitionAccessible)
-
-  @Component
-  export default class TableRowForm extends mix {
+  @Component({
+    components: {
+      TooltipButton
+    },
+    methods: mapActions('tableRows', {
+      create: 'CREATE',
+      update: 'UPDATE'
+    })
+  })
+  export default class TableRowForm extends mixins(DialogFormable) {
     @Prop({ type: Object, required: true }) stage
+    @Prop(Object) rowData
 
     row = {
       name: '',
@@ -94,11 +102,34 @@
       goals_against: null
     }
 
+    get title () {
+      return this.rowData ? 'Edit Table Row' : 'Add Table Row'
+    }
+
+    @Watch('dialog')
+    setTableRow (val) {
+      if (val && this.rowData) {
+        this.row = this.$_pick(this.rowData, [
+          'id',
+          'name',
+          'wins',
+          'draws',
+          'losses',
+          'goals_for',
+          'goals_against'
+        ])
+      }
+    }
+
     async submit () {
-      await this.$store.dispatch('tableRows/CREATE', {
-        stageId: this.stage.id,
-        tableRow: this.row
-      })
+      if (this.rowData) {
+        await this.update(this.row)
+      } else {
+        await this.create({
+          stageId: this.stage.id,
+          tableRow: this.row
+        })
+      }
     }
   }
 </script>

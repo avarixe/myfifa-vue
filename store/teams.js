@@ -13,12 +13,12 @@ export const actions = {
       }
     })
   },
-  CREATE ({ commit, rootState }, team) {
+  CREATE ({ commit, rootState }, data) {
     return http({
       method: 'post',
       path: routes.teams.index,
       token: rootState.token,
-      data: { team },
+      data,
       success ({ data }) {
         Team.insert({ data })
       }

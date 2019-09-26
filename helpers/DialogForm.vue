@@ -13,35 +13,39 @@
     </template>
 
     <v-form
-      v-model="valid"
       ref="form"
-      @submit.prevent="submitForm"
+      v-model="valid"
       style="width:100%"
+      @submit.prevent="submitForm"
     >
       <v-card>
-        <v-card-title
-          primary-title
+        <v-toolbar
           :class="formColor"
+          dense
         >
           <slot name="header">
-            <div class="headline">
+            <v-toolbar-title>
               <v-icon left>{{ titleIcon }}</v-icon>
               {{ title }}
-            </div>
+            </v-toolbar-title>
           </slot>
-        </v-card-title>
+        </v-toolbar>
 
         <v-divider />
 
-        <v-card-text>
-          <slot name="form" />
+        <v-card-text :key="key">
+          <v-row dense>
+            <slot name="form" />
+          </v-row>
         </v-card-text>
 
         <v-alert
-          type="error"
           v-model="formError"
+          type="error"
           dismissible
-        >{{ errorMessage }}</v-alert>
+          tile
+          v-text="errorMessage"
+        />
 
         <v-divider />
 
@@ -52,7 +56,9 @@
             text
             large
             @click="dialog = false"
-          >Cancel</v-btn>
+          >
+            Cancel
+          </v-btn>
 
           <slot name="additional-actions" />
 
@@ -64,7 +70,9 @@
             large
             :loading="loading"
             @click="loading = true"
-          >Save</v-btn>
+          >
+            Save
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-form>
@@ -85,17 +93,11 @@
     @Prop(Boolean) fullWidth
 
     dialog = null
+    key = 0
     valid = false
     loading = false
     errorMessage = ''
-
-    get formError () {
-      return this.errorMessage.length > 0
-    }
-
-    set formError (val) {
-      this.errMessage = val
-    }
+    formError = false
 
     get buttonColor () {
       return this.color ? this.color + ' darken-2' : 'primary'
@@ -112,6 +114,15 @@
     @Watch('dialog')
     emitValue (val) {
       this.$emit('input', val)
+
+      if (!val && this.$refs.form) {
+        this.resetForm()
+      }
+    }
+
+    async resetForm () {
+      this.key++
+      this.$refs.form.reset()
     }
 
     async submitForm () {
@@ -124,6 +135,7 @@
           console.log(e)
           console.log(e.message)
           this.errorMessage = e.message
+          this.formError = true
         } finally {
           this.loading = false
         }

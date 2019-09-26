@@ -1,23 +1,14 @@
 <template>
-  <v-data-iterator
-    :items="rows"
-    :items-per-page="-1"
-    no-data-text="No Squads Recorded"
-    hide-default-footer
-  >
-    <template #default="{ items }">
-      <v-layout wrap>
-        <v-flex
-          v-for="squad in items"
-          :key="squad.id"
-          xs12
-          md6
-        >
-          <squad-card :squad="squad" />
-        </v-flex>
-      </v-layout>
-    </template>
-  </v-data-iterator>
+  <v-row>
+    <v-col
+      v-for="squad in squads"
+      :key="squad.id"
+      cols="12"
+      md="6"
+    >
+      <squad-card :squad="squad" />
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -32,7 +23,7 @@
     }
   })
   export default class SquadGrid extends mixins(TeamAccessible) {
-    get rows () {
+    get squads () {
       return Squad
         .query()
         .with('squad_players')

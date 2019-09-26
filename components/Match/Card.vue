@@ -1,23 +1,29 @@
 <template>
-  <v-card outlined>
-    <v-card-title :class="`subtitle-1 d-block text-xs-center`">
-      <span :class="`${color}--text font-weight-light`">{{ title }}</span>
-    </v-card-title>
+  <v-card>
+    <v-toolbar
+      :color="color"
+      dark
+      dense
+    >
+      <v-toolbar-title class="font-weight-light">
+        {{ title }}
+      </v-toolbar-title>
 
-    <v-divider class="mx-3" />
+      <v-spacer />
+
+      <v-btn
+        v-if="match"
+        :to="match.link"
+        dark
+        nuxt
+        text
+      >
+        View Match
+      </v-btn>
+    </v-toolbar>
 
     <template v-if="match">
-      <v-card-actions>
-        <v-btn
-          :to="match.link"
-          nuxt
-          :color="color"
-          block
-          text
-        >View Match</v-btn>
-      </v-card-actions>
-
-      <v-card-text class="text-xs-center">
+      <v-card-text class="text-center">
         <p class="font-weight-thin mb-0">{{ match.competition }}</p>
         <h4 class="title font-weight-light mt-0 mb-3">
           {{ match.home }} v {{ match.away }}
@@ -31,9 +37,9 @@
     </template>
     <div
       v-else
-      class="text-xs-center"
+      class="text-center pa-4"
     >
-      <p class="category font-weight-thin">
+      <p class="category font-weight-thin ma-0">
         No Matches have been Recorded.
       </p>
     </div>

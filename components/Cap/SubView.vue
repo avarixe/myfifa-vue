@@ -1,30 +1,32 @@
 <template>
-  <v-list-item two-line>
+  <v-list-item>
     <v-list-item-action class="font-weight-bold">
-      <inline-field
+      <inline-select
         :item="cap"
         attribute="pos"
         input-type="select"
         :label="`${cap.name} Position`"
         :options="positions"
-        @close="setPosition($event)"
         :readonly="readonly"
+        @change="setPosition($event)"
       />
     </v-list-item-action>
 
     <span
       v-if="!readonly"
       class="font-weight-thin body-2 mr-4"
-    >{{ cap.name }}</span>
+      v-text="cap.name"
+    />
     <v-dialog
       v-else
       width="500"
     >
       <template #activator="{ on }">
         <a
-          v-on="on"
           class="font-weight-thin body-2 black--text mr-4"
-        >{{ cap.name }}</a>
+          v-on="on"
+          v-text="cap.name"
+        />
       </template>
 
       <player-card :player-id="cap.player_id" />
@@ -35,21 +37,20 @@
       :match="match"
       class="d-inline-block"
     />
-
   </v-list-item>
 </template>
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { positions } from '@/models/Match'
-  import { InlineField } from '@/helpers'
+  import { InlineSelect } from '@/helpers'
   import CapEvents from './Events'
   import PlayerCard from '@/components/Player/Card'
 
   @Component({
     components: {
       CapEvents,
-      InlineField,
+      InlineSelect,
       PlayerCard
     }
   })

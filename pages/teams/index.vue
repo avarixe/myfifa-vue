@@ -1,29 +1,14 @@
 <template>
-  <v-container grid-list-lg>
-    <v-layout wrap>
-      <v-flex xs12>
-        <div class="headline font-weight-thin">Teams</div>
-      </v-flex>
+  <v-container>
+    <v-row>
+      <v-col cols="12">
+        <team-form />
+      </v-col>
 
-      <v-flex xs12>
-        <team-form>
-          <template #default="{ on }">
-            <v-btn
-              v-on="on"
-              color="blue-grey"
-              outlined
-            >
-              <v-icon left>mdi-plus-circle-outline</v-icon>
-              Team
-            </v-btn>
-          </template>
-        </team-form>
-      </v-flex>
-
-      <v-flex xs12>
+      <v-col cols="12">
         <team-grid />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -33,6 +18,7 @@
   import TeamGrid from '@/components/Team/Grid'
 
   @Component({
+    middleware: ['authenticated'],
     components: {
       TeamForm,
       TeamGrid
@@ -40,11 +26,14 @@
     transition: 'fade-transition'
   })
   export default class TeamsPage extends Vue {
-    layout = () => 'default'
-    middleware = () => 'home'
+    async fetch ({ store }) {
+      await store.dispatch('teams/FETCH')
+    }
 
-    mounted () {
-      this.$store.commit('app/SET_TITLE', 'Teams')
+    beforeMount () {
+      this.$store.commit('app/SET_PAGE', {
+        headline: 'Teams'
+      })
     }
   }
 </script>

@@ -6,6 +6,8 @@
     :prefix="prefix"
     :rules="rules"
     :clearable="!required"
+    :autofocus="autofocus"
+    inputmode="numeric"
   />
 </template>
 
@@ -23,6 +25,7 @@
     @Prop({ type: String, required: true }) label
     @Prop(String) prefix
     @Prop({ type: Boolean, default: false }) required
+    @Prop({ type: Boolean, default: false }) autofocus
 
     money = null
     config = {

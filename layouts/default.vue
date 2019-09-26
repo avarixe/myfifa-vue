@@ -1,46 +1,33 @@
 <template>
   <v-app>
-    <no-ssr>
-      <app-bar v-if="$store.getters.authenticated" />
+    <client-only v-if="authenticated">
+      <app-bar />
 
-      <team-drawer v-if="teamPage && loaded" />
-    </no-ssr>
+      <app-drawer />
+    </client-only>
 
     <app-broadcaster />
 
     <v-content>
       <template v-if="teamPage">
-        <template v-if="loaded">
-          <team-channel />
-          <nuxt />
-        </template>
-        <team-loader
-          v-else
-          :key="key"
-          :team="team"
-          @loaded="loaded = true"
-        />
+        <team-channel />
+        <nuxt />
       </template>
       <template v-else>
         <nuxt />
       </template>
     </v-content>
-
-    <!-- <team-bottom-navigation /> -->
-
   </v-app>
 </template>
 
 <script>
-  import { Vue, Component, Watch } from 'vue-property-decorator'
-  import { mapState } from 'vuex'
+  import { Vue, Component } from 'vue-property-decorator'
+  import { mapGetters } from 'vuex'
   import { Team } from '@/models'
   import AppBar from '@/components/App/Bar'
   import AppBroadcaster from '@/components/App/Broadcaster'
   import TeamChannel from '@/components/Team/Channel'
-  import TeamLoader from '@/components/Team/Loader'
-  import TeamDrawer from '@/components/Team/Drawer'
-  // import TeamBottomNavigation from '@/components/Team/TeamBottomNavigation'
+  import AppDrawer from '@/components/App/Drawer'
 
   @Component({
     name: 'App',
@@ -48,15 +35,18 @@
       AppBar,
       AppBroadcaster,
       TeamChannel,
-      TeamLoader,
-      TeamDrawer
-      // TeamBottomNavigation
+      AppDrawer
     },
-    computed: mapState('app', ['drawer'])
+    computed: mapGetters([
+      'authenticated'
+    ])
   })
   export default class Layout extends Vue {
-    loaded = false
-    key = 0
+    head () {
+      return {
+        title: this.$store.state.app.title
+      }
+    }
 
     get teamPage () {
       return 'teamId' in this.$route.params
@@ -64,12 +54,6 @@
 
     get team () {
       return Team.find(this.$route.params.teamId)
-    }
-
-    @Watch('teamPage')
-    resetLoader () {
-      this.loaded = false
-      this.key++
     }
   }
 </script>

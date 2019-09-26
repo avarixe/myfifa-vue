@@ -1,60 +1,49 @@
 <template>
-  <v-container
-    fluid
-    grid-list-lg
-  >
-    <v-layout wrap>
-      <v-flex xs12>
-        <div class="overline">{{ team.title }}</div>
-        <div class="headline font-weight-thin">Seasons</div>
-      </v-flex>
-      <v-flex xs12>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12">
         <competition-form>
           <template #default="{ on }">
-            <v-btn
-              v-on="on"
-              color="blue-grey"
-              outlined
-            >
+            <v-btn v-on="on">
               <v-icon left>mdi-plus-circle-outline</v-icon>
               Competition
             </v-btn>
           </template>
         </competition-form>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
-        <season-grid />
-      </v-flex>
-    </v-layout>
+      <v-col cols="12">
+        <season-timeline />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
   import { mixins, Component } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
-  import SeasonGrid from '@/components/Season/Grid'
+  import SeasonTimeline from '@/components/Season/Timeline'
   import CompetitionForm from '@/components/Competition/Form'
 
   @Component({
+    middleware: ['authenticated'],
     components: {
       CompetitionForm,
-      SeasonGrid
+      SeasonTimeline
     },
     transition: 'fade-transition'
   })
   export default class SeasonsPage extends mixins(TeamAccessible) {
-    layout = () => 'default'
-    middleware = () => 'authenticated'
-
-    head () {
-      return {
-        title: `${this.team.title} - Seasons`
-      }
+    async fetch ({ store, params }) {
+      await store.dispatch('competitions/FETCH', { teamId: params.teamId })
     }
 
-    mounted () {
-      this.$store.commit('app/SET_TITLE', this.team.title)
+    beforeMount () {
+      this.$store.commit('app/SET_PAGE', {
+        title: `${this.team.title} - Seasons`,
+        overline: this.team.title,
+        headline: 'Seasons'
+      })
     }
   }
 </script>
