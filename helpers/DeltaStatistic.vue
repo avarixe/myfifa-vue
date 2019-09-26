@@ -6,18 +6,20 @@
     >
       <template #activator="{ on }">
         <div
-          v-on="on"
           :class="`display-1 ${color}--text`"
+          v-on="on"
         >
           <v-icon
             class="display-1"
             :color="color"
-          >mdi-{{ icon }}</v-icon>
+          >
+            mdi-{{ icon }}
+          </v-icon>
           {{ formatter(endValue) }}
         </div>
       </template>
 
-      {{ startValue < endValue ? 'Increased' : 'Decreased' }} from
+      {{ valueIncreased ? 'Increased' : 'Decreased' }} from
       {{ formatter(startValue) }} by {{ percentage.toFixed(2) }}%
     </v-tooltip>
 
@@ -42,15 +44,19 @@
     }
 
     get color () {
-      return this.startValue < this.endValue ? 'green' : 'red'
+      return this.valueIncreased ? 'green' : 'red'
     }
 
     get icon () {
-      return this.startValue < this.endValue ? 'menu-up' : 'menu-down'
+      return this.valueIncreased ? 'menu-up' : 'menu-down'
     }
 
     get percentage () {
       return Math.abs((this.endValue - this.startValue) / this.startValue) * 100
+    }
+
+    get valueIncreased () {
+      return this.startValue <= this.endValue
     }
   }
 </script>

@@ -1,11 +1,13 @@
 <template>
   <v-container>
-    <v-layout
-      class="text-xs-center"
-      justify-space-around
-      wrap
+    <v-row
+      class="text-center"
+      dense
     >
-      <v-flex xs6>
+      <v-col
+        cols="12"
+        sm="6"
+      >
         <season-team-growth
           label="Team Value"
           attribute="value"
@@ -13,8 +15,11 @@
           :season-start="seasonStart"
           :season-end="seasonEnd"
         />
-      </v-flex>
-      <v-flex xs6>
+      </v-col>
+      <v-col
+        cols="12"
+        sm="6"
+      >
         <season-team-growth
           label="Team OVR"
           attribute="ovr"
@@ -23,33 +28,48 @@
           :season-start="seasonStart"
           :season-end="seasonEnd"
         />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <v-divider />
-      </v-flex>
+      </v-col>
 
-      <v-flex xs4 sm2>
+      <v-col
+        cols="4"
+        sm="2"
+      >
         <div class="display-1 success--text">{{ numWins }}</div>
         <div class="subheading">Wins</div>
-      </v-flex>
-      <v-flex xs4 sm2>
+      </v-col>
+      <v-col
+        cols="4"
+        sm="2"
+      >
         <div class="display-1 warning--text">{{ numDraws }}</div>
         <div class="subheading">Draws</div>
-      </v-flex>
-      <v-flex xs4 sm2>
+      </v-col>
+      <v-col
+        cols="4"
+        sm="2"
+      >
         <div class="display-1 red--text">{{ numLosses }}</div>
         <div class="subheading">Losses</div>
-      </v-flex>
-      <v-flex xs6 sm2>
+      </v-col>
+      <v-col
+        cols="6"
+        sm="2"
+      >
         <div class="display-1 teal--text">{{ numGoalsFor }}</div>
         <div class="subheading">Goals For</div>
-      </v-flex>
-      <v-flex xs6 sm2>
+      </v-col>
+      <v-col
+        cols="6"
+        sm="2"
+      >
         <div class="display-1 pink--text">{{ numGoalsAgainst }}</div>
         <div class="subheading">Goals Against</div>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
