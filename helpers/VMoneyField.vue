@@ -7,6 +7,7 @@
     :rules="rules"
     :clearable="!required"
     :autofocus="autofocus"
+    inputmode="numeric"
   />
 </template>
 
