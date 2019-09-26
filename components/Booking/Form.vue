@@ -37,10 +37,7 @@
         </v-radio-group>
       </v-col>
       <v-col cols="12">
-        <minute-field
-          v-model="minute"
-          :extra-time="match.extra_time"
-        />
+        <minute-field v-model="minute" />
       </v-col>
       <v-col cols="12">
         <player-select

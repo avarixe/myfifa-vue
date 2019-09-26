@@ -43,6 +43,7 @@
           v-model="formError"
           type="error"
           dismissible
+          tile
           v-text="errorMessage"
         />
 
@@ -96,14 +97,7 @@
     valid = false
     loading = false
     errorMessage = ''
-
-    get formError () {
-      return this.errorMessage.length > 0
-    }
-
-    set formError (val) {
-      this.errorMessage = val
-    }
+    formError = false
 
     get buttonColor () {
       return this.color ? this.color + ' darken-2' : 'primary'
@@ -141,6 +135,7 @@
           console.log(e)
           console.log(e.message)
           this.errorMessage = e.message
+          this.formError = true
         } finally {
           this.loading = false
         }
