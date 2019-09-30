@@ -85,11 +85,6 @@
           no-data-text="No Players Found"
         >
           <template #item.name="{ item }">
-            <flag
-              v-if="item.nationality"
-              :iso="item.flag"
-              :title="item.nationality"
-            />
             <v-btn
               :to="item.link"
               small
@@ -97,6 +92,12 @@
               nuxt
               color="info"
             >
+              <flag
+                v-if="item.nationality"
+                :iso="item.flag"
+                :title="item.nationality"
+                class="mr-2"
+              />
               {{ item.name }}
             </v-btn>
           </template>
