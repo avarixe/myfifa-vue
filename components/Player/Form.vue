@@ -28,6 +28,9 @@
         />
       </v-col>
       <v-col cols="12">
+        <nationality-field v-model="player.nationality" />
+      </v-col>
+      <v-col cols="12">
         <v-select
           v-model="player.pos"
           :rules="$_validate('Position', ['required'])"
@@ -101,10 +104,11 @@
   import { mapActions } from 'vuex'
   import { DialogFormable, TeamAccessible } from '@/mixins'
   import { positions } from '@/models/Player'
-  import { VMoneyField } from '@/helpers'
+  import { NationalityField, VMoneyField } from '@/helpers'
 
   @Component({
     components: {
+      NationalityField,
       VMoneyField
     },
     methods: mapActions('players', {
@@ -119,6 +123,7 @@
     player = {
       name: '',
       pos: '',
+      nationality: null,
       sec_pos: [],
       ovr: 60,
       value: '',
@@ -142,6 +147,7 @@
           'id',
           'name',
           'pos',
+          'nationality',
           'ovr',
           'value',
           'kit_no',

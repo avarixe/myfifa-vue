@@ -6,17 +6,20 @@
       </v-col>
 
       <v-container>
-        <v-row class="text-center">
+        <v-row
+          justify="space-around"
+          class="text-center"
+        >
           <v-col
             cols="6"
-            sm="3"
+            sm="2"
           >
             <div class="display-1">{{ player.pos }}</div>
             <div class="subheading">Position</div>
           </v-col>
           <v-col
             cols="6"
-            sm="3"
+            sm="2"
           >
             <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
             <div class="subheading">
@@ -27,15 +30,27 @@
             </div>
           </v-col>
           <v-col
-            cols="6"
-            sm="3"
+            cols="4"
+            sm="2"
           >
             <div class="display-1">{{ player.age }}</div>
             <div class="subheading">Age</div>
           </v-col>
           <v-col
-            cols="6"
-            sm="3"
+            v-if="player.nationality"
+            cols="4"
+            sm="2"
+          >
+            <flag
+              :iso="player.flag"
+              :title="player.nationality"
+              style="font-size: 40px"
+            />
+            <div class="subheading">Nationality</div>
+          </v-col>
+          <v-col
+            cols="4"
+            sm="2"
           >
             <v-icon
               :color="player.statusColor"

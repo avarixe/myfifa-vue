@@ -85,6 +85,11 @@
           no-data-text="No Players Found"
         >
           <template #item.name="{ item }">
+            <flag
+              v-if="item.nationality"
+              :iso="item.flag"
+              :title="item.nationality"
+            />
             <v-btn
               :to="item.link"
               small
@@ -271,6 +276,7 @@
 
           return {
             ...player,
+            flag: player.flag,
             link: player.link,
             statusIcon: player.statusIcon,
             statusColor: player.statusColor,
