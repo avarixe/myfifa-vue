@@ -2,6 +2,7 @@
   <v-container>
     <v-row
       class="text-center"
+      justify="space-around"
       dense
     >
       <v-col
@@ -108,7 +109,7 @@
         .query()
         .where('team_id', this.team.id)
         .where('played_on', date => {
-          return this.seasonStart <= date && date <= this.seasonEnd
+          return this.seasonStart <= date && date < this.seasonEnd
         })
         .get()
     }

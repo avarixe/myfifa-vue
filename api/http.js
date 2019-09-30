@@ -55,7 +55,7 @@ async function sendRequest ({
     } else {
       console.error(e)
       console.trace(e)
-      throw new Error('An Error occurred. Please try again.')
+      throw new Error(`An Error occurred when sending a request to ${path}. Please try again.`)
     }
   }
 }

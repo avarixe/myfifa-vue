@@ -31,6 +31,7 @@
               <v-tab>Summary</v-tab>
               <v-tab>Competitions</v-tab>
               <v-tab>Players</v-tab>
+              <v-tab>Transfers</v-tab>
             </v-tabs>
 
             <v-tabs-items
@@ -46,6 +47,9 @@
               <v-tab-item>
                 <player-grid :season="pageSeason" />
               </v-tab-item>
+              <v-tab-item>
+                <transfer-grid :season="pageSeason" />
+              </v-tab-item>
             </v-tabs-items>
           </v-card-text>
         </v-card>
@@ -60,6 +64,7 @@
   import SeasonSummary from '@/components/Season/Summary'
   import CompetitionGrid from '@/components/Season/CompetitionGrid'
   import PlayerGrid from '@/components/Season/PlayerGrid'
+  import TransferGrid from '@/components/Season/TransferGrid'
   import { TeamAccessible } from '@/mixins'
 
   @Component({
@@ -68,7 +73,8 @@
       CompetitionForm,
       SeasonSummary,
       CompetitionGrid,
-      PlayerGrid
+      PlayerGrid,
+      TransferGrid
     },
     transition: 'fade-transition'
   })
@@ -95,7 +101,8 @@
         store.dispatch('players/FETCH', { teamId: params.teamId }),
         store.dispatch('playerHistories/SEARCH', { teamId: params.teamId }),
         store.dispatch('matches/FETCH', { teamId: params.teamId }),
-        store.dispatch('contracts/SEARCH', { teamId: params.teamId })
+        store.dispatch('contracts/SEARCH', { teamId: params.teamId }),
+        store.dispatch('transfers/SEARCH', { teamId: params.teamId })
       ])
     }
 

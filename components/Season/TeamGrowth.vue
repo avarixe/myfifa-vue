@@ -9,7 +9,7 @@
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
-  import { Player, Team } from '@/models'
+  import { Player, Contract, Team } from '@/models'
   import { DeltaStatistic } from '@/helpers'
 
   @Component({
@@ -29,31 +29,41 @@
       return Team.find(this.$route.params.teamId)
     }
 
+    get contractsAtStart () {
+      return Contract
+        .query()
+        .where(contract =>
+          contract.started_on <= this.seasonStart &&
+          this.seasonStart < contract.ended_on
+        )
+        .get()
+    }
+
     get playersAtStart () {
       return Player
         .query()
-        .withAll()
+        .with('histories')
         .where('team_id', this.team.id)
-        .whereHas('contracts', query => {
-          query.where(contract =>
-            contract.started_on <= this.seasonStart &&
-            this.seasonStart <= contract.ended_on
-          )
-        })
+        .whereIdIn(this.contractsAtStart.map(contract => contract.player_id))
+        .get()
+    }
+
+    get contractsAtEnd () {
+      return Contract
+        .query()
+        .where(contract =>
+          contract.started_on <= this.seasonEnd &&
+          this.seasonEnd < contract.ended_on
+        )
         .get()
     }
 
     get playersAtEnd () {
       return Player
         .query()
-        .withAll()
+        .with('histories')
         .where('team_id', this.team.id)
-        .whereHas('contracts', query => {
-          query.where(contract =>
-            contract.started_on <= this.seasonEnd &&
-            this.seasonEnd <= contract.ended_on
-          )
-        })
+        .whereIdIn(this.contractsAtEnd.map(contract => contract.player_id))
         .get()
     }
 
