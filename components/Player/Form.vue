@@ -53,8 +53,8 @@
           v-model="player.birth_year"
           label="Birth Year"
           prepend-icon="mdi-calendar"
-          mask="####"
           :rules="$_validate('Birth Year', ['required'])"
+          inputmode="numeric"
         />
       </v-col>
       <v-col cols="12">
