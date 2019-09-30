@@ -58,8 +58,9 @@ export default {
     '@/plugins/lodash.js',
     '@/plugins/custom.js',
     '@/plugins/date-fns.js',
+    '@/plugins/fitty.js',
     '@/plugins/chartkick.client.js',
-    '@/plugins/fitty.js'
+    '@/plugins/vue-flag-icon.client.js'
   ],
 
   /*
