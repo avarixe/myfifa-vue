@@ -2,10 +2,6 @@ a {
   text-decoration: none !important;
 }
 
-.theme--light {
-  &.v-card {
-    .v-card__text {
-      color: rgba(0, 0, 0, 0.87);
-    }
-  }
+html {
+  overflow-y: auto
 }
