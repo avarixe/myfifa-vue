@@ -51,26 +51,24 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import { activePlayers } from '@/models/Player'
   import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
   const mix = mixins(DialogFormable, MatchAccessible, TeamAccessible)
+  const substitutions = namespace('substitutions')
 
   @Component({
     components: {
       MinuteField,
       PlayerSelect,
       TooltipButton
-    },
-    methods: mapActions('substitutions', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class SubstitutionForm extends mix {
+    @substitutions.Action('CREATE') createSubstitution
+    @substitutions.Action('UPDATE') updateSubstitution
     @Prop(Object) record
 
     substitution = {
@@ -122,9 +120,9 @@
       }
 
       if (this.record) {
-        await this.update(substitution)
+        await this.updateSubstitution(substitution)
       } else {
-        await this.create({
+        await this.createSubstitution({
           matchId: this.match.id,
           substitution
         })

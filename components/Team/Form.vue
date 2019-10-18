@@ -58,23 +58,22 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import { Team } from '@/models'
   import { VDateField } from '@/helpers'
   import { DialogFormable } from '@/mixins'
   import { format } from 'date-fns'
 
+  const teams = namespace('teams')
+
   @Component({
     components: {
       VDateField
-    },
-    methods: mapActions('teams', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class TeamForm extends mixins(DialogFormable) {
+    @teams.Action('CREATE') createTeam
+    @teams.Action('UPDATE') updateTeam
     @Prop([String, Number]) teamId
 
     team = {
@@ -111,12 +110,12 @@
       }
 
       if ('id' in this.team) {
-        await this.update({
+        await this.updateTeam({
           id: this.team.id,
           formData
         })
       } else {
-        const { data } = await this.create(formData)
+        const { data } = await this.createTeam(formData)
 
         this.$router.push({
           name: 'teams-teamId',

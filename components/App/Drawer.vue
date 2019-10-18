@@ -13,7 +13,7 @@
           MyFIFA Manager
         </v-list-item-title>
         <v-list-item-subtitle>
-          v{{ $store.state.version }}
+          v{{ version }}
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
@@ -84,7 +84,7 @@
         </template>
       </user-form>
 
-      <v-list-item @click="logout">
+      <v-list-item @click="logUserOut">
         <v-list-item-action>
           <v-icon>mdi-exit-to-app</v-icon>
         </v-list-item-action>
@@ -95,26 +95,26 @@
 </template>
 
 <script>
-  import { Vue, Component } from 'nuxt-property-decorator'
-  import { mapState, mapMutations } from 'vuex'
+  import { Vue, Component, State, Action, namespace } from 'nuxt-property-decorator'
   import Cookie from 'js-cookie'
   import { Team } from '@/models'
   import UserForm from './UserForm'
   import TeamDatePicker from '@/components/Team/DatePicker'
 
+  const app = namespace('app')
+
   @Component({
     components: {
       TeamDatePicker,
       UserForm
-    },
-    computed: mapState('app', [
-      'drawer'
-    ]),
-    methods: mapMutations('app', {
-      setDrawer: 'SET_DRAWER'
-    })
+    }
   })
   export default class AppDrawer extends Vue {
+    @State version
+    @Action logout
+    @app.State drawer
+    @app.Mutation('SET_DRAWER') setDrawer
+
     get teamId () {
       return this.$route.params.teamId
     }
@@ -168,8 +168,8 @@
       this.setDrawer(window.innerWidth >= 991)
     }
 
-    async logout () {
-      await this.$store.dispatch('logout')
+    async logUserOut () {
+      await this.logout()
       Cookie.remove('token')
     }
 

@@ -65,13 +65,16 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
+  import { Vue, Component, Prop, namespace } from 'nuxt-property-decorator'
   import { addYears } from 'date-fns'
   import { Team, Player } from '@/models'
   import { positions } from '@/models/Player'
 
+  const teams = namespace('teams')
+
   @Component
   export default class SeasonPlayerGrid extends Vue {
+    @teams.Action('ANALYZE_SEASON') analyzeSeason
     @Prop({ type: [String, Number], required: true }) season
 
     mode = 0
@@ -186,7 +189,7 @@
     }
 
     async mounted () {
-      const { data } = await this.$store.dispatch('teams/ANALYZE_SEASON', {
+      const { data } = await this.analyzeSeason({
         teamId: this.team.id,
         season: this.season
       })

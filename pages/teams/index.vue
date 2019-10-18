@@ -13,9 +13,11 @@
 </template>
 
 <script>
-  import { Vue, Component } from 'nuxt-property-decorator'
+  import { Vue, Component, namespace } from 'nuxt-property-decorator'
   import TeamForm from '@/components/Team/Form'
   import TeamGrid from '@/components/Team/Grid'
+
+  const app = namespace('app')
 
   @Component({
     middleware: ['authenticated'],
@@ -26,12 +28,14 @@
     transition: 'fade-transition'
   })
   export default class TeamsPage extends Vue {
+    @app.Mutation('SET_PAGE') setPage
+
     async fetch ({ store }) {
       await store.dispatch('teams/FETCH')
     }
 
     beforeMount () {
-      this.$store.commit('app/SET_PAGE', {
+      this.setPage({
         headline: 'Teams'
       })
     }

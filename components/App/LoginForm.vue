@@ -9,7 +9,7 @@
       >
         <v-toolbar-title>
           <div class="headline font-weight-light">MyFIFA Manager</div>
-          <div class="caption">v{{ $store.state.version }}</div>
+          <div class="caption">v{{ version }}</div>
         </v-toolbar-title>
       </v-toolbar>
 
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-  import { Vue, Component } from 'nuxt-property-decorator'
+  import { Vue, Component, State, Action } from 'nuxt-property-decorator'
   import Cookie from 'js-cookie'
   import UserForm from '@/components/App/UserForm'
 
@@ -82,6 +82,9 @@
     }
   })
   export default class LoginForm extends Vue {
+    @State version
+    @Action login
+
     visible = false
     loading = false
     errorMessage = ''
@@ -101,7 +104,7 @@
 
     async authenticate () {
       try {
-        const { data } = await this.$store.dispatch('login', this.credentials)
+        const { data } = await this.login(this.credentials)
         Cookie.set('token', data.access_token, {
           expires: data.expires_in / 86400
         })

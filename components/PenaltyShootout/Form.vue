@@ -41,23 +41,21 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import { TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
   const mix = mixins(TeamAccessible, DialogFormable, MatchAccessible)
+  const penaltyShootout = namespace('penaltyShootout')
 
   @Component({
     components: {
       TooltipButton
-    },
-    methods: mapActions('penaltyShootout', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class PenaltyShootoutForm extends mix {
+    @penaltyShootout.Action('CREATE') create
+    @penaltyShootout.Action('UPDATE') update
     @Prop(Object) record
 
     penaltyShootout = {

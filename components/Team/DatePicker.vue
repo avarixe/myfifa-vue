@@ -32,12 +32,15 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import { format } from 'date-fns'
 
+  const teams = namespace('teams')
+
   @Component
   export default class TeamDatePicker extends mixins(TeamAccessible) {
+    @teams.Action('UPDATE') updateTeam
     @Prop({ type: String, default: 'd-inline-block' }) menuClass
     @Prop({ type: String, default: 'top left' }) origin
 
@@ -52,7 +55,7 @@
     @Watch('currentDate')
     async updateDate (val, oldVal) {
       if (oldVal) {
-        await this.$store.dispatch('teams/UPDATE', {
+        await this.updateTeam({
           id: this.team.id,
           currently_on: val
         })

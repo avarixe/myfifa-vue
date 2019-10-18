@@ -87,10 +87,13 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop } from 'nuxt-property-decorator'
+  import { mixins, Component, Prop, namespace } from 'nuxt-property-decorator'
   import { CompetitionAccessible } from '@/mixins'
   import { InlineField, RecordRemove, TooltipButton } from '@/helpers'
   import TableRowForm from '@/components/TableRow/Form'
+
+  const stages = namespace('stages')
+  const broadcaster = namespace('broadcaster')
 
   @Component({
     components: {
@@ -101,6 +104,8 @@
     }
   })
   export default class TableStage extends mixins(CompetitionAccessible) {
+    @stages.Action('UPDATE') updateStage
+    @broadcaster.Mutation('ANNOUNCE') announce
     @Prop({ type: Object, required: true }) table
     @Prop(Boolean) readonly
 
@@ -142,13 +147,13 @@
 
     async updateStageAttribute (stageId, attribute, value) {
       try {
-        await this.$store.dispatch('stages/UPDATE', {
+        await this.updateStage({
           id: stageId,
           [attribute]: value
         })
       } catch (e) {
         this.key++
-        this.$store.commit('broadcaster/ANNOUNCE', {
+        this.announce({
           message: e.message,
           color: 'red'
         })

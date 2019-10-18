@@ -104,7 +104,7 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
+  import { mixins, Component, namespace } from 'nuxt-property-decorator'
   import { Match, Player } from '@/models'
   import MatchForm from '@/components/Match/Form'
   import MatchActions from '@/components/Match/Actions'
@@ -112,6 +112,8 @@
   import MatchTimeline from '@/components/Match/Timeline'
   import { FittyText } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
+
+  const app = namespace('app')
 
   @Component({
     middleware: ['authenticated'],
@@ -125,6 +127,8 @@
     transition: 'fade-transition'
   })
   export default class MatchPage extends mixins(TeamAccessible) {
+    @app.Mutation('SET_PAGE') setPage
+
     get match () {
       return Match
         .query()
@@ -176,7 +180,7 @@
     }
 
     beforeMount () {
-      this.$store.commit('app/SET_PAGE', {
+      this.setPage({
         title: `${this.match.home} vs ${this.match.away}`,
         overline: this.team.title,
         headline: 'Match',

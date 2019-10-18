@@ -184,7 +184,7 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
+  import { mixins, Component, namespace } from 'nuxt-property-decorator'
   import { Player } from '@/models'
   import PlayerForm from '@/components/Player/Form'
   import PlayerActions from '@/components/Player/Actions'
@@ -192,6 +192,8 @@
   import PlayerHistoryChart from '@/components/Charts/PlayerHistoryChart'
   import { FittyText } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
+
+  const app = namespace('app')
 
   @Component({
     middleware: ['authenticated'],
@@ -205,6 +207,8 @@
     transition: 'fade-transition'
   })
   export default class PlayerPage extends mixins(TeamAccessible) {
+    @app.Mutation('SET_PAGE') setPage
+
     get player () {
       return Player
         .query()
@@ -238,7 +242,7 @@
     }
 
     beforeMount () {
-      this.$store.commit('app/SET_PAGE', {
+      this.setPage({
         title: this.player.name,
         overline: this.team.title,
         headline: this.player.name

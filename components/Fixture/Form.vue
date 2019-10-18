@@ -82,23 +82,21 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import { CompetitionAccessible, DialogFormable } from '@/mixins'
   import { TooltipButton } from '@/helpers'
 
   const mix = mixins(CompetitionAccessible, DialogFormable)
+  const fixtures = namespace('fixtures')
 
   @Component({
     components: {
       TooltipButton
-    },
-    methods: mapActions('fixtures', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class FixtureForm extends mix {
+    @fixtures.Action('CREATE') createFixture
+    @fixtures.Action('UPDATE') updateFixture
     @Prop({ type: Object, required: true }) stage
     @Prop(Object) fixtureData
 
@@ -143,9 +141,9 @@
 
     async submit () {
       if (this.fixtureData) {
-        await this.update(this.fixture)
+        await this.updateFixture(this.fixture)
       } else {
-        await this.create({
+        await this.createFixture({
           stageId: this.stage.id,
           fixture: this.fixture
         })

@@ -3,28 +3,26 @@
 </template>
 
 <script>
-  import { Vue, Component } from 'nuxt-property-decorator'
+  import { Vue, Component, State } from 'nuxt-property-decorator'
   import { cableURL } from '@/api'
   import * as models from '@/models'
 
   @Component
   export default class TeamChannel extends Vue {
+    @State token
+
     cable = null
-
     subscriptions = []
-
     timeout = null
     insertBuffer = {}
     deleteBuffer = {}
 
     mounted () {
-      const token = this.$store.state.token
-
-      if (!this.cable && token) {
+      if (!this.cable && this.token) {
         const ActionCable = require('actioncable')
 
         this.cable = ActionCable.createConsumer(
-          `${cableURL}?access_token=${token}`
+          `${cableURL}?access_token=${this.token}`
         )
 
         const subscription = this.cable.subscriptions.create({

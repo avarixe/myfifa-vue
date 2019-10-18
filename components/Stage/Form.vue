@@ -73,13 +73,15 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
+  const stages = namespace('stages')
 
   @Component
   export default class StageFrom extends mix {
+    @stages.Action('CREATE') createStage
     @Prop({ type: Object, required: true }) competition
 
     valid = false
@@ -98,7 +100,7 @@
     }
 
     async submit () {
-      await this.$store.dispatch('stages/CREATE', {
+      await this.createStage({
         competitionId: this.competition.id,
         stage: this.stage
       })

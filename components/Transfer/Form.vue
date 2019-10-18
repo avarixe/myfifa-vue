@@ -80,25 +80,23 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import { VDateField, VMoneyField, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
+  const transfers = namespace('transfers')
 
   @Component({
     components: {
       VDateField,
       VMoneyField,
       TooltipButton
-    },
-    methods: mapActions('transfers', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class TransferForm extends mix {
+    @transfers.Action('CREATE') createTransfer
+    @transfers.Action('UPDATE') updateTransfer
     @Prop({ type: Object, required: true }) player
     @Prop(Object) record
     @Prop(Boolean) dark
@@ -151,9 +149,9 @@
 
     async submit () {
       if (this.record) {
-        await this.update(this.transfer)
+        await this.updateTransfer(this.transfer)
       } else {
-        await this.create({
+        await this.createTransfer({
           playerId: this.player.id,
           transfer: this.transfer
         })

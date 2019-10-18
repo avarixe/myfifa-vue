@@ -21,30 +21,30 @@
 </template>
 
 <script>
-  import { Vue, Component } from 'vue-property-decorator'
-  import { mapGetters } from 'vuex'
+  import { Vue, Component, Getter, namespace } from 'nuxt-property-decorator'
   import { Team } from '@/models'
   import AppBar from '@/components/App/Bar'
   import AppBroadcaster from '@/components/App/Broadcaster'
   import TeamChannel from '@/components/Team/Channel'
   import AppDrawer from '@/components/App/Drawer'
 
+  const app = namespace('app')
+
   @Component({
-    name: 'App',
     components: {
       AppBar,
       AppBroadcaster,
       TeamChannel,
       AppDrawer
-    },
-    computed: mapGetters([
-      'authenticated'
-    ])
+    }
   })
   export default class Layout extends Vue {
+    @Getter authenticated
+    @app.State title
+
     head () {
       return {
-        title: this.$store.state.app.title
+        title: this.title
       }
     }
 

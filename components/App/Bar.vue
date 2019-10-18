@@ -33,22 +33,19 @@
 </template>
 
 <script>
-  import { Vue, Component } from 'nuxt-property-decorator'
-  import { mapState, mapMutations } from 'vuex'
+  import { Vue, Component, Action, namespace } from 'nuxt-property-decorator'
   import { Team } from '@/models'
   import { baseURL } from '@/api'
 
-  @Component({
-    computed: mapState('app', [
-      'overline',
-      'headline',
-      'caption'
-    ]),
-    methods: mapMutations('app', {
-      toggleDrawer: 'TOGGLE_DRAWER'
-    })
-  })
+  const app = namespace('app')
+
+  @Component
   export default class AppBar extends Vue {
+    @Action('entities/deleteAll') clearStore
+    @app.State overline
+    @app.State headline
+    @app.State caption
+    @app.Mutation('TOGGLE_DRAWER') toggleDrawer
     responsive = false
 
     get team () {
@@ -70,7 +67,7 @@
 
     beforeDestroy () {
       window.removeEventListener('resize', this.updateResponsiveState)
-      this.$store.dispatch('entities/deleteAll')
+      this.clearStore()
       this.$router.push({ name: 'index' })
     }
 

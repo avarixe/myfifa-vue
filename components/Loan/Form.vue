@@ -81,24 +81,22 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import { VDateField, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
+  const loans = namespace('loans')
 
   @Component({
     components: {
       VDateField,
       TooltipButton
-    },
-    methods: mapActions('loans', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class LoanForm extends mix {
+    @loans.Action('CREATE') createLoan
+    @loans.Action('UPDATE') updateLoan
     @Prop({ type: Object, required: true }) player
     @Prop(Object) record
     @Prop(String) color
@@ -148,9 +146,9 @@
 
     async submit () {
       if (this.record) {
-        await this.update(this.loan)
+        await this.updateLoan(this.loan)
       } else {
-        await this.create({
+        await this.createLoan({
           playerId: this.player.id,
           loan: this.loan
         })

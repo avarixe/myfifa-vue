@@ -40,11 +40,13 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop } from 'nuxt-property-decorator'
+  import { mixins, Component, Prop, namespace } from 'nuxt-property-decorator'
   import { positions } from '@/models/Match'
   import { activePlayers } from '@/models/Player'
   import { PlayerSelect, TooltipButton } from '@/helpers'
   import { DialogFormable } from '@/mixins'
+
+  const caps = namespace('caps')
 
   @Component({
     components: {
@@ -53,6 +55,7 @@
     }
   })
   export default class CapForm extends mixins(DialogFormable) {
+    @caps.Action('CREATE') createCap
     @Prop({ type: Object, required: true }) match
 
     cap = {
@@ -69,7 +72,7 @@
     }
 
     async submit () {
-      await this.$store.dispatch('caps/CREATE', {
+      await this.createCap({
         matchId: this.match.id,
         cap: this.cap
       })

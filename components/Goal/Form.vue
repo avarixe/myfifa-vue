@@ -105,25 +105,23 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
   const mix = mixins(TeamAccessible, DialogFormable, MatchAccessible)
+  const goals = namespace('goals')
 
   @Component({
     components: {
       MinuteField,
       PlayerSelect,
       TooltipButton
-    },
-    methods: mapActions('goals', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class GoalForm extends mix {
+    @goals.Action('CREATE') createGoal
+    @goals.Action('UPDATE') updateGoal
     @Prop(Object) record
 
     goal = {
@@ -199,9 +197,9 @@
       }
 
       if (this.record) {
-        await this.update(goal)
+        await this.updateGoal(goal)
       } else {
-        await this.create({
+        await this.createGoal({
           matchId: this.match.id,
           goal
         })
