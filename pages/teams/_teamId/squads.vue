@@ -13,10 +13,12 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
+  import { mixins, Component, namespace } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import SquadForm from '@/components/Squad/Form'
   import SquadGrid from '@/components/Squad/Grid'
+
+  const app = namespace('app')
 
   @Component({
     middleware: ['authenticated'],
@@ -27,6 +29,8 @@
     transition: 'fade-transition'
   })
   export default class SquadsPage extends mixins(TeamAccessible) {
+    @app.Mutation('SET_PAGE') setPage
+
     async fetch ({ store, params }) {
       await Promise.all([
         store.dispatch('squads/FETCH', { teamId: params.teamId }),
@@ -35,7 +39,7 @@
     }
 
     beforeMount () {
-      this.$store.commit('app/SET_PAGE', {
+      this.setPage({
         title: `${this.team.title} - Squads`,
         overline: this.team.title,
         headline: 'Squads'

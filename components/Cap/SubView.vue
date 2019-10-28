@@ -41,11 +41,13 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
+  import { Vue, Component, Prop, namespace } from 'nuxt-property-decorator'
   import { positions } from '@/models/Match'
   import { InlineSelect } from '@/helpers'
   import CapEvents from './Events'
   import PlayerCard from '@/components/Player/Card'
+
+  const caps = namespace('caps')
 
   @Component({
     components: {
@@ -55,6 +57,7 @@
     }
   })
   export default class CapSubView extends Vue {
+    @caps.Action('UPDATE') updateCap
     @Prop({ type: Object, required: true }) cap
     @Prop({ type: Object, required: true }) match
     @Prop(Boolean) readonly
@@ -64,7 +67,7 @@
     }
 
     setPosition (position) {
-      this.$store.dispatch('caps/UPDATE', {
+      this.updateCap({
         ...this.cap,
         pos: position
       })

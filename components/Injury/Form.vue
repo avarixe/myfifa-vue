@@ -66,22 +66,21 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import { DialogFormable } from '@/mixins'
   import { TooltipButton, VDateField } from '@/helpers'
+
+  const injuries = namespace('injuries')
 
   @Component({
     components: {
       TooltipButton,
       VDateField
-    },
-    methods: mapActions('injuries', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class InjuryForm extends mixins(DialogFormable) {
+    @injuries.Action('CREATE') createInjury
+    @injuries.Action('UPDATE') updateInjury
     @Prop({ type: Object, required: true }) player
     @Prop(Object) record
     @Prop(String) color
@@ -113,9 +112,9 @@
 
     async submit () {
       if (this.record) {
-        await this.update(this.injury)
+        await this.updateInjury(this.injury)
       } else {
-        await this.create({
+        await this.createInjury({
           playerId: this.player.id,
           injury: this.injury
         })

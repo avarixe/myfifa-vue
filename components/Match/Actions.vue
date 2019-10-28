@@ -84,7 +84,7 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop } from 'nuxt-property-decorator'
+  import { mixins, Component, Prop, namespace } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import { Squad } from '@/models'
   import MatchForm from './Form'
@@ -94,6 +94,8 @@
   import SubstitutionForm from '@/components/Substitution/Form'
   import PenaltyShootoutForm from '@/components/PenaltyShootout/Form'
   import { RecordRemove, TooltipButton } from '@/helpers'
+
+  const matches = namespace('matches')
 
   @Component({
     components: {
@@ -108,6 +110,7 @@
     }
   })
   export default class MatchActions extends mixins(TeamAccessible) {
+    @matches.Action('APPLY_SQUAD') applySquad
     @Prop({ type: Object, required: true }) match
 
     get squads () {
@@ -135,7 +138,7 @@
 
     async applySquadToMatch (squadId) {
       try {
-        await this.$store.dispatch('matches/APPLY_SQUAD', {
+        await this.applySquad({
           matchId: this.match.id,
           squadId
         })

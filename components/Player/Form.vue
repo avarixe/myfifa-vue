@@ -100,23 +100,22 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import { DialogFormable, TeamAccessible } from '@/mixins'
   import { positions } from '@/models/Player'
   import { NationalityField, VMoneyField } from '@/helpers'
+
+  const players = namespace('players')
 
   @Component({
     components: {
       NationalityField,
       VMoneyField
-    },
-    methods: mapActions('players', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class PlayerForm extends mixins(DialogFormable, TeamAccessible) {
+    @players.Action('CREATE') createPlayer
+    @players.Action('UPDATE') updatePlayer
     @Prop(Object) playerData
 
     valid = false
@@ -160,9 +159,9 @@
 
     async submit () {
       if (this.playerData) {
-        await this.update(this.player)
+        await this.updatePlayer(this.player)
       } else {
-        const { data } = await this.create({
+        const { data } = await this.createPlayer({
           teamId: this.team.id,
           player: this.player
         })

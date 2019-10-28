@@ -105,20 +105,17 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import { Competition } from '@/models'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
+  const competitions = namespace('competitions')
 
-  @Component({
-    methods: mapActions('competitions', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
-  })
+  @Component
   export default class CompetitionForm extends mix {
+    @competitions.Action('CREATE') createCompetition
+    @competitions.Action('UPDATE') updateCompetition
     @Prop(Object) competitionData
     @Prop(Boolean) close
 
@@ -178,9 +175,9 @@
 
     async submit () {
       if (this.competitionData) {
-        await this.update(this.competition)
+        await this.updateCompetition(this.competition)
       } else {
-        const { data } = await this.create({
+        const { data } = await this.createCompetition({
           teamId: this.team.id,
           competition: this.competition
         })

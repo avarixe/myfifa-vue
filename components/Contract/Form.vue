@@ -96,29 +96,25 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapState, mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import { addYears } from 'date-fns'
   import { VDateField, VMoneyField, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
+  const contracts = namespace('contracts')
 
   @Component({
     components: {
       VDateField,
       VMoneyField,
       TooltipButton
-    },
-    computed: mapState('contracts', [
-      'bonusRequirementTypes'
-    ]),
-    methods: mapActions('contracts', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class ContractForm extends mix {
+    @contracts.State bonusRequirementTypes
+    @contracts.Action('CREATE') createContract
+    @contracts.Action('UPDATE') updateContract
     @Prop({ type: Object, required: true }) player
     @Prop(Object) record
     @Prop(String) color
@@ -173,9 +169,9 @@
 
     async submit () {
       if (this.record) {
-        await this.update(this.contract)
+        await this.updateContract(this.contract)
       } else {
-        await this.create({
+        await this.createContract({
           playerId: this.player.id,
           contract: this.contract
         })

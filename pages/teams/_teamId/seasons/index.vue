@@ -20,10 +20,12 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
+  import { mixins, Component, namespace } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import SeasonTimeline from '@/components/Season/Timeline'
   import CompetitionForm from '@/components/Competition/Form'
+
+  const app = namespace('app')
 
   @Component({
     middleware: ['authenticated'],
@@ -34,12 +36,14 @@
     transition: 'fade-transition'
   })
   export default class SeasonsPage extends mixins(TeamAccessible) {
+    @app.Mutation('SET_PAGE') setPage
+
     async fetch ({ store, params }) {
       await store.dispatch('competitions/FETCH', { teamId: params.teamId })
     }
 
     beforeMount () {
-      this.$store.commit('app/SET_PAGE', {
+      this.setPage({
         title: `${this.team.title} - Seasons`,
         overline: this.team.title,
         headline: 'Seasons'

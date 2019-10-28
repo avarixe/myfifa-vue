@@ -75,21 +75,20 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import { DialogFormable } from '@/mixins'
   import { TooltipButton } from '@/helpers'
+
+  const tableRows = namespace('tableRows')
 
   @Component({
     components: {
       TooltipButton
-    },
-    methods: mapActions('tableRows', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class TableRowForm extends mixins(DialogFormable) {
+    @tableRows.Action('CREATE') createRow
+    @tableRows.Action('UPDATE') updateRow
     @Prop({ type: Object, required: true }) stage
     @Prop(Object) rowData
 
@@ -123,9 +122,9 @@
 
     async submit () {
       if (this.rowData) {
-        await this.update(this.row)
+        await this.updateRow(this.row)
       } else {
-        await this.create({
+        await this.createRow({
           stageId: this.stage.id,
           tableRow: this.row
         })

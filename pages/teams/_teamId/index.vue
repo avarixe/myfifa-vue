@@ -89,7 +89,7 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
+  import { mixins, Component, namespace } from 'nuxt-property-decorator'
   import { Match, Player } from '@/models'
   import MatchForm from '@/components/Match/Form'
   import MatchCard from '@/components/Match/Card'
@@ -100,6 +100,8 @@
   import PlayerListCard from '@/components/Player/ListCard'
   import { RecordRemove } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
+
+  const app = namespace('app')
 
   @Component({
     middleware: ['authenticated'],
@@ -116,6 +118,8 @@
     transition: 'fade-transition'
   })
   export default class TeamPage extends mixins(TeamAccessible) {
+    @app.Mutation('SET_PAGE') setPage
+
     get lastMatch () {
       return Match
         .query()
@@ -152,7 +156,7 @@
     }
 
     beforeMount () {
-      this.$store.commit('app/SET_PAGE', {
+      this.setPage({
         title: this.team.title,
         overline: this.team.title,
         headline: 'Dashboard'

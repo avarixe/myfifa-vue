@@ -155,11 +155,14 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
+  import { mixins, Component, namespace } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
   import { InlineField, InlineSelect } from '@/helpers'
   import { positions } from '@/models/Player'
+
+  const broadcaster = namespace('broadcaster')
+  const players = namespace('players')
 
   @Component({
     components: {
@@ -168,6 +171,10 @@
     }
   })
   export default class PlayerGrid extends mixins(TeamAccessible) {
+    @players.Action('UPDATE') updatePlayer
+    @players.Action('ANALYZE') analyzePlayers
+    @broadcaster.Mutation('ANNOUNCE') announce
+
     key = 0
     mode = 0
     modes = [
@@ -295,13 +302,13 @@
 
     async updatePlayerAttribute (playerId, attribute, value) {
       try {
-        await this.$store.dispatch('players/UPDATE', {
+        await this.updatePlayer({
           id: playerId,
           [attribute]: value
         })
       } catch (e) {
         this.key++
-        this.$store.commit('broadcaster/ANNOUNCE', {
+        this.announce({
           message: e.message,
           color: 'red'
         })
@@ -309,7 +316,7 @@
     }
 
     async mounted () {
-      const { data } = await this.$store.dispatch('players/ANALYZE', {
+      const { data } = await this.analyzePlayers({
         teamId: this.team.id,
         playerIds: this.players.map(player => player.id)
       })

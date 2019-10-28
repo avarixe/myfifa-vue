@@ -120,23 +120,24 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import { Competition } from '@/models'
   import { teams } from '@/models/Match'
   import { VDateField } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
+  const matches = namespace('matches')
+  const stages = namespace('stages')
+
   @Component({
     components: {
       VDateField
-    },
-    methods: mapActions('matches', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class MatchForm extends mixins(DialogFormable, TeamAccessible) {
+    @matches.Action('CREATE') createMatch
+    @matches.Action('UPDATE') updateMatch
+    @stages.Action('FETCH') fetchStages
     @Prop(Object) matchData
 
     valid = false
@@ -227,7 +228,7 @@
     @Watch('competitionId', { immediate: true })
     loadStages (competitionId) {
       if (competitionId) {
-        this.$store.dispatch('stages/FETCH', { competitionId })
+        this.fetchStages({ competitionId })
       }
     }
 
@@ -247,9 +248,9 @@
 
     async submit () {
       if (this.matchData) {
-        await this.update(this.match)
+        await this.updateMatch(this.match)
       } else {
-        const { data } = await this.create({
+        const { data } = await this.createMatch({
           teamId: this.team.id,
           match: this.match
         })
