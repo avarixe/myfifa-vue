@@ -267,7 +267,7 @@
             case 1: // Youth
               return player.youth && player.contracts.length === 0
             case 2: // Active
-              return player.status
+              return player.status && player.status !== 'Pending'
             case 3: // Injured
             case 4: // Loaned
             case 5: // Pending
