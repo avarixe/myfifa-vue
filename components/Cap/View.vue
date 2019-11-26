@@ -80,7 +80,7 @@
       return activePlayers(parseInt(this.$route.params.teamId))
     }
 
-    async updateCap (key, value) {
+    async updateCapAttribute (key, value) {
       try {
         await this.updateCap({
           id: this.cap.id,
@@ -95,11 +95,11 @@
     }
 
     async setPosition (position) {
-      await this.updateCap('pos', position)
+      await this.updateCapAttribute('pos', position)
     }
 
     async setPlayer (playerId) {
-      await this.updateCap('player_id', playerId)
+      await this.updateCapAttribute('player_id', playerId)
     }
   }
 </script>
