@@ -3,17 +3,18 @@
     ref="menu"
     v-model="menu"
     :close-on-content-click="false"
-    :return-value.sync="date"
     transition="scale-transition"
     min-width="290px"
   >
     <template #activator="{ on }">
       <v-text-field
-        v-model="date"
+        v-model="formattedDate"
         :label="label"
         :prepend-icon="prependIcon"
         :rules="rules"
         readonly
+        :clearable="clearable"
+        :disabled="disabled"
         v-on="on"
       />
     </template>
@@ -23,7 +24,7 @@
       :color="color"
       :min="min"
       :max="max"
-      @input="$refs.menu.save(date)"
+      @input="menu = false"
     />
   </v-menu>
 </template>
@@ -41,13 +42,21 @@
     @Prop(String) prependIcon
     @Prop({ type: Boolean, default: false }) required
     @Prop({ type: Boolean, default: false }) startWithYear
+    @Prop({ type: Boolean, default: false }) disabled
+    @Prop({ type: Boolean, default: false }) clearable
 
     menu = false
     date = null
 
+    get formattedDate () {
+      return this.date
+        ? this.$_format(this.$_parse(this.date), 'MMM DD, YYYY')
+        : null
+    }
+
     get rules () {
       return this.required
-        ? this.$_validate(this.label, ['required', 'date'])
+        ? this.$_validate(this.label, ['required'])
         : []
     }
 
