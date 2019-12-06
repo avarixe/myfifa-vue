@@ -67,6 +67,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { DialogFormable } from '@/mixins'
   import { TooltipButton, VDateField } from '@/helpers'
 
@@ -101,7 +102,7 @@
     @Watch('dialog')
     async setInjury (val) {
       if (val && this.record) {
-        this.injury = this.$_pick(this.record, [
+        this.injury = pick(this.record, [
           'id',
           'started_on',
           'ended_on',

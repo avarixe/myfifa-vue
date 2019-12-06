@@ -76,6 +76,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { DialogFormable } from '@/mixins'
   import { TooltipButton } from '@/helpers'
 
@@ -108,7 +109,7 @@
     @Watch('dialog')
     setTableRow (val) {
       if (val && this.rowData) {
-        this.row = this.$_pick(this.rowData, [
+        this.row = pick(this.rowData, [
           'id',
           'name',
           'wins',

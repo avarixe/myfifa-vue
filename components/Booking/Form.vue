@@ -52,6 +52,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
   import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
 
@@ -82,7 +83,7 @@
     @Watch('dialog')
     setBooking (val) {
       if (val && this.record) {
-        this.booking = this.$_pick(this.record, [
+        this.booking = pick(this.record, [
           'id',
           'player_id',
           'red_card'

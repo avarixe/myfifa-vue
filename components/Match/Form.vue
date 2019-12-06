@@ -121,6 +121,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { Competition } from '@/models'
   import { teams } from '@/models/Match'
   import { VDateField } from '@/helpers'
@@ -210,7 +211,7 @@
     setMatch (val) {
       if (val) {
         if (this.matchData) {
-          this.match = this.$_pick(this.matchData, [
+          this.match = pick(this.matchData, [
             'id',
             'played_on',
             'competition',

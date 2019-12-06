@@ -83,6 +83,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { CompetitionAccessible, DialogFormable } from '@/mixins'
   import { TooltipButton } from '@/helpers'
 
@@ -118,7 +119,7 @@
     @Watch('dialog')
     setFixture (val) {
       if (val && this.fixtureData) {
-        this.fixture = this.$_pick(this.fixtureData, [
+        this.fixture = pick(this.fixtureData, [
           'id',
           'home_team',
           'away_team'

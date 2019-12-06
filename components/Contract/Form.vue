@@ -98,6 +98,7 @@
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import { addYears } from 'date-fns'
+  import pick from 'lodash.pick'
   import { VDateField, VMoneyField, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
@@ -148,7 +149,7 @@
     setContract (val) {
       if (val) {
         if (this.record) {
-          this.contract = this.$_pick(this.record, [
+          this.contract = pick(this.record, [
             'id',
             'started_on',
             'ended_on',

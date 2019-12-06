@@ -59,6 +59,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { Team } from '@/models'
   import { VDateField } from '@/helpers'
   import { DialogFormable } from '@/mixins'
@@ -92,7 +93,7 @@
     @Watch('dialog')
     setTeam (val) {
       if (val && this.teamId) {
-        this.team = this.$_pick(Team.find(this.teamId), [
+        this.team = pick(Team.find(this.teamId), [
           'id',
           'title',
           'started_on',

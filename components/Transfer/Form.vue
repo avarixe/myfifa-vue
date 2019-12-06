@@ -81,6 +81,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { VDateField, VMoneyField, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
@@ -128,7 +129,7 @@
     setTransfer (val) {
       if (val) {
         if (this.record) {
-          this.transfer = this.$_pick(this.record, [
+          this.transfer = pick(this.record, [
             'id',
             'moved_on',
             'origin',

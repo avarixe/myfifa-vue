@@ -106,6 +106,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
@@ -161,7 +162,7 @@
     @Watch('dialog')
     setGoal (val) {
       if (val && this.record) {
-        this.goal = this.$_pick(this.record, [
+        this.goal = pick(this.record, [
           'id',
           'home',
           'player_id',

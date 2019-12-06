@@ -42,6 +42,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
@@ -70,7 +71,7 @@
     @Watch('dialog')
     setPenaltyShootout (val) {
       if (val && this.record) {
-        this.penaltyShootout = this.$_pick(this.record, [
+        this.penaltyShootout = pick(this.record, [
           'id',
           'home_score',
           'away_score'

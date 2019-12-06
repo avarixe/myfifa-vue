@@ -60,6 +60,7 @@
 
 <script>
   import { mixins, Component, Prop } from 'nuxt-property-decorator'
+  import orderBy from 'lodash.orderby'
   import TimelineContent from './Content'
   import RecordForm from '@/helpers/RecordForm'
   import { TeamAccessible } from '@/mixins'
@@ -125,7 +126,7 @@
     }
 
     get sortedItems () {
-      return this.$_orderBy(this.items, ['date'], ['desc'])
+      return orderBy(this.items, 'date', 'desc')
     }
 
     get dense () {

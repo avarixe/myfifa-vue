@@ -101,6 +101,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { DialogFormable, TeamAccessible } from '@/mixins'
   import { positions } from '@/models/Player'
   import { NationalityField, VMoneyField } from '@/helpers'
@@ -142,7 +143,7 @@
     @Watch('dialog')
     setPlayer (val) {
       if (val && this.playerData) {
-        this.player = this.$_pick(this.playerData, [
+        this.player = pick(this.playerData, [
           'id',
           'name',
           'pos',

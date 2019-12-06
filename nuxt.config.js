@@ -55,7 +55,6 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/lodash.js',
     '@/plugins/custom.js',
     '@/plugins/date-fns.js',
     '@/plugins/fitty.js',

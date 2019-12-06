@@ -82,6 +82,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { VDateField, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
@@ -126,7 +127,7 @@
     setLoan (val) {
       if (val) {
         if (this.record) {
-          this.loan = this.$_pick(this.record, [
+          this.loan = pick(this.record, [
             'id',
             'started_on',
             'ended_on',

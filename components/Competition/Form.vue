@@ -106,6 +106,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { Competition } from '@/models'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
@@ -162,7 +163,7 @@
     @Watch('dialog')
     setCompetition (val) {
       if (val && this.competitionData) {
-        this.competition = this.$_pick(this.competitionData, [
+        this.competition = pick(this.competitionData, [
           'id',
           'name',
           'champion',
