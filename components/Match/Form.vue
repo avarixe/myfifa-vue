@@ -28,8 +28,8 @@
       <v-col cols="12">
         <v-select
           v-model="match.competition"
+          v-rules.required
           :items="competitions"
-          :rules="$_validate('Competition', ['required'])"
           label="Competition"
           prepend-icon="mdi-trophy"
           spellcheck="false"
@@ -58,8 +58,8 @@
       <v-col cols="12">
         <v-combobox
           v-model="match.home"
+          v-rules.required
           :items="teams"
-          :rules="$_validate('Home Team', ['required'])"
           label="Home Team"
           prepend-icon="mdi-shield-half-full"
           spellcheck="false"
@@ -85,8 +85,8 @@
       <v-col cols="12">
         <v-combobox
           v-model="match.away"
+          v-rules.required
           :items="teams"
-          :rules="$_validate('Away Team', ['required'])"
           label="Away Team"
           prepend-icon="mdi-shield-half-full"
           spellcheck="false"

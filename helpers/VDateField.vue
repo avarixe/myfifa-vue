@@ -8,10 +8,10 @@
   >
     <template #activator="{ on }">
       <v-text-field
+        v-rules.required="{ disabled: !required }"
         :value="formattedDate"
         :label="label"
         :prepend-icon="prependIcon"
-        :rules="rules"
         readonly
         :clearable="clearable"
         :disabled="disabled"
@@ -52,12 +52,6 @@
       return this.date
         ? this.$_format(this.$_parse(this.date), 'MMM dd, yyyy')
         : null
-    }
-
-    get rules () {
-      return this.required
-        ? this.$_validate(this.label, ['required'])
-        : []
     }
 
     @Watch('value', { immediate: true })

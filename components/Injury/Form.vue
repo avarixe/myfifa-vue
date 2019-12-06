@@ -22,6 +22,7 @@
         <v-col cols="12">
           <v-date-field
             v-model="injury.started_on"
+            v-rules.required
             label="Injury Date"
             prepend-icon="mdi-calendar-today"
             color="pink"
@@ -31,6 +32,7 @@
         <v-col cols="12">
           <v-date-field
             v-model="injury.ended_on"
+            v-rules.required
             label="Recovery Date"
             prepend-icon="mdi-calendar-today"
             color="pink"
@@ -41,7 +43,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="injury.description"
-          :rules="$_validate('Description', ['required'])"
+          v-rules.required
           label="Description"
           prepend-icon="mdi-hospital"
           spellcheck="false"

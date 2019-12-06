@@ -18,7 +18,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="squad.name"
-          :rules="$_validate('Name', ['required'])"
+          v-rules.required
           label="Name"
           prepend-icon="mdi-clipboard-text"
           spellcheck="false"

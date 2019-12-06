@@ -54,7 +54,7 @@
           />
         </template>
         <template #item.played_on="{ item }">
-          {{ datePlayed(item) }}
+          {{ item.played_on | formatDate }}
         </template>
       </v-data-table>
     </v-card-text>
@@ -66,7 +66,6 @@
   import { addYears } from 'date-fns'
   import { Competition, Match } from '@/models'
   import { TeamAccessible } from '@/mixins'
-  import { formatDate } from '@/helpers'
 
   @Component
   export default class MatchGrid extends mixins(TeamAccessible) {
@@ -138,10 +137,6 @@
     clearAllFilters () {
       this.seasonFilter = null
       this.competition = null
-    }
-
-    datePlayed (match) {
-      return formatDate(match.played_on)
     }
   }
 </script>

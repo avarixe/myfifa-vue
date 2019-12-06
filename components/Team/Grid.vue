@@ -29,10 +29,10 @@
             />
           </template>
           <template #item.started_on="{ item }">
-            {{ formatDate(item.started_on) }}
+            {{ item.started_on | formatDate }}
           </template>
           <template #item.currently_on="{ item }">
-            {{ formatDate(item.currently_on) }}
+            {{ item.currently_on | formatDate }}
           </template>
         </v-data-table>
       </client-only>
@@ -43,7 +43,6 @@
 <script>
   import { Vue, Component } from 'nuxt-property-decorator'
   import { Team } from '@/models'
-  import { formatDate } from '@/helpers'
 
   @Component
   export default class TeamGrid extends Vue {
@@ -57,10 +56,6 @@
 
     get teams () {
       return Team.query().orderBy('id', 'desc').get()
-    }
-
-    formatDate (date) {
-      return formatDate(date)
     }
   }
 </script>

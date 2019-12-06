@@ -21,7 +21,7 @@
       <v-col cols="6">
         <v-text-field
           v-model="penaltyShootout.home_score"
-          :rules="$_validate('Home Score', ['required'])"
+          v-rules.required="{ label: 'Home Score' }"
           type="number"
           :label="match.home"
           prepend-icon="mdi-soccer"
@@ -30,7 +30,7 @@
       <v-col cols="6">
         <v-text-field
           v-model="penaltyShootout.away_score"
-          :rules="$_validate('Away Score', ['required'])"
+          v-rules.required="{ label: 'Away Score' }"
           type="number"
           :label="match.away"
           prepend-icon="mdi-soccer"

@@ -25,7 +25,7 @@
           <div class="subheading">Position</div>
         </v-col>
         <v-col cols="3">
-          <div class="display-1">{{ secondaryPositions }}</div>
+          <div class="display-1">{{ player.sec_pos | listArray }}</div>
           <div class="subheading">
             <fitty-text text="Secondary Position(s)" />
           </div>
@@ -49,7 +49,9 @@
           <div class="subheading">OVR</div>
         </v-col>
         <v-col cols="6">
-          <div class="display-1 primary--text">{{ playerValue }}</div>
+          <div class="display-1 primary--text">
+            {{ player.value | formatMoney(team.currency) }}
+          </div>
           <div class="subheading">Value</div>
         </v-col>
       </v-row>
@@ -58,9 +60,9 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
+  import { Component, Vue, Prop } from 'nuxt-property-decorator'
   import { Player, Team } from '@/models'
-  import { FittyText, formatMoney, listArray } from '@/helpers'
+  import { FittyText } from '@/helpers'
 
   @Component({
     components: {
@@ -77,14 +79,6 @@
 
     get team () {
       return Team.find(this.$route.params.teamId)
-    }
-
-    get secondaryPositions () {
-      return listArray(this.player.sec_pos)
-    }
-
-    get playerValue () {
-      return formatMoney(this.player.value)
     }
   }
 </script>

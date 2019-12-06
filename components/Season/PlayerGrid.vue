@@ -52,7 +52,7 @@
           </span>
         </template>
         <template #item.endValue="{ item }">
-          {{ formatMoney(item.endValue) }}
+          {{ item.endValue | formatMoney(team.currency) }}
         </template>
         <template #item.valueChange="{ item }">
           <span :class="valueColor(item)">
@@ -69,7 +69,6 @@
   import { addYears } from 'date-fns'
   import { Team, Player } from '@/models'
   import { positions } from '@/models/Player'
-  import { formatMoney } from '@/helpers'
 
   const teams = namespace('teams')
 
@@ -238,10 +237,6 @@
         default:
           return 'grey--text'
       }
-    }
-
-    formatMoney (amount) {
-      return formatMoney(amount)
     }
   }
 </script>

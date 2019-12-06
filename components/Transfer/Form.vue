@@ -31,7 +31,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="transfer.origin"
-          :rules="$_validate('Origin', ['required'])"
+          v-rules.required
           label="Origin"
           prepend-icon="mdi-airplane-takeoff"
           :disabled="transferOut"
@@ -44,7 +44,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="transfer.destination"
-          :rules="$_validate('Destination', ['required'])"
+          v-rules.required
           label="Destination"
           prepend-icon="mdi-airplane-landing"
           :disabled="!transferOut"
@@ -65,14 +65,11 @@
       <v-col cols="12">
         <v-text-field
           v-model="transfer.addon_clause"
+          v-rules.range="{ label: 'Add-On Clause', min: 0, max: 25 }"
           label="Add-On Clause (%)"
-          :rules="$_validate(
-            'Add-On Clause',
-            [{ type: 'range', options: { min: 0, max: 25 }}])"
           type="number"
           min="0"
           max="25"
-          hide-details
         />
       </v-col>
     </template>

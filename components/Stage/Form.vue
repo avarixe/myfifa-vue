@@ -22,7 +22,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="stage.name"
-          :rules="$_validate('Name', ['required'])"
+          v-rules.required
           label="Name"
           prepend-icon="mdi-table"
           spellcheck="false"
@@ -34,24 +34,27 @@
       <v-col cols="12">
         <v-text-field
           v-model="stage.num_teams"
-          :rules="$_validate('Number of Teams', ['required'])"
+          v-rules.required
           label="Number of Teams"
           prepend-icon="mdi-account-group"
           type="number"
         />
       </v-col>
-      <v-col cols="12">
-        <v-text-field
-          v-model="stage.num_fixtures"
-          :rules="stage.table
-            ? []
-            : $_validate('Number of Fixtures', ['required'])"
-          label="Number of Fixtures"
-          prepend-icon="mdi-sword-cross"
-          type="number"
-          :disabled="stage.table"
-        />
-      </v-col>
+      <v-scroll-y-transition mode="out-in">
+        <v-col
+          v-if="!stage.table"
+          cols="12"
+        >
+          <v-text-field
+            v-model="stage.num_fixtures"
+            v-rules.required
+            label="Number of Fixtures"
+            prepend-icon="mdi-sword-cross"
+            type="number"
+            :disabled="stage.table"
+          />
+        </v-col>
+      </v-scroll-y-transition>
       <v-col cols="12">
         <v-radio-group
           v-model="stage.table"

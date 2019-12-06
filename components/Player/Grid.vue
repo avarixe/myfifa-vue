@@ -129,7 +129,7 @@
               attribute="value"
               label="Value"
               input-type="money"
-              :display="playerValue(item)"
+              :display="item.value | formatMoney(team.currency)"
               required
               @close="updatePlayerAttribute(item.id, 'value', $event)"
             />
@@ -140,13 +140,13 @@
             </v-icon>
           </template>
           <template #item.sec_pos="{ item }">
-            {{ secondaryPositions(item) }}
+            {{ item.sec_pos | listArray('-') }}
           </template>
           <template #item.wage="{ item }">
-            {{ contractWage(item) }}
+            {{ item.wage | formatMoney(team.currency, '-') }}
           </template>
           <template #item.endDate="{ item }">
-            {{ contractDate(item) }}
+            {{ item.endDate | formatDate('MMM dd, yyyy', '-') }}
           </template>
         </v-data-table>
       </client-only>
@@ -158,13 +158,7 @@
   import { mixins, Component, namespace } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
-  import {
-    InlineField,
-    InlineSelect,
-    formatDate,
-    formatMoney,
-    listArray
-  } from '@/helpers'
+  import { InlineField, InlineSelect } from '@/helpers'
   import { positions } from '@/models/Player'
 
   const broadcaster = namespace('broadcaster')
@@ -332,24 +326,6 @@
 
     sortPos (posA, posB) {
       return positions.indexOf(posA) - positions.indexOf(posB)
-    }
-
-    contractWage (player) {
-      const value = player.wage
-      return value && formatMoney(value)
-    }
-
-    contractDate (player) {
-      const value = player.endDate
-      return value && formatDate(value, 'MMM d, yyyy')
-    }
-
-    secondaryPositions (player) {
-      return listArray(player.sec_pos, '-')
-    }
-
-    playerValue (player) {
-      return formatMoney(player.value)
     }
   }
 </script>

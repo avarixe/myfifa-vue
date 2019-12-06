@@ -18,7 +18,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="team.title"
-          :rules="$_validate('Team', ['required'])"
+          v-rules.required
           label="Team"
           prepend-icon="mdi-shield-half-full"
           spellcheck="false"
@@ -42,7 +42,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="team.currency"
-          :rules="$_validate('Currency', ['required'])"
+          v-rules.required
           label="Currency"
           prepend-icon="mdi-cash"
         />

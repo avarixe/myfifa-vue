@@ -18,7 +18,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="player.name"
-          :rules="$_validate('Name', ['required'])"
+          v-rules.required
           label="Name"
           prepend-icon="mdi-account"
           spellcheck="false"
@@ -33,7 +33,7 @@
       <v-col cols="12">
         <v-select
           v-model="player.pos"
-          :rules="$_validate('Position', ['required'])"
+          v-rules.required
           :items="positions"
           label="Position"
           prepend-icon="mdi-run"
@@ -54,9 +54,9 @@
       <v-col cols="12">
         <v-text-field
           v-model="player.birth_year"
+          v-rules.required
           label="Birth Year"
           prepend-icon="mdi-calendar"
-          :rules="$_validate('Birth Year', ['required'])"
           inputmode="numeric"
         />
       </v-col>
@@ -80,8 +80,8 @@
       <v-col cols="12">
         <v-select
           v-model="player.ovr"
+          v-rules.required
           :items="Array.from({ length: 61 }, (v, k) => k + 40)"
-          :rules="$_validate('OVR', ['required'])"
           label="OVR"
           prepend-icon="mdi-trending-up"
           menu-props="auto"

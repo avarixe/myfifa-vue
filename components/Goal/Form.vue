@@ -51,7 +51,7 @@
         <v-text-field
           v-else
           v-model="goal.player_name"
-          :rules="$_validate('Goal Scorer', ['required'])"
+          v-rules.required
           label="Goal Scorer"
           prepend-icon="mdi-account"
           spellcheck="false"
