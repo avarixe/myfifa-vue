@@ -11,7 +11,7 @@
       </tr>
       <tr>
         <td class="font-weight-bold">Transfer Fee</td>
-        <td class="pl-1">{{ $_formatMoney(transfer.fee) }}</td>
+        <td class="pl-1">{{ formatMoney(transfer.fee) }}</td>
       </tr>
       <tr v-if="transfer.traded_player">
         <td class="font-weight-bold">Traded Player</td>
@@ -28,6 +28,7 @@
 <script>
   import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
+  import { formatMoney } from '@/helpers'
 
   @Component
   export default class TransferContent extends mixins(TeamAccessible) {
@@ -35,6 +36,10 @@
 
     get transfer () {
       return this.item.data
+    }
+
+    get transferFee () {
+      return formatMoney(this.transfer.fee)
     }
   }
 </script>

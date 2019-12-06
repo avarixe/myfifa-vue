@@ -34,9 +34,7 @@
                 :max-size="30"
               />
             </div>
-            <div class="subheading">
-              {{ $_formatDate(match.played_on) }}
-            </div>
+            <div class="subheading">{{ datePlayed }}</div>
           </v-col>
 
           <v-container>
@@ -110,7 +108,7 @@
   import MatchActions from '@/components/Match/Actions'
   import MatchLineup from '@/components/Match/Lineup'
   import MatchTimeline from '@/components/Match/Timeline'
-  import { FittyText } from '@/helpers'
+  import { FittyText, formatDate } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
   const app = namespace('app')
@@ -141,6 +139,10 @@
         .query()
         .where('team_id', this.team.id)
         .get()
+    }
+
+    get datePlayed () {
+      return formatDate(this.match.played_on)
     }
 
     get prevMatchLink () {

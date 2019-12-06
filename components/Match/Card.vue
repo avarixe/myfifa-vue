@@ -30,9 +30,7 @@
         </h4>
 
         <h4 class="title font-weight-light mb-0">{{ match.score }}</h4>
-        <p class="font-weight-thin mt-0">
-          {{ $_formatDate(match.played_on) }}
-        </p>
+        <p class="font-weight-thin mt-0">{{ datePlayed }}</p>
       </v-card-text>
     </template>
     <div
@@ -48,11 +46,16 @@
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
+  import { formatDate } from '@/helpers'
 
   @Component
   export default class MatchCard extends Vue {
     @Prop(Object) match
     @Prop(String) title
     @Prop({ type: String, default: 'info' }) color
+
+    get datePlayed () {
+      return formatDate(this.match.played_on)
+    }
   }
 </script>

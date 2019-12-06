@@ -15,9 +15,8 @@
           color="cyan"
           dark
           v-on="on"
-        >
-          {{ $_formatDate(currentDate, 'MMM dd, yyyy') }}
-        </v-btn>
+          v-text="formattedDate"
+        />
       </slot>
     </template>
 
@@ -33,8 +32,8 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import { format, parseISO } from 'date-fns'
   import { TeamAccessible } from '@/mixins'
-  import { format } from 'date-fns'
 
   const teams = namespace('teams')
 
@@ -46,6 +45,10 @@
 
     calendar = false
     currentDate = format(new Date(), 'yyyy-MM-dd')
+
+    get formattedDate () {
+      return format(parseISO(this.currentDate), 'MMM dd, yyyy')
+    }
 
     @Watch('team', { immediate: true })
     setCurrentDate () {

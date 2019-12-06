@@ -129,7 +129,7 @@
               attribute="value"
               label="Value"
               input-type="money"
-              :display="$_formatMoney(item.value)"
+              :display="playerValue(item)"
               required
               @close="updatePlayerAttribute(item.id, 'value', $event)"
             />
@@ -140,7 +140,7 @@
             </v-icon>
           </template>
           <template #item.sec_pos="{ item }">
-            {{ $_listArray(item.sec_pos, '-') }}
+            {{ secondaryPositions(item) }}
           </template>
           <template #item.wage="{ item }">
             {{ contractWage(item) }}
@@ -158,7 +158,13 @@
   import { mixins, Component, namespace } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
-  import { InlineField, InlineSelect } from '@/helpers'
+  import {
+    InlineField,
+    InlineSelect,
+    formatDate,
+    formatMoney,
+    listArray
+  } from '@/helpers'
   import { positions } from '@/models/Player'
 
   const broadcaster = namespace('broadcaster')
@@ -330,12 +336,20 @@
 
     contractWage (player) {
       const value = player.wage
-      return value && this.$_formatMoney(value)
+      return value && formatMoney(value)
     }
 
     contractDate (player) {
       const value = player.endDate
-      return value && this.$_formatDate(value, 'MMM d, yyyy')
+      return value && formatDate(value, 'MMM d, yyyy')
+    }
+
+    secondaryPositions (player) {
+      return listArray(player.sec_pos, '-')
+    }
+
+    playerValue (player) {
+      return formatMoney(player.value)
     }
   }
 </script>

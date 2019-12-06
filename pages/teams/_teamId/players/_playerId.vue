@@ -21,7 +21,7 @@
             cols="6"
             sm="2"
           >
-            <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
+            <div class="display-1">{{ secondaryPositions(player.sec_pos) }}</div>
             <div class="subheading">
               <fitty-text
                 text="Secondary Position(s)"
@@ -85,9 +85,7 @@
                 cols="12"
                 sm="6"
               >
-                <div class="display-1 primary--text">
-                  {{ $_formatMoney(player.value) }}
-                </div>
+                <div class="display-1 primary--text">{{ playerValue }}</div>
                 <div class="subheading">Value</div>
               </v-col>
 
@@ -190,7 +188,7 @@
   import PlayerActions from '@/components/Player/Actions'
   import PlayerTimeline from '@/components/Player/Timeline'
   import PlayerHistoryChart from '@/components/Charts/PlayerHistoryChart'
-  import { FittyText } from '@/helpers'
+  import { FittyText, formatMoney, listArray } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
   const app = namespace('app')
@@ -214,6 +212,14 @@
         .query()
         .withAll()
         .find(this.$route.params.playerId)
+    }
+
+    get secondaryPositions () {
+      return listArray(this.player.sec_pos)
+    }
+
+    get playerValue () {
+      return formatMoney(this.player.value)
     }
 
     async asyncData ({ store, params }) {

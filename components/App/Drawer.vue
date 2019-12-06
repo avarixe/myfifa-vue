@@ -36,7 +36,7 @@
               <v-icon>mdi-calendar</v-icon>
             </v-list-item-action>
             <v-list-item-title>
-              {{ $_formatDate(date, 'MMM dd, yyyy') }}
+              {{ formatDate(date, 'MMM dd, yyyy') }}
             </v-list-item-title>
           </v-list-item>
         </template>
@@ -98,6 +98,7 @@
   import { Vue, Component, State, Action, namespace } from 'nuxt-property-decorator'
   import Cookie from 'js-cookie'
   import { Team } from '@/models'
+  import { formatDate } from '@/helpers'
   import UserForm from './UserForm'
   import TeamDatePicker from '@/components/Team/DatePicker'
 
@@ -178,6 +179,10 @@
         name: `teams-teamId-${page}`,
         params: { teamId: this.team.id }
       }
+    }
+
+    formatDate (date) {
+      return formatDate(date)
     }
   }
 </script>
