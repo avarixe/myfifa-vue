@@ -8,7 +8,7 @@
   >
     <template #activator="{ on }">
       <v-text-field
-        v-model="formattedDate"
+        :value="formattedDate"
         :label="label"
         :prepend-icon="prependIcon"
         :rules="rules"
@@ -50,7 +50,7 @@
 
     get formattedDate () {
       return this.date
-        ? this.$_format(this.$_parse(this.date), 'MMM DD, YYYY')
+        ? this.$_format(this.$_parse(this.date), 'MMM dd, yyyy')
         : null
     }
 

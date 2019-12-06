@@ -140,9 +140,8 @@
     }
 
     get maxEndDate () {
-      return this.$_format(
-        addYears(this.$_parse(this.contract.started_on), 6)
-      )
+      return this.contract.started_on &&
+        this.$_format(addYears(this.$_parse(this.contract.started_on), 6))
     }
 
     @Watch('dialog')

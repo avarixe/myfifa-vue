@@ -29,10 +29,10 @@
             />
           </template>
           <template #item.started_on="{ item }">
-            {{ $_format($_parse(item.started_on), 'MMM DD, YYYY') }}
+            {{ $_formatDate(item.started_on) }}
           </template>
           <template #item.currently_on="{ item }">
-            {{ $_format($_parse(item.currently_on), 'MMM DD, YYYY') }}
+            {{ $_formatDate(item.currently_on) }}
           </template>
         </v-data-table>
       </client-only>

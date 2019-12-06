@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { format, parse } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 
-Vue.prototype.$_parse = parse
-Vue.prototype.$_format = (date, dateFormat) => format(date, dateFormat || 'YYYY-MM-DD')
+Vue.prototype.$_parse = parseISO
+Vue.prototype.$_format = (date, dateFormat) => format(date, dateFormat || 'yyyy-MM-dd')

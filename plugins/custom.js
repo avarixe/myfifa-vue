@@ -62,7 +62,7 @@ Vue.prototype.$_formatMoney = function (amount) {
     : 'N/A'
 }
 
-Vue.prototype.$_formatDate = function (date, dateFormat = 'MMM DD, YYYY') {
+Vue.prototype.$_formatDate = function (date, dateFormat = 'MMM dd, yyyy') {
   return date ? this.$_format(this.$_parse(date), dateFormat) : 'N/A'
 }
 

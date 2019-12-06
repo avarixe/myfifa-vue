@@ -335,7 +335,7 @@
 
     contractDate (player) {
       const value = player.endDate
-      return value && this.$_format(this.$_parse(value), 'MMM D, YYYY')
+      return value && this.$_formatDate(value, 'MMM d, yyyy')
     }
   }
 </script>

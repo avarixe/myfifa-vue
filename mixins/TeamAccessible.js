@@ -1,5 +1,5 @@
 import { Vue, Component } from 'nuxt-property-decorator'
-import { format, parse, addYears, differenceInYears } from 'date-fns'
+import { addYears, differenceInYears, format, parseISO } from 'date-fns'
 import { Team } from '@/models'
 
 @Component
@@ -9,25 +9,25 @@ export default class TeamAccessible extends Vue {
   }
 
   get season () {
-    const date = this.$_parse(this.team.started_on)
-    const currentDate = this.$_parse(this.team.currently_on)
+    const date = parseISO(this.team.started_on)
+    const currentDate = parseISO(this.team.currently_on)
     return differenceInYears(currentDate, date)
   }
 
   get seasonStart () {
-    const date = parse(this.team.started_on)
-    return format(addYears(date, this.season), 'YYYY-MM-DD')
+    const date = parseISO(this.team.started_on)
+    return format(addYears(date, this.season), 'yyyy-MM-dd')
   }
 
   get seasonEnd () {
-    const date = parse(this.seasonStart)
-    return format(addYears(date, 1), 'YYYY-MM-DD')
+    const date = parseISO(this.seasonStart)
+    return format(addYears(date, 1), 'yyyy-MM-dd')
   }
 
   seasonLabel (season) {
-    let start = addYears(this.team.started_on, season)
+    const start = addYears(parseISO(this.team.started_on), season)
     const end = addYears(start, 1)
-    return `${this.$_format(start, 'YYYY')} - ${this.$_format(end, 'YYYY')}`
+    return `${format(start, 'yyyy')} - ${format(end, 'yyyy')}`
   }
 
   linkTo (page) {

@@ -89,12 +89,12 @@ class Competition extends Model {
 
   get seasonStart () {
     const date = parse(this.team.started_on)
-    return format(addYears(date, this.season), 'YYYY-MM-DD')
+    return format(addYears(date, this.season), 'yyyy-MM-dd')
   }
 
   get seasonEnd () {
     const date = parse(this.seasonStart)
-    return format(addYears(date, 1), 'YYYY-MM-DD')
+    return format(addYears(date, 1), 'yyyy-MM-dd')
   }
 
   get matches () {

@@ -78,7 +78,7 @@
 
     team = {
       title: '',
-      started_on: format(new Date(), 'YYYY-MM-DD'),
+      started_on: format(new Date(), 'yyyy-MM-dd'),
       currency: '$',
       badge: null
     }

@@ -55,7 +55,7 @@
           </v-btn>
         </template>
         <template #item.played_on="{ item }">
-          {{ $_format($_parse(item.played_on), 'MMM DD, YYYY') }}
+          {{ $_formatDate(item.played_on) }}
         </template>
       </v-data-table>
     </v-card-text>

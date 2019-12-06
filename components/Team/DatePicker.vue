@@ -16,7 +16,7 @@
           dark
           v-on="on"
         >
-          {{ $_format(currentDate, 'MMM DD, YYYY') }}
+          {{ $_formatDate(currentDate, 'MMM dd, yyyy') }}
         </v-btn>
       </slot>
     </template>
@@ -45,7 +45,7 @@
     @Prop({ type: String, default: 'top left' }) origin
 
     calendar = false
-    currentDate = format(new Date(), 'YYYY-MM-DD')
+    currentDate = format(new Date(), 'yyyy-MM-dd')
 
     @Watch('team', { immediate: true })
     setCurrentDate () {
