@@ -55,7 +55,6 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/date-fns.js',
     '@/plugins/fitty.js',
     '@/plugins/custom/filters.js',
     '@/plugins/custom/v-rules.js',

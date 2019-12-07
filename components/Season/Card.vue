@@ -48,7 +48,7 @@
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
-  import { addYears, parseISO } from 'date-fns'
+  import { addYears, format, parseISO } from 'date-fns'
   import { Team, Competition } from '@/models'
 
   @Component
@@ -71,7 +71,7 @@
     get seasonLabel () {
       let start = addYears(parseISO(this.team.started_on), this.season)
       const end = addYears(start, 1)
-      return `${this.$_format(start, 'yyyy')} - ${this.$_format(end, 'yyyy')}`
+      return `${format(start, 'yyyy')} - ${format(end, 'yyyy')}`
     }
 
     get link () {

@@ -31,6 +31,7 @@
 
 <script>
   import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { format, parseISO } from 'date-fns'
 
   @Component
   export default class VDateField extends Vue {
@@ -50,7 +51,7 @@
 
     get formattedDate () {
       return this.date
-        ? this.$_format(this.$_parse(this.date), 'MMM dd, yyyy')
+        ? format(parseISO(this.date), 'MMM dd, yyyy')
         : null
     }
 
