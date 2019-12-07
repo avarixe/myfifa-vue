@@ -18,7 +18,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="team.title"
-          :rules="$_validate('Team', ['required'])"
+          v-rules.required
           label="Team"
           prepend-icon="mdi-shield-half-full"
           spellcheck="false"
@@ -42,7 +42,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="team.currency"
-          :rules="$_validate('Currency', ['required'])"
+          v-rules.required
           label="Currency"
           prepend-icon="mdi-cash"
         />
@@ -59,6 +59,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { Team } from '@/models'
   import { VDateField } from '@/helpers'
   import { DialogFormable } from '@/mixins'
@@ -78,7 +79,7 @@
 
     team = {
       title: '',
-      started_on: format(new Date(), 'YYYY-MM-DD'),
+      started_on: format(new Date(), 'yyyy-MM-dd'),
       currency: '$',
       badge: null
     }
@@ -92,7 +93,7 @@
     @Watch('dialog')
     setTeam (val) {
       if (val && this.teamId) {
-        this.team = this.$_pick(Team.find(this.teamId), [
+        this.team = pick(Team.find(this.teamId), [
           'id',
           'title',
           'started_on',

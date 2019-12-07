@@ -52,6 +52,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { activePlayers } from '@/models/Player'
   import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
@@ -103,7 +104,7 @@
     @Watch('dialog')
     setSubstitution (val) {
       if (val && this.record) {
-        this.substitution = this.$_pick(this.record, [
+        this.substitution = pick(this.record, [
           'id',
           'player_id',
           'replacement_id',

@@ -1,7 +1,7 @@
 <template>
   <v-text-field
+    v-rules.required
     :value="value"
-    :rules="$_validate('Minute', ['required'])"
     label="Minute"
     prepend-icon="mdi-timer"
     type="number"

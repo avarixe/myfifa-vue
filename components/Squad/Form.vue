@@ -18,7 +18,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="squad.name"
-          :rules="$_validate('Name', ['required'])"
+          v-rules.required
           label="Name"
           prepend-icon="mdi-clipboard-text"
           spellcheck="false"
@@ -57,6 +57,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { positions } from '@/models/Match'
   import { activePlayers } from '@/models/Player'
   import { PlayerSelect } from '@/helpers'
@@ -99,7 +100,7 @@
     @Watch('dialog')
     setSquad (val) {
       if (val && this.squadData) {
-        this.squad = this.$_pick(this.squadData, [
+        this.squad = pick(this.squadData, [
           'id',
           'name'
         ])

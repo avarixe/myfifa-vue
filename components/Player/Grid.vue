@@ -129,7 +129,7 @@
               attribute="value"
               label="Value"
               input-type="money"
-              :display="$_formatMoney(item.value)"
+              :display="item.value | formatMoney(team.currency)"
               required
               @close="updatePlayerAttribute(item.id, 'value', $event)"
             />
@@ -140,13 +140,13 @@
             </v-icon>
           </template>
           <template #item.sec_pos="{ item }">
-            {{ $_listArray(item.sec_pos, '-') }}
+            {{ item.sec_pos | listArray('-') }}
           </template>
           <template #item.wage="{ item }">
-            {{ contractWage(item) }}
+            {{ item.wage | formatMoney(team.currency, '-') }}
           </template>
           <template #item.endDate="{ item }">
-            {{ contractDate(item) }}
+            {{ item.endDate | formatDate('MMM dd, yyyy', '-') }}
           </template>
         </v-data-table>
       </client-only>
@@ -326,16 +326,6 @@
 
     sortPos (posA, posB) {
       return positions.indexOf(posA) - positions.indexOf(posB)
-    }
-
-    contractWage (player) {
-      const value = player.wage
-      return value && this.$_formatMoney(value)
-    }
-
-    contractDate (player) {
-      const value = player.endDate
-      return value && this.$_format(this.$_parse(value), 'MMM D, YYYY')
     }
   }
 </script>

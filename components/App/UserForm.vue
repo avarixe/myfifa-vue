@@ -13,24 +13,24 @@
         <v-col cols="12">
           <v-text-field
             v-model="user.full_name"
+            v-rules.required
             label="Name"
-            :rules="$_validate('Name', ['required'])"
           />
         </v-col>
         <v-col cols="12">
           <v-text-field
             v-model="user.username"
+            v-rules.required
             label="Username"
-            :rules="$_validate('Username', ['required'])"
             autocapitalize="off"
           />
         </v-col>
         <v-col cols="12">
           <v-text-field
             v-model="user.email"
+            v-rules.required.format="{ type: 'email' }"
             label="Email"
             type="email"
-            :rules="$_validate('Email', ['required', 'email'])"
           />
         </v-col>
       </template>

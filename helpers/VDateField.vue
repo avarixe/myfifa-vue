@@ -8,10 +8,10 @@
   >
     <template #activator="{ on }">
       <v-text-field
-        v-model="formattedDate"
+        v-rules.required="{ disabled: !required }"
+        :value="formattedDate"
         :label="label"
         :prepend-icon="prependIcon"
-        :rules="rules"
         readonly
         :clearable="clearable"
         :disabled="disabled"
@@ -31,6 +31,7 @@
 
 <script>
   import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { format, parseISO } from 'date-fns'
 
   @Component
   export default class VDateField extends Vue {
@@ -50,14 +51,8 @@
 
     get formattedDate () {
       return this.date
-        ? this.$_format(this.$_parse(this.date), 'MMM DD, YYYY')
+        ? format(parseISO(this.date), 'MMM dd, yyyy')
         : null
-    }
-
-    get rules () {
-      return this.required
-        ? this.$_validate(this.label, ['required'])
-        : []
     }
 
     @Watch('value', { immediate: true })

@@ -20,6 +20,7 @@
       <v-col cols="12">
         <v-date-field
           v-model="loan.started_on"
+          v-rules.required
           label="Start Date"
           prepend-icon="mdi-calendar-today"
           :min="record ? null: team.currently_on"
@@ -42,7 +43,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="loan.origin"
-          :rules="$_validate('Origin', ['required'])"
+          v-rules.required
           label="Origin"
           prepend-icon="mdi-airplane-takeoff"
           :disabled="loanOut"
@@ -55,7 +56,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="loan.destination"
-          :rules="$_validate('Destination', ['required'])"
+          v-rules.required
           label="Destination"
           prepend-icon="mdi-airplane-landing"
           :disabled="!loanOut"
@@ -82,6 +83,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { VDateField, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
@@ -126,7 +128,7 @@
     setLoan (val) {
       if (val) {
         if (this.record) {
-          this.loan = this.$_pick(this.record, [
+          this.loan = pick(this.record, [
             'id',
             'started_on',
             'ended_on',

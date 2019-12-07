@@ -55,10 +55,9 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/lodash.js',
-    '@/plugins/custom.js',
-    '@/plugins/date-fns.js',
     '@/plugins/fitty.js',
+    '@/plugins/custom/filters.js',
+    '@/plugins/custom/v-rules.js',
     '@/plugins/chartkick.client.js',
     '@/plugins/vue-flag-icon.client.js'
   ],

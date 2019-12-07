@@ -6,6 +6,13 @@
     :prepend-icon="icon"
     @change="emitValue"
   >
+    <template #selection="{ item }">
+      <flag
+        :iso="nationalities[item]"
+        class="mr-2"
+      />
+      {{ item }}
+    </template>
     <template #item="{ item }">
       <v-list-item-avatar size="20">
         <flag :iso="nationalities[item]" />

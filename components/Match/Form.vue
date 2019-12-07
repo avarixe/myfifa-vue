@@ -28,8 +28,8 @@
       <v-col cols="12">
         <v-select
           v-model="match.competition"
+          v-rules.required
           :items="competitions"
-          :rules="$_validate('Competition', ['required'])"
           label="Competition"
           prepend-icon="mdi-trophy"
           spellcheck="false"
@@ -58,8 +58,8 @@
       <v-col cols="12">
         <v-combobox
           v-model="match.home"
+          v-rules.required
           :items="teams"
-          :rules="$_validate('Home Team', ['required'])"
           label="Home Team"
           prepend-icon="mdi-shield-half-full"
           spellcheck="false"
@@ -85,8 +85,8 @@
       <v-col cols="12">
         <v-combobox
           v-model="match.away"
+          v-rules.required
           :items="teams"
-          :rules="$_validate('Away Team', ['required'])"
           label="Away Team"
           prepend-icon="mdi-shield-half-full"
           spellcheck="false"
@@ -121,6 +121,8 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
+  import { parseISO } from 'date-fns'
   import { Competition } from '@/models'
   import { teams } from '@/models/Match'
   import { VDateField } from '@/helpers'
@@ -163,8 +165,8 @@
     }
 
     get season () {
-      const startDate = this.$_parse(this.team.started_on)
-      const datePlayed = this.$_parse(this.match.played_on)
+      const startDate = parseISO(this.team.started_on)
+      const datePlayed = parseISO(this.match.played_on)
       return parseInt((datePlayed - startDate) / (525600 * 60 * 1000))
     }
 
@@ -210,7 +212,7 @@
     setMatch (val) {
       if (val) {
         if (this.matchData) {
-          this.match = this.$_pick(this.matchData, [
+          this.match = pick(this.matchData, [
             'id',
             'played_on',
             'competition',

@@ -5,9 +5,7 @@ function urlFor (path, pathData = {}) {
   return Object.entries(pathData)
     .reduce((url, data) => {
       const regex = `{{\\s*${data[0]}\\s*}}`
-      const escapedData = data[1]
-        .toString()
-        .replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')
+      const escapedData = encodeURI(data[1].toString())
       return url.replace(new RegExp(regex, 'g'), escapedData)
     }, path)
 }

@@ -80,7 +80,7 @@
   import MatchCard from '@/components/Match/Card'
   import { FittyText } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
-  import { format } from 'date-fns'
+  import { format, parseISO } from 'date-fns'
 
   @Component({
     components: {
@@ -89,11 +89,10 @@
     }
   })
   export default class TeamCalendar extends mixins(TeamAccessible) {
-    day = format(new Date(), 'YYYY-MM-DD')
+    day = format(new Date(), 'yyyy-MM-dd')
 
     get currentMonth () {
-      const date = this.$_parse(this.day)
-      return this.$_format(date, 'MMMM YYYY')
+      return format(parseISO(this.day), 'MMMM yyyy')
     }
 
     mounted () {

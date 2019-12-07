@@ -19,8 +19,8 @@
       <v-col cols="12">
         <v-select
           v-model="cap.pos"
+          v-rules.required
           :items="positions"
-          :rules="$_validate('Position', ['required'])"
           label="Position"
           prepend-icon="mdi-run"
         />
@@ -28,9 +28,9 @@
       <v-col cols="12">
         <player-select
           v-model="cap.player_id"
+          v-rules.required
           :players="players"
           item-value="id"
-          :rules="$_validate('Player', ['required'])"
           :disabled="cap.start > 0"
           label="Player"
         />

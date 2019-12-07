@@ -36,7 +36,7 @@
               <v-icon>mdi-calendar</v-icon>
             </v-list-item-action>
             <v-list-item-title>
-              {{ $_format(date, 'MMM DD, YYYY') }}
+              {{ date | formatDate }}
             </v-list-item-title>
           </v-list-item>
         </template>

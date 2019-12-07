@@ -31,7 +31,7 @@
 
         <h4 class="title font-weight-light mb-0">{{ match.score }}</h4>
         <p class="font-weight-thin mt-0">
-          {{ $_format($_parse(match.played_on), 'MMMM DD, YYYY') }}
+          {{ match.played_on | formatDate }}
         </p>
       </v-card-text>
     </template>

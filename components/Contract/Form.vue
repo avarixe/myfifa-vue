@@ -97,7 +97,8 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
-  import { addYears } from 'date-fns'
+  import { addYears, format, parseISO } from 'date-fns'
+  import pick from 'lodash.pick'
   import { VDateField, VMoneyField, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
@@ -140,8 +141,9 @@
     }
 
     get maxEndDate () {
-      return this.$_format(
-        addYears(this.$_parse(this.contract.started_on), 6)
+      return this.contract.started_on && format(
+        addYears(parseISO(this.contract.started_on), 6),
+        'MMM dd, yyyy'
       )
     }
 
@@ -149,7 +151,7 @@
     setContract (val) {
       if (val) {
         if (this.record) {
-          this.contract = this.$_pick(this.record, [
+          this.contract = pick(this.record, [
             'id',
             'started_on',
             'ended_on',

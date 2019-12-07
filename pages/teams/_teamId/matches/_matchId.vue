@@ -34,9 +34,7 @@
                 :max-size="30"
               />
             </div>
-            <div class="subheading">
-              {{ $_formatDate(match.played_on) }}
-            </div>
+            <div class="subheading">{{ match.played_on | formatDate }}</div>
           </v-col>
 
           <v-container>

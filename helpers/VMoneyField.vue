@@ -2,9 +2,9 @@
   <v-text-field
     v-model="money"
     v-money="money ? config : null"
+    v-rules.required="{ disabled: !required }"
     :label="label"
     :prefix="prefix"
-    :rules="rules"
     :clearable="!required"
     :autofocus="autofocus"
     inputmode="numeric"
@@ -32,12 +32,6 @@
       decimal: '.',
       thousands: ',',
       precision: 0
-    }
-
-    get rules () {
-      return this.required
-        ? this.$_validate(this.label, ['required'])
-        : []
     }
 
     get moneyNum () {

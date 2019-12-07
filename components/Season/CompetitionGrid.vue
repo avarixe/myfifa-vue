@@ -23,6 +23,7 @@
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
+  import { sum } from '@/helpers'
   import { Competition, Team } from '@/models'
 
   @Component
@@ -68,10 +69,10 @@
           .filter(match => match.team_result === 'loss')
           .length
 
-        const gf = this.$_sum(matches.map(match =>
+        const gf = sum(matches.map(match =>
           match.home === this.team.title ? match.home_score : match.away_score
         ))
-        const ga = this.$_sum(matches.map(match =>
+        const ga = sum(matches.map(match =>
           match.home === this.team.title ? match.away_score : match.home_score
         ))
 

@@ -11,7 +11,7 @@
       </tr>
       <tr>
         <td class="font-weight-bold">Transfer Fee</td>
-        <td class="pl-1">{{ $_formatMoney(transfer.fee) }}</td>
+        <td class="pl-1">{{ transfer.fee | formatMoney(team.currency) }}</td>
       </tr>
       <tr v-if="transfer.traded_player">
         <td class="font-weight-bold">Traded Player</td>

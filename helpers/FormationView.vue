@@ -16,10 +16,10 @@
         dense
       >
         <v-col
-          v-for="(player, j) in $_compact(positions)"
+          v-for="(player, j) in compact(positions)"
           :key="j"
           class="text-center"
-          :cols="parseInt(12 / $_compact(positions).length)"
+          :cols="parseInt(12 / compact(positions).length)"
         >
           <slot
             name="item"
@@ -33,15 +33,12 @@
 
 <script>
   import { mixins, Component, Prop } from 'nuxt-property-decorator'
-  import { FittyText } from '@/helpers'
+  import compact from 'lodash.compact'
+  import orderBy from 'lodash.orderby'
   import TeamAccessible from '@/mixins/TeamAccessible'
   import { positions } from '@/models/Match'
 
-  @Component({
-    components: {
-      FittyText
-    }
-  })
+  @Component
   export default class FormationView extends mixins(TeamAccessible) {
     @Prop({ type: Array, required: true }) formation
 
@@ -52,10 +49,7 @@
     }
 
     get startingEleven () {
-      return this.$_orderBy(
-        this.formation,
-        p => this.positions.indexOf(p)
-      )
+      return orderBy(this.formation, p => this.positions.indexOf(p))
     }
 
     get posGK () {
@@ -92,6 +86,10 @@
 
     retrievePos (pos) {
       return this.startingEleven.find(p => p.pos === pos)
+    }
+
+    compact (array) {
+      return compact(array)
     }
   }
 </script>

@@ -21,7 +21,7 @@
             cols="6"
             sm="2"
           >
-            <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
+            <div class="display-1">{{ player.sec_pos | listArray }}</div>
             <div class="subheading">
               <fitty-text
                 text="Secondary Position(s)"
@@ -86,7 +86,7 @@
                 sm="6"
               >
                 <div class="display-1 primary--text">
-                  {{ $_formatMoney(player.value) }}
+                  {{ player.value | formatMoney(team.currency) }}
                 </div>
                 <div class="subheading">Value</div>
               </v-col>

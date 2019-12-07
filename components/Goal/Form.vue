@@ -51,7 +51,7 @@
         <v-text-field
           v-else
           v-model="goal.player_name"
-          :rules="$_validate('Goal Scorer', ['required'])"
+          v-rules.required
           label="Goal Scorer"
           prepend-icon="mdi-account"
           spellcheck="false"
@@ -106,6 +106,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
@@ -161,7 +162,7 @@
     @Watch('dialog')
     setGoal (val) {
       if (val && this.record) {
-        this.goal = this.$_pick(this.record, [
+        this.goal = pick(this.record, [
           'id',
           'home',
           'player_id',
