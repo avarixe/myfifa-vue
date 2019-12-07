@@ -15,8 +15,9 @@
           color="cyan"
           dark
           v-on="on"
-          v-text="formattedDate"
-        />
+        >
+          {{ formattedDate }}
+        </v-btn>
       </slot>
     </template>
 
