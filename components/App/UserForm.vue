@@ -126,7 +126,7 @@
     }
 
     @Watch('dialog')
-    async getUser (val) {
+    async getUserData (val) {
       if (val && this.authenticated) {
         const { data } = await this.getUser()
         this.user = data
