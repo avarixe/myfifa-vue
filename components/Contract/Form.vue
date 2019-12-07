@@ -143,7 +143,7 @@
     get maxEndDate () {
       return this.contract.started_on && format(
         addYears(parseISO(this.contract.started_on), 6),
-        'MMM dd, yyyy'
+        'yyyy-MM-dd'
       )
     }
 
