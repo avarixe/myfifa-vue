@@ -70,7 +70,7 @@
     get color () {
       switch (this.type) {
         case 'Goal':
-          return this.event.own_goal ? 'light-blue' : 'blue'
+          return this.event.own_goal ? 'blue-grey' : 'blue'
         case 'Booking':
           return this.event.red_card ? 'red' : 'amber'
         case 'Substitution':
@@ -85,11 +85,11 @@
     get icon () {
       switch (this.type) {
         case 'Goal':
-          return this.event.penalty ? 'alpha-p-box' : 'soccer'
+          return this.event.penalty ? 'alpha-p-circle-outline' : 'soccer'
         case 'Booking':
           return 'book'
         case 'Substitution':
-          return this.event.injury ? 'hospital' : 'repeat'
+          return this.event.injury ? 'ambulance' : 'repeat'
         case 'Penalty Shootout':
           return 'human'
         default:

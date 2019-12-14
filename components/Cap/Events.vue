@@ -36,7 +36,7 @@
       color="pink"
       small
     >
-      mdi-hospital
+      mdi-ambulance
     </v-icon>
     <v-icon
       v-if="cap.subbed_out"

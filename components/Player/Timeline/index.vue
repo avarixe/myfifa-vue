@@ -91,7 +91,7 @@
         ...this.player.injuries.map(injury => ({
           type: 'Injury',
           color: 'pink',
-          icon: 'hospital',
+          icon: 'ambulance',
           date: injury.started_on,
           dateRange:
             this.formatDate(injury.started_on) +

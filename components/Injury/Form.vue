@@ -10,7 +10,7 @@
       <slot :on="on">
         <tooltip-button
           :label="title"
-          icon="mdi-hospital"
+          icon="mdi-ambulance"
           color="pink"
           :on="on"
         />
@@ -45,7 +45,7 @@
           v-model="injury.description"
           v-rules.required
           label="Description"
-          prepend-icon="mdi-hospital"
+          prepend-icon="mdi-ambulance"
           spellcheck="false"
           autocapitalize="words"
           autocomplete="off"
