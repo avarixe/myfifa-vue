@@ -52,7 +52,7 @@
           </span>
         </template>
         <template #item.endValue="{ item }">
-          {{ $_formatMoney(item.endValue) }}
+          {{ item.endValue | formatMoney(team.currency) }}
         </template>
         <template #item.valueChange="{ item }">
           <span :class="valueColor(item)">
@@ -65,13 +65,16 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
-  import { addYears } from 'date-fns'
+  import { Vue, Component, Prop, namespace } from 'nuxt-property-decorator'
+  import { addYears, format, parseISO } from 'date-fns'
   import { Team, Player } from '@/models'
   import { positions } from '@/models/Player'
 
+  const teams = namespace('teams')
+
   @Component
   export default class SeasonPlayerGrid extends Vue {
+    @teams.Action('ANALYZE_SEASON') analyzeSeason
     @Prop({ type: [String, Number], required: true }) season
 
     mode = 0
@@ -174,19 +177,19 @@
     }
 
     get seasonStart () {
-      let date = this.$_parse(this.team.started_on)
+      let date = parseISO(this.team.started_on)
       date = addYears(date, parseInt(this.season))
-      return this.$_format(date)
+      return format(date, 'yyyy-MM-dd')
     }
 
     get seasonEnd () {
-      let date = this.$_parse(this.team.started_on)
+      let date = parseISO(this.team.started_on)
       date = addYears(date, parseInt(this.season) + 1)
-      return this.$_format(date)
+      return format(date, 'yyyy-MM-dd')
     }
 
     async mounted () {
-      const { data } = await this.$store.dispatch('teams/ANALYZE_SEASON', {
+      const { data } = await this.analyzeSeason({
         teamId: this.team.id,
         season: this.season
       })

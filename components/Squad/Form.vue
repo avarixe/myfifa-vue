@@ -18,7 +18,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="squad.name"
-          :rules="$_validate('Name', ['required'])"
+          v-rules.required
           label="Name"
           prepend-icon="mdi-clipboard-text"
           spellcheck="false"
@@ -56,25 +56,24 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { positions } from '@/models/Match'
   import { activePlayers } from '@/models/Player'
   import { PlayerSelect } from '@/helpers'
   import { DialogFormable, TeamAccessible } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
+  const squads = namespace('squads')
 
   @Component({
     components: {
       PlayerSelect
-    },
-    methods: mapActions('squads', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class SquadForm extends mix {
+    @squads.Action('CREATE') createSquad
+    @squads.Action('UPDATE') updateSquad
     @Prop(Object) squadData
 
     valid = false
@@ -101,7 +100,7 @@
     @Watch('dialog')
     setSquad (val) {
       if (val && this.squadData) {
-        this.squad = this.$_pick(this.squadData, [
+        this.squad = pick(this.squadData, [
           'id',
           'name'
         ])
@@ -116,9 +115,9 @@
 
     async submit () {
       if (this.squadData) {
-        await this.update(this.squad)
+        await this.updateSquad(this.squad)
       } else {
-        await this.create({
+        await this.createSquad({
           teamId: this.team.id,
           squad: this.squad
         })

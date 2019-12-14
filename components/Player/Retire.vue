@@ -15,7 +15,7 @@
       <v-btn
         dark
         text
-        @click="$store.dispatch('players/RETIRE', player.id)"
+        @click="retirePlayer(player.id)"
       >
         Yes
       </v-btn>
@@ -31,8 +31,10 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
+  import { Vue, Component, Prop, namespace } from 'nuxt-property-decorator'
   import { TooltipButton } from '@/helpers'
+
+  const players = namespace('players')
 
   @Component({
     components: {
@@ -40,6 +42,7 @@
     }
   })
   export default class PlayerRetire extends Vue {
+    @players.Action('RETIRE') retirePlayer
     @Prop({ type: Object, required: true }) player
 
     snackbar = false

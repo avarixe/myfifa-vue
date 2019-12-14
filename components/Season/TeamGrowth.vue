@@ -10,7 +10,7 @@
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { Player, Contract, Team } from '@/models'
-  import { DeltaStatistic } from '@/helpers'
+  import { DeltaStatistic, sum } from '@/helpers'
 
   @Component({
     components: {
@@ -68,7 +68,7 @@
     }
 
     get startValue () {
-      const total = this.$_sum(
+      const total = sum(
         this.playersAtStart.map(player =>
           player.recordAt(this.seasonStart)[this.attribute]
         )
@@ -77,7 +77,7 @@
     }
 
     get endValue () {
-      const total = this.$_sum(
+      const total = sum(
         this.playersAtEnd.map(player =>
           player.recordAt(this.seasonEnd)[this.attribute]
         )

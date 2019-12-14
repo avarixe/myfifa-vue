@@ -16,16 +16,15 @@
 </template>
 
 <script>
-  import { Vue, Component, Watch } from 'nuxt-property-decorator'
-  import { mapState } from 'vuex'
+  import { Vue, Component, Watch, namespace } from 'nuxt-property-decorator'
 
-  @Component({
-    computed: mapState('broadcaster', [
-      'message',
-      'color'
-    ])
-  })
+  const broadcaster = namespace('broadcaster')
+
+  @Component
   export default class AppBroadcaster extends Vue {
+    @broadcaster.State message
+    @broadcaster.State color
+    @broadcaster.Mutation('CLEAR') clearBroadcast
     snackbar = false
 
     @Watch('message')
@@ -35,7 +34,7 @@
 
     @Watch('snackbar')
     clear (val) {
-      !val && this.$store.commit('broadcaster/CLEAR')
+      !val && this.clearBroadcast()
     }
   }
 </script>

@@ -51,25 +51,24 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
   import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
 
   const mix = mixins(DialogFormable, TeamAccessible, MatchAccessible)
+  const bookings = namespace('bookings')
 
   @Component({
     components: {
       MinuteField,
       PlayerSelect,
       TooltipButton
-    },
-    methods: mapActions('bookings', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class BookingForm extends mix {
+    @bookings.Action('CREATE') createBooking
+    @bookings.Action('UPDATE') updateBooking
     @Prop(Object) record
 
     booking = {
@@ -84,7 +83,7 @@
     @Watch('dialog')
     setBooking (val) {
       if (val && this.record) {
-        this.booking = this.$_pick(this.record, [
+        this.booking = pick(this.record, [
           'id',
           'player_id',
           'red_card'
@@ -100,9 +99,9 @@
       }
 
       if (this.record) {
-        await this.update(booking)
+        await this.updateBooking(booking)
       } else {
-        await this.create({
+        await this.createBooking({
           matchId: this.match.id,
           booking
         })

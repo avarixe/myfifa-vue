@@ -19,7 +19,7 @@
 
 <script>
   import { mixins, Component, Prop } from 'nuxt-property-decorator'
-  import { distanceInWords } from 'date-fns'
+  import { formatDistance, parseISO } from 'date-fns'
   import { TeamAccessible } from '@/mixins'
 
   @Component
@@ -31,9 +31,9 @@
     }
 
     get length () {
-      return distanceInWords(
-        this.loan.started_on,
-        this.loan.ended_on || this.team.currently_on
+      return formatDistance(
+        parseISO(this.loan.ended_on || this.team.currently_on),
+        parseISO(this.loan.started_on)
       )
     }
   }

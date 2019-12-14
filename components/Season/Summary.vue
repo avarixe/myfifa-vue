@@ -12,7 +12,7 @@
         <season-team-growth
           label="Team Value"
           attribute="value"
-          :formatter="$_formatMoney"
+          :formatter="x => `${team.currency}${parseInt(x).toLocaleString()}`"
           :season-start="seasonStart"
           :season-end="seasonEnd"
         />
@@ -76,8 +76,9 @@
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
-  import { addYears } from 'date-fns'
+  import { addYears, format, parseISO } from 'date-fns'
   import { Match, Team } from '@/models'
+  import { sum } from '@/helpers'
   import SeasonTeamGrowth from './TeamGrowth'
 
   @Component({
@@ -93,15 +94,15 @@
     }
 
     get seasonStart () {
-      let date = this.$_parse(this.team.started_on)
+      let date = parseISO(this.team.started_on)
       date = addYears(date, parseInt(this.season))
-      return this.$_format(date)
+      return format(date, 'yyyy-MM-dd')
     }
 
     get seasonEnd () {
-      let date = this.$_parse(this.team.started_on)
+      let date = parseISO(this.team.started_on)
       date = addYears(date, parseInt(this.season) + 1)
-      return this.$_format(date)
+      return format(date, 'yyyy-MM-dd')
     }
 
     get matches () {
@@ -127,13 +128,13 @@
     }
 
     get numGoalsFor () {
-      return this.$_sum(this.matches.map(match =>
+      return sum(this.matches.map(match =>
         match.home === this.team.title ? match.home_score : match.away_score
       ))
     }
 
     get numGoalsAgainst () {
-      return this.$_sum(this.matches.map(match =>
+      return sum(this.matches.map(match =>
         match.home === this.team.title ? match.away_score : match.home_score
       ))
     }

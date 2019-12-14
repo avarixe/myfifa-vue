@@ -8,7 +8,7 @@
     hide-default-footer
   >
     <template #item.moved_on="{ item }">
-      {{ $_format($_parse(item.moved_on), 'MMM D, YYYY') }}
+      {{ item.moved_on | formatDate }}
     </template>
     <template #item.name="{ item }">
       <nuxt-link
@@ -34,7 +34,7 @@
     </template>
     <template #item.fee="{ item }">
       <span :class="`${item.dir === 'in' ? 'red' : 'green'}--text`">
-        {{ $_formatMoney(item.fee) }}
+        {{ item.fee | formatMoney }}
         <span v-if="item.addon_clause">
           (+{{ item.addon_clause }}%)
         </span>
@@ -45,7 +45,7 @@
 
 <script>
   import { Component, Vue, Prop } from 'nuxt-property-decorator'
-  import { addYears } from 'date-fns'
+  import { addYears, format, parseISO } from 'date-fns'
   import { Team, Player, Transfer } from '@/models'
 
   @Component
@@ -66,15 +66,15 @@
     }
 
     get seasonStart () {
-      let date = this.$_parse(this.team.started_on)
+      let date = parseISO(this.team.started_on)
       date = addYears(date, parseInt(this.season))
-      return this.$_format(date)
+      return format(date, 'yyyy-MM-dd')
     }
 
     get seasonEnd () {
-      let date = this.$_parse(this.team.started_on)
+      let date = parseISO(this.team.started_on)
       date = addYears(date, parseInt(this.season) + 1)
-      return this.$_format(date)
+      return format(date, 'yyyy-MM-dd')
     }
 
     get transfers () {

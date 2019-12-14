@@ -60,6 +60,8 @@
 
 <script>
   import { mixins, Component, Prop } from 'nuxt-property-decorator'
+  import orderBy from 'lodash.orderby'
+  import { format, parseISO } from 'date-fns'
   import TimelineContent from './Content'
   import RecordForm from '@/helpers/RecordForm'
   import { TeamAccessible } from '@/mixins'
@@ -81,9 +83,9 @@
           icon: 'file-document',
           date: contract.started_on,
           dateRange:
-            this.$_formatDate(contract.started_on) +
+            this.formatDate(contract.started_on) +
             ' - ' +
-            this.$_formatDate(contract.ended_on),
+            this.formatDate(contract.ended_on),
           data: contract
         })),
         ...this.player.injuries.map(injury => ({
@@ -92,9 +94,9 @@
           icon: 'hospital',
           date: injury.started_on,
           dateRange:
-            this.$_formatDate(injury.started_on) +
+            this.formatDate(injury.started_on) +
             ' - ' +
-            this.$_formatDate(injury.ended_on),
+            this.formatDate(injury.ended_on),
           title: `${injury.description} Injury`,
           data: injury
         })),
@@ -104,9 +106,9 @@
           icon: 'transit-transfer',
           date: loan.started_on,
           dateRange:
-            this.$_formatDate(loan.started_on) +
+            this.formatDate(loan.started_on) +
             ' - ' +
-            this.$_formatDate(loan.ended_on),
+            this.formatDate(loan.ended_on),
           title: `On Loan at ${loan.destination}`,
           data: loan
         })),
@@ -117,7 +119,7 @@
             color: transferOut ? 'red' : 'green',
             icon: `airplane-${transferOut ? 'takeoff' : 'landing'}`,
             date: transfer.moved_on,
-            dateRange: this.$_formatDate(transfer.moved_on),
+            dateRange: this.formatDate(transfer.moved_on),
             data: transfer
           }
         })
@@ -125,7 +127,7 @@
     }
 
     get sortedItems () {
-      return this.$_orderBy(this.items, ['date'], ['desc'])
+      return orderBy(this.items, 'date', 'desc')
     }
 
     get dense () {
@@ -136,6 +138,10 @@
         default:
           return false
       }
+    }
+
+    formatDate (date) {
+      return format(parseISO(date), 'MMM dd, yyyy')
     }
   }
 </script>

@@ -19,26 +19,28 @@
 </template>
 
 <script>
-  import { Vue, Component, Watch } from 'nuxt-property-decorator'
-  import { mapGetters } from 'vuex'
+  import { Vue, Component, Watch, Getter, namespace } from 'nuxt-property-decorator'
   import LoginForm from '@/components/App/LoginForm'
+
+  const app = namespace('app')
 
   @Component({
     middleware: ['authenticated'],
     components: {
       LoginForm
     },
-    computed: mapGetters(['authenticated']),
     transition: 'fade-transition'
   })
   export default class IndexPage extends Vue {
+    @Getter authenticated
+    @app.Mutation('SET_TITLE') setTitle
     @Watch('authenticated', { immediate: true })
     goToTeams (val) {
       val && this.$router.push({ name: 'teams' })
     }
 
     mounted () {
-      this.$store.commit('app/SET_TITLE', '')
+      this.setTitle('')
     }
   }
 </script>

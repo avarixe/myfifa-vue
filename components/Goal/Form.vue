@@ -51,7 +51,7 @@
         <v-text-field
           v-else
           v-model="goal.player_name"
-          :rules="$_validate('Goal Scorer', ['required'])"
+          v-rules.required
           label="Goal Scorer"
           prepend-icon="mdi-account"
           spellcheck="false"
@@ -105,25 +105,24 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
   const mix = mixins(TeamAccessible, DialogFormable, MatchAccessible)
+  const goals = namespace('goals')
 
   @Component({
     components: {
       MinuteField,
       PlayerSelect,
       TooltipButton
-    },
-    methods: mapActions('goals', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class GoalForm extends mix {
+    @goals.Action('CREATE') createGoal
+    @goals.Action('UPDATE') updateGoal
     @Prop(Object) record
 
     goal = {
@@ -163,7 +162,7 @@
     @Watch('dialog')
     setGoal (val) {
       if (val && this.record) {
-        this.goal = this.$_pick(this.record, [
+        this.goal = pick(this.record, [
           'id',
           'home',
           'player_id',
@@ -199,9 +198,9 @@
       }
 
       if (this.record) {
-        await this.update(goal)
+        await this.updateGoal(goal)
       } else {
-        await this.create({
+        await this.createGoal({
           matchId: this.match.id,
           goal
         })

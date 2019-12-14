@@ -15,6 +15,7 @@
 
 <script>
   import { mixins, Component, Prop } from 'nuxt-property-decorator'
+  import orderBy from 'lodash.orderby'
   import MatchTimelineItem from './Item'
   import { TeamAccessible } from '@/mixins'
 
@@ -27,7 +28,7 @@
     @Prop({ type: Object, required: true }) match
 
     get events () {
-      const events = this.$_orderBy([
+      const events = orderBy([
         ...this.match.bookings,
         ...this.match.substitutions,
         ...this.match.goals

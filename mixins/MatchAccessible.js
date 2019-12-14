@@ -1,4 +1,5 @@
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import orderBy from 'lodash.orderby'
 import { positions } from '@/models/Match'
 
 @Component
@@ -12,10 +13,7 @@ export default class MatchAccessible extends Vue {
   }
 
   get sortedCaps () {
-    return this.$_orderBy(
-      this.match.caps,
-      [ c => this.positions.indexOf(c.pos), 'start' ]
-    )
+    return orderBy(this.match.caps, c => this.positions.indexOf(c.pos), 'start')
   }
 
   get unsubbedPlayers () {

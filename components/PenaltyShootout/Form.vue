@@ -21,7 +21,7 @@
       <v-col cols="6">
         <v-text-field
           v-model="penaltyShootout.home_score"
-          :rules="$_validate('Home Score', ['required'])"
+          v-rules.required="{ label: 'Home Score' }"
           type="number"
           :label="match.home"
           prepend-icon="mdi-soccer"
@@ -30,7 +30,7 @@
       <v-col cols="6">
         <v-text-field
           v-model="penaltyShootout.away_score"
-          :rules="$_validate('Away Score', ['required'])"
+          v-rules.required="{ label: 'Away Score' }"
           type="number"
           :label="match.away"
           prepend-icon="mdi-soccer"
@@ -41,23 +41,22 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
   const mix = mixins(TeamAccessible, DialogFormable, MatchAccessible)
+  const penaltyShootout = namespace('penaltyShootout')
 
   @Component({
     components: {
       TooltipButton
-    },
-    methods: mapActions('penaltyShootout', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class PenaltyShootoutForm extends mix {
+    @penaltyShootout.Action('CREATE') create
+    @penaltyShootout.Action('UPDATE') update
     @Prop(Object) record
 
     penaltyShootout = {
@@ -72,7 +71,7 @@
     @Watch('dialog')
     setPenaltyShootout (val) {
       if (val && this.record) {
-        this.penaltyShootout = this.$_pick(this.record, [
+        this.penaltyShootout = pick(this.record, [
           'id',
           'home_score',
           'away_score'

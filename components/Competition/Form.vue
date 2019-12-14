@@ -21,10 +21,10 @@
       >
         <v-select
           v-model="competition.champion"
+          v-rules.required
           :items="teams"
           label="Champion"
           prepend-icon="mdi-crown"
-          :rules="$_validate('Champion', ['required'])"
         />
       </v-col>
       <template v-else>
@@ -39,8 +39,8 @@
         <v-col cols="12">
           <v-combobox
             v-model="competition.name"
+            v-rules.required
             :items="competitions"
-            :rules="$_validate('Name', ['required'])"
             label="Name"
             prepend-icon="mdi-trophy"
             spellcheck="false"
@@ -66,7 +66,7 @@
             >
               <v-text-field
                 v-model="competition.num_teams"
-                :rules="$_validate('Number of Teams', ['required'])"
+                v-rules.required
                 label="Number of Teams"
                 prepend-icon="mdi-account-multiple"
                 type="number"
@@ -81,7 +81,7 @@
               <v-col cols="12">
                 <v-text-field
                   v-model="competition.num_teams_per_group"
-                  :rules="$_validate('Teams per Group', ['required'])"
+                  v-rules.required
                   label="Teams per Group"
                   prepend-icon="mdi-account-group"
                   type="number"
@@ -90,7 +90,7 @@
               <v-col cols="12">
                 <v-text-field
                   v-model="competition.num_advances_from_group"
-                  :rules="$_validate('Teams Advancing per Group', ['required'])"
+                  v-rules.required
                   label="Teams Advance per Group"
                   prepend-icon="mdi-forward"
                   type="number"
@@ -105,20 +105,18 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { Competition } from '@/models'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
+  const competitions = namespace('competitions')
 
-  @Component({
-    methods: mapActions('competitions', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
-  })
+  @Component
   export default class CompetitionForm extends mix {
+    @competitions.Action('CREATE') createCompetition
+    @competitions.Action('UPDATE') updateCompetition
     @Prop(Object) competitionData
     @Prop(Boolean) close
 
@@ -165,7 +163,7 @@
     @Watch('dialog')
     setCompetition (val) {
       if (val && this.competitionData) {
-        this.competition = this.$_pick(this.competitionData, [
+        this.competition = pick(this.competitionData, [
           'id',
           'name',
           'champion',
@@ -178,9 +176,9 @@
 
     async submit () {
       if (this.competitionData) {
-        await this.update(this.competition)
+        await this.updateCompetition(this.competition)
       } else {
-        const { data } = await this.create({
+        const { data } = await this.createCompetition({
           teamId: this.team.id,
           competition: this.competition
         })

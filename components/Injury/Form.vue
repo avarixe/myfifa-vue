@@ -22,6 +22,7 @@
         <v-col cols="12">
           <v-date-field
             v-model="injury.started_on"
+            v-rules.required
             label="Injury Date"
             prepend-icon="mdi-calendar-today"
             color="pink"
@@ -31,6 +32,7 @@
         <v-col cols="12">
           <v-date-field
             v-model="injury.ended_on"
+            v-rules.required
             label="Recovery Date"
             prepend-icon="mdi-calendar-today"
             color="pink"
@@ -41,7 +43,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="injury.description"
-          :rules="$_validate('Description', ['required'])"
+          v-rules.required
           label="Description"
           prepend-icon="mdi-hospital"
           spellcheck="false"
@@ -66,22 +68,22 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { DialogFormable } from '@/mixins'
   import { TooltipButton, VDateField } from '@/helpers'
+
+  const injuries = namespace('injuries')
 
   @Component({
     components: {
       TooltipButton,
       VDateField
-    },
-    methods: mapActions('injuries', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class InjuryForm extends mixins(DialogFormable) {
+    @injuries.Action('CREATE') createInjury
+    @injuries.Action('UPDATE') updateInjury
     @Prop({ type: Object, required: true }) player
     @Prop(Object) record
     @Prop(String) color
@@ -102,7 +104,7 @@
     @Watch('dialog')
     async setInjury (val) {
       if (val && this.record) {
-        this.injury = this.$_pick(this.record, [
+        this.injury = pick(this.record, [
           'id',
           'started_on',
           'ended_on',
@@ -113,9 +115,9 @@
 
     async submit () {
       if (this.record) {
-        await this.update(this.injury)
+        await this.updateInjury(this.injury)
       } else {
-        await this.create({
+        await this.createInjury({
           playerId: this.player.id,
           injury: this.injury
         })

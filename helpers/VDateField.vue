@@ -3,17 +3,18 @@
     ref="menu"
     v-model="menu"
     :close-on-content-click="false"
-    :return-value.sync="date"
     transition="scale-transition"
     min-width="290px"
   >
     <template #activator="{ on }">
       <v-text-field
-        v-model="date"
+        v-rules.required="{ disabled: !required }"
+        :value="formattedDate"
         :label="label"
         :prepend-icon="prependIcon"
-        :rules="rules"
         readonly
+        :clearable="clearable"
+        :disabled="disabled"
         v-on="on"
       />
     </template>
@@ -23,13 +24,14 @@
       :color="color"
       :min="min"
       :max="max"
-      @input="$refs.menu.save(date)"
+      @input="menu = false"
     />
   </v-menu>
 </template>
 
 <script>
   import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { format, parseISO } from 'date-fns'
 
   @Component
   export default class VDateField extends Vue {
@@ -41,14 +43,16 @@
     @Prop(String) prependIcon
     @Prop({ type: Boolean, default: false }) required
     @Prop({ type: Boolean, default: false }) startWithYear
+    @Prop({ type: Boolean, default: false }) disabled
+    @Prop({ type: Boolean, default: false }) clearable
 
     menu = false
     date = null
 
-    get rules () {
-      return this.required
-        ? this.$_validate(this.label, ['required', 'date'])
-        : []
+    get formattedDate () {
+      return this.date
+        ? format(parseISO(this.date), 'MMM dd, yyyy')
+        : null
     }
 
     @Watch('value', { immediate: true })

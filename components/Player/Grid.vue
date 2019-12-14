@@ -92,6 +92,12 @@
               nuxt
               color="info"
             >
+              <flag
+                v-if="item.nationality"
+                :iso="item.flag"
+                :title="item.nationality"
+                class="mr-2"
+              />
               {{ item.name }}
             </v-btn>
           </template>
@@ -123,7 +129,7 @@
               attribute="value"
               label="Value"
               input-type="money"
-              :display="$_formatMoney(item.value)"
+              :display="item.value | formatMoney(team.currency)"
               required
               @close="updatePlayerAttribute(item.id, 'value', $event)"
             />
@@ -134,13 +140,13 @@
             </v-icon>
           </template>
           <template #item.sec_pos="{ item }">
-            {{ $_listArray(item.sec_pos, '-') }}
+            {{ item.sec_pos | listArray('-') }}
           </template>
           <template #item.wage="{ item }">
-            {{ contractWage(item) }}
+            {{ item.wage | formatMoney(team.currency, '-') }}
           </template>
           <template #item.endDate="{ item }">
-            {{ contractDate(item) }}
+            {{ item.endDate | formatDate('MMM dd, yyyy', '-') }}
           </template>
         </v-data-table>
       </client-only>
@@ -149,11 +155,14 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
+  import { mixins, Component, namespace } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
   import { InlineField, InlineSelect } from '@/helpers'
   import { positions } from '@/models/Player'
+
+  const broadcaster = namespace('broadcaster')
+  const players = namespace('players')
 
   @Component({
     components: {
@@ -162,6 +171,10 @@
     }
   })
   export default class PlayerGrid extends mixins(TeamAccessible) {
+    @players.Action('UPDATE') updatePlayer
+    @players.Action('ANALYZE') analyzePlayers
+    @broadcaster.Mutation('ANNOUNCE') announce
+
     key = 0
     mode = 0
     modes = [
@@ -254,7 +267,7 @@
             case 1: // Youth
               return player.youth && player.contracts.length === 0
             case 2: // Active
-              return player.status
+              return player.status && player.status !== 'Pending'
             case 3: // Injured
             case 4: // Loaned
             case 5: // Pending
@@ -271,6 +284,7 @@
 
           return {
             ...player,
+            flag: player.flag,
             link: player.link,
             statusIcon: player.statusIcon,
             statusColor: player.statusColor,
@@ -288,13 +302,13 @@
 
     async updatePlayerAttribute (playerId, attribute, value) {
       try {
-        await this.$store.dispatch('players/UPDATE', {
+        await this.updatePlayer({
           id: playerId,
           [attribute]: value
         })
       } catch (e) {
         this.key++
-        this.$store.commit('broadcaster/ANNOUNCE', {
+        this.announce({
           message: e.message,
           color: 'red'
         })
@@ -302,7 +316,7 @@
     }
 
     async mounted () {
-      const { data } = await this.$store.dispatch('players/ANALYZE', {
+      const { data } = await this.analyzePlayers({
         teamId: this.team.id,
         playerIds: this.players.map(player => player.id)
       })
@@ -312,16 +326,6 @@
 
     sortPos (posA, posB) {
       return positions.indexOf(posA) - positions.indexOf(posB)
-    }
-
-    contractWage (player) {
-      const value = player.wage
-      return value && this.$_formatMoney(value)
-    }
-
-    contractDate (player) {
-      const value = player.endDate
-      return value && this.$_format(this.$_parse(value), 'MMM D, YYYY')
     }
   }
 </script>

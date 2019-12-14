@@ -11,7 +11,7 @@
 
 <script>
   import { mixins, Component, Prop } from 'nuxt-property-decorator'
-  import { distanceInWords } from 'date-fns'
+  import { formatDistance, parseISO } from 'date-fns'
   import { TeamAccessible } from '@/mixins'
 
   @Component
@@ -23,9 +23,9 @@
     }
 
     get length () {
-      return distanceInWords(
-        this.injury.started_on,
-        this.injury.ended_on || this.team.currently_on
+      return formatDistance(
+        parseISO(this.injury.ended_on || this.team.currently_on),
+        parseISO(this.injury.started_on)
       )
     }
   }

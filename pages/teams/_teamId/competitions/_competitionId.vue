@@ -172,7 +172,7 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
+  import { mixins, Component, namespace } from 'nuxt-property-decorator'
   import { Competition } from '@/models'
   import { FittyText, RecordRemove } from '@/helpers'
   import CompetitionForm from '@/components/Competition/Form'
@@ -180,6 +180,8 @@
   import RoundStage from '@/components/Stage/Round'
   import TableStage from '@/components/Stage/Table'
   import { TeamAccessible } from '@/mixins'
+
+  const app = namespace('app')
 
   @Component({
     middleware: ['authenticated'],
@@ -194,6 +196,8 @@
     transition: 'fade-transition'
   })
   export default class CompetitionPage extends mixins(TeamAccessible) {
+    @app.Mutation('SET_PAGE') setPage
+
     head () {
       return {
         title: `${this.competition.name} (${this.competitionSeason})`
@@ -245,7 +249,7 @@
     }
 
     mounted () {
-      this.$store.commit('app/SET_PAGE', {
+      this.setPage({
         title: this.title,
         overline: this.team.title,
         headline: this.title

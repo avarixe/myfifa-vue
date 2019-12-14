@@ -31,7 +31,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="transfer.origin"
-          :rules="$_validate('Origin', ['required'])"
+          v-rules.required
           label="Origin"
           prepend-icon="mdi-airplane-takeoff"
           :disabled="transferOut"
@@ -44,7 +44,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="transfer.destination"
-          :rules="$_validate('Destination', ['required'])"
+          v-rules.required
           label="Destination"
           prepend-icon="mdi-airplane-landing"
           :disabled="!transferOut"
@@ -65,14 +65,11 @@
       <v-col cols="12">
         <v-text-field
           v-model="transfer.addon_clause"
+          v-rules.range="{ label: 'Add-On Clause', min: 0, max: 25 }"
           label="Add-On Clause (%)"
-          :rules="$_validate(
-            'Add-On Clause',
-            [{ type: 'range', options: { min: 0, max: 25 }}])"
           type="number"
           min="0"
           max="25"
-          hide-details
         />
       </v-col>
     </template>
@@ -80,25 +77,24 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { VDateField, VMoneyField, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
+  const transfers = namespace('transfers')
 
   @Component({
     components: {
       VDateField,
       VMoneyField,
       TooltipButton
-    },
-    methods: mapActions('transfers', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class TransferForm extends mix {
+    @transfers.Action('CREATE') createTransfer
+    @transfers.Action('UPDATE') updateTransfer
     @Prop({ type: Object, required: true }) player
     @Prop(Object) record
     @Prop(Boolean) dark
@@ -130,7 +126,7 @@
     setTransfer (val) {
       if (val) {
         if (this.record) {
-          this.transfer = this.$_pick(this.record, [
+          this.transfer = pick(this.record, [
             'id',
             'moved_on',
             'origin',
@@ -151,9 +147,9 @@
 
     async submit () {
       if (this.record) {
-        await this.update(this.transfer)
+        await this.updateTransfer(this.transfer)
       } else {
-        await this.create({
+        await this.createTransfer({
           playerId: this.player.id,
           transfer: this.transfer
         })

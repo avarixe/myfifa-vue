@@ -18,7 +18,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="player.name"
-          :rules="$_validate('Name', ['required'])"
+          v-rules.required
           label="Name"
           prepend-icon="mdi-account"
           spellcheck="false"
@@ -28,9 +28,12 @@
         />
       </v-col>
       <v-col cols="12">
+        <nationality-field v-model="player.nationality" />
+      </v-col>
+      <v-col cols="12">
         <v-select
           v-model="player.pos"
-          :rules="$_validate('Position', ['required'])"
+          v-rules.required
           :items="positions"
           label="Position"
           prepend-icon="mdi-run"
@@ -51,10 +54,10 @@
       <v-col cols="12">
         <v-text-field
           v-model="player.birth_year"
+          v-rules.required
           label="Birth Year"
           prepend-icon="mdi-calendar"
-          mask="####"
-          :rules="$_validate('Birth Year', ['required'])"
+          inputmode="numeric"
         />
       </v-col>
       <v-col cols="12">
@@ -77,8 +80,8 @@
       <v-col cols="12">
         <v-select
           v-model="player.ovr"
+          v-rules.required
           :items="Array.from({ length: 61 }, (v, k) => k + 40)"
-          :rules="$_validate('OVR', ['required'])"
           label="OVR"
           prepend-icon="mdi-trending-up"
           menu-props="auto"
@@ -97,28 +100,30 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { DialogFormable, TeamAccessible } from '@/mixins'
   import { positions } from '@/models/Player'
-  import { VMoneyField } from '@/helpers'
+  import { NationalityField, VMoneyField } from '@/helpers'
+
+  const players = namespace('players')
 
   @Component({
     components: {
+      NationalityField,
       VMoneyField
-    },
-    methods: mapActions('players', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class PlayerForm extends mixins(DialogFormable, TeamAccessible) {
+    @players.Action('CREATE') createPlayer
+    @players.Action('UPDATE') updatePlayer
     @Prop(Object) playerData
 
     valid = false
     player = {
       name: '',
       pos: '',
+      nationality: null,
       sec_pos: [],
       ovr: 60,
       value: '',
@@ -138,10 +143,11 @@
     @Watch('dialog')
     setPlayer (val) {
       if (val && this.playerData) {
-        this.player = this.$_pick(this.playerData, [
+        this.player = pick(this.playerData, [
           'id',
           'name',
           'pos',
+          'nationality',
           'ovr',
           'value',
           'kit_no',
@@ -154,9 +160,9 @@
 
     async submit () {
       if (this.playerData) {
-        await this.update(this.player)
+        await this.updatePlayer(this.player)
       } else {
-        const { data } = await this.create({
+        const { data } = await this.createPlayer({
           teamId: this.team.id,
           player: this.player
         })

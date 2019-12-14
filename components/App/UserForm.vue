@@ -13,24 +13,24 @@
         <v-col cols="12">
           <v-text-field
             v-model="user.full_name"
+            v-rules.required
             label="Name"
-            :rules="$_validate('Name', ['required'])"
           />
         </v-col>
         <v-col cols="12">
           <v-text-field
             v-model="user.username"
+            v-rules.required
             label="Username"
-            :rules="$_validate('Username', ['required'])"
             autocapitalize="off"
           />
         </v-col>
         <v-col cols="12">
           <v-text-field
             v-model="user.email"
+            v-rules.required.format="{ type: 'email' }"
             label="Email"
             type="email"
-            :rules="$_validate('Email', ['required', 'email'])"
           />
         </v-col>
       </template>
@@ -83,21 +83,18 @@
 </template>
 
 <script>
-  import { mixins, Component, Watch } from 'nuxt-property-decorator'
-  import { mapGetters, mapActions } from 'vuex'
+  import { mixins, Component, Watch, Getter, namespace } from 'nuxt-property-decorator'
   import { DialogFormable } from '@/mixins'
 
-  @Component({
-    computed: mapGetters([
-      'authenticated'
-    ]),
-    methods: mapActions('user', {
-      get: 'GET',
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
-  })
+  const user = namespace('user')
+
+  @Component
   export default class UserForm extends mixins(DialogFormable) {
+    @Getter authenticated
+    @user.Action('GET') getUser
+    @user.Action('CREATE') createUser
+    @user.Action('UPDATE') updateUser
+
     visible = false
     passwordMode = false
     user = {
@@ -129,16 +126,16 @@
     }
 
     @Watch('dialog')
-    async getUser (val) {
+    async getUserData (val) {
       if (val && this.authenticated) {
-        const { data } = await this.get()
+        const { data } = await this.getUser()
         this.user = data
       }
     }
 
     async submit () {
       if (!this.authenticated) {
-        await this.create(this.user)
+        await this.createUser(this.user)
       } else {
         let params = {}
 
@@ -146,7 +143,7 @@
           params[attr] = this.user[attr]
         })
 
-        await this.update(params)
+        await this.updateUser(params)
       }
     }
   }

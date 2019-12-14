@@ -50,12 +50,11 @@
             nuxt
             text
             :color="item.resultColor"
-          >
-            {{ item.score }}
-          </v-btn>
+            v-text="item.score"
+          />
         </template>
         <template #item.played_on="{ item }">
-          {{ $_format($_parse(item.played_on), 'MMM DD, YYYY') }}
+          {{ item.played_on | formatDate }}
         </template>
       </v-data-table>
     </v-card-text>
@@ -64,9 +63,9 @@
 
 <script>
   import { mixins, Component } from 'nuxt-property-decorator'
+  import { addYears, parseISO } from 'date-fns'
   import { Competition, Match } from '@/models'
   import { TeamAccessible } from '@/mixins'
-  import { addYears } from 'date-fns'
 
   @Component
   export default class MatchGrid extends mixins(TeamAccessible) {
@@ -89,12 +88,12 @@
     }
 
     get rows () {
-      const teamStart = this.$_parse(this.team.started_on)
+      const teamStart = parseISO(this.team.started_on)
 
       return this.matches
         .filter(match => {
           if (typeof this.seasonFilter === 'number') {
-            const datePlayed = this.$_parse(match.played_on)
+            const datePlayed = parseISO(match.played_on)
             const seasonStart = addYears(teamStart, this.seasonFilter)
             const seasonEnd = addYears(teamStart, this.seasonFilter + 1)
             return seasonStart <= datePlayed && datePlayed < seasonEnd

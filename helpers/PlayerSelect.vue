@@ -1,7 +1,7 @@
 <template>
   <v-select
+    v-rules.required="{ disabled: !required }"
     :value="value"
-    :rules="rules"
     :items="players"
     :item-value="itemValue"
     item-text="name"
@@ -39,12 +39,6 @@
     @Prop(Boolean) disabled
     @Prop(Boolean) clearable
     @Prop(Boolean) hideDetails
-
-    get rules () {
-      return this.required
-        ? this.$_validate(this.label, ['required'])
-        : []
-    }
 
     updateValue (value) {
       this.$emit('input', value)

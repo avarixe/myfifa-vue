@@ -96,29 +96,26 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapState, mapActions } from 'vuex'
-  import { addYears } from 'date-fns'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import { addYears, format, parseISO } from 'date-fns'
+  import pick from 'lodash.pick'
   import { VDateField, VMoneyField, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
+  const contracts = namespace('contracts')
 
   @Component({
     components: {
       VDateField,
       VMoneyField,
       TooltipButton
-    },
-    computed: mapState('contracts', [
-      'bonusRequirementTypes'
-    ]),
-    methods: mapActions('contracts', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class ContractForm extends mix {
+    @contracts.State bonusRequirementTypes
+    @contracts.Action('CREATE') createContract
+    @contracts.Action('UPDATE') updateContract
     @Prop({ type: Object, required: true }) player
     @Prop(Object) record
     @Prop(String) color
@@ -144,8 +141,9 @@
     }
 
     get maxEndDate () {
-      return this.$_format(
-        addYears(this.$_parse(this.contract.started_on), 6)
+      return this.contract.started_on && format(
+        addYears(parseISO(this.contract.started_on), 6),
+        'yyyy-MM-dd'
       )
     }
 
@@ -153,7 +151,7 @@
     setContract (val) {
       if (val) {
         if (this.record) {
-          this.contract = this.$_pick(this.record, [
+          this.contract = pick(this.record, [
             'id',
             'started_on',
             'ended_on',
@@ -173,9 +171,9 @@
 
     async submit () {
       if (this.record) {
-        await this.update(this.contract)
+        await this.updateContract(this.contract)
       } else {
-        await this.create({
+        await this.createContract({
           playerId: this.player.id,
           contract: this.contract
         })

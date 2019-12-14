@@ -18,7 +18,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="team.title"
-          :rules="$_validate('Team', ['required'])"
+          v-rules.required
           label="Team"
           prepend-icon="mdi-shield-half-full"
           spellcheck="false"
@@ -42,7 +42,7 @@
       <v-col cols="12">
         <v-text-field
           v-model="team.currency"
-          :rules="$_validate('Currency', ['required'])"
+          v-rules.required
           label="Currency"
           prepend-icon="mdi-cash"
         />
@@ -58,28 +58,28 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
-  import { mapActions } from 'vuex'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import pick from 'lodash.pick'
   import { Team } from '@/models'
   import { VDateField } from '@/helpers'
   import { DialogFormable } from '@/mixins'
   import { format } from 'date-fns'
 
+  const teams = namespace('teams')
+
   @Component({
     components: {
       VDateField
-    },
-    methods: mapActions('teams', {
-      create: 'CREATE',
-      update: 'UPDATE'
-    })
+    }
   })
   export default class TeamForm extends mixins(DialogFormable) {
+    @teams.Action('CREATE') createTeam
+    @teams.Action('UPDATE') updateTeam
     @Prop([String, Number]) teamId
 
     team = {
       title: '',
-      started_on: format(new Date(), 'YYYY-MM-DD'),
+      started_on: format(new Date(), 'yyyy-MM-dd'),
       currency: '$',
       badge: null
     }
@@ -93,7 +93,7 @@
     @Watch('dialog')
     setTeam (val) {
       if (val && this.teamId) {
-        this.team = this.$_pick(Team.find(this.teamId), [
+        this.team = pick(Team.find(this.teamId), [
           'id',
           'title',
           'started_on',
@@ -111,12 +111,12 @@
       }
 
       if ('id' in this.team) {
-        await this.update({
+        await this.updateTeam({
           id: this.team.id,
           formData
         })
       } else {
-        const { data } = await this.create(formData)
+        const { data } = await this.createTeam(formData)
 
         this.$router.push({
           name: 'teams-teamId',

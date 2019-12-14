@@ -6,19 +6,22 @@
       </v-col>
 
       <v-container>
-        <v-row class="text-center">
+        <v-row
+          justify="space-around"
+          class="text-center"
+        >
           <v-col
             cols="6"
-            sm="3"
+            sm="2"
           >
             <div class="display-1">{{ player.pos }}</div>
             <div class="subheading">Position</div>
           </v-col>
           <v-col
             cols="6"
-            sm="3"
+            sm="2"
           >
-            <div class="display-1">{{ $_listArray(player.sec_pos) }}</div>
+            <div class="display-1">{{ player.sec_pos | listArray }}</div>
             <div class="subheading">
               <fitty-text
                 text="Secondary Position(s)"
@@ -27,15 +30,27 @@
             </div>
           </v-col>
           <v-col
-            cols="6"
-            sm="3"
+            cols="4"
+            sm="2"
           >
             <div class="display-1">{{ player.age }}</div>
             <div class="subheading">Age</div>
           </v-col>
           <v-col
-            cols="6"
-            sm="3"
+            v-if="player.nationality"
+            cols="4"
+            sm="2"
+          >
+            <flag
+              :iso="player.flag"
+              :title="player.nationality"
+              style="font-size: 40px"
+            />
+            <div class="subheading">Nationality</div>
+          </v-col>
+          <v-col
+            cols="4"
+            sm="2"
           >
             <v-icon
               :color="player.statusColor"
@@ -71,7 +86,7 @@
                 sm="6"
               >
                 <div class="display-1 primary--text">
-                  {{ $_formatMoney(player.value) }}
+                  {{ player.value | formatMoney(team.currency) }}
                 </div>
                 <div class="subheading">Value</div>
               </v-col>
@@ -169,7 +184,7 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
+  import { mixins, Component, namespace } from 'nuxt-property-decorator'
   import { Player } from '@/models'
   import PlayerForm from '@/components/Player/Form'
   import PlayerActions from '@/components/Player/Actions'
@@ -177,6 +192,8 @@
   import PlayerHistoryChart from '@/components/Charts/PlayerHistoryChart'
   import { FittyText } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
+
+  const app = namespace('app')
 
   @Component({
     middleware: ['authenticated'],
@@ -190,6 +207,8 @@
     transition: 'fade-transition'
   })
   export default class PlayerPage extends mixins(TeamAccessible) {
+    @app.Mutation('SET_PAGE') setPage
+
     get player () {
       return Player
         .query()
@@ -223,7 +242,7 @@
     }
 
     beforeMount () {
-      this.$store.commit('app/SET_PAGE', {
+      this.setPage({
         title: this.player.name,
         overline: this.team.title,
         headline: this.player.name

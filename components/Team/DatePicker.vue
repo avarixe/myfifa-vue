@@ -16,7 +16,7 @@
           dark
           v-on="on"
         >
-          {{ $_format(currentDate, 'MMM DD, YYYY') }}
+          {{ formattedDate }}
         </v-btn>
       </slot>
     </template>
@@ -32,17 +32,24 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch } from 'nuxt-property-decorator'
+  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import { format, parseISO } from 'date-fns'
   import { TeamAccessible } from '@/mixins'
-  import { format } from 'date-fns'
+
+  const teams = namespace('teams')
 
   @Component
   export default class TeamDatePicker extends mixins(TeamAccessible) {
+    @teams.Action('UPDATE') updateTeam
     @Prop({ type: String, default: 'd-inline-block' }) menuClass
     @Prop({ type: String, default: 'top left' }) origin
 
     calendar = false
-    currentDate = format(new Date(), 'YYYY-MM-DD')
+    currentDate = format(new Date(), 'yyyy-MM-dd')
+
+    get formattedDate () {
+      return format(parseISO(this.currentDate), 'MMM dd, yyyy')
+    }
 
     @Watch('team', { immediate: true })
     setCurrentDate () {
@@ -52,7 +59,7 @@
     @Watch('currentDate')
     async updateDate (val, oldVal) {
       if (oldVal) {
-        await this.$store.dispatch('teams/UPDATE', {
+        await this.updateTeam({
           id: this.team.id,
           currently_on: val
         })
