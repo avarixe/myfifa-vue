@@ -77,7 +77,7 @@
         <template #default="{ on }">
           <v-list-item v-on="on">
             <v-list-item-action>
-              <v-icon>mdi-account</v-icon>
+              <v-icon>mdi-account-tie</v-icon>
             </v-list-item-action>
             <v-list-item-title>Account</v-list-item-title>
           </v-list-item>

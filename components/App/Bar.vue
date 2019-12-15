@@ -29,6 +29,10 @@
         </small>
       </div>
     </v-toolbar-title>
+
+    <v-spacer />
+
+    <app-forms-menu />
   </v-app-bar>
 </template>
 
@@ -36,10 +40,15 @@
   import { Vue, Component, Action, namespace } from 'nuxt-property-decorator'
   import { Team } from '@/models'
   import { baseURL } from '@/api'
+  import AppFormsMenu from './FormsMenu'
 
   const app = namespace('app')
 
-  @Component
+  @Component({
+    components: {
+      AppFormsMenu
+    }
+  })
   export default class AppBar extends Vue {
     @Action('entities/deleteAll') clearStore
     @app.State overline
