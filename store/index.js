@@ -56,7 +56,7 @@ export const actions = {
     return http({
       method: 'post',
       path: routes.token.revoke,
-      data: { token: state.token },
+      token: state.token,
       success ({ data }) {
         commit('SET_TOKEN', null)
         commit('broadcaster/ANNOUNCE', {
