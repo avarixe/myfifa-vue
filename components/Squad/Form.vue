@@ -15,42 +15,7 @@
     </template>
 
     <template #form>
-      <v-col cols="12">
-        <v-text-field
-          v-model="squad.name"
-          v-rules.required
-          label="Name"
-          prepend-icon="mdi-clipboard-text"
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
-        />
-      </v-col>
-      <v-row
-        v-for="(squadPlayer, i) in squad.squad_players_attributes"
-        :key="i"
-        dense
-      >
-        <v-col cols="4">
-          <v-select
-            v-model="squadPlayer.pos"
-            :items="positions"
-            label="Position"
-            prepend-icon="mdi-run"
-            hide-details
-          />
-        </v-col>
-        <v-col cols="8">
-          <player-select
-            v-model="squadPlayer.player_id"
-            :players="players"
-            item-value="id"
-            label="Player"
-            hide-details
-          />
-        </v-col>
-      </v-row>
+      <dynamic-fields :fields="fields" />
     </template>
   </dialog-form>
 </template>
@@ -60,7 +25,7 @@
   import pick from 'lodash.pick'
   import { positions } from '@/models/Match'
   import { activePlayers } from '@/models/Player'
-  import { PlayerSelect } from '@/helpers'
+  import { DynamicFields } from '@/helpers'
   import { DialogFormable, TeamAccessible } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
@@ -68,7 +33,7 @@
 
   @Component({
     components: {
-      PlayerSelect
+      DynamicFields
     }
   })
   export default class SquadForm extends mix {
@@ -85,12 +50,56 @@
       }))
     }
 
-    get positions () {
-      return Object.keys(positions)
-    }
-
     get title () {
       return this.squadData ? 'Edit Squad' : 'New Squad'
+    }
+
+    get fields () {
+      let fields = [
+        {
+          type: 'string',
+          object: this.squad,
+          attribute: 'name',
+          label: 'Name',
+          prependIcon: 'mdi-clipboard-text',
+          required: true,
+          spellcheck: 'false',
+          autocapitalize: 'words',
+          autocomplete: 'off',
+          autocorrect: 'off'
+        }
+      ]
+
+      for (const i in this.squad.squad_players_attributes) {
+        fields.push({
+          cols: 4,
+          type: 'select',
+          object: this.squad.squad_players_attributes[i],
+          attribute: 'pos',
+          label: 'Position',
+          prependIcon: 'mdi-run',
+          items: this.positions,
+          required: true,
+          hideDetails: true
+        })
+        fields.push({
+          cols: 8,
+          type: 'player',
+          object: this.squad.squad_players_attributes[i],
+          attribute: 'player_id',
+          prependIcon: 'mdi-account',
+          players: this.players,
+          itemValue: 'id',
+          required: true,
+          hideDetails: true
+        })
+      }
+
+      return fields
+    }
+
+    get positions () {
+      return Object.keys(positions)
     }
 
     get players () {

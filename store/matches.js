@@ -15,5 +15,13 @@ export const actions = {
       token: rootState.token,
       data: { squad_id: squadId }
     })
+  },
+  FETCH_TEAMS ({ rootState }, { teamId }) {
+    return http({
+      method: 'get',
+      path: routes.matches.teamOptions,
+      pathData: { teamId },
+      token: rootState.token
+    })
   }
 }

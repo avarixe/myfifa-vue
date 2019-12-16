@@ -1,25 +1,5 @@
 import Vue from 'vue'
-
-function required (options) {
-  return v => !!v || `${options.label} is required`
-}
-
-function range (options) {
-  return v => (
-    (!isNaN(v) && options.min <= parseFloat(v) && parseFloat(v) <= options.max) ||
-    `${options.label} must be between ${options.min} and ${options.max}`
-  )
-}
-
-function format (options) {
-  const error = `${options.label} must be valid`
-  switch (options.type) {
-    case 'email':
-      return v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || error
-    case 'date':
-      return v => /^\d{4}-\d{2}-\d{2}$/.test(v) || error
-  }
-}
+import { requiredRule, rangeRule, formatRule } from '@/helpers/utilities'
 
 Vue.directive('rules', {
   bind (el, binding, vnode) {
@@ -41,13 +21,13 @@ Vue.directive('rules', {
 
         switch (rule) {
           case 'required':
-            rules.push(required(binding.value))
+            rules.push(requiredRule(binding.value))
             break
           case 'range':
-            rules.push(range(binding.value))
+            rules.push(rangeRule(binding.value))
             break
           case 'format':
-            rules.push(format(binding.value))
+            rules.push(formatRule(binding.value))
             break
         }
       }
