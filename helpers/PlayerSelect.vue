@@ -1,7 +1,5 @@
 <template>
   <v-select
-    v-rules.required="{ disabled: !required }"
-    :value="value"
     :items="players"
     :item-value="itemValue"
     item-text="name"
@@ -10,6 +8,8 @@
     :disabled="disabled"
     :clearable="clearable"
     :hide-details="hideDetails"
+    :rules="rules"
+    :value="value"
     @change="updateValue"
   >
     <template #item="{ item }">
@@ -27,6 +27,7 @@
 
 <script>
   import { Vue, Prop, Component } from 'nuxt-property-decorator'
+  import { requiredRule } from './utilities'
 
   @Component
   export default class PlayerSelect extends Vue {
@@ -39,6 +40,10 @@
     @Prop(Boolean) disabled
     @Prop(Boolean) clearable
     @Prop(Boolean) hideDetails
+
+    get rules () {
+      return this.required ? [requiredRule({ label: this.label })] : []
+    }
 
     updateValue (value) {
       this.$emit('input', value)

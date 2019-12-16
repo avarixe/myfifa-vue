@@ -1,6 +1,5 @@
 <template>
   <v-menu
-    :value="true"
     offset-y
     offset-overflow
   >
