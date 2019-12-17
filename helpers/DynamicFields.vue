@@ -11,6 +11,7 @@
           v-if="field.type === 'string'"
           :label="field.label"
           :prepend-icon="field.prependIcon"
+          :inputmode="field.inputmode"
           :spellcheck="field.spellcheck"
           :autocapitalize="field.autocapitalize"
           :autocomplete="field.autocomplete"
@@ -28,28 +29,51 @@
           :items="field.items"
           :item-key="field.itemKey"
           :item-value="field.itemValue"
+          :multiple="field.multiple"
+          :chips="field.multiple"
+          :deletable-chips="field.multiple"
           :hide-details="field.hideDetails"
           :rules="rulesFor(field)"
           :value="field.object[field.attribute]"
           @input="updateField(field, $event)"
         />
 
+        <!-- Checkbox -->
+        <v-checkbox
+          v-else-if="field.type === 'checkbox'"
+          :label="field.label"
+          :hide-details="field.hideDetails"
+          :disabled="field.disabled"
+          :value="field.object[field.attribute]"
+          @change="updateField(field, $event)"
+        />
+
         <!-- Date -->
         <v-date-field
           v-else-if="field.type === 'date'"
-          :value="field.object[field.attribute]"
           :label="field.label"
           :prepend-icon="field.prependIcon"
           :required="field.required"
           :color="field.color"
+          :value="field.object[field.attribute]"
+          @input="updateField(field, $event)"
+        />
+
+        <!-- Money -->
+        <v-money-field
+          v-else-if="field.type === 'money'"
+          :label="field.label"
+          :prefix="field.prefix"
+          :required="field.required"
+          :value="field.object[field.attribute]"
           @input="updateField(field, $event)"
         />
 
         <!-- File -->
         <v-file-input
           v-else-if="field.type === 'file'"
-          :value="field.object[field.attribute]"
           :label="field.label"
+          :value="field.object[field.attribute]"
           @change="updateField(field, $event)"
         />
 
@@ -64,6 +88,13 @@
           :value="field.object[field.attribute]"
           @input="updateField(field, $event)"
         />
+
+        <!-- Nationality -->
+        <nationality-field
+          v-else-if="field.type === 'nationality'"
+          :value="field.object[field.attribute]"
+          @input="updateField(field, $event)"
+        />
       </v-col>
     </v-scroll-y-transition>
   </v-row>
@@ -71,14 +102,18 @@
 
 <script>
   import { Component, Vue, Prop } from 'nuxt-property-decorator'
-  import { requiredRule } from './utilities'
+  import { requiredRule, rangeRule, formatRule } from './utilities'
+  import NationalityField from './NationalityField'
   import PlayerSelect from './PlayerSelect'
   import VDateField from './VDateField'
+  import VMoneyField from './VMoneyField'
 
   @Component({
     components: {
+      NationalityField,
       PlayerSelect,
-      VDateField
+      VDateField,
+      VMoneyField
     }
   })
   export default class DynamicFields extends Vue {
@@ -93,6 +128,14 @@
 
       if (field.required) {
         rules.push(requiredRule({ label: field.label }))
+      }
+
+      if (field.inputmode === 'numeric') {
+        rules.push(formatRule({ label: field.label, type: 'number' }))
+      }
+
+      if (field.range) {
+        rules.push(rangeRule({ ...field.range, label: field.label }))
       }
 
       return rules

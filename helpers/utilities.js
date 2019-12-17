@@ -20,5 +20,7 @@ export function formatRule (options) {
       return v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || error
     case 'date':
       return v => /^\d{4}-\d{2}-\d{2}$/.test(v) || error
+    case 'number':
+      return v => /^\d*$/.test(v) || error
   }
 }
