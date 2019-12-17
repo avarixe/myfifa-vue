@@ -73,10 +73,12 @@
   import { Component, Vue, Prop } from 'nuxt-property-decorator'
   import { requiredRule } from './utilities'
   import PlayerSelect from './PlayerSelect'
+  import VDateField from './VDateField'
 
   @Component({
     components: {
-      PlayerSelect
+      PlayerSelect,
+      VDateField
     }
   })
   export default class DynamicFields extends Vue {

@@ -5,7 +5,7 @@
         <team-date-picker />
 
         <team-form
-          :team-id="team.id"
+          :record="team"
           color="orange"
         >
           <template #default="{ on }">
