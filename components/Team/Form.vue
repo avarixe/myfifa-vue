@@ -1,17 +1,12 @@
 <template>
   <dialog-form
     v-model="dialog"
-    :title="`Edit ${team.title}`"
+    title="Edit Team"
     :submit="submit"
     :color="color"
   >
     <template #activator="{ on }">
-      <slot :on="on">
-        <v-btn v-on="on">
-          <v-icon left>mdi-plus-circle-outline</v-icon>
-          Team
-        </v-btn>
-      </slot>
+      <slot :on="on" />
     </template>
 
     <template #form>
