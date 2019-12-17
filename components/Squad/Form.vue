@@ -1,7 +1,7 @@
 <template>
   <dialog-form
     v-model="dialog"
-    :title="title"
+    title="Edit Squad"
     :submit="submit"
     :color="color"
   >
@@ -42,17 +42,7 @@
     @Prop(Object) squadData
 
     valid = false
-    squad = {
-      name: '',
-      squad_players_attributes: new Array(11).fill().map(x => ({
-        player_id: null,
-        pos: null
-      }))
-    }
-
-    get title () {
-      return this.squadData ? 'Edit Squad' : 'New Squad'
-    }
+    squad = {}
 
     get fields () {
       let fields = [
@@ -123,14 +113,7 @@
     }
 
     async submit () {
-      if (this.squadData) {
-        await this.updateSquad(this.squad)
-      } else {
-        await this.createSquad({
-          teamId: this.team.id,
-          squad: this.squad
-        })
-      }
+      await this.updateSquad(this.squad)
     }
   }
 </script>
