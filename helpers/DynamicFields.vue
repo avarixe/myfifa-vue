@@ -75,6 +75,23 @@
           @change="updateField(field, $event)"
         />
 
+        <!-- Radio -->
+        <v-radio-group
+          v-else-if="field.type === 'radio'"
+          row
+          :hide-details="field.hideDetails"
+          :value="field.object[field.attribute]"
+          @change="updateField(field, $event)"
+        >
+          <v-radio
+            v-for="item in field.items"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+            :color="item.color"
+          />
+        </v-radio-group>
+
         <!-- Date -->
         <v-date-field
           v-else-if="field.type === 'date'"
