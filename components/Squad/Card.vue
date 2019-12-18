@@ -8,7 +8,7 @@
       <v-spacer />
 
       <squad-form
-        :squad-data="squad"
+        :record="squad"
         color="orange"
       >
         <template #default="{ on }">

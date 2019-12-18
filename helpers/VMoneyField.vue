@@ -2,7 +2,7 @@
   <v-text-field
     v-model="money"
     v-money="money ? config : null"
-    v-rules.required="{ disabled: !required }"
+    :rules="rules"
     :label="label"
     :prefix="prefix"
     :clearable="!required"
@@ -14,6 +14,7 @@
 <script>
   import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { VMoney } from 'v-money'
+  import { requiredRule } from '@/helpers'
 
   @Component({
     directives: {
@@ -38,6 +39,10 @@
       return this.money && this.money.length > 0
         ? parseInt(this.money.replace(/,/g, ''))
         : null
+    }
+
+    get rules () {
+      return this.required ? [requiredRule({ label: this.label })] : []
     }
 
     @Watch('value', { immediate: true })

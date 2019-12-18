@@ -1,7 +1,7 @@
 <template>
   <div class="d-inline-block">
     <player-form
-      :player-data="player"
+      :record="player"
       color="orange"
     >
       <template #default="{ on }">

@@ -1,7 +1,7 @@
 <template>
   <dialog-form
     v-model="dialog"
-    title="Edit Team"
+    :title="title"
     :submit="submit"
     :color="color"
   >
@@ -17,6 +17,7 @@
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import { format } from 'date-fns'
   import pick from 'lodash.pick'
   import { DynamicFields } from '@/helpers'
   import { DialogFormable } from '@/mixins'
@@ -29,10 +30,20 @@
     }
   })
   export default class TeamForm extends mixins(DialogFormable) {
+    @teams.Action('CREATE') createTeam
     @teams.Action('UPDATE') updateTeam
     @Prop(Object) record
 
-    team = {}
+    team = {
+      title: '',
+      started_on: format(new Date(), 'yyyy-MM-dd'),
+      currency: '$',
+      badge: null
+    }
+
+    get title () {
+      return this.record ? `Edit ${this.record.title}` : 'New Team'
+    }
 
     get fields () {
       return [
@@ -47,6 +58,15 @@
           autocapitalize: 'words',
           autocomplete: 'off',
           autocorrect: 'off'
+        },
+        {
+          type: 'date',
+          object: this.team,
+          attribute: 'started_on',
+          label: 'Start Date',
+          prependIcon: 'mdi-calendar-today',
+          disabled: this.team.id > 0,
+          required: true
         },
         {
           type: 'string',
@@ -85,10 +105,20 @@
         formData.append(`team[${k}]`, this.team[k])
       }
 
-      await this.updateTeam({
-        id: this.team.id,
-        formData
-      })
+      if (this.record) {
+        await this.updateTeam({
+          id: this.team.id,
+          formData
+        })
+      } else {
+        const { data } = await this.createTeam(formData)
+        this.$router.push({
+          name: 'teams-teamId',
+          params: {
+            teamId: data.id
+          }
+        })
+      }
     }
   }
 </script>

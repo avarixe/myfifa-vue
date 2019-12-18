@@ -170,7 +170,6 @@
         store.dispatch('substitutions/FETCH', { matchId: params.matchId }),
         store.dispatch('bookings/FETCH', { matchId: params.matchId }),
 
-        store.dispatch('competitions/FETCH', { teamId: params.teamId }),
         store.dispatch('players/FETCH', { teamId: params.teamId }),
         store.dispatch('playerHistories/SEARCH', { teamId: params.teamId }),
         store.dispatch('squads/FETCH', { teamId: params.teamId })
