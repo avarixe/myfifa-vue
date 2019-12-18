@@ -18,34 +18,29 @@
     </template>
 
     <template #form>
-      <v-col cols="12">
-        <minute-field v-model="minute" />
-      </v-col>
-      <v-col cols="12">
-        <player-select
-          v-model="substitution.player_id"
-          :players="unsubbedPlayers"
-          icon="mdi-subdirectory-arrow-left"
-          required
-        />
-      </v-col>
-      <v-col cols="12">
-        <player-select
-          v-model="substitution.replacement_id"
-          :players="availablePlayers"
-          item-value="id"
-          label="Replaced By"
-          icon="mdi-subdirectory-arrow-right"
-          required
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-checkbox
-          v-model="substitution.injury"
-          label="Injury"
-          hide-details
-        />
-      </v-col>
+      <dynamic-fields :fields="fields">
+        <template #field.minute>
+          <minute-field v-model="minute" />
+        </template>
+        <template #field.player_id>
+          <player-select
+            v-model="substitution.player_id"
+            :players="unsubbedPlayers"
+            icon="mdi-subdirectory-arrow-left"
+            required
+          />
+        </template>
+        <template #field.replacement_id>
+          <player-select
+            v-model="substitution.replacement_id"
+            :players="availablePlayers"
+            item-value="id"
+            label="Replaced By"
+            icon="mdi-subdirectory-arrow-right"
+            required
+          />
+        </template>
+      </dynamic-fields>
     </template>
   </dialog-form>
 </template>
@@ -54,7 +49,12 @@
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import pick from 'lodash.pick'
   import { activePlayers } from '@/models/Player'
-  import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
+  import {
+    DynamicFields,
+    MinuteField,
+    PlayerSelect,
+    TooltipButton
+  } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
   const mix = mixins(DialogFormable, MatchAccessible, TeamAccessible)
@@ -62,6 +62,7 @@
 
   @Component({
     components: {
+      DynamicFields,
       MinuteField,
       PlayerSelect,
       TooltipButton
@@ -76,6 +77,21 @@
       player_id: null,
       replacement_id: '',
       injury: false
+    }
+
+    get fields () {
+      return [
+        { slot: 'minute' },
+        { slot: 'player_id' },
+        { slot: 'replacement_id' },
+        {
+          type: 'checkbox',
+          object: this.substitution,
+          attribute: 'injury',
+          label: 'Injury',
+          hideDetails: true
+        }
+      ]
     }
 
     get title () {
