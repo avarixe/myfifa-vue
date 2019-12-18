@@ -36,6 +36,7 @@
           :chips="field.multiple"
           :deletable-chips="field.multiple"
           :hide-details="field.hideDetails"
+          :clearable="field.clearable"
           :rules="rulesFor(field)"
           :value="field.object[field.attribute]"
           @input="updateField(field, $event)"

@@ -46,7 +46,7 @@
         class="text-center"
       >
         <competition-form
-          :competition-data="competition"
+          :record="competition"
           color="orange"
         >
           <template #default="{ on }">
@@ -62,7 +62,7 @@
         </competition-form>
 
         <competition-form
-          :competition-data="competition"
+          :record="competition"
           color="red"
           close
         >

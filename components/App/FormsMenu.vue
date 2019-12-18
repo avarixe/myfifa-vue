@@ -47,6 +47,17 @@
             </v-list-item>
           </template>
         </squad-form>
+
+        <competition-form>
+          <template #default="{ on }">
+            <v-list-item v-on="on">
+              <v-list-item-avatar>
+                <v-icon>mdi-trophy</v-icon>
+              </v-list-item-avatar>
+              <v-list-item-content>New Competition</v-list-item-content>
+            </v-list-item>
+          </template>
+        </competition-form>
       </template>
 
       <team-form>
@@ -66,6 +77,7 @@
 <script>
   import { Component, Vue } from 'nuxt-property-decorator'
   import { Team } from '@/models'
+  import CompetitionForm from '@/components/Competition/Form'
   import MatchForm from '@/components/Match/Form'
   import PlayerForm from '@/components/Player/Form'
   import SquadForm from '@/components/Squad/Form'
@@ -73,6 +85,7 @@
 
   @Component({
     components: {
+      CompetitionForm,
       MatchForm,
       PlayerForm,
       SquadForm,
