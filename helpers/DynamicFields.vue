@@ -122,11 +122,11 @@
         <v-text-field
           v-else-if="field.type === 'password'"
           :label="field.label"
-          :type="field.visible ? 'text' : 'password'"
-          :append-icon="`mdi-eye${field.visible ? '-off' : ''}`"
+          :type="visible ? 'text' : 'password'"
+          :append-icon="`mdi-eye${visible ? '-off' : ''}`"
           :value="fieldValue(field)"
           @input="updateField(field, $event)"
-          @click:append="field.visible = !field.visible"
+          @click:append="visible = !visible"
         />
 
         <!-- File -->
@@ -164,6 +164,8 @@
   export default class DynamicFields extends Vue {
     @Prop(Object) object
     @Prop(Array) fields
+
+    visible = false
 
     updateField (field, value) {
       Vue.set(this.fieldObject(field), field.attribute, value)

@@ -46,7 +46,6 @@
     @user.Action('CREATE') createUser
     @user.Action('UPDATE') updateUser
 
-    visible = false
     passwordMode = false
     user = {
       full_name: '',
