@@ -16,25 +16,18 @@
     </template>
 
     <template #form>
-      <v-col cols="12">
-        <v-select
-          v-model="cap.pos"
-          v-rules.required
-          :items="positions"
-          label="Position"
-          prepend-icon="mdi-run"
-        />
-      </v-col>
-      <v-col cols="12">
-        <player-select
-          v-model="cap.player_id"
-          v-rules.required
-          :players="players"
-          item-value="id"
-          :disabled="cap.start > 0"
-          label="Player"
-        />
-      </v-col>
+      <dynamic-fields :fields="fields">
+        <template #field.minute>
+          <player-select
+            v-model="cap.player_id"
+            :players="players"
+            item-value="id"
+            :disabled="cap.start > 0"
+            label="Player"
+            required
+          />
+        </template>
+      </dynamic-fields>
     </template>
   </dialog-form>
 </template>
@@ -43,13 +36,14 @@
   import { mixins, Component, Prop, namespace } from 'nuxt-property-decorator'
   import { positions } from '@/models/Match'
   import { activePlayers } from '@/models/Player'
-  import { PlayerSelect, TooltipButton } from '@/helpers'
+  import { DynamicFields, PlayerSelect, TooltipButton } from '@/helpers'
   import { DialogFormable } from '@/mixins'
 
   const caps = namespace('caps')
 
   @Component({
     components: {
+      DynamicFields,
       PlayerSelect,
       TooltipButton
     }
@@ -63,8 +57,19 @@
       pos: ''
     }
 
-    get positions () {
-      return Object.keys(positions)
+    get fields () {
+      return [
+        {
+          type: 'select',
+          object: this.cap,
+          attribute: 'pos',
+          items: Object.keys(positions),
+          label: 'Position',
+          prependIcon: 'mdi-run',
+          required: true
+        },
+        { slot: 'minute' }
+      ]
     }
 
     get players () {
