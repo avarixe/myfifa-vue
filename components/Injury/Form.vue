@@ -18,51 +18,10 @@
     </template>
 
     <template #form>
-      <template v-if="record && record.ended_on">
-        <v-col cols="12">
-          <v-date-field
-            v-model="injury.started_on"
-            v-rules.required
-            label="Injury Date"
-            prepend-icon="mdi-calendar-today"
-            color="pink"
-            required
-          />
-        </v-col>
-        <v-col cols="12">
-          <v-date-field
-            v-model="injury.ended_on"
-            v-rules.required
-            label="Recovery Date"
-            prepend-icon="mdi-calendar-today"
-            color="pink"
-            required
-          />
-        </v-col>
-      </template>
-      <v-col cols="12">
-        <v-text-field
-          v-model="injury.description"
-          v-rules.required
-          label="Description"
-          prepend-icon="mdi-ambulance"
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
-        />
-      </v-col>
-      <v-scroll-y-transition mode="out-in">
-        <v-col
-          v-if="record && !record.ended_on"
-          cols="12"
-        >
-          <v-checkbox
-            v-model="injury.recovered"
-            label="Player Recovered"
-          />
-        </v-col>
-      </v-scroll-y-transition>
+      <dynamic-fields
+        :object="injury"
+        :fields="fields"
+      />
     </template>
   </dialog-form>
 </template>
@@ -71,14 +30,14 @@
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import pick from 'lodash.pick'
   import { DialogFormable } from '@/mixins'
-  import { TooltipButton, VDateField } from '@/helpers'
+  import { DynamicFields, TooltipButton } from '@/helpers'
 
   const injuries = namespace('injuries')
 
   @Component({
     components: {
-      TooltipButton,
-      VDateField
+      DynamicFields,
+      TooltipButton
     }
   })
   export default class InjuryForm extends mixins(DialogFormable) {
@@ -93,6 +52,54 @@
     injury = {
       description: '',
       recovered: false
+    }
+
+    get fields () {
+      let fields = []
+
+      if (this.record && this.record.ended_on) {
+        fields = [
+          {
+            type: 'date',
+            attribute: 'started_on',
+            label: 'Injury Date',
+            prependIcon: 'mdi-calendar-today',
+            color: 'pink',
+            max: this.contract && this.contract.ended_on,
+            required: true
+          },
+          {
+            type: 'date',
+            attribute: 'ended_on',
+            label: 'Recovery Date',
+            prependIcon: 'mdi-calendar',
+            color: 'pink',
+            min: this.contract && this.contract.started_on,
+            required: true
+          }
+        ]
+      }
+
+      return [
+        ...fields,
+        {
+          type: 'string',
+          attribute: 'description',
+          label: 'Description',
+          prependIcon: 'mdi-ambulance',
+          required: true,
+          spellcheck: 'false',
+          autocapitalize: 'words',
+          autocomplete: 'off',
+          autocorrect: 'off'
+        },
+        {
+          type: 'checkbox',
+          attribute: 'recovered',
+          label: 'Player Recovered',
+          hidden: !this.record || this.record.ended_on
+        }
+      ]
     }
 
     get title () {
