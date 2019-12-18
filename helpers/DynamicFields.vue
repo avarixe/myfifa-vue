@@ -5,7 +5,10 @@
       :key="i"
       mode="out-in"
     >
-      <v-col :cols="field.cols || 12">
+      <v-col
+        v-if="!field.hidden"
+        :cols="field.cols || 12"
+      >
         <!-- String -->
         <v-text-field
           v-if="field.type === 'string'"
@@ -38,6 +41,29 @@
           @input="updateField(field, $event)"
         />
 
+        <!-- Combobox -->
+        <v-combobox
+          v-else-if="field.type === 'combobox'"
+          :label="field.label"
+          :prepend-icon="field.prependIcon"
+          :append-outer-icon="field.appendOuterIcon"
+          :items="field.items"
+          :item-key="field.itemKey"
+          :item-value="field.itemValue"
+          :multiple="field.multiple"
+          :chips="field.multiple"
+          :deletable-chips="field.multiple"
+          :hide-details="field.hideDetails"
+          :spellcheck="field.spellcheck"
+          :autocapitalize="field.autocapitalize"
+          :autocomplete="field.autocomplete"
+          :autocorrect="field.autocorrect"
+          :rules="rulesFor(field)"
+          :value="field.object[field.attribute]"
+          @input="updateField(field, $event)"
+          @click:append-outer="field.clickAppendOuter && field.clickAppendOuter()"
+        />
+
         <!-- Checkbox -->
         <v-checkbox
           v-else-if="field.type === 'checkbox'"
@@ -55,6 +81,7 @@
           :prepend-icon="field.prependIcon"
           :required="field.required"
           :color="field.color"
+          :min="field.min"
           :value="field.object[field.attribute]"
           @input="updateField(field, $event)"
         />
@@ -124,10 +151,6 @@
       }
 
       return rules
-    }
-
-    mounted () {
-      console.log(this.$scopedSlots)
     }
   }
 </script>

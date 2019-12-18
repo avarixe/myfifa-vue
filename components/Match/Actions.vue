@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
     <match-form
-      :match-data="match"
+      :record="match"
       color="orange"
     >
       <template #default="{ on }">
