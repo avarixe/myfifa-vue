@@ -16,67 +16,12 @@
         />
       </slot>
     </template>
+
     <template #form>
-      <v-col cols="12">
-        <v-date-field
-          v-model="loan.started_on"
-          v-rules.required
-          label="Start Date"
-          prepend-icon="mdi-calendar-today"
-          :min="record ? null: team.currently_on"
-          color="indigo"
-          required
-        />
-      </v-col>
-      <v-col
-        v-if="record && record.ended_on"
-        cols="12"
-      >
-        <v-date-field
-          v-model="loan.ended_on"
-          label="Return Date"
-          prepend-icon="mdi-calendar-today"
-          color="indigo"
-          required
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-text-field
-          v-model="loan.origin"
-          v-rules.required
-          label="Origin"
-          prepend-icon="mdi-airplane-takeoff"
-          :disabled="loanOut"
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-text-field
-          v-model="loan.destination"
-          v-rules.required
-          label="Destination"
-          prepend-icon="mdi-airplane-landing"
-          :disabled="!loanOut"
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
-        />
-      </v-col>
-      <v-scroll-y-transition mode="out-in">
-        <v-col
-          v-if="record && !record.ended_on"
-          cols="12"
-        >
-          <v-checkbox
-            v-model="loan.returned"
-            label="Player Returned"
-          />
-        </v-col>
-      </v-scroll-y-transition>
+      <dynamic-fields
+        :object="loan"
+        :fields="fields"
+      />
     </template>
   </dialog-form>
 </template>
@@ -84,7 +29,7 @@
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import pick from 'lodash.pick'
-  import { VDateField, TooltipButton } from '@/helpers'
+  import { DynamicFields, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
@@ -92,7 +37,7 @@
 
   @Component({
     components: {
-      VDateField,
+      DynamicFields,
       TooltipButton
     }
   })
@@ -110,6 +55,60 @@
       origin: '',
       destination: '',
       returned: false
+    }
+
+    get fields () {
+      return [
+        {
+          type: 'date',
+          attribute: 'started_on',
+          label: 'Start Date',
+          prependIcon: 'mdi-calendar-today',
+          min: this.record ? null : this.team.currently_on,
+          color: 'indigo',
+          required: true
+        },
+        {
+          type: 'date',
+          attribute: 'ended_on',
+          label: 'Return Date',
+          prependIcon: 'mdi-calendar',
+          min: this.loan.started_on,
+          color: 'indigo',
+          required: true,
+          hidden: !(this.record && this.record.ended_on)
+        },
+        {
+          type: 'string',
+          attribute: 'origin',
+          label: 'Origin',
+          prependIcon: 'mdi-airplane-takeoff',
+          disabled: this.loanOut,
+          required: true,
+          spellcheck: 'false',
+          autocapitalize: 'words',
+          autocomplete: 'off',
+          autocorrect: 'off'
+        },
+        {
+          type: 'string',
+          attribute: 'destination',
+          label: 'Destination',
+          prependIcon: 'mdi-airplane-landing',
+          disabled: !this.loanOut,
+          required: true,
+          spellcheck: 'false',
+          autocapitalize: 'words',
+          autocomplete: 'off',
+          autocorrect: 'off'
+        },
+        {
+          type: 'checkbox',
+          attribute: 'returned',
+          label: 'Player Returned',
+          hidden: !this.record || this.record.ended_on
+        }
+      ]
     }
 
     get loanOut () {
