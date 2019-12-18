@@ -18,60 +18,10 @@
     </template>
 
     <template #form>
-      <v-col cols="12">
-        <v-date-field
-          v-model="transfer.moved_on"
-          label="Effective Date"
-          prepend-icon="mdi-calendar-today"
-          :min="record ? null : team.currently_on"
-          :color="transferColor"
-          required
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-text-field
-          v-model="transfer.origin"
-          v-rules.required
-          label="Origin"
-          prepend-icon="mdi-airplane-takeoff"
-          :disabled="transferOut"
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-text-field
-          v-model="transfer.destination"
-          v-rules.required
-          label="Destination"
-          prepend-icon="mdi-airplane-landing"
-          :disabled="!transferOut"
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-money-field
-          v-model="transfer.fee"
-          label="Fee"
-          :prefix="team.currency"
-          hide-details
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-text-field
-          v-model="transfer.addon_clause"
-          v-rules.range="{ label: 'Add-On Clause', min: 0, max: 25 }"
-          label="Add-On Clause (%)"
-          type="number"
-          min="0"
-          max="25"
-        />
-      </v-col>
+      <dynamic-fields
+        :object="transfer"
+        :fields="fields"
+      />
     </template>
   </dialog-form>
 </template>
@@ -79,7 +29,7 @@
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import pick from 'lodash.pick'
-  import { VDateField, VMoneyField, TooltipButton } from '@/helpers'
+  import { DynamicFields, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
@@ -87,8 +37,7 @@
 
   @Component({
     components: {
-      VDateField,
-      VMoneyField,
+      DynamicFields,
       TooltipButton
     }
   })
@@ -106,6 +55,58 @@
       destination: '',
       fee: null,
       addon_clause: 0
+    }
+
+    get fields () {
+      return [
+        {
+          type: 'date',
+          attribute: 'moved_on',
+          label: 'Effective Date',
+          prependIcon: 'mdi-calendar-today',
+          min: this.record ? null : this.team.currently_on,
+          color: this.transferColor,
+          required: true
+        },
+        {
+          type: 'string',
+          attribute: 'origin',
+          label: 'Origin',
+          prependIcon: 'mdi-airplane-takeoff',
+          required: true,
+          disabled: this.transferOut,
+          spellcheck: 'false',
+          autocapitalize: 'words',
+          autocomplete: 'off',
+          autocorrect: 'off'
+        },
+        {
+          type: 'string',
+          attribute: 'destination',
+          label: 'Destination',
+          prependIcon: 'mdi-airplane-landing',
+          required: true,
+          disabled: !this.transferOut,
+          spellcheck: 'false',
+          autocapitalize: 'words',
+          autocomplete: 'off',
+          autocorrect: 'off'
+        },
+        {
+          type: 'money',
+          attribute: 'fee',
+          label: 'Fee',
+          prefix: this.team.currency,
+          hideDetails: true
+        },
+        {
+          type: 'string',
+          attribute: 'addon_clause',
+          label: 'Add-On Clause (%)',
+          inputmode: 'numeric',
+          range: { min: 0, max: 25 }
+        }
+      ]
     }
 
     get transferOut () {

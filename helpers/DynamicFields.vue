@@ -15,6 +15,7 @@
           :label="field.label"
           :prepend-icon="field.prependIcon"
           :prefix="field.prefix"
+          :disabled="field.disabled"
           :inputmode="field.inputmode"
           :spellcheck="field.spellcheck"
           :autocapitalize="field.autocapitalize"
