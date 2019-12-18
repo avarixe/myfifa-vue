@@ -9,64 +9,10 @@
     </template>
 
     <template #form>
-      <template v-if="!passwordMode">
-        <v-col cols="12">
-          <v-text-field
-            v-model="user.full_name"
-            v-rules.required
-            label="Name"
-          />
-        </v-col>
-        <v-col cols="12">
-          <v-text-field
-            v-model="user.username"
-            v-rules.required
-            label="Username"
-            autocapitalize="off"
-          />
-        </v-col>
-        <v-col cols="12">
-          <v-text-field
-            v-model="user.email"
-            v-rules.required.format="{ type: 'email' }"
-            label="Email"
-            type="email"
-          />
-        </v-col>
-      </template>
-      <v-col
-        v-else
-        cols="12"
-      >
-        <v-text-field
-          v-model="user.current_password"
-          label="Current Password"
-          :type="visible ? 'text' : 'password'"
-          :append-icon="`mdi-eye${visible ? '-off' : ''}`"
-          @click:append="visible = !visible"
-        />
-      </v-col>
-
-      <template v-if="!authenticated || passwordMode">
-        <v-col cols="12">
-          <v-text-field
-            v-model="user.password"
-            :label="passwordLabel"
-            :type="visible ? 'text' : 'password'"
-            :append-icon="`mdi-eye${visible ? '-off' : ''}`"
-            @click:append="visible = !visible"
-          />
-        </v-col>
-        <v-col cols="12">
-          <v-text-field
-            v-model="user.password_confirmation"
-            label="Confirm Password"
-            :type="visible ? 'text' : 'password'"
-            :append-icon="`mdi-eye${visible ? '-off' : ''}`"
-            @click:append="visible = !visible"
-          />
-        </v-col>
-      </template>
+      <dynamic-fields
+        :object="user"
+        :fields="fields"
+      />
     </template>
 
     <template #additional-actions>
@@ -85,10 +31,15 @@
 <script>
   import { mixins, Component, Watch, Getter, namespace } from 'nuxt-property-decorator'
   import { DialogFormable } from '@/mixins'
+  import { DynamicFields } from '@/helpers'
 
   const user = namespace('user')
 
-  @Component
+  @Component({
+    components: {
+      DynamicFields
+    }
+  })
   export default class UserForm extends mixins(DialogFormable) {
     @Getter authenticated
     @user.Action('GET') getUser
@@ -103,6 +54,60 @@
       email: '',
       password: '',
       password_confirmation: ''
+    }
+
+    get fields () {
+      let fields = []
+
+      if (this.passwordMode) {
+        fields.push({
+          type: 'password',
+          attribute: 'current_password',
+          label: 'Current Password'
+        })
+      } else {
+        fields = [
+          {
+            type: 'string',
+            attribute: 'full_name',
+            label: 'Name',
+            required: true,
+            autocapitalize: 'word'
+          },
+          {
+            type: 'string',
+            attribute: 'username',
+            label: 'Username',
+            required: true,
+            autocapitalize: 'off'
+          },
+          {
+            type: 'string',
+            attribute: 'email',
+            label: 'Email',
+            required: true,
+            inputmode: 'email'
+          }
+        ]
+      }
+
+      if (!this.authenticated || this.passwordMode) {
+        fields = [
+          ...fields,
+          {
+            type: 'password',
+            attribute: 'password',
+            label: this.passwordLabel
+          },
+          {
+            type: 'password',
+            attribute: 'password_confirmation',
+            label: 'Confirm Password'
+          }
+        ]
+      }
+
+      return fields
     }
 
     get title () {

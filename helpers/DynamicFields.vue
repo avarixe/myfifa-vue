@@ -118,6 +118,17 @@
           @input="updateField(field, $event)"
         />
 
+        <!-- Password -->
+        <v-text-field
+          v-else-if="field.type === 'password'"
+          :label="field.label"
+          :type="field.visible ? 'text' : 'password'"
+          :append-icon="`mdi-eye${field.visible ? '-off' : ''}`"
+          :value="fieldValue(field)"
+          @input="updateField(field, $event)"
+          @click:append="field.visible = !field.visible"
+        />
+
         <!-- File -->
         <v-file-input
           v-else-if="field.type === 'file'"
@@ -173,8 +184,13 @@
         rules.push(requiredRule({ label: field.label }))
       }
 
-      if (field.inputmode === 'numeric') {
-        rules.push(formatRule({ label: field.label, type: 'number' }))
+      switch (field.inputmode) {
+        case 'numeric':
+          rules.push(formatRule({ label: field.label, type: 'number' }))
+          break
+        case 'email':
+          rules.push(formatRule({ label: field.label, type: 'email' }))
+          break
       }
 
       if (field.range) {
