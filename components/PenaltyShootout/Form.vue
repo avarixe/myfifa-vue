@@ -18,24 +18,10 @@
     </template>
 
     <template #form>
-      <v-col cols="6">
-        <v-text-field
-          v-model="penaltyShootout.home_score"
-          v-rules.required="{ label: 'Home Score' }"
-          type="number"
-          :label="match.home"
-          prepend-icon="mdi-soccer"
-        />
-      </v-col>
-      <v-col cols="6">
-        <v-text-field
-          v-model="penaltyShootout.away_score"
-          v-rules.required="{ label: 'Away Score' }"
-          type="number"
-          :label="match.away"
-          prepend-icon="mdi-soccer"
-        />
-      </v-col>
+      <dynamic-fields
+        :object="penaltyShootout"
+        :fields="fields"
+      />
     </template>
   </dialog-form>
 </template>
@@ -43,7 +29,7 @@
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import pick from 'lodash.pick'
-  import { TooltipButton } from '@/helpers'
+  import { DynamicFields, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
   const mix = mixins(TeamAccessible, DialogFormable, MatchAccessible)
@@ -51,6 +37,7 @@
 
   @Component({
     components: {
+      DynamicFields,
       TooltipButton
     }
   })
@@ -62,6 +49,29 @@
     penaltyShootout = {
       home_score: null,
       away_score: null
+    }
+
+    get fields () {
+      return [
+        {
+          cols: 6,
+          type: 'string',
+          attribute: 'home_score',
+          label: 'Home Score',
+          prependIcon: 'mdi-soccer',
+          required: true,
+          inputmode: 'numeric'
+        },
+        {
+          cols: 6,
+          type: 'string',
+          attribute: 'away_score',
+          label: 'Away Score',
+          prependIcon: 'mdi-soccer',
+          required: true,
+          inputmode: 'numeric'
+        }
+      ]
     }
 
     get title () {
