@@ -19,71 +19,27 @@
     </template>
 
     <template #form>
-      <v-col cols="12">
-        <v-text-field
-          v-model="stage.name"
-          v-rules.required
-          label="Name"
-          prepend-icon="mdi-table"
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-text-field
-          v-model="stage.num_teams"
-          v-rules.required
-          label="Number of Teams"
-          prepend-icon="mdi-account-group"
-          type="number"
-        />
-      </v-col>
-      <v-scroll-y-transition mode="out-in">
-        <v-col
-          v-if="!stage.table"
-          cols="12"
-        >
-          <v-text-field
-            v-model="stage.num_fixtures"
-            v-rules.required
-            label="Number of Fixtures"
-            prepend-icon="mdi-sword-cross"
-            type="number"
-            :disabled="stage.table"
-          />
-        </v-col>
-      </v-scroll-y-transition>
-      <v-col cols="12">
-        <v-radio-group
-          v-model="stage.table"
-          hide-details
-          row
-        >
-          <v-radio
-            label="Table"
-            :value="true"
-          />
-          <v-radio
-            label="Elimination Round"
-            :value="false"
-          />
-        </v-radio-group>
-      </v-col>
+      <dynamic-fields
+        :object="stage"
+        :fields="fields"
+      />
     </template>
   </dialog-form>
 </template>
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
-  import { TeamAccessible, DialogFormable } from '@/mixins'
+  import { DialogFormable } from '@/mixins'
+  import { DynamicFields } from '@/helpers'
 
-  const mix = mixins(DialogFormable, TeamAccessible)
   const stages = namespace('stages')
 
-  @Component
-  export default class StageFrom extends mix {
+  @Component({
+    components: {
+      DynamicFields
+    }
+  })
+  export default class StageFrom extends mixins(DialogFormable) {
     @stages.Action('CREATE') createStage
     @Prop({ type: Object, required: true }) competition
 
@@ -93,6 +49,47 @@
       num_teams: null,
       num_fixtures: null,
       table: false
+    }
+
+    get fields () {
+      return [
+        {
+          type: 'string',
+          attribute: 'name',
+          label: 'Name',
+          prependIcon: 'mdi-table',
+          required: true,
+          spellcheck: 'false',
+          autocapitalize: 'words',
+          autocomplete: 'off',
+          autocorrect: 'off'
+        },
+        {
+          type: 'radio',
+          attribute: 'table',
+          items: [
+            { label: 'Table', value: true },
+            { label: 'Elimination Round', value: false }
+          ],
+          hideDetails: true
+        },
+        {
+          type: 'string',
+          attribute: 'num_teams',
+          label: 'Number of Teams',
+          prependIcon: 'mdi-account-group',
+          inputmode: 'numeric',
+          required: true
+        },
+        {
+          type: 'string',
+          attribute: 'num_fixtures',
+          label: 'Number of Fixtures',
+          prependIcon: 'mdi-sword-cross',
+          inputmode: 'numeric',
+          hidden: this.stage.table
+        }
+      ]
     }
 
     @Watch('stage.table')
