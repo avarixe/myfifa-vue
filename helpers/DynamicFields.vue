@@ -14,6 +14,7 @@
           v-if="field.type === 'string'"
           :label="field.label"
           :prepend-icon="field.prependIcon"
+          :prefix="field.prefix"
           :inputmode="field.inputmode"
           :spellcheck="field.spellcheck"
           :autocapitalize="field.autocapitalize"
@@ -100,6 +101,8 @@
           :required="field.required"
           :color="field.color"
           :min="field.min"
+          :max="field.max"
+          :start-with-year="field.startWithYear"
           :value="fieldValue(field)"
           @input="updateField(field, $event)"
         />
