@@ -61,7 +61,7 @@
       <template #item.edit="{ item }">
         <table-row-form
           :stage="table"
-          :row-data="item"
+          :record="item"
         >
           <template #default="{ on }">
             <tooltip-button
