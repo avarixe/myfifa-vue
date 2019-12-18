@@ -20,7 +20,7 @@
           :autocomplete="field.autocomplete"
           :autocorrect="field.autocorrect"
           :rules="rulesFor(field)"
-          :value="field.object[field.attribute]"
+          :value="fieldValue(field)"
           @input="updateField(field, $event)"
         />
 
@@ -38,7 +38,7 @@
           :hide-details="field.hideDetails"
           :clearable="field.clearable"
           :rules="rulesFor(field)"
-          :value="field.object[field.attribute]"
+          :value="fieldValue(field)"
           @input="updateField(field, $event)"
         />
 
@@ -60,7 +60,7 @@
           :autocomplete="field.autocomplete"
           :autocorrect="field.autocorrect"
           :rules="rulesFor(field)"
-          :value="field.object[field.attribute]"
+          :value="fieldValue(field)"
           @input="updateField(field, $event)"
           @click:append-outer="field.clickAppendOuter && field.clickAppendOuter()"
         />
@@ -71,7 +71,7 @@
           :label="field.label"
           :hide-details="field.hideDetails"
           :disabled="field.disabled"
-          :value="field.object[field.attribute]"
+          :value="fieldValue(field)"
           @change="updateField(field, $event)"
         />
 
@@ -80,7 +80,7 @@
           v-else-if="field.type === 'radio'"
           row
           :hide-details="field.hideDetails"
-          :value="field.object[field.attribute]"
+          :value="fieldValue(field)"
           @change="updateField(field, $event)"
         >
           <v-radio
@@ -100,7 +100,7 @@
           :required="field.required"
           :color="field.color"
           :min="field.min"
-          :value="field.object[field.attribute]"
+          :value="fieldValue(field)"
           @input="updateField(field, $event)"
         />
 
@@ -110,7 +110,7 @@
           :label="field.label"
           :prefix="field.prefix"
           :required="field.required"
-          :value="field.object[field.attribute]"
+          :value="fieldValue(field)"
           @input="updateField(field, $event)"
         />
 
@@ -118,7 +118,7 @@
         <v-file-input
           v-else-if="field.type === 'file'"
           :label="field.label"
-          :value="field.object[field.attribute]"
+          :value="fieldValue(field)"
           @change="updateField(field, $event)"
         />
 
@@ -147,10 +147,19 @@
     }
   })
   export default class DynamicFields extends Vue {
+    @Prop(Object) object
     @Prop(Array) fields
 
     updateField (field, value) {
-      Vue.set(field.object, field.attribute, value)
+      Vue.set(this.fieldObject(field), field.attribute, value)
+    }
+
+    fieldObject (field) {
+      return field.object || this.object
+    }
+
+    fieldValue (field) {
+      return field.value || this.fieldObject(field)[field.attribute]
     }
 
     rulesFor (field) {

@@ -15,7 +15,10 @@
     </template>
 
     <template #form>
-      <dynamic-fields :fields="fields" />
+      <dynamic-fields
+        :object="match"
+        :fields="fields"
+      />
     </template>
   </dialog-form>
 </template>
@@ -60,7 +63,6 @@
       return [
         {
           type: 'date',
-          object: this.match,
           attribute: 'played_on',
           label: 'Date Played',
           prependIcon: 'mdi-calendar-today',
@@ -70,7 +72,6 @@
         },
         {
           type: 'select',
-          object: this.match,
           attribute: 'competition',
           items: this.competitions,
           label: 'Competition',
@@ -80,7 +81,6 @@
         },
         {
           type: 'combobox',
-          object: this.match,
           attribute: 'stage',
           items: this.stages,
           label: 'Stage',
@@ -95,7 +95,6 @@
         },
         {
           type: 'combobox',
-          object: this.match,
           attribute: 'home',
           items: this.teams,
           label: 'Home Team',
@@ -110,7 +109,6 @@
         },
         {
           type: 'combobox',
-          object: this.match,
           attribute: 'away',
           items: this.teams,
           label: 'Away Team',
@@ -125,7 +123,6 @@
         },
         {
           type: 'checkbox',
-          object: this.match,
           attribute: 'extra_time',
           label: 'Extra Time Required'
         }

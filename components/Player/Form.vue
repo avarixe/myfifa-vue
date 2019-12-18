@@ -10,7 +10,10 @@
     </template>
 
     <template #form>
-      <dynamic-fields :fields="fields">
+      <dynamic-fields
+        :object="player"
+        :fields="fields"
+      >
         <template #field.nationality>
           <nationality-field v-model="player.nationality" />
         </template>
@@ -60,7 +63,6 @@
       return [
         {
           type: 'string',
-          object: this.player,
           attribute: 'name',
           label: 'Name',
           prependIcon: 'mdi-account',
@@ -73,7 +75,6 @@
         { slot: 'nationality' },
         {
           type: 'select',
-          object: this.player,
           attribute: 'pos',
           label: 'Position',
           prependIcon: 'mdi-run',
@@ -82,7 +83,6 @@
         },
         {
           type: 'select',
-          object: this.player,
           attribute: 'sec_pos',
           label: 'Secondary Position(s)',
           prependIcon: 'mdi-walk',
@@ -91,7 +91,6 @@
         },
         {
           type: 'string',
-          object: this.player,
           attribute: 'birth_year',
           label: 'Birth Year',
           prependIcon: 'mdi-calendar',
@@ -100,7 +99,6 @@
         },
         {
           type: 'string',
-          object: this.player,
           attribute: 'ovr',
           label: 'OVR',
           prependIcon: 'mdi-trending-up',
@@ -110,7 +108,6 @@
         },
         {
           type: 'money',
-          object: this.player,
           attribute: 'value',
           label: 'Value',
           prefix: this.team.currency,
@@ -118,7 +115,6 @@
         },
         {
           type: 'string',
-          object: this.player,
           attribute: 'kit_no',
           label: 'Kit Number',
           prependIcon: 'mdi-tshirt-crew',
@@ -127,7 +123,6 @@
         },
         {
           type: 'checkbox',
-          object: this.player,
           attribute: 'youth',
           label: 'Youth Player',
           disabled: this.player.id > 0,

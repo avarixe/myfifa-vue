@@ -15,16 +15,10 @@
     </template>
 
     <template #form>
-      <dynamic-fields :fields="fields">
-        <template #field.season>
-          <v-text-field
-            :value="seasonLabel(season)"
-            label="Season"
-            prepend-icon="mdi-calendar-text"
-            disabled
-          />
-        </template>
-      </dynamic-fields>
+      <dynamic-fields
+        :object="competition"
+        :fields="fields"
+      />
     </template>
   </dialog-form>
 </template>
@@ -70,7 +64,6 @@
         return [
           {
             type: 'select',
-            object: this.competition,
             attribute: 'champion',
             items: this.record.teamOptions,
             label: 'Champion',
@@ -80,10 +73,15 @@
         ]
       } else {
         let fields = [
-          { slot: 'season' },
+          {
+            type: 'string',
+            value: this.seasonLabel(this.season),
+            label: 'Season',
+            prependIcon: 'mdi-calendar-text',
+            disabled: true
+          },
           {
             type: 'combobox',
-            object: this.competition,
             attribute: 'name',
             items: this.competitions,
             label: 'Name',
@@ -101,7 +99,6 @@
             ...fields,
             {
               type: 'select',
-              object: this.competition,
               attribute: 'preset_format',
               items: presetFormats,
               label: 'Preset Format',
@@ -110,7 +107,6 @@
             },
             {
               type: 'string',
-              object: this.competition,
               attribute: 'num_teams',
               label: 'Number of Teams',
               prependIcon: 'mdi-account-group',
@@ -119,7 +115,6 @@
             },
             {
               type: 'string',
-              object: this.competition,
               attribute: 'num_teams_per_group',
               label: 'Teams per Group',
               prependIcon: 'mdi-table',
@@ -129,7 +124,6 @@
             },
             {
               type: 'string',
-              object: this.competition,
               attribute: 'num_advances_from_group',
               label: 'Teams Advance per Group',
               prependIcon: 'mdi-tournament',

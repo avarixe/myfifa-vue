@@ -10,7 +10,10 @@
     </template>
 
     <template #form>
-      <dynamic-fields :fields="fields" />
+      <dynamic-fields
+        :object="team"
+        :fields="fields"
+      />
     </template>
   </dialog-form>
 </template>
@@ -49,7 +52,6 @@
       return [
         {
           type: 'string',
-          object: this.team,
           attribute: 'title',
           label: 'Team',
           prependIcon: 'mdi-shield-half-full',
@@ -61,7 +63,6 @@
         },
         {
           type: 'date',
-          object: this.team,
           attribute: 'started_on',
           label: 'Start Date',
           prependIcon: 'mdi-calendar-today',
@@ -70,7 +71,6 @@
         },
         {
           type: 'string',
-          object: this.team,
           attribute: 'currency',
           label: 'Currency',
           prependIcon: 'mdi-cash',
@@ -78,7 +78,6 @@
         },
         {
           type: 'file',
-          object: this.team,
           attribute: 'badge',
           label: 'Badge'
         }
