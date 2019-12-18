@@ -1,7 +1,7 @@
 <template>
   <dialog-form
     v-model="dialog"
-    title="Edit Player"
+    :title="title"
     :submit="submit"
     :color="color"
   >
@@ -10,7 +10,11 @@
     </template>
 
     <template #form>
-      <dynamic-fields :fields="fields" />
+      <dynamic-fields :fields="fields">
+        <template #field.nationality>
+          <nationality-field v-model="player.nationality" />
+        </template>
+      </dynamic-fields>
     </template>
   </dialog-form>
 </template>
@@ -20,21 +24,37 @@
   import pick from 'lodash.pick'
   import { DialogFormable, TeamAccessible } from '@/mixins'
   import { positions } from '@/models/Player'
-  import { DynamicFields } from '@/helpers'
+  import { DynamicFields, NationalityField } from '@/helpers'
 
   const players = namespace('players')
 
   @Component({
     components: {
-      DynamicFields
+      DynamicFields,
+      NationalityField
     }
   })
   export default class PlayerForm extends mixins(DialogFormable, TeamAccessible) {
     @players.Action('UPDATE') updatePlayer
-    @Prop(Object) playerData
+    @players.Action('CREATE') createPlayer
+    @Prop(Object) record
 
     valid = false
-    player = {}
+    player = {
+      name: '',
+      pos: '',
+      nationality: null,
+      sec_pos: [],
+      ovr: 60,
+      value: '',
+      kit_no: null,
+      birth_year: null,
+      youth: false
+    }
+
+    get title () {
+      return this.record ? `Edit ${this.player.name}` : 'New Player'
+    }
 
     get fields () {
       return [
@@ -50,11 +70,7 @@
           autocomplete: 'off',
           autocorrect: 'off'
         },
-        {
-          type: 'nationality',
-          object: this.player,
-          attribute: 'nationality'
-        },
+        { slot: 'nationality' },
         {
           type: 'select',
           object: this.player,
@@ -114,7 +130,7 @@
           object: this.player,
           attribute: 'youth',
           label: 'Youth Player',
-          disabled: true,
+          disabled: this.player.id > 0,
           hideDetails: true
         }
       ]
@@ -122,8 +138,8 @@
 
     @Watch('dialog')
     setPlayer (val) {
-      if (val && this.playerData) {
-        this.player = pick(this.playerData, [
+      if (val && this.record) {
+        this.player = pick(this.record, [
           'id',
           'name',
           'pos',
@@ -134,12 +150,26 @@
           'birth_year',
           'youth'
         ])
-        this.player.sec_pos = [...this.playerData.sec_pos]
+        this.player.sec_pos = [...this.record.sec_pos]
       }
     }
 
     async submit () {
-      await this.updatePlayer(this.player)
+      if (this.record) {
+        await this.updatePlayer(this.player)
+      } else {
+        const { data } = await this.createPlayer({
+          teamId: this.team.id,
+          player: this.player
+        })
+        this.$router.push({
+          name: 'teams-teamId-players-playerId',
+          params: {
+            teamId: this.team.id,
+            playerId: data.id
+          }
+        })
+      }
     }
   }
 </script>

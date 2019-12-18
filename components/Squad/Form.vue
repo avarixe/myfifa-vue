@@ -10,7 +10,17 @@
     </template>
 
     <template #form>
-      <dynamic-fields :fields="fields" />
+      <dynamic-fields :fields="fields">
+        <template #field.player="{ object, attribute }">
+          <player-select
+            v-model="object[attribute]"
+            :players="players"
+            item-value="id"
+            label="Player"
+            hide-details
+          />
+        </template>
+      </dynamic-fields>
     </template>
   </dialog-form>
 </template>
@@ -20,7 +30,7 @@
   import pick from 'lodash.pick'
   import { positions } from '@/models/Match'
   import { activePlayers } from '@/models/Player'
-  import { DynamicFields } from '@/helpers'
+  import { DynamicFields, PlayerSelect } from '@/helpers'
   import { DialogFormable, TeamAccessible } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
@@ -28,16 +38,27 @@
 
   @Component({
     components: {
-      DynamicFields
+      DynamicFields,
+      PlayerSelect
     }
   })
   export default class SquadForm extends mix {
     @squads.Action('CREATE') createSquad
     @squads.Action('UPDATE') updateSquad
-    @Prop(Object) squadData
+    @Prop(Object) record
 
     valid = false
-    squad = {}
+    squad = {
+      name: '',
+      squad_players_attributes: new Array(11).fill().map(x => ({
+        player_id: null,
+        pos: null
+      }))
+    }
+
+    get title () {
+      return this.record ? 'Edit Squad' : 'New Squad'
+    }
 
     get fields () {
       let fields = [
@@ -69,14 +90,9 @@
         })
         fields.push({
           cols: 8,
-          type: 'player',
+          slot: 'player',
           object: this.squad.squad_players_attributes[i],
-          attribute: 'player_id',
-          prependIcon: 'mdi-account',
-          players: this.players,
-          itemValue: 'id',
-          required: true,
-          hideDetails: true
+          attribute: 'player_id'
         })
       }
 
@@ -93,12 +109,12 @@
 
     @Watch('dialog')
     setSquad (val) {
-      if (val && this.squadData) {
-        this.squad = pick(this.squadData, [
+      if (val && this.record) {
+        this.squad = pick(this.record, [
           'id',
           'name'
         ])
-        this.squad.squad_players_attributes = this.squadData.squad_players
+        this.squad.squad_players_attributes = this.record.squad_players
           .map(squadPlayer => ({
             id: squadPlayer.id,
             player_id: squadPlayer.player_id,
@@ -108,7 +124,14 @@
     }
 
     async submit () {
-      await this.updateSquad(this.squad)
+      if (this.record) {
+        await this.updateSquad(this.squad)
+      } else {
+        await this.createSquad({
+          teamId: this.team.id,
+          squad: this.squad
+        })
+      }
     }
   }
 </script>

@@ -1,5 +1,6 @@
 <template>
   <v-menu
+    :close-on-content-click="false"
     offset-y
     offset-overflow
   >
@@ -12,30 +13,52 @@
       </v-btn>
     </template>
 
-    <v-list
-      dense
-    >
-      <v-list-item
-        v-for="link in links"
-        :key="link.name"
-        :to="{ name: link.name, params: link.params }"
-        nuxt
-      >
-        <v-list-item-avatar>
-          <v-icon>mdi-{{ link.icon }}</v-icon>
-        </v-list-item-avatar>
-        <v-list-item-content>{{ link.text }}</v-list-item-content>
-      </v-list-item>
-      <v-divider />
-      <v-list-item
-        :to="{ name: 'teams-new' }"
-        nuxt
-      >
-        <v-list-item-avatar>
-          <v-icon>mdi-shield-plus</v-icon>
-        </v-list-item-avatar>
-        <v-list-item-content>New Team</v-list-item-content>
-      </v-list-item>
+    <v-list dense>
+      <template v-if="team">
+        <player-form>
+          <template #default="{ on }">
+            <v-list-item v-on="on">
+              <v-list-item-avatar>
+                <v-icon>mdi-account-plus</v-icon>
+              </v-list-item-avatar>
+              <v-list-item-content>New Player</v-list-item-content>
+            </v-list-item>
+          </template>
+        </player-form>
+
+        <match-form>
+          <template #default="{ on }">
+            <v-list-item v-on="on">
+              <v-list-item-avatar>
+                <v-icon>mdi-soccer-field</v-icon>
+              </v-list-item-avatar>
+              <v-list-item-content>New Match</v-list-item-content>
+            </v-list-item>
+          </template>
+        </match-form>
+
+        <squad-form>
+          <template #default="{ on }">
+            <v-list-item v-on="on">
+              <v-list-item-avatar>
+                <v-icon>mdi-clipboard-plus</v-icon>
+              </v-list-item-avatar>
+              <v-list-item-content>New Squad</v-list-item-content>
+            </v-list-item>
+          </template>
+        </squad-form>
+      </template>
+
+      <team-form>
+        <template #default="{ on }">
+          <v-list-item v-on="on">
+            <v-list-item-avatar>
+              <v-icon>mdi-shield-plus</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>New Team</v-list-item-content>
+          </v-list-item>
+        </template>
+      </team-form>
     </v-list>
   </v-menu>
 </template>
@@ -43,15 +66,20 @@
 <script>
   import { Component, Vue } from 'nuxt-property-decorator'
   import { Team } from '@/models'
+  import MatchForm from '@/components/Match/Form'
+  import PlayerForm from '@/components/Player/Form'
+  import SquadForm from '@/components/Squad/Form'
+  import TeamForm from '@/components/Team/Form'
 
-  @Component
-  export default class AppFormsMenu extends Vue {
-    newTeamLink = {
-      text: 'New Team',
-      icon: 'shield-plus',
-      name: 'teams-new'
+  @Component({
+    components: {
+      MatchForm,
+      PlayerForm,
+      SquadForm,
+      TeamForm
     }
-
+  })
+  export default class AppFormsMenu extends Vue {
     get team () {
       return this.$route.params.teamId && Team.find(this.$route.params.teamId)
     }

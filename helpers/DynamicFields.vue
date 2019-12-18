@@ -77,23 +77,12 @@
           @change="updateField(field, $event)"
         />
 
-        <!-- Player Select -->
-        <player-select
-          v-else-if="field.type === 'player'"
-          :label="field.label"
-          :players="field.players"
-          :item-value="field.itemValue"
-          :hide-details="field.hideDetails"
-          :required="field.required"
-          :value="field.object[field.attribute]"
-          @input="updateField(field, $event)"
-        />
-
-        <!-- Nationality -->
-        <nationality-field
-          v-else-if="field.type === 'nationality'"
-          :value="field.object[field.attribute]"
-          @input="updateField(field, $event)"
+        <!-- Custom -->
+        <slot
+          v-else-if="field.slot"
+          :name="`field.${field.slot}`"
+          :object="field.object"
+          :attribute="field.attribute"
         />
       </v-col>
     </v-scroll-y-transition>
@@ -103,15 +92,11 @@
 <script>
   import { Component, Vue, Prop } from 'nuxt-property-decorator'
   import { requiredRule, rangeRule, formatRule } from './utilities'
-  import NationalityField from './NationalityField'
-  import PlayerSelect from './PlayerSelect'
   import VDateField from './VDateField'
   import VMoneyField from './VMoneyField'
 
   @Component({
     components: {
-      NationalityField,
-      PlayerSelect,
       VDateField,
       VMoneyField
     }
@@ -139,6 +124,10 @@
       }
 
       return rules
+    }
+
+    mounted () {
+      console.log(this.$scopedSlots)
     }
   }
 </script>
