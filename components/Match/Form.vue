@@ -124,7 +124,8 @@
         {
           type: 'checkbox',
           attribute: 'extra_time',
-          label: 'Extra Time Required'
+          label: 'Extra Time Required',
+          hideDetails: true
         }
       ]
     }

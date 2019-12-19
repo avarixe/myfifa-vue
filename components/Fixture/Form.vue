@@ -16,32 +16,10 @@
     </template>
 
     <template #form>
-      <v-col cols="12">
-        <v-combobox
-          v-model="fixture.home_team"
-          label="Home Team"
-          :items="competitionTeams"
-          prepend-icon="mdi-shield-half-full"
-          hide-details
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-combobox
-          v-model="fixture.away_team"
-          label="Away Team"
-          :items="competitionTeams"
-          hide-details
-          prepend-icon="mdi-shield-half-full"
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
-        />
-      </v-col>
+      <dynamic-fields
+        :object="fixture"
+        :fields="fields"
+      />
       <v-col
         cols="12"
         class="mt-3 text-center"
@@ -85,13 +63,14 @@
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import pick from 'lodash.pick'
   import { CompetitionAccessible, DialogFormable } from '@/mixins'
-  import { TooltipButton } from '@/helpers'
+  import { DynamicFields, TooltipButton } from '@/helpers'
 
   const mix = mixins(CompetitionAccessible, DialogFormable)
   const fixtures = namespace('fixtures')
 
   @Component({
     components: {
+      DynamicFields,
       TooltipButton
     }
   })
@@ -110,6 +89,35 @@
         away_score: '',
         _destroy: false
       }]
+    }
+
+    get fields () {
+      return [
+        {
+          type: 'combobox',
+          attribute: 'home_team',
+          label: 'Home Team',
+          prependIcon: 'mdi-home',
+          items: this.competitionTeams,
+          hideDetails: true,
+          spellcheck: 'false',
+          autocapitalize: 'words',
+          autocomplete: 'off',
+          autocorrect: 'off'
+        },
+        {
+          type: 'combobox',
+          attribute: 'away_team',
+          label: 'Away Team',
+          prependIcon: 'mdi-bus',
+          items: this.competitionTeams,
+          hideDetails: true,
+          spellcheck: 'false',
+          autocapitalize: 'words',
+          autocomplete: 'off',
+          autocorrect: 'off'
+        }
+      ]
     }
 
     get title () {
