@@ -41,11 +41,13 @@
             cols="4"
             sm="2"
           >
-            <flag
-              :iso="player.flag"
-              :title="player.nationality"
-              style="font-size: 40px"
-            />
+            <client-only>
+              <flag
+                :iso="player.flag"
+                :title="player.nationality"
+                style="font-size: 40px"
+              />
+            </client-only>
             <div class="subheading">Nationality</div>
           </v-col>
           <v-col
