@@ -34,6 +34,7 @@
   import { DialogFormable, TeamAccessible } from '@/mixins'
 
   const mix = mixins(DialogFormable, TeamAccessible)
+  const players = namespace('players')
   const squads = namespace('squads')
 
   @Component({
@@ -43,11 +44,13 @@
     }
   })
   export default class SquadForm extends mix {
+    @players.Action('FETCH') fetchPlayers
     @squads.Action('CREATE') createSquad
     @squads.Action('UPDATE') updateSquad
     @Prop(Object) record
 
     valid = false
+    loadingPlayers = false
     squad = {
       name: '',
       squad_players_attributes: new Array(11).fill().map(x => ({
@@ -92,7 +95,8 @@
           cols: 8,
           slot: 'player',
           object: this.squad.squad_players_attributes[i],
-          attribute: 'player_id'
+          attribute: 'player_id',
+          loading: this.loadingPlayers
         })
       }
 
@@ -120,6 +124,21 @@
             player_id: squadPlayer.player_id,
             pos: squadPlayer.pos
           }))
+      }
+
+      if (this.players.length === 0) {
+        this.loadPlayers()
+      }
+    }
+
+    async loadPlayers () {
+      try {
+        this.loadingPlayers = true
+        await this.fetchPlayers({ teamId: this.team.id })
+      } catch (e) {
+        alert(e.message)
+      } finally {
+        this.loadingPlayers = false
       }
     }
 

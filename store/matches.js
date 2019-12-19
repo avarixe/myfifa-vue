@@ -1,6 +1,18 @@
 import { crud, http, routes } from '@/api'
 import { Match } from '@/models'
 
+// state
+export const state = () => ({
+  teamOptions: []
+})
+
+// mutations
+export const mutations = {
+  SET_TEAM_OPTIONS (state, teamOptions) {
+    state.teamOptions = teamOptions
+  }
+}
+
 // actions
 export const actions = {
   ...crud({
@@ -16,12 +28,15 @@ export const actions = {
       data: { squad_id: squadId }
     })
   },
-  FETCH_TEAMS ({ rootState }, { teamId }) {
+  FETCH_TEAM_OPTIONS ({ commit, rootState }, { teamId }) {
     return http({
       method: 'get',
       path: routes.matches.teamOptions,
       pathData: { teamId },
-      token: rootState.token
+      token: rootState.token,
+      success ({ data }) {
+        commit('SET_TEAM_OPTIONS', data)
+      }
     })
   }
 }

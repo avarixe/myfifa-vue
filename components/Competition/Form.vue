@@ -45,12 +45,14 @@
     }
   })
   export default class CompetitionForm extends mix {
+    @competitions.Action('FETCH') fetchCompetitions
     @competitions.Action('CREATE') createCompetition
     @competitions.Action('UPDATE') updateCompetition
     @Prop(Object) record
     @Prop(Boolean) close
 
     valid = false
+    loadingCompetitions = false
     competition = {
       season: null,
       preset_format: null,
@@ -87,6 +89,7 @@
             label: 'Name',
             prependIcon: 'mdi-trophy',
             required: true,
+            loading: this.loadingCompetitions,
             spellcheck: 'false',
             autocapitalize: 'words',
             autocomplete: 'off',
@@ -175,6 +178,21 @@
         ])
       } else {
         this.competition.season = this.season
+      }
+
+      if (this.competitions.length === 0) {
+        this.loadCompetitions()
+      }
+    }
+
+    async loadCompetitions () {
+      try {
+        this.loadingCompetitions = true
+        await this.fetchCompetitions({ teamId: this.team.id })
+      } catch (e) {
+        alert(e.message)
+      } finally {
+        this.loadingCompetitions = false
       }
     }
 

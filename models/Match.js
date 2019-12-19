@@ -98,16 +98,6 @@ export function competitions (teamId) {
   ]
 }
 
-export function teams (teamId) {
-  const matches = allByRecency(teamId)
-  return [
-    ...new Set([
-      ...matches.map(match => match.home),
-      ...matches.map(match => match.away)
-    ])
-  ]
-}
-
 export const positions = {
   GK: 'DEF',
   LB: 'DEF',

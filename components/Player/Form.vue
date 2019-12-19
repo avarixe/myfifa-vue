@@ -17,6 +17,14 @@
         <template #field.nationality>
           <nationality-field v-model="player.nationality" />
         </template>
+        <template #field.youth>
+          <v-checkbox
+            v-model="player.youth"
+            label="Youth Player"
+            :disabled="record"
+            hide-details
+          />
+        </template>
       </dynamic-fields>
     </template>
   </dialog-form>
@@ -121,13 +129,7 @@
           inputmode: 'numeric',
           range: { min: 1, max: 99 }
         },
-        {
-          type: 'checkbox',
-          attribute: 'youth',
-          label: 'Youth Player',
-          disabled: this.player.id > 0,
-          hideDetails: true
-        }
+        { slot: 'youth' }
       ]
     }
 

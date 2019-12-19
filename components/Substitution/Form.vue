@@ -40,6 +40,13 @@
             required
           />
         </template>
+        <template #field.injury>
+          <v-checkbox
+            v-model="substitution.injury"
+            label="Injury"
+            hide-details
+          />
+        </template>
       </dynamic-fields>
     </template>
   </dialog-form>
@@ -84,13 +91,7 @@
         { slot: 'minute' },
         { slot: 'player_id' },
         { slot: 'replacement_id' },
-        {
-          type: 'checkbox',
-          object: this.substitution,
-          attribute: 'injury',
-          label: 'Injury',
-          hideDetails: true
-        }
+        { slot: 'injury' }
       ]
     }
 

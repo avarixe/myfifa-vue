@@ -35,6 +35,12 @@
 
   const mix = mixins(DialogFormable, TeamAccessible)
   const contracts = namespace('contracts')
+  const bonusRequirementTypes = [
+    'Appearances',
+    'Goals',
+    'Assists',
+    'Clean Sheets'
+  ]
 
   @Component({
     components: {
@@ -43,7 +49,6 @@
     }
   })
   export default class ContractForm extends mix {
-    @contracts.State bonusRequirementTypes
     @contracts.Action('CREATE') createContract
     @contracts.Action('UPDATE') updateContract
     @Prop({ type: Object, required: true }) player
@@ -123,7 +128,7 @@
           type: 'select',
           attribute: 'bonus_req_type',
           label: 'Bonus Req. Type',
-          items: this.bonusRequirementTypes,
+          items: bonusRequirementTypes,
           clearable: true,
           hidden: !this.contract.performance_bonus
         }

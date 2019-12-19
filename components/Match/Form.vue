@@ -18,7 +18,15 @@
       <dynamic-fields
         :object="match"
         :fields="fields"
-      />
+      >
+        <template #field.extra_time>
+          <v-checkbox
+            v-model="match.extra_time"
+            label="Extra Time Required"
+            hide-details
+          />
+        </template>
+      </dynamic-fields>
     </template>
   </dialog-form>
 </template>
@@ -28,7 +36,6 @@
   import pick from 'lodash.pick'
   import { parseISO } from 'date-fns'
   import { Competition } from '@/models'
-  import { teams } from '@/models/Match'
   import { DynamicFields } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
@@ -43,12 +50,15 @@
   })
   export default class MatchForm extends mixins(DialogFormable, TeamAccessible) {
     @competitions.Action('FETCH') fetchCompetitions
+    @matches.State teamOptions
+    @matches.Action('FETCH_TEAM_OPTIONS') fetchTeamOptions
     @matches.Action('CREATE') createMatch
     @matches.Action('UPDATE') updateMatch
     @stages.Action('FETCH') fetchStages
     @Prop(Object) record
 
     valid = false
+    loadingTeams = false
     loadingCompetitions = false
     loadingStages = false
     match = {
@@ -96,12 +106,13 @@
         {
           type: 'combobox',
           attribute: 'home',
-          items: this.teams,
+          items: this.teamOptions,
           label: 'Home Team',
           prependIcon: 'mdi-home',
           appendOuterIcon: `mdi-shield-${this.isHome ? 'star' : 'outline'}`,
           clickAppendOuter: this.setHome,
           required: true,
+          loading: this.loadingTeams,
           spellcheck: 'false',
           autocapitalize: 'words',
           autocomplete: 'off',
@@ -110,28 +121,20 @@
         {
           type: 'combobox',
           attribute: 'away',
-          items: this.teams,
+          items: this.teamOptions,
           label: 'Away Team',
           prependIcon: 'mdi-bus',
           appendOuterIcon: `mdi-shield-${this.isAway ? 'star' : 'outline'}`,
           clickAppendOuter: this.setAway,
+          loading: this.loadingTeams,
           required: true,
           spellcheck: 'false',
           autocapitalize: 'words',
           autocomplete: 'off',
           autocorrect: 'off'
         },
-        {
-          type: 'checkbox',
-          attribute: 'extra_time',
-          label: 'Extra Time Required',
-          hideDetails: true
-        }
+        { slot: 'extra_time' }
       ]
-    }
-
-    get teams () {
-      return teams(this.team.id)
     }
 
     get title () {
@@ -207,6 +210,8 @@
           this.match.played_on = this.team.currently_on
         }
 
+        this.loadTeamOptions()
+
         if (this.competitions.length === 0) {
           this.loadCompetitions()
         }
@@ -249,6 +254,17 @@
         alert(e.message)
       } finally {
         this.loadingCompetitions = false
+      }
+    }
+
+    async loadTeamOptions () {
+      try {
+        this.loadingTeams = true
+        await this.fetchTeamOptions({ teamId: this.team.id })
+      } catch (e) {
+        alert(e.message)
+      } finally {
+        this.loadingTeams = false
       }
     }
 

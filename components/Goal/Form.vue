@@ -44,6 +44,22 @@
             hide-details
           />
         </template>
+        <template #field.penalty>
+          <v-checkbox
+            v-model="goal.penalty"
+            label="Penalty"
+            :disabled="goal.own_goal"
+            hide-details
+          />
+        </template>
+        <template #field.own_goal>
+          <v-checkbox
+            v-model="goal.own_goal"
+            label="Own Goal"
+            :disabled="goal.penalty"
+            hide-details
+          />
+        </template>
       </dynamic-fields>
     </template>
   </dialog-form>
@@ -131,20 +147,8 @@
 
       return [
         ...fields,
-        {
-          type: 'checkbox',
-          attribute: 'penalty',
-          label: 'Penalty',
-          disabled: this.goal.own_goal,
-          hideDetails: true
-        },
-        {
-          type: 'checkbox',
-          attribute: 'own_goal',
-          label: 'Own Goal',
-          disabled: this.goal.penalty,
-          hideDetails: true
-        }
+        { slot: 'penalty' },
+        { slot: 'own_goal' }
       ]
     }
 
