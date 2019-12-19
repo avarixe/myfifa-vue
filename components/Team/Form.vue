@@ -6,76 +6,36 @@
     :color="color"
   >
     <template #activator="{ on }">
-      <slot :on="on">
-        <v-btn v-on="on">
-          <v-icon left>mdi-plus-circle-outline</v-icon>
-          Team
-        </v-btn>
-      </slot>
+      <slot :on="on" />
     </template>
 
     <template #form>
-      <v-col cols="12">
-        <v-text-field
-          v-model="team.title"
-          v-rules.required
-          label="Team"
-          prepend-icon="mdi-shield-half-full"
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
-        />
-      </v-col>
-      <v-col
-        v-if="!teamId"
-        cols="12"
-      >
-        <v-date-field
-          v-model="team.started_on"
-          label="Start Date"
-          prepend-icon="mdi-calendar-today"
-          :color="color"
-          required
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-text-field
-          v-model="team.currency"
-          v-rules.required
-          label="Currency"
-          prepend-icon="mdi-cash"
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-file-input
-          v-model="team.badge"
-          label="Badge"
-        />
-      </v-col>
+      <dynamic-fields
+        :object="team"
+        :fields="fields"
+      />
     </template>
   </dialog-form>
 </template>
 
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
-  import pick from 'lodash.pick'
-  import { Team } from '@/models'
-  import { VDateField } from '@/helpers'
-  import { DialogFormable } from '@/mixins'
   import { format } from 'date-fns'
+  import pick from 'lodash.pick'
+  import { DynamicFields } from '@/helpers'
+  import { DialogFormable } from '@/mixins'
 
   const teams = namespace('teams')
 
   @Component({
     components: {
-      VDateField
+      DynamicFields
     }
   })
   export default class TeamForm extends mixins(DialogFormable) {
     @teams.Action('CREATE') createTeam
     @teams.Action('UPDATE') updateTeam
-    @Prop([String, Number]) teamId
+    @Prop(Object) record
 
     team = {
       title: '',
@@ -85,15 +45,49 @@
     }
 
     get title () {
-      return this.teamId
-        ? `Edit ${this.team.title}`
-        : 'New Team'
+      return this.record ? `Edit ${this.record.title}` : 'New Team'
+    }
+
+    get fields () {
+      return [
+        {
+          type: 'string',
+          attribute: 'title',
+          label: 'Team',
+          prependIcon: 'mdi-shield-half-full',
+          required: true,
+          spellcheck: 'false',
+          autocapitalize: 'words',
+          autocomplete: 'off',
+          autocorrect: 'off'
+        },
+        {
+          type: 'date',
+          attribute: 'started_on',
+          label: 'Start Date',
+          prependIcon: 'mdi-calendar-today',
+          disabled: this.team.id > 0,
+          required: true
+        },
+        {
+          type: 'string',
+          attribute: 'currency',
+          label: 'Currency',
+          prependIcon: 'mdi-cash',
+          required: true
+        },
+        {
+          type: 'file',
+          attribute: 'badge',
+          label: 'Badge'
+        }
+      ]
     }
 
     @Watch('dialog')
     setTeam (val) {
-      if (val && this.teamId) {
-        this.team = pick(Team.find(this.teamId), [
+      if (val && this.record) {
+        this.team = pick(this.record, [
           'id',
           'title',
           'started_on',
@@ -110,14 +104,13 @@
         formData.append(`team[${k}]`, this.team[k])
       }
 
-      if ('id' in this.team) {
+      if (this.record) {
         await this.updateTeam({
           id: this.team.id,
           formData
         })
       } else {
         const { data } = await this.createTeam(formData)
-
         this.$router.push({
           name: 'teams-teamId',
           params: {

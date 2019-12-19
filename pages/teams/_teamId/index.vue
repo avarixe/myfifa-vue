@@ -5,7 +5,7 @@
         <team-date-picker />
 
         <team-form
-          :team-id="team.id"
+          :record="team"
           color="orange"
         >
           <template #default="{ on }">
@@ -27,11 +27,6 @@
         >
           <v-btn dark>Remove</v-btn>
         </record-remove>
-      </v-col>
-
-      <v-col cols="12">
-        <match-form />
-        <player-form />
       </v-col>
 
       <v-col
@@ -91,9 +86,7 @@
 <script>
   import { mixins, Component, namespace } from 'nuxt-property-decorator'
   import { Match, Player } from '@/models'
-  import MatchForm from '@/components/Match/Form'
   import MatchCard from '@/components/Match/Card'
-  import PlayerForm from '@/components/Player/Form'
   import SeasonCard from '@/components/Season/Card'
   import TeamDatePicker from '@/components/Team/DatePicker'
   import TeamForm from '@/components/Team/Form'
@@ -106,9 +99,7 @@
   @Component({
     middleware: ['authenticated'],
     components: {
-      MatchForm,
       MatchCard,
-      PlayerForm,
       PlayerListCard,
       SeasonCard,
       TeamDatePicker,

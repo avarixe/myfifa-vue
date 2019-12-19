@@ -7,7 +7,10 @@
 
       <v-spacer />
 
-      <squad-form :squad-data="squad">
+      <squad-form
+        :record="squad"
+        color="orange"
+      >
         <template #default="{ on }">
           <tooltip-button
             label="Edit"

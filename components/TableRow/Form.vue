@@ -16,60 +16,10 @@
     </template>
 
     <template #form>
-      <v-col cols="12">
-        <v-text-field
-          v-model="row.name"
-          label="Team"
-          prepend-icon="mdi-shield-half-full"
-          hide-details
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
-        />
-      </v-col>
-      <v-col cols="4">
-        <v-text-field
-          v-model="row.wins"
-          prepend-icon="mdi-alpha-w"
-          type="number"
-          hide-details
-        />
-      </v-col>
-      <v-col cols="4">
-        <v-text-field
-          v-model="row.draws"
-          prepend-icon="mdi-alpha-d"
-          type="number"
-          hide-details
-        />
-      </v-col>
-      <v-col cols="4">
-        <v-text-field
-          v-model="row.losses"
-          prepend-icon="mdi-alpha-l"
-          type="number"
-          hide-details
-        />
-      </v-col>
-      <v-col cols="6">
-        <v-text-field
-          v-model="row.goals_for"
-          label="GF"
-          prepend-icon="mdi-soccer"
-          type="number"
-          hide-details
-        />
-      </v-col>
-      <v-col cols="6">
-        <v-text-field
-          v-model="row.goals_against"
-          label="GA"
-          prepend-icon="mdi-soccer"
-          type="number"
-          hide-details
-        />
-      </v-col>
+      <dynamic-fields
+        :object="row"
+        :fields="fields"
+      />
     </template>
   </dialog-form>
 </template>
@@ -78,12 +28,13 @@
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import pick from 'lodash.pick'
   import { DialogFormable } from '@/mixins'
-  import { TooltipButton } from '@/helpers'
+  import { DynamicFields, TooltipButton } from '@/helpers'
 
   const tableRows = namespace('tableRows')
 
   @Component({
     components: {
+      DynamicFields,
       TooltipButton
     }
   })
@@ -91,7 +42,7 @@
     @tableRows.Action('CREATE') createRow
     @tableRows.Action('UPDATE') updateRow
     @Prop({ type: Object, required: true }) stage
-    @Prop(Object) rowData
+    @Prop(Object) record
 
     row = {
       name: '',
@@ -102,14 +53,72 @@
       goals_against: null
     }
 
+    get fields () {
+      return [
+        {
+          type: 'string',
+          attribute: 'name',
+          label: 'Team',
+          prependIcon: 'mdi-shield-half-full',
+          hideDetails: true,
+          spellcheck: 'false',
+          autocapitalize: 'words',
+          autocomplete: 'off',
+          autocorrect: 'off'
+        },
+        {
+          cols: 4,
+          type: 'string',
+          attribute: 'wins',
+          prependIcon: 'mdi-alpha-w',
+          inputmode: 'numeric',
+          hideDetails: true
+        },
+        {
+          cols: 4,
+          type: 'string',
+          attribute: 'draws',
+          prependIcon: 'mdi-alpha-d',
+          inputmode: 'numeric',
+          hideDetails: true
+        },
+        {
+          cols: 4,
+          type: 'string',
+          attribute: 'losses',
+          prependIcon: 'mdi-alpha-l',
+          inputmode: 'numeric',
+          hideDetails: true
+        },
+        {
+          cols: 6,
+          type: 'string',
+          attribute: 'goals_for',
+          label: 'GF',
+          prependIcon: 'mdi-soccer',
+          inputmode: 'numeric',
+          hideDetails: true
+        },
+        {
+          cols: 6,
+          type: 'string',
+          attribute: 'goals_against',
+          label: 'GA',
+          prependIcon: 'mdi-soccer',
+          inputmode: 'numeric',
+          hideDetails: true
+        }
+      ]
+    }
+
     get title () {
-      return this.rowData ? 'Edit Table Row' : 'Add Table Row'
+      return `${this.record ? 'Edit' : 'Add'} Table Row`
     }
 
     @Watch('dialog')
     setTableRow (val) {
-      if (val && this.rowData) {
-        this.row = pick(this.rowData, [
+      if (val && this.record) {
+        this.row = pick(this.record, [
           'id',
           'name',
           'wins',
@@ -122,7 +131,7 @@
     }
 
     async submit () {
-      if (this.rowData) {
+      if (this.record) {
         await this.updateRow(this.row)
       } else {
         await this.createRow({

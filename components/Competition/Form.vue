@@ -15,91 +15,10 @@
     </template>
 
     <template #form>
-      <v-col
-        v-if="close"
-        cols="12"
-      >
-        <v-select
-          v-model="competition.champion"
-          v-rules.required
-          :items="teams"
-          label="Champion"
-          prepend-icon="mdi-crown"
-        />
-      </v-col>
-      <template v-else>
-        <v-col cols="12">
-          <v-text-field
-            :value="seasonLabel(season)"
-            label="Season"
-            prepend-icon="mdi-calendar-text"
-            disabled
-          />
-        </v-col>
-        <v-col cols="12">
-          <v-combobox
-            v-model="competition.name"
-            v-rules.required
-            :items="competitions"
-            label="Name"
-            prepend-icon="mdi-trophy"
-            spellcheck="false"
-            autocapitalize="words"
-            autocomplete="off"
-            autocorrect="off"
-          />
-        </v-col>
-        <template v-if="!competitionData">
-          <v-col cols="12">
-            <v-select
-              v-model="competition.preset_format"
-              :items="presetFormats"
-              label="Preset Format"
-              prepend-icon="mdi-cogs"
-              clearable
-            />
-          </v-col>
-          <v-scroll-y-transition mode="out-in">
-            <v-col
-              v-if="competition.preset_format"
-              cols="12"
-            >
-              <v-text-field
-                v-model="competition.num_teams"
-                v-rules.required
-                label="Number of Teams"
-                prepend-icon="mdi-account-multiple"
-                type="number"
-              />
-            </v-col>
-          </v-scroll-y-transition>
-          <v-scroll-y-transition mode="out-in">
-            <v-row
-              v-if="competition.preset_format === 'Group + Knockout'"
-              dense
-            >
-              <v-col cols="12">
-                <v-text-field
-                  v-model="competition.num_teams_per_group"
-                  v-rules.required
-                  label="Teams per Group"
-                  prepend-icon="mdi-account-group"
-                  type="number"
-                />
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  v-model="competition.num_advances_from_group"
-                  v-rules.required
-                  label="Teams Advance per Group"
-                  prepend-icon="mdi-forward"
-                  type="number"
-                />
-              </v-col>
-            </v-row>
-          </v-scroll-y-transition>
-        </template>
-      </template>
+      <dynamic-fields
+        :object="competition"
+        :fields="fields"
+      />
     </template>
   </dialog-form>
 </template>
@@ -109,23 +28,31 @@
   import pick from 'lodash.pick'
   import { Competition } from '@/models'
   import { TeamAccessible, DialogFormable } from '@/mixins'
+  import { DynamicFields } from '@/helpers'
 
   const mix = mixins(DialogFormable, TeamAccessible)
   const competitions = namespace('competitions')
 
-  @Component
+  const presetFormats = [
+    'League',
+    'Knockout',
+    'Group + Knockout'
+  ]
+
+  @Component({
+    components: {
+      DynamicFields
+    }
+  })
   export default class CompetitionForm extends mix {
+    @competitions.Action('FETCH') fetchCompetitions
     @competitions.Action('CREATE') createCompetition
     @competitions.Action('UPDATE') updateCompetition
-    @Prop(Object) competitionData
+    @Prop(Object) record
     @Prop(Boolean) close
 
     valid = false
-    presetFormats = [
-      'League',
-      'Knockout',
-      'Group + Knockout'
-    ]
+    loadingCompetitions = false
     competition = {
       season: null,
       preset_format: null,
@@ -134,10 +61,90 @@
       num_advances_from_group: null
     }
 
+    get fields () {
+      if (this.close) {
+        return [
+          {
+            type: 'select',
+            attribute: 'champion',
+            items: this.record.teamOptions,
+            label: 'Champion',
+            prependIcon: 'mdi-crown',
+            required: true
+          }
+        ]
+      } else {
+        let fields = [
+          {
+            type: 'string',
+            value: this.seasonLabel(this.season),
+            label: 'Season',
+            prependIcon: 'mdi-calendar-text',
+            disabled: true
+          },
+          {
+            type: 'combobox',
+            attribute: 'name',
+            items: this.competitions,
+            label: 'Name',
+            prependIcon: 'mdi-trophy',
+            required: true,
+            loading: this.loadingCompetitions,
+            spellcheck: 'false',
+            autocapitalize: 'words',
+            autocomplete: 'off',
+            autocorrect: 'off'
+          }
+        ]
+
+        if (!this.record) {
+          fields = [
+            ...fields,
+            {
+              type: 'select',
+              attribute: 'preset_format',
+              items: presetFormats,
+              label: 'Preset Format',
+              prependIcon: 'mdi-cogs',
+              clearable: true
+            },
+            {
+              type: 'string',
+              attribute: 'num_teams',
+              label: 'Number of Teams',
+              prependIcon: 'mdi-account-group',
+              inputmode: 'numeric',
+              hidden: !this.competition.preset_format
+            },
+            {
+              type: 'string',
+              attribute: 'num_teams_per_group',
+              label: 'Teams per Group',
+              prependIcon: 'mdi-table',
+              inputmode: 'numeric',
+              required: true,
+              hidden: this.isNotGroupAndKnockout
+            },
+            {
+              type: 'string',
+              attribute: 'num_advances_from_group',
+              label: 'Teams Advance per Group',
+              prependIcon: 'mdi-tournament',
+              inputmode: 'numeric',
+              required: true,
+              hidden: this.isNotGroupAndKnockout
+            }
+          ]
+        }
+
+        return fields
+      }
+    }
+
     get title () {
       if (this.close) {
         return 'Close Competition'
-      } else if (this.competitionData) {
+      } else if (this.record) {
         return 'Edit Competition'
       } else {
         return 'New Competition'
@@ -156,14 +163,14 @@
       ]
     }
 
-    get teams () {
-      return this.competitionData.teamOptions
+    get isNotGroupAndKnockout () {
+      return this.competition.preset_format !== 'Group + Knockout'
     }
 
     @Watch('dialog')
     setCompetition (val) {
-      if (val && this.competitionData) {
-        this.competition = pick(this.competitionData, [
+      if (val && this.record) {
+        this.competition = pick(this.record, [
           'id',
           'name',
           'champion',
@@ -172,10 +179,25 @@
       } else {
         this.competition.season = this.season
       }
+
+      if (this.competitions.length === 0) {
+        this.loadCompetitions()
+      }
+    }
+
+    async loadCompetitions () {
+      try {
+        this.loadingCompetitions = true
+        await this.fetchCompetitions({ teamId: this.team.id })
+      } catch (e) {
+        alert(e.message)
+      } finally {
+        this.loadingCompetitions = false
+      }
     }
 
     async submit () {
-      if (this.competitionData) {
+      if (this.record) {
         await this.updateCompetition(this.competition)
       } else {
         const { data } = await this.createCompetition({

@@ -2,17 +2,6 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <competition-form>
-          <template #default="{ on }">
-            <v-btn v-on="on">
-              <v-icon left>mdi-plus-circle-outline</v-icon>
-              Competition
-            </v-btn>
-          </template>
-        </competition-form>
-      </v-col>
-
-      <v-col cols="12">
         <season-timeline />
       </v-col>
     </v-row>
@@ -23,14 +12,12 @@
   import { mixins, Component, namespace } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import SeasonTimeline from '@/components/Season/Timeline'
-  import CompetitionForm from '@/components/Competition/Form'
 
   const app = namespace('app')
 
   @Component({
     middleware: ['authenticated'],
     components: {
-      CompetitionForm,
       SeasonTimeline
     },
     transition: 'fade-transition'

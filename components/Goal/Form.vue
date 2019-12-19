@@ -18,88 +18,49 @@
     </template>
 
     <template #form>
-      <v-col cols="12">
-        <v-radio-group
-          v-model="goal.home"
-          row
-          hide-details
-          @change="clearNames"
-        >
-          <v-radio
-            :label="match.home"
-            :value="true"
-            color="teal"
+      <dynamic-fields
+        :object="goal"
+        :fields="fields"
+      >
+        <template #field.minute>
+          <minute-field v-model="minute" />
+        </template>
+        <template #field.player_id>
+          <player-select
+            v-model="goal.player_id"
+            :players="scorerOptions"
+            label="Goal Scorer"
+            required
           />
-          <v-radio
-            :label="match.away"
-            :value="false"
-            color="pink"
+        </template>
+        <template #field.assist_id>
+          <player-select
+            v-model="goal.assist_id"
+            :players="assistOptions"
+            label="Assisted By"
+            icon="mdi-human-greeting"
+            :disabled="goal.penalty || goal.own_goal"
+            clearable
+            hide-details
           />
-        </v-radio-group>
-      </v-col>
-      <v-col cols="12">
-        <minute-field v-model="minute" />
-      </v-col>
-      <v-col cols="12">
-        <player-select
-          v-if="teamGoal"
-          v-model="goal.player_id"
-          :players="scorerOptions"
-          label="Goal Scorer"
-          required
-        />
-        <v-text-field
-          v-else
-          v-model="goal.player_name"
-          v-rules.required
-          label="Goal Scorer"
-          prepend-icon="mdi-account"
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
-        />
-      </v-col>
-      <v-col cols="12">
-        <player-select
-          v-if="teamGoal"
-          v-model="goal.assist_id"
-          :players="assistOptions"
-          label="Assisted By"
-          icon="mdi-human-greeting"
-          :disabled="goal.penalty || goal.own_goal"
-          clearable
-          hide-details
-        />
-        <v-text-field
-          v-else
-          v-model="goal.assisted_by"
-          label="Assisted By"
-          prepend-icon="mdi-human-greeting"
-          :disabled="goal.penalty || goal.own_goal"
-          hide-details
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-checkbox
-          v-model="goal.penalty"
-          label="Penalty"
-          :disabled="goal.own_goal"
-          hide-details
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-checkbox
-          v-model="goal.own_goal"
-          label="Own Goal"
-          :disabled="goal.penalty"
-          hide-details
-        />
-      </v-col>
+        </template>
+        <template #field.penalty>
+          <v-checkbox
+            v-model="goal.penalty"
+            label="Penalty"
+            :disabled="goal.own_goal"
+            hide-details
+          />
+        </template>
+        <template #field.own_goal>
+          <v-checkbox
+            v-model="goal.own_goal"
+            label="Own Goal"
+            :disabled="goal.penalty"
+            hide-details
+          />
+        </template>
+      </dynamic-fields>
     </template>
   </dialog-form>
 </template>
@@ -107,7 +68,12 @@
 <script>
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import pick from 'lodash.pick'
-  import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
+  import {
+    DynamicFields,
+    MinuteField,
+    PlayerSelect,
+    TooltipButton
+  } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
   const mix = mixins(TeamAccessible, DialogFormable, MatchAccessible)
@@ -115,6 +81,7 @@
 
   @Component({
     components: {
+      DynamicFields,
       MinuteField,
       PlayerSelect,
       TooltipButton
@@ -133,6 +100,56 @@
       assist_id: '',
       own_goal: false,
       penalty: false
+    }
+
+    get fields () {
+      let fields = [
+        {
+          type: 'radio',
+          attribute: 'home',
+          items: [
+            { label: this.match.home, value: true, color: 'teal' },
+            { label: this.match.away, value: false, color: 'pink' }
+          ],
+          hideDetails: true,
+          onUpdate: this.clearNames
+        },
+        { slot: 'minute' }
+      ]
+
+      if (this.teamGoal) {
+        fields.push({ slot: 'player_id' })
+        fields.push({ slot: 'assist_id' })
+      } else {
+        fields.push({
+          type: 'string',
+          attribute: 'player_name',
+          label: 'Goal Scorer',
+          prependIcon: 'mdi-account',
+          spellcheck: 'false',
+          autocapitalize: 'words',
+          autocomplete: 'off',
+          autocorrect: 'off'
+        })
+        fields.push({
+          type: 'string',
+          attribute: 'assisted_by',
+          label: 'Assisted By',
+          prependIcon: 'mdi-human-greeting',
+          hideDetails: true,
+          disabled: this.goal.penalty || this.goal.own_goal,
+          spellcheck: 'false',
+          autocapitalize: 'words',
+          autocomplete: 'off',
+          autocorrect: 'off'
+        })
+      }
+
+      return [
+        ...fields,
+        { slot: 'penalty' },
+        { slot: 'own_goal' }
+      ]
     }
 
     get title () {
@@ -176,12 +193,6 @@
       }
     }
 
-    clearNames () {
-      this.goal.player_id = null
-      this.goal.player_name = ''
-      this.clearAssistedBy(true)
-    }
-
     @Watch('goal.penalty')
     @Watch('goal.own_goal')
     clearAssistedBy (val) {
@@ -189,6 +200,13 @@
         this.goal.assist_id = null
         this.goal.assisted_by = null
       }
+    }
+
+    clearNames () {
+      console.log('in clearNames')
+      this.goal.player_id = null
+      this.goal.player_name = ''
+      this.clearAssistedBy(true)
     }
 
     async submit () {

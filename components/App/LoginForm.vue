@@ -14,23 +14,10 @@
       </v-toolbar>
 
       <v-card-text>
-        <v-col cols="12">
-          <v-text-field
-            v-model="credentials.username"
-            label="Username"
-            autofocus
-            autocapitalize="off"
-          />
-        </v-col>
-        <v-col cols="12">
-          <v-text-field
-            v-model="credentials.password"
-            label="Password"
-            :type="visible ? 'text' : 'password'"
-            :append-icon="`mdi-eye${visible ? '-off' : ''}`"
-            @click:append="visible = !visible"
-          />
-        </v-col>
+        <dynamic-fields
+          :object="credentials"
+          :fields="fields"
+        />
       </v-card-text>
 
       <v-alert
@@ -74,10 +61,12 @@
 <script>
   import { Vue, Component, State, Action } from 'nuxt-property-decorator'
   import Cookie from 'js-cookie'
+  import { DynamicFields } from '@/helpers'
   import UserForm from '@/components/App/UserForm'
 
   @Component({
     components: {
+      DynamicFields,
       UserForm
     }
   })
@@ -85,13 +74,29 @@
     @State version
     @Action login
 
-    visible = false
     loading = false
     errorMessage = ''
     credentials = {
       username: '',
       password: '',
       grant_type: 'password'
+    }
+
+    get fields () {
+      return [
+        {
+          type: 'string',
+          attribute: 'username',
+          label: 'Username',
+          autofocus: true,
+          autocapitalize: 'off'
+        },
+        {
+          type: 'password',
+          attribute: 'password',
+          label: 'Password'
+        }
+      ]
     }
 
     get formError () {

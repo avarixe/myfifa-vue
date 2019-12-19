@@ -2,10 +2,6 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <squad-form />
-      </v-col>
-
-      <v-col cols="12">
         <squad-grid />
       </v-col>
     </v-row>
@@ -15,7 +11,6 @@
 <script>
   import { mixins, Component, namespace } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
-  import SquadForm from '@/components/Squad/Form'
   import SquadGrid from '@/components/Squad/Grid'
 
   const app = namespace('app')
@@ -23,7 +18,6 @@
   @Component({
     middleware: ['authenticated'],
     components: {
-      SquadForm,
       SquadGrid
     },
     transition: 'fade-transition'

@@ -1,10 +1,6 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="12">
-        <player-form />
-      </v-col>
-
       <v-container>
         <v-row
           justify="space-around"
@@ -188,7 +184,6 @@
 <script>
   import { mixins, Component, namespace } from 'nuxt-property-decorator'
   import { Player } from '@/models'
-  import PlayerForm from '@/components/Player/Form'
   import PlayerActions from '@/components/Player/Actions'
   import PlayerTimeline from '@/components/Player/Timeline'
   import PlayerHistoryChart from '@/components/Charts/PlayerHistoryChart'
@@ -200,7 +195,6 @@
   @Component({
     middleware: ['authenticated'],
     components: {
-      PlayerForm,
       PlayerActions,
       PlayerTimeline,
       PlayerHistoryChart,

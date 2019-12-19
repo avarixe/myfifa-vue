@@ -10,8 +10,6 @@
           Previous Season
         </v-btn>
 
-        <competition-form v-if="pageSeason === season" />
-
         <v-btn
           v-else
           :to="linkToSeason(pageSeason + 1)"
@@ -52,7 +50,6 @@
 
 <script>
   import { mixins, Component, namespace } from 'nuxt-property-decorator'
-  import CompetitionForm from '@/components/Competition/Form'
   import CompetitionGrid from '@/components/Season/CompetitionGrid'
   import PlayerGrid from '@/components/Season/PlayerGrid'
   import { TeamAccessible } from '@/mixins'
@@ -62,7 +59,6 @@
   @Component({
     middleware: ['authenticated'],
     components: {
-      CompetitionForm,
       CompetitionGrid,
       PlayerGrid
     },

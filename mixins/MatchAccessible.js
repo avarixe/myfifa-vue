@@ -6,7 +6,7 @@ import { positions } from '@/models/Match'
 export default class MatchAccessible extends Vue {
   @Prop(Object, { required: true }) match
 
-  minute = 0
+  minute = null
 
   get positions () {
     return Object.keys(positions)

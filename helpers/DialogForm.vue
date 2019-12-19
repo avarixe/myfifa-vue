@@ -44,8 +44,9 @@
           type="error"
           dismissible
           tile
-          v-text="errorMessage"
-        />
+        >
+          {{ errorMessage }}
+        </v-alert>
 
         <v-divider />
 

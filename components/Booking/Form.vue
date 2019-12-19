@@ -18,34 +18,18 @@
     </template>
 
     <template #form>
-      <v-col cols="12">
-        <v-radio-group
-          v-model="booking.red_card"
-          row
-          hide-details
-        >
-          <v-radio
-            label="Yellow Card"
-            :value="false"
-            color="orange darken-2"
+      <dynamic-fields :fields="fields">
+        <template #field.minute>
+          <minute-field v-model="minute" />
+        </template>
+        <template #field.player_id>
+          <player-select
+            v-model="booking.player_id"
+            :players="unsubbedPlayers"
+            required
           />
-          <v-radio
-            label="Red Card"
-            :value="true"
-            color="red darken-2"
-          />
-        </v-radio-group>
-      </v-col>
-      <v-col cols="12">
-        <minute-field v-model="minute" />
-      </v-col>
-      <v-col cols="12">
-        <player-select
-          v-model="booking.player_id"
-          :players="unsubbedPlayers"
-          required
-        />
-      </v-col>
+        </template>
+      </dynamic-fields>
     </template>
   </dialog-form>
 </template>
@@ -54,13 +38,19 @@
   import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
-  import { MinuteField, PlayerSelect, TooltipButton } from '@/helpers'
+  import {
+    DynamicFields,
+    MinuteField,
+    PlayerSelect,
+    TooltipButton
+  } from '@/helpers'
 
   const mix = mixins(DialogFormable, TeamAccessible, MatchAccessible)
   const bookings = namespace('bookings')
 
   @Component({
     components: {
+      DynamicFields,
       MinuteField,
       PlayerSelect,
       TooltipButton
@@ -74,6 +64,23 @@
     booking = {
       player_id: null,
       red_card: false
+    }
+
+    get fields () {
+      return [
+        {
+          type: 'radio',
+          object: this.booking,
+          attribute: 'red_card',
+          items: [
+            { label: 'Yellow Card', value: false, color: 'orange darken-2' },
+            { label: 'Red Card', value: true, color: 'red darken-2' }
+          ],
+          hideDetails: true
+        },
+        { slot: 'minute' },
+        { slot: 'player_id' }
+      ]
     }
 
     get title () {
