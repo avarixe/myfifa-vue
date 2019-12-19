@@ -16,6 +16,7 @@
           :prepend-icon="field.prependIcon"
           :prefix="field.prefix"
           :disabled="field.disabled"
+          :hide-details="field.hideDetails"
           :inputmode="field.inputmode"
           :spellcheck="field.spellcheck"
           :autocapitalize="field.autocapitalize"
@@ -169,6 +170,7 @@
 
     updateField (field, value) {
       Vue.set(this.fieldObject(field), field.attribute, value)
+      field.onUpdate && field.onUpdate()
     }
 
     fieldObject (field) {

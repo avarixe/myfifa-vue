@@ -11,14 +11,23 @@
 
 <script>
   import { Vue, Component, Prop } from 'nuxt-property-decorator'
-  import { requiredRule } from '@/helpers'
+  import { Match } from '@/models'
+  import { requiredRule, rangeRule } from '@/helpers'
 
   @Component
   export default class MinuteField extends Vue {
     @Prop([String, Number]) value
 
+    get match () {
+      return Match.find(this.$route.params.matchId)
+    }
+
     get rules () {
-      return [requiredRule({ label: 'Minute' })]
+      const label = 'Minute'
+      return [
+        requiredRule({ label }),
+        rangeRule({ label, min: 1, max: this.match.extra_time ? 120 : 90 })
+      ]
     }
 
     updateValue (value) {
