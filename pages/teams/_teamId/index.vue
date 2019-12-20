@@ -1,86 +1,49 @@
-<template>
-  <v-container fluid>
-    <v-row>
-      <v-col cols="12">
-        <team-date-picker />
-
-        <team-form
-          :record="team"
-          color="orange"
-        >
-          <template #default="{ on }">
-            <v-btn
-              color="orange"
-              dark
-              v-on="on"
-            >
-              Edit
-            </v-btn>
-          </template>
-        </team-form>
-
-        <record-remove
+<template lang="pug">
+  v-container(fluid)
+    v-row
+      v-col(cols="12")
+        team-date-picker
+        |&nbsp;
+        team-form(:record="team" color="orange")
+          template(#default="{ on }")
+            v-btn(color="orange" dark v-on="on") Edit
+        |&nbsp;
+        record-remove(
           :record="team"
           store="teams"
           :label="team.title"
           :redirect="{ name: 'teams' }"
-        >
-          <v-btn dark>Remove</v-btn>
-        </record-remove>
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="6"
-      >
-        <!-- Latest Match -->
-        <v-col cols="12">
-          <match-card
-            title="Latest Match"
-            :match="lastMatch"
-            color="green"
-          />
-        </v-col>
-
-        <!-- Current Season -->
-        <v-col cols="12">
-          <season-card :season="season" />
-        </v-col>
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="6"
-      >
-        <!-- Injured Players -->
-        <v-col cols="12">
-          <player-list-card
+        )
+          v-btn(dark) Remove
+      v-col(cols="12" md="6")
+        //- Latest Match
+        v-col(cols="12")
+          match-card(title="Latest Match" :match="lastMatch" color="green")
+        //- Current Season
+        v-col(cols="12")
+          season-card(:season="season")
+      v-col(cols="12" md="6")
+        //- Injured Players
+        v-col(cols="12")
+          player-list-card(
             :players="injuredPlayers"
             title="Injured Players"
             color="pink"
-          />
-        </v-col>
-
-        <!-- Loaned Players -->
-        <v-col cols="12">
-          <player-list-card
+          )
+        //- Loaned Players
+        v-col(cols="12")
+          player-list-card(
             :players="loanedPlayers"
             title="Loaned Players"
             color="indigo"
-          />
-        </v-col>
-
-        <!-- Expiring Contracts -->
-        <v-col cols="12">
-          <player-list-card
+          )
+        //- Expiring Contracts
+        v-col(cols="12")
+          player-list-card(
             :players="playersWithExpiringContracts"
             title="Expiring Contracts"
             color="orange"
-          />
-        </v-col>
-      </v-col>
-    </v-row>
-  </v-container>
+          )
 </template>
 
 <script>

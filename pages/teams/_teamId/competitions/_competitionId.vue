@@ -1,174 +1,52 @@
-<template>
-  <v-container fluid>
-    <v-row>
-      <v-col cols="12">
-        <v-btn
-          :to="competition.linkToSeason"
-          nuxt
-        >
-          View Season
-        </v-btn>
-      </v-col>
-
-      <v-col
-        cols="12"
-        class="text-center"
-      >
-        <div class="subheading">
-          {{ competitionSeason }}
-        </div>
-        <div class="display-1 primary--text">
-          <fitty-text :text="competition.name" />
-        </div>
-        <div
-          v-if="readonly"
-          class="title"
-        >
-          <v-icon
-            color="yellow darken-2"
-            left
-          >
-            mdi-crown
-          </v-icon>
-          {{ competition.champion }}
-          <v-icon
-            color="yellow darken-2"
-            right
-          >
-            mdi-crown
-          </v-icon>
-        </div>
-      </v-col>
-
-      <v-col
-        v-if="!readonly"
-        cols="12"
-        class="text-center"
-      >
-        <competition-form
-          :record="competition"
-          color="orange"
-        >
-          <template #default="{ on }">
-            <v-btn
-              dark
-              color="orange"
-              class="my-1"
-              v-on="on"
-            >
-              Edit
-            </v-btn>
-          </template>
-        </competition-form>
-
-        <competition-form
-          :record="competition"
-          color="red"
-          close
-        >
-          <template #default="{ on }">
-            <v-btn
-              dark
-              color="red"
-              class="my-1"
-              v-on="on"
-            >
-              Close
-            </v-btn>
-          </template>
-        </competition-form>
-
-        <stage-form
-          :competition="competition"
-          color="teal"
-        />
-
-        <record-remove
+<template lang="pug">
+  v-container(fluid)
+    v-row
+      v-col(cols="12")
+        v-btn(:to="competition.linkToSeason" nuxt) View Season
+      v-col.text-center(cols="12")
+        .subheading
+          | {{ competitionSeason }}
+        .display-1.primary--text
+          fitty-text(:text="competition.name")
+        .title(v-if="readonly")
+          v-icon(color="yellow darken-2" left) mdi-crown
+          | {{ competition.champion }}
+          v-icon(color="yellow darken-2" right) mdi-crown
+      v-col.text-center(v-if="!readonly" cols="12")
+        competition-form(:record="competition" color="orange")
+          template(#default="{ on }")
+            v-btn.my-1(dark color="orange" v-on="on") Edit
+        |&nbsp;
+        competition-form(:record="competition" color="red" close)
+          template(#default="{ on }")
+            v-btn.my-1(dark color="red" v-on="on") Close
+        |&nbsp;
+        stage-form(:competition="competition" color="teal")
+        |&nbsp;
+        record-remove(
           :record="competition"
           store="competitions"
           :label="`${competitionSeason} ${competition.name}`"
           :redirect="competition.linkToSeason"
-        >
-          <v-btn
-            dark
-            class="my-1"
-          >
-            Remove
-          </v-btn>
-        </record-remove>
-      </v-col>
-
-      <!-- Table Stages -->
-      <v-col
-        v-if="tables.length > 0"
-        cols="12"
-      >
-        <v-card outlined>
-          <v-card-text>
-            <v-tabs
-              v-model="table"
-              centered
-              center-active
-            >
-              <v-tab
-                v-for="table in tables"
-                :key="table.id"
-              >
-                {{ table.name }}
-              </v-tab>
-            </v-tabs>
-
-            <v-tabs-items
-              v-model="table"
-              touchless
-            >
-              <v-tab-item
-                v-for="table in tables"
-                :key="table.id"
-              >
-                <table-stage
-                  :table="table"
-                  :readonly="readonly"
-                />
-              </v-tab-item>
-            </v-tabs-items>
-          </v-card-text>
-        </v-card>
-      </v-col>
-
-      <!-- Elimination Round Stages -->
-      <v-col
-        v-if="rounds.length > 0"
-        cols="12"
-      >
-        <v-card outlined>
-          <v-card-text>
-            <v-tabs
-              centered
-              center-active
-            >
-              <v-tab
-                v-for="round in rounds"
-                :key="round.id"
-              >
-                {{ round.name }}
-              </v-tab>
-
-              <v-tab-item
-                v-for="round in rounds"
-                :key="round.id"
-              >
-                <round-stage
-                  :round="round"
-                  :readonly="readonly"
-                />
-              </v-tab-item>
-            </v-tabs>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+        )
+          v-btn.my-1(dark) Remove
+      //- Table Stages
+      v-col(v-if="tables.length > 0" cols="12")
+        v-card(outlined)
+          v-card-text
+            v-tabs(v-model="table" centered center-active)
+              v-tab(v-for="table in tables" :key="table.id") {{ table.name }}
+            v-tabs-items(v-model="table" touchless)
+              v-tab-item(v-for="table in tables" :key="table.id")
+                table-stage(:table="table" :readonly="readonly")
+      //- Elimination Round Stages
+      v-col(v-if="rounds.length > 0" cols="12")
+        v-card(outlined)
+          v-card-text
+            v-tabs(centered center-active)
+              v-tab(v-for="round in rounds" :key="round.id") {{ round.name }}
+              v-tab-item(v-for="round in rounds" :key="round.id")
+                round-stage(:round="round" :readonly="readonly")
 </template>
 
 <script>
