@@ -1,17 +1,16 @@
-<template>
-  <div>
-    <div class="font-weight-bold">
-      <inline-select
+<template lang="pug">
+  div
+    .font-weight-bold
+      inline-select(
         :item="cap"
         attribute="pos"
         :label="`${cap.name} Position`"
         :options="positions"
         :readonly="readonly"
         @change="setPosition($event)"
-      />
-    </div>
-    <div class="font-weight-thin">
-      <inline-select
+      )
+    .font-weight-thin
+      inline-select(
         v-if="!readonly"
         :item="cap"
         attribute="player_id"
@@ -22,29 +21,12 @@
         option-value="id"
         :display="cap.name"
         @change="setPlayer($event)"
-      />
-
-      <v-dialog
-        v-else
-        width="500"
-      >
-        <template #activator="{ on }">
-          <a
-            class="black--text"
-            v-on="on"
-            v-text="cap.name"
-          />
-        </template>
-
-        <player-card :player-id="cap.player_id" />
-      </v-dialog>
-    </div>
-
-    <cap-events
-      :cap="cap"
-      :match="match"
-    />
-  </div>
+      )
+      v-dialog(v-else width="500")
+        template(#activator="{ on }")
+          a.black--text(v-on="on") {{ cap.name }}
+        player-card(:player-id="cap.player_id")
+    cap-events(:cap="cap" :match="match")
 </template>
 
 <script>

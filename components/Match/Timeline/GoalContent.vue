@@ -1,13 +1,14 @@
-<template>
-  <div>
-    {{ goalType }} scored by
-    <span class="font-weight-bold">{{ item.player_name }}</span>
-    <span v-if="item.assisted_by">
-      (assisted by
-      <span class="font-weight-bold">{{ item.assisted_by }}</span>
-      )
-    </span>
-  </div>
+<template lang="pug">
+  div
+    | {{ goalType }} scored by
+    |&nbsp;
+    span.font-weight-bold {{ item.player_name }}
+    |&nbsp;
+    span(v-if="item.assisted_by")
+      | (assisted by
+      |&nbsp;
+      span.font-weight-bold {{ item.assisted_by }}
+      | )
 </template>
 
 <script>

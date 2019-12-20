@@ -1,49 +1,26 @@
-<template>
-  <v-card>
-    <v-toolbar
-      color="blue"
-      dark
-      dense
-    >
-      <v-toolbar-title class="font-weight-light">
-        {{ seasonLabel }}
-      </v-toolbar-title>
-
-      <v-spacer />
-
-      <v-btn
+<template lang="pug">
+  v-card
+    v-toolbar(color="blue" dark dense)
+      v-toolbar-title.font-weight-light {{ seasonLabel }}
+      v-spacer
+      v-btn(
         :to="link"
         dark
         text
         nuxt
-      >
-        View Season
-      </v-btn>
-    </v-toolbar>
-
-    <v-list
-      nav
-      dense
-    >
-      <v-subheader>Competitions</v-subheader>
-      <v-list-item
+      ) View Season
+    v-list(nav dense)
+      v-subheader Competitions
+      v-list-item(
         v-for="competition in competitions"
         :key="competition.id"
         :to="competition.link"
         nuxt
-      >
-        <v-list-item-icon>
-          <v-icon
-            :color="competition.statusColor"
-            v-text="competition.statusIcon"
-          />
-        </v-list-item-icon>
-        <v-list-item-content>
-          <v-list-item-title>{{ competition.name }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
-  </v-card>
+      )
+        v-list-item-icon
+          v-icon(:color="competition.statusColor") {{ competition.statusIcon }}
+        v-list-item-content
+          v-list-item-title {{ competition.name }}
 </template>
 
 <script>

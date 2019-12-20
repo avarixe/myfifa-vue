@@ -1,29 +1,21 @@
-<template>
-  <dialog-form
+<template lang="pug">
+  dialog-form(
     v-model="dialog"
     title-icon="mdi-human"
     :title="title"
     :submit="submit"
     :color="color"
-  >
-    <template #activator="{ on }">
-      <slot :on="on">
-        <tooltip-button
+  )
+    template(#activator="{ on }")
+      slot(:on="on")
+        tooltip-button(
           label="Penalty Shootout"
           icon="mdi-human"
           color="indigo"
           :on="on"
-        />
-      </slot>
-    </template>
-
-    <template #form>
-      <dynamic-fields
-        :object="penaltyShootout"
-        :fields="fields"
-      />
-    </template>
-  </dialog-form>
+        )
+    template(#form)
+      dynamic-fields(:object="penaltyShootout" :fields="fields")
 </template>
 
 <script>

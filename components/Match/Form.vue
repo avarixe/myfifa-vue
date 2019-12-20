@@ -1,34 +1,23 @@
-<template>
-  <dialog-form
+<template lang="pug">
+  dialog-form(
     v-model="dialog"
     :title="title"
     :submit="submit"
     :color="color"
-  >
-    <template #activator="{ on }">
-      <slot :on="on">
-        <v-btn v-on="on">
-          <v-icon left>mdi-plus-circle-outline</v-icon>
-          Match
-        </v-btn>
-      </slot>
-    </template>
-
-    <template #form>
-      <dynamic-fields
-        :object="match"
-        :fields="fields"
-      >
-        <template #field.extra_time>
-          <v-checkbox
+  )
+    template(#activator="{ on }")
+      slot(:on="on")
+        v-btn(v-on="on")
+          v-icon(left) mdi-plus-circle-outline
+          | Match
+    template(#form)
+      dynamic-fields(:object="match" :fields="fields")
+        template(#field.extra_time)
+          v-checkbox(
             v-model="match.extra_time"
             label="Extra Time Required"
             hide-details
-          />
-        </template>
-      </dynamic-fields>
-    </template>
-  </dialog-form>
+          )
 </template>
 
 <script>

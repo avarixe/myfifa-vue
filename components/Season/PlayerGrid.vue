@@ -1,39 +1,29 @@
-<template>
-  <v-card flat>
-    <v-card-title>
-      <v-btn-toggle
+<template lang="pug">
+  v-card(flat)
+    v-card-title
+      v-btn-toggle.mx-3(
         v-model="mode"
         rounded
         mandatory
-        class="mx-3"
-      >
-        <v-btn
+      )
+        v-btn(
           v-for="(opt, i) in modes"
           :key="i"
           text
-        >
-          <v-icon :color="opt.color">{{ opt.icon }}</v-icon>
-        </v-btn>
-      </v-btn-toggle>
-
-      <div :class="`subheading ${currentMode.color}--text`">
-        {{ currentMode.text }}
-      </div>
-
-      <v-spacer />
-
-      <!-- Player Search -->
-      <v-text-field
+        )
+          v-icon(:color="opt.color") {{ opt.icon }}
+      .subheading(:class="`${currentMode.color}--text`") {{ currentMode.text }}
+      v-spacer
+      //- Player Search
+      v-text-field(
         v-model="search"
         label="Search"
         append-icon="mdi-magnify"
         hide-details
-      />
-    </v-card-title>
-
-    <!-- Player Information Grid -->
-    <v-card-text>
-      <v-data-table
+      )
+    //- Player Information Grid
+    v-card-text
+      v-data-table(
         :headers="headers"
         :items="rows"
         :loading="loading"
@@ -42,26 +32,17 @@
         item-key="id"
         :mobile-breakpoint="0"
         no-data-text="No Players Recorded"
-      >
-        <template #item.name="{ item }">
-          <nuxt-link :to="item.link">{{ item.name }}</nuxt-link>
-        </template>
-        <template #item.ovrChange="{ item }">
-          <span :class="ovrColor(item)">
-            {{ item.ovrChange > 0 ? '+' : '' }}{{ item.ovrChange }}
-          </span>
-        </template>
-        <template #item.endValue="{ item }">
-          {{ item.endValue | formatMoney(team.currency) }}
-        </template>
-        <template #item.valueChange="{ item }">
-          <span :class="valueColor(item)">
-            {{ item.valueChange.toFixed(2) }}%
-          </span>
-        </template>
-      </v-data-table>
-    </v-card-text>
-  </v-card>
+      )
+        template(#item.name="{ item }")
+          nuxt-link(:to="item.link") {{ item.name }}
+        template(#item.ovrChange="{ item }")
+          span(:class="ovrColor(item)")
+            | {{ item.ovrChange > 0 ? '+' : '' }}{{ item.ovrChange }}
+        template(#item.endValue="{ item }")
+          | {{ item.endValue | formatMoney(team.currency) }}
+        template(#item.valueChange="{ item }")
+          span(:class="valueColor(item)")
+            | {{ item.valueChange.toFixed(2) }}%
 </template>
 
 <script>
@@ -240,10 +221,3 @@
     }
   }
 </script>
-
-<style scoped>
-  >>> table.v-table tbody tr td {
-    padding: 8px 16px;
-    height: auto;
-  }
-</style>

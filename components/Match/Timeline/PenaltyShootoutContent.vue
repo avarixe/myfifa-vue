@@ -1,10 +1,10 @@
-<template>
-  <span>
-    <span class="font-weight-bold">{{ winner }}</span>
-    wins by Penalty Shootout
-    (
-    <span class="font-weight-bold">{{ score }}</span>
-    )
+<template lang="pug">
+  div
+    span.font-weight-bold {{ winner }}
+    |&nbsp;
+    | wins by Penalty Shootout (
+    span.font-weight-bold {{ score }}
+    | )
   </span>
 </template>
 

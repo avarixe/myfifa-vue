@@ -1,12 +1,9 @@
-<template>
-  <table>
-    <tbody>
-      <tr>
-        <td class="font-weight-bold">Duration</td>
-        <td class="pl-1">Injured for {{ length }}</td>
-      </tr>
-    </tbody>
-  </table>
+<template lang="pug">
+  table
+    tbody
+      tr
+        td.font-weight-bold Duration
+        td.pl-1 Injured for {{ length }}
 </template>
 
 <script>

@@ -1,77 +1,45 @@
-<template>
-  <v-menu
+<template lang="pug">
+  v-menu(
     :close-on-content-click="false"
     offset-y
     offset-overflow
-  >
-    <template #activator="{ on }">
-      <v-btn
-        icon
-        v-on="on"
-      >
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-    </template>
-
-    <v-list dense>
-      <template v-if="team">
-        <player-form>
-          <template #default="{ on }">
-            <v-list-item v-on="on">
-              <v-list-item-avatar>
-                <v-icon>mdi-account-plus</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>New Player</v-list-item-content>
-            </v-list-item>
-          </template>
-        </player-form>
-
-        <match-form>
-          <template #default="{ on }">
-            <v-list-item v-on="on">
-              <v-list-item-avatar>
-                <v-icon>mdi-soccer-field</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>New Match</v-list-item-content>
-            </v-list-item>
-          </template>
-        </match-form>
-
-        <squad-form>
-          <template #default="{ on }">
-            <v-list-item v-on="on">
-              <v-list-item-avatar>
-                <v-icon>mdi-clipboard-plus</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>New Squad</v-list-item-content>
-            </v-list-item>
-          </template>
-        </squad-form>
-
-        <competition-form>
-          <template #default="{ on }">
-            <v-list-item v-on="on">
-              <v-list-item-avatar>
-                <v-icon>mdi-trophy</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>New Competition</v-list-item-content>
-            </v-list-item>
-          </template>
-        </competition-form>
-      </template>
-
-      <team-form>
-        <template #default="{ on }">
-          <v-list-item v-on="on">
-            <v-list-item-avatar>
-              <v-icon>mdi-shield-plus</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>New Team</v-list-item-content>
-          </v-list-item>
-        </template>
-      </team-form>
-    </v-list>
-  </v-menu>
+  )
+    template(#activator="{ on }")
+      v-btn(icon v-on="on")
+        v-icon mdi-plus
+    v-list(dense)
+      template(v-if="team")
+        player-form
+          template(#default="{ on }")
+            v-list-item(v-on="on")
+              v-list-item-avatar
+                v-icon mdi-account-plus
+              v-list-item-content New Player
+        match-form
+          template(#default="{ on }")
+            v-list-item(v-on="on")
+              v-list-item-avatar
+                v-icon mdi-soccer-field
+              v-list-item-content New Match
+        squad-form
+          template(#default="{ on }")
+            v-list-item(v-on="on")
+              v-list-item-avatar
+                v-icon mdi-clipboard-plus
+              v-list-item-content New Squad
+        competition-form
+          template(#default="{ on }")
+            v-list-item(v-on="on")
+              v-list-item-avatar
+                v-icon mdi-trophy
+              v-list-item-content New Competition
+      v-divider
+      team-form
+        template(#default="{ on }")
+          v-list-item(v-on="on")
+            v-list-item-avatar
+              v-icon mdi-shield-plus
+            v-list-item-content New Team
 </template>
 
 <script>

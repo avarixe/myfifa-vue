@@ -1,15 +1,11 @@
-<template>
-  <v-timeline
-    v-if="events.length > 0 || match.penalty_shootout"
-    dense
-  >
-    <match-timeline-item
+<template lang="pug">
+  v-timeline(v-if="events.length > 0 || match.penalty_shootout" dense)
+    match-timeline-item(
       v-for="(event, i) in events"
       :key="`${event.id}_${i}`"
       :event="event"
       :match="match"
-    />
-  </v-timeline>
+    )
 </template>
 
 <script>

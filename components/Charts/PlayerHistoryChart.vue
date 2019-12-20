@@ -1,5 +1,5 @@
-<template>
-  <area-chart
+<template lang="pug">
+  area-chart(
     :data="chartData"
     :label="label"
     :xtitle="xtitle"
@@ -10,7 +10,7 @@
     :legend="legend"
     :prefix="prefix"
     :thousands="thousands"
-  />
+  )
 </template>
 
 <script>

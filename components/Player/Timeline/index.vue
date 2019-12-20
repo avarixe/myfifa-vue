@@ -1,42 +1,32 @@
-<template>
-  <v-timeline :dense="dense">
-    <v-timeline-item
+<template lang="pug">
+  v-timeline(:dense="dense")
+    v-timeline-item(
       v-for="(item, i) in sortedItems"
       :key="i"
       :icon="`mdi-${item.icon}`"
       :color="item.color"
       fill-dot
       right
-    >
-      <template #opposite>
-        <span :class="`headline font-weight-bold ${item.color}--text`">
-          {{ item.title || item.type }}
-        </span>
-        <h4 :class="`headline font-weight-light mb-3 ${item.color}--text`">
-          {{ item.dateRange }}
-        </h4>
-      </template>
-
-      <v-card dense>
-        <v-card-title
-          v-if="dense"
-          :class="`${item.color} lighten-2 py-1`"
-        >
-          <span class="title font-weight-bold pr-1 white--text">
-            {{ item.title || item.type }}
-          </span>
-          <span class="body-2 font-weight-light pl-1 white--text">
-            {{ item.dateRange }}
-          </span>
-        </v-card-title>
-        <v-card-text>
-          <record-form
+    )
+      template(#opposite)
+        span.headline.font-weight-bold(:class="`${item.color}--text`")
+          | {{ item.title || item.type }}
+        h4.headline.font-weight-light.mb-3(:class="`${item.color}--text`")
+          | {{ item.dateRange }}
+      v-card(dense)
+        v-card-title.lighten-2.py-1(v-if="dense" :class="item.color")
+          span.title.font-weight-bold.pr-1.white--text
+            | {{ item.title || item.type }}
+          span.body-2.font-weight-light.pl-1.white--text
+            | {{ item.dateRange }}
+        v-card-text
+          record-form(
             :player="player"
             :record="item.data"
             :type="item.type"
-          >
-            <template #default="{ on }">
-              <v-btn
+          )
+            template(#default="{ on }")
+              v-btn(
                 absolute
                 dark
                 fab
@@ -45,17 +35,9 @@
                 x-small
                 color="orange"
                 v-on="on"
-              >
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
-            </template>
-          </record-form>
-
-          <timeline-content :item="item" />
-        </v-card-text>
-      </v-card>
-    </v-timeline-item>
-  </v-timeline>
+              )
+                v-icon mdi-pencil
+          timeline-content(:item="item")
 </template>
 
 <script>

@@ -1,14 +1,12 @@
-<template>
-  <v-row>
-    <v-col
+<template lang="pug">
+  v-row
+    v-col(
       v-for="squad in squads"
       :key="squad.id"
       cols="12"
       md="6"
-    >
-      <squad-card :squad="squad" />
-    </v-col>
-  </v-row>
+    )
+      squad-card(:squad="squad")
 </template>
 
 <script>

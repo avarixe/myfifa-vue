@@ -1,26 +1,17 @@
-<template>
-  <dialog-form
+<template lang="pug">
+  dialog-form(
     v-model="dialog"
     :title="title"
     :submit="submit"
     :color="color"
-  >
-    <template #activator="{ on }">
-      <slot :on="on">
-        <v-btn v-on="on">
-          <v-icon left>mdi-plus-circle-outline</v-icon>
-          Competition
-        </v-btn>
-      </slot>
-    </template>
-
-    <template #form>
-      <dynamic-fields
-        :object="competition"
-        :fields="fields"
-      />
-    </template>
-  </dialog-form>
+  )
+    template(#activator="{ on }")
+      slot(:on="on")
+        v-btn(v-on="on")
+          v-icon(left) mdi-plus-circle-outline
+          | Competition
+    template(#form)
+      dynamic-fields(:object="competition" :fields="fields")
 </template>
 
 <script>
