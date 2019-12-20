@@ -57,7 +57,6 @@ export default {
   plugins: [
     '@/plugins/fitty.js',
     '@/plugins/custom/filters.js',
-    '@/plugins/custom/v-rules.js',
     '@/plugins/chartkick.client.js',
     '@/plugins/vue-flag-icon.client.js'
   ],
