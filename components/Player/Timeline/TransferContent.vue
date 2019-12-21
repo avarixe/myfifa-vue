@@ -19,15 +19,23 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
 
-  @Component
-  export default class TransferContent extends mixins(TeamAccessible) {
-    @Prop({ type: Object, required: true }) item
-
-    get transfer () {
-      return this.item.data
+  export default {
+    name: 'TransferContent',
+    mixins: [
+      TeamAccessible
+    ],
+    props: {
+      item: {
+        type: Object,
+        required: true
+      }
+    },
+    computed: {
+      transfer () {
+        return this.item.data
+      }
     }
   }
 </script>

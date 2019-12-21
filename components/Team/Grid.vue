@@ -30,21 +30,23 @@
 </template>
 
 <script>
-  import { Vue, Component } from 'nuxt-property-decorator'
   import { Team } from '@/models'
 
-  @Component
-  export default class TeamGrid extends Vue {
-    headers = [
-      { text: 'Team Name', value: 'title', align: 'center' },
-      { text: 'Badge', value: 'badge_path', align: 'center', width: '32px', sortable: false },
-      { text: 'Start Date', value: 'started_on', align: 'center' },
-      { text: 'Current Date', value: 'currently_on', align: 'center' }
-    ]
-    search = ''
-
-    get teams () {
-      return Team.query().orderBy('id', 'desc').get()
+  export default {
+    name: 'TeamGrid',
+    data: () => ({
+      headers: [
+        { text: 'Team Name', value: 'title', align: 'center' },
+        { text: 'Badge', value: 'badge_path', align: 'center', width: '32px', sortable: false },
+        { text: 'Start Date', value: 'started_on', align: 'center' },
+        { text: 'Current Date', value: 'currently_on', align: 'center' }
+      ],
+      search: ''
+    }),
+    computed: {
+      teams () {
+        return Team.query().orderBy('id', 'desc').get()
+      }
     }
   }
 </script>

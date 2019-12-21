@@ -12,19 +12,23 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
-
-  @Component
-  export default class GoalContent extends Vue {
-    @Prop({ type: Object, required: true }) item
-
-    get goalType () {
-      if (this.item.penalty) {
-        return 'Penalty'
-      } else if (this.item.own_goal) {
-        return 'Own Goal'
-      } else {
-        return 'Goal'
+  export default {
+    name: 'GoalContent',
+    props: {
+      item: {
+        type: Object,
+        required: true
+      }
+    },
+    computed: {
+      goalType () {
+        if (this.item.penalty) {
+          return 'Penalty'
+        } else if (this.item.own_goal) {
+          return 'Own Goal'
+        } else {
+          return 'Goal'
+        }
       }
     }
   }

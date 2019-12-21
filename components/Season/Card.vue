@@ -24,39 +24,41 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { addYears, format, parseISO } from 'date-fns'
   import { Team, Competition } from '@/models'
 
-  @Component
-  export default class SeasonCard extends Vue {
-    @Prop({ type: Number, required: true }) season
-
-    get team () {
-      return Team.find(this.$route.params.teamId)
-    }
-
-    get competitions () {
-      return Competition
-        .query()
-        .with('team')
-        .where('team_id', this.team.id)
-        .where('season', this.season)
-        .get()
-    }
-
-    get seasonLabel () {
-      let start = addYears(parseISO(this.team.started_on), this.season)
-      const end = addYears(start, 1)
-      return `${format(start, 'yyyy')} - ${format(end, 'yyyy')}`
-    }
-
-    get link () {
-      return {
-        name: 'teams-teamId-seasons-season',
-        params: {
-          teamId: this.team.id,
-          season: this.season
+  export default {
+    name: 'SeasonCard',
+    props: {
+      season: {
+        type: Number,
+        required: true
+      }
+    },
+    computed: {
+      team () {
+        return Team.find(this.$route.params.teamId)
+      },
+      competitions () {
+        return Competition
+          .query()
+          .with('team')
+          .where('team_id', this.team.id)
+          .where('season', this.season)
+          .get()
+      },
+      seasonLabel () {
+        let start = addYears(parseISO(this.team.started_on), this.season)
+        const end = addYears(start, 1)
+        return `${format(start, 'yyyy')} - ${format(end, 'yyyy')}`
+      },
+      link () {
+        return {
+          name: 'teams-teamId-seasons-season',
+          params: {
+            teamId: this.team.id,
+            season: this.season
+          }
         }
       }
     }

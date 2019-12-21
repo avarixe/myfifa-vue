@@ -52,88 +52,90 @@
 </template>
 
 <script>
-  import { Vue, Component, State, Action, namespace } from 'nuxt-property-decorator'
+  import { mapState, mapMutations, mapActions } from 'vuex'
   import Cookie from 'js-cookie'
   import { Team } from '@/models'
   import UserForm from './UserForm'
   import TeamDatePicker from '@/components/Team/DatePicker'
 
-  const app = namespace('app')
-
-  @Component({
+  export default {
+    name: 'AppDrawer',
     components: {
       TeamDatePicker,
       UserForm
-    }
-  })
-  export default class AppDrawer extends Vue {
-    @State version
-    @Action logout
-    @app.State drawer
-    @app.Mutation('SET_DRAWER') setDrawer
-
-    get teamId () {
-      return this.$route.params.teamId
-    }
-
-    get team () {
-      return Team.find(this.teamId)
-    }
-
-    get teamName () {
-      return this.team.title
-    }
-
-    get teamLinks () {
-      if (this.teamId) {
-        return [
-          {
-            to: {
-              name: 'teams-teamId',
-              params: { teamId: this.teamId }
+    },
+    computed: {
+      ...mapState([
+        'version'
+      ]),
+      ...mapState('app', [
+        'drawer'
+      ]),
+      teamId () {
+        return this.$route.params.teamId
+      },
+      team () {
+        return Team.find(this.teamId)
+      },
+      teamName () {
+        return this.team.title
+      },
+      teamLinks () {
+        if (this.teamId) {
+          return [
+            {
+              to: {
+                name: 'teams-teamId',
+                params: { teamId: this.teamId }
+              },
+              icon: 'mdi-view-dashboard',
+              text: 'Dashboard'
             },
-            icon: 'mdi-view-dashboard',
-            text: 'Dashboard'
-          },
-          {
-            to: this.linkTo('seasons'),
-            icon: 'mdi-trophy',
-            text: 'Seasons'
-          },
-          {
-            to: this.linkTo('players'),
-            icon: 'mdi-account',
-            text: 'Players'
-          },
-          {
-            to: this.linkTo('matches'),
-            icon: 'mdi-soccer-field',
-            text: 'Matches'
-          },
-          {
-            to: this.linkTo('squads'),
-            icon: 'mdi-clipboard-text',
-            text: 'Squads'
-          }
-        ]
-      } else {
-        return []
+            {
+              to: this.linkTo('seasons'),
+              icon: 'mdi-trophy',
+              text: 'Seasons'
+            },
+            {
+              to: this.linkTo('players'),
+              icon: 'mdi-account',
+              text: 'Players'
+            },
+            {
+              to: this.linkTo('matches'),
+              icon: 'mdi-soccer-field',
+              text: 'Matches'
+            },
+            {
+              to: this.linkTo('squads'),
+              icon: 'mdi-clipboard-text',
+              text: 'Squads'
+            }
+          ]
+        } else {
+          return []
+        }
       }
-    }
-
+    },
     mounted () {
       this.setDrawer(window.innerWidth >= 991)
-    }
-
-    async logUserOut () {
-      await this.logout()
-      Cookie.remove('token')
-    }
-
-    linkTo (page) {
-      return {
-        name: `teams-teamId-${page}`,
-        params: { teamId: this.team.id }
+    },
+    methods: {
+      ...mapMutations('app', {
+        setDrawer: 'SET_DRAWER'
+      }),
+      ...mapActions([
+        'logout'
+      ]),
+      async logUserOut () {
+        await this.logout()
+        Cookie.remove('token')
+      },
+      linkTo (page) {
+        return {
+          name: `teams-teamId-${page}`,
+          params: { teamId: this.team.id }
+        }
       }
     }
   }

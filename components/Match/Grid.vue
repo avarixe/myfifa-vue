@@ -50,81 +50,84 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
   import { addYears, parseISO } from 'date-fns'
   import { Competition, Match } from '@/models'
   import { TeamAccessible } from '@/mixins'
 
-  @Component
-  export default class MatchGrid extends mixins(TeamAccessible) {
-    headers = [
-      { text: 'Competition', value: 'competition', align: 'end' },
-      { text: 'Home', value: 'home', align: 'end' },
-      { text: 'Score', value: 'score', align: 'center', sortable: false },
-      { text: 'Away', value: 'away' },
-      { text: 'Date Played', value: 'played_on' }
-    ]
-    search = ''
-    seasonFilter = null
-    competition = null
+  export default {
+    name: 'MatchGrid',
+    mixins: [
+      TeamAccessible
+    ],
+    data: () => ({
+      headers: [
+        { text: 'Competition', value: 'competition', align: 'end' },
+        { text: 'Home', value: 'home', align: 'end' },
+        { text: 'Score', value: 'score', align: 'center', sortable: false },
+        { text: 'Away', value: 'away' },
+        { text: 'Date Played', value: 'played_on' }
+      ],
+      search: '',
+      seasonFilter: null,
+      competition: null
+    }),
+    computed: {
+      matches () {
+        return Match
+          .query()
+          .where('team_id', this.team.id)
+          .get()
+      },
+      rows () {
+        const teamStart = parseISO(this.team.started_on)
 
-    get matches () {
-      return Match
-        .query()
-        .where('team_id', this.team.id)
-        .get()
-    }
+        return this.matches
+          .filter(match => {
+            if (typeof this.seasonFilter === 'number') {
+              const datePlayed = parseISO(match.played_on)
+              const seasonStart = addYears(teamStart, this.seasonFilter)
+              const seasonEnd = addYears(teamStart, this.seasonFilter + 1)
+              return seasonStart <= datePlayed && datePlayed < seasonEnd
+            } else {
+              return true
+            }
+          })
+          .filter(match => {
+            return typeof this.competition === 'string'
+              ? match.competition === this.competition
+              : true
+          })
+      },
+      seasons () {
+        let seasons = []
 
-    get rows () {
-      const teamStart = parseISO(this.team.started_on)
+        for (let i = 0; i <= this.season; i++) {
+          seasons.push({
+            id: i,
+            label: this.seasonLabel(i)
+          })
+        }
 
-      return this.matches
-        .filter(match => {
-          if (typeof this.seasonFilter === 'number') {
-            const datePlayed = parseISO(match.played_on)
-            const seasonStart = addYears(teamStart, this.seasonFilter)
-            const seasonEnd = addYears(teamStart, this.seasonFilter + 1)
-            return seasonStart <= datePlayed && datePlayed < seasonEnd
-          } else {
-            return true
-          }
-        })
-        .filter(match => {
-          return typeof this.competition === 'string'
-            ? match.competition === this.competition
-            : true
-        })
-    }
-
-    get seasons () {
-      let seasons = []
-
-      for (let i = 0; i <= this.season; i++) {
-        seasons.push({
-          id: i,
-          label: this.seasonLabel(i)
-        })
+        return seasons
+      },
+      competitions () {
+        return Competition
+          .query()
+          .where('team_id', this.team.id)
+          .where(comp => {
+            return typeof this.seasonFilter === 'number'
+              ? comp.season === this.seasonFilter
+              : true
+          })
+          .get()
+          .map(comp => comp.name)
       }
-
-      return seasons
-    }
-
-    get competitions () {
-      return Competition
-        .query()
-        .where('team_id', this.team.id)
-        .where(comp => {
-          return typeof this.seasonFilter === 'number'
-            ? comp.season === this.seasonFilter
-            : true
-        })
-        .get()
-        .map(comp => comp.name)
-    }
-
-    clearAllFilters () {
-      this.seasonFilter = null
-      this.competition = null
+    },
+    methods: {
+      clearAllFilters () {
+        this.seasonFilter = null
+        this.competition = null
+      }
     }
   }
 </script>

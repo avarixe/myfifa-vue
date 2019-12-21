@@ -18,15 +18,23 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
 
-  @Component
-  export default class ContractContent extends mixins(TeamAccessible) {
-    @Prop({ type: Object, required: true }) item
-
-    get contract () {
-      return this.item.data
+  export default {
+    name: 'ContractContent',
+    mixins: [
+      TeamAccessible
+    ],
+    props: {
+      item: {
+        type: Object,
+        required: true
+      }
+    },
+    computed: {
+      contract () {
+        return this.item.data
+      }
     }
   }
 </script>

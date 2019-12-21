@@ -19,51 +19,55 @@
 </template>
 
 <script>
-  import { Vue, Component, Action, namespace } from 'nuxt-property-decorator'
+  import { mapState, mapMutations, mapActions } from 'vuex'
   import { Team } from '@/models'
   import { baseURL } from '@/api'
   import AppFormsMenu from './FormsMenu'
 
-  const app = namespace('app')
-
-  @Component({
+  export default {
+    name: 'AppBar',
     components: {
       AppFormsMenu
-    }
-  })
-  export default class AppBar extends Vue {
-    @Action('entities/deleteAll') clearStore
-    @app.State overline
-    @app.State headline
-    @app.State caption
-    @app.Mutation('TOGGLE_DRAWER') toggleDrawer
-    responsive = false
-
-    get team () {
-      return this.$route.params.teamId
-        ? Team.find(this.$route.params.teamId)
-        : null
-    }
-
-    get badgeUrl () {
-      return this.team && this.team.badge_path
-        ? `${baseURL}${this.team.badge_path}`
-        : null
-    }
-
+    },
+    data: () => ({
+      responsive: false
+    }),
+    computed: {
+      ...mapState('app', [
+        'overline',
+        'headline',
+        'caption'
+      ]),
+      team () {
+        return this.$route.params.teamId
+          ? Team.find(this.$route.params.teamId)
+          : null
+      },
+      badgeUrl () {
+        return this.team && this.team.badge_path
+          ? `${baseURL}${this.team.badge_path}`
+          : null
+      }
+    },
     mounted () {
       this.updateResponsiveState()
       window.addEventListener('resize', this.updateResponsiveState)
-    }
-
+    },
     beforeDestroy () {
       window.removeEventListener('resize', this.updateResponsiveState)
       this.clearStore()
       this.$router.push({ name: 'index' })
-    }
-
-    updateResponsiveState () {
-      this.responsive = window.innerWidth < 991
+    },
+    methods: {
+      ...mapMutations('app', {
+        toggleDrawer: 'TOGGLE_DRAWER'
+      }),
+      ...mapActions({
+        clearStore: 'entities/deleteAll'
+      }),
+      updateResponsiveState () {
+        this.responsive = window.innerWidth < 991
+      }
     }
   }
 </script>

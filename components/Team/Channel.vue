@@ -3,20 +3,22 @@
 </template>
 
 <script>
-  import { Vue, Component, State } from 'nuxt-property-decorator'
+  import { mapState } from 'vuex'
   import { cableURL } from '@/api'
   import * as models from '@/models'
 
-  @Component
-  export default class TeamChannel extends Vue {
-    @State token
-
-    cable = null
-    subscriptions = []
-    timeout = null
-    insertBuffer = {}
-    deleteBuffer = {}
-
+  export default {
+    name: 'TeamChannel',
+    data: () => ({
+      cable: null,
+      subscriptions: [],
+      timeout: null,
+      insertBuffer: {},
+      deleteBuffer: {}
+    }),
+    computed: mapState([
+      'token'
+    ]),
     mounted () {
       if (!this.cable && this.token) {
         const ActionCable = require('actioncable')
@@ -38,41 +40,40 @@
 
         this.subscriptions.push(subscription)
       }
-    }
-
+    },
     destroyed () {
       this.subscriptions.forEach((sub) => {
         sub && this.cable.subscriptions.remove(sub)
       })
-    }
+    },
+    methods: {
+      addToBuffer ({ type, data, destroyed }) {
+        let buffer = destroyed ? this.deleteBuffer : this.insertBuffer
 
-    addToBuffer ({ type, data, destroyed }) {
-      let buffer = destroyed ? this.deleteBuffer : this.insertBuffer
+        if (type in buffer) {
+          buffer[type].push(data)
+        } else {
+          buffer[type] = [data]
+        }
 
-      if (type in buffer) {
-        buffer[type].push(data)
-      } else {
-        buffer[type] = [data]
+        if (this.timeout) {
+          clearTimeout(this.timeout)
+        }
+
+        this.timeout = setTimeout(this.updateStore, 300)
+      },
+      updateStore () {
+        Object.keys(this.deleteBuffer).forEach(async type => {
+          const ids = this.deleteBuffer[type].map(data => data.id)
+          await models[type].delete(record => ids.indexOf(record.id) > -1)
+          delete this.deleteBuffer[type]
+        })
+
+        Object.keys(this.insertBuffer).forEach(async type => {
+          await models[type].insert({ data: this.insertBuffer[type] })
+          delete this.insertBuffer[type]
+        })
       }
-
-      if (this.timeout) {
-        clearTimeout(this.timeout)
-      }
-
-      this.timeout = setTimeout(this.updateStore, 300)
-    }
-
-    updateStore () {
-      Object.keys(this.deleteBuffer).forEach(async type => {
-        const ids = this.deleteBuffer[type].map(data => data.id)
-        await models[type].delete(record => ids.indexOf(record.id) > -1)
-        delete this.deleteBuffer[type]
-      })
-
-      Object.keys(this.insertBuffer).forEach(async type => {
-        await models[type].insert({ data: this.insertBuffer[type] })
-        delete this.insertBuffer[type]
-      })
     }
   }
 </script>

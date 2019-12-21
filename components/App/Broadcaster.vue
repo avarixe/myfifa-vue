@@ -5,25 +5,27 @@
 </template>
 
 <script>
-  import { Vue, Component, Watch, namespace } from 'nuxt-property-decorator'
+  import { mapState, mapMutations } from 'vuex'
 
-  const broadcaster = namespace('broadcaster')
-
-  @Component
-  export default class AppBroadcaster extends Vue {
-    @broadcaster.State message
-    @broadcaster.State color
-    @broadcaster.Mutation('CLEAR') clearBroadcast
-    snackbar = false
-
-    @Watch('message')
-    toggleSnackbar (val) {
-      this.snackbar = val.length > 0
-    }
-
-    @Watch('snackbar')
-    clear (val) {
-      !val && this.clearBroadcast()
-    }
+  export default {
+    name: 'AppBroadcaster',
+    data: () => ({
+      snackbar: false
+    }),
+    computed: mapState('broadcaster', [
+      'message',
+      'color'
+    ]),
+    watch: {
+      message (val) {
+        this.snackbar = val.length > 0
+      },
+      snackbar (val) {
+        !val && this.clearBroadcast()
+      }
+    },
+    methods: mapMutations('broadcaster', {
+      clearBroadcast: 'CLEAR'
+    })
   }
 </script>

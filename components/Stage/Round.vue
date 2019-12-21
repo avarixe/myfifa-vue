@@ -50,69 +50,82 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, namespace } from 'nuxt-property-decorator'
+  import { mapMutations, mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
   import { InlineField, RecordRemove, TooltipButton } from '@/helpers'
   import FixtureForm from '@/components/Fixture/Form'
 
-  const stages = namespace('stages')
-  const broadcaster = namespace('broadcaster')
-
-  @Component({
+  export default {
+    name: 'RoundStage',
     components: {
       InlineField,
       RecordRemove,
       FixtureForm,
       TooltipButton
-    }
-  })
-  export default class RoundStage extends mixins(CompetitionAccessible) {
-    @stages.Action('UPDATE') updateStage
-    @broadcaster.Mutation('ANNOUNCE') announce
-    @Prop({ type: Object, required: true }) round
-    @Prop(Boolean) readonly
-
-    key = 0
-
-    get items () {
-      return Object.values(this.round.fixtures) || []
-    }
-
-    get headers () {
-      const headers = [
-        { text: 'Home Team', value: 'home_team', align: 'right' },
-        { text: 'Score', value: 'score', align: 'center' },
-        { text: 'Away Team', value: 'away_team' }
-      ]
-
-      if (!this.readonly) {
-        headers.push({
-          text: '',
-          value: 'edit',
-          width: 40
-        })
-        headers.push({
-          text: '',
-          value: 'delete',
-          width: 40
-        })
+    },
+    mixins: [
+      CompetitionAccessible
+    ],
+    props: {
+      round: {
+        type: Object,
+        required: true
+      },
+      readonly: {
+        type: Boolean,
+        default: false
       }
+    },
+    data: () => ({
+      key: 0
+    }),
+    computed: {
+      items () {
+        return Object.values(this.round.fixtures) || []
+      },
+      headers () {
+        const headers = [
+          { text: 'Home Team', value: 'home_team', align: 'right' },
+          { text: 'Score', value: 'score', align: 'center' },
+          { text: 'Away Team', value: 'away_team' }
+        ]
 
-      return headers
-    }
+        if (!this.readonly) {
+          headers.push({
+            text: '',
+            value: 'edit',
+            width: 40
+          })
+          headers.push({
+            text: '',
+            value: 'delete',
+            width: 40
+          })
+        }
 
-    async updateStageAttribute (stageId, attribute, value) {
-      try {
-        await this.updateStage({
-          id: stageId,
-          [attribute]: value
-        })
-      } catch (e) {
-        this.key++
-        this.announce({
-          message: e.message,
-          color: 'red'
-        })
+        return headers
+      }
+    },
+    methods: {
+      ...mapMutations('broadcaster', {
+        announce: 'ANNOUNCE'
+      }),
+      ...mapActions('stages', {
+        updateStage: 'UPDATE'
+      }),
+      async updateStageAttribute (stageId, attribute, value) {
+        try {
+          await this.updateStage({
+            id: stageId,
+            [attribute]: value
+          })
+        } catch (e) {
+          this.key++
+          this.announce({
+            message: e.message,
+            color: 'red'
+          })
+        }
       }
     }
   }

@@ -104,177 +104,180 @@
 </template>
 
 <script>
-  import { mixins, Component, namespace } from 'nuxt-property-decorator'
+  import { mapMutations, mapActions } from 'vuex'
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
   import { InlineField, InlineSelect } from '@/helpers'
   import { positions } from '@/models/Player'
 
-  const broadcaster = namespace('broadcaster')
-  const players = namespace('players')
-
-  @Component({
+  export default {
+    name: 'PlayerGrid',
     components: {
       InlineField,
       InlineSelect
-    }
-  })
-  export default class PlayerGrid extends mixins(TeamAccessible) {
-    @players.Action('UPDATE') updatePlayer
-    @players.Action('ANALYZE') analyzePlayers
-    @broadcaster.Mutation('ANNOUNCE') announce
-
-    key = 0
-    mode = 0
-    modes = [
-      { text: 'Overall', color: 'green', icon: 'trending-up' },
-      { text: 'Edit', color: 'orange', icon: 'pencil' },
-      { text: 'Contract', color: 'blue', icon: 'file-document-outline' },
-      { text: 'Statistics', color: 'red', icon: 'numeric' }
-    ]
-    filter = 2
-    filters = [
-      { text: 'All', color: 'blue', icon: 'earth' },
-      { text: 'Youth', color: 'cyan', icon: 'school' },
-      { text: 'Active', color: 'light-green', icon: 'account-check' },
-      { text: 'Injured', color: 'pink', icon: 'ambulance' },
-      { text: 'Loaned', color: 'indigo', icon: 'transit-transfer' },
-      { text: 'Pending', color: 'deep-orange', icon: 'lock-clock' }
-    ]
-    search = ''
-    stats = {
-      num_games: {},
-      num_goals: {},
-      num_assists: {},
-      num_cs: {}
-    }
-
-    get players () {
-      return Player
-        .query()
-        .with('team|contracts')
-        .where('team_id', parseInt(this.$route.params.teamId))
-        .get()
-    }
-
-    get currentMode () {
-      return this.modes[this.mode]
-    }
-
-    get currentFilter () {
-      return this.filters[this.filter]
-    }
-
-    get headers () {
-      let headers = [
-        { text: 'Name', value: 'name' },
-        { text: 'Status', value: 'status', align: 'center', sortable: false, width: 40 },
-        { text: 'Age', value: 'age', align: 'center' },
-        { text: 'Position', value: 'pos', align: 'center', sort: this.sortPos },
-        { text: 'Kit No', value: 'kit_no', align: 'center' }
-      ]
-
-      switch (this.mode) {
-        case 0: // Overall
-          return headers.concat([
-            { text: '2nd Position(s)', value: 'sec_pos', sortable: false, align: 'center' },
-            { text: 'OVR', value: 'ovr', align: 'center' },
-            { text: 'Value', value: 'value', align: 'end' }
-          ])
-        case 1: // Edit
-          return [
-            { text: 'Name', value: 'name' },
-            { text: 'Position', value: 'pos', align: 'center', sort: this.sortPos },
-            { text: 'Kit No', value: 'kit_no', align: 'center' },
-            { text: 'OVR', value: 'ovr', align: 'center' },
-            { text: 'Value', value: 'value', align: 'end' }
-          ]
-        case 2: // Contract
-          return headers.concat([
-            { text: 'Value', value: 'value', align: 'end' },
-            { text: 'Wage', value: 'wage', align: 'end' },
-            { text: 'End Date', value: 'endDate', align: 'end' }
-          ])
-        case 3: // Statistics
-          return headers.concat([
-            { text: 'Games Played', value: 'numGames', align: 'center' },
-            { text: 'Goals', value: 'numGoals', align: 'center' },
-            { text: 'Assists', value: 'numAssists', align: 'center' },
-            { text: 'Clean Sheets', value: 'numCs', align: 'center' }
-          ])
-        default:
-          return headers
+    },
+    mixins: [
+      TeamAccessible
+    ],
+    data: () => ({
+      key: 0,
+      mode: 0,
+      modes: [
+        { text: 'Overall', color: 'green', icon: 'trending-up' },
+        { text: 'Edit', color: 'orange', icon: 'pencil' },
+        { text: 'Contract', color: 'blue', icon: 'file-document-outline' },
+        { text: 'Statistics', color: 'red', icon: 'numeric' }
+      ],
+      filter: 2,
+      filters: [
+        { text: 'All', color: 'blue', icon: 'earth' },
+        { text: 'Youth', color: 'cyan', icon: 'school' },
+        { text: 'Active', color: 'light-green', icon: 'account-check' },
+        { text: 'Injured', color: 'pink', icon: 'ambulance' },
+        { text: 'Loaned', color: 'indigo', icon: 'transit-transfer' },
+        { text: 'Pending', color: 'deep-orange', icon: 'lock-clock' }
+      ],
+      search: '',
+      stats: {
+        num_games: {},
+        num_goals: {},
+        num_assists: {},
+        num_cs: {}
       }
-    }
+    }),
+    computed: {
+      players () {
+        return Player
+          .query()
+          .with('team|contracts')
+          .where('team_id', parseInt(this.$route.params.teamId))
+          .get()
+      },
+      currentMode () {
+        return this.modes[this.mode]
+      },
+      currentFilter () {
+        return this.filters[this.filter]
+      },
+      headers () {
+        let headers = [
+          { text: 'Name', value: 'name' },
+          { text: 'Status', value: 'status', align: 'center', sortable: false, width: 40 },
+          { text: 'Age', value: 'age', align: 'center' },
+          { text: 'Position', value: 'pos', align: 'center', sort: this.sortPos },
+          { text: 'Kit No', value: 'kit_no', align: 'center' }
+        ]
 
-    get rows () {
-      return this.players
-        .filter(player => {
-          switch (this.filter) {
-            case 0: // All
-              return true
-            case 1: // Youth
-              return player.youth && player.contracts.length === 0
-            case 2: // Active
-              return player.status && player.status !== 'Pending'
-            case 3: // Injured
-            case 4: // Loaned
-            case 5: // Pending
-              return player.status === this.currentFilter.text
-          }
-        })
-        .map(player => {
-          const contract = player.contract()
+        switch (this.mode) {
+          case 0: // Overall
+            return headers.concat([
+              { text: '2nd Position(s)', value: 'sec_pos', sortable: false, align: 'center' },
+              { text: 'OVR', value: 'ovr', align: 'center' },
+              { text: 'Value', value: 'value', align: 'end' }
+            ])
+          case 1: // Edit
+            return [
+              { text: 'Name', value: 'name' },
+              { text: 'Position', value: 'pos', align: 'center', sort: this.sortPos },
+              { text: 'Kit No', value: 'kit_no', align: 'center' },
+              { text: 'OVR', value: 'ovr', align: 'center' },
+              { text: 'Value', value: 'value', align: 'end' }
+            ]
+          case 2: // Contract
+            return headers.concat([
+              { text: 'Value', value: 'value', align: 'end' },
+              { text: 'Wage', value: 'wage', align: 'end' },
+              { text: 'End Date', value: 'endDate', align: 'end' }
+            ])
+          case 3: // Statistics
+            return headers.concat([
+              { text: 'Games Played', value: 'numGames', align: 'center' },
+              { text: 'Goals', value: 'numGoals', align: 'center' },
+              { text: 'Assists', value: 'numAssists', align: 'center' },
+              { text: 'Clean Sheets', value: 'numCs', align: 'center' }
+            ])
+          default:
+            return headers
+        }
+      },
+      rows () {
+        return this.players
+          .filter(player => {
+            switch (this.filter) {
+              case 0: // All
+                return true
+              case 1: // Youth
+                return player.youth && player.contracts.length === 0
+              case 2: // Active
+                return player.status && player.status !== 'Pending'
+              case 3: // Injured
+              case 4: // Loaned
+              case 5: // Pending
+                return player.status === this.currentFilter.text
+            }
+          })
+          .map(player => {
+            const contract = player.contract()
 
-          const numGames = this.stats.num_games[player.id] || 0
-          const numGoals = this.stats.num_goals[player.id] || 0
-          const numAssists = this.stats.num_assists[player.id] || 0
-          const numCs = this.stats.num_cs[player.id] || 0
+            const numGames = this.stats.num_games[player.id] || 0
+            const numGoals = this.stats.num_goals[player.id] || 0
+            const numAssists = this.stats.num_assists[player.id] || 0
+            const numCs = this.stats.num_cs[player.id] || 0
 
-          return {
-            ...player,
-            flag: player.flag,
-            link: player.link,
-            statusIcon: player.statusIcon,
-            statusColor: player.statusColor,
+            return {
+              ...player,
+              flag: player.flag,
+              link: player.link,
+              statusIcon: player.statusIcon,
+              statusColor: player.statusColor,
 
-            wage: contract.wage,
-            endDate: contract.ended_on,
+              wage: contract.wage,
+              endDate: contract.ended_on,
 
-            numGames,
-            numGoals,
-            numAssists,
-            numCs
-          }
-        })
-    }
-
-    async updatePlayerAttribute (playerId, attribute, value) {
-      try {
-        await this.updatePlayer({
-          id: playerId,
-          [attribute]: value
-        })
-      } catch (e) {
-        this.key++
-        this.announce({
-          message: e.message,
-          color: 'red'
-        })
+              numGames,
+              numGoals,
+              numAssists,
+              numCs
+            }
+          })
       }
-    }
+    },
+    mounted () {
+      this.getPlayerStats()
+    },
+    methods: {
+      ...mapMutations('broadcaster', {
+        announce: 'ANNOUNCE'
+      }),
+      ...mapActions('players', {
+        updatePlayer: 'UPDATE',
+        analyzePlayers: 'ANALYZE'
+      }),
+      async getPlayerStats () {
+        const { data } = await this.analyzePlayers({
+          teamId: this.team.id,
+          playerIds: this.players.map(player => player.id)
+        })
 
-    async mounted () {
-      const { data } = await this.analyzePlayers({
-        teamId: this.team.id,
-        playerIds: this.players.map(player => player.id)
-      })
-
-      this.stats = data
-    }
-
-    sortPos (posA, posB) {
-      return positions.indexOf(posA) - positions.indexOf(posB)
+        this.stats = data
+      },
+      async updatePlayerAttribute (playerId, attribute, value) {
+        try {
+          await this.updatePlayer({
+            id: playerId,
+            [attribute]: value
+          })
+        } catch (e) {
+          this.key++
+          this.announce({
+            message: e.message,
+            color: 'red'
+          })
+        }
+      },
+      sortPos (posA, posB) {
+        return positions.indexOf(posA) - positions.indexOf(posB)
+      }
     }
   }
 </script>

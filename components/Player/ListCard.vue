@@ -17,12 +17,21 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
-
-  @Component
-  export default class PlayersListCard extends Vue {
-    @Prop({ type: Array, default: [] }) players
-    @Prop({ type: String, default: 'primary' }) color
-    @Prop(String) title
+  export default {
+    name: 'PlayersListCard',
+    props: {
+      players: {
+        type: Array,
+        default: () => ([])
+      },
+      color: {
+        type: String,
+        default: 'primary'
+      },
+      title: {
+        type: String,
+        default: null
+      }
+    }
   }
 </script>

@@ -36,35 +36,39 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
-
-  @Component
-  export default class CapEvents extends Vue {
-    @Prop({ type: Object, required: true }) cap
-    @Prop({ type: Object, required: true }) match
-
-    get goals () {
-      return this.match.goals
-        .filter(g => g.player_id === this.cap.player_id && !g.own_goal)
-        .length
-    }
-
-    get assists () {
-      return this.match.goals
-        .filter(g => g.assist_id === this.cap.player_id)
-        .length
-    }
-
-    get bookings () {
-      return this.match.bookings
-        .filter(b => b.player_id === this.cap.player_id)
-        .map(b => b.red_card ? 'red' : 'yellow darken-2')
-    }
-
-    get injured () {
-      return this.match.substitutions.some(s =>
-        s.player_id === this.cap.player_id && s.injury
-      )
+  export default {
+    name: 'CapEvents',
+    props: {
+      cap: {
+        type: Object,
+        required: true
+      },
+      match: {
+        type: Object,
+        required: true
+      }
+    },
+    computed: {
+      goals () {
+        return this.match.goals
+          .filter(g => g.player_id === this.cap.player_id && !g.own_goal)
+          .length
+      },
+      assists () {
+        return this.match.goals
+          .filter(g => g.assist_id === this.cap.player_id)
+          .length
+      },
+      bookings () {
+        return this.match.bookings
+          .filter(b => b.player_id === this.cap.player_id)
+          .map(b => b.red_card ? 'red' : 'yellow darken-2')
+      },
+      injured () {
+        return this.match.substitutions.some(s =>
+          s.player_id === this.cap.player_id && s.injury
+        )
+      }
     }
   }
 </script>
