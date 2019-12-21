@@ -33,6 +33,7 @@
   import { TeamAccessible } from '@/mixins'
 
   export default {
+    name: 'SeasonPage',
     components: {
       CompetitionGrid,
       PlayerGrid

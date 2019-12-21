@@ -60,6 +60,7 @@
   import { TeamAccessible } from '@/mixins'
 
   export default {
+    name: 'CompetitionPage',
     components: {
       FittyText,
       RecordRemove,

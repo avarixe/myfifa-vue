@@ -12,15 +12,33 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
-
-  @Component
-  export default class TooltipButton extends Vue {
-    @Prop(String) label
-    @Prop(String) icon
-    @Prop(String) color
-    @Prop(Boolean) dark
-    @Prop(Object) to
-    @Prop() on
+  export default {
+    name: 'TooltipButton',
+    props: {
+      label: {
+        type: String,
+        default: null
+      },
+      icon: {
+        type: String,
+        default: null
+      },
+      color: {
+        type: String,
+        default: null
+      },
+      dark: {
+        type: Boolean,
+        default: null
+      },
+      to: {
+        type: Object,
+        default: null
+      },
+      on: {
+        type: null,
+        default: null
+      }
+    }
   }
 </script>

@@ -139,57 +139,63 @@
 </template>
 
 <script>
-  import { Component, Vue, Prop } from 'nuxt-property-decorator'
+  import Vue from 'vue'
   import { requiredRule, rangeRule, formatRule } from './utilities'
   import VDateField from './VDateField'
   import VMoneyField from './VMoneyField'
 
-  @Component({
+  export default {
+    name: 'DynamicFields',
     components: {
       VDateField,
       VMoneyField
-    }
-  })
-  export default class DynamicFields extends Vue {
-    @Prop(Object) object
-    @Prop(Array) fields
-
-    visible = false
-
-    updateField (field, value) {
-      Vue.set(this.fieldObject(field), field.attribute, value)
-      field.onUpdate && field.onUpdate()
-    }
-
-    fieldObject (field) {
-      return field.object || this.object
-    }
-
-    fieldValue (field) {
-      return field.value || this.fieldObject(field)[field.attribute]
-    }
-
-    rulesFor (field) {
-      let rules = []
-
-      if (field.required) {
-        rules.push(requiredRule({ label: field.label }))
+    },
+    props: {
+      object: {
+        type: Object,
+        default: () => ({})
+      },
+      fields: {
+        type: Array,
+        default: () => ([])
       }
+    },
+    data: () => ({
+      visible: false
+    }),
+    methods: {
+      updateField (field, value) {
+        Vue.set(this.fieldObject(field), field.attribute, value)
+        field.onUpdate && field.onUpdate()
+      },
+      fieldObject (field) {
+        return field.object || this.object
+      },
+      fieldValue (field) {
+        return field.value || this.fieldObject(field)[field.attribute]
+      },
+      rulesFor (field) {
+        let rules = []
 
-      switch (field.inputmode) {
-        case 'numeric':
-          rules.push(formatRule({ label: field.label, type: 'number' }))
-          break
-        case 'email':
-          rules.push(formatRule({ label: field.label, type: 'email' }))
-          break
+        if (field.required) {
+          rules.push(requiredRule({ label: field.label }))
+        }
+
+        switch (field.inputmode) {
+          case 'numeric':
+            rules.push(formatRule({ label: field.label, type: 'number' }))
+            break
+          case 'email':
+            rules.push(formatRule({ label: field.label, type: 'email' }))
+            break
+        }
+
+        if (field.range) {
+          rules.push(rangeRule({ ...field.range, label: field.label }))
+        }
+
+        return rules
       }
-
-      if (field.range) {
-        rules.push(rangeRule({ ...field.range, label: field.label }))
-      }
-
-      return rules
     }
   }
 </script>

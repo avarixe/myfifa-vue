@@ -11,6 +11,7 @@
   import MatchGrid from '@/components/Match/Grid'
 
   export default {
+    name: 'MatchesPage',
     components: {
       MatchGrid
     },

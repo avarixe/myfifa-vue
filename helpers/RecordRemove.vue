@@ -9,30 +9,44 @@
 </template>
 
 <script>
-  import { Vue, Prop, Component } from 'nuxt-property-decorator'
   import TooltipButton from './TooltipButton'
 
-  @Component({
+  export default {
+    name: 'RecordRemove',
     components: {
       TooltipButton
-    }
-  })
-  export default class RecordRemove extends Vue {
-    @Prop({ type: Object, required: true }) record
-    @Prop({ type: String, required: true }) store
-    @Prop([String, Object]) redirect
-    @Prop(String) label
+    },
+    props: {
+      record: {
+        type: Object,
+        required: true
+      },
+      store: {
+        type: String,
+        required: true
+      },
+      redirect: {
+        type: [String, Object],
+        default: null
+      },
+      label: {
+        type: String,
+        default: null
+      }
+    },
+    data: () => ({
+      snackbar: false
+    }),
+    methods: {
+      remove () {
+        this.$store.dispatch(
+          `${this.store}/REMOVE`,
+          this.record.id
+        )
 
-    snackbar = false
-
-    remove () {
-      this.$store.dispatch(
-        `${this.store}/REMOVE`,
-        this.record.id
-      )
-
-      if (this.redirect) {
-        this.$router.push(this.redirect)
+        if (this.redirect) {
+          this.$router.push(this.redirect)
+        }
       }
     }
   }

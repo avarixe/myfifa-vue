@@ -51,6 +51,7 @@
   import { TeamAccessible } from '@/mixins'
 
   export default {
+    name: 'MatchPage',
     components: {
       FittyText,
       MatchForm,

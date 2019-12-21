@@ -3,7 +3,7 @@
     template(v-if="readonly")
       span(:class="displayClass") {{ humanizedDisplay }}
     template(v-else)
-      v-edit-dialog(@open="open" @close="close")
+      v-edit-dialog(@close="close")
         v-tooltip(bottom)
           template(#activator="{ on }")
             span(v-on="on")
@@ -54,60 +54,108 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop } from 'nuxt-property-decorator'
-  import { Watch } from 'vue-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import ListOption from './ListOption'
   import VMoneyField from './VMoneyField'
 
-  @Component({
+  export default {
+    name: 'InlineField',
     components: {
       ListOption,
       VMoneyField
-    }
-  })
-  export default class InlineField extends mixins(TeamAccessible) {
-    @Prop({ type: Object, required: true }) item
-    @Prop({ type: String, required: true }) attribute
-    @Prop(String) label
-    @Prop(Array) options
-    @Prop(String) optionAvatar
-    @Prop(String) optionText
-    @Prop(String) optionValue
-    @Prop(Array) rules
-    @Prop(String) inputType
-    @Prop([String, Number]) display
-    @Prop(String) displayClass
-    @Prop({ type: Boolean, default: false }) readonly
-    @Prop({ type: Boolean, default: false }) required
-
-    value = null
-    original = null
-    key = 0
-
-    get humanizedDisplay () {
-      const value = this.display || this.value
-      return value === null || value === '' ? '-' : value
-    }
-
-    get isDirty () {
-      return this.value !== this.original
-    }
-
-    @Watch('item', { immediate: true })
-    @Watch('attribute')
-    reset () {
-      this.value = this.item[this.attribute]
-      this.original = this.value
-    }
-
-    open () {
-    }
-
-    close () {
-      if (this.isDirty) {
-        this.$emit('close', this.value)
-        this.key++
+    },
+    mixins: [
+      TeamAccessible
+    ],
+    props: {
+      item: {
+        type: Object,
+        required: true
+      },
+      attribute: {
+        type: String,
+        required: true
+      },
+      label: {
+        type: String,
+        default: null
+      },
+      options: {
+        type: Array,
+        default: () => ([])
+      },
+      optionAvatar: {
+        type: String,
+        default: null
+      },
+      optionText: {
+        type: String,
+        default: null
+      },
+      optionValue: {
+        type: String,
+        default: null
+      },
+      rules: {
+        type: Array,
+        default: () => ([])
+      },
+      inputType: {
+        type: String,
+        default: null
+      },
+      display: {
+        type: [String, Number],
+        default: null
+      },
+      displayClass: {
+        type: String,
+        default: null
+      },
+      readonly: {
+        type: Boolean,
+        default: false
+      },
+      required: {
+        type: Boolean,
+        default: false
+      }
+    },
+    data: () => ({
+      value: null,
+      original: null,
+      key: 0
+    }),
+    computed: {
+      humanizedDisplay () {
+        const value = this.display || this.value
+        return value === null || value === '' ? '-' : value
+      },
+      isDirty () {
+        return this.value !== this.original
+      }
+    },
+    watch: {
+      item: {
+        handler () {
+          this.reset()
+        },
+        immediate: true
+      },
+      attribute () {
+        this.reset()
+      }
+    },
+    methods: {
+      reset () {
+        this.value = this.item[this.attribute]
+        this.original = this.value
+      },
+      close () {
+        if (this.isDirty) {
+          this.$emit('close', this.value)
+          this.key++
+        }
       }
     }
   }

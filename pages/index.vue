@@ -10,6 +10,7 @@
   import LoginForm from '@/components/App/LoginForm'
 
   export default {
+    name: 'AppPage',
     middleware: [
       'authenticated'
     ],

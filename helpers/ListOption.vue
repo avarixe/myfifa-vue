@@ -12,14 +12,29 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
-
-  @Component
-  export default class ListOption extends Vue {
-    @Prop(null) item
-    @Prop(String) optionAvatar
-    @Prop(String) optionText
-    @Prop({ type: Boolean, default: false }) selected
-    @Prop({ type: Boolean, default: false }) dense
+  export default {
+    name: 'ListOption',
+    props: {
+      item: {
+        type: null,
+        required: true
+      },
+      optionAvatar: {
+        type: String,
+        default: null
+      },
+      optionText: {
+        type: String,
+        default: null
+      },
+      selected: {
+        type: Boolean,
+        default: false
+      },
+      dense: {
+        type: Boolean,
+        default: false
+      }
+    }
   }
 </script>

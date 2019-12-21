@@ -11,6 +11,7 @@
   import PlayerGrid from '@/components/Player/Grid'
 
   export default {
+    name: 'PlayersPage',
     components: {
       PlayerGrid
     },

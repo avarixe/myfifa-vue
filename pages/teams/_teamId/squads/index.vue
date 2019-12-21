@@ -11,6 +11,7 @@
   import SquadGrid from '@/components/Squad/Grid'
 
   export default {
+    name: 'SquadsPage',
     components: {
       SquadGrid
     },

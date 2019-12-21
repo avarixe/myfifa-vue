@@ -11,6 +11,7 @@
   import SeasonTimeline from '@/components/Season/Timeline'
 
   export default {
+    name: 'SeasonsPage',
     components: {
       SeasonTimeline
     },

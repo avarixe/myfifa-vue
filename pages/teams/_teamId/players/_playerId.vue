@@ -92,6 +92,7 @@
   import { TeamAccessible } from '@/mixins'
 
   export default {
+    name: 'PlayerPage',
     components: {
       PlayerActions,
       PlayerTimeline,

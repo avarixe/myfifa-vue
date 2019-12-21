@@ -10,6 +10,7 @@
   import TeamGrid from '@/components/Team/Grid'
 
   export default {
+    name: 'TeamsPage',
     middleware: [
       'authenticated'
     ],

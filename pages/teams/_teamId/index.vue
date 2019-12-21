@@ -58,6 +58,7 @@
   import { TeamAccessible } from '@/mixins'
 
   export default {
+    name: 'TeamPage',
     components: {
       MatchCard,
       PlayerListCard,
