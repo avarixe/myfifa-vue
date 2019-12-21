@@ -1,33 +1,15 @@
-<template>
-  <div class="d-inline-block">
-    <tooltip-button
+<template lang="pug">
+  .d-inline-block
+    tooltip-button(
       label="Retire"
       icon="mdi-human-greeting"
       color="purple"
       @click="snackbar = true"
-    />
-
-    <v-snackbar
-      v-model="snackbar"
-      color="purple"
-    >
-      {{ player.name }} is Retiring End of Season?
-      <v-btn
-        dark
-        text
-        @click="retirePlayer(player.id)"
-      >
-        Yes
-      </v-btn>
-      <v-btn
-        dark
-        text
-        @click.stop="snackbar = false"
-      >
-        No
-      </v-btn>
-    </v-snackbar>
-  </div>
+    )
+    v-snackbar(v-model="snackbar" color="purple")
+      | {{ player.name }} is Retiring End of Season?
+      v-btn(dark text @click="retirePlayer(player.id)") Yes
+      v-btn(dark text @click.stop="snackbar = false") No
 </template>
 
 <script>

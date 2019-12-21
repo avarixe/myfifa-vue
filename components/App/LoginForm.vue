@@ -1,61 +1,31 @@
-<template>
-  <v-form
-    ref="form"
-    @submit.prevent="authenticate"
-  >
-    <v-card>
-      <v-toolbar
-        flat
-      >
-        <v-toolbar-title>
-          <div class="headline font-weight-light">MyFIFA Manager</div>
-          <div class="caption">v{{ version }}</div>
-        </v-toolbar-title>
-      </v-toolbar>
-
-      <v-card-text>
-        <dynamic-fields
-          :object="credentials"
-          :fields="fields"
-        />
-      </v-card-text>
-
-      <v-alert
-        v-model="formError"
-        type="error"
-        dismissible
-      >
-        {{ errorMessage }}
-      </v-alert>
-
-      <v-card-actions>
-        <v-spacer />
-        <user-form>
-          <template #default="{ on }">
-            <v-btn
+<template lang="pug">
+  v-form(ref="form" @submit.prevent="authenticate")
+    v-card
+      v-toolbar(flat)
+        v-toolbar-title
+          .headline.font-weight-light MyFIFA Manager
+          .caption v{{ version }}
+      v-card-text
+        dynamic-fields(:object="credentials" :fields="fields")
+      v-alert(v-model="formError" type="error" dismissible) {{ errorMessage }}
+      v-card-actions
+        v-spacer
+        user-form
+          template(#default="{ on }")
+            v-btn(
               color="orange"
               text
               large
               v-on="on"
-            >
-              Register
-            </v-btn>
-          </template>
-        </user-form>
-
-        <v-btn
+            ) Register
+        v-btn(
           type="submit"
           color="primary"
           text
           large
           :loading="loading"
           @click="loading = true"
-        >
-          Log In
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-form>
+        ) Log In
 </template>
 
 <script>

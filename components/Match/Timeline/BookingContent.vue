@@ -1,8 +1,8 @@
-<template>
-  <div>
-    <span class="font-weight-bold">{{ item.player_name }}</span>
-    has received a {{ bookingType }}
-  </div>
+<template lang="pug">
+  div
+    span.font-weight-bold {{ item.player_name }}
+    |&nbsp;
+    | has received a {{ bookingType }}
 </template>
 
 <script>

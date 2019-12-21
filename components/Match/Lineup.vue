@@ -1,51 +1,34 @@
-<template>
-  <v-container>
-    <v-row
-      v-if="match.caps.length >= 11"
-      dense
-      class="text-center"
-    >
-      <v-col>
-        <div class="display-1 primary--text">{{ defOVR }}</div>
-        <div class="subheading">DEF</div>
-      </v-col>
-      <v-col>
-        <div class="display-1 success--text">{{ midOVR }}</div>
-        <div class="subheading">MID</div>
-      </v-col>
-      <v-col>
-        <div class="display-1 warning--text">{{ attOVR }}</div>
-        <div class="subheading">ATT</div>
-      </v-col>
-    </v-row>
-
-    <v-divider class="mx-3" />
-
-    <formation-view :formation="starters">
-      <template #item="{ player }">
-        <cap-view
+<template lang="pug">
+  v-container
+    v-row.text-center(v-if="match.caps.length >= 11" dense)
+      v-col
+        .display-1.primary--text {{ defOVR }}
+        .subheading DEF
+      v-col
+        .display-1.success--text {{ midOVR }}
+        .subheading MID
+      v-col
+        .display-1.warning--text {{ attOVR }}
+        .subheading ATT
+    v-divider.mx-3
+    formation-view(:formation="starters")
+      template(#item="{ player }")
+        cap-view(
           :cap="player"
           :match="match"
           :readonly="readonly"
-        />
-      </template>
-    </formation-view>
-
-    <v-row v-if="substitutes.length > 0">
-      <v-col cols="12">
-        <v-list dense>
-          <v-subheader>Substitutes</v-subheader>
-          <cap-sub-view
+        )
+    v-row(v-if="substitutes.length > 0")
+      v-col
+        v-list(dense)
+          v-subheader Substitutes
+          cap-sub-view(
             v-for="cap in substitutes"
             :key="cap.id"
             :cap="cap"
             :match="match"
             :readonly="readonly"
-          />
-        </v-list>
-      </v-col>
-    </v-row>
-  </v-container>
+          )
 </template>
 
 <script>

@@ -1,18 +1,7 @@
-<template>
-  <v-snackbar
-    v-model="snackbar"
-    :color="color"
-    bottom
-  >
-    {{ message }}
-    <v-btn
-      dark
-      text
-      @click="snackbar = false"
-    >
-      Close
-    </v-btn>
-  </v-snackbar>
+<template lang="pug">
+  v-snackbar(v-model="snackbar" :color="color" bottom)
+    | {{ message }}
+    v-btn(dark text @click="snackbar = false") Close
 </template>
 
 <script>

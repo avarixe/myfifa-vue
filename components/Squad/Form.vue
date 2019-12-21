@@ -1,28 +1,22 @@
-<template>
-  <dialog-form
+<template lang="pug">
+  dialog-form(
     v-model="dialog"
     title="Edit Squad"
     :submit="submit"
     :color="color"
-  >
-    <template #activator="{ on }">
-      <slot :on="on" />
-    </template>
-
-    <template #form>
-      <dynamic-fields :fields="fields">
-        <template #field.player="{ object, attribute }">
-          <player-select
+  )
+    template(#activator="{ on }")
+      slot(:on="on")
+    template(#form)
+      dynamic-fields(:fields="fields")
+        template(#field.player="{ object, attribute }")
+          player-select(
             v-model="object[attribute]"
             :players="players"
             item-value="id"
             label="Player"
             hide-details
-          />
-        </template>
-      </dynamic-fields>
-    </template>
-  </dialog-form>
+          )
 </template>
 
 <script>

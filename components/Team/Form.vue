@@ -1,21 +1,14 @@
-<template>
-  <dialog-form
+<template lang="pug">
+  dialog-form(
     v-model="dialog"
     :title="title"
     :submit="submit"
     :color="color"
-  >
-    <template #activator="{ on }">
-      <slot :on="on" />
-    </template>
-
-    <template #form>
-      <dynamic-fields
-        :object="team"
-        :fields="fields"
-      />
-    </template>
-  </dialog-form>
+  )
+    template(#activator="{ on }")
+      slot(:on="on")
+    template(#form)
+      dynamic-fields(:object="team" :fields="fields")
 </template>
 
 <script>

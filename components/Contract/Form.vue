@@ -1,29 +1,21 @@
-<template>
-  <dialog-form
+<template lang="pug">
+  dialog-form(
     v-model="dialog"
     :title="title"
     :submit="submit"
     :submit-cb="submitCb"
     color="blue"
-  >
-    <template #activator="{ on }">
-      <slot :on="on">
-        <tooltip-button
+  )
+    template(#activator="{ on }")
+      slot(:on="on")
+        tooltip-button(
           :label="title"
           icon="mdi-file-document-outline"
           color="blue"
           :on="on"
-        />
-      </slot>
-    </template>
-
-    <template #form>
-      <dynamic-fields
-        :object="contract"
-        :fields="fields"
-      />
-    </template>
-  </dialog-form>
+        )
+    template(#form)
+      dynamic-fields(:object="contract" :fields="fields")
 </template>
 
 <script>

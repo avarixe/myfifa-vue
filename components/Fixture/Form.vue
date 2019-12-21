@@ -1,62 +1,44 @@
-<template>
-  <dialog-form
+<template lang="pug">
+  dialog-form(
     v-model="dialog"
     :title="title"
     :submit="submit"
     :color="color"
-  >
-    <template #activator="{ on }">
-      <slot :on="on">
-        <tooltip-button
+  )
+    template(#activator="{ on }")
+      slot(:on="on")
+        tooltip-button(
           :label="title"
           icon="mdi-table-row-plus-after"
           :on="on"
-        />
-      </slot>
-    </template>
-
-    <template #form>
-      <dynamic-fields
-        :object="fixture"
-        :fields="fields"
-      />
-      <v-col
-        cols="12"
-        class="mt-3 text-center"
-      >
-        <v-btn @click="addLeg">
-          Add Fixture Leg
-        </v-btn>
-      </v-col>
-      <v-container :key="key">
-        <v-row
+        )
+    template(#form)
+      dynamic-fields(:object="fixture" :fields="fields")
+      v-col.mt-3.text-center(cols="12")
+        v-btn(@click="addLeg") Add Fixture Leg
+      v-container(:key="key")
+        v-row(
           v-for="(leg, i) in fixture.legs_attributes"
           v-show="!leg._destroy"
           :key="i"
           dense
-        >
-          <v-col cols="6">
-            <v-text-field
+        )
+          v-col(cols="6")
+            v-text-field(
               v-model="leg.home_score"
               label="Home Score"
               prepend-icon="mdi-soccer"
               hide-details
-            />
-          </v-col>
-          <v-col cols="6">
-            <v-text-field
+            )
+          v-col(cols="6")
+            v-text-field(
               v-model="leg.away_score"
               label="Away Score"
               prepend-icon="mdi-soccer"
               append-outer-icon="mdi-delete"
               hide-details
               @click:append-outer="leg._destroy = true; key++"
-            />
-          </v-col>
-        </v-row>
-      </v-container>
-    </template>
-  </dialog-form>
+            )
 </template>
 
 <script>

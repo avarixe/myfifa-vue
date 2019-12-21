@@ -1,51 +1,38 @@
-<template>
-  <div>
-    <v-icon
+<template lang="pug">
+  div
+    v-icon(
       v-if="parseInt(cap.start) > 0"
       color="green"
       small
-    >
-      mdi-subdirectory-arrow-right
-    </v-icon>
-    <v-icon
+    ) mdi-subdirectory-arrow-right
+    v-icon(
       v-for="index in goals"
       :key="`goal${index}`"
       color="blue"
       small
-    >
-      mdi-soccer
-    </v-icon>
-    <v-icon
+    ) mdi-soccer
+    v-icon(
       v-for="index in assists"
       :key="`assist${index}`"
       color="light-blue accent-1"
       small
-    >
-      mdi-human-greeting
-    </v-icon>
-    <v-icon
+    ) mdi-human-greeting
+    v-icon(
       v-for="(color, i) in bookings"
       :key="`booking${i}`"
       :color="color"
       small
-    >
-      mdi-book
-    </v-icon>
-    <v-icon
+    ) mdi-book
+    v-icon(
       v-if="injured"
       color="pink"
       small
-    >
-      mdi-ambulance
-    </v-icon>
-    <v-icon
+    ) mdi-ambulance
+    v-icon(
       v-if="cap.subbed_out"
       color="red"
       small
-    >
-      mdi-subdirectory-arrow-left
-    </v-icon>
-  </div>
+    ) mdi-subdirectory-arrow-left
 </template>
 
 <script>

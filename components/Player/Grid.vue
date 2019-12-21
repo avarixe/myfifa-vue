@@ -1,80 +1,45 @@
-<template>
-  <v-card>
-    <v-toolbar flat>
-      <!-- Display Menu -->
-      <v-tooltip
-        bottom
-        :color="currentFilter.color"
-      >
-        <template #activator="{ on: tooltip }">
-          <v-menu
-            bottom
-            right
-          >
-            <template #activator="{ on: menu }">
-              <v-btn
-                class="px-1"
-                text
-                v-on="{ ...menu, ...tooltip }"
-              >
-                <v-icon :color="currentFilter.color">
-                  mdi-{{ currentFilter.icon }}
-                </v-icon>
-              </v-btn>
-            </template>
-
-            <v-list>
-              <v-list-item
+<template lang="pug">
+  v-card
+    v-toolbar(flat)
+      //- Display Menu
+      v-tooltip(bottom :color="currentFilter.color")
+        template(#activator="{ on: tooltip }")
+          v-menu(bottom right)
+            template(#activator="{ on: menu }")
+              v-btn.px-1(text v-on="{ ...menu, ...tooltip }")
+                v-icon(:color="currentFilter.color")
+                  | mdi-{{ currentFilter.icon }}
+            v-list
+              v-list-item(
                 v-for="(opt, i) in filters"
                 :key="i"
                 @click="filter = i"
-              >
-                <v-list-item-avatar>
-                  <v-icon :color="opt.color">mdi-{{ opt.icon }}</v-icon>
-                </v-list-item-avatar>
-                <v-list-item-title>{{ opt.text }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </template>
-        Display {{ currentFilter.text }} Players
-      </v-tooltip>
-
-      <v-btn-toggle
+              )
+                v-list-item-avatar
+                  v-icon(:color="opt.color") mdi-{{ opt.icon }}
+                v-list-item-title {{ opt.text }}
+        | Display {{ currentFilter.text }} Players
+      v-btn-toggle.mx-3(
         v-model="mode"
         mandatory
         rounded
-        class="mx-3"
-      >
-        <v-btn
-          v-for="(opt, i) in modes"
-          :key="i"
-          text
-        >
-          <v-icon :color="opt.color">mdi-{{ opt.icon }}</v-icon>
-        </v-btn>
-      </v-btn-toggle>
-
-      <div
-        :class="`hidden-sm-and-down subheading ${currentMode.color}--text`"
-        v-text="currentMode.text"
-      />
-
-      <v-spacer />
-
-      <!-- Player Search -->
-      <v-text-field
+      )
+        v-btn(v-for="(opt, i) in modes" :key="i" text)
+          v-icon(:color="opt.color") mdi-{{ opt.icon }}
+      .hidden-sm-and-down.subheading(:class="`${currentMode.color}--text`")
+        | {{ currentMode.text }}
+      v-spacer
+      //- Player Search
+      v-text-field(
         v-model="search"
         label="Search"
         append-icon="mdi-magnify"
         hide-details
-      />
-    </v-toolbar>
-
-    <!-- Player Information Grid -->
-    <v-card-text>
-      <client-only>
-        <v-data-table
+      )
+    //- Player Information Grid
+    v-card-text
+      client-only
+        v-data-table(
           :key="key"
           :headers="headers"
           :items="rows"
@@ -83,26 +48,23 @@
           :search="search"
           item-key="id"
           no-data-text="No Players Found"
-        >
-          <template #item.name="{ item }">
-            <v-btn
+        )
+          template(#item.name="{ item }")
+            v-btn(
               :to="item.link"
               small
               text
               nuxt
               color="info"
-            >
-              <flag
+            )
+              flag.mr-2(
                 v-if="item.nationality"
                 :iso="item.flag"
                 :title="item.nationality"
-                class="mr-2"
-              />
-              {{ item.name }}
-            </v-btn>
-          </template>
-          <template #item.kit_no="{ item }">
-            <inline-select
+              )
+              | {{ item.name }}
+          template(#item.kit_no="{ item }")
+            inline-select(
               :item="item"
               attribute="kit_no"
               label="Kit No"
@@ -110,10 +72,9 @@
               :options="Array.from({ length: 98 }, (v, k) => k + 1)"
               dense
               @change="updatePlayerAttribute(item.id, 'kit_no', $event)"
-            />
-          </template>
-          <template #item.ovr="{ item }">
-            <inline-select
+            )
+          template(#item.ovr="{ item }")
+            inline-select(
               :item="item"
               attribute="ovr"
               label="OVR"
@@ -121,10 +82,9 @@
               :options="Array.from({ length: 61 }, (v, k) => k + 40)"
               dense
               @change="updatePlayerAttribute(item.id, 'ovr', $event)"
-            />
-          </template>
-          <template #item.value="{ item }">
-            <inline-field
+            )
+          template(#item.value="{ item }")
+            inline-field(
               :item="item"
               attribute="value"
               label="Value"
@@ -132,26 +92,15 @@
               :display="item.value | formatMoney(team.currency)"
               required
               @close="updatePlayerAttribute(item.id, 'value', $event)"
-            />
-          </template>
-          <template #item.status="{ item }">
-            <v-icon :color="item.statusColor">
-              mdi-{{ item.statusIcon }}
-            </v-icon>
-          </template>
-          <template #item.sec_pos="{ item }">
-            {{ item.sec_pos | listArray('-') }}
-          </template>
-          <template #item.wage="{ item }">
-            {{ item.wage | formatMoney(team.currency, '-') }}
-          </template>
-          <template #item.endDate="{ item }">
-            {{ item.endDate | formatDate('MMM dd, yyyy', '-') }}
-          </template>
-        </v-data-table>
-      </client-only>
-    </v-card-text>
-  </v-card>
+            )
+          template(#item.status="{ item }")
+            v-icon(:color="item.statusColor") mdi-{{ item.statusIcon }}
+          template(#item.sec_pos="{ item }")
+            | {{ item.sec_pos | listArray('-') }}
+          template(#item.wage="{ item }")
+            | {{ item.wage | formatMoney(team.currency, '-') }}
+          template(#item.endDate="{ item }")
+            | {{ item.endDate | formatDate('MMM dd, yyyy', '-') }}
 </template>
 
 <script>

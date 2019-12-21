@@ -1,27 +1,19 @@
-<template>
-  <v-autocomplete
+<template lang="pug">
+  v-autocomplete(
     v-model="nationality"
     :items="items"
     :label="label"
     :prepend-icon="icon"
     @change="emitValue"
-  >
-    <template #selection="{ item }">
-      <flag
-        :iso="nationalities[item]"
-        class="mr-2"
-      />
-      {{ item }}
-    </template>
-    <template #item="{ item }">
-      <v-list-item-avatar size="20">
-        <flag :iso="nationalities[item]" />
-      </v-list-item-avatar>
-      <v-list-item-content>
-        <v-list-item-title v-text="item" />
-      </v-list-item-content>
-    </template>
-  </v-autocomplete>
+  )
+    template(#selection="{ item }")
+      flag.mr-2(:iso="nationalities[item]")
+      | {{ item }}
+    template(#item="{ item }")
+      v-list-item-avatar(size="20")
+        flag(:iso="nationalities[item]")
+      v-list-item-content
+        v-list-item-title {{ item }}
 </template>
 
 <script>

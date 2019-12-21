@@ -1,33 +1,23 @@
-<template>
-  <dialog-form
+<template lang="pug">
+  dialog-form(
     v-model="dialog"
     :title="title"
     :submit="submit"
     :color="color"
-  >
-    <template #activator="{ on }">
-      <slot :on="on" />
-    </template>
-
-    <template #form>
-      <dynamic-fields
-        :object="player"
-        :fields="fields"
-      >
-        <template #field.nationality>
-          <nationality-field v-model="player.nationality" />
-        </template>
-        <template #field.youth>
-          <v-checkbox
+  )
+    template(#activator="{ on }")
+      slot(:on="on")
+    template(#form)
+      dynamic-fields(:object="player" :fields="fields")
+        template(#field.nationality)
+          nationality-field(v-model="player.nationality")
+        template(#field.youth)
+          v-checkbox(
             v-model="player.youth"
             label="Youth Player"
             :disabled="record"
             hide-details
-          />
-        </template>
-      </dynamic-fields>
-    </template>
-  </dialog-form>
+          )
 </template>
 
 <script>

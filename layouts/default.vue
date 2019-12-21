@@ -1,23 +1,12 @@
-<template>
-  <v-app>
-    <client-only v-if="authenticated">
-      <app-bar />
-
-      <app-drawer />
-    </client-only>
-
-    <app-broadcaster />
-
-    <v-content>
-      <template v-if="teamPage">
-        <team-channel />
-        <nuxt />
-      </template>
-      <template v-else>
-        <nuxt />
-      </template>
-    </v-content>
-  </v-app>
+<template lang="pug">
+  v-app
+    client-only(v-if="authenticated")
+      app-bar
+      app-drawer
+    app-broadcaster
+    v-content
+      team-channel(v-if="teamPage")
+      nuxt
 </template>
 
 <script>

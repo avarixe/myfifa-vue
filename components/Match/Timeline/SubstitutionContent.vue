@@ -1,9 +1,10 @@
-<template>
-  <div>
-    <span class="font-weight-bold">{{ item.player_name }}</span>
-    {{ action }}
-    <span class="font-weight-bold">{{ item.replaced_by }}</span>
-  </div>
+<template lang="pug">
+  div
+    span.font-weight-bold {{ item.player_name }}
+    |&nbsp;
+    | {{ action }}
+    |&nbsp;
+    span.font-weight-bold {{ item.replaced_by }}
 </template>
 
 <script>

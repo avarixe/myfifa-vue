@@ -1,7 +1,7 @@
-<template>
-  <v-card flat>
-    <v-card-title>
-      <inline-field
+<template lang="pug">
+  v-card(flat)
+    v-card-title
+      inline-field(
         :key="key"
         :item="table"
         attribute="name"
@@ -9,21 +9,16 @@
         :readonly="readonly"
         display-class="font-weight-light"
         @close="updateStageAttribute(table.id, 'name', $event)"
-      />
-
-      <v-spacer />
-
-      <template v-if="!readonly">
-        <table-row-form :stage="table" />
-        <record-remove
+      )
+      v-spacer
+      template(v-if="!readonly")
+        table-row-form(:stage="table")
+        record-remove(
           :record="table"
           store="stages"
           :label="table.name"
-        />
-      </template>
-    </v-card-title>
-
-    <v-data-table
+        )
+    v-data-table(
       :key="key"
       :headers="headers"
       :items="items"
@@ -33,57 +28,40 @@
       multi-sort
       :items-per-page="-1"
       hide-default-footer
-    >
-      <template #item.name="{ item }">
-        <span :class="teamClass(item.name)">{{ item.name }}</span>
-      </template>
-      <template #item.wins="{ item }">
-        <span :class="teamClass(item.name)">{{ item.wins }}</span>
-      </template>
-      <template #item.draws="{ item }">
-        <span :class="teamClass(item.name)">{{ item.draws }}</span>
-      </template>
-      <template #item.losses="{ item }">
-        <span :class="teamClass(item.name)">{{ item.losses }}</span>
-      </template>
-      <template #item.goals_for="{ item }">
-        <span :class="teamClass(item.name)">{{ item.goals_for }}</span>
-      </template>
-      <template #item.goals_against="{ item }">
-        <span :class="teamClass(item.name)">{{ item.goals_against }}</span>
-      </template>
-      <template #item.goal_difference="{ item }">
-        <span :class="teamClass(item.name)">{{ item.goal_difference }}</span>
-      </template>
-      <template #item.points="{ item }">
-        <span :class="teamClass(item.name)">{{ item.points }}</span>
-      </template>
-      <template #item.edit="{ item }">
-        <table-row-form
-          :stage="table"
-          :record="item"
-        >
-          <template #default="{ on }">
-            <tooltip-button
+    )
+      template(#item.name="{ item }")
+        span(:class="teamClass(item.name)") {{ item.name }}
+      template(#item.wins="{ item }")
+        span(:class="teamClass(item.name)") {{ item.wins }}
+      template(#item.draws="{ item }")
+        span(:class="teamClass(item.name)") {{ item.draws }}
+      template(#item.losses="{ item }")
+        span(:class="teamClass(item.name)") {{ item.losses }}
+      template(#item.goals_for="{ item }")
+        span(:class="teamClass(item.name)") {{ item.goals_for }}
+      template(#item.goals_against="{ item }")
+        span(:class="teamClass(item.name)") {{ item.goals_against }}
+      template(#item.goal_difference="{ item }")
+        span(:class="teamClass(item.name)") {{ item.goal_difference }}
+      template(#item.points="{ item }")
+        span(:class="teamClass(item.name)") {{ item.points }}
+      template(#item.edit="{ item }")
+        table-row-form(:stage="table" :record="item")
+          template(#default="{ on }")
+            tooltip-button(
               label="Edit Table Row"
               icon="mdi-pencil"
               color="orange"
               :on="on"
               small
-            />
-          </template>
-        </table-row-form>
-      </template>
-      <template #item.delete="{ item }">
-        <record-remove
+            )
+      template(#item.delete="{ item }")
+        record-remove(
           :record="item"
           store="tableRows"
           label="Table Row"
           small
-        />
-      </template>
-    </v-data-table>
-  </v-card>
+        )
 </template>
 
 <script>

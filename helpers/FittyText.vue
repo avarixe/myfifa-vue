@@ -1,11 +1,8 @@
-<template>
-  <div>
-    <fitty :options="options">
-      <template #content>
-        <slot>{{ text }}</slot>
-      </template>
-    </fitty>
-  </div>
+<template lang="pug">
+  div
+    fitty(:options="options")
+      template(#content)
+        slot {{ text }}
 </template>
 
 <script>

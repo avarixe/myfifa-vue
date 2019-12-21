@@ -1,69 +1,47 @@
-<template>
-  <v-dialog
+<template lang="pug">
+  v-dialog(
     v-model="dialog"
     persistent
     scrollable
     :max-width="fullWidth ? '' : '500px'"
-  >
-    <template #activator="{ on }">
-      <slot
-        name="activator"
-        :on="on"
-      />
-    </template>
-
-    <v-form
+  )
+    template(#activator="{ on }")
+      slot(name="activator" :on="on")
+    v-form(
       ref="form"
       v-model="valid"
       style="width:100%"
       @submit.prevent="submitForm"
-    >
-      <v-card>
-        <v-toolbar
-          :class="formColor"
-          dense
-        >
-          <slot name="header">
-            <v-toolbar-title>
-              <v-icon left>{{ titleIcon }}</v-icon>
-              {{ title }}
-            </v-toolbar-title>
-          </slot>
-        </v-toolbar>
-
-        <v-divider />
-
-        <v-card-text :key="key">
-          <v-row dense>
-            <slot name="form" />
-          </v-row>
-        </v-card-text>
-
-        <v-alert
+    )
+      v-card
+        v-toolbar(:class="formColor" dense)
+          slot(name="header")
+            v-toolbar-title
+              v-icon(left) {{ titleIcon }}
+              | {{ title }}
+        v-divider
+        v-card-text(:key="key")
+          v-row(dense)
+            slot(name="form")
+        v-alert(
           v-model="formError"
           type="error"
           dismissible
           tile
-        >
-          {{ errorMessage }}
-        </v-alert>
-
-        <v-divider />
-
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
+        ) {{ errorMessage }}
+        v-divider
+        v-card-actions
+          v-spacer
+          v-btn(
             color="tertiary"
             text
             large
             @click="dialog = false"
-          >
-            Cancel
-          </v-btn>
-
-          <slot name="additional-actions" />
-
-          <v-btn
+          ) Cancel
+          |&nbsp;
+          slot(name="additional-actions")
+          |&nbsp;
+          v-btn(
             type="submit"
             :disabled="!valid"
             :color="buttonColor"
@@ -71,13 +49,7 @@
             large
             :loading="loading"
             @click="loading = true"
-          >
-            Save
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-form>
-  </v-dialog>
+          ) Save
 </template>
 
 <script>

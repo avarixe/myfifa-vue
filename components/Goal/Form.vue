@@ -1,40 +1,32 @@
-<template>
-  <dialog-form
+<template lang="pug">
+  dialog-form(
     v-model="dialog"
     title-icon="mdi-soccer"
     :title="title"
     :submit="submit"
     :color="color"
-  >
-    <template #activator="{ on }">
-      <slot :on="on">
-        <tooltip-button
+  )
+    template(#activator="{ on }")
+      slot(:on="on")
+        tooltip-button(
           label="Goal"
           icon="mdi-soccer"
           color="blue"
           :on="on"
-        />
-      </slot>
-    </template>
-
-    <template #form>
-      <dynamic-fields
-        :object="goal"
-        :fields="fields"
-      >
-        <template #field.minute>
-          <minute-field v-model="minute" />
-        </template>
-        <template #field.player_id>
-          <player-select
+        )
+    template(#form)
+      dynamic-fields(:object="goal" :fields="fields")
+        template(#field.minute)
+          minute-field(v-model="minute")
+        template(#field.player_id)
+          player-select(
             v-model="goal.player_id"
             :players="scorerOptions"
             label="Goal Scorer"
             required
-          />
-        </template>
-        <template #field.assist_id>
-          <player-select
+          )
+        template(#field.assist_id)
+          player-select(
             v-model="goal.assist_id"
             :players="assistOptions"
             label="Assisted By"
@@ -42,27 +34,21 @@
             :disabled="goal.penalty || goal.own_goal"
             clearable
             hide-details
-          />
-        </template>
-        <template #field.penalty>
-          <v-checkbox
+          )
+        template(#field.penalty)
+          v-checkbox(
             v-model="goal.penalty"
             label="Penalty"
             :disabled="goal.own_goal"
             hide-details
-          />
-        </template>
-        <template #field.own_goal>
-          <v-checkbox
+          )
+        template(#field.own_goal)
+          v-checkbox(
             v-model="goal.own_goal"
             label="Own Goal"
             :disabled="goal.penalty"
             hide-details
-          />
-        </template>
-      </dynamic-fields>
-    </template>
-  </dialog-form>
+          )
 </template>
 
 <script>

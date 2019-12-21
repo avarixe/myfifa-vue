@@ -1,51 +1,29 @@
-<template>
-  <v-container fluid>
-    <v-row>
-      <v-col cols="12">
-        <v-btn
-          v-if="pageSeason > 0"
+<template lang="pug">
+  v-container(fluid)
+    v-row
+      v-col(cols="12")
+        v-btn(
           :to="linkToSeason(pageSeason - 1)"
           nuxt
-        >
-          Previous Season
-        </v-btn>
-
-        <v-btn
-          v-else
+          :disabled="pageSeason === 0"
+        ) Previous Season
+        |&nbsp;
+        v-btn(
           :to="linkToSeason(pageSeason + 1)"
           nuxt
-        >
-          Next Season
-        </v-btn>
-      </v-col>
-
-      <v-col cols="12">
-        <v-card>
-          <v-card-text>
-            <v-tabs
-              v-model="tab"
-              centered
-            >
-              <v-tab>Competitions</v-tab>
-              <v-tab>Players</v-tab>
-            </v-tabs>
-
-            <v-tabs-items
-              v-model="tab"
-              touchless
-            >
-              <v-tab-item>
-                <competition-grid :season="pageSeason" />
-              </v-tab-item>
-              <v-tab-item>
-                <player-grid :season="pageSeason" />
-              </v-tab-item>
-            </v-tabs-items>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+          :disabled="pageSeason >= season"
+        ) Next Season
+      v-col(cols="12")
+        v-card
+          v-card-text
+            v-tabs(v-model="tab" centered)
+              v-tab Competitions
+              v-tab Players
+            v-tabs-items(v-model="tab" touchless)
+              v-tab-item
+                competition-grid(:season="pageSeason")
+              v-tab-item
+                player-grid(:season="pageSeason")
 </template>
 
 <script>

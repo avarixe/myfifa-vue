@@ -1,11 +1,8 @@
-<template>
-  <v-container fluid>
-    <v-row>
-      <v-col cols="12">
-        <season-timeline />
-      </v-col>
-    </v-row>
-  </v-container>
+<template lang="pug">
+  v-container(fluid)
+    v-row
+      v-col
+        season-timeline
 </template>
 
 <script>

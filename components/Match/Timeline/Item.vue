@@ -1,47 +1,36 @@
-<template>
-  <v-timeline-item
+<template lang="pug">
+  v-timeline-item(
     :color="color"
     :icon="`mdi-${icon}`"
     fill-dot
-  >
-    <h2 :class="`headline font-weight-light my-0 ${color}--text`">
-      {{ event.minute || lastMinute }}"
-
-      <span :class="`caption text-truncate ${captionColor}--text`">
-        {{ caption }}
-      </span>
-
-      <record-form
+  )
+    h2.headline.font-weight-light.my-0(:class="`${color}--text`")
+      | {{ event.minute || lastMinute }}"
+      span.caption.text-truncate(:class="`${captionColor}--text`") {{ caption }}
+      |&nbsp;
+      record-form(
         v-if="!readonly"
         :record="event"
         :match="match"
         :type="type"
         color="orange"
-      >
-        <template #default="{ on }">
-          <tooltip-button
+      )
+        template(#default="{ on }")
+          tooltip-button(
             :label="`Edit ${type}`"
             icon="mdi-pencil"
             color="orange"
             small
             :on="on"
-          />
-        </template>
-      </record-form>
-
-      <record-remove
+          )
+      |&nbsp;
+      record-remove(
         v-if="!readonly"
         :record="event"
         :store="store"
         :label="title"
-      />
-    </h2>
-
-    <timeline-content
-      :item="event"
-      :type="type"
-    />
-  </v-timeline-item>
+      )
+    timeline-content(:item="event" :type="type")
 </template>
 
 <script>
