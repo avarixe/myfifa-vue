@@ -6,32 +6,33 @@
 </template>
 
 <script>
-  import { mixins, Component, namespace } from 'nuxt-property-decorator'
+  import { mapMutations } from 'vuex'
   import { TeamAccessible } from '@/mixins'
   import SeasonTimeline from '@/components/Season/Timeline'
 
-  const app = namespace('app')
-
-  @Component({
-    middleware: ['authenticated'],
+  export default {
     components: {
       SeasonTimeline
     },
-    transition: 'fade-transition'
-  })
-  export default class SeasonsPage extends mixins(TeamAccessible) {
-    @app.Mutation('SET_PAGE') setPage
-
+    mixins: [
+      TeamAccessible
+    ],
+    middleware: [
+      'authenticated'
+    ],
+    transition: 'fade-transition',
     async fetch ({ store, params }) {
       await store.dispatch('competitions/FETCH', { teamId: params.teamId })
-    }
-
-    beforeMount () {
+    },
+    mounted () {
       this.setPage({
         title: `${this.team.title} - Seasons`,
         overline: this.team.title,
         headline: 'Seasons'
       })
-    }
+    },
+    methods: mapMutations('app', {
+      setPage: 'SET_PAGE'
+    })
   }
 </script>

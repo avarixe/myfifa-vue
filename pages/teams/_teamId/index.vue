@@ -47,7 +47,7 @@
 </template>
 
 <script>
-  import { mixins, Component, namespace } from 'nuxt-property-decorator'
+  import { mapMutations } from 'vuex'
   import { Match, Player } from '@/models'
   import MatchCard from '@/components/Match/Card'
   import SeasonCard from '@/components/Season/Card'
@@ -57,10 +57,7 @@
   import { RecordRemove } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
-  const app = namespace('app')
-
-  @Component({
-    middleware: ['authenticated'],
+  export default {
     components: {
       MatchCard,
       PlayerListCard,
@@ -69,37 +66,37 @@
       TeamForm,
       RecordRemove
     },
-    transition: 'fade-transition'
-  })
-  export default class TeamPage extends mixins(TeamAccessible) {
-    @app.Mutation('SET_PAGE') setPage
-
-    get lastMatch () {
-      return Match
-        .query()
-        .with('team')
-        .where('team_id', this.team.id)
-        .orderBy('played_on', 'desc')
-        .first()
-    }
-
-    get injuredPlayers () {
-      return this.getPlayersByStatus('Injured')
-    }
-
-    get loanedPlayers () {
-      return this.getPlayersByStatus('Loaned')
-    }
-
-    get playersWithExpiringContracts () {
-      return Player
-        .query()
-        .with('team')
-        .where('team_id', this.team.id)
-        .get()
-        .filter(player => player.contract().ended_on <= this.seasonEnd)
-    }
-
+    mixins: [
+      TeamAccessible
+    ],
+    middleware: [
+      'authenticated'
+    ],
+    transition: 'fade-transition',
+    computed: {
+      lastMatch () {
+        return Match
+          .query()
+          .with('team')
+          .where('team_id', this.team.id)
+          .orderBy('played_on', 'desc')
+          .first()
+      },
+      injuredPlayers () {
+        return this.getPlayersByStatus('Injured')
+      },
+      loanedPlayers () {
+        return this.getPlayersByStatus('Loaned')
+      },
+      playersWithExpiringContracts () {
+        return Player
+          .query()
+          .with('team')
+          .where('team_id', this.team.id)
+          .get()
+          .filter(player => player.contract().ended_on <= this.seasonEnd)
+      }
+    },
     async fetch ({ store, params }) {
       await Promise.all([
         store.dispatch('matches/FETCH', { teamId: params.teamId }),
@@ -107,23 +104,26 @@
         store.dispatch('competitions/FETCH', { teamId: params.teamId }),
         store.dispatch('contracts/SEARCH', { teamId: params.teamId })
       ])
-    }
-
-    beforeMount () {
+    },
+    mounted () {
       this.setPage({
         title: this.team.title,
         overline: this.team.title,
         headline: 'Dashboard'
       })
-    }
-
-    getPlayersByStatus (status) {
-      return Player
-        .query()
-        .with('team')
-        .where('team_id', this.team.id)
-        .where('status', status)
-        .get()
+    },
+    methods: {
+      ...mapMutations('app', {
+        setPage: 'SET_PAGE'
+      }),
+      getPlayersByStatus (status) {
+        return Player
+          .query()
+          .with('team')
+          .where('team_id', this.team.id)
+          .where('status', status)
+          .get()
+      }
     }
   }
 </script>

@@ -27,40 +27,34 @@
 </template>
 
 <script>
-  import { mixins, Component, namespace } from 'nuxt-property-decorator'
+  import { mapMutations } from 'vuex'
   import CompetitionGrid from '@/components/Season/CompetitionGrid'
   import PlayerGrid from '@/components/Season/PlayerGrid'
   import { TeamAccessible } from '@/mixins'
 
-  const app = namespace('app')
-
-  @Component({
-    middleware: ['authenticated'],
+  export default {
     components: {
       CompetitionGrid,
       PlayerGrid
     },
-    transition: 'fade-transition'
-  })
-  export default class SeasonPage extends mixins(TeamAccessible) {
-    @app.Mutation('SET_PAGE') setPage
-
-    head () {
-      return {
-        title: this.title
+    mixins: [
+      TeamAccessible
+    ],
+    middleware: [
+      'authenticated'
+    ],
+    transition: 'fade-transition',
+    data: () => ({
+      tab: 0
+    }),
+    computed: {
+      title () {
+        return `${this.seasonLabel(this.pageSeason)} Season`
+      },
+      pageSeason () {
+        return parseInt(this.$route.params.season)
       }
-    }
-
-    tab = 0
-
-    get title () {
-      return `${this.seasonLabel(this.pageSeason)} Season`
-    }
-
-    get pageSeason () {
-      return parseInt(this.$route.params.season)
-    }
-
+    },
     async fetch ({ store, params }) {
       await Promise.all([
         store.dispatch('competitions/FETCH', { teamId: params.teamId }),
@@ -69,23 +63,31 @@
         store.dispatch('matches/FETCH', { teamId: params.teamId }),
         store.dispatch('contracts/SEARCH', { teamId: params.teamId })
       ])
-    }
-
-    beforeMount () {
+    },
+    mounted () {
       this.setPage({
         title: this.title,
         overline: this.team.title,
         headline: this.title
       })
-    }
-
-    linkToSeason (season) {
-      return {
-        name: 'teams-teamId-seasons-season',
-        params: {
-          teamId: this.team.id,
-          season
+    },
+    methods: {
+      ...mapMutations('app', {
+        setPage: 'SET_PAGE'
+      }),
+      linkToSeason (season) {
+        return {
+          name: 'teams-teamId-seasons-season',
+          params: {
+            teamId: this.team.id,
+            season
+          }
         }
+      }
+    },
+    head () {
+      return {
+        title: this.title
       }
     }
   }

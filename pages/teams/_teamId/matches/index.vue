@@ -6,35 +6,36 @@
 </template>
 
 <script>
-  import { mixins, Component, namespace } from 'nuxt-property-decorator'
+  import { mapMutations } from 'vuex'
   import { TeamAccessible } from '@/mixins'
   import MatchGrid from '@/components/Match/Grid'
 
-  const app = namespace('app')
-
-  @Component({
-    middleware: ['authenticated'],
+  export default {
     components: {
       MatchGrid
     },
-    transition: 'fade-transition'
-  })
-  export default class MatchesPage extends mixins(TeamAccessible) {
-    @app.Mutation('SET_PAGE') setPage
-
+    mixins: [
+      TeamAccessible
+    ],
+    middleware: [
+      'authenticated'
+    ],
+    transition: 'fade-transition',
     async fetch ({ store, params }) {
       await Promise.all([
         store.dispatch('matches/FETCH', { teamId: params.teamId }),
         store.dispatch('competitions/FETCH', { teamId: params.teamId })
       ])
-    }
-
-    beforeMount () {
+    },
+    mounted () {
       this.setPage({
         title: `${this.team.title} - Matches`,
         overline: this.team.title,
         headline: 'Matches'
       })
-    }
+    },
+    methods: mapMutations('app', {
+      setPage: 'SET_PAGE'
+    })
   }
 </script>

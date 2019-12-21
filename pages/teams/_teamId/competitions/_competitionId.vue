@@ -1,9 +1,9 @@
 <template lang="pug">
   v-container(fluid)
     v-row
-      v-col(cols="12")
+      v-col(cols=12)
         v-btn(:to="competition.linkToSeason" nuxt) View Season
-      v-col.text-center(cols="12")
+      v-col.text-center(cols=12)
         .subheading
           | {{ competitionSeason }}
         .display-1.primary--text
@@ -12,7 +12,7 @@
           v-icon(color="yellow darken-2" left) mdi-crown
           | {{ competition.champion }}
           v-icon(color="yellow darken-2" right) mdi-crown
-      v-col.text-center(v-if="!readonly" cols="12")
+      v-col.text-center(v-if="!readonly" cols=12)
         competition-form(:record="competition" color="orange")
           template(#default="{ on }")
             v-btn.my-1(dark color="orange" v-on="on") Edit
@@ -31,7 +31,7 @@
         )
           v-btn.my-1(dark) Remove
       //- Table Stages
-      v-col(v-if="tables.length > 0" cols="12")
+      v-col(v-if="tables.length > 0" cols=12)
         v-card(outlined)
           v-card-text
             v-tabs(v-model="table" centered center-active)
@@ -40,7 +40,7 @@
               v-tab-item(v-for="table in tables" :key="table.id")
                 table-stage(:table="table" :readonly="readonly")
       //- Elimination Round Stages
-      v-col(v-if="rounds.length > 0" cols="12")
+      v-col(v-if="rounds.length > 0" cols=12)
         v-card(outlined)
           v-card-text
             v-tabs(centered center-active)
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-  import { mixins, Component, namespace } from 'nuxt-property-decorator'
+  import { mapMutations } from 'vuex'
   import { Competition } from '@/models'
   import { FittyText, RecordRemove } from '@/helpers'
   import CompetitionForm from '@/components/Competition/Form'
@@ -59,10 +59,7 @@
   import TableStage from '@/components/Stage/Table'
   import { TeamAccessible } from '@/mixins'
 
-  const app = namespace('app')
-
-  @Component({
-    middleware: ['authenticated'],
+  export default {
     components: {
       FittyText,
       RecordRemove,
@@ -71,52 +68,44 @@
       TableStage,
       StageForm
     },
-    transition: 'fade-transition'
-  })
-  export default class CompetitionPage extends mixins(TeamAccessible) {
-    @app.Mutation('SET_PAGE') setPage
-
-    head () {
-      return {
-        title: `${this.competition.name} (${this.competitionSeason})`
+    mixins: [
+      TeamAccessible
+    ],
+    middleware: [
+      'authenticated'
+    ],
+    transition: 'fade-transition',
+    data: () => ({
+      table: 0
+    }),
+    computed: {
+      competition () {
+        return Competition
+          .query()
+          .with('stages.table_rows')
+          .with('stages.fixtures.legs')
+          .find(this.$route.params.competitionId)
+      },
+      title () {
+        return `${this.competition.name} (${this.competitionSeason})`
+      },
+      stages () {
+        return this.competition.stages
+      },
+      tables () {
+        return this.stages.filter(stage => stage.table)
+      },
+      rounds () {
+        return this.stages.filter(stage => !stage.table)
+      },
+      readonly () {
+        return this.competition.champion &&
+          this.competition.champion.length > 0
+      },
+      competitionSeason () {
+        return this.seasonLabel(this.competition.season)
       }
-    }
-
-    table = 0
-
-    get competition () {
-      return Competition
-        .query()
-        .with('stages.table_rows')
-        .with('stages.fixtures.legs')
-        .find(this.$route.params.competitionId)
-    }
-
-    get title () {
-      return `${this.competition.name} (${this.competitionSeason})`
-    }
-
-    get stages () {
-      return this.competition.stages
-    }
-
-    get tables () {
-      return this.stages.filter(stage => stage.table)
-    }
-
-    get rounds () {
-      return this.stages.filter(stage => !stage.table)
-    }
-
-    get readonly () {
-      return this.competition.champion &&
-        this.competition.champion.length > 0
-    }
-
-    get competitionSeason () {
-      return this.seasonLabel(this.competition.season)
-    }
-
+    },
     async fetch ({ store, params }) {
       await Promise.all([
         store.dispatch('competitions/GET', {
@@ -124,14 +113,21 @@
         }),
         store.dispatch('stages/FETCH', { competitionId: params.competitionId })
       ])
-    }
-
+    },
     mounted () {
       this.setPage({
         title: this.title,
         overline: this.team.title,
         headline: this.title
       })
+    },
+    methods: mapMutations('app', {
+      setPage: 'SET_PAGE'
+    }),
+    head () {
+      return {
+        title: `${this.competition.name} (${this.competitionSeason})`
+      }
     }
   }
 </script>
