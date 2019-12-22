@@ -116,7 +116,6 @@
           try {
             await this.submit()
             this.dialog = false
-            this.submitCb && this.submitCb()
           } catch (e) {
             console.log(e)
             console.log(e.message)

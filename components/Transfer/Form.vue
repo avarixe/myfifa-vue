@@ -3,7 +3,6 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
-    :submit-cb="submitCb"
     :color="transferColor"
   )
     template(#activator="{ on }")

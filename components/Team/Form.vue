@@ -102,7 +102,9 @@
         const formData = new FormData()
 
         for (let k in this.team) {
-          formData.append(`team[${k}]`, this.team[k])
+          if (this.team[k]) {
+            formData.append(`team[${k}]`, this.team[k])
+          }
         }
 
         if (this.record) {

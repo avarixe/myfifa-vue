@@ -26,7 +26,7 @@
         headline: 'Teams'
       })
     },
-    methods: mapMutations({
+    methods: mapMutations('app', {
       setPage: 'SET_PAGE'
     })
   }

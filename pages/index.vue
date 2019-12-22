@@ -32,7 +32,7 @@
     mounted () {
       this.setTitle('')
     },
-    methods: mapMutations({
+    methods: mapMutations('app', {
       setTitle: 'SET_TITLE'
     })
   }

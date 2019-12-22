@@ -43,6 +43,7 @@
           :key="key"
           :headers="headers"
           :items="rows"
+          :loading="loading"
           sort-by="pos"
           must-sort
           :search="search"
@@ -138,6 +139,7 @@
         { text: 'Pending', color: 'deep-orange', icon: 'lock-clock' }
       ],
       search: '',
+      loading: false,
       stats: {
         num_games: {},
         num_goals: {},
@@ -242,8 +244,10 @@
           })
       }
     },
-    mounted () {
-      this.getPlayerStats()
+    watch: {
+      mode (val) {
+        val === 3 && this.getPlayerStats()
+      }
     },
     methods: {
       ...mapMutations('broadcaster', {
@@ -254,12 +258,19 @@
         analyzePlayers: 'ANALYZE'
       }),
       async getPlayerStats () {
-        const { data } = await this.analyzePlayers({
-          teamId: this.team.id,
-          playerIds: this.players.map(player => player.id)
-        })
+        try {
+          this.loading = true
+          const { data } = await this.analyzePlayers({
+            teamId: this.team.id,
+            playerIds: this.players.map(player => player.id)
+          })
 
-        this.stats = data
+          this.stats = data
+        } catch (e) {
+          console.error(e)
+        } finally {
+          this.loading = false
+        }
       },
       async updatePlayerAttribute (playerId, attribute, value) {
         try {

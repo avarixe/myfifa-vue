@@ -100,6 +100,7 @@
           :min="field.min"
           :max="field.max"
           :start-with-year="field.startWithYear"
+          :disabled="field.disabled"
           :value="fieldValue(field)"
           @input="updateField(field, $event)"
         )

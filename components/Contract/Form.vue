@@ -173,7 +173,7 @@
       }
     },
     methods: {
-      ...mapActions('contract', {
+      ...mapActions('contracts', {
         createContract: 'CREATE',
         updateContract: 'UPDATE'
       }),

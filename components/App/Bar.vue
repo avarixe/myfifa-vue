@@ -1,7 +1,7 @@
 <template lang="pug">
   v-app-bar(app clipped-left)
     v-app-bar-nav-icon(v-show="responsive" @click.stop="toggleDrawer")
-    span.mr-2(v-if="team")
+    span.mr-2(v-if="team && team.badge_path")
       v-img(
         :src="badgeUrl"
         height="32px"

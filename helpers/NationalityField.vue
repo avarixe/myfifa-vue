@@ -4,7 +4,6 @@
     :items="items"
     :label="label"
     :prepend-icon="icon"
-    @change="emitValue"
   )
     template(#selection="{ item }")
       flag.mr-2(:iso="nationalities[item]")
