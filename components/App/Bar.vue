@@ -45,7 +45,7 @@
       },
       badgeUrl () {
         return this.team && this.team.badge_path
-          ? `${baseURL}${this.team.badge_path}`
+          ? `${baseURL.replace(/\/api/, '')}${this.team.badge_path}`
           : null
       }
     },

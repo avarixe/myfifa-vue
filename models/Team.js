@@ -46,7 +46,7 @@ export default class Team extends Model {
   }
 
   get badgeUrl () {
-    return `${baseURL}/${this.badge_path}`
+    return `${baseURL.replace(/\/api/, '')}${this.badge_path}`
   }
 
   linkTo (page) {
