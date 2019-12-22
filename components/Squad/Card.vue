@@ -37,62 +37,63 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { FormationView, RecordRemove, TooltipButton } from '@/helpers'
   import { Player } from '@/models'
   import SquadForm from './Form'
 
-  @Component({
+  export default {
+    name: 'SquadCard',
     components: {
       SquadForm,
       FormationView,
       RecordRemove,
       TooltipButton
-    }
-  })
-  export default class SquadCard extends Vue {
-    @Prop({ type: Object, required: true }) squad
+    },
+    props: {
+      squad: {
+        type: Object,
+        required: true
+      }
+    },
+    computed: {
+      defOVR () {
+        return this.avgOVR('DEF')
+      },
+      midOVR () {
+        return this.avgOVR('MID')
+      },
+      attOVR () {
+        return this.avgOVR('ATT')
+      }
+    },
+    methods: {
+      avgOVR (positionType) {
+        let playerIds = []
 
-    get defOVR () {
-      return this.avgOVR('DEF')
-    }
+        this.squad.squad_players.forEach(squadPlayer => {
+          if (squadPlayer.positionType === positionType) {
+            playerIds.push(squadPlayer.player_id)
+          }
+        })
 
-    get midOVR () {
-      return this.avgOVR('MID')
-    }
+        const totalOvr = Player
+          .query()
+          .whereIdIn(playerIds)
+          .sum('ovr')
 
-    get attOVR () {
-      return this.avgOVR('ATT')
-    }
-
-    avgOVR (positionType) {
-      let playerIds = []
-
-      this.squad.squad_players.forEach(squadPlayer => {
-        if (squadPlayer.positionType === positionType) {
-          playerIds.push(squadPlayer.player_id)
+        return Math.round(totalOvr / playerIds.length)
+      },
+      nameOf (playerId) {
+        const player = Player.find(playerId)
+        return player ? player.name : ''
+      },
+      statusColor (playerId) {
+        const player = Player.find(playerId)
+        if (player && player.status === 'Active') {
+          return ''
+        } else {
+          return 'red--text'
         }
-      })
-
-      const totalOvr = Player
-        .query()
-        .whereIdIn(playerIds)
-        .sum('ovr')
-
-      return Math.round(totalOvr / playerIds.length)
-    }
-
-    nameOf (playerId) {
-      const player = Player.find(playerId)
-      return player ? player.name : ''
-    }
-
-    statusColor (playerId) {
-      const player = Player.find(playerId)
-      if (player && player.status === 'Active') {
-        return ''
-      } else {
-        return 'red--text'
       }
     }
   }

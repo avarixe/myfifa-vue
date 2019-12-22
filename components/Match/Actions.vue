@@ -39,7 +39,7 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, namespace } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
   import { TeamAccessible } from '@/mixins'
   import { Squad } from '@/models'
   import MatchForm from './Form'
@@ -50,9 +50,8 @@
   import PenaltyShootoutForm from '@/components/PenaltyShootout/Form'
   import { RecordRemove, TooltipButton } from '@/helpers'
 
-  const matches = namespace('matches')
-
-  @Component({
+  export default {
+    name: 'MatchActions',
     components: {
       MatchForm,
       CapForm,
@@ -62,43 +61,49 @@
       PenaltyShootoutForm,
       RecordRemove,
       TooltipButton
-    }
-  })
-  export default class MatchActions extends mixins(TeamAccessible) {
-    @matches.Action('APPLY_SQUAD') applySquad
-    @Prop({ type: Object, required: true }) match
-
-    get squads () {
-      return Squad
-        .query()
-        .where('team_id', this.team.id)
-        .get()
-    }
-
-    get active () {
-      return this.match.status && this.match.status.length > 0
-    }
-
-    get validMatch () {
-      return !this.match.team_result || this.numPlayers >= 11
-    }
-
-    get matchDraw () {
-      return this.match.home_score === this.match.away_score
-    }
-
-    get numPlayers () {
-      return this.match.caps.length
-    }
-
-    async applySquadToMatch (squadId) {
-      try {
-        await this.applySquad({
-          matchId: this.match.id,
-          squadId
-        })
-      } catch (e) {
-        alert(e.message)
+    },
+    mixins: [
+      TeamAccessible
+    ],
+    props: {
+      match: {
+        type: Object,
+        required: true
+      }
+    },
+    computed: {
+      squads () {
+        return Squad
+          .query()
+          .where('team_id', this.team.id)
+          .get()
+      },
+      active () {
+        return this.match.status && this.match.status.length > 0
+      },
+      validMatch () {
+        return !this.match.team_result || this.numPlayers >= 11
+      },
+      matchDraw () {
+        return this.match.home_score === this.match.away_score
+      },
+      numPlayers () {
+        return this.match.caps.length
+      }
+    },
+    methods: {
+      ...mapActions('matches', {
+        applySquad: 'APPLY_SQUAD'
+      }),
+      async applySquadToMatch (squadId) {
+        try {
+          await this.applySquad({
+            matchId: this.match.id,
+            squadId
+          })
+        } catch (e) {
+          alert(e.message)
+        }
       }
     }
   }

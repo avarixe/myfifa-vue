@@ -1,13 +1,13 @@
-import { Vue, Component, Prop } from 'nuxt-property-decorator'
 import DialogForm from '@/helpers/DialogForm'
 
-@Component({
+export default {
   components: {
     DialogForm
-  }
-})
-export default class DialogFormable extends Vue {
-  @Prop(String) color
-
-  dialog = false
+  },
+  props: {
+    color: String
+  },
+  data: () => ({
+    dialog: false
+  })
 }

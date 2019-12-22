@@ -24,6 +24,7 @@ async function sendRequest ({
   success
 }) {
   try {
+    console.debug(`${method || 'get'}: ${urlFor(path, pathData)}`)
     const res = await axios({
       method: method || 'get',
       baseURL,
@@ -33,6 +34,7 @@ async function sendRequest ({
       credentials: false,
       headers: token ? { Authorization: `Bearer ${token}` } : null
     })
+    console.debug(`response status: ${res.status}`)
     success && await success(res)
     return res
   } catch (e) {
@@ -53,7 +55,6 @@ async function sendRequest ({
     } else {
       console.error(e)
       console.trace(e)
-      throw new Error('An Error occurred. Please try again.')
     }
   }
 }

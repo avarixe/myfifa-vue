@@ -2,17 +2,17 @@
   v-container(fluid)
     v-row
       v-row.text-center(justify="space-around")
-        v-col(cols="6" sm="2")
+        v-col(cols=6 sm=2)
           .display-1 {{ player.pos }}
           .subheading Position
-        v-col(cols="6" sm="2")
+        v-col(cols=6 sm=2)
           .display-1 {{ player.sec_pos | listArray }}
           .subheading
-            fitty-text(text="Secondary Position(s)" :max-size="16")
-        v-col(cols="4" sm="2")
+            fitty-text(text="Secondary Position(s)" max-size=16)
+        v-col(cols=4 sm=2)
           .display-1 {{ player.age }}
           .subheading Age
-        v-col(v-if="player.nationality" cols="4" sm="2")
+        v-col(v-if="player.nationality" cols=4 sm=2)
           client-only
             flag(
               :iso="player.flag"
@@ -20,33 +20,33 @@
               style="font-size: 40px"
             )
           .subheading Nationality
-        v-col(cols="4" sm="2")
+        v-col(cols=4 sm=2)
           v-icon.display-1(:color="player.statusColor")
             | mdi-{{ player.statusIcon }}
           .subheading {{ player.status || 'Status' }}
-        v-col(cols="12")
+        v-col(cols=12)
           player-actions(:player="player")
-      v-col(cols="12")
+      v-col(cols=12)
         v-card
           v-card-text
             v-row.text-center
-              v-col(cols="12" sm="6")
+              v-col(cols=12 sm=6)
                 .display-1.success--text {{ player.ovr }}
                 .subheading OVR
-              v-col(cols="12" sm="6")
+              v-col(cols=12 sm=6)
                 .display-1.primary--text
                   | {{ player.value | formatMoney(team.currency) }}
                 .subheading Value
-              v-col(cols="6" sm="3")
+              v-col(cols=6 sm=3)
                 .display-1.teal--text {{ numGames || 0 }}
                 .subheading Matches
-              v-col(cols="6" sm="3")
+              v-col(cols=6 sm=3)
                 .display-1.pink--text {{ numCs || 0 }}
                 .subheading Clean Sheets
-              v-col(cols="6" sm="3")
+              v-col(cols=6 sm=3)
                 .display-1.blue--text {{ numGoals || 0 }}
                 .subheading Goals
-              v-col(cols="6" sm="3")
+              v-col(cols=6 sm=3)
                 .display-1.orange--text {{ numAssists || 0 }}
                 .subheading Assists
             v-tabs(centered)
@@ -62,7 +62,7 @@
                 v-card(flat)
                   v-card-text
                     v-row.text-center
-                      v-col(cols="12")
+                      v-col(cols=12)
                         player-history-chart(
                           :player="player"
                           attribute="ovr"
@@ -71,7 +71,7 @@
                           :min="40"
                           :max="100"
                         )
-                      v-col(cols="12")
+                      v-col(cols=12)
                         player-history-chart(
                           :player="player"
                           attribute="value"
@@ -83,7 +83,7 @@
 </template>
 
 <script>
-  import { mixins, Component, namespace } from 'nuxt-property-decorator'
+  import { mapMutations } from 'vuex'
   import { Player } from '@/models'
   import PlayerActions from '@/components/Player/Actions'
   import PlayerTimeline from '@/components/Player/Timeline'
@@ -91,28 +91,29 @@
   import { FittyText } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
-  const app = namespace('app')
-
-  @Component({
-    middleware: ['authenticated'],
+  export default {
+    name: 'PlayerPage',
     components: {
       PlayerActions,
       PlayerTimeline,
       PlayerHistoryChart,
       FittyText
     },
-    transition: 'fade-transition'
-  })
-  export default class PlayerPage extends mixins(TeamAccessible) {
-    @app.Mutation('SET_PAGE') setPage
-
-    get player () {
-      return Player
-        .query()
-        .withAll()
-        .find(this.$route.params.playerId)
-    }
-
+    mixins: [
+      TeamAccessible
+    ],
+    middleware: [
+      'authenticated'
+    ],
+    transition: 'fade-transition',
+    computed: {
+      player () {
+        return Player
+          .query()
+          .withAll()
+          .find(this.$route.params.playerId)
+      }
+    },
     async asyncData ({ store, params }) {
       const { data } = await store.dispatch('players/ANALYZE', {
         teamId: params.teamId,
@@ -125,8 +126,7 @@
         numGoals: data.num_goals[params.playerId],
         numAssists: data.num_assists[params.playerId]
       }
-    }
-
+    },
     async fetch ({ store, params }) {
       await Promise.all([
         store.dispatch('players/GET', { playerId: params.playerId }),
@@ -136,14 +136,16 @@
         store.dispatch('loans/FETCH', { playerId: params.playerId }),
         store.dispatch('transfers/FETCH', { playerId: params.playerId })
       ])
-    }
-
-    beforeMount () {
+    },
+    mounted () {
       this.setPage({
         title: this.player.name,
         overline: this.team.title,
         headline: this.player.name
       })
-    }
+    },
+    methods: mapMutations('app', {
+      setPage: 'SET_PAGE'
+    })
   }
 </script>

@@ -10,23 +10,26 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
   import { Squad } from '@/models'
   import SquadCard from './Card'
   import { TeamAccessible } from '@/mixins'
 
-  @Component({
+  export default {
+    name: 'SquadGrid',
     components: {
       SquadCard
-    }
-  })
-  export default class SquadGrid extends mixins(TeamAccessible) {
-    get squads () {
-      return Squad
-        .query()
-        .with('squad_players')
-        .where('team_id', this.team.id)
-        .get()
+    },
+    mixins: [
+      TeamAccessible
+    ],
+    computed: {
+      squads () {
+        return Squad
+          .query()
+          .with('squad_players')
+          .where('team_id', this.team.id)
+          .get()
+      }
     }
   }
 </script>

@@ -38,37 +38,41 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
   import { Match } from '@/models'
   import MatchCard from '@/components/Match/Card'
   import { FittyText } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
   import { format, parseISO } from 'date-fns'
 
-  @Component({
+  export default {
+    name: 'TeamCalendar',
     components: {
       FittyText,
       MatchCard
-    }
-  })
-  export default class TeamCalendar extends mixins(TeamAccessible) {
-    day = format(new Date(), 'yyyy-MM-dd')
-
-    get currentMonth () {
-      return format(parseISO(this.day), 'MMMM yyyy')
-    }
-
+    },
+    mixins: [
+      TeamAccessible
+    ],
+    data: () => ({
+      day: format(new Date(), 'yyyy-MM-dd')
+    }),
+    computed: {
+      currentMonth () {
+        return format(parseISO(this.day), 'MMMM yyyy')
+      }
+    },
     mounted () {
       this.day = this.team.currently_on
-    }
-
-    matchesOn (date) {
-      return Match
-        .query()
-        .with('team')
-        .where('team_id', this.team.id)
-        .where('played_on', date)
-        .get()
+    },
+    methods: {
+      matchesOn (date) {
+        return Match
+          .query()
+          .with('team')
+          .where('team_id', this.team.id)
+          .where('played_on', date)
+          .get()
+      }
     }
   }
 </script>

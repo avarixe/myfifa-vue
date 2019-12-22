@@ -10,22 +10,24 @@
 </template>
 
 <script>
-  import { mixins, Component } from 'nuxt-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import SeasonCard from './Card'
 
-  @Component({
+  export default {
+    name: 'SeasonGrid',
     components: {
       SeasonCard
-    }
-  })
-  export default class SeasonGrid extends mixins(TeamAccessible) {
-    get numSeasons () {
-      return this.season > 0 ? this.season + 1 : 1
-    }
-
-    get seasons () {
-      return [...Array(this.numSeasons).keys()].reverse()
+    },
+    mixins: [
+      TeamAccessible
+    ],
+    computed: {
+      numSeasons () {
+        return this.season > 0 ? this.season + 1 : 1
+      },
+      seasons () {
+        return [...Array(this.numSeasons).keys()].reverse()
+      }
     }
   }
 </script>

@@ -30,58 +30,68 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop, namespace } from 'nuxt-property-decorator'
+  import { mapMutations, mapActions } from 'vuex'
   import { activePlayers } from '@/models/Player'
   import { positions } from '@/models/Match'
   import { InlineSelect } from '@/helpers'
   import CapEvents from './Events'
   import PlayerCard from '@/components/Player/Card'
 
-  const caps = namespace('caps')
-  const broadcaster = namespace('broadcaster')
-
-  @Component({
+  export default {
+    name: 'CapView',
     components: {
       CapEvents,
       InlineSelect,
       PlayerCard
-    }
-  })
-  export default class CapView extends Vue {
-    @caps.Action('UPDATE') updateCap
-    @broadcaster.Mutation('ANNOUNCE') announce
-    @Prop({ type: Object, required: true }) cap
-    @Prop({ type: Object, required: true }) match
-    @Prop(Boolean) readonly
-
-    get positions () {
-      return Object.keys(positions)
-    }
-
-    get players () {
-      return activePlayers(parseInt(this.$route.params.teamId))
-    }
-
-    async updateCapAttribute (key, value) {
-      try {
-        await this.updateCap({
-          id: this.cap.id,
-          [key]: value
-        })
-      } catch (e) {
-        this.announce({
-          message: e.message,
-          color: 'red'
-        })
+    },
+    props: {
+      cap: {
+        type: Object,
+        required: true
+      },
+      match: {
+        type: Object,
+        required: true
+      },
+      readonly: {
+        type: Boolean,
+        default: false
       }
-    }
-
-    async setPosition (position) {
-      await this.updateCapAttribute('pos', position)
-    }
-
-    async setPlayer (playerId) {
-      await this.updateCapAttribute('player_id', playerId)
+    },
+    computed: {
+      positions () {
+        return Object.keys(positions)
+      },
+      players () {
+        return activePlayers(parseInt(this.$route.params.teamId))
+      }
+    },
+    methods: {
+      ...mapMutations('broadcaster', {
+        announce: 'ANNOUNCE'
+      }),
+      ...mapActions('caps', {
+        updateCap: 'UPDATE'
+      }),
+      async setPosition (position) {
+        await this.updateCapAttribute('pos', position)
+      },
+      async setPlayer (playerId) {
+        await this.updateCapAttribute('player_id', playerId)
+      },
+      async updateCapAttribute (key, value) {
+        try {
+          await this.updateCap({
+            id: this.cap.id,
+            [key]: value
+          })
+        } catch (e) {
+          this.announce({
+            message: e.message,
+            color: 'red'
+          })
+        }
+      }
     }
   }
 </script>

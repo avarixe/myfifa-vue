@@ -43,7 +43,6 @@
 </template>
 
 <script>
-  import { Component, Vue } from 'nuxt-property-decorator'
   import { Team } from '@/models'
   import CompetitionForm from '@/components/Competition/Form'
   import MatchForm from '@/components/Match/Form'
@@ -51,44 +50,44 @@
   import SquadForm from '@/components/Squad/Form'
   import TeamForm from '@/components/Team/Form'
 
-  @Component({
+  export default {
+    name: 'AppFormsMenu',
     components: {
       CompetitionForm,
       MatchForm,
       PlayerForm,
       SquadForm,
       TeamForm
-    }
-  })
-  export default class AppFormsMenu extends Vue {
-    get team () {
-      return this.$route.params.teamId && Team.find(this.$route.params.teamId)
-    }
-
-    get links () {
-      if (this.team) {
-        return [
-          {
-            text: 'New Player',
-            icon: 'account-plus',
-            name: 'teams-teamId-players-new',
-            params: { teamId: this.team.id }
-          },
-          {
-            text: 'New Match',
-            icon: 'soccer-field',
-            name: 'teams-teamId-matches-new',
-            params: { teamId: this.team.id }
-          },
-          {
-            text: 'New Squad',
-            icon: 'clipboard-plus',
-            name: 'teams-teamId-squads-new',
-            params: { teamId: this.team.id }
-          }
-        ]
-      } else {
-        return []
+    },
+    computed: {
+      team () {
+        return this.$route.params.teamId && Team.find(this.$route.params.teamId)
+      },
+      links () {
+        if (this.team) {
+          return [
+            {
+              text: 'New Player',
+              icon: 'account-plus',
+              name: 'teams-teamId-players-new',
+              params: { teamId: this.team.id }
+            },
+            {
+              text: 'New Match',
+              icon: 'soccer-field',
+              name: 'teams-teamId-matches-new',
+              params: { teamId: this.team.id }
+            },
+            {
+              text: 'New Squad',
+              icon: 'clipboard-plus',
+              name: 'teams-teamId-squads-new',
+              params: { teamId: this.team.id }
+            }
+          ]
+        } else {
+          return []
+        }
       }
     }
   }

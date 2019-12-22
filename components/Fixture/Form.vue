@@ -42,103 +42,115 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { CompetitionAccessible, DialogFormable } from '@/mixins'
   import { DynamicFields, TooltipButton } from '@/helpers'
 
-  const mix = mixins(CompetitionAccessible, DialogFormable)
-  const fixtures = namespace('fixtures')
-
-  @Component({
+  export default {
+    name: 'FixtureForm',
     components: {
       DynamicFields,
       TooltipButton
-    }
-  })
-  export default class FixtureForm extends mix {
-    @fixtures.Action('CREATE') createFixture
-    @fixtures.Action('UPDATE') updateFixture
-    @Prop({ type: Object, required: true }) stage
-    @Prop(Object) fixtureData
-
-    key = 0
-    fixture = {
-      home_team: '',
-      away_team: '',
-      legs_attributes: [{
-        home_score: '',
-        away_score: '',
-        _destroy: false
-      }]
-    }
-
-    get fields () {
-      return [
-        {
-          type: 'combobox',
-          attribute: 'home_team',
-          label: 'Home Team',
-          prependIcon: 'mdi-home',
-          items: this.competitionTeams,
-          hideDetails: true,
-          spellcheck: 'false',
-          autocapitalize: 'words',
-          autocomplete: 'off',
-          autocorrect: 'off'
-        },
-        {
-          type: 'combobox',
-          attribute: 'away_team',
-          label: 'Away Team',
-          prependIcon: 'mdi-bus',
-          items: this.competitionTeams,
-          hideDetails: true,
-          spellcheck: 'false',
-          autocapitalize: 'words',
-          autocomplete: 'off',
-          autocorrect: 'off'
-        }
-      ]
-    }
-
-    get title () {
-      return this.fixtureData ? 'Edit Fixture' : 'Add Fixture'
-    }
-
-    @Watch('dialog')
-    setFixture (val) {
-      if (val && this.fixtureData) {
-        this.fixture = pick(this.fixtureData, [
-          'id',
-          'home_team',
-          'away_team'
-        ])
-        this.fixture.legs_attributes = this.fixtureData.legs.map(leg => ({
-          ...leg,
+    },
+    mixins: [
+      CompetitionAccessible,
+      DialogFormable
+    ],
+    props: {
+      stage: {
+        type: Object,
+        required: true
+      },
+      fixtureData: {
+        type: Object,
+        default: null
+      }
+    },
+    data: () => ({
+      key: 0,
+      fixture: {
+        home_team: '',
+        away_team: '',
+        legs_attributes: [{
+          home_score: '',
+          away_score: '',
           _destroy: false
-        }))
+        }]
       }
-    }
-
-    addLeg () {
-      this.fixture.legs_attributes.push({
-        home_score: '',
-        away_score: '',
-        _destroy: false
-      })
-      this.key++
-    }
-
-    async submit () {
-      if (this.fixtureData) {
-        await this.updateFixture(this.fixture)
-      } else {
-        await this.createFixture({
-          stageId: this.stage.id,
-          fixture: this.fixture
+    }),
+    computed: {
+      fields () {
+        return [
+          {
+            type: 'combobox',
+            attribute: 'home_team',
+            label: 'Home Team',
+            prependIcon: 'mdi-home',
+            items: this.competitionTeams,
+            hideDetails: true,
+            spellcheck: 'false',
+            autocapitalize: 'words',
+            autocomplete: 'off',
+            autocorrect: 'off'
+          },
+          {
+            type: 'combobox',
+            attribute: 'away_team',
+            label: 'Away Team',
+            prependIcon: 'mdi-bus',
+            items: this.competitionTeams,
+            hideDetails: true,
+            spellcheck: 'false',
+            autocapitalize: 'words',
+            autocomplete: 'off',
+            autocorrect: 'off'
+          }
+        ]
+      },
+      title () {
+        return this.fixtureData ? 'Edit Fixture' : 'Add Fixture'
+      }
+    },
+    watch: {
+      dialog (val) {
+        if (val && this.fixtureData) {
+          this.fixture = pick(this.fixtureData, [
+            'id',
+            'home_team',
+            'away_team'
+          ])
+          this.fixture.legs_attributes = this.fixtureData.legs.map(leg => ({
+            ...leg,
+            _destroy: false
+          }))
+        }
+      }
+    },
+    methods: {
+      ...mapActions('fixtures', {
+        createFixture: 'CREATE',
+        updateFixture: 'UPDATE'
+      }),
+      addLeg () {
+        this.fixture.legs_attributes.push({
+          home_score: '',
+          away_score: '',
+          _destroy: false
         })
+        this.key++
+      },
+      async submit () {
+        if (this.fixtureData) {
+          await this.updateFixture(this.fixture)
+        } else {
+          await this.createFixture({
+            stageId: this.stage.id,
+            fixture: this.fixture
+          })
+        }
       }
+
     }
   }
 </script>

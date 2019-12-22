@@ -37,25 +37,31 @@
 </template>
 
 <script>
-  import { Component, Vue, Prop } from 'nuxt-property-decorator'
   import { Player, Team } from '@/models'
   import { FittyText } from '@/helpers'
 
-  @Component({
+  export default {
+    name: 'PlayerCard',
     components: {
       FittyText
-    }
-  })
-  export default class PlayerCard extends Vue {
-    @Prop({ type: [Number, String], required: true }) playerId
-    @Prop({ type: String, default: 'info' }) color
-
-    get player () {
-      return Player.find(this.playerId)
-    }
-
-    get team () {
-      return Team.find(this.$route.params.teamId)
+    },
+    props: {
+      playerId: {
+        type: [Number, String],
+        required: true
+      },
+      color: {
+        type: String,
+        default: 'info'
+      }
+    },
+    computed: {
+      player () {
+        return Player.find(this.playerId)
+      },
+      team () {
+        return Team.find(this.$route.params.teamId)
+      }
     }
   }
 </script>

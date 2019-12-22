@@ -19,36 +19,48 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop, namespace } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
   import { positions } from '@/models/Match'
   import { InlineSelect } from '@/helpers'
   import CapEvents from './Events'
   import PlayerCard from '@/components/Player/Card'
 
-  const caps = namespace('caps')
-
-  @Component({
+  export default {
+    name: 'CapSubView',
     components: {
       CapEvents,
       InlineSelect,
       PlayerCard
-    }
-  })
-  export default class CapSubView extends Vue {
-    @caps.Action('UPDATE') updateCap
-    @Prop({ type: Object, required: true }) cap
-    @Prop({ type: Object, required: true }) match
-    @Prop(Boolean) readonly
-
-    get positions () {
-      return Object.keys(positions)
-    }
-
-    setPosition (position) {
-      this.updateCap({
-        ...this.cap,
-        pos: position
-      })
+    },
+    props: {
+      cap: {
+        type: Object,
+        required: true
+      },
+      match: {
+        type: Object,
+        required: true
+      },
+      readonly: {
+        type: Boolean,
+        default: false
+      }
+    },
+    computed: {
+      positions () {
+        return Object.keys(positions)
+      }
+    },
+    methods: {
+      ...mapActions('caps', {
+        updateCap: 'UPDATE_CAP'
+      }),
+      setPosition (position) {
+        this.updateCap({
+          ...this.cap,
+          pos: position
+        })
+      }
     }
   }
 </script>

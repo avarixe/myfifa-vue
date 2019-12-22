@@ -14,125 +14,129 @@
 </template>
 
 <script>
-  import { mixins, Component, Watch, Getter, namespace } from 'nuxt-property-decorator'
+  import { mapGetters, mapActions } from 'vuex'
   import { DialogFormable } from '@/mixins'
   import { DynamicFields } from '@/helpers'
 
-  const user = namespace('user')
-
-  @Component({
+  export default {
+    name: 'UserForm',
     components: {
       DynamicFields
-    }
-  })
-  export default class UserForm extends mixins(DialogFormable) {
-    @Getter authenticated
-    @user.Action('GET') getUser
-    @user.Action('CREATE') createUser
-    @user.Action('UPDATE') updateUser
-
-    passwordMode = false
-    user = {
-      full_name: '',
-      username: '',
-      email: '',
-      password: '',
-      password_confirmation: ''
-    }
-
-    get fields () {
-      let fields = []
-
-      if (this.passwordMode) {
-        fields.push({
-          type: 'password',
-          attribute: 'current_password',
-          label: 'Current Password'
-        })
-      } else {
-        fields = [
-          {
-            type: 'string',
-            attribute: 'full_name',
-            label: 'Name',
-            required: true,
-            autocapitalize: 'word'
-          },
-          {
-            type: 'string',
-            attribute: 'username',
-            label: 'Username',
-            required: true,
-            autocapitalize: 'off'
-          },
-          {
-            type: 'string',
-            attribute: 'email',
-            label: 'Email',
-            required: true,
-            inputmode: 'email'
-          }
-        ]
+    },
+    mixins: [
+      DialogFormable
+    ],
+    data: () => ({
+      passwordMode: false,
+      user: {
+        full_name: '',
+        username: '',
+        email: '',
+        password: '',
+        password_confirmation: ''
       }
+    }),
+    computed: {
+      ...mapGetters([
+        'authenticated'
+      ]),
+      fields () {
+        let fields = []
 
-      if (!this.authenticated || this.passwordMode) {
-        fields = [
-          ...fields,
-          {
+        if (this.passwordMode) {
+          fields.push({
             type: 'password',
-            attribute: 'password',
-            label: this.passwordLabel
-          },
-          {
-            type: 'password',
-            attribute: 'password_confirmation',
-            label: 'Confirm Password'
-          }
-        ]
+            attribute: 'current_password',
+            label: 'Current Password'
+          })
+        } else {
+          fields = [
+            {
+              type: 'string',
+              attribute: 'full_name',
+              label: 'Name',
+              required: true,
+              autocapitalize: 'word'
+            },
+            {
+              type: 'string',
+              attribute: 'username',
+              label: 'Username',
+              required: true,
+              autocapitalize: 'off'
+            },
+            {
+              type: 'string',
+              attribute: 'email',
+              label: 'Email',
+              required: true,
+              inputmode: 'email'
+            }
+          ]
+        }
+
+        if (!this.authenticated || this.passwordMode) {
+          fields = [
+            ...fields,
+            {
+              type: 'password',
+              attribute: 'password',
+              label: this.passwordLabel
+            },
+            {
+              type: 'password',
+              attribute: 'password_confirmation',
+              label: 'Confirm Password'
+            }
+          ]
+        }
+
+        return fields
+      },
+      title () {
+        if (this.passwordMode) {
+          return 'Change Password'
+        } else if (this.authenticated) {
+          return 'Edit Account'
+        } else {
+          return 'New Account'
+        }
+      },
+      passwordLabel () {
+        return this.passwordMode ? 'New Password' : 'Password'
+      },
+      editParams () {
+        return this.passwordMode
+          ? ['current_password', 'password', 'password_confirmation']
+          : ['full_name', 'username', 'email']
       }
-
-      return fields
-    }
-
-    get title () {
-      if (this.passwordMode) {
-        return 'Change Password'
-      } else if (this.authenticated) {
-        return 'Edit Account'
-      } else {
-        return 'New Account'
+    },
+    watch: {
+      async dialog (val) {
+        if (val && this.authenticated) {
+          const { data } = await this.getUser()
+          this.user = data
+        }
       }
-    }
+    },
+    methods: {
+      ...mapActions('users', {
+        getUser: 'GET',
+        createUser: 'CREATE',
+        updateUser: 'UPDATE'
+      }),
+      async submit () {
+        if (!this.authenticated) {
+          await this.createUser(this.user)
+        } else {
+          let params = {}
 
-    get passwordLabel () {
-      return this.passwordMode ? 'New Password' : 'Password'
-    }
+          this.editParams.forEach(attr => {
+            params[attr] = this.user[attr]
+          })
 
-    get editParams () {
-      return this.passwordMode
-        ? ['current_password', 'password', 'password_confirmation']
-        : ['full_name', 'username', 'email']
-    }
-
-    @Watch('dialog')
-    async getUserData (val) {
-      if (val && this.authenticated) {
-        const { data } = await this.getUser()
-        this.user = data
-      }
-    }
-
-    async submit () {
-      if (!this.authenticated) {
-        await this.createUser(this.user)
-      } else {
-        let params = {}
-
-        this.editParams.forEach(attr => {
-          params[attr] = this.user[attr]
-        })
-
-        await this.updateUser(params)
+          await this.updateUser(params)
+        }
       }
     }
   }

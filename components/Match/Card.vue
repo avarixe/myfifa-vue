@@ -22,12 +22,21 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
-
-  @Component
-  export default class MatchCard extends Vue {
-    @Prop(Object) match
-    @Prop(String) title
-    @Prop({ type: String, default: 'info' }) color
+  export default {
+    name: 'MatchCard',
+    props: {
+      match: {
+        type: Object,
+        default: null
+      },
+      title: {
+        type: String,
+        default: null
+      },
+      color: {
+        type: String,
+        default: 'info'
+      }
+    }
   }
 </script>

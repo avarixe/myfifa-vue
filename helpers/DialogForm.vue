@@ -53,64 +53,77 @@
 </template>
 
 <script>
-  import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
+  export default {
+    name: 'DialogForm',
+    props: {
+      value: {
+        type: Boolean,
+        required: true
+      },
+      submit: {
+        type: Function,
+        required: true
+      },
+      title: {
+        type: String,
+        default: ''
+      },
+      titleIcon: {
+        type: String,
+        default: ''
+      },
+      color: {
+        type: String,
+        default: ''
+      },
+      fullWidth: Boolean
+    },
+    data: () => ({
+      dialog: null,
+      key: 0,
+      valid: false,
+      loading: false,
+      errorMessage: '',
+      formError: false
+    }),
+    computed: {
+      buttonColor () {
+        return this.color ? this.color + ' darken-2' : 'primary'
+      },
+      formColor () {
+        return this.color ? this.color + ' accent-2' : null
+      }
+    },
+    watch: {
+      dialog (val) {
+        this.$emit('input', val)
 
-  @Component
-  export default class DialogForm extends Vue {
-    @Prop({ type: Boolean, required: true }) value
-    @Prop({ type: Function, required: true }) submit
-    @Prop(Function) submitCb
-    @Prop(String) title
-    @Prop(String) titleIcon
-    @Prop(String) color
-    @Prop(Boolean) fullWidth
-
-    dialog = null
-    key = 0
-    valid = false
-    loading = false
-    errorMessage = ''
-    formError = false
-
-    get buttonColor () {
-      return this.color ? this.color + ' darken-2' : 'primary'
-    }
-
-    get formColor () {
-      return this.color ? this.color + ' accent-2' : null
-    }
-
+        if (!val && this.$refs.form) {
+          this.resetForm()
+        }
+      }
+    },
     mounted () {
       this.dialog = this.value
-    }
-
-    @Watch('dialog')
-    emitValue (val) {
-      this.$emit('input', val)
-
-      if (!val && this.$refs.form) {
-        this.resetForm()
-      }
-    }
-
-    async resetForm () {
-      this.key++
-      this.$refs.form.reset()
-    }
-
-    async submitForm () {
-      if (this.$refs.form.validate()) {
-        try {
-          await this.submit()
-          this.dialog = false
-          this.submitCb && this.submitCb()
-        } catch (e) {
-          console.log(e)
-          console.log(e.message)
-          this.errorMessage = e.message
-          this.formError = true
-        } finally {
-          this.loading = false
+    },
+    methods: {
+      async resetForm () {
+        this.key++
+        this.$refs.form.reset()
+      },
+      async submitForm () {
+        if (this.$refs.form.validate()) {
+          try {
+            await this.submit()
+            this.dialog = false
+          } catch (e) {
+            console.log(e)
+            console.log(e.message)
+            this.errorMessage = e.message
+            this.formError = true
+          } finally {
+            this.loading = false
+          }
         }
       }
     }

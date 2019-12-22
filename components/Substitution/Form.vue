@@ -43,7 +43,7 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { activePlayers } from '@/models/Player'
   import {
@@ -54,86 +54,94 @@
   } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
-  const mix = mixins(DialogFormable, MatchAccessible, TeamAccessible)
-  const substitutions = namespace('substitutions')
-
-  @Component({
+  export default {
+    name: 'SubstitutionForm',
     components: {
       DynamicFields,
       MinuteField,
       PlayerSelect,
       TooltipButton
-    }
-  })
-  export default class SubstitutionForm extends mix {
-    @substitutions.Action('CREATE') createSubstitution
-    @substitutions.Action('UPDATE') updateSubstitution
-    @Prop(Object) record
-
-    substitution = {
-      player_id: null,
-      replacement_id: '',
-      injury: false
-    }
-
-    get fields () {
-      return [
-        { slot: 'minute' },
-        { slot: 'player_id' },
-        { slot: 'replacement_id' },
-        { slot: 'injury' }
-      ]
-    }
-
-    get title () {
-      return `${this.record ? 'Edit' : 'Record'} Substitution`
-    }
-
-    get availablePlayers () {
-      const selectedIds = this.sortedCaps.map(cap => cap.player_id)
-      return activePlayers(this.team.id)
-        .filter(player => {
-          if (selectedIds.indexOf(player.id) < 0) {
-            return true
-          } else if (this.record) {
-            return player.id === this.record.replacement_id
-          }
-        })
-    }
-
-    get unsubbedPlayers () {
-      return this.sortedCaps.filter(cap =>
-        (cap.player_id !== this.substitution.replacement_id && !cap.subbed_out) ||
-        (this.record && cap.player_id === this.record.player_id)
-      )
-    }
-
-    @Watch('dialog')
-    setSubstitution (val) {
-      if (val && this.record) {
-        this.substitution = pick(this.record, [
-          'id',
-          'player_id',
-          'replacement_id',
-          'injury'
-        ])
-        this.minute = this.record.minute
+    },
+    mixins: [
+      DialogFormable,
+      MatchAccessible,
+      TeamAccessible
+    ],
+    props: {
+      record: {
+        type: Object,
+        default: null
       }
-    }
-
-    async submit () {
-      const substitution = {
-        ...this.substitution,
-        minute: this.minute
+    },
+    data: () => ({
+      substitution: {
+        player_id: null,
+        replacement_id: '',
+        injury: false
       }
+    }),
+    computed: {
+      fields () {
+        return [
+          { slot: 'minute' },
+          { slot: 'player_id' },
+          { slot: 'replacement_id' },
+          { slot: 'injury' }
+        ]
+      },
+      title () {
+        return `${this.record ? 'Edit' : 'Record'} Substitution`
+      },
+      availablePlayers () {
+        const selectedIds = this.sortedCaps.map(cap => cap.player_id)
+        return activePlayers(this.team.id)
+          .filter(player => {
+            if (selectedIds.indexOf(player.id) < 0) {
+              return true
+            } else if (this.record) {
+              return player.id === this.record.replacement_id
+            }
+          })
+      },
+      unsubbedPlayers () {
+        return this.sortedCaps.filter(cap =>
+          (cap.player_id !== this.substitution.replacement_id && !cap.subbed_out) ||
+          (this.record && cap.player_id === this.record.player_id)
+        )
+      }
+    },
+    watch: {
+      dialog (val) {
+        if (val && this.record) {
+          this.substitution = pick(this.record, [
+            'id',
+            'player_id',
+            'replacement_id',
+            'injury'
+          ])
+          this.minute = this.record.minute
+        }
+      }
+    },
+    methods: {
+      ...mapActions('substitutions', {
+        createSubstitution: 'CREATE',
+        updateSubstitution: 'UPDATE'
+      }),
+      async submit () {
+        const substitution = {
+          ...this.substitution,
+          minute: this.minute
+        }
 
-      if (this.record) {
-        await this.updateSubstitution(substitution)
-      } else {
-        await this.createSubstitution({
-          matchId: this.match.id,
-          substitution
-        })
+        if (this.record) {
+          await this.updateSubstitution(substitution)
+        } else {
+          await this.createSubstitution({
+            matchId: this.match.id,
+            substitution
+          })
+        }
       }
     }
   }

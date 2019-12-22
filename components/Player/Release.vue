@@ -13,20 +13,25 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop, namespace } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
   import { TooltipButton } from '@/helpers'
 
-  const players = namespace('players')
-
-  @Component({
+  export default {
+    name: 'PlayerRelease',
     components: {
       TooltipButton
-    }
-  })
-  export default class PlayerRelease extends Vue {
-    @players.Action('RELEASE') releasePlayer
-    @Prop({ type: Object, required: true }) player
-
-    snackbar = false
+    },
+    props: {
+      player: {
+        type: Object,
+        required: true
+      }
+    },
+    data: () => ({
+      snackbar: false
+    }),
+    methods: mapActions('players', {
+      releasePlayer: 'RELEASE'
+    })
   }
 </script>

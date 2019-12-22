@@ -4,46 +4,57 @@
     :items="items"
     :label="label"
     :prepend-icon="icon"
-    @change="emitValue"
   )
     template(#selection="{ item }")
       flag.mr-2(:iso="nationalities[item]")
       | {{ item }}
     template(#item="{ item }")
-      v-list-item-avatar(size="20")
+      v-list-item-avatar(size=20)
         flag(:iso="nationalities[item]")
       v-list-item-content
         v-list-item-title {{ item }}
 </template>
 
 <script>
-  import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { nationalities } from '@/models/Player'
 
-  @Component
-  export default class NationalityField extends Vue {
-    @Prop([String, Number]) value
-    @Prop({ type: String, default: 'Nationality' }) label
-    @Prop({ type: String, default: 'mdi-flag' }) icon
-
-    nationality = null
-
-    get nationalities () {
-      return nationalities
-    }
-
-    get items () {
-      return Object.keys(nationalities).sort()
-    }
-
-    @Watch('value', { immediate: true })
-    setNationality () {
-      this.nationality = this.value
-    }
-
-    @Watch('nationality')
-    emitValue (value) {
-      this.$emit('input', value)
+  export default {
+    name: 'NationalityField',
+    props: {
+      value: {
+        type: [String, Number],
+        default: null
+      },
+      label: {
+        type: String,
+        default: 'Nationality'
+      },
+      icon: {
+        type: String,
+        default: 'mdi-flag'
+      }
+    },
+    data: () => ({
+      nationality: null
+    }),
+    computed: {
+      nationalities () {
+        return nationalities
+      },
+      items () {
+        return Object.keys(nationalities).sort()
+      }
+    },
+    watch: {
+      value: {
+        handler () {
+          this.nationality = this.value
+        },
+        immediate: true
+      },
+      nationality (value) {
+        this.$emit('input', value)
+      }
     }
   }
 </script>

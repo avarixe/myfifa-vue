@@ -6,29 +6,28 @@
 </template>
 
 <script>
-  import { Vue, Component, namespace } from 'nuxt-property-decorator'
+  import { mapMutations } from 'vuex'
   import TeamGrid from '@/components/Team/Grid'
 
-  const app = namespace('app')
-
-  @Component({
-    middleware: ['authenticated'],
+  export default {
+    name: 'TeamsPage',
+    middleware: [
+      'authenticated'
+    ],
     components: {
       TeamGrid
     },
-    transition: 'fade-transition'
-  })
-  export default class TeamsPage extends Vue {
-    @app.Mutation('SET_PAGE') setPage
-
+    transition: 'fade-transition',
     async fetch ({ store }) {
       await store.dispatch('teams/FETCH')
-    }
-
-    beforeMount () {
+    },
+    mounted () {
       this.setPage({
         headline: 'Teams'
       })
-    }
+    },
+    methods: mapMutations('app', {
+      setPage: 'SET_PAGE'
+    })
   }
 </script>

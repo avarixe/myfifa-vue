@@ -3,7 +3,6 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
-    :submit-cb="submitCb"
     color="pink"
   )
     template(#activator="{ on }")
@@ -19,107 +18,124 @@
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { DialogFormable } from '@/mixins'
   import { DynamicFields, TooltipButton } from '@/helpers'
 
-  const injuries = namespace('injuries')
-
-  @Component({
+  export default {
+    name: 'InjuryForm',
     components: {
       DynamicFields,
       TooltipButton
-    }
-  })
-  export default class InjuryForm extends mixins(DialogFormable) {
-    @injuries.Action('CREATE') createInjury
-    @injuries.Action('UPDATE') updateInjury
-    @Prop({ type: Object, required: true }) player
-    @Prop(Object) record
-    @Prop(String) color
-    @Prop(Boolean) dark
-    @Prop(Function) submitCb
+    },
+    mixins: [
+      DialogFormable
+    ],
+    props: {
+      player: {
+        type: Object,
+        required: true
+      },
+      record: {
+        type: Object,
+        default: null
+      },
+      color: {
+        type: String,
+        default: null
+      },
+      dark: {
+        type: Boolean,
+        default: false
+      }
+    },
+    data: () => ({
+      injury: {
+        description: '',
+        recovered: false
+      }
+    }),
+    computed: {
+      fields () {
+        let fields = []
 
-    injury = {
-      description: '',
-      recovered: false
-    }
+        if (this.record && this.record.ended_on) {
+          fields = [
+            {
+              type: 'date',
+              attribute: 'started_on',
+              label: 'Injury Date',
+              prependIcon: 'mdi-calendar-today',
+              color: 'pink',
+              max: this.contract && this.contract.ended_on,
+              required: true
+            },
+            {
+              type: 'date',
+              attribute: 'ended_on',
+              label: 'Recovery Date',
+              prependIcon: 'mdi-calendar',
+              color: 'pink',
+              min: this.contract && this.contract.started_on,
+              required: true
+            }
+          ]
+        }
 
-    get fields () {
-      let fields = []
-
-      if (this.record && this.record.ended_on) {
-        fields = [
+        return [
+          ...fields,
           {
-            type: 'date',
-            attribute: 'started_on',
-            label: 'Injury Date',
-            prependIcon: 'mdi-calendar-today',
-            color: 'pink',
-            max: this.contract && this.contract.ended_on,
-            required: true
+            type: 'string',
+            attribute: 'description',
+            label: 'Description',
+            prependIcon: 'mdi-ambulance',
+            required: true,
+            spellcheck: 'false',
+            autocapitalize: 'words',
+            autocomplete: 'off',
+            autocorrect: 'off'
           },
           {
-            type: 'date',
-            attribute: 'ended_on',
-            label: 'Recovery Date',
-            prependIcon: 'mdi-calendar',
-            color: 'pink',
-            min: this.contract && this.contract.started_on,
-            required: true
+            type: 'checkbox',
+            attribute: 'recovered',
+            label: 'Player Recovered',
+            hidden: !this.record || this.record.ended_on
           }
         ]
+      },
+      title () {
+        return this.record
+          ? 'Update Injury'
+          : 'Record New Injury'
       }
-
-      return [
-        ...fields,
-        {
-          type: 'string',
-          attribute: 'description',
-          label: 'Description',
-          prependIcon: 'mdi-ambulance',
-          required: true,
-          spellcheck: 'false',
-          autocapitalize: 'words',
-          autocomplete: 'off',
-          autocorrect: 'off'
-        },
-        {
-          type: 'checkbox',
-          attribute: 'recovered',
-          label: 'Player Recovered',
-          hidden: !this.record || this.record.ended_on
+    },
+    watch: {
+      dialog (val) {
+        if (val && this.record) {
+          this.injury = pick(this.record, [
+            'id',
+            'started_on',
+            'ended_on',
+            'description'
+          ])
         }
-      ]
-    }
-
-    get title () {
-      return this.record
-        ? 'Update Injury'
-        : 'Record New Injury'
-    }
-
-    @Watch('dialog')
-    async setInjury (val) {
-      if (val && this.record) {
-        this.injury = pick(this.record, [
-          'id',
-          'started_on',
-          'ended_on',
-          'description'
-        ])
       }
-    }
-
-    async submit () {
-      if (this.record) {
-        await this.updateInjury(this.injury)
-      } else {
-        await this.createInjury({
-          playerId: this.player.id,
-          injury: this.injury
-        })
+    },
+    methods: {
+      ...mapActions('injuries', {
+        createInjury: 'CREATE',
+        updateInjury: 'UPDATE'
+      }),
+      async submit () {
+        if (this.record) {
+          await this.updateInjury(this.injury)
+        } else {
+          await this.createInjury({
+            playerId: this.player.id,
+            injury: this.injury
+          })
+        }
       }
     }
   }
