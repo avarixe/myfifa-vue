@@ -1,178 +1,171 @@
-<template>
-  <dialog-form
+<template lang="pug">
+  dialog-form(
     v-model="dialog"
     :title="title"
     :submit="submit"
     :color="color"
-  >
-    <template #activator="{ on }">
-      <slot :on="on">
-        <v-btn v-on="on">
-          <v-icon left>mdi-plus-circle-outline</v-icon>
-          Player
-        </v-btn>
-      </slot>
-    </template>
-
-    <template #form>
-      <v-col cols="12">
-        <v-text-field
-          v-model="player.name"
-          v-rules.required
-          label="Name"
-          prepend-icon="mdi-account"
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
-        />
-      </v-col>
-      <v-col cols="12">
-        <nationality-field v-model="player.nationality" />
-      </v-col>
-      <v-col cols="12">
-        <v-select
-          v-model="player.pos"
-          v-rules.required
-          :items="positions"
-          label="Position"
-          prepend-icon="mdi-run"
-          menu-props="auto"
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-select
-          v-model="player.sec_pos"
-          :items="positions"
-          label="Secondary Position(s)"
-          prepend-icon="mdi-walk"
-          multiple
-          chips
-          deletable-chips
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-text-field
-          v-model="player.birth_year"
-          v-rules.required
-          label="Birth Year"
-          prepend-icon="mdi-calendar"
-          inputmode="numeric"
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-checkbox
-          v-model="player.youth"
-          label="Youth Player"
-          :disabled="player.id > 0"
-          hide-details
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-select
-          v-model="player.kit_no"
-          :items="Array.from({ length: 99 }, (v, k) => k + 1)"
-          label="Kit Number"
-          prepend-icon="mdi-tshirt-crew"
-          menu-props="auto"
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-select
-          v-model="player.ovr"
-          v-rules.required
-          :items="Array.from({ length: 61 }, (v, k) => k + 40)"
-          label="OVR"
-          prepend-icon="mdi-trending-up"
-          menu-props="auto"
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-money-field
-          v-model="player.value"
-          label="Value"
-          :prefix="team.currency"
-          required
-        />
-      </v-col>
-    </template>
-  </dialog-form>
+  )
+    template(#activator="{ on }")
+      slot(:on="on")
+    template(#form)
+      dynamic-fields(:object="player" :fields="fields")
+        template(#field.nationality)
+          nationality-field(v-model="player.nationality")
+        template(#field.youth)
+          v-checkbox(
+            v-model="player.youth"
+            label="Youth Player"
+            :disabled="record"
+            hide-details
+          )
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { DialogFormable, TeamAccessible } from '@/mixins'
   import { positions } from '@/models/Player'
-  import { NationalityField, VMoneyField } from '@/helpers'
+  import { DynamicFields, NationalityField } from '@/helpers'
 
-  const players = namespace('players')
-
-  @Component({
+  export default {
+    name: 'PlayerForm',
     components: {
-      NationalityField,
-      VMoneyField
-    }
-  })
-  export default class PlayerForm extends mixins(DialogFormable, TeamAccessible) {
-    @players.Action('CREATE') createPlayer
-    @players.Action('UPDATE') updatePlayer
-    @Prop(Object) playerData
-
-    valid = false
-    player = {
-      name: '',
-      pos: '',
-      nationality: null,
-      sec_pos: [],
-      ovr: 60,
-      value: '',
-      kit_no: null,
-      birth_year: null,
-      youth: false
-    }
-
-    get title () {
-      return this.playerData ? 'Edit ' + this.player.name : 'New Player'
-    }
-
-    get positions () {
-      return positions
-    }
-
-    @Watch('dialog')
-    setPlayer (val) {
-      if (val && this.playerData) {
-        this.player = pick(this.playerData, [
-          'id',
-          'name',
-          'pos',
-          'nationality',
-          'ovr',
-          'value',
-          'kit_no',
-          'birth_year',
-          'youth'
-        ])
-        this.player.sec_pos = [...this.playerData.sec_pos]
+      DynamicFields,
+      NationalityField
+    },
+    mixins: [
+      DialogFormable,
+      TeamAccessible
+    ],
+    props: {
+      record: {
+        type: Object,
+        default: null
       }
-    }
-
-    async submit () {
-      if (this.playerData) {
-        await this.updatePlayer(this.player)
-      } else {
-        const { data } = await this.createPlayer({
-          teamId: this.team.id,
-          player: this.player
-        })
-        this.$router.push({
-          name: 'teams-teamId-players-playerId',
-          params: {
+    },
+    data: () => ({
+      valid: false,
+      player: {
+        name: '',
+        pos: '',
+        nationality: null,
+        sec_pos: [],
+        ovr: 60,
+        value: '',
+        kit_no: null,
+        birth_year: null,
+        youth: false
+      }
+    }),
+    computed: {
+      fields () {
+        return [
+          {
+            type: 'string',
+            attribute: 'name',
+            label: 'Name',
+            prependIcon: 'mdi-account',
+            required: true,
+            spellcheck: 'false',
+            autocapitalize: 'words',
+            autocomplete: 'off',
+            autocorrect: 'off'
+          },
+          { slot: 'nationality' },
+          {
+            type: 'select',
+            attribute: 'pos',
+            label: 'Position',
+            prependIcon: 'mdi-run',
+            items: positions,
+            required: true
+          },
+          {
+            type: 'select',
+            attribute: 'sec_pos',
+            label: 'Secondary Position(s)',
+            prependIcon: 'mdi-walk',
+            items: positions,
+            multiple: true
+          },
+          {
+            type: 'string',
+            attribute: 'birth_year',
+            label: 'Birth Year',
+            prependIcon: 'mdi-calendar',
+            required: true,
+            inputmode: 'numeric'
+          },
+          {
+            type: 'string',
+            attribute: 'ovr',
+            label: 'OVR',
+            prependIcon: 'mdi-trending-up',
+            required: true,
+            inputmode: 'numeric',
+            range: { min: 40, max: 100 }
+          },
+          {
+            type: 'money',
+            attribute: 'value',
+            label: 'Value',
+            prefix: this.team.currency,
+            required: true
+          },
+          {
+            type: 'string',
+            attribute: 'kit_no',
+            label: 'Kit Number',
+            prependIcon: 'mdi-tshirt-crew',
+            inputmode: 'numeric',
+            range: { min: 1, max: 99 }
+          },
+          { slot: 'youth' }
+        ]
+      },
+      title () {
+        return this.record ? `Edit ${this.player.name}` : 'New Player'
+      }
+    },
+    watch: {
+      dialog (val) {
+        if (val && this.record) {
+          this.player = pick(this.record, [
+            'id',
+            'name',
+            'pos',
+            'nationality',
+            'ovr',
+            'value',
+            'kit_no',
+            'birth_year',
+            'youth'
+          ])
+          this.player.sec_pos = [...this.record.sec_pos]
+        }
+      }
+    },
+    methods: {
+      ...mapActions('players', {
+        createPlayer: 'CREATE',
+        updatePlayer: 'UPDATE'
+      }),
+      async submit () {
+        if (this.record) {
+          await this.updatePlayer(this.player)
+        } else {
+          const { data } = await this.createPlayer({
             teamId: this.team.id,
-            playerId: data.id
-          }
-        })
+            player: this.player
+          })
+          this.$router.push({
+            name: 'teams-teamId-players-playerId',
+            params: {
+              teamId: this.team.id,
+              playerId: data.id
+            }
+          })
+        }
       }
     }
   }

@@ -2,18 +2,18 @@
   v-container(fluid)
     v-row
       v-col
-        season-timeline
+        squad-grid
 </template>
 
 <script>
   import { mapMutations } from 'vuex'
   import { TeamAccessible } from '@/mixins'
-  import SeasonTimeline from '@/components/Season/Timeline'
+  import SquadGrid from '@/components/Squad/Grid'
 
   export default {
-    name: 'SeasonsPage',
+    name: 'SquadsPage',
     components: {
-      SeasonTimeline
+      SquadGrid
     },
     mixins: [
       TeamAccessible
@@ -23,13 +23,16 @@
     ],
     transition: 'fade-transition',
     async fetch ({ store, params }) {
-      await store.dispatch('competitions/FETCH', { teamId: params.teamId })
+      await Promise.all([
+        store.dispatch('squads/FETCH', { teamId: params.teamId }),
+        store.dispatch('players/FETCH', { teamId: params.teamId })
+      ])
     },
     mounted () {
       this.setPage({
-        title: `${this.team.title} - Seasons`,
+        title: `${this.team.title} - Squads`,
         overline: this.team.title,
-        headline: 'Seasons'
+        headline: 'Squads'
       })
     },
     methods: mapMutations('app', {

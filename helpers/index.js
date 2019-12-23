@@ -1,5 +1,6 @@
 export { default as DeltaStatistic } from './DeltaStatistic'
 export { default as DialogForm } from './DialogForm'
+export { default as DynamicFields } from './DynamicFields'
 export { default as FittyText } from './FittyText'
 export { default as FormationView } from './FormationView'
 export { default as InlineField } from './InlineField'

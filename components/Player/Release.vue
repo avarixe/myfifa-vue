@@ -1,50 +1,37 @@
-<template>
-  <div class="d-inline-block">
-    <tooltip-button
+<template lang="pug">
+  .d-inline-block
+    tooltip-button(
       label="Release"
       icon="mdi-door-open"
       color="brown"
       @click="snackbar = true"
-    />
-
-    <v-snackbar
-      v-model="snackbar"
-      color="brown"
-    >
-      Release Player: {{ player.name }}?
-      <v-btn
-        dark
-        text
-        @click="releasePlayer(player.id)"
-      >
-        Yes
-      </v-btn>
-      <v-btn
-        dark
-        text
-        @click.stop="snackbar = false"
-      >
-        No
-      </v-btn>
-    </v-snackbar>
-  </div>
+    )
+    v-snackbar(v-model="snackbar" color="brown")
+      | Release Player: {{ player.name }}?
+      v-btn(dark text @click="releasePlayer(player.id)") Yes
+      v-btn(dark text @click.stop="snackbar = false") No
 </template>
 
 <script>
-  import { Vue, Component, Prop, namespace } from 'nuxt-property-decorator'
+  import { mapActions } from 'vuex'
   import { TooltipButton } from '@/helpers'
 
-  const players = namespace('players')
-
-  @Component({
+  export default {
+    name: 'PlayerRelease',
     components: {
       TooltipButton
-    }
-  })
-  export default class PlayerRelease extends Vue {
-    @players.Action('RELEASE') releasePlayer
-    @Prop({ type: Object, required: true }) player
-
-    snackbar = false
+    },
+    props: {
+      player: {
+        type: Object,
+        required: true
+      }
+    },
+    data: () => ({
+      snackbar: false
+    }),
+    methods: mapActions('players', {
+      releasePlayer: 'RELEASE'
+    })
   }
 </script>

@@ -1,84 +1,67 @@
-<template>
-  <v-card outlined>
-    <v-card-title :class="`subtitle-1 d-block text-center`">
-      <span :class="`${color}--text font-weight-light`">{{ player.name }}</span>
-    </v-card-title>
-
-    <v-divider class="mx-3" />
-
-    <v-card-actions>
-      <v-btn
+<template lang="pug">
+  v-card(outlined)
+    v-card-title.subtitle-1.d-block.text-center
+      span.font-weight-light(:class="`${color}--text`") {{ player.name }}
+    v-divider.mx-3
+    v-card-actions
+      v-btn(
         :to="player.link"
         nuxt
         :color="color"
         block
         text
-      >
-        View Player
-      </v-btn>
-    </v-card-actions>
-
-    <v-card-text class="text-center">
-      <v-row>
-        <v-col cols="3">
-          <div class="display-1">{{ player.pos }}</div>
-          <div class="subheading">Position</div>
-        </v-col>
-        <v-col cols="3">
-          <div class="display-1">{{ player.sec_pos | listArray }}</div>
-          <div class="subheading">
-            <fitty-text text="Secondary Position(s)" />
-          </div>
-        </v-col>
-        <v-col cols="3">
-          <div class="display-1">{{ player.age }}</div>
-          <div class="subheading">Age</div>
-        </v-col>
-        <v-col cols="3">
-          <v-icon
-            :color="player.statusColor"
-            class="display-1"
-          >
-            mdi-{{ player.statusIcon }}
-          </v-icon>
-
-          <div class="subheading">{{ player.status || 'Status' }}</div>
-        </v-col>
-        <v-col cols="6">
-          <div class="display-1 success--text">{{ player.ovr }}</div>
-          <div class="subheading">OVR</div>
-        </v-col>
-        <v-col cols="6">
-          <div class="display-1 primary--text">
-            {{ player.value | formatMoney(team.currency) }}
-          </div>
-          <div class="subheading">Value</div>
-        </v-col>
-      </v-row>
-    </v-card-text>
-  </v-card>
+      ) View Player
+    v-card-text.text-center
+      v-row
+        v-col(cols=3)
+          .display-1 {{ player.pos }}
+          .subheadingPosition
+        v-col(cols=3)
+          .display-1 {{ player.sec_pos | listArray }}
+          .subheading
+            fitty-text(text="Secondary Position(s)")
+        v-col(cols=3)
+          .display-1 {{ player.age }}
+          .subheading Age
+        v-col(cols=3)
+          v-icon.display-1(:color="player.statusColor")
+            | mdi-{{ player.statusIcon }}
+          .subheading {{ player.status || 'Status' }}
+        v-col(cols=6)
+          .display-1.success--text {{ player.ovr }}
+          .subheading OVR
+        v-col(cols=6)
+          .display-1.primary--text
+            | {{ player.value | formatMoney(team.currency) }}
+          .subheading Value
 </template>
 
 <script>
-  import { Component, Vue, Prop } from 'nuxt-property-decorator'
   import { Player, Team } from '@/models'
   import { FittyText } from '@/helpers'
 
-  @Component({
+  export default {
+    name: 'PlayerCard',
     components: {
       FittyText
-    }
-  })
-  export default class PlayerCard extends Vue {
-    @Prop({ type: [Number, String], required: true }) playerId
-    @Prop({ type: String, default: 'info' }) color
-
-    get player () {
-      return Player.find(this.playerId)
-    }
-
-    get team () {
-      return Team.find(this.$route.params.teamId)
+    },
+    props: {
+      playerId: {
+        type: [Number, String],
+        required: true
+      },
+      color: {
+        type: String,
+        default: 'info'
+      }
+    },
+    computed: {
+      player () {
+        return Player.find(this.playerId)
+      },
+      team () {
+        return Team.find(this.$route.params.teamId)
+      }
     }
   }
 </script>

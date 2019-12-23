@@ -1,121 +1,99 @@
-<template>
-  <v-card>
-    <v-toolbar color="blue">
-      <v-toolbar-title class="font-weight-light white--text">
-        {{ squad.name }}
-      </v-toolbar-title>
-
-      <v-spacer />
-
-      <squad-form :squad-data="squad">
-        <template #default="{ on }">
-          <tooltip-button
+<template lang="pug">
+  v-card
+    v-toolbar(color="blue")
+      v-toolbar-title.font-weight-light.white--text {{ squad.name }}
+      v-spacer
+      squad-form(:record="squad" color="orange")
+        template(#default="{ on }")
+          tooltip-button(
             label="Edit"
             icon="mdi-pencil"
             color="orange"
             :on="on"
-          />
-        </template>
-      </squad-form>
-
-      <record-remove
+          )
+      record-remove(
         :record="squad"
         store="squads"
         :label="`Squad: ${ squad.name }`"
         small
-      />
-    </v-toolbar>
-
-    <v-card-text>
-      <v-row
-        dense
-        class="text-center"
-      >
-        <v-col>
-          <div class="display-1 primary--text">{{ defOVR }}</div>
-          <div class="subheading">DEF</div>
-        </v-col>
-        <v-col>
-          <div class="display-1 success--text">{{ midOVR }}</div>
-          <div class="subheading">MID</div>
-        </v-col>
-        <v-col>
-          <div class="display-1 warning--text">{{ attOVR }}</div>
-          <div class="subheading">ATT</div>
-        </v-col>
-      </v-row>
-
-      <v-divider class="mx-3" />
-
-      <formation-view :formation="squad.squad_players">
-        <template #item="{ player }">
-          <div class="font-weight-bold">{{ player.pos }}</div>
-          <div :class="`font-weight-thin ${statusColor(player.player_id)}`">
-            {{ nameOf(player.player_id) }}
-          </div>
-        </template>
-      </formation-view>
-    </v-card-text>
-  </v-card>
+      )
+    v-card-text
+      v-row.text-center(dense)
+        v-col
+          .display-1.primary--text {{ defOVR }}
+          .subheading DEF
+        v-col
+          .display-1.success--text {{ midOVR }}
+          .subheading MID
+        v-col
+          .display-1.warning--text {{ attOVR }}
+          .subheading ATT
+      v-divider.mx-3
+      formation-view(:formation="squad.squad_players")
+        template(#item="{ player }")
+          .font-weight-bold {{ player.pos }}
+          .font-weight-thin(:class="statusColor(player.player_id)")
+            | {{ nameOf(player.player_id) }}
 </template>
 
 <script>
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
   import { FormationView, RecordRemove, TooltipButton } from '@/helpers'
   import { Player } from '@/models'
   import SquadForm from './Form'
 
-  @Component({
+  export default {
+    name: 'SquadCard',
     components: {
       SquadForm,
       FormationView,
       RecordRemove,
       TooltipButton
-    }
-  })
-  export default class SquadCard extends Vue {
-    @Prop({ type: Object, required: true }) squad
+    },
+    props: {
+      squad: {
+        type: Object,
+        required: true
+      }
+    },
+    computed: {
+      defOVR () {
+        return this.avgOVR('DEF')
+      },
+      midOVR () {
+        return this.avgOVR('MID')
+      },
+      attOVR () {
+        return this.avgOVR('ATT')
+      }
+    },
+    methods: {
+      avgOVR (positionType) {
+        let playerIds = []
 
-    get defOVR () {
-      return this.avgOVR('DEF')
-    }
+        this.squad.squad_players.forEach(squadPlayer => {
+          if (squadPlayer.positionType === positionType) {
+            playerIds.push(squadPlayer.player_id)
+          }
+        })
 
-    get midOVR () {
-      return this.avgOVR('MID')
-    }
+        const totalOvr = Player
+          .query()
+          .whereIdIn(playerIds)
+          .sum('ovr')
 
-    get attOVR () {
-      return this.avgOVR('ATT')
-    }
-
-    avgOVR (positionType) {
-      let playerIds = []
-
-      this.squad.squad_players.forEach(squadPlayer => {
-        if (squadPlayer.positionType === positionType) {
-          playerIds.push(squadPlayer.player_id)
+        return Math.round(totalOvr / playerIds.length)
+      },
+      nameOf (playerId) {
+        const player = Player.find(playerId)
+        return player ? player.name : ''
+      },
+      statusColor (playerId) {
+        const player = Player.find(playerId)
+        if (player && player.status === 'Active') {
+          return ''
+        } else {
+          return 'red--text'
         }
-      })
-
-      const totalOvr = Player
-        .query()
-        .whereIdIn(playerIds)
-        .sum('ovr')
-
-      return Math.round(totalOvr / playerIds.length)
-    }
-
-    nameOf (playerId) {
-      const player = Player.find(playerId)
-      return player ? player.name : ''
-    }
-
-    statusColor (playerId) {
-      const player = Player.find(playerId)
-      if (player && player.status === 'Active') {
-        return ''
-      } else {
-        return 'red--text'
       }
     }
   }

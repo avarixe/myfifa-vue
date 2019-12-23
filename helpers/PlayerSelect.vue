@@ -1,7 +1,5 @@
-<template>
-  <v-select
-    v-rules.required="{ disabled: !required }"
-    :value="value"
+<template lang="pug">
+  v-select(
     :items="players"
     :item-value="itemValue"
     item-text="name"
@@ -10,38 +8,69 @@
     :disabled="disabled"
     :clearable="clearable"
     :hide-details="hideDetails"
+    :rules="rules"
+    :value="value"
     @change="updateValue"
-  >
-    <template #item="{ item }">
-      <v-list-item-action>
-        <v-list-item-action-text>
-          {{ item.pos }}
-        </v-list-item-action-text>
-      </v-list-item-action>
-      <v-list-item-content>
-        <v-list-item-title>{{ item.name }}</v-list-item-title>
-      </v-list-item-content>
-    </template>
-  </v-select>
+  )
+    template(#item="{ item }")
+      v-list-item-action
+        v-list-item-action-text {{ item.pos }}
+      v-list-item-content
+        v-list-item-title {{ item.name }}
 </template>
 
 <script>
-  import { Vue, Prop, Component } from 'nuxt-property-decorator'
+  import { requiredRule } from './utilities'
 
-  @Component
-  export default class PlayerSelect extends Vue {
-    @Prop([String, Number]) value
-    @Prop(Array) players
-    @Prop({ type: String, default: 'Player' }) label
-    @Prop({ type: String, default: 'mdi-account' }) icon
-    @Prop({ type: String, default: 'player_id' }) itemValue
-    @Prop(Boolean) required
-    @Prop(Boolean) disabled
-    @Prop(Boolean) clearable
-    @Prop(Boolean) hideDetails
-
-    updateValue (value) {
-      this.$emit('input', value)
+  export default {
+    name: 'PlayerSelect',
+    props: {
+      value: {
+        type: [String, Number],
+        default: null
+      },
+      players: {
+        type: Array,
+        default: () => ([])
+      },
+      label: {
+        type: String,
+        default: 'Player'
+      },
+      icon: {
+        type: String,
+        default: 'mdi-account'
+      },
+      itemValue: {
+        type: String,
+        default: 'player_id'
+      },
+      required: {
+        type: Boolean,
+        default: false
+      },
+      disabled: {
+        type: Boolean,
+        default: false
+      },
+      clearable: {
+        type: Boolean,
+        default: false
+      },
+      hideDetails: {
+        type: Boolean,
+        default: false
+      }
+    },
+    computed: {
+      rules () {
+        return this.required ? [requiredRule({ label: this.label })] : []
+      }
+    },
+    methods: {
+      updateValue (value) {
+        this.$emit('input', value)
+      }
     }
   }
 </script>

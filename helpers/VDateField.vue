@@ -1,76 +1,110 @@
-<template>
-  <v-menu
+<template lang="pug">
+  v-menu(
     ref="menu"
     v-model="menu"
     :close-on-content-click="false"
     transition="scale-transition"
     min-width="290px"
-  >
-    <template #activator="{ on }">
-      <v-text-field
-        v-rules.required="{ disabled: !required }"
+  )
+    template(#activator="{ on }")
+      v-text-field(
         :value="formattedDate"
+        :rules="rules"
         :label="label"
         :prepend-icon="prependIcon"
         readonly
         :clearable="clearable"
         :disabled="disabled"
         v-on="on"
-      />
-    </template>
-    <v-date-picker
+      )
+    v-date-picker(
       ref="picker"
       v-model="date"
       :color="color"
       :min="min"
       :max="max"
       @input="menu = false"
-    />
-  </v-menu>
+    )
 </template>
 
 <script>
-  import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { format, parseISO } from 'date-fns'
+  import { requiredRule } from '@/helpers'
 
-  @Component
-  export default class VDateField extends Vue {
-    @Prop(String) value
-    @Prop({ type: String, required: true }) label
-    @Prop(String) min
-    @Prop(String) max
-    @Prop(String) color
-    @Prop(String) prependIcon
-    @Prop({ type: Boolean, default: false }) required
-    @Prop({ type: Boolean, default: false }) startWithYear
-    @Prop({ type: Boolean, default: false }) disabled
-    @Prop({ type: Boolean, default: false }) clearable
-
-    menu = false
-    date = null
-
-    get formattedDate () {
-      return this.date
-        ? format(parseISO(this.date), 'MMM dd, yyyy')
-        : null
-    }
-
-    @Watch('value', { immediate: true })
-    setDate () {
-      this.date = this.value
-    }
-
-    @Watch('date')
-    emitValue (value) {
-      this.$emit('input', value)
-    }
-
-    @Watch('menu')
-    setPicker (val) {
-      if (val && this.startWithYear) {
-        this.$nextTick(() => {
-          this.$refs.picker.activePicker = 'YEAR'
-        })
+  export default {
+    name: 'VDateField',
+    props: {
+      value: {
+        type: String,
+        default: null
+      },
+      label: {
+        type: String,
+        required: true
+      },
+      min: {
+        type: String,
+        default: null
+      },
+      max: {
+        type: String,
+        default: null
+      },
+      color: {
+        type: String,
+        default: null
+      },
+      prependIcon: {
+        type: String,
+        default: null
+      },
+      required: {
+        type: Boolean,
+        default: false
+      },
+      startWithYear: {
+        type: Boolean,
+        default: false
+      },
+      disabled: {
+        type: Boolean,
+        default: false
+      },
+      clearable: {
+        type: Boolean,
+        default: false
+      }
+    },
+    data: () => ({
+      menu: false,
+      date: null
+    }),
+    computed: {
+      formattedDate () {
+        return this.date
+          ? format(parseISO(this.date), 'MMM dd, yyyy')
+          : null
+      },
+      rules () {
+        return this.required ? [requiredRule({ label: this.label })] : []
+      }
+    },
+    watch: {
+      value: {
+        handler () {
+          this.date = this.value
+        },
+        immediate: true
+      },
+      date (value) {
+        this.$emit('input', value)
+      },
+      menu (val) {
+        if (val && this.startWithYear) {
+          this.$nextTick(() => {
+            this.$refs.picker.activePicker = 'YEAR'
+          })
+        }
       }
     }
   }

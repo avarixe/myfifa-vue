@@ -1,112 +1,108 @@
-<template>
-  <dialog-form
+<template lang="pug">
+  dialog-form(
     v-model="dialog"
     title="New Stage"
     :submit="submit"
     :color="color"
-  >
-    <template #activator="{ on }">
-      <slot :on="on">
-        <v-btn
+  )
+    template(#activator="{ on }")
+      slot(:on="on")
+        v-btn.my-1(
           dark
           color="teal"
-          class="my-1"
           v-on="on"
-        >
-          Add Stage
-        </v-btn>
-      </slot>
-    </template>
-
-    <template #form>
-      <v-col cols="12">
-        <v-text-field
-          v-model="stage.name"
-          v-rules.required
-          label="Name"
-          prepend-icon="mdi-table"
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-text-field
-          v-model="stage.num_teams"
-          v-rules.required
-          label="Number of Teams"
-          prepend-icon="mdi-account-group"
-          type="number"
-        />
-      </v-col>
-      <v-scroll-y-transition mode="out-in">
-        <v-col
-          v-if="!stage.table"
-          cols="12"
-        >
-          <v-text-field
-            v-model="stage.num_fixtures"
-            v-rules.required
-            label="Number of Fixtures"
-            prepend-icon="mdi-sword-cross"
-            type="number"
-            :disabled="stage.table"
-          />
-        </v-col>
-      </v-scroll-y-transition>
-      <v-col cols="12">
-        <v-radio-group
-          v-model="stage.table"
-          hide-details
-          row
-        >
-          <v-radio
-            label="Table"
-            :value="true"
-          />
-          <v-radio
-            label="Elimination Round"
-            :value="false"
-          />
-        </v-radio-group>
-      </v-col>
-    </template>
-  </dialog-form>
+        ) Add Stage
+    template(#form)
+      dynamic-fields(:object="stage" :fields="fields")
 </template>
 
 <script>
-  import { mixins, Component, Prop, Watch, namespace } from 'nuxt-property-decorator'
-  import { TeamAccessible, DialogFormable } from '@/mixins'
+  import { mapActions } from 'vuex'
+  import { DialogFormable } from '@/mixins'
+  import { DynamicFields } from '@/helpers'
 
-  const mix = mixins(DialogFormable, TeamAccessible)
-  const stages = namespace('stages')
-
-  @Component
-  export default class StageFrom extends mix {
-    @stages.Action('CREATE') createStage
-    @Prop({ type: Object, required: true }) competition
-
-    valid = false
-    stage = {
-      name: '',
-      num_teams: null,
-      num_fixtures: null,
-      table: false
-    }
-
-    @Watch('stage.table')
-    setNumFixtures (val) {
-      if (val) {
-        this.stage.num_fixtures = null
+  export default {
+    name: 'StageForm',
+    components: {
+      DynamicFields
+    },
+    mixins: [
+      DialogFormable
+    ],
+    props: {
+      competition: {
+        type: Object,
+        required: true
       }
-    }
-
-    async submit () {
-      await this.createStage({
-        competitionId: this.competition.id,
-        stage: this.stage
-      })
+    },
+    data: () => ({
+      valid: false,
+      stage: {
+        name: '',
+        num_teams: null,
+        num_fixtures: null,
+        table: false
+      }
+    }),
+    computed: {
+      fields () {
+        return [
+          {
+            type: 'string',
+            attribute: 'name',
+            label: 'Name',
+            prependIcon: 'mdi-table',
+            required: true,
+            spellcheck: 'false',
+            autocapitalize: 'words',
+            autocomplete: 'off',
+            autocorrect: 'off'
+          },
+          {
+            type: 'radio',
+            attribute: 'table',
+            items: [
+              { label: 'Table', value: true },
+              { label: 'Elimination Round', value: false }
+            ],
+            hideDetails: true
+          },
+          {
+            type: 'string',
+            attribute: 'num_teams',
+            label: 'Number of Teams',
+            prependIcon: 'mdi-account-group',
+            inputmode: 'numeric',
+            required: true
+          },
+          {
+            type: 'string',
+            attribute: 'num_fixtures',
+            label: 'Number of Fixtures',
+            prependIcon: 'mdi-sword-cross',
+            inputmode: 'numeric',
+            hidden: this.stage.table
+          }
+        ]
+      }
+    },
+    watch: {
+      'stage.table' (val) {
+        if (val) {
+          this.stage.num_fixtures = null
+        }
+      }
+    },
+    methods: {
+      ...mapActions('stages', {
+        createStage: 'CREATE'
+      }),
+      async submit () {
+        await this.createStage({
+          competitionId: this.competition.id,
+          stage: this.stage
+        })
+      }
     }
   }
 </script>

@@ -1,29 +1,19 @@
-<template>
-  <div :key="key">
-    <template v-if="readonly">
-      <span :class="displayClass">{{ humanizedDisplay }}</span>
-    </template>
-    <template v-else>
-      <v-edit-dialog
-        @open="open"
-        @close="close"
-      >
-        <v-tooltip bottom>
-          <template #activator="{ on }">
-            <span v-on="on">
-              <v-badge color="transparent">
-                <template #badge>
-                  <v-icon>mdi-circle-edit-outline</v-icon>
-                </template>
-                <span :class="displayClass">{{ humanizedDisplay }}</span>
-              </v-badge>
-            </span>
-          </template>
-          Click to Edit {{ label }}
-        </v-tooltip>
-
-        <template #input>
-          <v-combobox
+<template lang="pug">
+  div(:key="key")
+    template(v-if="readonly")
+      span(:class="displayClass") {{ humanizedDisplay }}
+    template(v-else)
+      v-edit-dialog(@close="close")
+        v-tooltip(bottom)
+          template(#activator="{ on }")
+            span(v-on="on")
+              v-badge(color="transparent")
+                template(#badge)
+                  v-icon mdi-circle-edit-outline
+                span(:class="displayClass") {{ humanizedDisplay }}
+          | Click to Edit {{ label }}
+        template(#input)
+          v-combobox(
             v-if="inputType === 'combobox'"
             v-model="value"
             :items="options"
@@ -37,97 +27,135 @@
             autocomplete="off"
             autocorrect="off"
             autofocus
-          >
-            <template #item="{ item }">
-              <slot
-                name="option"
-                :item="item"
-              >
-                <list-option
+          )
+            template(#item="{ item }")
+              slot(name="option" :item="item")
+                list-option(
                   :item="item"
                   :option-avatar="optionAvatar"
                   :option-text="optionText"
-                />
-              </slot>
-            </template>
-          </v-combobox>
-          <v-money-field
+                )
+          v-money-field(
             v-else-if="inputType === 'money'"
             v-model="value"
             :label="label"
             :prefix="team.currency"
             :required="required"
             autofocus
-          />
-          <v-text-field
+          )
+          v-text-field(
             v-else
             v-model="value"
             :label="label"
             :type="inputType"
             :rules="rules"
             autofocus
-          />
-        </template>
-      </v-edit-dialog>
-    </template>
-  </div>
+          )
 </template>
 
 <script>
-  import { mixins, Component, Prop } from 'nuxt-property-decorator'
-  import { Watch } from 'vue-property-decorator'
   import { TeamAccessible } from '@/mixins'
   import ListOption from './ListOption'
   import VMoneyField from './VMoneyField'
 
-  @Component({
+  export default {
+    name: 'InlineField',
     components: {
       ListOption,
       VMoneyField
-    }
-  })
-  export default class InlineField extends mixins(TeamAccessible) {
-    @Prop({ type: Object, required: true }) item
-    @Prop({ type: String, required: true }) attribute
-    @Prop(String) label
-    @Prop(Array) options
-    @Prop(String) optionAvatar
-    @Prop(String) optionText
-    @Prop(String) optionValue
-    @Prop(Array) rules
-    @Prop(String) inputType
-    @Prop([String, Number]) display
-    @Prop(String) displayClass
-    @Prop({ type: Boolean, default: false }) readonly
-    @Prop({ type: Boolean, default: false }) required
-
-    value = null
-    original = null
-    key = 0
-
-    get humanizedDisplay () {
-      const value = this.display || this.value
-      return value === null || value === '' ? '-' : value
-    }
-
-    get isDirty () {
-      return this.value !== this.original
-    }
-
-    @Watch('item', { immediate: true })
-    @Watch('attribute')
-    reset () {
-      this.value = this.item[this.attribute]
-      this.original = this.value
-    }
-
-    open () {
-    }
-
-    close () {
-      if (this.isDirty) {
-        this.$emit('close', this.value)
-        this.key++
+    },
+    mixins: [
+      TeamAccessible
+    ],
+    props: {
+      item: {
+        type: Object,
+        required: true
+      },
+      attribute: {
+        type: String,
+        required: true
+      },
+      label: {
+        type: String,
+        default: null
+      },
+      options: {
+        type: Array,
+        default: () => ([])
+      },
+      optionAvatar: {
+        type: String,
+        default: null
+      },
+      optionText: {
+        type: String,
+        default: null
+      },
+      optionValue: {
+        type: String,
+        default: null
+      },
+      rules: {
+        type: Array,
+        default: () => ([])
+      },
+      inputType: {
+        type: String,
+        default: null
+      },
+      display: {
+        type: [String, Number],
+        default: null
+      },
+      displayClass: {
+        type: String,
+        default: null
+      },
+      readonly: {
+        type: Boolean,
+        default: false
+      },
+      required: {
+        type: Boolean,
+        default: false
+      }
+    },
+    data: () => ({
+      value: null,
+      original: null,
+      key: 0
+    }),
+    computed: {
+      humanizedDisplay () {
+        const value = this.display || this.value
+        return value === null || value === '' ? '-' : value
+      },
+      isDirty () {
+        return this.value !== this.original
+      }
+    },
+    watch: {
+      item: {
+        handler () {
+          this.reset()
+        },
+        immediate: true
+      },
+      attribute () {
+        this.reset()
+      }
+    },
+    methods: {
+      reset () {
+        this.value = this.item[this.attribute]
+        this.original = this.value
+      },
+      close () {
+        if (this.isDirty) {
+          this.$emit('close', this.value)
+          this.key++
+        }
       }
     }
   }

@@ -60,7 +60,8 @@ export const routes = {
     index: 'teams/{{ teamId }}/matches',
     record: 'matches/{{ matchId }}',
     applySquad: 'matches/{{ matchId }}/apply_squad',
-    penaltyShootout: 'matches/{{ matchId }}/penalty_shootout'
+    penaltyShootout: 'matches/{{ matchId }}/penalty_shootout',
+    teamOptions: 'teams/{{ teamId }}/matches/team_options'
   },
 
   goals: {

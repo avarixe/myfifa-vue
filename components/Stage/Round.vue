@@ -1,7 +1,7 @@
-<template>
-  <v-card flat>
-    <v-card-title>
-      <inline-field
+<template lang="pug">
+  v-card(flat)
+    v-card-title
+      inline-field(
         :key="key"
         :item="round"
         attribute="name"
@@ -9,136 +9,123 @@
         :readonly="readonly"
         display-class="font-weight-light"
         @close="updateStageAttribute(round.id, 'name', $event)"
-      />
-
-      <v-spacer />
-
-      <template v-if="!readonly">
-        <fixture-form :stage="round" />
-        <record-remove
+      )
+      v-spacer
+      template(v-if="!readonly")
+        fixture-form(:stage="round")
+        record-remove(
           :record="round"
           store="stages"
           :label="round.name"
-        />
-      </template>
-    </v-card-title>
-
-    <v-data-table
+        )
+    v-data-table(
       :headers="headers"
       :items="items"
       :items-per-page="-1"
       :mobile-breakpoint="0"
       disable-sort
       hide-default-footer
-    >
-      <template #item.home_team="{ item }">
-        <span :class="teamClass(item.home_team)">
-          {{ item.home_team }}
-        </span>
-      </template>
-      <template #item.score="{ item }">
-        <div
-          v-for="leg in item.legs"
-          :key="leg.id"
-        >
-          {{ leg.score }}
-        </div>
-      </template>
-      <template #item.away_team="{ item }">
-        <span :class="teamClass(item.away_team)">
-          {{ item.away_team }}
-        </span>
-      </template>
-      <template #item.edit="{ item }">
-        <fixture-form
-          :stage="round"
-          :fixture-data="item"
-        >
-          <template #default="{ on }">
-            <tooltip-button
+    )
+      template(#item.home_team="{ item }")
+        span(:class="teamClass(item.home_team)") {{ item.home_team }}
+      template(#item.score="{ item }")
+        div(v-for="leg in item.legs" :key="leg.id") {{ leg.score }}
+      template(#item.away_team="{ item }")
+        span(:class="teamClass(item.away_team)") {{ item.away_team }}
+      template(#item.edit="{ item }")
+        fixture-form(:stage="round" :fixture-data="item")
+          template(#default="{ on }")
+            tooltip-button(
               label="Edit Fixture"
               icon="mdi-pencil"
               color="orange"
               :on="on"
-            />
-          </template>
-        </fixture-form>
-      </template>
-      <template #item.delete="{ item }">
-        <record-remove
+            )
+      template(#item.delete="{ item }")
+        record-remove(
           :record="item"
           store="fixtures"
           label="Fixture"
-        />
-      </template>
-    </v-data-table>
-  </v-card>
+        )
 </template>
 
 <script>
-  import { mixins, Component, Prop, namespace } from 'nuxt-property-decorator'
+  import { mapMutations, mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
   import { InlineField, RecordRemove, TooltipButton } from '@/helpers'
   import FixtureForm from '@/components/Fixture/Form'
 
-  const stages = namespace('stages')
-  const broadcaster = namespace('broadcaster')
-
-  @Component({
+  export default {
+    name: 'RoundStage',
     components: {
       InlineField,
       RecordRemove,
       FixtureForm,
       TooltipButton
-    }
-  })
-  export default class RoundStage extends mixins(CompetitionAccessible) {
-    @stages.Action('UPDATE') updateStage
-    @broadcaster.Mutation('ANNOUNCE') announce
-    @Prop({ type: Object, required: true }) round
-    @Prop(Boolean) readonly
-
-    key = 0
-
-    get items () {
-      return Object.values(this.round.fixtures) || []
-    }
-
-    get headers () {
-      const headers = [
-        { text: 'Home Team', value: 'home_team', align: 'right' },
-        { text: 'Score', value: 'score', align: 'center' },
-        { text: 'Away Team', value: 'away_team' }
-      ]
-
-      if (!this.readonly) {
-        headers.push({
-          text: '',
-          value: 'edit',
-          width: 40
-        })
-        headers.push({
-          text: '',
-          value: 'delete',
-          width: 40
-        })
+    },
+    mixins: [
+      CompetitionAccessible
+    ],
+    props: {
+      round: {
+        type: Object,
+        required: true
+      },
+      readonly: {
+        type: Boolean,
+        default: false
       }
+    },
+    data: () => ({
+      key: 0
+    }),
+    computed: {
+      items () {
+        return Object.values(this.round.fixtures) || []
+      },
+      headers () {
+        const headers = [
+          { text: 'Home Team', value: 'home_team', align: 'right' },
+          { text: 'Score', value: 'score', align: 'center' },
+          { text: 'Away Team', value: 'away_team' }
+        ]
 
-      return headers
-    }
+        if (!this.readonly) {
+          headers.push({
+            text: '',
+            value: 'edit',
+            width: 40
+          })
+          headers.push({
+            text: '',
+            value: 'delete',
+            width: 40
+          })
+        }
 
-    async updateStageAttribute (stageId, attribute, value) {
-      try {
-        await this.updateStage({
-          id: stageId,
-          [attribute]: value
-        })
-      } catch (e) {
-        this.key++
-        this.announce({
-          message: e.message,
-          color: 'red'
-        })
+        return headers
+      }
+    },
+    methods: {
+      ...mapMutations('broadcaster', {
+        announce: 'ANNOUNCE'
+      }),
+      ...mapActions('stages', {
+        updateStage: 'UPDATE'
+      }),
+      async updateStageAttribute (stageId, attribute, value) {
+        try {
+          await this.updateStage({
+            id: stageId,
+            [attribute]: value
+          })
+        } catch (e) {
+          this.key++
+          this.announce({
+            message: e.message,
+            color: 'red'
+          })
+        }
       }
     }
   }

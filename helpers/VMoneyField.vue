@@ -1,55 +1,75 @@
-<template>
-  <v-text-field
+<template lang="pug">
+  v-text-field(
     v-model="money"
     v-money="money ? config : null"
-    v-rules.required="{ disabled: !required }"
+    :rules="rules"
     :label="label"
     :prefix="prefix"
     :clearable="!required"
     :autofocus="autofocus"
     inputmode="numeric"
-  />
+  )
 </template>
 
 <script>
-  import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
   import { VMoney } from 'v-money'
+  import { requiredRule } from '@/helpers'
 
-  @Component({
+  export default {
+    name: 'VMoneyField',
     directives: {
       money: VMoney
-    }
-  })
-  export default class VMoneyField extends Vue {
-    @Prop([String, Number]) value
-    @Prop({ type: String, required: true }) label
-    @Prop(String) prefix
-    @Prop({ type: Boolean, default: false }) required
-    @Prop({ type: Boolean, default: false }) autofocus
-
-    money = null
-    config = {
-      decimal: '.',
-      thousands: ',',
-      precision: 0
-    }
-
-    get moneyNum () {
-      return this.money && this.money.length > 0
-        ? parseInt(this.money.replace(/,/g, ''))
-        : null
-    }
-
-    @Watch('value', { immediate: true })
-    setMoney () {
-      this.money = this.value
-        ? this.value.toString()
-        : ''
-    }
-
-    @Watch('money')
-    emitValue (value) {
-      this.$emit('input', this.moneyNum)
+    },
+    props: {
+      value: {
+        type: [String, Number],
+        default: null
+      },
+      label: {
+        type: String,
+        required: true
+      },
+      prefix: {
+        type: String,
+        default: null
+      },
+      required: {
+        type: Boolean,
+        default: false
+      },
+      autofocus: {
+        type: Boolean,
+        default: false
+      }
+    },
+    data: () => ({
+      money: null,
+      config: {
+        decimal: '.',
+        thousands: ',',
+        precision: 0
+      }
+    }),
+    computed: {
+      moneyNum () {
+        return this.money && this.money.length > 0
+          ? parseInt(this.money.replace(/,/g, ''))
+          : null
+      },
+      rules () {
+        return this.required ? [requiredRule({ label: this.label })] : []
+      }
+    },
+    watch: {
+      value: {
+        handler () {
+          this.money = this.value ? this.value.toString() : ''
+        },
+        immediate: true
+      },
+      money (value) {
+        this.$emit('input', this.moneyNum)
+      }
     }
   }
 </script>

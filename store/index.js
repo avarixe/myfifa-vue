@@ -15,6 +15,13 @@ export const getters = {
   authenticated: state => state.token !== null
 }
 
+// mutations
+export const mutations = {
+  SET_TOKEN (state, token) {
+    state.token = token
+  }
+}
+
 // actions
 export const actions = {
   async nuxtServerInit ({ commit, dispatch }, { req, params }) {
@@ -56,7 +63,7 @@ export const actions = {
     return http({
       method: 'post',
       path: routes.token.revoke,
-      data: { token: state.token },
+      token: state.token,
       success ({ data }) {
         commit('SET_TOKEN', null)
         commit('broadcaster/ANNOUNCE', {
@@ -68,13 +75,7 @@ export const actions = {
   }
 }
 
-// mutations
-export const mutations = {
-  SET_TOKEN (state, token) {
-    state.token = token
-  }
-}
-
+// plugins
 export const plugins = [
   VuexORM.install(database)
 ]
