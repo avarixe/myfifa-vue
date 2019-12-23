@@ -1,62 +1,49 @@
-<template>
-  <div>
-    <v-tooltip
-      :color="color"
-      bottom
-    >
-      <template #activator="{ on }">
-        <div
-          :class="`display-1 ${color}--text`"
-          v-on="on"
-        >
-          <v-icon
-            class="display-1"
-            :color="color"
-          >
-            mdi-{{ icon }}
-          </v-icon>
-          {{ formatter(endValue) }}
-        </div>
-      </template>
-
-      {{ valueIncreased ? 'Increased' : 'Decreased' }} from
-      {{ formatter(startValue) }} by {{ percentage.toFixed(2) }}%
-    </v-tooltip>
-
-    <div class="subheading">{{ label }}</div>
-  </div>
+<template lang="pug">
+  div
+    v-tooltip(:color="color" bottom)
+      template(#activator="{ on }")
+        .display-1(:class="`${color}--text`" v-on="on")
+          v-icon.display-1(:color="color") mdi-{{ icon }}
+          | {{ formatter(endValue) }}
+      | {{ valueIncreased ? 'Increased' : 'Decreased' }} from
+      | {{ formatter(startValue) }} by {{ percentage.toFixed(2) }}%
+    .subheading {{ label }}
 </template>
 
 <script>
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
-  import { Team } from '@/models'
-
-  @Component
-  export default class DeltaStatistic extends Vue {
-    @Prop({ type: String, required: true }) label
-    @Prop({ type: Function, default: x => x }) formatter
-    @Prop([String, Number]) startValue
-    @Prop([String, Number]) endValue
-
-    // required to use $_formatMoney as formatter
-    get team () {
-      return Team.find(this.$route.params.teamId)
-    }
-
-    get color () {
-      return this.valueIncreased ? 'green' : 'red'
-    }
-
-    get icon () {
-      return this.valueIncreased ? 'menu-up' : 'menu-down'
-    }
-
-    get percentage () {
-      return Math.abs((this.endValue - this.startValue) / this.startValue) * 100
-    }
-
-    get valueIncreased () {
-      return this.startValue <= this.endValue
+  export default {
+    name: 'DeltaStatistic',
+    props: {
+      label: {
+        type: String,
+        required: true
+      },
+      formatter: {
+        type: Function,
+        default: x => x
+      },
+      startValue: {
+        type: [String, Number],
+        default: null
+      },
+      endValue: {
+        type: [String, Number],
+        default: null
+      }
+    },
+    computed: {
+      color () {
+        return this.valueIncreased ? 'green' : 'red'
+      },
+      icon () {
+        return this.valueIncreased ? 'menu-up' : 'menu-down'
+      },
+      percentage () {
+        return Math.abs((this.endValue - this.startValue) / this.startValue) * 100
+      },
+      valueIncreased () {
+        return this.startValue <= this.endValue
+      }
     }
   }
 </script>
