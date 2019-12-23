@@ -1,31 +1,31 @@
 <template lang="pug">
   v-container(fluid)
+    v-row.text-center(justify="space-around")
+      v-col(cols=6 sm=2)
+        .display-1 {{ player.pos }}
+        .subheading Position
+      v-col(cols=6 sm=2)
+        .display-1 {{ player.sec_pos | listArray }}
+        .subheading
+          fitty-text(text="Secondary Position(s)" max-size=16)
+      v-col(cols=4 sm=2)
+        .display-1 {{ player.age }}
+        .subheading Age
+      v-col(v-if="player.nationality" cols=4 sm=2)
+        client-only
+          flag(
+            :iso="player.flag"
+            :title="player.nationality"
+            style="font-size: 40px"
+          )
+        .subheading Nationality
+      v-col(cols=4 sm=2)
+        v-icon.display-1(:color="player.statusColor")
+          | mdi-{{ player.statusIcon }}
+        .subheading {{ player.status || 'Status' }}
+      v-col(cols=12)
+        player-actions(:player="player")
     v-row
-      v-row.text-center(justify="space-around")
-        v-col(cols=6 sm=2)
-          .display-1 {{ player.pos }}
-          .subheading Position
-        v-col(cols=6 sm=2)
-          .display-1 {{ player.sec_pos | listArray }}
-          .subheading
-            fitty-text(text="Secondary Position(s)" max-size=16)
-        v-col(cols=4 sm=2)
-          .display-1 {{ player.age }}
-          .subheading Age
-        v-col(v-if="player.nationality" cols=4 sm=2)
-          client-only
-            flag(
-              :iso="player.flag"
-              :title="player.nationality"
-              style="font-size: 40px"
-            )
-          .subheading Nationality
-        v-col(cols=4 sm=2)
-          v-icon.display-1(:color="player.statusColor")
-            | mdi-{{ player.statusIcon }}
-          .subheading {{ player.status || 'Status' }}
-        v-col(cols=12)
-          player-actions(:player="player")
       v-col(cols=12)
         v-card
           v-card-text

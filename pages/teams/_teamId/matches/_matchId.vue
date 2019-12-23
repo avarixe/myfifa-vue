@@ -6,28 +6,29 @@
         |&nbsp;
         v-btn(v-if="nextMatchLink" :to="nextMatchLink") Next Match
         match-form(v-else)
-      v-row.text-center
-        v-col(cols=12)
-          .display-2
-            fitty-text(:text="match.competition")
-          .display-1(v-if="match.stage")
-            fitty-text(:text="match.stage" max-size=30)
-          .subheading {{ match.played_on | formatDate }}
-        v-row.display-1(justify="space-between" align=center)
-          v-col.font-weight-thin.pa-3(cols=5)
-            fitty-text(:text="match.home")
-            .font-weight-bold(:class="`${match.resultColor}--text`")
-              | {{ match.home_score }}
-              span(v-if="match.penalty_shootout")
-                | ({{ match.penalty_shootout.home_score }})
-          v-col.font-weight-thin.pa-3(cols=5)
-            fitty-text(:text="match.away")
-            .font-weight-bold(:class="`${match.resultColor}--text`")
-              | {{ match.away_score }}
-              span(v-if="match.penalty_shootout")
-                | ({{ match.penalty_shootout.away_score }})
-        v-col(v-if="match.played_on === team.currently_on" cols=12)
-          match-actions(:match="match")
+      v-container
+        v-row.text-center
+          v-col(cols=12)
+            .display-2
+              fitty-text(:text="match.competition")
+            .display-1(v-if="match.stage")
+              fitty-text(:text="match.stage" max-size=30)
+            .subheading {{ match.played_on | formatDate }}
+          v-row.display-1(justify="space-between" align=center)
+            v-col.font-weight-thin.pa-3(cols=5)
+              fitty-text(:text="match.home")
+              .font-weight-bold(:class="`${match.resultColor}--text`")
+                | {{ match.home_score }}
+                span(v-if="match.penalty_shootout")
+                  | ({{ match.penalty_shootout.home_score }})
+            v-col.font-weight-thin.pa-3(cols=5)
+              fitty-text(:text="match.away")
+              .font-weight-bold(:class="`${match.resultColor}--text`")
+                | {{ match.away_score }}
+                span(v-if="match.penalty_shootout")
+                  | ({{ match.penalty_shootout.away_score }})
+          v-col(v-if="match.played_on === team.currently_on" cols=12)
+            match-actions(:match="match")
       v-col(cols=12)
         v-card
           v-card-text
