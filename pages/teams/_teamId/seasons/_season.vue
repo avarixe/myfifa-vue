@@ -17,26 +17,36 @@
         v-card
           v-card-text
             v-tabs(v-model="tab" centered)
+              v-tab Summary
               v-tab Competitions
               v-tab Players
+              v-tab Transfers
             v-tabs-items(v-model="tab" touchless)
+              v-tab-item
+                season-summary(:season="pageSeason")
               v-tab-item
                 competition-grid(:season="pageSeason")
               v-tab-item
                 player-grid(:season="pageSeason")
+              v-tab-item
+                transfer-grid(:season="pageSeason")
 </template>
 
 <script>
   import { mapMutations } from 'vuex'
   import CompetitionGrid from '@/components/Season/CompetitionGrid'
   import PlayerGrid from '@/components/Season/PlayerGrid'
+  import TransferGrid from '@/components/Season/TransferGrid'
+  import SeasonSummary from '@/components/Season/Summary'
   import { TeamAccessible } from '@/mixins'
 
   export default {
     name: 'SeasonPage',
     components: {
       CompetitionGrid,
-      PlayerGrid
+      PlayerGrid,
+      TransferGrid,
+      SeasonSummary
     },
     mixins: [
       TeamAccessible
@@ -62,7 +72,8 @@
         store.dispatch('players/FETCH', { teamId: params.teamId }),
         store.dispatch('playerHistories/SEARCH', { teamId: params.teamId }),
         store.dispatch('matches/FETCH', { teamId: params.teamId }),
-        store.dispatch('contracts/SEARCH', { teamId: params.teamId })
+        store.dispatch('contracts/SEARCH', { teamId: params.teamId }),
+        store.dispatch('transfers/SEARCH', { teamId: params.teamId })
       ])
     },
     mounted () {

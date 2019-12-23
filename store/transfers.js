@@ -9,7 +9,7 @@ export const actions = {
   }),
   SEARCH ({ rootState }, { teamId, filters }) {
     return http({
-      methods: 'post',
+      method: 'post',
       path: routes.transfers.search,
       pathData: { teamId },
       data: { filters },
