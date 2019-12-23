@@ -10,7 +10,6 @@
     v-form(
       ref="form"
       v-model="valid"
-      style="width:100%"
       @submit.prevent="submitForm"
     )
       v-card

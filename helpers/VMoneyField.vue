@@ -6,6 +6,9 @@
     :label="label"
     :prefix="prefix"
     :clearable="!required"
+    :dense="dense"
+    :outlined="outlined"
+    :hide-details="hideDetails"
     :autofocus="autofocus"
     inputmode="numeric"
   )
@@ -38,6 +41,18 @@
         default: false
       },
       autofocus: {
+        type: Boolean,
+        default: false
+      },
+      dense: {
+        type: Boolean,
+        default: false
+      },
+      outlined: {
+        type: Boolean,
+        default: false
+      },
+      hideDetails: {
         type: Boolean,
         default: false
       }

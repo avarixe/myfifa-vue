@@ -4,6 +4,9 @@
     :items="items"
     :label="label"
     :prepend-icon="icon"
+    :dense="dense"
+    :outlined="outlined"
+    :hide-details="hideDetails"
   )
     template(#selection="{ item }")
       flag.mr-2(:iso="nationalities[item]")
@@ -32,6 +35,18 @@
       icon: {
         type: String,
         default: 'mdi-flag'
+      },
+      dense: {
+        type: Boolean,
+        default: false
+      },
+      outlined: {
+        type: Boolean,
+        default: false
+      },
+      hideDetails: {
+        type: Boolean,
+        default: false
       }
     },
     data: () => ({
