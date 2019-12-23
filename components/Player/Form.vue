@@ -15,7 +15,7 @@
           v-checkbox(
             v-model="player.youth"
             label="Youth Player"
-            :disabled="record"
+            :disabled="record !== null"
             hide-details
           )
 </template>
@@ -23,6 +23,7 @@
 <script>
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
+  import { parseISO } from 'date-fns'
   import { DialogFormable, TeamAccessible } from '@/mixins'
   import { positions } from '@/models/Player'
   import { DynamicFields, NationalityField } from '@/helpers'
@@ -53,7 +54,7 @@
         ovr: 60,
         value: '',
         kit_no: null,
-        birth_year: null,
+        age: null,
         youth: false
       }
     }),
@@ -90,8 +91,8 @@
           },
           {
             type: 'string',
-            attribute: 'birth_year',
-            label: 'Birth Year',
+            attribute: 'age',
+            label: 'Age',
             prependIcon: 'mdi-calendar',
             required: true,
             inputmode: 'numeric'
@@ -138,9 +139,10 @@
             'ovr',
             'value',
             'kit_no',
-            'birth_year',
             'youth'
           ])
+          this.player.age = parseISO(this.team.currently_on).getFullYear()
+          this.player.age -= this.record.birth_year
           this.player.sec_pos = [...this.record.sec_pos]
         }
       }
