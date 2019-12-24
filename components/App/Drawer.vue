@@ -28,7 +28,7 @@
         :key="i"
         :to="link.to"
         active-class=""
-        exact
+        :exact="link.exact"
       )
         v-list-item-action
           v-icon {{ link.icon }}
@@ -88,6 +88,7 @@
                 name: 'teams-teamId',
                 params: { teamId: this.teamId }
               },
+              exact: true,
               icon: 'mdi-view-dashboard',
               text: 'Dashboard'
             },
