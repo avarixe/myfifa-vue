@@ -67,10 +67,14 @@
     }),
     computed: {
       moneyNum () {
-        const money = this.money.replace(/,/g, '')
-        return money.length > 0 && !isNaN(money)
-          ? parseInt(money)
-          : null
+        if (this.money) {
+          const money = this.money.replace(/,/g, '')
+          return money.length > 0 && !isNaN(money)
+            ? parseInt(money)
+            : null
+        } else {
+          return null
+        }
       },
       rules () {
         return this.required ? [requiredRule({ label: this.label })] : []

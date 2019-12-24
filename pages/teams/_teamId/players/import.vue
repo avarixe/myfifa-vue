@@ -16,81 +16,37 @@
             v-simple-table
               thead
                 tr
-                  th(v-for="field in fields" :key="field.value")
-                    | {{ field.label }}
+                  th Name
+                  th Nationality
+                  th Position
+                  th Secondary Position(s)
+                  th Age
+                  th OVR
+                  th Value
+                  th Kit Number
+                  th Contract Ends
+                  th Wage
+                  th Signing Bonus
+                  th Release Clause
+                  th(colspan=3) Performance Bonus
               tbody
-                tr(v-for="(player, i) in players" :key="i")
-                  td(v-for="field in fields" :key="field.value")
-                    nationality-field.pa-1(
-                      v-if="field.value === 'nationality'"
-                      v-model="player.nationality"
-                      :icon="null"
-                      dense
-                      outlined
-                      hide-details
-                    )
-                    v-select.pa-1(
-                      v-else-if="field.value === 'pos'"
-                      v-model="player.pos"
-                      :items="positions"
-                      :rules="fieldRules(field)"
-                      label="Position"
-                      menu-props="auto"
-                      dense
-                      outlined
-                      hide-details
-                    )
-                    v-select.pa-1(
-                      v-else-if="field.value === 'sec_pos'"
-                      v-model="player.sec_pos"
-                      :items="positions"
-                      label="Secondary Position(s)"
-                      menu-props="auto, offsetY"
-                      multiple
-                      chips
-                      deletable-chips
-                      dense
-                      outlined
-                      hide-details
-                    )
-                    v-money-field.pa-1(
-                      v-else-if="field.value === 'value'"
-                      v-model="player.value"
-                      label="Value"
-                      required
-                      dense
-                      outlined
-                      hide-details
-                    )
-                    v-text-field.pa-1(
-                      v-else
-                      v-model="player[field.value]"
-                      :rules="fieldRules(field)"
-                      :label="field.label"
-                      dense
-                      outlined
-                      hide-details
-                      :inputmode="field.inputmode"
-                    )
+                player-import-row(
+                  v-for="(player, i) in players"
+                  :key="i"
+                  :player="player"
+                  :fields="fields"
+                )
 </template>
 
 <script>
   import { mapMutations } from 'vuex'
-  import { positions } from '@/models/Player'
   import { TeamAccessible } from '@/mixins'
-  import {
-    NationalityField,
-    VMoneyField,
-    formatRule,
-    rangeRule,
-    requiredRule
-  } from '@/helpers'
+  import PlayerImportRow from '@/components/Player/ImportRow'
 
   export default {
     name: 'ImportPlayersPage',
     components: {
-      NationalityField,
-      VMoneyField
+      PlayerImportRow
     },
     mixins: [
       TeamAccessible
@@ -101,59 +57,8 @@
     transition: 'fade-transition',
     data: () => ({
       valid: false,
-      players: [],
-      fields: [
-        {
-          label: 'Name',
-          value: 'name',
-          required: true
-        },
-        {
-          label: 'Nationality',
-          value: 'nationality'
-        },
-        {
-          label: 'Position',
-          value: 'pos',
-          required: true
-        },
-        {
-          label: 'Secondary Position(s)',
-          value: 'sec_pos'
-        },
-        {
-          label: 'Age',
-          value: 'age',
-          inputmode: 'numeric',
-          required: true
-        },
-        {
-          label: 'OVR',
-          value: 'ovr',
-          inputmode: 'numeric',
-          required: true,
-          range: { min: 40, max: 100 }
-        },
-        {
-          label: 'Value',
-          value: 'value',
-          inputmode: 'numeric',
-          required: true
-        },
-        {
-          label: 'Kit No',
-          value: 'kit_no',
-          inputmode: 'numeric',
-          required: true,
-          range: { min: 1, max: 99 }
-        }
-      ]
+      players: []
     }),
-    computed: {
-      positions () {
-        return positions
-      }
-    },
     mounted () {
       this.setPage({
         title: 'Import Players',
@@ -174,32 +79,20 @@
           ovr: null,
           value: 0,
           kit_no: null,
-          birth_year: null
+          birth_year: null,
+          contracts_attributes: [
+            {
+              started_on: this.team.currently_on,
+              ended_on: this.team.currently_on,
+              wage: null,
+              release_clause: null,
+              performance_bonus: null,
+              bonus_req: null,
+              bonus_req_type: null
+            }
+          ]
         })
-      },
-      fieldRules ({ label, range, required, inputmode }) {
-        let rules = []
-
-        if (required) {
-          rules.push(requiredRule({ label }))
-        }
-
-        if (inputmode === 'numeric') {
-          rules.push(formatRule({ label, type: 'number' }))
-        }
-
-        if (range) {
-          rules.push(rangeRule({ ...range, label }))
-        }
-
-        return rules
       }
     }
   }
 </script>
-
-<style scoped>
-  td > * {
-    width: 150px
-  }
-</style>
