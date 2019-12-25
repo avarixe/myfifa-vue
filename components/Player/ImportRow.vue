@@ -1,5 +1,12 @@
 <template lang="pug">
   tr
+    td.stick-left
+      v-btn(
+        icon
+        :loading="loading"
+        @click="$emit('remove', player)"
+      )
+        v-icon mdi-close
     td.pa-1(v-for="field in fields" :key="field.value" style="width:150px")
       dynamic-field(
         :object="player"
@@ -40,6 +47,9 @@
         required: true
       }
     },
+    data: () => ({
+      loading: false
+    }),
     computed: {
       team () {
         return Team.find(this.$route.params.teamId)
@@ -143,6 +153,7 @@
             attribute: 'wage',
             label: 'Wage',
             prefix: this.team.currency,
+            required: true,
             dense: true,
             outlined: true,
             hideDetails: true
@@ -183,6 +194,7 @@
             attribute: 'bonus_req',
             label: 'Bonus Req.',
             prefix: 'if',
+            required: true,
             dense: true,
             outlined: true,
             hideDetails: true,
@@ -195,6 +207,7 @@
             attribute: 'bonus_req_type',
             label: 'Bonus Req. Type',
             items: bonusRequirementTypes,
+            required: true,
             clearable: true,
             dense: true,
             outlined: true,

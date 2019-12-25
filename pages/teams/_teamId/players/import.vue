@@ -11,31 +11,46 @@
           v-model="valid"
           @submit.prevent
         )
-        v-card
-          v-card-text
-            v-simple-table
-              thead
-                tr
-                  th Name
-                  th Nationality
-                  th Position
-                  th Secondary Position(s)
-                  th Age
-                  th OVR
-                  th Value
-                  th Kit Number
-                  th Contract Ends
-                  th Wage
-                  th Signing Bonus
-                  th Release Clause
-                  th(colspan=3) Performance Bonus
-              tbody
-                player-import-row(
-                  v-for="(player, i) in players"
-                  :key="i"
-                  :player="player"
-                  :fields="fields"
-                )
+          v-card
+            v-card-text
+              v-data-table(
+                :headers="headers"
+                :items="players"
+                disable-sort
+                disable-pagination
+                disable-filtering
+                hide-default-footer
+                hide-default-header
+              )
+                template(#header)
+                  thead
+                    tr
+                      th.stick-left
+                      th Name
+                      th Nationality
+                      th Position
+                      th Secondary Position(s)
+                      th Age
+                      th OVR
+                      th Value
+                      th Kit Number
+                      th Contract Ends
+                      th Wage
+                      th Signing Bonus
+                      th Release Clause
+                      th(colspan=3) Performance Bonus
+                template(#item="{ item }")
+                  player-import-row(
+                    :player="item"
+                    @remove="removePlayer(item)"
+                  )
+            v-card-actions
+              v-btn(
+                type="submit"
+                color="primary"
+                text
+                :disabled="!valid"
+              ) Submit
 </template>
 
 <script>
@@ -57,7 +72,26 @@
     transition: 'fade-transition',
     data: () => ({
       valid: false,
-      players: []
+      players: [],
+      headers: [
+        { text: '', value: 'icon', class: 'stick-left' },
+        { text: 'Name', value: 'name' },
+        { text: 'Nationality', value: 'nationality' },
+        { text: 'Position', value: 'pos' },
+        { text: 'Secondary Position(s)', value: 'sec_pos' },
+        { text: 'Age', value: 'age' },
+        { text: 'OVR', value: 'ovr' },
+        { text: 'Value', value: 'value' },
+        { text: 'Kit Number', value: 'kit_no' },
+        { text: 'Contract Ends', value: 'contract_ends' },
+        { text: 'Wage', value: 'wage' },
+        { text: 'Signing Bonus', value: 'signing_bonus' },
+        { text: 'Release Clause', value: 'release_clause' },
+        { text: 'Performance Bonus', value: 'performance_bonus' },
+        { text: '', value: 'bonus_req' },
+        { text: '', value: 'bonus_req_type' }
+
+      ]
     }),
     mounted () {
       this.setPage({
@@ -92,6 +126,9 @@
             }
           ]
         })
+      },
+      removePlayer (row) {
+        this.players = this.players.filter(player => player !== row)
       }
     }
   }
