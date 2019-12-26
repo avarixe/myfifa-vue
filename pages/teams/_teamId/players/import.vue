@@ -184,7 +184,7 @@
         reader.onload = (e) => {
           /* Parse data */
           const bstr = e.target.result
-          const wb = XLSX.read(bstr, { type: 'binary' })
+          const wb = XLSX.read(bstr, { type: 'binary', cellDates: true })
           /* Get first worksheet */
           const wsname = wb.SheetNames[0]
           const ws = wb.Sheets[wsname]
