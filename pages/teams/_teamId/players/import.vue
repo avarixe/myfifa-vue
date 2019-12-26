@@ -7,7 +7,8 @@
           | Player
         input(type="file" ref="uploader" @input="upload" class="d-none")
         |&nbsp;
-        v-btn(@click="exportTemplate") Download Template
+        v-btn(to="/import_players_template.xlsx" target="_blank")
+          | Download Template
         |&nbsp;
         v-btn(@click="$refs.uploader.click()") Upload File
       v-col(cols=12)
@@ -94,8 +95,8 @@
         { text: 'Signing Bonus', value: 'signing_bonus' },
         { text: 'Release Clause', value: 'release_clause' },
         { text: 'Performance Bonus', value: 'performance_bonus' },
-        { text: 'Bonus Req', value: 'bonus_req' },
-        { text: 'Bonus Req. Type', value: 'bonus_req_type' }
+        { text: '', value: 'bonus_req' },
+        { text: '', value: 'bonus_req_type' }
       ],
       accept: [
         '.xlsx',
@@ -120,19 +121,6 @@
         '.htm'
       ].join(',')
     }),
-    computed: {
-      template () {
-        return [
-          this.headers.reduce((row, header) => {
-            console.log(header.text)
-            if (header.text.length > 0) {
-              row[header.text] = null
-            }
-            return row
-          }, {})
-        ]
-      }
-    },
     mounted () {
       this.setPage({
         title: 'Import Players',
@@ -169,14 +157,6 @@
       },
       removePlayer (row) {
         this.players = this.players.filter(player => player !== row)
-      },
-      exportTemplate () {
-        /* convert state to workbook */
-        const ws = XLSX.utils.json_to_sheet(this.template)
-        const wb = XLSX.utils.book_new()
-        XLSX.utils.book_append_sheet(wb, ws, `${this.team.title} Players`)
-        /* generate file and send to client */
-        XLSX.writeFile(wb, `${this.team.title} Players.xlsx`)
       },
       upload (event) {
         /* Boilerplate to set up FileReader */
