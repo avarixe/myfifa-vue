@@ -62,6 +62,7 @@
 <script>
   import XLSX from 'xlsx'
   import { mapMutations } from 'vuex'
+  import { format } from 'date-fns'
   import { TeamAccessible } from '@/mixins'
   import PlayerImportRow from '@/components/Player/ImportRow'
 
@@ -141,13 +142,14 @@
           ovr: null,
           value: 0,
           kit_no: null,
-          birth_year: null,
+          age: null,
           contracts_attributes: [
             {
               started_on: this.team.currently_on,
               ended_on: this.team.currently_on,
               wage: null,
               release_clause: null,
+              signing_bonus: null,
               performance_bonus: null,
               bonus_req: null,
               bonus_req_type: null
@@ -172,7 +174,7 @@
           const data = XLSX.utils.sheet_to_json(ws)
           /* Update state */
           console.log(data)
-          // this.data = data
+          data.forEach(player => this.importPlayer(player))
         }
 
         const files = event.target.files
@@ -182,6 +184,30 @@
         }
 
         this.$refs.uploader.value = null
+      },
+      importPlayer (player) {
+        this.players.push({
+          name: player['Name'],
+          pos: player['Position'],
+          nationality: player['Nationality'],
+          sec_pos: player['Secondary Position(s)'].split(','),
+          ovr: player['OVR'],
+          value: player['Value'],
+          kit_no: player['Kit Number'],
+          age: player['Age'],
+          contracts_attributes: [
+            {
+              started_on: this.team.currently_on,
+              ended_on: format(player['Contract Ends'], 'yyyy-MM-dd'),
+              wage: player['Wage'],
+              release_clause: player['Release Clause'],
+              signing_bonus: player['Signing Bonus'],
+              performance_bonus: player['Performance Bonus'],
+              bonus_req: player['Bonus Req'],
+              bonus_req_type: player['Bonus Req. Type']
+            }
+          ]
+        })
       }
     }
   }
