@@ -1,10 +1,10 @@
 <template lang="pug">
   tr
-    td.stick-left
+    td.stick-left.pa-1
       v-btn(
         v-if="saved"
-        icon
-        @click="$emit('remove', playerId)"
+        text
+        @click="$emit('remove', player)"
       )
         v-icon(color="success") mdi-check-circle
       v-tooltip(
@@ -14,7 +14,7 @@
       )
         template(#activator="{ on }")
           v-btn(
-            icon
+            text
             v-on="on"
             @click="error = ''"
           )
@@ -23,9 +23,9 @@
         | {{ error }}
       v-btn(
         v-else
-        icon
+        text
         :loading="loading"
-        @click="$emit('remove', playerId)"
+        @click="$emit('remove', player)"
       )
         v-icon mdi-close
     td.pa-1(v-for="field in fields" :key="field.value" style="width:150px")
@@ -65,10 +65,6 @@
     props: {
       player: {
         type: Object,
-        required: true
-      },
-      playerId: {
-        type: String,
         required: true
       },
       submitted: {
@@ -260,7 +256,7 @@
       },
       cleared () {
         if (this.saved) {
-          this.$emit('remove', this.playerId)
+          this.$emit('remove', this.player)
         }
       }
     },

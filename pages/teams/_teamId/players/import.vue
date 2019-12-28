@@ -2,15 +2,13 @@
   v-container(fluid)
     v-row
       v-col(cols=12)
-        v-btn(@click="addPlayer")
+        v-btn.ma-1(@click="addPlayer")
           v-icon(left) mdi-plus-circle-outline
           | Player
         input(type="file" ref="uploader" @input="upload" class="d-none")
-        |&nbsp;
-        v-btn(to="/import_players_template.xlsx" target="_blank")
+        v-btn.ma-1(to="/import_players_template.xlsx" target="_blank")
           | Download Template
-        |&nbsp;
-        v-btn(@click="$refs.uploader.click()") Upload File
+        v-btn.ma-1(@click="$refs.uploader.click()") Upload File
       v-col(cols=12)
         v-form(
           ref="form"
@@ -25,7 +23,7 @@
               )
                 thead
                   tr
-                    th.stick-left
+                    th
                     th Name
                     th Nationality
                     th Position
@@ -41,13 +39,12 @@
                     th(colspan=3) Performance Bonus
                 tbody
                   player-import-row(
-                    v-for="id in Object.keys(players)"
-                    :key="id"
-                    :player="players[id]"
-                    :player-id="id"
+                    v-for="player in players"
+                    :key="player.rowId"
+                    :player="player"
                     :submitted="submitted"
                     :cleared="cleared"
-                    @remove="removePlayer(id)"
+                    @remove="removePlayer(player)"
                   )
             v-card-actions
               v-btn(
@@ -66,7 +63,6 @@
 </template>
 
 <script>
-  import Vue from 'vue'
   import { mapMutations } from 'vuex'
   import XLSX from 'xlsx'
   import { format } from 'date-fns'
@@ -90,7 +86,7 @@
       numPlayers: 0,
       submitted: 0,
       cleared: 0,
-      players: {},
+      players: [],
       headers: [
         { text: '', value: 'icon', class: 'stick-left' },
         { text: 'Name', value: 'name' },
@@ -132,11 +128,6 @@
         '.htm'
       ].join(',')
     }),
-    computed: {
-      rows () {
-        return Object.keys(this.players)
-      }
-    },
     mounted () {
       this.setPage({
         title: 'Import Players',
@@ -149,7 +140,8 @@
         setPage: 'SET_PAGE'
       }),
       addPlayer () {
-        Vue.set(this.players, this.numPlayers++, {
+        this.players.push({
+          rowId: this.numPlayers++,
           name: '',
           pos: '',
           nationality: null,
@@ -172,8 +164,8 @@
           ]
         })
       },
-      removePlayer (rowId) {
-        Vue.delete(this.players, rowId)
+      removePlayer (row) {
+        this.players = this.players.filter(player => player.rowId !== row.rowId)
       },
       upload (event) {
         /* Boilerplate to set up FileReader */
@@ -200,7 +192,8 @@
         this.$refs.uploader.value = null
       },
       importPlayer (player) {
-        Vue.set(this.players, this.numPlayers++, {
+        this.players.push({
+          rowId: this.numPlayers++,
           name: player['Name'],
           pos: player['Position'],
           nationality: player['Nationality'],
