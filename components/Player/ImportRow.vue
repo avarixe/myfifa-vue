@@ -2,9 +2,30 @@
   tr
     td.stick-left
       v-btn(
+        v-if="saved"
+        icon
+        @click="$emit('remove', playerId)"
+      )
+        v-icon(color="success") mdi-check-circle
+      v-tooltip(
+        v-else-if="error.length > 0"
+        color="red"
+        right
+      )
+        template(#activator="{ on }")
+          v-btn(
+            icon
+            v-on="on"
+            @click="error = ''"
+          )
+            v-icon(color="red") mdi-alert
+        v-icon(left dark) mdi-alert
+        | {{ error }}
+      v-btn(
+        v-else
         icon
         :loading="loading"
-        @click="$emit('remove', player)"
+        @click="$emit('remove', playerId)"
       )
         v-icon mdi-close
     td.pa-1(v-for="field in fields" :key="field.value" style="width:150px")
@@ -45,10 +66,24 @@
       player: {
         type: Object,
         required: true
+      },
+      playerId: {
+        type: String,
+        required: true
+      },
+      submitted: {
+        type: Number,
+        default: 0
+      },
+      cleared: {
+        type: Number,
+        default: 0
       }
     },
     data: () => ({
-      loading: false
+      loading: false,
+      saved: false,
+      error: ''
     }),
     computed: {
       team () {
@@ -217,7 +252,29 @@
         ]
       }
     },
+    watch: {
+      submitted () {
+        if (!this.loading && !this.saved) {
+          this.savePlayer()
+        }
+      },
+      cleared () {
+        if (this.saved) {
+          this.$emit('remove', this.playerId)
+        }
+      }
+    },
     methods: {
+      async savePlayer () {
+        try {
+          this.loading = true
+          this.saved = true
+        } catch (e) {
+          this.error = e.message
+        } finally {
+          this.loading = false
+        }
+      },
       maxEndDate (contract) {
         return contract.started_on && format(
           addYears(parseISO(contract.started_on), 6),

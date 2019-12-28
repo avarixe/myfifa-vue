@@ -15,53 +15,60 @@
         v-form(
           ref="form"
           v-model="valid"
-          @submit.prevent
+          @submit.prevent="submitted++"
         )
           v-card
             v-card-text
-              v-data-table(
-                :headers="headers"
-                :items="players"
-                disable-sort
-                disable-pagination
-                disable-filtering
-                hide-default-footer
-                hide-default-header
+              v-simple-table(
+                fixed-header
+                height="50vh"
               )
-                template(#header)
-                  thead
-                    tr
-                      th.stick-left
-                      th Name
-                      th Nationality
-                      th Position
-                      th Secondary Position(s)
-                      th Age
-                      th OVR
-                      th Value
-                      th Kit Number
-                      th Contract Ends
-                      th Wage
-                      th Signing Bonus
-                      th Release Clause
-                      th(colspan=3) Performance Bonus
-                template(#item="{ item }")
+                thead
+                  tr
+                    th.stick-left
+                    th Name
+                    th Nationality
+                    th Position
+                    th Secondary Position(s)
+                    th Age
+                    th OVR
+                    th Value
+                    th Kit Number
+                    th Contract Ends
+                    th Wage
+                    th Signing Bonus
+                    th Release Clause
+                    th(colspan=3) Performance Bonus
+                tbody
                   player-import-row(
-                    :player="item"
-                    @remove="removePlayer(item)"
+                    v-for="id in Object.keys(players)"
+                    :key="id"
+                    :player="players[id]"
+                    :player-id="id"
+                    :submitted="submitted"
+                    :cleared="cleared"
+                    @remove="removePlayer(id)"
                   )
             v-card-actions
               v-btn(
                 type="submit"
+                :disabled="!valid || players.length === 0"
                 color="primary"
                 text
-                :disabled="!valid"
               ) Submit
+              |&nbsp;
+              v-btn(
+                color="success"
+                :disabled="cleared >= submitted"
+                text
+                @click="cleared++"
+              ) Clear Saved Players
 </template>
 
 <script>
-  import XLSX from 'xlsx'
+  import Vue from 'vue'
   import { mapMutations } from 'vuex'
+  import XLSX from 'xlsx'
   import { format } from 'date-fns'
   import { TeamAccessible } from '@/mixins'
   import PlayerImportRow from '@/components/Player/ImportRow'
@@ -80,7 +87,10 @@
     transition: 'fade-transition',
     data: () => ({
       valid: false,
-      players: [],
+      numPlayers: 0,
+      submitted: 0,
+      cleared: 0,
+      players: {},
       headers: [
         { text: '', value: 'icon', class: 'stick-left' },
         { text: 'Name', value: 'name' },
@@ -122,6 +132,11 @@
         '.htm'
       ].join(',')
     }),
+    computed: {
+      rows () {
+        return Object.keys(this.players)
+      }
+    },
     mounted () {
       this.setPage({
         title: 'Import Players',
@@ -134,7 +149,7 @@
         setPage: 'SET_PAGE'
       }),
       addPlayer () {
-        this.players.push({
+        Vue.set(this.players, this.numPlayers++, {
           name: '',
           pos: '',
           nationality: null,
@@ -157,8 +172,8 @@
           ]
         })
       },
-      removePlayer (row) {
-        this.players = this.players.filter(player => player !== row)
+      removePlayer (rowId) {
+        Vue.delete(this.players, rowId)
       },
       upload (event) {
         /* Boilerplate to set up FileReader */
@@ -173,7 +188,6 @@
           /* Convert array of arrays */
           const data = XLSX.utils.sheet_to_json(ws)
           /* Update state */
-          console.log(data)
           data.forEach(player => this.importPlayer(player))
         }
 
@@ -186,11 +200,12 @@
         this.$refs.uploader.value = null
       },
       importPlayer (player) {
-        this.players.push({
+        Vue.set(this.players, this.numPlayers++, {
           name: player['Name'],
           pos: player['Position'],
           nationality: player['Nationality'],
-          sec_pos: player['Secondary Position(s)'].split(','),
+          sec_pos: player['Secondary Position(s)'] &&
+            player['Secondary Position(s)'].split(','),
           ovr: player['OVR'],
           value: player['Value'],
           kit_no: player['Kit Number'],
