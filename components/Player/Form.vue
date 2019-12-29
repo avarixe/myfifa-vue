@@ -23,7 +23,6 @@
 <script>
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
-  import { parseISO } from 'date-fns'
   import { DialogFormable, TeamAccessible } from '@/mixins'
   import { positions } from '@/models/Player'
   import { DynamicFields, NationalityField } from '@/helpers'
@@ -135,14 +134,13 @@
             'id',
             'name',
             'pos',
+            'age',
             'nationality',
             'ovr',
             'value',
             'kit_no',
             'youth'
           ])
-          this.player.age = parseISO(this.team.currently_on).getFullYear()
-          this.player.age -= this.record.birth_year
           this.player.sec_pos = [...this.record.sec_pos]
         }
       }

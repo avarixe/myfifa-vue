@@ -55,6 +55,7 @@ async function sendRequest ({
     } else {
       console.error(e)
       console.trace(e)
+      throw new Error(e)
     }
   }
 }
