@@ -6,6 +6,9 @@
     :label="label"
     :prefix="prefix"
     :clearable="!required"
+    :dense="dense"
+    :outlined="outlined"
+    :hide-details="hideDetails"
     :autofocus="autofocus"
     inputmode="numeric"
   )
@@ -40,6 +43,18 @@
       autofocus: {
         type: Boolean,
         default: false
+      },
+      dense: {
+        type: Boolean,
+        default: false
+      },
+      outlined: {
+        type: Boolean,
+        default: false
+      },
+      hideDetails: {
+        type: Boolean,
+        default: false
       }
     },
     data: () => ({
@@ -52,9 +67,14 @@
     }),
     computed: {
       moneyNum () {
-        return this.money && this.money.length > 0
-          ? parseInt(this.money.replace(/,/g, ''))
-          : null
+        if (this.money) {
+          const money = this.money.replace(/,/g, '')
+          return money.length > 0 && !isNaN(money)
+            ? parseInt(money)
+            : null
+        } else {
+          return null
+        }
       },
       rules () {
         return this.required ? [requiredRule({ label: this.label })] : []

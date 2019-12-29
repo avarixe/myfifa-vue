@@ -4,10 +4,13 @@
     :items="items"
     :label="label"
     :prepend-icon="icon"
+    :dense="dense"
+    :outlined="outlined"
+    :hide-details="hideDetails"
+    menu-props="auto, offsetY"
   )
-    template(#selection="{ item }")
-      flag.mr-2(:iso="nationalities[item]")
-      | {{ item }}
+    template(#prepend-inner)
+      flag.mt-1(:iso="nationalities[nationality]")
     template(#item="{ item }")
       v-list-item-avatar(size=20)
         flag(:iso="nationalities[item]")
@@ -32,6 +35,18 @@
       icon: {
         type: String,
         default: 'mdi-flag'
+      },
+      dense: {
+        type: Boolean,
+        default: false
+      },
+      outlined: {
+        type: Boolean,
+        default: false
+      },
+      hideDetails: {
+        type: Boolean,
+        default: false
       }
     },
     data: () => ({

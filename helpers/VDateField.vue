@@ -15,6 +15,9 @@
         readonly
         :clearable="clearable"
         :disabled="disabled"
+        :dense="dense"
+        :outlined="outlined"
+        :hide-details="hideDetails"
         v-on="on"
       )
     v-date-picker(
@@ -67,6 +70,18 @@
         default: false
       },
       disabled: {
+        type: Boolean,
+        default: false
+      },
+      dense: {
+        type: Boolean,
+        default: false
+      },
+      outlined: {
+        type: Boolean,
+        default: false
+      },
+      hideDetails: {
         type: Boolean,
         default: false
       },

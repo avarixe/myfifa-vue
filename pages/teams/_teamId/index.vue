@@ -2,27 +2,31 @@
   v-container(fluid)
     v-row
       v-col(cols="12")
-        team-date-picker
-        |&nbsp;
-        team-form(:record="team" color="orange")
+        team-date-picker.ma-1
+        team-form.ma-1(:record="team" color="orange")
           template(#default="{ on }")
             v-btn(color="orange" dark v-on="on") Edit
-        |&nbsp;
-        record-remove(
+        v-btn.ma-1(
+          :to="importPlayersLink"
+          nuxt
+          color="primary"
+          dark
+        ) Import Players
+        record-remove.ma-1(
           :record="team"
           store="teams"
           :label="team.title"
           :redirect="{ name: 'teams' }"
         )
           v-btn(dark) Remove
-      v-col(cols="12" md="6")
+      v-col.pa-0(cols="12" md="6")
         //- Latest Match
         v-col(cols="12")
           match-card(title="Latest Match" :match="lastMatch" color="green")
         //- Current Season
         v-col(cols="12")
           season-card(:season="season")
-      v-col(cols="12" md="6")
+      v-col.pa-0(cols="12" md="6")
         //- Injured Players
         v-col(cols="12")
           player-list-card(
@@ -96,6 +100,12 @@
           .where('team_id', this.team.id)
           .get()
           .filter(player => player.contract().ended_on <= this.seasonEnd)
+      },
+      importPlayersLink () {
+        return {
+          name: 'teams-teamId-players-import',
+          params: { teamId: this.team.id }
+        }
       }
     },
     async fetch ({ store, params }) {

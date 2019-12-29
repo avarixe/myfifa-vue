@@ -27,7 +27,8 @@
     "v-money": "^0.8.1",
     "vue-chartkick": "^0.5.1",
     "vue-fitty": "^0.1.7",
-    "vue-flag-icon": "^1.0.6"
+    "vue-flag-icon": "^1.0.6",
+    "xlsx": "^0.15.4"
   },
   "devDependencies": {
     "@babel/traverse": "^7.1.5",
