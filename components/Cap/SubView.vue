@@ -53,7 +53,7 @@
     },
     methods: {
       ...mapActions('caps', {
-        updateCap: 'UPDATE_CAP'
+        updateCap: 'UPDATE'
       }),
       setPosition (position) {
         this.updateCap({
