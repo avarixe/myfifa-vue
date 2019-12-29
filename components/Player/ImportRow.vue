@@ -44,6 +44,7 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
   import { addYears, format, parseISO } from 'date-fns'
   import { Team } from '@/models'
   import { positions } from '@/models/Player'
@@ -261,9 +262,16 @@
       }
     },
     methods: {
+      ...mapActions('players', {
+        createPlayer: 'CREATE'
+      }),
       async savePlayer () {
         try {
           this.loading = true
+          await this.createPlayer({
+            teamId: this.team.id,
+            player: this.player
+          })
           this.saved = true
         } catch (e) {
           this.error = e.message
