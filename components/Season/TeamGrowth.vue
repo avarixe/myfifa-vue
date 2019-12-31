@@ -9,13 +9,10 @@
 
 <script>
   import { Player, Contract, Team } from '@/models'
-  import { DeltaStatistic, sum } from '@/helpers'
+  import { sum } from '@/functions'
 
   export default {
     name: 'SeasonTeamGrowth',
-    components: {
-      DeltaStatistic
-    },
     props: {
       attribute: {
         type: String,

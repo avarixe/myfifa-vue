@@ -6,6 +6,7 @@
   )
     h2.headline.font-weight-light.my-0(:class="`${color}--text`")
       | {{ event.minute || lastMinute }}"
+      |&nbsp;
       span.caption.text-truncate(:class="`${captionColor}--text`") {{ caption }}
       |&nbsp;
       record-form(
@@ -34,17 +35,12 @@
 </template>
 
 <script>
-  import { RecordRemove, TooltipButton } from '@/helpers'
-  import RecordForm from '@/helpers/RecordForm'
   import TimelineContent from './Content'
 
   export default {
     name: 'MatchTimelineItem',
     components: {
-      RecordForm,
-      RecordRemove,
-      TimelineContent,
-      TooltipButton
+      TimelineContent
     },
     props: {
       event: {

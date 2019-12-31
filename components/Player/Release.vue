@@ -14,13 +14,9 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import { TooltipButton } from '@/helpers'
 
   export default {
     name: 'PlayerRelease',
-    components: {
-      TooltipButton
-    },
     props: {
       player: {
         type: Object,

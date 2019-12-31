@@ -52,7 +52,6 @@
 <script>
   import { mapMutations } from 'vuex'
   import { Competition } from '@/models'
-  import { FittyText, RecordRemove } from '@/helpers'
   import CompetitionForm from '@/components/Competition/Form'
   import StageForm from '@/components/Stage/Form'
   import RoundStage from '@/components/Stage/Round'
@@ -62,8 +61,6 @@
   export default {
     name: 'CompetitionPage',
     components: {
-      FittyText,
-      RecordRemove,
       CompetitionForm,
       RoundStage,
       TableStage,

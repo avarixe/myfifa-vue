@@ -38,13 +38,9 @@
 
 <script>
   import { Player, Team } from '@/models'
-  import { FittyText } from '@/helpers'
 
   export default {
     name: 'PlayerCard',
-    components: {
-      FittyText
-    },
     props: {
       playerId: {
         type: [Number, String],

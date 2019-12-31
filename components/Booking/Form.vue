@@ -30,21 +30,9 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
-  import {
-    DynamicFields,
-    MinuteField,
-    PlayerSelect,
-    TooltipButton
-  } from '@/helpers'
 
   export default {
     name: 'BookingForm',
-    components: {
-      DynamicFields,
-      MinuteField,
-      PlayerSelect,
-      TooltipButton
-    },
     mixins: [
       DialogFormable,
       TeamAccessible,

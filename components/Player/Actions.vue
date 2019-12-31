@@ -38,7 +38,6 @@
   import PlayerRetire from './Retire'
   import PlayerRelease from './Release'
   import PlayerForm from './Form'
-  import { RecordRemove, TooltipButton } from '@/helpers'
 
   export default {
     name: 'PlayerAction',
@@ -49,9 +48,7 @@
       TransferForm,
       PlayerRetire,
       PlayerRelease,
-      PlayerForm,
-      RecordRemove,
-      TooltipButton
+      PlayerForm
     },
     props: {
       player: {

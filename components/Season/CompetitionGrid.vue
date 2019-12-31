@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import { sum } from '@/helpers'
+  import { sum } from '@/functions'
   import { Competition, Team } from '@/models'
 
   export default {

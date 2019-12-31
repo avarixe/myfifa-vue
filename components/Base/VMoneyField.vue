@@ -16,7 +16,7 @@
 
 <script>
   import { VMoney } from 'v-money'
-  import { requiredRule } from '@/helpers'
+  import { requiredRule } from '@/functions'
 
   export default {
     name: 'VMoneyField',

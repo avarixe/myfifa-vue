@@ -145,7 +145,7 @@
 
 <script>
   import Vue from 'vue'
-  import { requiredRule, rangeRule, formatRule } from './utilities'
+  import { requiredRule, rangeRule, formatRule } from '@/functions'
   import VDateField from './VDateField'
   import VMoneyField from './VMoneyField'
 

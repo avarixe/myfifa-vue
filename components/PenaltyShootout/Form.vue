@@ -21,15 +21,10 @@
 <script>
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
-  import { DynamicFields, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
   export default {
     name: 'PenaltyShootoutForm',
-    components: {
-      DynamicFields,
-      TooltipButton
-    },
     mixins: [
       TeamAccessible,
       DialogFormable,

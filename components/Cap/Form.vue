@@ -29,16 +29,10 @@
   import { mapActions } from 'vuex'
   import { positions } from '@/models/Match'
   import { activePlayers } from '@/models/Player'
-  import { DynamicFields, PlayerSelect, TooltipButton } from '@/helpers'
   import { DialogFormable } from '@/mixins'
 
   export default {
     name: 'CapForm',
-    components: {
-      DynamicFields,
-      PlayerSelect,
-      TooltipButton
-    },
     mixins: [
       DialogFormable
     ],

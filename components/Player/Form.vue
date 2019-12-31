@@ -25,14 +25,9 @@
   import pick from 'lodash.pick'
   import { DialogFormable, TeamAccessible } from '@/mixins'
   import { positions } from '@/models/Player'
-  import { DynamicFields, NationalityField } from '@/helpers'
 
   export default {
     name: 'PlayerForm',
-    components: {
-      DynamicFields,
-      NationalityField
-    },
     mixins: [
       DialogFormable,
       TeamAccessible

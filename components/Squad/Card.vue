@@ -37,17 +37,13 @@
 </template>
 
 <script>
-  import { FormationView, RecordRemove, TooltipButton } from '@/helpers'
   import { Player } from '@/models'
   import SquadForm from './Form'
 
   export default {
     name: 'SquadCard',
     components: {
-      SquadForm,
-      FormationView,
-      RecordRemove,
-      TooltipButton
+      SquadForm
     },
     props: {
       squad: {

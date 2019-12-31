@@ -31,13 +31,11 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import Cookie from 'js-cookie'
-  import { DynamicFields } from '@/helpers'
   import UserForm from '@/components/App/UserForm'
 
   export default {
     name: 'LoginForm',
     components: {
-      DynamicFields,
       UserForm
     },
     data: () => ({

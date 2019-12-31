@@ -45,14 +45,9 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { CompetitionAccessible, DialogFormable } from '@/mixins'
-  import { DynamicFields, TooltipButton } from '@/helpers'
 
   export default {
     name: 'FixtureForm',
-    components: {
-      DynamicFields,
-      TooltipButton
-    },
     mixins: [
       CompetitionAccessible,
       DialogFormable

@@ -67,16 +67,12 @@
 <script>
   import { mapMutations, mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
-  import { InlineField, RecordRemove, TooltipButton } from '@/helpers'
   import TableRowForm from '@/components/TableRow/Form'
 
   export default {
     name: 'TableStage',
     components: {
-      InlineField,
-      RecordRemove,
-      TableRowForm,
-      TooltipButton
+      TableRowForm
     },
     mixins: [
       CompetitionAccessible

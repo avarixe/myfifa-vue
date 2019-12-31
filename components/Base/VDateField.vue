@@ -32,7 +32,7 @@
 
 <script>
   import { format, parseISO } from 'date-fns'
-  import { requiredRule } from '@/helpers'
+  import { requiredRule } from '@/functions'
 
   export default {
     name: 'VDateField',

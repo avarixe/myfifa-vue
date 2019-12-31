@@ -33,7 +33,6 @@
 
 <script>
   import { TeamAccessible } from '@/mixins'
-  import { FormationView } from '@/helpers'
   import { Player } from '@/models'
   import { positions } from '@/models/Match'
   import CapView from '@/components/Cap/View'
@@ -42,7 +41,6 @@
   export default {
     name: 'MatchLineup',
     components: {
-      FormationView,
       CapView,
       CapSubView
     },

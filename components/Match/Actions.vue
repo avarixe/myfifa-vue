@@ -48,7 +48,6 @@
   import BookingForm from '@/components/Booking/Form'
   import SubstitutionForm from '@/components/Substitution/Form'
   import PenaltyShootoutForm from '@/components/PenaltyShootout/Form'
-  import { RecordRemove, TooltipButton } from '@/helpers'
 
   export default {
     name: 'MatchActions',
@@ -58,9 +57,7 @@
       GoalForm,
       BookingForm,
       SubstitutionForm,
-      PenaltyShootoutForm,
-      RecordRemove,
-      TooltipButton
+      PenaltyShootoutForm
     },
     mixins: [
       TeamAccessible

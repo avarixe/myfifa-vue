@@ -16,13 +16,9 @@
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import { DialogFormable } from '@/mixins'
-  import { DynamicFields } from '@/helpers'
 
   export default {
     name: 'UserForm',
-    components: {
-      DynamicFields
-    },
     mixins: [
       DialogFormable
     ],

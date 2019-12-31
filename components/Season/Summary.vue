@@ -40,7 +40,7 @@
 <script>
   import { addYears, format, parseISO } from 'date-fns'
   import { Match, Team } from '@/models'
-  import { sum } from '@/helpers'
+  import { sum } from '@/functions'
   import SeasonTeamGrowth from './TeamGrowth'
 
   export default {
