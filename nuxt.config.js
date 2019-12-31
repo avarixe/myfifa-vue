@@ -67,13 +67,6 @@ export default {
   build: {
     // analyze: true,
 
-    babel: {
-      plugins: [
-        ['@babel/plugin-proposal-decorators', { legacy: true }],
-        ['@babel/plugin-proposal-class-properties', { loose: true }]
-      ]
-    },
-
     transpile: [/^vuetify/],
 
     extractCSS: true,
