@@ -63,22 +63,21 @@
                   v-card-text
                     v-row.text-center
                       v-col(cols=12)
+                        .subheading Overall Rating
                         player-history-chart(
                           :player="player"
                           attribute="ovr"
-                          label="Overall Rating"
                           color="#4caf50"
                           :min="40"
                           :max="100"
                         )
                       v-col(cols=12)
+                        .subheading Value
                         player-history-chart(
                           :player="player"
                           attribute="value"
-                          label="Value"
                           color="#1976d2"
                           :prefix="team.currency"
-                          thousands=","
                         )
 </template>
 
@@ -104,6 +103,11 @@
       'authenticated'
     ],
     transition: 'fade-transition',
+    head: () => ({
+      link: [
+        { rel: 'stylesheet', href: '//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css' }
+      ]
+    }),
     computed: {
       player () {
         return Player
