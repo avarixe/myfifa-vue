@@ -25,14 +25,10 @@
   import pick from 'lodash.pick'
   import { parseISO } from 'date-fns'
   import { Competition } from '@/models'
-  import { DynamicFields } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   export default {
     name: 'MatchForm',
-    components: {
-      DynamicFields
-    },
     mixins: [
       DialogFormable,
       TeamAccessible

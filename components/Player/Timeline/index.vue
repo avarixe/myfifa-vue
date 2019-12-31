@@ -44,14 +44,12 @@
   import orderBy from 'lodash.orderby'
   import { format, parseISO } from 'date-fns'
   import TimelineContent from './Content'
-  import RecordForm from '@/helpers/RecordForm'
   import { TeamAccessible } from '@/mixins'
 
   export default {
     name: 'PlayerTimeline',
     components: {
-      TimelineContent,
-      RecordForm
+      TimelineContent
     },
     mixins: [
       TeamAccessible

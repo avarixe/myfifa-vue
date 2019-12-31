@@ -48,13 +48,11 @@
   import MatchActions from '@/components/Match/Actions'
   import MatchLineup from '@/components/Match/Lineup'
   import MatchTimeline from '@/components/Match/Timeline'
-  import { FittyText } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
   export default {
     name: 'MatchPage',
     components: {
-      FittyText,
       MatchForm,
       MatchActions,
       MatchLineup,

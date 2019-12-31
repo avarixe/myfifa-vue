@@ -19,13 +19,9 @@
 <script>
   import { mapActions } from 'vuex'
   import { DialogFormable } from '@/mixins'
-  import { DynamicFields } from '@/helpers'
 
   export default {
     name: 'StageForm',
-    components: {
-      DynamicFields
-    },
     mixins: [
       DialogFormable
     ],

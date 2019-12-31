@@ -21,7 +21,6 @@
   import { mapActions } from 'vuex'
   import { addYears, format, parseISO } from 'date-fns'
   import pick from 'lodash.pick'
-  import { DynamicFields, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   const bonusRequirementTypes = [
@@ -33,10 +32,6 @@
 
   export default {
     name: 'ContractForm',
-    components: {
-      DynamicFields,
-      TooltipButton
-    },
     mixins: [
       DialogFormable,
       TeamAccessible

@@ -24,15 +24,10 @@
   import pick from 'lodash.pick'
   import { positions } from '@/models/Match'
   import { activePlayers } from '@/models/Player'
-  import { DynamicFields, PlayerSelect } from '@/helpers'
   import { DialogFormable, TeamAccessible } from '@/mixins'
 
   export default {
     name: 'SquadForm',
-    components: {
-      DynamicFields,
-      PlayerSelect
-    },
     mixins: [
       DialogFormable,
       TeamAccessible

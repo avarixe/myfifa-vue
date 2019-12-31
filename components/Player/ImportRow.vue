@@ -48,7 +48,6 @@
   import { addYears, format, parseISO } from 'date-fns'
   import { Team } from '@/models'
   import { positions } from '@/models/Player'
-  import { DynamicField, NationalityField } from '@/helpers'
 
   const bonusRequirementTypes = [
     'Appearances',
@@ -59,10 +58,6 @@
 
   export default {
     name: 'PlayerImportRow',
-    components: {
-      DynamicField,
-      NationalityField
-    },
     props: {
       player: {
         type: Object,

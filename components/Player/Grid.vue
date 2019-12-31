@@ -108,15 +108,10 @@
   import { mapMutations, mapActions } from 'vuex'
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
-  import { InlineField, InlineSelect } from '@/helpers'
   import { positions } from '@/models/Player'
 
   export default {
     name: 'PlayerGrid',
-    components: {
-      InlineField,
-      InlineSelect
-    },
     mixins: [
       TeamAccessible
     ],

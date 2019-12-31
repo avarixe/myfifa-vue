@@ -21,14 +21,9 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { DialogFormable } from '@/mixins'
-  import { DynamicFields, TooltipButton } from '@/helpers'
 
   export default {
     name: 'InjuryForm',
-    components: {
-      DynamicFields,
-      TooltipButton
-    },
     mixins: [
       DialogFormable
     ],

@@ -46,22 +46,10 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { activePlayers } from '@/models/Player'
-  import {
-    DynamicFields,
-    MinuteField,
-    PlayerSelect,
-    TooltipButton
-  } from '@/helpers'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
 
   export default {
     name: 'SubstitutionForm',
-    components: {
-      DynamicFields,
-      MinuteField,
-      PlayerSelect,
-      TooltipButton
-    },
     mixins: [
       DialogFormable,
       MatchAccessible,

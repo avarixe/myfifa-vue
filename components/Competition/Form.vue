@@ -19,7 +19,6 @@
   import pick from 'lodash.pick'
   import { Competition } from '@/models'
   import { TeamAccessible, DialogFormable } from '@/mixins'
-  import { DynamicFields } from '@/helpers'
 
   const presetFormats = [
     'League',
@@ -29,9 +28,6 @@
 
   export default {
     name: 'CompetitionForm',
-    components: {
-      DynamicFields
-    },
     mixins: [
       DialogFormable,
       TeamAccessible

@@ -15,14 +15,10 @@
   import { mapActions } from 'vuex'
   import { format } from 'date-fns'
   import pick from 'lodash.pick'
-  import { DynamicFields } from '@/helpers'
   import { DialogFormable } from '@/mixins'
 
   export default {
     name: 'TeamForm',
-    components: {
-      DynamicFields
-    },
     mixins: [
       DialogFormable
     ],

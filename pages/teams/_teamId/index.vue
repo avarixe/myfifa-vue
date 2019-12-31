@@ -58,7 +58,6 @@
   import TeamDatePicker from '@/components/Team/DatePicker'
   import TeamForm from '@/components/Team/Form'
   import PlayerListCard from '@/components/Player/ListCard'
-  import { RecordRemove } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -68,8 +67,7 @@
       PlayerListCard,
       SeasonCard,
       TeamDatePicker,
-      TeamForm,
-      RecordRemove
+      TeamForm
     },
     mixins: [
       TeamAccessible

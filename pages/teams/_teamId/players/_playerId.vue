@@ -88,7 +88,6 @@
   import PlayerActions from '@/components/Player/Actions'
   import PlayerTimeline from '@/components/Player/Timeline'
   import PlayerHistoryChart from '@/components/Charts/PlayerHistoryChart'
-  import { FittyText } from '@/helpers'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -96,8 +95,7 @@
     components: {
       PlayerActions,
       PlayerTimeline,
-      PlayerHistoryChart,
-      FittyText
+      PlayerHistoryChart
     },
     mixins: [
       TeamAccessible

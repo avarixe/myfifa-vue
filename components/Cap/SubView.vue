@@ -21,7 +21,6 @@
 <script>
   import { mapActions } from 'vuex'
   import { positions } from '@/models/Match'
-  import { InlineSelect } from '@/helpers'
   import CapEvents from './Events'
   import PlayerCard from '@/components/Player/Card'
 
@@ -29,7 +28,6 @@
     name: 'CapSubView',
     components: {
       CapEvents,
-      InlineSelect,
       PlayerCard
     },
     props: {

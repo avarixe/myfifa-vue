@@ -52,16 +52,12 @@
 <script>
   import { mapMutations, mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
-  import { InlineField, RecordRemove, TooltipButton } from '@/helpers'
   import FixtureForm from '@/components/Fixture/Form'
 
   export default {
     name: 'RoundStage',
     components: {
-      InlineField,
-      RecordRemove,
-      FixtureForm,
-      TooltipButton
+      FixtureForm
     },
     mixins: [
       CompetitionAccessible

@@ -20,15 +20,10 @@
 <script>
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
-  import { DynamicFields, TooltipButton } from '@/helpers'
   import { TeamAccessible, DialogFormable } from '@/mixins'
 
   export default {
     name: 'LoanForm',
-    components: {
-      DynamicFields,
-      TooltipButton
-    },
     mixins: [
       DialogFormable,
       TeamAccessible

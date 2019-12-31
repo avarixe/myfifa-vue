@@ -11,7 +11,7 @@
 
 <script>
   import { Match } from '@/models'
-  import { requiredRule, rangeRule } from '@/helpers'
+  import { requiredRule, rangeRule } from '@/functions'
 
   export default {
     name: 'MinuteField',

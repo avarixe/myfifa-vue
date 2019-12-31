@@ -33,7 +33,6 @@
   import { mapMutations, mapActions } from 'vuex'
   import { activePlayers } from '@/models/Player'
   import { positions } from '@/models/Match'
-  import { InlineSelect } from '@/helpers'
   import CapEvents from './Events'
   import PlayerCard from '@/components/Player/Card'
 
@@ -41,7 +40,6 @@
     name: 'CapView',
     components: {
       CapEvents,
-      InlineSelect,
       PlayerCard
     },
     props: {
