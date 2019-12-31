@@ -1,5 +1,5 @@
 import { Model } from '@vuex-orm/core'
-import { parse } from 'date-fns'
+import { parseISO } from 'date-fns'
 import Team from './Team'
 import PenaltyShootout from './PenaltyShootout'
 import Goal from './Goal'
@@ -65,8 +65,8 @@ class Match extends Model {
   }
 
   get season () {
-    const startDate = parse(this.team.started_on)
-    const datePlayed = parse(this.played_on)
+    const startDate = parseISO(this.team.started_on)
+    const datePlayed = parseISO(this.played_on)
     return parseInt((datePlayed - startDate) / (525600 * 60 * 1000))
   }
 

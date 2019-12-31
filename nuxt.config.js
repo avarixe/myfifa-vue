@@ -81,6 +81,7 @@ export default {
           exclude: /(node_modules)/
         })
       }
+
       if (process.server) {
         config.externals = [
           nodeExternals({
