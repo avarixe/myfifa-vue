@@ -21,8 +21,8 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700' },
-      { rel: 'stylesheet', href: 'https://cdn.materialdesignicons.com/2.8.94/css/materialdesignicons.min.css' }
+      { rel: 'stylesheet', href: '//fonts.googleapis.com/css?family=Roboto:300,400,500,700' },
+      { rel: 'stylesheet', href: '//cdn.materialdesignicons.com/2.8.94/css/materialdesignicons.min.css' }
     ]
   },
 
@@ -43,7 +43,6 @@ export default {
   ],
 
   modules: [
-    '@nuxtjs/moment',
     '@nuxtjs/dotenv'
   ],
 
@@ -58,7 +57,7 @@ export default {
     '@/plugins/fitty.js',
     '@/plugins/custom/components.js',
     '@/plugins/custom/filters.js',
-    '@/plugins/chartkick.client.js',
+    '@/plugins/vue-chartist.js',
     '@/plugins/vue-flag-icon.client.js'
   ],
 

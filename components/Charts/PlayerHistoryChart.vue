@@ -1,19 +1,16 @@
 <template lang="pug">
-  area-chart(
+  chartist(
+    type="Line"
+    :ratio="ratio"
     :data="chartData"
-    :label="label"
-    :xtitle="xtitle"
-    :ytitle="ytitle"
-    :colors="[color]"
-    :min="min"
-    :max="max"
-    :legend="legend"
-    :prefix="prefix"
-    :thousands="thousands"
+    :options="options"
+    :event-handlers="eventHandlers"
   )
 </template>
 
 <script>
+  import { format, parseISO } from 'date-fns'
+  // import { parseISO } from 'date-fns'
   import { Contract, Team } from '@/models'
 
   export default {
@@ -27,21 +24,9 @@
         type: String,
         required: true
       },
-      label: {
-        type: String,
-        default: null
-      },
       color: {
         type: String,
-        default: null
-      },
-      xtitle: {
-        type: String,
-        default: null
-      },
-      ytitle: {
-        type: String,
-        default: null
+        default: '#d70206'
       },
       min: {
         type: Number,
@@ -51,17 +36,13 @@
         type: Number,
         default: null
       },
-      legend: {
-        type: String,
-        default: null
-      },
       prefix: {
         type: String,
         default: null
       },
-      thousands: {
+      ratio: {
         type: String,
-        default: null
+        default: 'ct-major-tenth'
       }
     },
     computed: {
@@ -82,12 +63,64 @@
           : this.team.currently_on
       },
       chartData () {
-        return this.player.histories.reduce((data, history) => {
-          data[history.recorded_on] = history[this.attribute]
-          return data
-        }, {
-          [this.lastDate]: this.player[this.attribute]
+        let series = []
+
+        series.push({
+          data: this.player.histories.reduce((data, history) => {
+            data.splice(-1, 0, {
+              x: parseISO(history.recorded_on),
+              y: history[this.attribute]
+            })
+            return data
+          }, [
+            {
+              x: parseISO(this.lastDate),
+              y: this.player[this.attribute]
+            }
+          ])
         })
+
+        return { series }
+      },
+      options () {
+        const prefix = this.prefix || ''
+        return {
+          axisX: {
+            type: this.$chartist.FixedScaleAxis,
+            divisor: 5,
+            labelInterpolationFnc: value => format(value, 'MMM d, yyyy')
+          },
+          axisY: {
+            offset: 80,
+            labelInterpolationFnc (value) {
+              return `${prefix}${value.toLocaleString()}`
+            }
+          },
+          low: this.min,
+          high: this.max,
+          onlyInteger: true,
+          showArea: true
+        }
+      },
+      eventHandlers () {
+        const color = this.color
+        return [{
+          event: 'draw',
+          fn (context) {
+            switch (context.type) {
+              case 'area':
+                context.element.attr({
+                  style: `fill: ${color}`
+                })
+                break
+              case 'point':
+              case 'line':
+                context.element.attr({
+                  style: `stroke: ${color}`
+                })
+            }
+          }
+        }]
       }
     }
   }
