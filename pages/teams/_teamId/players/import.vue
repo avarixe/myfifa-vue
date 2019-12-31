@@ -5,7 +5,12 @@
         v-btn.ma-1(@click="addPlayer")
           v-icon(left) mdi-plus-circle-outline
           | Player
-        input(type="file" ref="uploader" @input="upload" class="d-none")
+        input.d-none(
+          type="file"
+          ref="uploader"
+          @input="upload"
+          accept=".xlsx"
+        )
         v-btn.ma-1(to="/import_players_template.xlsx" target="_blank")
           | Download Template
         v-btn.ma-1(@click="$refs.uploader.click()") Upload File
@@ -64,7 +69,7 @@
 
 <script>
   import { mapMutations } from 'vuex'
-  import XLSX from 'xlsx'
+  import XLSX from 'xlsx/dist/xlsx.mini.min'
   import { format } from 'date-fns'
   import { TeamAccessible } from '@/mixins'
   import PlayerImportRow from '@/components/Player/ImportRow'
@@ -104,29 +109,7 @@
         { text: 'Performance Bonus', value: 'performance_bonus' },
         { text: '', value: 'bonus_req' },
         { text: '', value: 'bonus_req_type' }
-      ],
-      accept: [
-        '.xlsx',
-        '.xlsb',
-        '.xlsm',
-        '.xls',
-        '.xml',
-        '.csv',
-        '.txt',
-        '.ods',
-        '.fods',
-        '.uos',
-        '.sylk',
-        '.dif',
-        '.dbf',
-        '.prn',
-        '.qpw',
-        '.123',
-        '.wb*',
-        '.wq*',
-        '.html',
-        '.htm'
-      ].join(',')
+      ]
     }),
     mounted () {
       this.setPage({
