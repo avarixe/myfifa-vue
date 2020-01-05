@@ -170,7 +170,12 @@
     }),
     methods: {
       updateField (field, value) {
-        Vue.set(this.fieldObject(field), field.attribute, value && value.trim())
+        console.log(value)
+        Vue.set(
+          this.fieldObject(field),
+          field.attribute,
+          typeof value === 'string' ? value.trim() : value
+        )
         field.onUpdate && field.onUpdate()
       },
       fieldObject (field) {
