@@ -166,6 +166,16 @@
           this.minute = this.record.minute
         }
       },
+      'goal.player_id' (val) {
+        if (!val) {
+          this.goal.player_name = ''
+        }
+      },
+      'goal.assist_id' (val) {
+        if (!val) {
+          this.goal.assisted_by = ''
+        }
+      },
       'goal.penalty' (val) {
         this.clearAssistedBy(val)
       },

@@ -170,7 +170,7 @@
     }),
     methods: {
       updateField (field, value) {
-        Vue.set(this.fieldObject(field), field.attribute, value)
+        Vue.set(this.fieldObject(field), field.attribute, value && value.trim())
         field.onUpdate && field.onUpdate()
       },
       fieldObject (field) {
