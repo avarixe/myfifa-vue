@@ -2,23 +2,23 @@
   v-card
     v-toolbar(color="blue")
       v-toolbar-title.font-weight-light.white--text {{ squad.name }}
-      v-spacer
-      squad-form(:record="squad" color="orange")
-        template(#default="{ on }")
-          tooltip-button(
-            label="Edit"
-            icon="mdi-pencil"
-            color="orange"
-            :on="on"
-          )
-      record-remove(
-        :record="squad"
-        store="squads"
-        :label="`Squad: ${ squad.name }`"
-        small
-      )
     v-card-text
       v-row.text-center(dense)
+        v-col(cols=12)
+          squad-form(:record="squad" color="orange")
+            template(#default="{ on }")
+              tooltip-button(
+                label="Edit"
+                icon="mdi-pencil"
+                color="orange"
+                :on="on"
+              )
+          record-remove(
+            :record="squad"
+            store="squads"
+            :label="`Squad: ${ squad.name }`"
+            small
+          )
         v-col
           .display-1.primary--text {{ defOVR }}
           .subheading DEF
