@@ -10,6 +10,7 @@ export function requiredRule (options) {
 export function rangeRule (options) {
   options.label = options.label || 'Field'
   return v => (
+    !v ||
     (!isNaN(v) && options.min <= parseFloat(v) && parseFloat(v) <= options.max) ||
     `${options.label} must be between ${options.min} and ${options.max}`
   )
@@ -18,12 +19,16 @@ export function rangeRule (options) {
 export function formatRule (options) {
   options.label = options.label || 'Field'
   const error = `${options.label} must be valid`
+  let regex = null
   switch (options.type) {
     case 'email':
-      return v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || error
+      regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+      break
     case 'date':
-      return v => /^\d{4}-\d{2}-\d{2}$/.test(v) || error
+      regex = /^\d{4}-\d{2}-\d{2}$/
+      break
     case 'number':
-      return v => !v || /^\d+$/.test(v) || error
+      regex = /^\d+$/
   }
+  return v => !v || regex.test(v) || error
 }

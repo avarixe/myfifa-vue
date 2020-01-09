@@ -120,7 +120,8 @@
             label: 'Bonus Req.',
             prefix: 'if',
             inputmode: 'numeric',
-            hidden: !this.contract.performance_bonus
+            hidden: !this.contract.performance_bonus,
+            required: true
           },
           {
             cols: 6,
@@ -129,7 +130,8 @@
             label: 'Bonus Req. Type',
             items: bonusRequirementTypes,
             clearable: true,
-            hidden: !this.contract.performance_bonus
+            hidden: !this.contract.performance_bonus,
+            required: true
           }
         ]
       },
