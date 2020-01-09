@@ -8,7 +8,7 @@
             span(v-on="{ ...menu, ...tooltip }")
               v-badge(color="transparent")
                 template(#badge)
-                  v-icon mdi-circle-edit-outline
+                  v-icon(color="grey") mdi-circle-edit-outline
                 span(:class="displayClass") {{ humanizedDisplay }}
           | Click to Edit {{ label }}
       v-list
