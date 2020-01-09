@@ -34,7 +34,6 @@
       :record="match"
       store="matches"
       :label="`${match.home} v ${match.away}`"
-      :redirect="linkTo('matches')"
     )
 </template>
 

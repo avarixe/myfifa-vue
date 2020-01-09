@@ -45,7 +45,7 @@
         pos: '',
         nationality: null,
         sec_pos: [],
-        ovr: 60,
+        ovr: null,
         value: '',
         kit_no: null,
         age: null,

@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-container(fluid)
+  v-container(v-if="player" fluid)
     v-row.text-center(justify="space-around")
       v-col(cols=6 sm=2)
         .display-1 {{ player.pos }}
@@ -114,6 +114,16 @@
           .query()
           .withAll()
           .find(this.$route.params.playerId)
+      }
+    },
+    watch: {
+      player () {
+        if (!this.player) {
+          this.$router.push({
+            name: 'teams-teamId-players',
+            params: this.$route.params
+          })
+        }
       }
     },
     async asyncData ({ store, params }) {

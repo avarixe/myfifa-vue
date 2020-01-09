@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-container(fluid)
+  v-container(v-if="team" fluid)
     v-row
       v-col(cols="12")
         team-date-picker.ma-1

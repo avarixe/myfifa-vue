@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-container(fluid)
+  v-container(v-if="competition" fluid)
     v-row
       v-col(cols=12)
         v-btn(:to="competition.linkToSeason" nuxt) View Season
@@ -27,7 +27,6 @@
           :record="competition"
           store="competitions"
           :label="`${competitionSeason} ${competition.name}`"
-          :redirect="competition.linkToSeason"
         )
           v-btn.my-1(dark) Remove
       //- Table Stages
@@ -85,7 +84,9 @@
           .find(this.$route.params.competitionId)
       },
       title () {
-        return `${this.competition.name} (${this.competitionSeason})`
+        return this.competition
+          ? `${this.competition.name} (${this.competitionSeason})`
+          : 'Competition'
       },
       stages () {
         return this.competition.stages
@@ -102,6 +103,16 @@
       },
       competitionSeason () {
         return this.seasonLabel(this.competition.season)
+      }
+    },
+    watch: {
+      competition () {
+        if (!this.competition) {
+          this.$router.push({
+            name: 'teams-teamId-seasons',
+            params: this.$route.params
+          })
+        }
       }
     },
     async fetch ({ store, params }) {
@@ -124,7 +135,7 @@
     }),
     head () {
       return {
-        title: `${this.competition.name} (${this.competitionSeason})`
+        title: this.title
       }
     }
   }

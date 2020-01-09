@@ -25,7 +25,6 @@
       :record="player"
       store="players"
       :label="player.name"
-      :redirect="playersLink"
     )
 </template>
 
@@ -57,14 +56,6 @@
       }
     },
     computed: {
-      playersLink () {
-        return {
-          name: 'teams-teamId-players',
-          params: {
-            teamId: this.player.team_id
-          }
-        }
-      },
       injury () {
         return Injury
           .query()

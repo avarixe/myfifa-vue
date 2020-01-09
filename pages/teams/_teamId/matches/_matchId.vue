@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-container(fluid)
+  v-container(v-if="match" fluid)
     v-row
       v-col(cols=12)
         v-btn(v-if="prevMatchLink" :to="prevMatchLink") Previous Match
@@ -95,6 +95,16 @@
           .orderBy('played_on')
           .first()
         return nextMatch && nextMatch.link
+      }
+    },
+    watch: {
+      match () {
+        if (!this.match) {
+          this.$router.push({
+            name: 'teams-teamId-matches',
+            params: this.$route.params
+          })
+        }
       }
     },
     async fetch ({ store, params }) {
