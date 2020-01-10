@@ -16,18 +16,19 @@
       v-col(cols="12")
         v-card
           v-card-text
+            season-summary(:season="pageSeason")
+      v-col(cols="12")
+        v-card
+          v-card-text
             v-tabs(v-model="tab" centered)
-              v-tab Summary
-              v-tab Competitions
               v-tab Players
+              v-tab Competitions
               v-tab Transfers
             v-tabs-items(v-model="tab" touchless)
               v-tab-item
-                season-summary(:season="pageSeason")
+                player-grid(:season="pageSeason")
               v-tab-item
                 competition-grid(:season="pageSeason")
-              v-tab-item
-                player-grid(:season="pageSeason")
               v-tab-item
                 transfer-grid(:season="pageSeason")
 </template>

@@ -29,15 +29,26 @@
                   | ({{ match.penalty_shootout.away_score }})
           v-col(v-if="match.played_on === team.currently_on" cols=12)
             match-actions(:match="match")
-      v-col(cols=12)
-        v-card
-          v-card-text
-            v-tabs(centered)
-              v-tab Lineup
-              v-tab Timeline
-              v-tab-item
+      v-col.hidden-lg-and-up(cols=12)
+        v-card: v-card-text
+          v-tabs(centered)
+            v-tab Lineup
+            v-tab Timeline
+            v-tab-item
+              match-lineup(:match="match")
+            v-tab-item
+              match-timeline(:match="match")
+      v-col.hidden-md-and-down(cols=12)
+        v-row
+          v-col(cols=6)
+            v-card
+              v-card-title.justify-center.font-weight-light Lineup
+              v-card-text
                 match-lineup(:match="match")
-              v-tab-item
+          v-col(cols=6)
+            v-card
+              v-card-title.justify-center.font-weight-light Timeline
+              v-card-text
                 match-timeline(:match="match")
 </template>
 
