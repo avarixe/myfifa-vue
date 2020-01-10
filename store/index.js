@@ -1,4 +1,5 @@
 import VuexORM from '@vuex-orm/core'
+import Cookie from 'js-cookie'
 import database from '@/database'
 import cookieparser from 'cookieparser'
 import { http, routes } from '@/api'
@@ -26,11 +27,10 @@ export const mutations = {
 export const actions = {
   async nuxtServerInit ({ commit, dispatch }, { req, params }) {
     if (req.headers.cookie) {
-      var parsed = cookieparser.parse(req.headers.cookie)
+      var { token, mode } = cookieparser.parse(req.headers.cookie)
 
-      if ('token' in parsed) {
-        const accessToken = parsed.token
-        commit('SET_TOKEN', accessToken)
+      if (token) {
+        commit('SET_TOKEN', token)
 
         try {
           await dispatch('user/GET')
@@ -43,14 +43,19 @@ export const actions = {
           commit('SET_TOKEN', null)
         }
       }
+
+      commit('app/SET_MODE', mode || 'light')
     }
   },
-  login ({ commit }, payload) {
+  LOGIN ({ commit }, payload) {
     return http({
       method: 'post',
       path: routes.token.get,
       data: payload,
       success ({ data }) {
+        Cookie.set('token', data.access_token, {
+          expires: data.expires_in / 86400
+        })
         commit('SET_TOKEN', data.access_token)
         commit('broadcaster/ANNOUNCE', {
           message: 'You have successfully logged in!',
@@ -59,12 +64,13 @@ export const actions = {
       }
     })
   },
-  logout ({ commit, state }) {
+  LOGOUT ({ commit, state }) {
     return http({
       method: 'post',
       path: routes.token.revoke,
       token: state.token,
       success ({ data }) {
+        Cookie.remove('token')
         commit('SET_TOKEN', null)
         commit('broadcaster/ANNOUNCE', {
           message: 'You have successfully logged out!',

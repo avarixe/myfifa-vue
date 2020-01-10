@@ -20,9 +20,7 @@ export default {
       { hid: 'description', name: 'description', content: pkg.description }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: '//fonts.googleapis.com/css?family=Roboto:300,400,500,700' },
-      { rel: 'stylesheet', href: '//cdn.materialdesignicons.com/2.8.94/css/materialdesignicons.min.css' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
 
@@ -46,9 +44,7 @@ export default {
     '@nuxtjs/dotenv'
   ],
 
-  vuetify: {
-    assets: false
-  },
+  // vuetify: {},
 
   /*
   ** Plugins to load before mounting the App

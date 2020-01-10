@@ -10,7 +10,7 @@
       v-col
         .display-1.warning--text {{ attOVR }}
         .subheading ATT
-    v-divider.mx-3
+    v-divider.mx-3.mb-2
     formation-view(:formation="starters")
       template(#item="{ player }")
         cap-view(

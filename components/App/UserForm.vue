@@ -116,7 +116,7 @@
       }
     },
     methods: {
-      ...mapActions('users', {
+      ...mapActions('user', {
         getUser: 'GET',
         createUser: 'CREATE',
         updateUser: 'UPDATE'

@@ -45,6 +45,12 @@
             v-list-item-action
               v-icon mdi-account-tie
             v-list-item-title Account
+      settings-form.d-block
+        template(#default="{ on }")
+          v-list-item(v-on="on")
+            v-list-item-action
+              v-icon mdi-settings
+            v-list-item-title Settings
       v-list-item(@click="logUserOut")
         v-list-item-action
           v-icon mdi-exit-to-app
@@ -53,14 +59,15 @@
 
 <script>
   import { mapState, mapMutations, mapActions } from 'vuex'
-  import Cookie from 'js-cookie'
   import { Team } from '@/models'
-  import UserForm from './UserForm'
+  import SettingsForm from './SettingsForm'
   import TeamDatePicker from '@/components/Team/DatePicker'
+  import UserForm from './UserForm'
 
   export default {
     name: 'AppDrawer',
     components: {
+      SettingsForm,
       TeamDatePicker,
       UserForm
     },
@@ -125,12 +132,11 @@
       ...mapMutations('app', {
         setDrawer: 'SET_DRAWER'
       }),
-      ...mapActions([
-        'logout'
-      ]),
+      ...mapActions({
+        logout: 'LOGOUT'
+      }),
       async logUserOut () {
         await this.logout()
-        Cookie.remove('token')
       },
       linkTo (page) {
         return {

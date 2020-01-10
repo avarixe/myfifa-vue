@@ -1,3 +1,5 @@
+import Cookie from 'js-cookie'
+
 const appTitle = 'MyFIFA Manager'
 
 // initial state
@@ -6,7 +8,8 @@ export const state = () => ({
   title: appTitle,
   overline: '',
   headline: '',
-  caption: ''
+  caption: '',
+  mode: 'light'
 })
 
 // mutations
@@ -25,5 +28,9 @@ export const mutations = {
   },
   TOGGLE_DRAWER (state) {
     state.drawer = !state.drawer
+  },
+  SET_MODE (state, mode) {
+    state.mode = mode || 'light'
+    Cookie.set('mode', state.mode)
   }
 }

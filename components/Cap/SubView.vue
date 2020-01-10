@@ -10,11 +10,12 @@
         :readonly="readonly"
         @change="setPosition($event)"
       )
-    span.font-weight-thin.body-2.mr-4(v-if="!readonly") {{ cap.name }}
-    v-dialog(v-else width="500")
+    v-dialog(v-if="readonly" width="500")
       template(#activator="{ on }")
-        a.font-weight-thin.body-2.black--text.mr-4(v-on="on") {{ cap.name }}
+        a.font-weight-light.body-2.mr-4(style="color: inherit" v-on="on")
+          | {{ cap.name }}
       player-card(:player-id="cap.player_id")
+    span.font-weight-light.body-2.mr-4(v-else) {{ cap.name }}
     cap-events.d-inline-block(:cap="cap" :match="match")
 </template>
 

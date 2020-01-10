@@ -9,7 +9,7 @@
         :readonly="readonly"
         @change="setPosition($event)"
       )
-    .font-weight-thin
+    .font-weight-light
       inline-select(
         v-if="!readonly"
         :item="cap"
@@ -24,7 +24,7 @@
       )
       v-dialog(v-else width="500")
         template(#activator="{ on }")
-          a.black--text(v-on="on") {{ cap.name }}
+          a(style="color: inherit" v-on="on") {{ cap.name }}
         player-card(:player-id="cap.player_id")
     cap-events(:cap="cap" :match="match")
 </template>

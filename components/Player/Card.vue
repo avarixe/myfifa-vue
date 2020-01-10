@@ -15,7 +15,7 @@
       v-row
         v-col(cols=3)
           .display-1 {{ player.pos }}
-          .subheadingPosition
+          .subheading Position
         v-col(cols=3)
           .display-1 {{ player.sec_pos | listArray }}
           .subheading

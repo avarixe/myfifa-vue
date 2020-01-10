@@ -30,7 +30,6 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import Cookie from 'js-cookie'
   import UserForm from '@/components/App/UserForm'
 
   export default {
@@ -77,15 +76,12 @@
       }
     },
     methods: {
-      ...mapActions([
-        'login'
-      ]),
+      ...mapActions({
+        login: 'LOGIN'
+      }),
       async authenticate () {
         try {
-          const { data } = await this.login(this.credentials)
-          Cookie.set('token', data.access_token, {
-            expires: data.expires_in / 86400
-          })
+          await this.login(this.credentials)
           this.$router.push({ name: 'teams' })
         } catch (e) {
           this.errorMessage = e.message
