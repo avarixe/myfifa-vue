@@ -86,6 +86,7 @@
           Cookie.set('token', data.access_token, {
             expires: data.expires_in / 86400
           })
+          this.$router.push({ name: 'teams' })
         } catch (e) {
           this.errorMessage = e.message
         } finally {

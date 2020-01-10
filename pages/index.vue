@@ -21,14 +21,6 @@
     computed: mapGetters([
       'authenticated'
     ]),
-    watch: {
-      authenticated: {
-        handler (val) {
-          val && this.$router.push({ name: 'teams' })
-        },
-        immediate: true
-      }
-    },
     mounted () {
       this.setTitle('')
     },
