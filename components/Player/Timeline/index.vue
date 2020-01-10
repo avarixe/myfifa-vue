@@ -1,43 +1,42 @@
 <template lang="pug">
-  v-timeline(:dense="dense")
-    v-timeline-item(
-      v-for="(item, i) in sortedItems"
-      :key="i"
-      :icon="`mdi-${item.icon}`"
-      :color="item.color"
-      fill-dot
-      right
-    )
-      template(#opposite)
-        span.headline.font-weight-bold(:class="`${item.color}--text`")
-          | {{ item.title || item.type }}
-        h4.headline.font-weight-light.mb-3(:class="`${item.color}--text`")
-          | {{ item.dateRange }}
-      v-card(dense)
-        v-card-title.lighten-2.py-1(v-if="dense" :class="item.color")
-          span.title.font-weight-bold.pr-1.white--text
-            | {{ item.title || item.type }}
-          span.body-2.font-weight-light.pl-1.white--text
-            | {{ item.dateRange }}
-        v-card-text
-          record-form(
-            :player="player"
-            :record="item.data"
-            :type="item.type"
-          )
-            template(#default="{ on }")
-              v-btn(
-                absolute
-                dark
-                fab
-                top
-                right
-                x-small
-                color="orange"
-                v-on="on"
+  v-card(flat)
+    v-card-text
+      v-timeline(:dense="dense")
+        v-timeline-item(
+          v-for="(item, i) in sortedItems"
+          :key="i"
+          :icon="`mdi-${item.icon}`"
+          :color="item.color"
+          fill-dot
+          right
+        )
+          template(#opposite)
+            span.headline.font-weight-bold(:class="`${item.color}--text`")
+              | {{ item.title || item.type }}
+            h4.title.font-weight-light.mb-3(:class="`${item.color}--text`")
+              | {{ item.dateRange }}
+          v-card(dense flat)
+            v-card-title.py-0(v-if="dense")
+              div
+                span.title.font-weight-bold(:class="`${item.color}--text`")
+                  | {{ item.title || item.type }}
+                h4.body-2.font-weight-light.mb-3(:class="`${item.color}--text`")
+                  | {{ item.dateRange }}
+            v-card-text.py-0
+              timeline-content(:item="item")
+            v-card-actions
+              record-form(
+                :player="player"
+                :record="item.data"
+                :type="item.type"
               )
-                v-icon mdi-pencil
-          timeline-content(:item="item")
+                template(#default="{ on }")
+                  v-btn(
+                    text
+                    small
+                    color="orange"
+                    v-on="on"
+                  ) Edit
 </template>
 
 <script>
@@ -116,11 +115,11 @@
       },
       dense () {
         switch (this.$vuetify.breakpoint.name) {
-          case 'xs':
           case 'sm':
-            return true
-          default:
+          case 'md':
             return false
+          default:
+            return true
         }
       }
     },

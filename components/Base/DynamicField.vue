@@ -170,7 +170,6 @@
     }),
     methods: {
       updateField (field, value) {
-        console.log(value)
         Vue.set(
           this.fieldObject(field),
           field.attribute,

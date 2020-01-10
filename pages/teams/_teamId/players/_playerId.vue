@@ -49,52 +49,37 @@
               v-col(cols=6 sm=3)
                 .display-1.orange--text {{ numAssists || 0 }}
                 .subheading Assists
-            v-tabs(centered)
+            v-tabs.hidden-lg-and-up(centered)
               v-tab Timeline
               v-tab Growth
-              //- Timeline
+
               v-tab-item
-                v-card(flat)
-                  v-card-text
-                    player-timeline(:player="player")
-              //- Growth
+                player-timeline(:player="player")
               v-tab-item
-                v-card(flat)
-                  v-card-text
-                    v-row.text-center
-                      v-col(cols=12)
-                        .subheading Overall Rating
-                        player-history-chart(
-                          :player="player"
-                          attribute="ovr"
-                          color="#4caf50"
-                          :min="40"
-                          :max="100"
-                        )
-                      v-col(cols=12)
-                        .subheading Value
-                        player-history-chart(
-                          :player="player"
-                          attribute="value"
-                          color="#1976d2"
-                          :prefix="team.currency"
-                        )
+                player-growth(:player="player")
+            v-row.hidden-md-and-down(cols=12)
+              v-col(cols=6)
+                .title.text-center Timeline
+                player-timeline(:player="player" dense)
+              v-col(cols=6)
+                .title.text-center Growth
+                player-growth(:player="player")
 </template>
 
 <script>
   import { mapMutations } from 'vuex'
   import { Player } from '@/models'
   import PlayerActions from '@/components/Player/Actions'
+  import PlayerGrowth from '@/components/Player/Growth'
   import PlayerTimeline from '@/components/Player/Timeline'
-  import PlayerHistoryChart from '@/components/Charts/PlayerHistoryChart'
   import { TeamAccessible } from '@/mixins'
 
   export default {
     name: 'PlayerPage',
     components: {
       PlayerActions,
-      PlayerTimeline,
-      PlayerHistoryChart
+      PlayerGrowth,
+      PlayerTimeline
     },
     mixins: [
       TeamAccessible
