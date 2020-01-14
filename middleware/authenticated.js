@@ -4,6 +4,6 @@ export default function ({ store, route, redirect }) {
       return redirect('/teams')
     }
   } else if (route.name !== 'index') {
-    return redirect('/')
+    return redirect(`/#${route.path}`)
   }
 }
