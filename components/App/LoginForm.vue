@@ -77,12 +77,22 @@
     },
     methods: {
       ...mapActions({
-        login: 'LOGIN'
+        login: 'LOGIN',
+        getTeam: 'teams/GET'
       }),
       async authenticate () {
         try {
           await this.login(this.credentials)
-          this.$router.push({ name: 'teams' })
+
+          // load Team if required
+          if (this.$route.hash) {
+            const matches = this.$route.hash.match(/teams\/(\d+)/)
+            if (matches) {
+              await this.getTeam({ teamId: matches[1] })
+            }
+          }
+
+          this.$router.push(this.$route.hash.slice(1) || { name: 'teams' })
         } catch (e) {
           this.errorMessage = e.message
         } finally {
