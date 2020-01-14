@@ -2,41 +2,50 @@
   v-card(flat)
     v-card-text
       v-timeline(:dense="dense")
+        template(v-if="items.length > 0")
+          v-timeline-item(
+            v-for="(item, i) in sortedItems"
+            :key="i"
+            :icon="`mdi-${item.icon}`"
+            :color="item.color"
+            fill-dot
+            right
+          )
+            template(#opposite)
+              span.headline.font-weight-bold(:class="`${item.color}--text`")
+                | {{ item.title || item.type }}
+              h4.title.font-weight-light.mb-3(:class="`${item.color}--text`")
+                | {{ item.dateRange }}
+            v-card(dense flat)
+              v-card-title.py-0(v-if="dense")
+                div
+                  span.title.font-weight-bold(:class="`${item.color}--text`")
+                    | {{ item.title || item.type }}
+                  h4.body-2.font-weight-light.mb-3(
+                    :class="`${item.color}--text`"
+                  ) {{ item.dateRange }}
+              v-card-text.py-0
+                timeline-content(:item="item")
+              v-card-actions
+                record-form(
+                  :player="player"
+                  :record="item.data"
+                  :type="item.type"
+                )
+                  template(#default="{ on }")
+                    v-btn(
+                      text
+                      small
+                      color="orange"
+                      v-on="on"
+                    ) Edit
         v-timeline-item(
-          v-for="(item, i) in sortedItems"
-          :key="i"
-          :icon="`mdi-${item.icon}`"
-          :color="item.color"
+          v-else
+          color="grey"
+          icon="mdi-calendar"
           fill-dot
-          right
         )
-          template(#opposite)
-            span.headline.font-weight-bold(:class="`${item.color}--text`")
-              | {{ item.title || item.type }}
-            h4.title.font-weight-light.mb-3(:class="`${item.color}--text`")
-              | {{ item.dateRange }}
-          v-card(dense flat)
-            v-card-title.py-0(v-if="dense")
-              div
-                span.title.font-weight-bold(:class="`${item.color}--text`")
-                  | {{ item.title || item.type }}
-                h4.body-2.font-weight-light.mb-3(:class="`${item.color}--text`")
-                  | {{ item.dateRange }}
-            v-card-text.py-0
-              timeline-content(:item="item")
-            v-card-actions
-              record-form(
-                :player="player"
-                :record="item.data"
-                :type="item.type"
-              )
-                template(#default="{ on }")
-                  v-btn(
-                    text
-                    small
-                    color="orange"
-                    v-on="on"
-                  ) Edit
+          .mt-2 No Player Events
 </template>
 
 <script>

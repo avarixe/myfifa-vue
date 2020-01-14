@@ -1,11 +1,19 @@
 <template lang="pug">
-  v-timeline(v-if="events.length > 0 || match.penalty_shootout" dense)
-    match-timeline-item(
-      v-for="(event, i) in events"
-      :key="`${event.id}_${i}`"
-      :event="event"
-      :match="match"
+  v-timeline(dense)
+    template(v-if="events.length > 0 || match.penalty_shootout")
+      match-timeline-item(
+        v-for="(event, i) in events"
+        :key="`${event.id}_${i}`"
+        :event="event"
+        :match="match"
+      )
+    v-timeline-item(
+      v-else
+      color="grey"
+      icon="mdi-timer"
+      fill-dot
     )
+      .mt-2 No Match Events
 </template>
 
 <script>
