@@ -31,6 +31,6 @@ export const mutations = {
   },
   SET_MODE (state, mode) {
     state.mode = mode || 'light'
-    Cookie.set('mode', state.mode)
+    Cookie.set('mode', state.mode, { expires: 365 })
   }
 }
