@@ -11,7 +11,6 @@
     name: 'TeamChannel',
     data: () => ({
       cable: null,
-      subscriptions: [],
       timeout: null,
       insertBuffer: {},
       deleteBuffer: {}
@@ -27,7 +26,7 @@
           `${cableURL}?access_token=${this.token}`
         )
 
-        const subscription = this.cable.subscriptions.create({
+        this.cable.subscriptions.create({
           channel: 'TeamChannel',
           id: this.$route.params.teamId
         }, {
@@ -37,14 +36,10 @@
           },
           connected: () => {}
         })
-
-        this.subscriptions.push(subscription)
       }
     },
     destroyed () {
-      this.subscriptions.forEach((sub) => {
-        sub && this.cable.subscriptions.remove(sub)
-      })
+      this.cable.subscriptions.consumer.disconnect()
     },
     methods: {
       addToBuffer ({ type, data, destroyed }) {
