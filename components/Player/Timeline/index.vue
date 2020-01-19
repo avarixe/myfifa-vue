@@ -54,6 +54,10 @@
   import TimelineContent from './Content'
   import { TeamAccessible } from '@/mixins'
 
+  function formatDate (date) {
+    return format(parseISO(date), 'MMM dd, yyyy')
+  }
+
   export default {
     name: 'PlayerTimeline',
     components: {
@@ -77,9 +81,9 @@
             icon: 'file-document',
             date: contract.started_on,
             dateRange:
-              this.formatDate(contract.started_on) +
+              formatDate(contract.started_on) +
               ' - ' +
-              this.formatDate(contract.ended_on),
+              formatDate(contract.ended_on),
             data: contract
           })),
           ...this.player.injuries.map(injury => ({
@@ -88,9 +92,9 @@
             icon: 'ambulance',
             date: injury.started_on,
             dateRange:
-              this.formatDate(injury.started_on) +
+              formatDate(injury.started_on) +
               ' - ' +
-              this.formatDate(injury.ended_on),
+              `${injury.ended_on ? formatDate(injury.ended_on) : 'Present'}`,
             title: `${injury.description} Injury`,
             data: injury
           })),
@@ -100,10 +104,10 @@
             icon: 'transit-transfer',
             date: loan.started_on,
             dateRange:
-              this.formatDate(loan.started_on) +
+              formatDate(loan.started_on) +
               ' - ' +
-              this.formatDate(loan.ended_on),
-            title: `On Loan at ${loan.destination}`,
+              `${loan.ended_on ? formatDate(loan.ended_on) : 'Present'}`,
+            title: `Loan at ${loan.destination}`,
             data: loan
           })),
           ...this.player.transfers.map(transfer => {
@@ -113,7 +117,7 @@
               color: transferOut ? 'red' : 'green',
               icon: `airplane-${transferOut ? 'takeoff' : 'landing'}`,
               date: transfer.moved_on,
-              dateRange: this.formatDate(transfer.moved_on),
+              dateRange: formatDate(transfer.moved_on),
               data: transfer
             }
           })
@@ -130,11 +134,6 @@
           default:
             return true
         }
-      }
-    },
-    methods: {
-      formatDate (date) {
-        return format(parseISO(date), 'MMM dd, yyyy')
       }
     }
   }
