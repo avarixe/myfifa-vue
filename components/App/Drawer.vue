@@ -59,7 +59,7 @@
 
 <script>
   import { mapState, mapMutations, mapActions } from 'vuex'
-  import { Team } from '@/models'
+  import { TeamAccessible } from '@/mixins'
   import SettingsForm from './SettingsForm'
   import TeamDatePicker from '@/components/Team/DatePicker'
   import UserForm from './UserForm'
@@ -71,6 +71,9 @@
       TeamDatePicker,
       UserForm
     },
+    mixins: [
+      TeamAccessible
+    ],
     computed: {
       ...mapState([
         'version'
@@ -80,12 +83,6 @@
       ]),
       teamId () {
         return this.$route.params.teamId
-      },
-      team () {
-        return Team.find(this.teamId)
-      },
-      teamName () {
-        return this.team.title
       },
       teamLinks () {
         if (this.teamId) {
@@ -100,9 +97,12 @@
               text: 'Dashboard'
             },
             {
-              to: this.linkTo('seasons'),
+              to: {
+                name: 'teams-teamId-seasons-season',
+                params: { season: this.season }
+              },
               icon: 'mdi-trophy',
-              text: 'Seasons'
+              text: 'Season'
             },
             {
               to: this.linkTo('players'),
@@ -137,12 +137,6 @@
       }),
       async logUserOut () {
         await this.logout()
-      },
-      linkTo (page) {
-        return {
-          name: `teams-teamId-${page}`,
-          params: { teamId: this.team.id }
-        }
       }
     }
   }

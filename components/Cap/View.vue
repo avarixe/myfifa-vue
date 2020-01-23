@@ -9,7 +9,7 @@
         :readonly="readonly"
         @change="setPosition($event)"
       )
-    .font-weight-light
+    div
       inline-select(
         v-if="!readonly"
         :item="cap"

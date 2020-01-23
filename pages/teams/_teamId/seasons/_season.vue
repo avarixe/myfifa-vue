@@ -21,14 +21,14 @@
         v-card
           v-card-text
             v-tabs(v-model="tab" centered)
-              v-tab Players
               v-tab Competitions
+              v-tab Players
               v-tab Transfers
             v-tabs-items(v-model="tab" touchless)
               v-tab-item
-                player-grid(:season="pageSeason")
-              v-tab-item
                 competition-grid(:season="pageSeason")
+              v-tab-item
+                player-grid(:season="pageSeason")
               v-tab-item
                 transfer-grid(:season="pageSeason")
 </template>

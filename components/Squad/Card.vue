@@ -1,6 +1,6 @@
 <template lang="pug">
   v-card
-    v-toolbar(color="blue")
+    v-toolbar(color="primary" dense)
       v-toolbar-title.font-weight-light.white--text {{ squad.name }}
     v-card-text
       v-row.text-center(dense)
@@ -32,7 +32,7 @@
       formation-view(:formation="squad.squad_players")
         template(#item="{ player }")
           .font-weight-bold {{ player.pos }}
-          .font-weight-thin(:class="statusColor(player.player_id)")
+          div(:class="statusColor(player.player_id)")
             | {{ nameOf(player.player_id) }}
 </template>
 

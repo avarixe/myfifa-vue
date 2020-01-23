@@ -11,19 +11,13 @@
       | {{ item.moved_on | formatDate }}
     template(#item.name="{ item }")
       nuxt-link(:to="playerLink(item)") {{ item.name }}
-    template(#item.origin="{ item }")
-      span(:class="team.title === item.origin ? 'warning--text' : ''")
-        | {{ item.origin }}
     template(#item.dir="{ item }")
       v-icon(:color="item.dir === 'in' ? 'green' : 'red'")
         | mdi-airplane-{{ item.dir === 'in' ? 'landing' : 'takeoff' }}
-    template(#item.destination="{ item }")
-      span(:class="team.title === item.destination ? 'warning--text' : ''")
-        | {{ item.destination }}
     template(#item.fee="{ item }")
       span(:class="`${item.dir === 'in' ? 'red' : 'green'}--text`")
         | {{ item.fee | formatMoney }}
-        |&nbsp;
+        | &nbsp;
         span(v-if="item.addon_clause") (+{{ item.addon_clause }}%)
 </template>
 
@@ -43,9 +37,8 @@
       headers: [
         { text: 'Effective Date', value: 'moved_on' },
         { text: 'Player', value: 'name' },
-        { text: 'Origin', value: 'origin' },
-        { text: '', value: 'dir', align: 'center', sortable: false },
-        { text: 'Destination', value: 'destination' },
+        { text: '', value: 'dir', align: 'center' },
+        { text: 'Team', value: 'team' },
         { text: 'Fee', value: 'fee', align: 'right' }
       ]
     }),
@@ -83,7 +76,10 @@
         return this.transfers.map(transfer => ({
           ...transfer,
           name: transfer.player.name,
-          dir: transfer.origin === this.team.title ? 'out' : 'in'
+          dir: transfer.origin === this.team.title ? 'out' : 'in',
+          team: transfer.origin === this.team.title
+            ? transfer.destination
+            : transfer.origin
         }))
       }
     },
