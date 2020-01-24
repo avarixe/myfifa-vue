@@ -16,7 +16,7 @@ export default class Booking extends Model {
       // Primary/Foreign keys
       id: this.number(0),
       match_id: this.number(0),
-      player_id: this.number(0),
+      player_id: this.number(null).nullable(),
 
       // Database fields
       player_name: this.string(''),

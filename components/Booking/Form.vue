@@ -15,7 +15,7 @@
           :on="on"
         )
     template(#form)
-      dynamic-fields(:fields="fields")
+      dynamic-fields(:object="booking" :fields="fields")
         template(#field.minute)
           minute-field(v-model="minute")
         template(#field.player_id)
@@ -46,29 +46,62 @@
     },
     data: () => ({
       booking: {
+        home: true,
         player_id: null,
+        player_name: '',
         red_card: false
       }
     }),
     computed: {
       fields () {
-        return [
+        let fields = [
           {
             type: 'radio',
-            object: this.booking,
+            attribute: 'home',
+            items: [
+              { label: this.match.home, value: true, color: 'teal' },
+              { label: this.match.away, value: false, color: 'pink' }
+            ],
+            hideDetails: true,
+            onUpdate: this.clearNames
+          },
+          { slot: 'minute' }
+        ]
+
+        if (this.teamBooking) {
+          fields.push({ slot: 'player_id' })
+        } else {
+          fields.push({
+            type: 'string',
+            attribute: 'player_name',
+            label: 'Player',
+            prependIcon: 'mdi-account',
+            required: true,
+            spellcheck: 'false',
+            autocapitalize: 'words',
+            autocomplete: 'off',
+            autocorrect: 'off'
+          })
+        }
+
+        return [
+          ...fields,
+          {
+            type: 'radio',
             attribute: 'red_card',
             items: [
               { label: 'Yellow Card', value: false, color: 'orange darken-2' },
               { label: 'Red Card', value: true, color: 'red darken-2' }
             ],
             hideDetails: true
-          },
-          { slot: 'minute' },
-          { slot: 'player_id' }
+          }
         ]
       },
       title () {
         return `${this.record ? 'Edit' : 'Record'} Booking`
+      },
+      teamBooking () {
+        return !this.booking.home ^ this.match.home === this.team.title
       }
     },
     watch: {
@@ -76,7 +109,9 @@
         if (val && this.record) {
           this.booking = pick(this.record, [
             'id',
+            'home',
             'player_id',
+            'player_name',
             'red_card'
           ])
           this.minute = this.record.minute
@@ -88,6 +123,10 @@
         createBooking: 'CREATE',
         updateBooking: 'UPDATE'
       }),
+      clearNames () {
+        this.booking.player_id = null
+        this.booking.player_name = ''
+      },
       async submit () {
         const booking = {
           ...this.booking,
