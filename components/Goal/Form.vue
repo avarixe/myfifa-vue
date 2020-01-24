@@ -105,6 +105,7 @@
             attribute: 'player_name',
             label: 'Goal Scorer',
             prependIcon: 'mdi-account',
+            required: true,
             spellcheck: 'false',
             autocapitalize: 'words',
             autocomplete: 'off',
@@ -132,9 +133,6 @@
       },
       title () {
         return `${this.record ? 'Edit' : 'Record'} Goal`
-      },
-      scoredTeam () {
-        return this.home ? this.match.home : this.match.away
       },
       teamGoal () {
         return !this.goal.home ^ this.match.home === this.team.title
