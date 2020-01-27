@@ -70,7 +70,7 @@
       :label="field.label"
       :hide-details="field.hideDetails || false"
       :disabled="field.disabled"
-      :value="fieldValue(field)"
+      :input-value="fieldValue(field)"
       @change="updateField(field, $event)"
     )
     //- Radio

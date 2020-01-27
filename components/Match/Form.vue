@@ -12,12 +12,6 @@
           | Match
     template(#form)
       dynamic-fields(:object="match" :fields="fields")
-        template(#field.extra_time)
-          v-checkbox(
-            v-model="match.extra_time"
-            label="Extra Time Required"
-            hide-details
-          )
 </template>
 
 <script>
@@ -120,7 +114,12 @@
             autocomplete: 'off',
             autocorrect: 'off'
           },
-          { slot: 'extra_time' }
+          {
+            type: 'checkbox',
+            attribute: 'extra_time',
+            label: 'Extra Time Required',
+            hideDetails: true
+          }
         ]
       },
       title () {

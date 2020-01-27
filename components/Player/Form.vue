@@ -11,13 +11,6 @@
       dynamic-fields(:object="player" :fields="fields")
         template(#field.nationality)
           nationality-field(v-model="player.nationality")
-        template(#field.youth)
-          v-checkbox(
-            v-model="player.youth"
-            label="Youth Player"
-            :disabled="record !== null"
-            hide-details
-          )
 </template>
 
 <script>
@@ -115,7 +108,13 @@
             inputmode: 'numeric',
             range: { min: 1, max: 99 }
           },
-          { slot: 'youth' }
+          {
+            type: 'checkbox',
+            attribute: 'youth',
+            label: 'Youth Player',
+            disabled: this.record !== null,
+            hideDetails: true
+          }
         ]
       },
       title () {

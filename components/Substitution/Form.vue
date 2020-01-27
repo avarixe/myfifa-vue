@@ -34,12 +34,6 @@
             icon="mdi-subdirectory-arrow-right"
             required
           )
-        template(#field.injury)
-          v-checkbox(
-            v-model="substitution.injury"
-            label="Injury"
-            hide-details
-          )
 </template>
 
 <script>
@@ -74,7 +68,13 @@
           { slot: 'minute' },
           { slot: 'player_id' },
           { slot: 'replacement_id' },
-          { slot: 'injury' }
+          {
+            type: 'checkbox',
+            object: this.substitution,
+            attribute: 'injury',
+            label: 'Injury',
+            hideDetails: true
+          }
         ]
       },
       title () {

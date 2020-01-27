@@ -35,20 +35,6 @@
             clearable
             hide-details
           )
-        template(#field.penalty)
-          v-checkbox(
-            v-model="goal.penalty"
-            label="Penalty"
-            :disabled="goal.own_goal"
-            hide-details
-          )
-        template(#field.own_goal)
-          v-checkbox(
-            v-model="goal.own_goal"
-            label="Own Goal"
-            :disabled="goal.penalty"
-            hide-details
-          )
 </template>
 
 <script>
@@ -127,8 +113,20 @@
 
         return [
           ...fields,
-          { slot: 'penalty' },
-          { slot: 'own_goal' }
+          {
+            type: 'checkbox',
+            attribute: 'penalty',
+            label: 'Penalty',
+            disabled: this.goal.own_goal,
+            hideDetails: true
+          },
+          {
+            type: 'checkbox',
+            attribute: 'own_goal',
+            label: 'Own Goal',
+            disabled: this.goal.penalty,
+            hideDetails: true
+          }
         ]
       },
       title () {
