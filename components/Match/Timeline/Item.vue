@@ -9,28 +9,27 @@
       |&nbsp;
       span.caption.text-truncate(:class="`${captionColor}--text`") {{ caption }}
       |&nbsp;
-      record-form(
-        v-if="!readonly"
-        :record="event"
-        :match="match"
-        :type="type"
-        color="orange"
-      )
-        template(#default="{ on }")
-          tooltip-button(
-            :label="`Edit ${type}`"
-            icon="mdi-pencil"
-            color="orange"
-            small
-            :on="on"
-          )
-      |&nbsp;
-      record-remove(
-        v-if="!readonly"
-        :record="event"
-        :store="store"
-        :label="title"
-      )
+      template(v-if="!readonly")
+        record-form(
+          :record="event"
+          :match="match"
+          :type="type"
+          color="orange"
+        )
+          template(#default="{ on }")
+            tooltip-button(
+              :label="`Edit ${type}`"
+              icon="mdi-pencil"
+              color="orange"
+              small
+              :on="on"
+            )
+        |&nbsp;
+        record-remove(
+          :record="event"
+          :store="store"
+          :label="title"
+        )
     timeline-content(:item="event" :type="type")
 </template>
 

@@ -6,6 +6,7 @@
         :key="`${event.id}_${i}`"
         :event="event"
         :match="match"
+        :readonly="readonly"
       )
     v-timeline-item(
       v-else
@@ -47,6 +48,9 @@
         }
 
         return events
+      },
+      readonly () {
+        return this.team.currently_on !== this.match.played_on
       }
     }
   }
