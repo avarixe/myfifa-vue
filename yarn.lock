@@ -1145,12 +1145,13 @@
     source-map "~0.6.1"
     vue-template-es2015-compiler "^1.9.0"
 
-"@vuex-orm/core@^0.35.2":
-  version "0.35.2"
-  resolved "https://registry.yarnpkg.com/@vuex-orm/core/-/core-0.35.2.tgz#02b16dba2439e4dd42b472f55b216f874b86ad49"
-  integrity sha512-19/O9rtrhGYSXXIu1mGcZuO2zLYqEUogEXNkp6sEScyi8xJnF8J14DhuYKlmcS1EOTtYmjlaDha2fJ+0W2Jcgg==
+"@vuex-orm/core@0.34.1":
+  version "0.34.1"
+  resolved "https://registry.yarnpkg.com/@vuex-orm/core/-/core-0.34.1.tgz#2b096324d0c1151ab5ab3a40c174e8aa901c1c8e"
+  integrity sha512-AamNIvLuetNGVJ4vmjUoBHnS0Es4yj/AoxhTbinQ5OM+5qpijWjMHa1sCwlVNWRUuZp3fQ4NDSx5fKPTbArfGg==
   dependencies:
-    normalizr "3.4.1"
+    normalizr "^3.4.1"
+    vuex "^3.1.2"
 
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
@@ -5313,10 +5314,10 @@ normalize-url@^3.0.0:
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
   integrity sha512-U+JJi7duF1o+u2pynbp2zXDW2/PADgC30f0GsHZtRh+HOcXHnw137TrNlyxxRvWW5fjKd3bcLHPxofWuCjaeZg==
 
-normalizr@3.4.1:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/normalizr/-/normalizr-3.4.1.tgz#cf4f8ac7a4a0dd7fe504b77cbe9dd533cb3e45b5"
-  integrity sha512-gei+tJucERU8vYN6TFQL2k5YMLX2Yh7nlylKMJC65+Uu/LS3xQCDJc8cies72aHouycKYyVgcnyLRbaJsigXKw==
+normalizr@^3.4.1:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/normalizr/-/normalizr-3.5.0.tgz#c2227644cdb31bcc501b25e3f88a8032bae8d730"
+  integrity sha512-wMQ0jvJM5y3mGYipiXdpVgtOeR57AUkg6zEXDDWeQczIc9sdY1Za78qVPDEPL8dCBkTmEzgYGkVrI23NcMfy7Q==
 
 npm-run-path@^4.0.0:
   version "4.0.1"
