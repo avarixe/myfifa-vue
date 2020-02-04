@@ -27,8 +27,6 @@
         :headers="headers"
         :items="rows"
         :loading="loading"
-        disable-pagination
-        hide-default-footer
         sort-by="pos"
         :search="search"
         item-key="id"
