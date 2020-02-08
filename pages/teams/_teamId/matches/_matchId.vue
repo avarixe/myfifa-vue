@@ -5,7 +5,17 @@
         v-btn(v-if="prevMatchLink" :to="prevMatchLink") Previous Match
         |&nbsp;
         v-btn(v-if="nextMatchLink" :to="nextMatchLink") Next Match
-        match-form(v-else)
+        |&nbsp;
+        match-form(:record="match" color="orange")
+          template(#default="{ on }")
+            v-btn(color="orange" dark v-on="on") Edit
+        |&nbsp;
+        record-remove.ma-1(
+          :record="match"
+          store="matches"
+          :label="`${match.home} v ${match.away}`"
+        )
+          v-btn(dark) Remove
       v-container
         v-row.text-center
           v-col(cols=12)
@@ -27,28 +37,18 @@
                 | {{ match.away_score }}
                 span(v-if="match.penalty_shootout")
                   | ({{ match.penalty_shootout.away_score }})
-          v-col(v-if="match.played_on === team.currently_on" cols=12)
-            match-actions(:match="match")
-      v-col.hidden-lg-and-up(cols=12)
-        v-card: v-card-text
-          v-tabs(centered)
-            v-tab Lineup
-            v-tab Timeline
-            v-tab-item
-              match-lineup(:match="match")
-            v-tab-item
-              match-timeline(:match="match")
-      v-col.hidden-md-and-down(cols=12)
+      v-col
         v-row
-          v-col(cols=6)
+          v-col(cols=12 md=6)
             v-card
               v-card-title.justify-center.font-weight-light Lineup
               v-card-text
                 match-lineup(:match="match")
-          v-col(cols=6)
+          v-col(cols=12 md=6)
             v-card
               v-card-title.justify-center.font-weight-light Timeline
               v-card-text
+                match-actions(v-if="!readonly" :match="match")
                 match-timeline(:match="match")
 </template>
 
@@ -88,6 +88,9 @@
           .query()
           .where('team_id', this.team.id)
           .get()
+      },
+      readonly () {
+        return this.match.played_on !== this.team.currently_on
       },
       prevMatchLink () {
         const prevMatch = Match
