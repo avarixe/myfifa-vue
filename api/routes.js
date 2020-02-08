@@ -53,13 +53,14 @@ export const routes = {
 
   squads: {
     index: 'teams/{{ teamId }}/squads',
-    record: 'squads/{{ squadId }}'
+    record: 'squads/{{ squadId }}',
+    storeLineup: 'squads/{{ squadId }}/store_lineup/{{ matchId }}'
   },
 
   matches: {
     index: 'teams/{{ teamId }}/matches',
     record: 'matches/{{ matchId }}',
-    applySquad: 'matches/{{ matchId }}/apply_squad',
+    applySquad: 'matches/{{ matchId }}/apply_squad/{{ squadId }}',
     penaltyShootout: 'matches/{{ matchId }}/penalty_shootout',
     teamOptions: 'teams/{{ teamId }}/matches/team_options'
   },

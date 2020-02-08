@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-tooltip(v-if="match.caps.length === 11" color="green" bottom)
+  v-tooltip(v-if="starters.length === 11" color="green" bottom)
     template(#activator="{ on: tooltip }")
       v-menu.d-inline-block(
         v-model="menu"
@@ -9,13 +9,8 @@
       )
         template(#activator="{ on: menu }")
           v-btn(icon v-on="{ ...menu, ...tooltip }")
-            v-icon(color="green") mdi-clipboard-arrow-up
+            v-icon(color="green") mdi-upload
         v-list
-          v-list-item(
-            v-for="squad in squads"
-            :key="squad.id"
-            @click="saveLineupToSquad(squad.id)"
-          ) {{ squad.name }}
           v-list-item
             v-text-field(
               v-model="squadName"
@@ -23,8 +18,13 @@
               :loading="loading"
               :disabled="loading"
               hint="Press Enter to Save"
-              @keypress.enter="saveLineupToSquad(null)"
+              @keypress.enter.prevent="saveLineupToSquad(null)"
             )
+          v-list-item(
+            v-for="squad in squads"
+            :key="squad.id"
+            @click="saveLineupToSquad(squad.id)"
+          ) {{ squad.name }}
     | Save Lineup to Squad
 </template>
 
@@ -53,27 +53,40 @@
       squads () {
         return Squad
           .query()
+          .with('squad_players')
           .where('team_id', this.team.id)
           .get()
+      },
+      starters () {
+        return this.match.caps.filter(c => c.start === 0)
       }
     },
     methods: {
       ...mapActions('squads', {
         createSquad: 'CREATE',
-        updateSquad: 'UPDATE'
+        storeLineup: 'STORE_LINEUP'
       }),
       async saveLineupToSquad (squadId) {
         try {
           if (squadId) {
-            console.log('overwrite Squad!')
-          } else {
+            await this.storeLineup({ squadId, matchId: this.match.id })
+          } else if (this.squadName) {
             this.loading = true
-            console.log('create new Squad!')
+
+            let squadPlayers = []
+
+            this.starters.forEach(cap => {
+              squadPlayers.push({ player_id: cap.player_id, pos: cap.pos })
+            })
+
+            await this.createSquad({
+              teamId: this.team.id,
+              squad: {
+                name: this.squadName,
+                squad_players_attributes: squadPlayers
+              }
+            })
           }
-          // await this.updateSquad({
-          //   matchId: this.match.id,
-          //   squadId
-          // })
 
           this.menu = false
         } catch (e) {

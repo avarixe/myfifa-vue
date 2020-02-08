@@ -4,7 +4,7 @@
       v-menu.d-inline-block(offset-y offset-overflow)
         template(#activator="{ on: menu }")
           v-btn(icon v-on="{ ...menu, ...tooltip }")
-            v-icon(color="cyan") mdi-clipboard-arrow-down
+            v-icon(color="cyan") mdi-download
         v-list
           v-list-item(
             v-for="squad in squads"
