@@ -1,5 +1,5 @@
 import { crud, http, routes } from '@/api'
-import { Match } from '@/models'
+import { Match, Cap } from '@/models'
 
 // state
 export const state = () => ({
@@ -23,9 +23,12 @@ export const actions = {
     return http({
       method: 'post',
       path: routes.matches.applySquad,
-      pathData: { matchId },
+      pathData: { matchId, squadId },
       token: rootState.token,
-      data: { squad_id: squadId }
+      success ({ data }) {
+        Cap.delete(cap => cap.match_id === matchId)
+        Match.insert({ data })
+      }
     })
   },
   FETCH_TEAM_OPTIONS ({ commit, rootState }, { teamId }) {
