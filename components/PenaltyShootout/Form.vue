@@ -22,6 +22,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
+  import { PenaltyShootoutFields } from '@/functions/fields'
 
   export default {
     name: 'PenaltyShootoutForm',
@@ -44,26 +45,7 @@
     }),
     computed: {
       fields () {
-        return [
-          {
-            cols: 6,
-            type: 'string',
-            attribute: 'home_score',
-            label: 'Home Score',
-            prependIcon: 'mdi-soccer',
-            required: true,
-            inputmode: 'numeric'
-          },
-          {
-            cols: 6,
-            type: 'string',
-            attribute: 'away_score',
-            label: 'Away Score',
-            prependIcon: 'mdi-soccer',
-            required: true,
-            inputmode: 'numeric'
-          }
-        ]
+        return PenaltyShootoutFields()
       },
       title () {
         return `${this.record ? 'Edit' : 'Record'} Penalty Shootout`

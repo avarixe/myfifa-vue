@@ -30,6 +30,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
+  import { BookingFields } from '@/functions/fields'
 
   export default {
     name: 'BookingForm',
@@ -54,48 +55,7 @@
     }),
     computed: {
       fields () {
-        let fields = [
-          {
-            type: 'radio',
-            attribute: 'home',
-            items: [
-              { label: this.match.home, value: true, color: 'teal' },
-              { label: this.match.away, value: false, color: 'pink' }
-            ],
-            hideDetails: true,
-            onUpdate: this.clearNames
-          },
-          { slot: 'minute' }
-        ]
-
-        if (this.teamBooking) {
-          fields.push({ slot: 'player_id' })
-        } else {
-          fields.push({
-            type: 'string',
-            attribute: 'player_name',
-            label: 'Player',
-            prependIcon: 'mdi-account',
-            required: true,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          })
-        }
-
-        return [
-          ...fields,
-          {
-            type: 'radio',
-            attribute: 'red_card',
-            items: [
-              { label: 'Yellow Card', value: false, color: 'orange darken-2' },
-              { label: 'Red Card', value: true, color: 'red darken-2' }
-            ],
-            hideDetails: true
-          }
-        ]
+        return BookingFields(this)
       },
       title () {
         return `${this.record ? 'Edit' : 'Record'} Booking`
