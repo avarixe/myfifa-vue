@@ -1,19 +1,24 @@
-export function BookingFields (context) {
+export function BookingFields ({ booking, match, team }) {
+  function clearNames () {
+    booking.player_id = null
+    booking.player_name = ''
+  }
+
   let fields = [
     {
       type: 'radio',
       attribute: 'home',
       items: [
-        { label: context.match.home, value: true, color: 'teal' },
-        { label: context.match.away, value: false, color: 'pink' }
+        { label: match.home, value: true, color: 'teal' },
+        { label: match.away, value: false, color: 'pink' }
       ],
       hideDetails: true,
-      onUpdate: context.clearNames
+      onUpdate: clearNames
     },
     { slot: 'minute' }
   ]
 
-  if (context.teamBooking) {
+  if (!booking.home ^ match.home === team.title) {
     fields.push({ slot: 'player_id' })
   } else {
     fields.push({

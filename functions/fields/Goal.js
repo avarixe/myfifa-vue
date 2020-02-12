@@ -1,19 +1,26 @@
-export function GoalFields (context) {
+export function GoalFields ({ goal, match, team }) {
+  function clearNames () {
+    goal.player_id = null
+    goal.player_name = null
+    goal.assist_id = null
+    goal.assisted_by = null
+  }
+
   let fields = [
     {
       type: 'radio',
       attribute: 'home',
       items: [
-        { label: context.match.home, value: true, color: 'teal' },
-        { label: context.match.away, value: false, color: 'pink' }
+        { label: match.home, value: true, color: 'teal' },
+        { label: match.away, value: false, color: 'pink' }
       ],
       hideDetails: true,
-      onUpdate: context.clearNames
+      onUpdate: clearNames
     },
     { slot: 'minute' }
   ]
 
-  if (context.teamGoal) {
+  if (!goal.home ^ match.home === team.title) {
     fields.push({ slot: 'player_id' })
     fields.push({ slot: 'assist_id' })
   } else {
@@ -34,7 +41,7 @@ export function GoalFields (context) {
       label: 'Assisted By',
       prependIcon: 'mdi-human-greeting',
       hideDetails: true,
-      disabled: context.goal.penalty || context.goal.own_goal,
+      disabled: goal.penalty || goal.own_goal,
       spellcheck: 'false',
       autocapitalize: 'words',
       autocomplete: 'off',
@@ -48,14 +55,14 @@ export function GoalFields (context) {
       type: 'checkbox',
       attribute: 'penalty',
       label: 'Penalty',
-      disabled: context.goal.own_goal,
+      disabled: goal.own_goal,
       hideDetails: true
     },
     {
       type: 'checkbox',
       attribute: 'own_goal',
       label: 'Own Goal',
-      disabled: context.goal.penalty,
+      disabled: goal.penalty,
       hideDetails: true
     }
   ]

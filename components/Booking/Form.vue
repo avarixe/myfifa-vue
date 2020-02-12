@@ -59,9 +59,6 @@
       },
       title () {
         return `${this.record ? 'Edit' : 'Record'} Booking`
-      },
-      teamBooking () {
-        return !this.booking.home ^ this.match.home === this.team.title
       }
     },
     watch: {
@@ -83,10 +80,6 @@
         createBooking: 'CREATE',
         updateBooking: 'UPDATE'
       }),
-      clearNames () {
-        this.booking.player_id = null
-        this.booking.player_name = ''
-      },
       async submit () {
         const booking = {
           ...this.booking,

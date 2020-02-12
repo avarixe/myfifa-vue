@@ -74,9 +74,6 @@
       title () {
         return `${this.record ? 'Edit' : 'Record'} Goal`
       },
-      teamGoal () {
-        return !this.goal.home ^ this.match.home === this.team.title
-      },
       scorerOptions () {
         return this.unsubbedPlayers.filter(cap =>
           cap.player_id !== this.goal.assist_id
@@ -126,11 +123,6 @@
           this.goal.assist_id = null
           this.goal.assisted_by = null
         }
-      },
-      clearNames () {
-        this.goal.player_id = null
-        this.goal.player_name = ''
-        this.clearAssistedBy(true)
       },
       async submit () {
         const goal = {
