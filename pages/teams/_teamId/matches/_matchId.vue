@@ -24,32 +24,34 @@
             .display-1(v-if="match.stage")
               fitty-text(:text="match.stage" max-size=30)
             .subheading {{ match.played_on | formatDate }}
-          v-row.display-1(justify="space-between" align=center)
-            v-col.font-weight-thin.pa-3(cols=5)
-              fitty-text(:text="match.home")
-              .font-weight-bold(:class="`${match.resultColor}--text`")
-                | {{ match.home_score }}
-                span(v-if="match.penalty_shootout")
-                  | ({{ match.penalty_shootout.home_score }})
-            v-col.font-weight-thin.pa-3(cols=5)
-              fitty-text(:text="match.away")
-              .font-weight-bold(:class="`${match.resultColor}--text`")
-                | {{ match.away_score }}
-                span(v-if="match.penalty_shootout")
-                  | ({{ match.penalty_shootout.away_score }})
+          v-container
+            v-row.display-1(justify="space-between" align=center)
+              v-col.font-weight-thin.pa-3(cols=5)
+                fitty-text(:text="match.home")
+                .font-weight-bold(:class="`${match.resultColor}--text`")
+                  | {{ match.home_score }}
+                  span(v-if="match.penalty_shootout")
+                    | ({{ match.penalty_shootout.home_score }})
+              v-col.font-weight-thin.pa-3(cols=5)
+                fitty-text(:text="match.away")
+                .font-weight-bold(:class="`${match.resultColor}--text`")
+                  | {{ match.away_score }}
+                  span(v-if="match.penalty_shootout")
+                    | ({{ match.penalty_shootout.away_score }})
       v-col
-        v-row
-          v-col(cols=12 md=6)
-            v-card
-              v-card-title.justify-center.font-weight-light Lineup
-              v-card-text
-                match-lineup(:match="match")
-          v-col(cols=12 md=6)
-            v-card
-              v-card-title.justify-center.font-weight-light Timeline
-              v-card-text
-                match-actions(v-if="!readonly" :match="match")
-                match-timeline(:match="match")
+        v-container
+          v-row
+            v-col(cols=12 md=6)
+              v-card
+                v-card-title.justify-center.font-weight-light Lineup
+                v-card-text
+                  match-lineup(:match="match")
+            v-col(cols=12 md=6)
+              v-card
+                v-card-title.justify-center.font-weight-light Timeline
+                v-card-text
+                  match-actions(v-if="!readonly" :match="match")
+                  match-timeline(:match="match")
 </template>
 
 <script>
