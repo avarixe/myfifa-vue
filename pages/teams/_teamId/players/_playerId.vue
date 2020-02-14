@@ -30,12 +30,39 @@
         v-card
           v-card-text
             v-row.text-center
-              v-col(cols=12 sm=6)
-                .display-1.success--text {{ player.ovr }}
+              v-col(cols=12 sm=4)
+                inline-select(
+                  :item="player"
+                  attribute="kit_no"
+                  label="Kit No"
+                  :options="Array.from({ length: 98 }, (v, k) => k + 1)"
+                  dense
+                  display-class="display-1 blue-grey--text"
+                  @change="updatePlayerAttribute(player.id, 'kit_no', $event)"
+                )
+                .subheading Kit No
+              v-col(cols=12 sm=4)
+                inline-select(
+                  :item="player"
+                  attribute="ovr"
+                  label="OVR"
+                  :options="Array.from({ length: 61 }, (v, k) => k + 40)"
+                  dense
+                  display-class="display-1 success--text"
+                  @change="updatePlayerAttribute(player.id, 'ovr', $event)"
+                )
                 .subheading OVR
-              v-col(cols=12 sm=6)
-                .display-1.primary--text
-                  | {{ player.value | formatMoney(team.currency) }}
+              v-col(cols=12 sm=4)
+                inline-field(
+                  :item="player"
+                  attribute="value"
+                  label="Value"
+                  input-type="money"
+                  :display="player.value | formatMoney(team.currency)"
+                  display-class="display-1 primary--text"
+                  required
+                  @close="updatePlayerAttribute(player.id, 'value', $event)"
+                )
                 .subheading Value
               v-col(cols=6 sm=3)
                 .display-1.teal--text {{ numGames || 0 }}
@@ -67,7 +94,7 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex'
+  import { mapMutations, mapActions } from 'vuex'
   import { Player } from '@/models'
   import PlayerActions from '@/components/Player/Actions'
   import PlayerGrowth from '@/components/Player/Growth'
@@ -141,8 +168,28 @@
         headline: this.player.name
       })
     },
-    methods: mapMutations('app', {
-      setPage: 'SET_PAGE'
-    })
+    methods: {
+      ...mapMutations({
+        setPage: 'app/SET_PAGE',
+        announce: 'broadcaster/ANNOUNCE'
+      }),
+      ...mapActions('players', {
+        updatePlayer: 'UPDATE'
+      }),
+      async updatePlayerAttribute (playerId, attribute, value) {
+        try {
+          await this.updatePlayer({
+            id: playerId,
+            [attribute]: value
+          })
+        } catch (e) {
+          this.key++
+          this.announce({
+            message: e.message,
+            color: 'red'
+          })
+        }
+      }
+    }
   }
 </script>

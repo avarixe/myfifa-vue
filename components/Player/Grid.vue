@@ -69,7 +69,6 @@
               :item="item"
               attribute="kit_no"
               label="Kit No"
-              input-type="select"
               :options="Array.from({ length: 98 }, (v, k) => k + 1)"
               dense
               @change="updatePlayerAttribute(item.id, 'kit_no', $event)"
@@ -79,7 +78,6 @@
               :item="item"
               attribute="ovr"
               label="OVR"
-              input-type="select"
               :options="Array.from({ length: 61 }, (v, k) => k + 40)"
               dense
               @change="updatePlayerAttribute(item.id, 'ovr', $event)"
