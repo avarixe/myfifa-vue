@@ -30,4 +30,8 @@ export default class Transfer extends Model {
       player: this.belongsTo(Player, 'player_id', 'id')
     }
   }
+
+  get date () {
+    return this.moved_on
+  }
 }
