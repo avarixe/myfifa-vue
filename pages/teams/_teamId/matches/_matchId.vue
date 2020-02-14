@@ -16,7 +16,7 @@
           :label="`${match.home} v ${match.away}`"
         )
           v-btn(dark) Remove
-      v-container
+      v-container.py-0
         v-row.text-center
           v-col(cols=12)
             .display-2
@@ -24,8 +24,8 @@
             .display-1(v-if="match.stage")
               fitty-text(:text="match.stage" max-size=30)
             .subheading {{ match.played_on | formatDate }}
-          v-container
-            v-row.display-1(justify="space-between" align=center)
+          v-container.py-0
+            v-row.display-1(justify="space-between" align="center")
               v-col.font-weight-thin.pa-3(cols=5)
                 fitty-text(:text="match.home")
                 .font-weight-bold(:class="`${match.resultColor}--text`")
@@ -38,19 +38,30 @@
                   | {{ match.away_score }}
                   span(v-if="match.penalty_shootout")
                     | ({{ match.penalty_shootout.away_score }})
-      v-col
-        v-container
+          v-col(cols=12)
+            match-actions(v-if="!readonly" :match="match")
+      v-col.hidden-lg-and-up(cols=12)
+        v-card
+          v-card-text
+            v-tabs(centered)
+              v-tab Lineup
+              v-tab Timeline
+              v-tab-item
+                match-lineup(:match="match")
+              v-tab-item
+                match-timeline(:match="match")
+      v-col.hidden-md-and-down(cols=12)
+        v-container.py-0
           v-row
-            v-col(cols=12 md=6)
+            v-col(cols=6)
               v-card
                 v-card-title.justify-center.font-weight-light Lineup
                 v-card-text
                   match-lineup(:match="match")
-            v-col(cols=12 md=6)
+            v-col(cols=6)
               v-card
                 v-card-title.justify-center.font-weight-light Timeline
                 v-card-text
-                  match-actions(v-if="!readonly" :match="match")
                   match-timeline(:match="match")
 </template>
 
