@@ -22,4 +22,8 @@ export default class Injury extends Model {
       recovered: this.boolean(false)
     }
   }
+
+  get date () {
+    return this.started_on
+  }
 }

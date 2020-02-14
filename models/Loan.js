@@ -24,4 +24,8 @@ export default class Loan extends Model {
       returned: this.boolean(false)
     }
   }
+
+  get date () {
+    return this.started_on
+  }
 }

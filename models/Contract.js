@@ -26,9 +26,14 @@ export default class Contract extends Model {
       bonus_req_type: this.string(null).nullable(),
       ended_on: this.string(''),
       started_on: this.string(''),
+      conclusion: this.string(null).nullable(),
 
       // Associations
       player: this.belongsTo(Player, 'player_id', 'id')
     }
+  }
+
+  get date () {
+    return this.started_on
   }
 }
