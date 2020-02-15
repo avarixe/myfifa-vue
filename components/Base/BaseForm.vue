@@ -1,12 +1,16 @@
 <template lang="pug">
   v-form(
     ref="form"
+    v-model="valid"
     :key="key"
-    :value="valid"
-    @input="$emit('update:valid', $event)"
     @submit.prevent="submitForm"
   )
-    slot(name="form")
+    slot(
+      :error="error"
+      :error-message="errorMessage"
+      :loading="loading"
+      :valid="valid"
+    )
 </template>
 
 <script>
@@ -14,19 +18,18 @@
     name: 'BaseForm',
     props: {
       submit: { type: Function, required: true },
-      submitting: { type: Boolean, default: false },
-      valid: { type: Boolean, default: false },
-      value: { type: Boolean, default: false }
+      resetAfterSubmit: { type: Boolean, default: true }
     },
     data: () => ({
-      key: 0
+      key: 0,
+      error: false,
+      errorMessage: '',
+      loading: false,
+      valid: false
     }),
     watch: {
       value (value) {
         !value && this.resetForm()
-      },
-      submitting (value) {
-        value && this.submitForm()
       }
     },
     methods: {
@@ -37,14 +40,17 @@
       async submitForm () {
         if (this.$refs.form.validate()) {
           try {
+            this.loading = true
             await this.submit()
             this.$emit('success')
+            this.resetAfterSubmit && this.resetForm()
           } catch (e) {
             console.log(e)
             console.log(e.message)
-            this.$emit('error', e.message)
+            this.errorMessage = e.message
+            this.error = true
           } finally {
-            this.$emit('update:submitting', false)
+            this.loading = false
           }
         }
       }
