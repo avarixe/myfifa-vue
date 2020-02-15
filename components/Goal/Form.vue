@@ -58,7 +58,7 @@
     },
     data: () => ({
       goal: {
-        home: true, // default to Team side
+        home: true,
         player_id: null,
         player_name: '',
         assisted_by: '',

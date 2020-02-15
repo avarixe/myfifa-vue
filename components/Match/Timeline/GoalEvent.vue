@@ -26,12 +26,12 @@
         )
     | {{ goalType }} scored by
     |&nbsp;
-    span.font-weight-bold {{ item.player_name }}
+    span.font-weight-bold {{ goal.player_name }}
     |&nbsp;
-    span(v-if="item.assisted_by")
+    span(v-if="goal.assisted_by")
       | (assisted by
       |&nbsp;
-      span.font-weight-bold {{ item.assisted_by }}
+      span.font-weight-bold {{ goal.assisted_by }}
       | )
 </template>
 

@@ -38,8 +38,8 @@
                   | {{ match.away_score }}
                   span(v-if="match.penalty_shootout")
                     | ({{ match.penalty_shootout.away_score }})
-          v-col(cols=12)
-            match-actions(v-if="!readonly" :match="match")
+          v-col(v-if="!readonly" cols=12)
+            match-actions(:match="match")
       v-col.hidden-lg-and-up(cols=12)
         v-card
           v-card-text
