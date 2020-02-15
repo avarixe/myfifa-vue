@@ -41,6 +41,7 @@
   import pick from 'lodash.pick'
   import { activePlayers } from '@/models/Player'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
+  import { SubstitutionFields } from '@/functions/fields'
 
   export default {
     name: 'SubstitutionForm',
@@ -64,18 +65,7 @@
     }),
     computed: {
       fields () {
-        return [
-          { slot: 'minute' },
-          { slot: 'player_id' },
-          { slot: 'replacement_id' },
-          {
-            type: 'checkbox',
-            object: this.substitution,
-            attribute: 'injury',
-            label: 'Injury',
-            hideDetails: true
-          }
-        ]
+        return SubstitutionFields(this)
       },
       title () {
         return `${this.record ? 'Edit' : 'Record'} Substitution`

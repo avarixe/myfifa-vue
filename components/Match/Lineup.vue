@@ -1,9 +1,5 @@
 <template lang="pug">
   v-container
-    v-row.mb-2(v-if="!readonly" justify="center" dense)
-      cap-form(v-if="match.caps.length < 11" :match="match")
-      match-squad-applier(:match="match")
-      match-squad-saver(:match="match")
     v-row.text-center(v-if="match.caps.length >= 11" dense)
       v-col
         .display-1.primary--text {{ defOVR }}
@@ -39,20 +35,14 @@
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
   import { positions } from '@/models/Match'
-  import CapForm from '@/components/Cap/Form'
   import CapView from '@/components/Cap/View'
   import CapSubView from '@/components/Cap/SubView'
-  import MatchSquadApplier from './SquadApplier'
-  import MatchSquadSaver from './SquadSaver'
 
   export default {
     name: 'MatchLineup',
     components: {
-      CapForm,
       CapView,
-      CapSubView,
-      MatchSquadApplier,
-      MatchSquadSaver
+      CapSubView
     },
     mixins: [
       TeamAccessible

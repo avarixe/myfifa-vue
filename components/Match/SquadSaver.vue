@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-tooltip(v-if="starters.length === 11" color="green" bottom)
+  v-tooltip(v-if="starters.length === 11" color="teal" bottom)
     template(#activator="{ on: tooltip }")
       v-menu.d-inline-block(
         v-model="menu"
@@ -9,7 +9,7 @@
       )
         template(#activator="{ on: menu }")
           v-btn(icon v-on="{ ...menu, ...tooltip }")
-            v-icon(color="green") mdi-upload
+            v-icon(color="teal") mdi-upload
         v-list
           v-list-item
             v-text-field(
