@@ -20,7 +20,7 @@
             :item-avatar="optionAvatar"
             :item-text="optionText"
             :item-value="optionValue"
-            :rules="rules"
+            :rules="allRules"
             :label="label"
             spellcheck="false"
             autocapitalize="words"
@@ -48,13 +48,14 @@
             v-model="value"
             :label="label"
             :type="inputType"
-            :rules="rules"
+            :rules="allRules"
             autofocus
           )
 </template>
 
 <script>
   import { TeamAccessible } from '@/mixins'
+  import { requiredRule } from '@/functions/rules'
   import ListOption from './ListOption'
   import VMoneyField from './VMoneyField'
 
@@ -133,6 +134,9 @@
       },
       isDirty () {
         return this.value !== this.original
+      },
+      allRules () {
+        return this.required ? [requiredRule, ...this.rules] : this.rules
       }
     },
     watch: {
@@ -152,7 +156,9 @@
         this.original = this.value
       },
       close () {
-        if (this.isDirty) {
+        if (this.allRules.some(rule => typeof rule(this.value) === 'string')) {
+          this.reset()
+        } else if (this.isDirty) {
           this.$emit('close', this.value)
           this.key++
         }

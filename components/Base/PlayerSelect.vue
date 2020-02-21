@@ -20,7 +20,7 @@
 </template>
 
 <script>
-  import { requiredRule } from '@/functions'
+  import { requiredRule } from '@/functions/rules'
 
   export default {
     name: 'PlayerSelect',
