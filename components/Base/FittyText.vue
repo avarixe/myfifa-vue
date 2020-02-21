@@ -9,18 +9,9 @@
   export default {
     name: 'FittyText',
     props: {
-      text: {
-        type: String,
-        default: ''
-      },
-      minSize: {
-        type: [Number, String],
-        default: 10
-      },
-      maxSize: {
-        type: [Number, String],
-        default: 50
-      }
+      text: { type: String, default: '' },
+      minSize: { type: [Number, String], default: 10 },
+      maxSize: { type: [Number, String], default: 50 }
     },
     computed: {
       options () {

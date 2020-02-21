@@ -27,14 +27,8 @@
       DialogFormable
     ],
     props: {
-      stage: {
-        type: Object,
-        required: true
-      },
-      record: {
-        type: Object,
-        default: null
-      }
+      stage: { type: Object, required: true },
+      record: { type: Object, default: null }
     },
     data: () => ({
       row: {

@@ -24,14 +24,8 @@
       DynamicField
     },
     props: {
-      object: {
-        type: Object,
-        default: () => ({})
-      },
-      fields: {
-        type: Array,
-        default: () => ([])
-      }
+      object: { type: Object, default: () => ({}) },
+      fields: { type: Array, default: () => [] }
     }
   }
 </script>

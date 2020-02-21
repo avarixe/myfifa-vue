@@ -60,27 +60,12 @@
       BaseForm
     },
     props: {
-      value: {
-        type: Boolean,
-        required: true
-      },
-      submit: {
-        type: Function,
-        required: true
-      },
-      title: {
-        type: String,
-        default: ''
-      },
-      titleIcon: {
-        type: String,
-        default: ''
-      },
-      color: {
-        type: String,
-        default: ''
-      },
-      fullWidth: Boolean
+      value: { type: Boolean, required: true },
+      submit: { type: Function, required: true },
+      title: { type: String, default: '' },
+      titleIcon: { type: String, default: '' },
+      color: { type: String, default: '' },
+      fullWidth: { type: Boolean, default: false }
     },
     data: () => ({
       dialog: null

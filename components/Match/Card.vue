@@ -25,18 +25,9 @@
   export default {
     name: 'MatchCard',
     props: {
-      match: {
-        type: Object,
-        default: null
-      },
-      title: {
-        type: String,
-        default: null
-      },
-      color: {
-        type: String,
-        default: 'info'
-      }
+      match: { type: Object, default: null },
+      title: { type: String, default: null },
+      color: { type: String, default: 'info' }
     }
   }
 </script>

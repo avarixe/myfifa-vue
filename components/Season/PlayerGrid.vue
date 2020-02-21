@@ -54,10 +54,7 @@
   export default {
     name: 'SeasonPlayerGrid',
     props: {
-      season: {
-        type: [String, Number],
-        required: true
-      }
+      season: { type: [String, Number], required: true }
     },
     data: () => ({
       mode: 0,

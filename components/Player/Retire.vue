@@ -18,10 +18,7 @@
   export default {
     name: 'PlayerRetire',
     props: {
-      player: {
-        type: Object,
-        required: true
-      }
+      player: { type: Object, required: true }
     },
     data: () => ({
       snackbar: false

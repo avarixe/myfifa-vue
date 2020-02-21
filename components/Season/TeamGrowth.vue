@@ -14,30 +14,12 @@
   export default {
     name: 'SeasonTeamGrowth',
     props: {
-      attribute: {
-        type: String,
-        required: true
-      },
-      label: {
-        type: String,
-        required: true
-      },
-      average: {
-        type: Boolean,
-        default: false
-      },
-      formatter: {
-        type: Function,
-        default: x => x
-      },
-      seasonStart: {
-        type: String,
-        default: null
-      },
-      seasonEnd: {
-        type: String,
-        default: null
-      }
+      attribute: { type: String, required: true },
+      label: { type: String, required: true },
+      average: { type: Boolean, default: false },
+      formatter: { type: Function, default: x => x },
+      seasonStart: { type: String, default: null },
+      seasonEnd: { type: String, default: null }
     },
     computed: {
       team () {

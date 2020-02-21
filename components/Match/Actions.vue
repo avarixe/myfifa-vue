@@ -34,10 +34,7 @@
       PenaltyShootoutForm
     },
     props: {
-      match: {
-        type: Object,
-        required: true
-      }
+      match: { type: Object, required: true }
     },
     computed: {
       active () {

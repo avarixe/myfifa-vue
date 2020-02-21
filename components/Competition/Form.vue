@@ -33,14 +33,8 @@
       TeamAccessible
     ],
     props: {
-      record: {
-        type: Object,
-        default: null
-      },
-      close: {
-        type: Boolean,
-        default: false
-      }
+      record: { type: Object, default: null },
+      close: { type: Boolean, default: false }
     },
     data: () => ({
       valid: false,

@@ -156,14 +156,8 @@
       VMoneyField
     },
     props: {
-      object: {
-        type: Object,
-        default: () => ({})
-      },
-      field: {
-        type: Object,
-        required: true
-      }
+      object: { type: Object, default: () => ({}) },
+      field: { type: Object, required: true }
     },
     data: () => ({
       visible: false

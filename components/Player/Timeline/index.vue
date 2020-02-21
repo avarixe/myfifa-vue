@@ -33,10 +33,7 @@
       TeamAccessible
     ],
     props: {
-      player: {
-        type: Object,
-        required: true
-      }
+      player: { type: Object, required: true }
     },
     computed: {
       events () {

@@ -43,18 +43,9 @@
       PlayerCard
     },
     props: {
-      cap: {
-        type: Object,
-        required: true
-      },
-      match: {
-        type: Object,
-        required: true
-      },
-      readonly: {
-        type: Boolean,
-        default: false
-      }
+      cap: { type: Object, required: true },
+      match: { type: Object, required: true },
+      readonly: { type: Boolean, default: false }
     },
     computed: {
       positions () {

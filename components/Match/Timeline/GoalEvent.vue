@@ -44,18 +44,9 @@
       GoalForm
     },
     props: {
-      match: {
-        type: Object,
-        required: true
-      },
-      goal: {
-        type: Object,
-        required: true
-      },
-      readonly: {
-        type: Boolean,
-        default: false
-      }
+      match: { type: Object, required: true },
+      goal: { type: Object, required: true },
+      readonly: { type: Boolean, default: false }
     },
     computed: {
       goalType () {

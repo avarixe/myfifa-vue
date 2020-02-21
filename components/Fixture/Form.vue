@@ -53,14 +53,8 @@
       DialogFormable
     ],
     props: {
-      stage: {
-        type: Object,
-        required: true
-      },
-      fixtureData: {
-        type: Object,
-        default: null
-      }
+      stage: { type: Object, required: true },
+      fixtureData: { type: Object, default: null }
     },
     data: () => ({
       key: 0,

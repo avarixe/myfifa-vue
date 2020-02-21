@@ -56,18 +56,9 @@
       TeamAccessible
     ],
     props: {
-      player: {
-        type: Object,
-        required: true
-      },
-      injury: {
-        type: Object,
-        required: true
-      },
-      dense: {
-        type: Boolean,
-        default: false
-      }
+      player: { type: Object, required: true },
+      injury: { type: Object, required: true },
+      dense: { type: Boolean, default: false }
     },
     computed: {
       length () {

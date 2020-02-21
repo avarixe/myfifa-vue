@@ -25,10 +25,7 @@
       TeamAccessible
     ],
     props: {
-      match: {
-        type: Object,
-        required: true
-      }
+      match: { type: Object, required: true }
     },
     computed: {
       squads () {

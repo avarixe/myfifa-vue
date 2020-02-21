@@ -23,10 +23,7 @@
       DialogFormable
     ],
     props: {
-      record: {
-        type: Object,
-        default: null
-      }
+      record: { type: Object, default: null }
     },
     data: () => ({
       team: {

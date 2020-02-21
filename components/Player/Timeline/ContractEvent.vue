@@ -64,18 +64,9 @@
       TeamAccessible
     ],
     props: {
-      player: {
-        type: Object,
-        required: true
-      },
-      contract: {
-        type: Object,
-        required: true
-      },
-      dense: {
-        type: Boolean,
-        default: false
-      }
+      player: { type: Object, required: true },
+      contract: { type: Object, required: true },
+      dense: { type: Boolean, default: false }
     }
   }
 </script>

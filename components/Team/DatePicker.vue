@@ -29,14 +29,8 @@
       TeamAccessible
     ],
     props: {
-      menuClass: {
-        type: String,
-        default: 'd-inline-block'
-      },
-      origin: {
-        type: String,
-        default: 'top left'
-      }
+      menuClass: { type: String, default: 'd-inline-block' },
+      origin: { type: String, default: 'top left' }
     },
     data: () => ({
       calendar: false,

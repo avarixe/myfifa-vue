@@ -78,14 +78,8 @@
       CompetitionAccessible
     ],
     props: {
-      table: {
-        type: Object,
-        required: true
-      },
-      readonly: {
-        type: Boolean,
-        default: false
-      }
+      table: { type: Object, required: true },
+      readonly: { type: Boolean, default: false }
     },
     data: () => ({
       key: 0

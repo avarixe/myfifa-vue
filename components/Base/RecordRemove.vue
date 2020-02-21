@@ -17,22 +17,10 @@
       TooltipButton
     },
     props: {
-      record: {
-        type: Object,
-        required: true
-      },
-      store: {
-        type: String,
-        required: true
-      },
-      redirect: {
-        type: [String, Object],
-        default: null
-      },
-      label: {
-        type: String,
-        default: null
-      }
+      record: { type: Object, required: true },
+      store: { type: String, required: true },
+      redirect: { type: [String, Object], default: null },
+      label: { type: String, default: null }
     },
     data: () => ({
       snackbar: false

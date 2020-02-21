@@ -38,18 +38,9 @@
       BookingForm
     },
     props: {
-      match: {
-        type: Object,
-        required: true
-      },
-      booking: {
-        type: Object,
-        required: true
-      },
-      readonly: {
-        type: Boolean,
-        default: false
-      }
+      match: { type: Object, required: true },
+      booking: { type: Object, required: true },
+      readonly: { type: Boolean, default: false }
     },
     computed: {
       bookingType () {

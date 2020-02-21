@@ -26,10 +26,7 @@
       TeamAccessible
     ],
     props: {
-      formation: {
-        type: Array,
-        required: true
-      }
+      formation: { type: Array, required: true }
     },
     data: () => ({
       windows: {}

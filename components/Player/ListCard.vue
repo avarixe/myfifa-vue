@@ -20,18 +20,9 @@
   export default {
     name: 'PlayersListCard',
     props: {
-      players: {
-        type: Array,
-        default: () => ([])
-      },
-      color: {
-        type: String,
-        default: 'primary'
-      },
-      title: {
-        type: String,
-        default: null
-      }
+      players: { type: Array, default: () => [] },
+      color: { type: String, default: 'primary' },
+      title: { type: String, default: null }
     }
   }
 </script>

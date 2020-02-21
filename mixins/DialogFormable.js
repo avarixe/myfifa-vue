@@ -1,6 +1,6 @@
 export default {
   props: {
-    color: String
+    color: { type: String, default: null }
   },
   data: () => ({
     dialog: false

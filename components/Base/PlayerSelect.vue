@@ -25,42 +25,15 @@
   export default {
     name: 'PlayerSelect',
     props: {
-      value: {
-        type: [String, Number],
-        default: null
-      },
-      players: {
-        type: Array,
-        default: () => ([])
-      },
-      label: {
-        type: String,
-        default: 'Player'
-      },
-      icon: {
-        type: String,
-        default: 'mdi-account'
-      },
-      itemValue: {
-        type: String,
-        default: 'player_id'
-      },
-      required: {
-        type: Boolean,
-        default: false
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      },
-      clearable: {
-        type: Boolean,
-        default: false
-      },
-      hideDetails: {
-        type: Boolean,
-        default: false
-      }
+      value: { type: [String, Number], default: null },
+      players: { type: Array, default: () => [] },
+      label: { type: String, default: 'Player' },
+      icon: { type: String, default: 'mdi-account' },
+      itemValue: { type: String, default: 'player_id' },
+      required: { type: Boolean, default: false },
+      disabled: { type: Boolean, default: false },
+      clearable: { type: Boolean, default: false },
+      hideDetails: { type: Boolean, default: false }
     },
     computed: {
       rules () {

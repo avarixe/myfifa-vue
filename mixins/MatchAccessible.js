@@ -3,10 +3,7 @@ import { positions } from '@/models/Match'
 
 export default {
   props: {
-    match: {
-      type: Object,
-      required: true
-    }
+    match: { type: Object, required: true }
   },
   data: () => ({
     minute: null
@@ -16,16 +13,18 @@ export default {
       return Object.keys(positions)
     },
     sortedCaps () {
-      return orderBy(this.match.caps, c => this.positions.indexOf(c.pos), 'start')
+      return orderBy(
+        this.match.caps,
+        c => this.positions.indexOf(c.pos),
+        'start'
+      )
     },
     unsubbedPlayers () {
-      if (this.minute) {
-        return this.sortedCaps.filter(c => {
-          return c.start <= this.minute && this.minute <= c.stop
-        })
-      } else {
-        return this.sortedCaps.filter(c => !c.subbed_out)
-      }
+      return this.sortedCaps.filter(cap => {
+        return this.minute
+          ? cap.start <= this.minute && this.minute <= cap.stop
+          : !cap.subbed_out
+      })
     }
   }
 }

@@ -37,58 +37,19 @@
   export default {
     name: 'VDateField',
     props: {
-      value: {
-        type: String,
-        default: null
-      },
-      label: {
-        type: String,
-        required: true
-      },
-      min: {
-        type: String,
-        default: null
-      },
-      max: {
-        type: String,
-        default: null
-      },
-      color: {
-        type: String,
-        default: null
-      },
-      prependIcon: {
-        type: String,
-        default: null
-      },
-      required: {
-        type: Boolean,
-        default: false
-      },
-      startWithYear: {
-        type: Boolean,
-        default: false
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      },
-      dense: {
-        type: Boolean,
-        default: false
-      },
-      outlined: {
-        type: Boolean,
-        default: false
-      },
-      hideDetails: {
-        type: Boolean,
-        default: false
-      },
-      clearable: {
-        type: Boolean,
-        default: false
-      }
+      value: { type: String, default: null },
+      label: { type: String, required: true },
+      min: { type: String, default: null },
+      max: { type: String, default: null },
+      color: { type: String, default: null },
+      prependIcon: { type: String, default: null },
+      required: { type: Boolean, default: false },
+      startWithYear: { type: Boolean, default: false },
+      disabled: { type: Boolean, default: false },
+      dense: { type: Boolean, default: false },
+      outlined: { type: Boolean, default: false },
+      hideDetails: { type: Boolean, default: false },
+      clearable: { type: Boolean, default: false }
     },
     data: () => ({
       menu: false,
