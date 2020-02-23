@@ -15,26 +15,11 @@
   export default {
     name: 'ListOption',
     props: {
-      item: {
-        type: null,
-        required: true
-      },
-      optionAvatar: {
-        type: String,
-        default: null
-      },
-      optionText: {
-        type: String,
-        default: null
-      },
-      selected: {
-        type: Boolean,
-        default: false
-      },
-      dense: {
-        type: Boolean,
-        default: false
-      }
+      item: { type: null, required: true },
+      optionAvatar: { type: String, default: null },
+      optionText: { type: String, default: null },
+      selected: { type: Boolean, default: false },
+      dense: { type: Boolean, default: false }
     }
   }
 </script>

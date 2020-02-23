@@ -7,18 +7,9 @@
   export default {
     functional: true,
     props: {
-      player: {
-        type: Object,
-        required: true
-      },
-      event: {
-        type: Object,
-        required: true
-      },
-      dense: {
-        type: Boolean,
-        default: false
-      }
+      player: { type: Object, required: true },
+      event: { type: Object, required: true },
+      dense: { type: Boolean, default: false }
     },
     render (createElement, { props: { player, event, dense } }) {
       switch (event.constructor.title) {

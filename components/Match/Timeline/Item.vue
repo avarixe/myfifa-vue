@@ -7,18 +7,9 @@
   export default {
     functional: true,
     props: {
-      match: {
-        type: Object,
-        required: true
-      },
-      event: {
-        type: Object,
-        required: true
-      },
-      readonly: {
-        type: Boolean,
-        default: false
-      }
+      match: { type: Object, required: true },
+      event: { type: Object, required: true },
+      readonly: { type: Boolean, default: false }
     },
     render (createElement, { props: { match, event, readonly } }) {
       switch (event.constructor.title) {

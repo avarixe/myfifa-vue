@@ -33,54 +33,18 @@
       ListOption
     },
     props: {
-      item: {
-        type: Object,
-        required: true
-      },
-      attribute: {
-        type: String,
-        required: true
-      },
-      label: {
-        type: String,
-        default: null
-      },
-      options: {
-        type: Array,
-        default: () => ([])
-      },
-      optionAvatar: {
-        type: String,
-        default: null
-      },
-      optionText: {
-        type: String,
-        default: null
-      },
-      optionValue: {
-        type: String,
-        default: null
-      },
-      rules: {
-        type: Array,
-        default: () => ([])
-      },
-      display: {
-        type: [String, Number],
-        default: null
-      },
-      displayClass: {
-        type: String,
-        default: null
-      },
-      readonly: {
-        type: Boolean,
-        default: false
-      },
-      dense: {
-        type: Boolean,
-        default: false
-      }
+      item: { type: Object, required: true },
+      attribute: { type: String, required: true },
+      label: { type: String, default: null },
+      options: { type: Array, default: () => [] },
+      optionAvatar: { type: String, default: null },
+      optionText: { type: String, default: null },
+      optionValue: { type: String, default: null },
+      rules: { type: Array, default: () => [] },
+      display: { type: [String, Number], default: null },
+      displayClass: { type: String, default: null },
+      readonly: { type: Boolean, default: false },
+      dense: { type: Boolean, default: false }
     },
     data: () => ({
       menu: false,

@@ -28,10 +28,7 @@
   export default {
     name: 'SeasonTransferGrid',
     props: {
-      season: {
-        type: [String, Number],
-        required: true
-      }
+      season: { type: [String, Number], required: true }
     },
     data: () => ({
       headers: [

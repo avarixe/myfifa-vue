@@ -30,10 +30,7 @@
   export default {
     name: 'SeasonCard',
     props: {
-      season: {
-        type: Number,
-        required: true
-      }
+      season: { type: Number, required: true }
     },
     computed: {
       team () {

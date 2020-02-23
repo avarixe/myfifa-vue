@@ -42,14 +42,8 @@
   export default {
     name: 'PlayerCard',
     props: {
-      playerId: {
-        type: [Number, String],
-        required: true
-      },
-      color: {
-        type: String,
-        default: 'info'
-      }
+      playerId: { type: [Number, String], required: true },
+      color: { type: String, default: 'info' }
     },
     computed: {
       player () {

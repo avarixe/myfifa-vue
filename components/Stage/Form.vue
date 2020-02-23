@@ -26,10 +26,7 @@
       DialogFormable
     ],
     props: {
-      competition: {
-        type: Object,
-        required: true
-      }
+      competition: { type: Object, required: true }
     },
     data: () => ({
       valid: false,

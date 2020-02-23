@@ -39,10 +39,7 @@
       TeamAccessible
     ],
     props: {
-      match: {
-        type: Object,
-        required: true
-      }
+      match: { type: Object, required: true }
     },
     data: () => ({
       menu: false,

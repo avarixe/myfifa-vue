@@ -63,14 +63,8 @@
       CompetitionAccessible
     ],
     props: {
-      round: {
-        type: Object,
-        required: true
-      },
-      readonly: {
-        type: Boolean,
-        default: false
-      }
+      round: { type: Object, required: true },
+      readonly: { type: Boolean, default: false }
     },
     data: () => ({
       key: 0

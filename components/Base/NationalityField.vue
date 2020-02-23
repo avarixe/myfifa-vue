@@ -24,30 +24,12 @@
   export default {
     name: 'NationalityField',
     props: {
-      value: {
-        type: [String, Number],
-        default: null
-      },
-      label: {
-        type: String,
-        default: 'Nationality'
-      },
-      icon: {
-        type: String,
-        default: 'mdi-flag'
-      },
-      dense: {
-        type: Boolean,
-        default: false
-      },
-      outlined: {
-        type: Boolean,
-        default: false
-      },
-      hideDetails: {
-        type: Boolean,
-        default: false
-      }
+      value: { type: [String, Number], default: null },
+      label: { type: String, default: 'Nationality' },
+      icon: { type: String, default: 'mdi-flag' },
+      dense: { type: Boolean, default: false },
+      outlined: { type: Boolean, default: false },
+      hideDetails: { type: Boolean, default: false }
     },
     data: () => ({
       nationality: null

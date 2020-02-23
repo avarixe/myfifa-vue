@@ -20,10 +20,7 @@
   export default {
     name: 'SeasonCompetitionGrid',
     props: {
-      season: {
-        type: Number,
-        required: true
-      }
+      season: { type: Number, required: true }
     },
     data: () => ({
       headers: [

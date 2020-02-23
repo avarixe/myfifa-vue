@@ -59,18 +59,9 @@
   export default {
     name: 'PlayerImportRow',
     props: {
-      player: {
-        type: Object,
-        required: true
-      },
-      submitted: {
-        type: Number,
-        default: 0
-      },
-      cleared: {
-        type: Number,
-        default: 0
-      }
+      player: { type: Object, required: true },
+      submitted: { type: Number, default: 0 },
+      cleared: { type: Number, default: 0 }
     },
     data: () => ({
       loading: false,

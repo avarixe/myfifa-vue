@@ -49,10 +49,7 @@
       SeasonTeamGrowth
     },
     props: {
-      season: {
-        type: [String, Number],
-        required: true
-      }
+      season: { type: [String, Number], required: true }
     },
     computed: {
       team () {

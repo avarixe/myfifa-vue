@@ -16,34 +16,13 @@
   export default {
     name: 'PlayerHistoryChart',
     props: {
-      player: {
-        type: Object,
-        required: true
-      },
-      attribute: {
-        type: String,
-        required: true
-      },
-      color: {
-        type: String,
-        default: '#d70206'
-      },
-      min: {
-        type: Number,
-        default: null
-      },
-      max: {
-        type: Number,
-        default: null
-      },
-      prefix: {
-        type: String,
-        default: null
-      },
-      ratio: {
-        type: String,
-        default: 'ct-major-tenth'
-      }
+      player: { type: Object, required: true },
+      attribute: { type: String, required: true },
+      color: { type: String, default: '#d70206' },
+      min: { type: Number, default: null },
+      max: { type: Number, default: null },
+      prefix: { type: String, default: null },
+      ratio: { type: String, default: 'ct-major-tenth' }
     },
     computed: {
       team () {

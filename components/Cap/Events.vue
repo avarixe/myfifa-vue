@@ -39,14 +39,8 @@
   export default {
     name: 'CapEvents',
     props: {
-      cap: {
-        type: Object,
-        required: true
-      },
-      match: {
-        type: Object,
-        required: true
-      }
+      cap: { type: Object, required: true },
+      match: { type: Object, required: true }
     },
     computed: {
       goals () {

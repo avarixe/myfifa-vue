@@ -24,38 +24,14 @@
       money: VMoney
     },
     props: {
-      value: {
-        type: [String, Number],
-        default: null
-      },
-      label: {
-        type: String,
-        required: true
-      },
-      prefix: {
-        type: String,
-        default: null
-      },
-      required: {
-        type: Boolean,
-        default: false
-      },
-      autofocus: {
-        type: Boolean,
-        default: false
-      },
-      dense: {
-        type: Boolean,
-        default: false
-      },
-      outlined: {
-        type: Boolean,
-        default: false
-      },
-      hideDetails: {
-        type: Boolean,
-        default: false
-      }
+      value: { type: [String, Number], default: null },
+      label: { type: String, required: true },
+      prefix: { type: String, default: null },
+      required: { type: Boolean, default: false },
+      autofocus: { type: Boolean, default: false },
+      dense: { type: Boolean, default: false },
+      outlined: { type: Boolean, default: false },
+      hideDetails: { type: Boolean, default: false }
     },
     data: () => ({
       money: null,

@@ -16,10 +16,7 @@
   export default {
     name: 'MinuteField',
     props: {
-      value: {
-        type: [String, Number],
-        default: null
-      }
+      value: { type: [String, Number], default: null }
     },
     computed: {
       match () {

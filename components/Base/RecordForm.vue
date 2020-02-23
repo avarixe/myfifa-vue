@@ -11,14 +11,8 @@
   export default {
     functional: true,
     props: {
-      record: {
-        type: Object,
-        required: true
-      },
-      type: {
-        type: String,
-        required: true
-      }
+      record: { type: Object, required: true },
+      type: { type: String, required: true }
     },
     render (createElement, context) {
       function contentComponent () {

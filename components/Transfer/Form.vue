@@ -29,18 +29,9 @@
       TeamAccessible
     ],
     props: {
-      player: {
-        type: Object,
-        required: true
-      },
-      record: {
-        type: Object,
-        default: null
-      },
-      dark: {
-        type: Boolean,
-        default: null
-      }
+      player: { type: Object, required: true },
+      record: { type: Object, default: null },
+      dark: { type: Boolean, default: null }
     },
     data: () => ({
       transfer: {

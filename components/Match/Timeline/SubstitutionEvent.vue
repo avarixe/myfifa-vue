@@ -40,18 +40,9 @@
       SubstitutionForm
     },
     props: {
-      match: {
-        type: Object,
-        required: true
-      },
-      substitution: {
-        type: Object,
-        required: true
-      },
-      readonly: {
-        type: Boolean,
-        default: false
-      }
+      match: { type: Object, required: true },
+      substitution: { type: Object, required: true },
+      readonly: { type: Boolean, default: false }
     },
     computed: {
       action () {

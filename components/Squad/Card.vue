@@ -46,10 +46,7 @@
       SquadForm
     },
     props: {
-      squad: {
-        type: Object,
-        required: true
-      }
+      squad: { type: Object, required: true }
     },
     computed: {
       defOVR () {

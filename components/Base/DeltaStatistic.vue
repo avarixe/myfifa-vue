@@ -14,22 +14,10 @@
   export default {
     name: 'DeltaStatistic',
     props: {
-      label: {
-        type: String,
-        required: true
-      },
-      formatter: {
-        type: Function,
-        default: x => x
-      },
-      startValue: {
-        type: [String, Number],
-        default: null
-      },
-      endValue: {
-        type: [String, Number],
-        default: null
-      }
+      label: { type: String, required: true },
+      formatter: { type: Function, default: x => x },
+      startValue: { type: [String, Number], default: null },
+      endValue: { type: [String, Number], default: null }
     },
     computed: {
       color () {

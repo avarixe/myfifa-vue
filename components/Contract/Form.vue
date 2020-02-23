@@ -37,22 +37,10 @@
       TeamAccessible
     ],
     props: {
-      player: {
-        type: Object,
-        required: true
-      },
-      record: {
-        type: Object,
-        default: null
-      },
-      color: {
-        type: String,
-        default: null
-      },
-      dark: {
-        type: Boolean,
-        default: false
-      }
+      player: { type: Object, required: true },
+      record: { type: Object, default: null },
+      color: { type: String, default: null },
+      dark: { type: Boolean, default: false }
     },
     data: () => ({
       valid: false,
