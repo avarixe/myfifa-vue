@@ -97,7 +97,9 @@
         return this.value !== this.original
       },
       allRules () {
-        return this.required ? [requiredRule, ...this.rules] : this.rules
+        return this.required
+          ? [requiredRule({ label: this.label }), ...this.rules]
+          : this.rules
       }
     },
     watch: {
@@ -118,6 +120,8 @@
       },
       close () {
         if (this.allRules.some(rule => typeof rule(this.value) === 'string')) {
+          console.log(this.allRules)
+          console.log('failed validation!')
           this.reset()
         } else if (this.isDirty) {
           this.$emit('close', this.value)
