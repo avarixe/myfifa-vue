@@ -36,6 +36,7 @@
               color="tertiary"
               text
               large
+              :disabled="loading"
               @click="dialog = false"
             ) Cancel
             |&nbsp;

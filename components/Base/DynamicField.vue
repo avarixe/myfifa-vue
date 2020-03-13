@@ -122,7 +122,7 @@
       v-else-if="field.type === 'password'"
       :label="field.label"
       :type="visible ? 'text' : 'password'"
-      :append-icon="`mdi-eye${visible ? '-off' : ''}`"
+      :append-icon="`mdi-eye${visible ? '' : '-off'}`"
       :value="fieldValue(field)"
       @input="updateField(field, $event)"
       @click:append="visible = !visible"
