@@ -1,12 +1,12 @@
-<template lang="pug">
-  v-text-field(
+<template>
+  <v-text-field
     label="Minute"
     prepend-icon="mdi-timer"
     type="number"
     :rules="rules"
     :value="value"
     @input="updateValue"
-  )
+  />
 </template>
 
 <script>

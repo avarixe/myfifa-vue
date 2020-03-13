@@ -1,14 +1,25 @@
-<template lang="pug">
-  v-tooltip(:color="color" bottom)
-    template(#activator="{ on: tooltip }")
-      v-btn(
+<template>
+  <v-tooltip
+    :color="color"
+    bottom
+  >
+    <template #activator="{ on: tooltip }">
+      <v-btn
         icon
         :to="to"
         v-on="on ? { ...on, ...tooltip } : tooltip"
         @click="$emit('click')"
-      )
-        v-icon(:color="color" :dark="dark") {{ icon }}
-    | {{ label }}
+      >
+        <v-icon
+          :color="color"
+          :dark="dark"
+        >
+          {{ icon }}
+        </v-icon>
+      </v-btn>
+    </template>
+    {{ label }}
+  </v-tooltip>
 </template>
 
 <script>

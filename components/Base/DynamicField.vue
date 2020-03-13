@@ -1,7 +1,7 @@
-<template lang="pug">
-  span(v-if="!field.hidden")
-    //- String
-    v-text-field(
+<template>
+  <span v-if="!field.hidden">
+    <!-- String -->
+    <v-text-field
       v-if="field.type === 'string'"
       :label="field.label"
       :prepend-icon="field.prependIcon"
@@ -18,9 +18,9 @@
       :rules="rulesFor(field)"
       :value="fieldValue(field)"
       @input="updateField(field, $event)"
-    )
-    //- Select
-    v-select(
+    />
+    <!-- Select -->
+    <v-select
       v-else-if="field.type === 'select'"
       :label="field.label"
       :prepend-icon="field.prependIcon"
@@ -39,9 +39,9 @@
       :rules="rulesFor(field)"
       :value="fieldValue(field)"
       @input="updateField(field, $event)"
-    )
-    //- Combobox
-    v-combobox(
+    />
+    <!-- Combobox -->
+    <v-combobox
       v-else-if="field.type === 'combobox'"
       :label="field.label"
       :prepend-icon="field.prependIcon"
@@ -63,33 +63,34 @@
       :value="fieldValue(field)"
       @input="updateField(field, $event)"
       @click:append-outer="field.clickAppendOuter && field.clickAppendOuter()"
-    )
-    //- Checkbox
-    v-checkbox(
+    />
+    <!-- Checkbox -->
+    <v-checkbox
       v-else-if="field.type === 'checkbox'"
       :label="field.label"
       :hide-details="field.hideDetails || false"
       :disabled="field.disabled"
       :input-value="fieldValue(field)"
       @change="updateField(field, $event)"
-    )
-    //- Radio
-    v-radio-group(
+    />
+    <!-- Radio -->
+    <v-radio-group
       v-else-if="field.type === 'radio'"
       row
       :hide-details="field.hideDetails || false"
       :value="fieldValue(field)"
       @change="updateField(field, $event)"
-    )
-      v-radio(
+    >
+      <v-radio
         v-for="item in field.items"
         :key="item.value"
         :label="item.label"
         :value="item.value"
         :color="item.color"
-      )
-    //- Date
-    v-date-field(
+      />
+    </v-radio-group>
+    <!-- Date -->
+    <v-date-field
       v-else-if="field.type === 'date'"
       :label="field.label"
       :prepend-icon="field.prependIcon"
@@ -104,9 +105,9 @@
       :disabled="field.disabled"
       :value="fieldValue(field)"
       @input="updateField(field, $event)"
-    )
-    //- Money
-    v-money-field(
+    />
+    <!-- Money -->
+    <v-money-field
       v-else-if="field.type === 'money'"
       :label="field.label"
       :prefix="field.prefix"
@@ -116,9 +117,9 @@
       :outlined="field.outlined"
       :value="fieldValue(field)"
       @input="updateField(field, $event)"
-    )
-    //- Password
-    v-text-field(
+    />
+    <!-- Password -->
+    <v-text-field
       v-else-if="field.type === 'password'"
       :label="field.label"
       :type="visible ? 'text' : 'password'"
@@ -126,21 +127,22 @@
       :value="fieldValue(field)"
       @input="updateField(field, $event)"
       @click:append="visible = !visible"
-    )
-    //- File
-    v-file-input(
+    />
+    <!-- File -->
+    <v-file-input
       v-else-if="field.type === 'file'"
       :label="field.label"
       :value="fieldValue(field)"
       @change="updateField(field, $event)"
-    )
-    //- Custom
-    slot(
+    />
+    <!-- Custom -->
+    <slot
       v-else-if="field.slot"
       :name="`field.${field.slot}`"
       :object="field.object"
       :attribute="field.attribute"
-    )
+    />
+  </span>
 </template>
 
 <script>

@@ -1,13 +1,28 @@
-<template lang="pug">
-  div
-    v-tooltip(:color="color" bottom)
-      template(#activator="{ on }")
-        .display-1(:class="`${color}--text`" v-on="on")
-          v-icon.display-1(:color="color") mdi-{{ icon }}
-          | {{ formatter(endValue) }}
-      | {{ valueIncreased ? 'Increased' : 'Decreased' }} from
-      | {{ formatter(startValue) }} by {{ percentage.toFixed(2) }}%
-    .subheading {{ label }}
+<template>
+  <div>
+    <v-tooltip
+      :color="color"
+      bottom
+    >
+      <template #activator="{ on }">
+        <div
+          :class="`display-1 ${color}--text`"
+          v-on="on"
+        >
+          <v-icon
+            class="display-1"
+            :color="color"
+          >
+            mdi-{{ icon }}
+          </v-icon>
+          {{ formatter(endValue) }}
+        </div>
+      </template>
+      {{ valueIncreased ? 'Increased' : 'Decreased' }} from
+      {{ formatter(startValue) }} by {{ percentage.toFixed(2) }}%
+    </v-tooltip>
+    <div class="subheading">{{ label }}</div>
+  </div>
 </template>
 
 <script>

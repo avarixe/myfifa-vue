@@ -1,16 +1,17 @@
-<template lang="pug">
-  v-form(
+<template>
+  <v-form
     ref="form"
-    v-model="valid"
     :key="key"
+    v-model="valid"
     @submit.prevent="submitForm"
-  )
-    slot(
+  >
+    <slot
       :error="error"
       :error-message="errorMessage"
       :loading="loading"
       :valid="valid"
-    )
+    />
+  </v-form>
 </template>
 
 <script>
