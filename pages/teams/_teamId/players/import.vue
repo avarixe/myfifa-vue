@@ -1,70 +1,100 @@
-<template lang="pug">
-  v-container(fluid)
-    v-row
-      v-col(cols=12)
-        v-btn.ma-1(@click="addPlayer")
-          v-icon(left) mdi-plus-circle-outline
-          | Player
-        input.d-none(
-          type="file"
+<template>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12">
+        <v-btn
+          class="ma-1"
+          @click="addPlayer"
+        >
+          <v-icon left>mdi-plus-circle-outline</v-icon>
+          Player
+        </v-btn>
+        <input
           ref="uploader"
-          @input="upload"
+          type="file"
           accept=".xlsx"
-        )
-        v-btn.ma-1(to="/import_players_template.xlsx" target="_blank")
-          | Download Template
-        v-btn.ma-1(@click="$refs.uploader.click()") Upload File
-      v-col(cols=12)
-        v-form(
+          class="d-none"
+          @input="upload"
+        >
+        <v-btn
+          class="ma-1"
+          to="/import_players_template.xlsx"
+          target="_blank"
+        >
+          Download Template
+        </v-btn>
+        <v-btn
+          class="ma-1"
+          @click="$refs.uploader.click()"
+        >
+          Upload File
+        </v-btn>
+      </v-col>
+      <v-col cols="12">
+        <v-form
           ref="form"
           v-model="valid"
           @submit.prevent="submitted++"
-        )
-          v-card
-            v-card-text
-              v-simple-table(
+        >
+          <v-card>
+            <v-card-text>
+              <v-simple-table
                 fixed-header
                 height="50vh"
-              )
-                thead
-                  tr
-                    th
-                    th Name
-                    th Nationality
-                    th Position
-                    th Secondary Position(s)
-                    th Age
-                    th OVR
-                    th Value
-                    th Kit Number
-                    th Contract Ends
-                    th Wage
-                    th Signing Bonus
-                    th Release Clause
-                    th(colspan=3) Performance Bonus
-                tbody
-                  player-import-row(
+              >
+                <thead>
+                  <tr>
+                    <th />
+                    <th>Name</th>
+                    <th>Nationality</th>
+                    <th>Position</th>
+                    <th>Secondary Position(s)</th>
+                    <th>Age</th>
+                    <th>OVR</th>
+                    <th>Value</th>
+                    <th>Kit Number</th>
+                    <th>Contract Ends</th>
+                    <th>Wage</th>
+                    <th>Signing Bonus</th>
+                    <th>Release Clause</th>
+                    <th colspan="3">Performance Bonus</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <player-import-row
                     v-for="player in players"
                     :key="player.rowId"
                     :player="player"
                     :submitted="submitted"
                     :cleared="cleared"
                     @remove="removePlayer(player)"
-                  )
-            v-card-actions
-              v-btn(
+                  />
+                </tbody>
+              </v-simple-table>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
                 type="submit"
                 :disabled="!valid || players.length === 0"
                 color="primary"
                 text
-              ) Submit
-              |&nbsp;
-              v-btn(
+              >
+                Submit
+              </v-btn>
+              <v-btn
                 color="success"
                 :disabled="cleared >= submitted"
                 text
                 @click="cleared++"
-              ) Clear Saved Players
+              >
+                Clear Saved Players
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
