@@ -14,6 +14,7 @@
         <v-btn
           color="cyan"
           dark
+          class="mb-1"
           v-on="on"
         >
           {{ formattedDate }}

@@ -56,7 +56,7 @@
         {{ currentMode.text }}
       </div>
       <v-spacer />
-      <v-text-field(
+      <v-text-field
         v-model="search"
         label="Search"
         append-icon="mdi-magnify"
@@ -116,7 +116,7 @@
             />
           </template>
           <template #item.value="{ item }">
-            <inline-field(
+            <inline-field
               :item="item"
               attribute="value"
               label="Value"

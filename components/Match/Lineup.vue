@@ -20,7 +20,7 @@
     </v-row>
     <v-divider class="mx-3 mb-2" />
     <formation-view :formation="starters">
-      <template item="{ player }">
+      <template #item="{ player }">
         <cap-view
           :cap="player"
           :match="match"

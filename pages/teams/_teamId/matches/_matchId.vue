@@ -8,12 +8,14 @@
         <v-btn
           v-if="prevMatchLink"
           :to="prevMatchLink"
+          class="mb-1"
         >
           Previous Match
         </v-btn>
         <v-btn
           v-if="nextMatchLink"
           :to="nextMatchLink"
+          class="mb-1"
         >
           Next Match
         </v-btn>
@@ -25,6 +27,7 @@
             <v-btn
               color="orange"
               dark
+              class="mb-1"
               v-on="on"
             >
               Edit
@@ -32,12 +35,16 @@
           </template>
         </match-form>
         <record-remove
-          class="ma-1"
           :record="match"
           store="matches"
           :label="`${match.home} v ${match.away}`"
         >
-          <v-btn dark>Remove</v-btn>
+          <v-btn
+            dark
+            class="mb-1"
+          >
+            Remove
+          </v-btn>
         </record-remove>
       </v-col>
       <v-container class="py-0">

@@ -5,9 +5,8 @@
   >
     <v-row>
       <v-col cols="12">
-        <team-date-picker class="ma-1" />
+        <team-date-picker />
         <team-form
-          class="ma-1"
           :record="team"
           color="orange"
         >
@@ -15,6 +14,7 @@
             <v-btn
               color="orange"
               dark
+              class="mb-1"
               v-on="on"
             >
               Edit
@@ -22,7 +22,7 @@
           </template>
         </team-form>
         <v-btn
-          class="ma-1"
+          class="mb-1"
           :to="importPlayersLink"
           nuxt
           color="primary"
@@ -31,13 +31,17 @@
           Import Players
         </v-btn>
         <record-remove
-          class="ma-1"
           :record="team"
           store="teams"
           :label="team.title"
           :redirect="{ name: 'teams' }"
         >
-          <v-btn dark>Remove</v-btn>
+          <v-btn
+            dark
+            class="mb-1"
+          >
+            Remove
+          </v-btn>
         </record-remove>
       </v-col>
       <v-col
