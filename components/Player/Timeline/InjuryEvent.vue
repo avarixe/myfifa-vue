@@ -28,7 +28,7 @@
             {{ injury.description }} Injury
           </span>
           <h4 class="body-2 font-weight-light mb-3">
-            {{ formatDate(injury.started_on) }} -
+            {{ injury.started_on | formatDate }} -
             <span v-if="injury.ended_on">{{ injury.ended_on | formatDate }}</span>
             <span v-else>Present</span>
           </h4>
