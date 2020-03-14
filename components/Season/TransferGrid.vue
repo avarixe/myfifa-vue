@@ -1,24 +1,30 @@
-<template lang="pug">
-  v-data-table(
+<template>
+  <v-data-table
     :headers="headers"
     :items="rows"
     :items-per-page="-1"
     :mobile-breakpoint="0"
     disable-sort
     hide-default-footer
-  )
-    template(#item.moved_on="{ item }")
-      | {{ item.moved_on | formatDate }}
-    template(#item.name="{ item }")
-      nuxt-link(:to="playerLink(item)") {{ item.name }}
-    template(#item.dir="{ item }")
-      v-icon(:color="item.dir === 'in' ? 'green' : 'red'")
-        | mdi-airplane-{{ item.dir === 'in' ? 'landing' : 'takeoff' }}
-    template(#item.fee="{ item }")
-      span(:class="`${item.dir === 'in' ? 'red' : 'green'}--text`")
-        | {{ item.fee | formatMoney }}
-        | &nbsp;
-        span(v-if="item.addon_clause") (+{{ item.addon_clause }}%)
+  >
+    <template #item.moved_on="{ item }">
+      {{ item.moved_on | formatDate }}
+    </template>
+    <template #item.name="{ item }">
+      <nuxt-link :to="playerLink(item)">{{ item.name }}</nuxt-link>
+    </template>
+    <template #item.dir="{ item }">
+      <v-icon :color="item.dir === 'in' ? 'green' : 'red'">
+        mdi-airplane-{{ item.dir === 'in' ? 'landing' : 'takeoff' }}
+      </v-icon>
+    </template>
+    <template #item.fee="{ item }">
+      <span :class="`${item.dir === 'in' ? 'red' : 'green'}--text`">
+        {{ item.fee | formatMoney }}
+        <span v-if="item.addon_clause">(+{{ item.addon_clause }}%)</span>
+      </span>
+    </template>
+  </v-data-table>
 </template>
 
 <script>

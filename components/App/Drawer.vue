@@ -1,60 +1,94 @@
-<template lang="pug">
-  v-navigation-drawer#app-drawer(
+<template>
+  <v-navigation-drawer
+    id="app-drawer"
     :value="drawer"
     app
     clipped
     mobile-break-point="991"
     @input="setDrawer"
-  )
-    v-list-item
-      v-list-item-content
-        v-list-item-title.title MyFIFA Manager
-        v-list-item-subtitle v{{ version }}
-    v-divider
-    v-list(v-if="teamId" nav)
-      team-date-picker(menu-class="d-block")
-        template(#default="{ on, date }")
-          v-list-item(
+  >
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title class="title">MyFIFA Manager</v-list-item-title>
+        <v-list-item-subtitle>v{{ version }}</v-list-item-subtitle>
+      </v-list-item-content>
+    </v-list-item>
+    <v-divider />
+    <v-list
+      v-if="teamId"
+      nav
+    >
+      <team-date-picker menu-class="d-block">
+        <template #default="{ on, date }">
+          <v-list-item
             v-ripple
             color="accent"
             style="width: 100%"
             v-on="on"
-          )
-            v-list-item-action
-              v-icon mdi-calendar
-            v-list-item-title {{ date | formatDate }}
-      v-list-item(
+          >
+            <v-list-item-action>
+              <v-icon>mdi-calendar</v-icon>
+            </v-list-item-action>
+            <v-list-item-title>{{ date | formatDate }}</v-list-item-title>
+          </v-list-item>
+        </template>
+      </team-date-picker>
+      <v-list-item
         v-for="(link, i) in teamLinks"
         :key="i"
         :to="link.to"
         active-class=""
         :exact="link.exact"
-      )
-        v-list-item-action
-          v-icon {{ link.icon }}
-        v-list-item-title {{ link.text }}
-    v-divider.mx-3(v-if="teamId")
-    v-list(nav)
-      v-list-item(to="/" exact nuxt)
-        v-list-item-action
-          v-icon mdi-home
-        v-list-item-title Home
-      user-form.d-block
-        template(#default="{ on }")
-          v-list-item(v-on="on")
-            v-list-item-action
-              v-icon mdi-account-tie
-            v-list-item-title Account
-      settings-form.d-block
-        template(#default="{ on }")
-          v-list-item(v-on="on")
-            v-list-item-action
-              v-icon mdi-settings
-            v-list-item-title Settings
-      v-list-item(@click="logUserOut")
-        v-list-item-action
-          v-icon mdi-exit-to-app
-        v-list-item-title Logout
+      >
+        <v-list-item-action>
+          <v-icon>{{ link.icon }}</v-icon>
+        </v-list-item-action>
+        <v-list-item-title>{{ link.text }}</v-list-item-title>
+      </v-list-item>
+    </v-list>
+    <v-divider
+      v-if="teamId"
+      class="mx-3"
+    />
+    <v-list nav>
+      <v-list-item
+        to="/"
+        exact
+        nuxt
+      >
+        <v-list-item-action>
+          <v-icon>mdi-home</v-icon>
+        </v-list-item-action>
+        <v-list-item-title>Home</v-list-item-title>
+      </v-list-item>
+      <user-form class="d-block">
+        <template #default="{ on }">
+          <v-list-item v-on="on">
+            <v-list-item-action>
+              <v-icon>mdi-account-tie</v-icon>
+            </v-list-item-action>
+            <v-list-item-title>Account</v-list-item-title>
+          </v-list-item>
+        </template>
+      </user-form>
+      <settings-form class="d-block">
+        <template #default="{ on }">
+          <v-list-item v-on="on">
+            <v-list-item-action>
+              <v-icon>mdi-settings</v-icon>
+            </v-list-item-action>
+            <v-list-item-title>Settings</v-list-item-title>
+          </v-list-item>
+        </template>
+      </settings-form>
+      <v-list-item @click="logUserOut">
+        <v-list-item-action>
+          <v-icon>mdi-exit-to-app</v-icon>
+        </v-list-item-action>
+        <v-list-item-title>Logout</v-list-item-title>
+      </v-list-item>
+    </v-list>
+  </v-navigation-drawer>
 </template>
 
 <script>

@@ -1,20 +1,27 @@
-<template lang="pug">
-  dialog-form(
+<template>
+  <dialog-form
     v-model="dialog"
     :title="title"
     :submit="submit"
     color="pink"
-  )
-    template(#activator="{ on }")
-      slot(:on="on")
-        tooltip-button(
+  >
+    <template #activator="{ on }">
+      <slot :on="on">
+        <tooltip-button
           :label="title"
           icon="mdi-ambulance"
           color="pink"
           :on="on"
-        )
-    template(#form)
-      dynamic-fields(:object="injury" :fields="fields")
+        />
+      </slot>
+    </template>
+    <template #form>
+      <dynamic-fields
+        :object="injury"
+        :fields="fields"
+      />
+    </template>
+  </dialog-form>
 </template>
 
 <script>

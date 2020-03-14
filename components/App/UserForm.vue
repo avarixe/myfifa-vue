@@ -1,16 +1,29 @@
-<template lang="pug">
-  dialog-form(v-model="dialog" :title="title" :submit="submit")
-    template(#activator="{ on }")
-      slot(:on="on")
-    template(#form)
-      dynamic-fields(:object="user" :fields="fields")
-    template(#additional-actions)
-      v-btn(
+<template>
+  <dialog-form
+    v-model="dialog"
+    :title="title"
+    :submit="submit"
+  >
+    <template #activator="{ on }">
+      <slot :on="on" />
+    </template>
+    <template #form>
+      <dynamic-fields
+        :object="user"
+        :fields="fields"
+      />
+    </template>
+    <template #additional-actions>
+      <v-btn
         v-if="user.id"
         text
         color="blue"
         @click="passwordMode = !passwordMode"
-      ) {{ passwordMode ? 'Profile' : 'Change Password' }}
+      >
+        {{ passwordMode ? 'Profile' : 'Change Password' }}
+      </v-btn>
+    </template>
+  </dialog-form>
 </template>
 
 <script>

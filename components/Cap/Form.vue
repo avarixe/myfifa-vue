@@ -1,28 +1,34 @@
-<template lang="pug">
-  dialog-form(
+<template>
+  <dialog-form
     v-model="dialog"
     title="Add Cap"
     :submit="submit"
     :color="color"
-  )
-    template(#activator="{ on }")
-      slot(:on="on")
-        tooltip-button(
+  >
+    <template #activator="{ on }">
+      <slot :on="on">
+        <tooltip-button
           label="Add Player"
           icon="mdi-plus-circle-outline"
           :on="on"
-        )
-    template(#form)
-      dynamic-fields(:fields="fields")
-        template(#field.minute)
-          player-select(
+        />
+      </slot>
+    </template>
+    <template #form>
+      <dynamic-fields :fields="fields">
+        <template #field.minute>
+          <player-select
             v-model="cap.player_id"
             :players="players"
             item-value="id"
             :disabled="cap.start > 0"
             label="Player"
             required
-          )
+          />
+        </template>
+      </dynamic-fields>
+    </template>
+  </dialog-form>
 </template>
 
 <script>

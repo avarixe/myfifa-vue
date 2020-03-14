@@ -1,34 +1,38 @@
-<template lang="pug">
-  v-timeline-item(
+<template>
+  <v-timeline-item
     color="indigo"
     icon="mdi-human"
     fill-dot
-  )
-    h2.headline.font-weight-light.my-0.indigo--text
-      | {{ match.extra_time ? 120 : 90 }}"
-      span.caption.text-truncate.mx-1.indigo--text Penalty Shootout
-      template(v-if="!readonly")
-        penalty-shootout-form(:match="match" :record="penaltyShootout")
-          template(#default="{ on }")
-            tooltip-button(
+  >
+    <h2 class="headline font-weight-light my-0 indigo--text">
+      {{ match.extra_time ? 120 : 90 }}"
+      <span class="caption text-truncate mx-1 indigo--text">
+        Penalty Shootout
+      </span>
+      <template v-if="!readonly">
+        <penalty-shootout-form
+          :match="match"
+          :record="penaltyShootout"
+        >
+          <template #default="{ on }">
+            <tooltip-button
               label="Edit Penalty Shootout"
               icon="mdi-pencil"
               color="orange"
               small
               :on="on"
-            )
-        |&nbsp;
-        record-remove(
+            />
+          </template>
+        </penalty-shootout-form>
+        <record-remove
           :record="penaltyShootout"
           store="penaltyShootout"
           label="Penalty Shootout"
-        )
-    span.font-weight-bold {{ winner }}
-    |&nbsp;
-    | wins by Penalty Shootout (
-    span.font-weight-bold {{ score }}
-    | )
-  </span>
+        />
+      </template>
+    </h2>
+    <b>{{ winner }}</b> wins by Penalty Shootout (<b>{{ score }}</b>)
+  </v-timeline-item>
 </template>
 
 <script>

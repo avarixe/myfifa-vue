@@ -1,40 +1,75 @@
-<template lang="pug">
-  v-container
-    v-row.text-center(justify="space-around" dense)
-      v-col(cols=12 sm=6)
-        season-team-growth(
+<template>
+  <v-container>
+    <v-row
+      class="text-center"
+      justify="space-around"
+      dense
+    >
+      <v-col
+        cols="12"
+        sm="6"
+      >
+        <season-team-growth
           label="Team Value"
           attribute="value"
           :formatter="x => `${team.currency}${parseInt(x).toLocaleString()}`"
           :season-start="seasonStart"
           :season-end="seasonEnd"
-        )
-      v-col(cols=12 sm=6)
-        season-team-growth(
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        sm="6"
+      >
+        <season-team-growth
           label="Team OVR"
           attribute="ovr"
           :formatter="parseInt"
           average
           :season-start="seasonStart"
           :season-end="seasonEnd"
-        )
-      v-col(cols=12)
-        v-divider
-      v-col(cols=4 sm=2)
-        .display-1.success--text {{ numWins }}
-        .subheading Wins
-      v-col(cols=4 sm=2)
-        .display-1.warning--text {{ numDraws }}
-        .subheading Draws
-      v-col(cols=4 sm=2)
-        .display-1.red--text {{ numLosses }}
-        .subheading Losses
-      v-col(cols=6 sm=2)
-        .display-1.teal--text {{ numGoalsFor }}
-        .subheading Goals For
-      v-col(cols=6 sm=2)
-        .display-1.pink--text {{ numGoalsAgainst }}
-        .subheading Goals Against
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-divider />
+      </v-col>
+      <v-col
+        cols="4"
+        sm="2"
+      >
+        <div class="display-1 success--text">{{ numWins }}</div>
+        <div class="subheading">Wins</div>
+      </v-col>
+      <v-col
+        cols="4"
+        sm="2"
+      >
+        <div class="display-1 warning--text">{{ numDraws }}</div>
+        <div class="subheading">Draws</div>
+      </v-col>
+      <v-col
+        cols="4"
+        sm="2"
+      >
+        <div class="display-1 red--text">{{ numLosses }}</div>
+        <div class="subheading">Losses</div>
+      </v-col>
+      <v-col
+        cols="6"
+        sm="2"
+      >
+        <div class="display-1 teal--text">{{ numGoalsFor }}</div>
+        <div class="subheading">Goals For</div>
+      </v-col>
+      <v-col
+        cols="6"
+        sm="2"
+      >
+        <div class="display-1 pink--text">{{ numGoalsAgainst }}</div>
+        <div class="subheading">Goals Against</div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

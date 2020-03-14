@@ -1,46 +1,66 @@
-<template lang="pug">
-  tr
-    td.stick-left.pa-1
-      v-btn(
+<template>
+  <tr>
+    <td class="stick-left pa-1">
+      <v-btn
         v-if="saved"
         text
         @click="$emit('remove', player)"
-      )
-        v-icon(color="success") mdi-check-circle
-      v-tooltip(
+      >
+        <v-icon color="success">mdi-check-circle</v-icon>
+      </v-btn>
+      <v-tooltip
         v-else-if="error.length > 0"
         color="red"
         right
-      )
-        template(#activator="{ on }")
-          v-btn(
+      >
+        <template #activator="{ on }">
+          <v-btn
             text
             v-on="on"
             @click="error = ''"
-          )
-            v-icon(color="red") mdi-alert
-        v-icon(left dark) mdi-alert
-        | {{ error }}
-      v-btn(
+          >
+            <v-icon color="red">mdi-alert</v-icon>
+          </v-btn>
+        </template>
+        <v-icon
+          left
+          dark
+        >
+          mdi-alert
+        </v-icon>
+        {{ error }}
+      </v-tooltip>
+      <v-btn
         v-else
         text
         :loading="loading"
         @click="$emit('remove', player)"
-      )
-        v-icon mdi-close
-    td.pa-1(v-for="field in fields" :key="field.value" style="width:150px")
-      dynamic-field(
+      >
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </td>
+    <td
+      v-for="field in fields"
+      :key="field.value"
+      class="pa-1"
+      style="width:150px"
+    >
+      <dynamic-field
         :object="player"
         :field="field"
-      )
-        template(#field.nationality)
-          nationality-field(
+      >
+        <template #field.nationality>
+          <nationality-field
             v-model="player.nationality"
             :icon="null"
             dense
             outlined
             hide-details
-          )
+          />
+        </template>
+      </dynamic-field>
+    </td>
+  </tr>
 </template>
 
 <script>

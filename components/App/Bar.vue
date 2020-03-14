@@ -1,21 +1,33 @@
-<template lang="pug">
-  v-app-bar(app clipped-left)
-    v-app-bar-nav-icon(v-show="responsive" @click.stop="toggleDrawer")
-    span.mr-2(v-if="team && team.badge_path")
-      v-img(
+<template>
+  <v-app-bar
+    app
+    clipped-left
+  >
+    <v-app-bar-nav-icon
+      v-show="responsive"
+      @click.stop="toggleDrawer"
+    />
+    <span
+      v-if="team && team.badge_path"
+      class="mr-2"
+    >
+      <v-img
         :src="badgeUrl"
         height="32px"
         width="32px"
         contain
-      )
-    v-toolbar-title
-      .overline {{ overline }}
-      .headline.font-weight-thin
-        | {{ headline }}
-        |&nbsp;
-        small(v-if="caption") {{ caption }}
-    v-spacer
-    app-forms-menu
+      />
+    </span>
+    <v-toolbar-title>
+      <div class="overline">{{ overline }}</div>
+      <div class="headline font-weight-thin">
+        {{ headline }}
+        <small v-if="caption">{{ caption }}</small>
+      </div>
+    </v-toolbar-title>
+    <v-spacer />
+    <app-forms-menu />
+  </v-app-bar>
 </template>
 
 <script>

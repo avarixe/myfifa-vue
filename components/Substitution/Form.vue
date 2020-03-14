@@ -1,39 +1,47 @@
-<template lang="pug">
-  dialog-form(
+<template>
+  <dialog-form
     v-model="dialog"
     title-icon="mdi-repeat"
     :title="title"
     :submit="submit"
     :color="color"
-  )
-    template(#activator="{ on }")
-      slot(:on="on")
-        tooltip-button(
+  >
+    <template #activator="{ on }">
+      <slot :on="on">
+        <tooltip-button
           label="Substitution"
           icon="mdi-repeat"
           color="green"
           :on="on"
-        )
-    template(#form)
-      dynamic-fields(:fields="fields")
-        template(#field.minute)
-          minute-field(v-model="minute")
-        template(#field.player_id)
-          player-select(
+        />
+      </slot>
+    </template>
+    <template #form>
+      <dynamic-fields :fields="fields">
+        <template #field.minute>
+          <minute-field v-model="minute" />
+        </template>
+        <template #field.player_id>
+          <player-select
             v-model="substitution.player_id"
             :players="unsubbedPlayers"
             icon="mdi-subdirectory-arrow-left"
             required
-          )
-        template(#field.replacement_id)
-          player-select(
+          />
+        </template>
+        <template #field.replacement_id>
+          <player-select
             v-model="substitution.replacement_id"
             :players="availablePlayers"
             item-value="id"
             label="Replaced By"
             icon="mdi-subdirectory-arrow-right"
             required
-          )
+          />
+        </template>
+      </dynamic-fields>
+    </template>
+  </dialog-form>
 </template>
 
 <script>

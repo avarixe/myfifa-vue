@@ -1,17 +1,36 @@
-<template lang="pug">
-  v-tooltip(v-if="squads.length > 0" color="cyan" bottom)
-    template(#activator="{ on: tooltip }")
-      v-menu.d-inline-block(offset-y offset-overflow)
-        template(#activator="{ on: menu }")
-          v-btn(icon v-on="{ ...menu, ...tooltip }")
-            v-icon(color="cyan") mdi-download
-        v-list
-          v-list-item(
+<template>
+  <v-tooltip
+    v-if="squads.length > 0"
+    color="cyan"
+    bottom
+  >
+    <template #activator="{ on: tooltip }">
+      <v-menu
+        class="d-inline-block"
+        offset-y
+        offset-overflow
+      >
+        <template #activator="{ on: menu }">
+          <v-btn
+            icon
+            v-on="{ ...menu, ...tooltip }"
+          >
+            <v-icon color="cyan">mdi-download</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
             v-for="squad in squads"
             :key="squad.id"
             @click="applySquadToMatch(squad.id)"
-          ) {{ squad.name }}
-    | Apply Squad
+          >
+            {{ squad.name }}
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </template>
+    Apply Squad
+  </v-tooltip>
 </template>
 
 <script>

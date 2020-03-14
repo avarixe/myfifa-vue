@@ -1,10 +1,10 @@
-<template lang="pug">
-  delta-statistic(
+<template>
+  <delta-statistic
     :label="label"
     :formatter="formatter"
     :start-value="startValue"
     :end-value="endValue"
-  )
+  />
 </template>
 
 <script>

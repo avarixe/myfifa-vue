@@ -1,19 +1,29 @@
-<template lang="pug">
-  dialog-form(
+<template>
+  <dialog-form
     v-model="dialog"
     title="New Stage"
     :submit="submit"
     :color="color"
-  )
-    template(#activator="{ on }")
-      slot(:on="on")
-        v-btn.my-1(
+  >
+    <template #activator="{ on }">
+      <slot :on="on">
+        <v-btn
+          class="my-1"
           dark
           color="teal"
           v-on="on"
-        ) Add Stage
-    template(#form)
-      dynamic-fields(:object="stage" :fields="fields")
+        >
+          Add Stage
+        </v-btn>
+      </slot>
+    </template>
+    <template #form>
+      <dynamic-fields
+        :object="stage"
+        :fields="fields"
+      />
+    </template>
+  </dialog-form>
 </template>
 
 <script>

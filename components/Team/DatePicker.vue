@@ -1,21 +1,33 @@
-<template lang="pug">
-  v-menu(
+<template>
+  <v-menu
     v-model="calendar"
     :close-on-content-click="false"
     transition="scale-transition"
     :origin="origin"
     :class="menuClass"
-  )
-    template(#activator="{ on }")
-      slot(:on="on" :date="currentDate")
-        v-btn(color="cyan" dark v-on="on") {{ formattedDate }}
-    v-date-picker(
+  >
+    <template #activator="{ on }">
+      <slot
+        :on="on"
+        :date="currentDate"
+      >
+        <v-btn
+          color="cyan"
+          dark
+          v-on="on"
+        >
+          {{ formattedDate }}
+        </v-btn>
+      </slot>
+    </template>
+    <v-date-picker
       v-model="currentDate"
       color="cyan"
       :min="seasonStart"
       :max="seasonEnd"
       @input="calendar = false"
-    )
+    />
+  </v-menu>
 </template>
 
 <script>

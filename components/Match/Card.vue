@@ -1,24 +1,47 @@
-<template lang="pug">
-  v-card
-    v-toolbar(:color="color" dark dense)
-      v-toolbar-title.font-weight-light {{ title }}
-      v-spacer
-      v-btn(
+<template>
+  <v-card>
+    <v-toolbar
+      :color="color"
+      dark
+      dense
+    >
+      <v-toolbar-title class="font-weight-light">{{ title }}</v-toolbar-title>
+      <v-spacer />
+      <v-btn
         v-if="match"
         :to="match.link"
         dark
         nuxt
         text
-      ) View Match
-    template(v-if="match")
-      v-card-text.text-center
-        p.font-weight-thin.mb-0 {{ match.competition }}
-        h4.title.font-weight-light.mt-0.mb-3
-          | {{ match.home }} v {{ match.away }}
-        h4.title.font-weight-light.mb-0 {{ match.score }}
-        p.font-weight-thin.mt-0 {{ match.played_on | formatDate }}
-    .text-center.pa-4(v-else)
-      p.category.font-weight-thin.ma-0 No Matches have been Recorded.
+      >
+        View Match
+      </v-btn>
+    </v-toolbar>
+    <template v-if="match">
+      <v-card-text class="text-center">
+        <p class="font-weight-thin mb-0">
+          {{ match.competition }}
+        </p>
+        <h4 class="title font-weight-light mt-0 mb-3">
+          {{ match.home }} v {{ match.away }}
+        </h4>
+        <h4 class="title font-weight-light mb-0">
+          {{ match.score }}
+        </h4>
+        <p class="font-weight-thin mt-0">
+          {{ match.played_on | formatDate }}
+        </p>
+      </v-card-text>
+    </template>
+    <div
+      v-else
+      class="text-center pa-4"
+    >
+      <p class="category font-weight-thin ma-0">
+        No Matches have been Recorded.
+      </p>
+    </div>
+  </v-card>
 </template>
 
 <script>

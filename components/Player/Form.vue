@@ -1,16 +1,24 @@
-<template lang="pug">
-  dialog-form(
+<template>
+  <dialog-form
     v-model="dialog"
     :title="title"
     :submit="submit"
     :color="color"
-  )
-    template(#activator="{ on }")
-      slot(:on="on")
-    template(#form)
-      dynamic-fields(:object="player" :fields="fields")
-        template(#field.nationality)
-          nationality-field(v-model="player.nationality")
+  >
+    <template #activator="{ on }">
+      <slot :on="on" />
+    </template>
+    <template #form>
+      <dynamic-fields
+        :object="player"
+        :fields="fields"
+      >
+        <template #field.nationality>
+          <nationality-field v-model="player.nationality" />
+        </template>
+      </dynamic-fields>
+    </template>
+  </dialog-form>
 </template>
 
 <script>

@@ -1,20 +1,27 @@
-<template lang="pug">
-  dialog-form(
+<template>
+  <dialog-form
     v-model="dialog"
     :title="title"
     :submit="submit"
     color="indigo"
-  )
-    template(#activator="{ on }")
-      slot(:on="on")
-        tooltip-button(
+  >
+    <template #activator="{ on }">
+      <slot :on="on">
+        <tooltip-button
           :label="title"
           icon="mdi-transit-transfer"
           color="indigo"
           :on="on"
-        )
-    template(#form)
-      dynamic-fields(:object="loan" :fields="fields")
+        />
+      </slot>
+    </template>
+    <template #form>
+      <dynamic-fields
+        :object="loan"
+        :fields="fields"
+      />
+    </template>
+  </dialog-form>
 </template>
 
 <script>
