@@ -19,7 +19,7 @@
         .pink--text
           span.title.font-weight-bold {{ injury.description }} Injury
           h4.body-2.font-weight-light.mb-3
-            | {{ formatDate(injury.started_on) }}
+            | {{ injury.started_on | formatDate }}
             | -
             template(v-if="injury.ended_on")
               | {{ injury.ended_on | formatDate }}
