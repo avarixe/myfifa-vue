@@ -75,7 +75,7 @@
         <template #default="{ on }">
           <v-list-item v-on="on">
             <v-list-item-action>
-              <v-icon>mdi-settings</v-icon>
+              <v-icon>mdi-cog</v-icon>
             </v-list-item-action>
             <v-list-item-title>Settings</v-list-item-title>
           </v-list-item>

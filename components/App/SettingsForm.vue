@@ -10,7 +10,7 @@
     <v-card>
       <v-card-title>
         <v-toolbar-title>
-          <v-icon left>mdi-settings</v-icon>
+          <v-icon left>mdi-cog</v-icon>
           App Settings
         </v-toolbar-title>
       </v-card-title>
