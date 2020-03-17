@@ -1,7 +1,7 @@
-<template lang="pug">
-  v-card(flat)
-    v-card-title
-      inline-field(
+<template>
+  <v-card flat>
+    <v-card-title>
+      <inline-field
         :key="key"
         :item="round"
         attribute="name"
@@ -9,44 +9,63 @@
         :readonly="readonly"
         display-class="font-weight-light"
         @close="updateStageAttribute(round.id, 'name', $event)"
-      )
-      v-spacer
-      template(v-if="!readonly")
-        fixture-form(:stage="round")
-        record-remove(
+      />
+      <v-spacer />
+      <template v-if="!readonly">
+        <fixture-form :stage="round" />
+        <record-remove
           :record="round"
           store="stages"
           :label="round.name"
-        )
-    v-data-table(
+        />
+      </template>
+    </v-card-title>
+    <v-data-table
       :headers="headers"
       :items="items"
       :items-per-page="-1"
       :mobile-breakpoint="0"
       disable-sort
       hide-default-footer
-    )
-      template(#item.home_team="{ item }")
-        span(:class="teamClass(item.home_team)") {{ item.home_team }}
-      template(#item.score="{ item }")
-        div(v-for="leg in item.legs" :key="leg.id") {{ leg.score }}
-      template(#item.away_team="{ item }")
-        span(:class="teamClass(item.away_team)") {{ item.away_team }}
-      template(#item.edit="{ item }")
-        fixture-form(:stage="round" :fixture-data="item")
-          template(#default="{ on }")
-            tooltip-button(
+    >
+      <template #item.home_team="{ item }">
+        <span :class="teamClass(item.home_team)">{{ item.home_team }}</span>
+      </template>
+      <template #item.score="{ item }">
+        <div
+          v-for="leg in item.legs"
+          :key="leg.id"
+        >
+          {{ leg.score }}
+        </div>
+      </template>
+      <template #item.away_team="{ item }">
+        <span :class="teamClass(item.away_team)">{{ item.away_team }}</span>
+      </template>
+      <template #item.edit="{ item }">
+        <fixture-form
+          :stage="round"
+          :fixture-data="item"
+        >
+          <template #default="{ on }">
+            <tooltip-button
               label="Edit Fixture"
               icon="mdi-pencil"
               color="orange"
               :on="on"
-            )
-      template(#item.delete="{ item }")
-        record-remove(
+            />
+          </template>
+        </fixture-form>
+      </template>
+      <template #item.delete="{ item }">
+        <record-remove
           :record="item"
           store="fixtures"
           label="Fixture"
-        )
+        />
+      </template>
+    </v-data-table>
+  </v-card>
 </template>
 
 <script>

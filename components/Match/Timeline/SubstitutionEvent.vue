@@ -1,34 +1,40 @@
-<template lang="pug">
-  v-timeline-item(
+<template>
+  <v-timeline-item
     :color="color"
     :icon="`mdi-${icon}`"
     fill-dot
-  )
-    h2.headline.font-weight-light.my-0(:class="`${color}--text`")
-      | {{ substitution.minute }}"
-      span.caption.text-truncate.mx-1(:class="`${captionColor}--text`")
-        | {{ substitution.home ? match.home : match.away }}
-      template(v-if="!readonly")
-        substitution-form(:match="match" :record="substitution")
-          template(#default="{ on }")
-            tooltip-button(
+  >
+    <h2 :class="`headline font-weight-light my-0 ${color}--text`">
+      {{ substitution.minute }}"
+      <span :class="`caption text-truncate mx-1 ${captionColor}--text`">
+        {{ substitution.home ? match.home : match.away }}
+      </span>
+      <template v-if="!readonly">
+        <substitution-form
+          :match="match"
+          :record="substitution"
+        >
+          <template #default="{ on }">
+            <tooltip-button
               label="Edit Substitution"
               icon="mdi-pencil"
               color="orange"
               small
               :on="on"
-            )
-        |&nbsp;
-        record-remove(
+            />
+          </template>
+        </substitution-form>
+        <record-remove
           :record="substitution"
           store="substitutions"
           label="Substitution"
-        )
-    span.font-weight-bold {{ substitution.player_name }}
-    |&nbsp;
-    | {{ action }}
-    |&nbsp;
-    span.font-weight-bold {{ substitution.replaced_by }}
+        />
+      </template>
+    </h2>
+    <b>{{ substitution.player_name }}</b>
+    {{ action }}
+    <b>{{ substitution.replaced_by }}</b>
+  </v-timeline-item>
 </template>
 
 <script>

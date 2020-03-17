@@ -1,53 +1,99 @@
-<template lang="pug">
-  v-container(v-if="team" fluid)
-    v-row
-      v-col(cols="12")
-        team-date-picker.ma-1
-        team-form.ma-1(:record="team" color="orange")
-          template(#default="{ on }")
-            v-btn(color="orange" dark v-on="on") Edit
-        v-btn.ma-1(
+<template>
+  <v-container
+    v-if="team"
+    fluid
+  >
+    <v-row>
+      <v-col cols="12">
+        <team-date-picker />
+        <team-form
+          :record="team"
+          color="orange"
+        >
+          <template #default="{ on }">
+            <v-btn
+              color="orange"
+              dark
+              class="mb-1"
+              v-on="on"
+            >
+              Edit
+            </v-btn>
+          </template>
+        </team-form>
+        <v-btn
+          class="mb-1"
           :to="importPlayersLink"
           nuxt
           color="primary"
           dark
-        ) Import Players
-        record-remove.ma-1(
+        >
+          Import Players
+        </v-btn>
+        <record-remove
           :record="team"
           store="teams"
           :label="team.title"
           :redirect="{ name: 'teams' }"
-        )
-          v-btn(dark) Remove
-      v-col.pa-0(cols="12" md="6")
-        //- Latest Match
-        v-col(cols="12")
-          match-card(title="Latest Match" :match="lastMatch" color="green")
-        //- Current Season
-        v-col(cols="12")
-          season-card(:season="season")
-      v-col.pa-0(cols="12" md="6")
-        //- Injured Players
-        v-col(cols="12")
-          player-list-card(
+        >
+          <v-btn
+            dark
+            class="mb-1"
+          >
+            Remove
+          </v-btn>
+        </record-remove>
+      </v-col>
+      <v-col
+        class="pa-0"
+        cols="12"
+        md="6"
+      >
+        <!-- Latest Match -->
+        <v-col cols="12">
+          <match-card
+            title="Latest Match"
+            :match="lastMatch"
+            color="green"
+          />
+        </v-col>
+        <!-- Current Season -->
+        <v-col cols="12">
+          <season-card :season="season" />
+        </v-col>
+      </v-col>
+      <v-col
+        class="pa-0"
+        cols="12"
+        md="6"
+      >
+        <!-- Injured Players -->
+        <v-col cols="12">
+          <player-list-card
             :players="injuredPlayers"
             title="Injured Players"
             color="pink"
-          )
-        //- Loaned Players
-        v-col(cols="12")
-          player-list-card(
+          />
+        </v-col>
+        <!-- Loaned Players -->
+        <v-col cols="12">
+          <player-list-card
             :players="loanedPlayers"
             title="Loaned Players"
             color="indigo"
-          )
-        //- Expiring Contracts
-        v-col(cols="12")
-          player-list-card(
+          />
+        </v-col>
+        <!-- Expiring Contracts -->
+        <v-col cols="12">
+          <player-list-card
             :players="playersWithExpiringContracts"
             title="Expiring Contracts"
             color="orange"
-          )
+          />
+        </v-col>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

@@ -1,31 +1,38 @@
-<template lang="pug">
-  .d-inline-block
-    player-form(:record="player" color="orange")
-      template(#default="{ on }")
-        tooltip-button(
+<template>
+  <div class="d-inline-block">
+    <player-form
+      :record="player"
+      color="orange"
+    >
+      <template #default="{ on }">
+        <tooltip-button
           label="Edit"
           icon="mdi-pencil"
           color="orange"
           :on="on"
-        )
-    transfer-form(:player="player")
-    loan-form(
+        />
+      </template>
+    </player-form>
+    <transfer-form :player="player" />
+    <loan-form
       :player="player"
       :record="player.status === 'Loaned' ? loan : null"
-    )
-    contract-form(:player="player")
-    template(v-if="player.isActive")
-      injury-form(
+    />
+    <contract-form :player="player" />
+    <template v-if="player.isActive">
+      <injury-form
         :player="player"
         :record="player.status === 'Injured' ? injury : null"
-      )
-      player-retire(:player="player")
-      player-release(:player="player")
-    record-remove(
+      />
+      <player-retire :player="player" />
+      <player-release :player="player" />
+    </template>
+    <record-remove
       :record="player"
       store="players"
       :label="player.name"
-    )
+    />
+  </div>
 </template>
 
 <script>

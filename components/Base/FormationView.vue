@@ -1,17 +1,28 @@
-<template lang="pug">
-  v-row(dense)
-    v-col(
-      v-for="(positions, i) in [posATT, posATTMID, posDEFMID, posDEF, posGK]"
+<template>
+  <v-row dense>
+    <v-col
+      v-for="(posSet, i) in [posATT, posATTMID, posDEFMID, posDEF, posGK]"
       :key="i"
       cols="12"
-    )
-      v-row(justify="space-around" dense)
-        v-col.text-center(
-          v-for="(player, j) in compact(positions)"
+    >
+      <v-row
+        justify="space-around"
+        dense
+      >
+        <v-col
+          v-for="(player, j) in compact(posSet)"
           :key="j"
-          :cols="parseInt(12 / compact(positions).length)"
-        )
-          slot(name="item" :player="player")
+          :cols="parseInt(12 / compact(posSet).length)"
+          class="text-center"
+        >
+          <slot
+            name="item"
+            :player="player"
+          />
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

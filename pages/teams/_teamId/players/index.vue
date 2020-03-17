@@ -1,8 +1,11 @@
-<template lang="pug">
-  v-container(fluid)
-    v-row
-      v-col
-        player-grid
+<template>
+  <v-container fluid>
+    <v-row>
+      <v-col>
+        <player-grid />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

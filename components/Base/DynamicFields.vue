@@ -1,18 +1,29 @@
-<template lang="pug">
-  v-row(dense)
-    v-scroll-y-transition(
+<template>
+  <v-row dense>
+    <v-scroll-y-transition
       v-for="(field, i) in fields"
       :key="i"
       mode="out-in"
-    )
-      v-col(v-if="!field.hidden" :cols="field.cols || 12")
-        dynamic-field(:object="object" :field="field")
-          template(v-slot:[`field.${field.slot}`])
-            slot(
+    >
+      <v-col
+        v-if="!field.hidden"
+        :cols="field.cols || 12"
+      >
+        <dynamic-field
+          :object="object"
+          :field="field"
+        >
+          <template v-slot:[`field.${field.slot}`]>
+            <slot
               :name="`field.${field.slot}`"
               :object="field.object"
               :attribute="field.attribute"
-            )
+            />
+          </template>
+        </dynamic-field>
+      </v-col>
+    </v-scroll-y-transition>
+  </v-row>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
-<template lang="pug">
-  v-select(
+<template>
+  <v-select
     :items="players"
     :item-value="itemValue"
     item-text="name"
@@ -11,12 +11,16 @@
     :rules="rules"
     :value="value"
     @change="updateValue"
-  )
-    template(#item="{ item }")
-      v-list-item-action
-        v-list-item-action-text {{ item.pos }}
-      v-list-item-content
-        v-list-item-title {{ item.name }}
+  >
+    <template #item="{ item }">
+      <v-list-item-action>
+        <v-list-item-action-text>{{ item.pos }}</v-list-item-action-text>
+      </v-list-item-action>
+      <v-list-item-content>
+        <v-list-item-title>{{ item.name }}</v-list-item-title>
+      </v-list-item-content>
+    </template>
+  </v-select>
 </template>
 
 <script>

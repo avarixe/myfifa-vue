@@ -1,53 +1,76 @@
-<template lang="pug">
-  v-timeline-item(
+<template>
+  <v-timeline-item
     icon="mdi-transit-transfer"
     color="indigo"
     fill-dot
     right
-  )
-    template(#opposite)
-      span.headline.font-weight-bold.indigo--text
-        | Loan at {{ loan.destination }}
-      h4.title.font-weight-light.mb-3.indigo--text
-        | {{ loan.started_on | formatDate }}
-        | -
-        template(v-if="loan.ended_on")
-          | {{ loan.ended_on | formatDate }}
-        template(v-else)
-          | Present
-    v-card(dense flat)
-      v-card-title.py-0(v-if="dense")
-        .indigo--text
-          span.title.font-weight-bold
-            | Loan at {{ loan.destination }}
-          h4.body-2.font-weight-light.mb-3
-            | {{ loan.started_on | formatDate }}
-            | -
-            template(v-if="loan.ended_on")
-              | {{ loan.ended_on | formatDate }}
-            template(v-else)
-              | Present
-      v-card-text.py-0
-        table
-          tbody
-            tr
-              td.font-weight-bold Origin
-              td.pl-1 {{ loan.origin }}
-            tr
-              td.font-weight-bold Destination
-              td.pl-1 {{ loan.destination }}
-            tr
-              td.font-weight-bold Duration
-              td.pl-1 Away for {{ length }}
-      v-card-actions
-        loan-form(:player="player" :record="loan")
-          template(#default="{ on }")
-            v-btn(
+  >
+    <template #opposite>
+      <span class="headline font-weight-bold indigo--text">
+        Loan at {{ loan.destination }}
+      </span>
+      <h4 class="title font-weight-light mb-3 indigo--text">
+        {{ loan.started_on | formatDate }} -
+        <span v-if="loan.ended_on">{{ loan.ended_on | formatDate }}</span>
+        <span v-else>Present</span>
+      </h4>
+    </template>
+    <v-card
+      dense
+      flat
+    >
+      <v-card-title
+        v-if="dense"
+        class="py-0"
+      >
+        <div class="indigo--text">
+          <span class="title font-weight-bold">
+            Loan at {{ loan.destination }}
+          </span>
+          <h4 class="body-2 font-weight-light mb-3">
+            {{ loan.started_on | formatDate }} -
+            <span v-if="loan.ended_on">{{ loan.ended_on | formatDate }}</span>
+            <span v-else>Present</span>
+          </h4>
+        </div>
+      </v-card-title>
+      <v-card-text class="py-0">
+        <table>
+          <tbody>
+            <tr>
+              <td class="font-weight-bold">Origin</td>
+              <td class="pl-1">{{ loan.origin }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold">Destination</td>
+              <td class="pl-1">{{ loan.destination }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold">Duration</td>
+              <td class="pl-1">Away for {{ length }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </v-card-text>
+      <v-card-actions>
+        <loan-form
+          :player="player"
+          :record="loan"
+        >
+          <template #default="{ on }">
+            <v-btn
               text
               small
               color="orange"
               v-on="on"
-            ) Edit
+            >
+              Edit
+            </v-btn>
+          </template>
+        </loan-form>
+      </v-card-actions>
+    </v-card>
+  </v-timeline-item>
 </template>
 
 <script>

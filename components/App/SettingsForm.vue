@@ -1,28 +1,43 @@
-<template lang="pug">
-  v-dialog(
+<template>
+  <v-dialog
     v-model="dialog"
     scrollable
     max-width="500px"
-  )
-    template(#activator="{ on }")
-      slot(:on="on")
-    v-card
-      v-card-title
-        v-toolbar-title
-          v-icon(left) mdi-settings
-          | App Settings
-      v-divider
-      v-card-text
-        v-row(dense)
-          v-col(cols=12)
-            v-radio-group(
+  >
+    <template #activator="{ on }">
+      <slot :on="on" />
+    </template>
+    <v-card>
+      <v-card-title>
+        <v-toolbar-title>
+          <v-icon left>mdi-cog</v-icon>
+          App Settings
+        </v-toolbar-title>
+      </v-card-title>
+      <v-divider />
+      <v-card-text>
+        <v-row dense>
+          <v-col cols="12">
+            <v-radio-group
               row
               hide-details
               :value="mode"
               @change="setMode"
-            )
-              v-radio(label="Light" value="light")
-              v-radio(label="Dark" value="dark")
+            >
+              <v-radio
+                label="Light"
+                value="light"
+              />
+              <v-radio
+                label="Dark"
+                value="dark"
+              />
+            </v-radio-group>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>

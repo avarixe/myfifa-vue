@@ -1,16 +1,24 @@
-<template lang="pug">
-  v-data-table(
+<template>
+  <v-data-table
     :headers="headers"
     :items="rows"
     :items-per-page="-1"
     :mobile-breakpoint="0"
     disable-sort
     hide-default-footer
-  )
-    template(#item.name="{ item }")
-      nuxt-link(:to="item.link") {{ item.name }}
-    template(#item.status="{ item }")
-      v-icon(:color="item.statusColor" small) {{ item.statusIcon }}
+  >
+    <template #item.name="{ item }">
+      <nuxt-link :to="item.link">{{ item.name }}</nuxt-link>
+    </template>
+    <template #item.status="{ item }">
+      <v-icon
+        :color="item.statusColor"
+        small
+      >
+        {{ item.statusIcon }}
+      </v-icon>
+    </template>
+  </v-data-table>
 </template>
 
 <script>

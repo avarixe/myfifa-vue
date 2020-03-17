@@ -1,27 +1,45 @@
-<template lang="pug">
-  div
-    span(v-if="readonly" :class="displayClass") {{ humanizedDisplay }}
-    v-menu(v-else v-model="menu" auto)
-      template(#activator="{ on: menu }")
-        v-tooltip(bottom)
-          template(#activator="{ on: tooltip }")
-            span(v-on="{ ...menu, ...tooltip }")
-              v-badge(color="transparent")
-                template(#badge)
-                  v-icon(color="grey") mdi-circle-edit-outline
-                span(:class="displayClass") {{ humanizedDisplay }}
-          | Click to Edit {{ label }}
-      v-list
-        list-option(
-          v-for="(item, i) in options"
+<template>
+  <div>
+    <span
+      v-if="readonly"
+      :class="displayClass"
+    >
+      {{ humanizedDisplay }}
+    </span>
+    <v-menu
+      v-else
+      v-model="menu"
+      auto
+    >
+      <template #activator="{ on: menu }">
+        <v-tooltip bottom>
+          <template #activator="{ on: tooltip }">
+            <span v-on="{ ...menu, ...tooltip }">
+              <v-badge color="transparent">
+                <template #badge>
+                  <v-icon color="grey">mdi-circle-edit-outline</v-icon>
+                </template>
+                <span :class="displayClass">{{ humanizedDisplay }}</span>
+              </v-badge>
+            </span>
+          </template>
+          Click to Edit {{ label }}
+        </v-tooltip>
+      </template>
+      <v-list>
+        <list-option
+          v-for="(option, i) in options"
           :key="i"
-          :item="item"
+          :item="option"
           :option-avatar="optionAvatar"
           :option-text="optionText"
-          :selected="value === (optionValue ? item[optionValue] : item)"
+          :selected="value === (optionValue ? option[optionValue] : option)"
           :dense="dense"
-          @click="emitChange(item)"
-        )
+          @click="emitChange(option)"
+        />
+      </v-list>
+    </v-menu>
+  </div>
 </template>
 
 <script>

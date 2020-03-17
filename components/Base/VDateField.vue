@@ -1,13 +1,13 @@
-<template lang="pug">
-  v-menu(
+<template>
+  <v-menu
     ref="menu"
     v-model="menu"
     :close-on-content-click="false"
     transition="scale-transition"
     min-width="290px"
-  )
-    template(#activator="{ on }")
-      v-text-field(
+  >
+    <template #activator="{ on }">
+      <v-text-field
         :value="formattedDate"
         :rules="rules"
         :label="label"
@@ -19,15 +19,17 @@
         :outlined="outlined"
         :hide-details="hideDetails"
         v-on="on"
-      )
-    v-date-picker(
+      />
+    </template>
+    <v-date-picker
       ref="picker"
       v-model="date"
       :color="color"
       :min="min"
       :max="max"
       @input="menu = false"
-    )
+    />
+  </v-menu>
 </template>
 
 <script>

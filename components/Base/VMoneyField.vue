@@ -1,5 +1,5 @@
-<template lang="pug">
-  v-text-field(
+<template>
+  <v-text-field
     v-model="money"
     v-money="money ? config : null"
     :rules="rules"
@@ -11,7 +11,7 @@
     :hide-details="hideDetails"
     :autofocus="autofocus"
     inputmode="numeric"
-  )
+  />
 </template>
 
 <script>

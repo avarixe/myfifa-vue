@@ -1,12 +1,14 @@
-<template lang="pug">
-  v-timeline(dense)
-    v-timeline-item(
+<template>
+  <v-timeline dense>
+    <v-timeline-item
       v-for="season in seasons"
       :key="season"
       :icon="`mdi-numeric-${season + 1}`"
       fill-dot
-    )
-      season-card(:season="parseInt(season)")
+    >
+      <season-card :season="parseInt(season)" />
+    </v-timeline-item>
+  </v-timeline>
 </template>
 
 <script>

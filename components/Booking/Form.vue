@@ -1,29 +1,39 @@
-<template lang="pug">
-  dialog-form(
+<template>
+  <dialog-form
     v-model="dialog"
     title-icon="mdi-book"
     :title="title"
     :submit="submit"
     :color="color"
-  )
-    template(#activator="{ on }")
-      slot(:on="on")
-        tooltip-button(
+  >
+    <template #activator="{ on }">
+      <slot :on="on">
+        <tooltip-button
           label="Booking"
           icon="mdi-book"
           color="red"
           :on="on"
-        )
-    template(#form)
-      dynamic-fields(:object="booking" :fields="fields")
-        template(#field.minute)
-          minute-field(v-model="minute")
-        template(#field.player_id)
-          player-select(
+        />
+      </slot>
+    </template>
+    <template #form>
+      <dynamic-fields
+        :object="booking"
+        :fields="fields"
+      >
+        <template #field.minute>
+          <minute-field v-model="minute" />
+        </template>
+        <template #field.player_id>
+          <player-select
             v-model="booking.player_id"
             :players="unsubbedPlayers"
             required
-          )
+          />
+        </template>
+      </dynamic-fields>
+    </template>
+  </dialog-form>
 </template>
 
 <script>

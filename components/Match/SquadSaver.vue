@@ -1,31 +1,48 @@
-<template lang="pug">
-  v-tooltip(v-if="starters.length === 11" color="teal" bottom)
-    template(#activator="{ on: tooltip }")
-      v-menu.d-inline-block(
+<template>
+  <v-tooltip
+    v-if="starters.length === 11"
+    color="teal"
+    bottom
+  >
+    <template #activator="{ on: tooltip }">
+      <v-menu
         v-model="menu"
         :close-on-content-click="false"
         offset-y
         offset-overflow
-      )
-        template(#activator="{ on: menu }")
-          v-btn(icon v-on="{ ...menu, ...tooltip }")
-            v-icon(color="teal") mdi-upload
-        v-list
-          v-list-item
-            v-text-field(
+        class="d-inline-block"
+      >
+        <template #activator="{ on: menu }">
+          <v-btn
+            icon
+            v-on="{ ...menu, ...tooltip }"
+          >
+            <v-icon color="teal">mdi-upload</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item>
+            <v-text-field
               v-model="squadName"
               label="New Squad"
               :loading="loading"
               :disabled="loading"
               hint="Press Enter to Save"
               @keypress.enter.prevent="saveLineupToSquad(null)"
-            )
-          v-list-item(
+            />
+          </v-list-item>
+          <v-list-item
             v-for="squad in squads"
             :key="squad.id"
             @click="saveLineupToSquad(squad.id)"
-          ) {{ squad.name }}
-    | Save Lineup to Squad
+          >
+            {{ squad.name }}
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </template>
+    Save Lineup to Squad
+  </v-tooltip>
 </template>
 
 <script>

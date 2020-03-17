@@ -1,16 +1,15 @@
-<template lang="pug">
-  chartist(
+<template>
+  <chartist
     type="Line"
     :ratio="ratio"
     :data="chartData"
     :options="options"
     :event-handlers="eventHandlers"
-  )
+  />
 </template>
 
 <script>
   import { format, parseISO } from 'date-fns'
-  // import { parseISO } from 'date-fns'
   import { Contract, Team } from '@/models'
 
   export default {

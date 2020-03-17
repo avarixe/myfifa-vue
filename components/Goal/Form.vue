@@ -1,32 +1,39 @@
-<template lang="pug">
-  dialog-form(
+<template>
+  <dialog-form
     v-model="dialog"
     title-icon="mdi-soccer"
     :title="title"
     :submit="submit"
     :color="color"
-  )
-    template(#activator="{ on }")
-      slot(:on="on")
-        tooltip-button(
+  >
+    <template #activator="{ on }">
+      <slot on="on">
+        <tooltip-button
           label="Goal"
           icon="mdi-soccer"
           color="blue"
           :on="on"
-        )
-    template(#form)
-      dynamic-fields(:object="goal" :fields="fields")
-        template(#field.minute)
-          minute-field(v-model="minute")
-        template(#field.player_id)
-          player-select(
+        />
+      </slot>
+    </template>
+    <template #form>
+      <dynamic-fields
+        :object="goal"
+        :fields="fields"
+      >
+        <template #field.minute>
+          <minute-field v-model="minute" />
+        </template>
+        <template #field.player_id>
+          <player-select
             v-model="goal.player_id"
             :players="scorerOptions"
             label="Goal Scorer"
             required
-          )
-        template(#field.assist_id)
-          player-select(
+          />
+        </template>
+        <template #field.assist_id>
+          <player-select
             v-model="goal.assist_id"
             :players="assistOptions"
             label="Assisted By"
@@ -34,7 +41,11 @@
             :disabled="goal.penalty || goal.own_goal"
             clearable
             hide-details
-          )
+          />
+        </template>
+      </dynamic-fields>
+    </template>
+  </dialog-form>
 </template>
 
 <script>

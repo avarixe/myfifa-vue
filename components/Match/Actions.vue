@@ -1,16 +1,32 @@
-<template lang="pug">
-  .text-center
-    cap-form(v-if="match.caps.length < 11" :match="match")
-    match-squad-applier(:match="match")
-    match-squad-saver(:match="match")
-    substitution-form(v-if="validMatch" :match="match" color="green")
-    goal-form(v-if="validMatch" :match="match" color="blue")
-    booking-form(v-if="validMatch" :match="match" color="red")
-    penalty-shootout-form(
+<template>
+  <div class="text-center">
+    <cap-form
+      v-if="match.caps.length < 11"
+      :match="match"
+    />
+    <match-squad-applier :match="match" />
+    <match-squad-saver :match="match" />
+    <substitution-form
+      v-if="validMatch"
+      :match="match"
+      color="green"
+    />
+    <goal-form
+      v-if="validMatch"
+      :match="match"
+      color="blue"
+    />
+    <booking-form
+      v-if="validMatch"
+      :match="match"
+      color="red"
+    />
+    <penalty-shootout-form
       v-if="validMatch && matchDraw && !match.penalty_shootout"
       :match="match"
       color="indigo"
-    )
+    />
+  </div>
 </template>
 
 <script>

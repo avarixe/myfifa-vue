@@ -1,15 +1,32 @@
-<template lang="pug">
-  .d-inline-block
-    tooltip-button(
+<template>
+  <div class="d-inline-block">
+    <tooltip-button
       label="Release"
       icon="mdi-door-open"
       color="brown"
       @click="snackbar = true"
-    )
-    v-snackbar(v-model="snackbar" color="brown")
-      | Release Player: {{ player.name }}?
-      v-btn(dark text @click="releasePlayer(player.id)") Yes
-      v-btn(dark text @click.stop="snackbar = false") No
+    />
+    <v-snackbar
+      v-model="snackbar"
+      color="brown"
+    >
+      Release Player: {{ player.name }}?
+      <v-btn
+        dark
+        text
+        @click="releasePlayer(player.id)"
+      >
+        Yes
+      </v-btn>
+      <v-btn
+        dark
+        text
+        @click.stop="snackbar = false"
+      >
+        No
+      </v-btn>
+    </v-snackbar>
+  </div>
 </template>
 
 <script>

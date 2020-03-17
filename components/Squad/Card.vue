@@ -1,39 +1,63 @@
-<template lang="pug">
-  v-card
-    v-toolbar(color="primary" dense)
-      v-toolbar-title.font-weight-light.white--text {{ squad.name }}
-    v-card-text
-      v-row.text-center(dense)
-        v-col(cols=12)
-          squad-form(:record="squad" color="orange")
-            template(#default="{ on }")
-              tooltip-button(
+<template>
+  <v-card>
+    <v-toolbar
+      color="primary"
+      dense
+    >
+      <v-toolbar-title class="font-weight-light white--text">
+        {{ squad.name }}
+      </v-toolbar-title>
+    </v-toolbar>
+    <v-card-text>
+      <v-row
+        class="text-center"
+        dense
+      >
+        <v-col cols="12">
+          <squad-form
+            :record="squad"
+            color="orange"
+          >
+            <template #default="{ on }">
+              <tooltip-button
                 label="Edit"
                 icon="mdi-pencil"
                 color="orange"
                 :on="on"
-              )
-          record-remove(
+              />
+            </template>
+          </squad-form>
+          <record-remove
             :record="squad"
             store="squads"
             :label="`Squad: ${ squad.name }`"
             small
-          )
-        v-col
-          .display-1.primary--text {{ defOVR }}
-          .subheading DEF
-        v-col
-          .display-1.success--text {{ midOVR }}
-          .subheading MID
-        v-col
-          .display-1.warning--text {{ attOVR }}
-          .subheading ATT
-      v-divider.mx-3
-      formation-view(:formation="squad.squad_players")
-        template(#item="{ player }")
-          .font-weight-bold {{ player.pos }}
-          div(:class="statusColor(player.player_id)")
-            | {{ nameOf(player.player_id) }}
+          />
+        </v-col>
+        <v-col>
+          <div class="display-1 primary--text">{{ defOVR }}</div>
+          <div class="subheading">DEF</div>
+        </v-col>
+        <v-col>
+          <div class="display-1 success--text">{{ midOVR }}</div>
+          <div class="subheading">MID</div>
+        </v-col>
+        <v-col>
+          <div class="display-1 warning--text">{{ attOVR }}</div>
+          <div class="subheading">ATT</div>
+        </v-col>
+      </v-row>
+      <v-divider class="mx-3" />
+      <formation-view :formation="squad.squad_players">
+        <template #item="{ player }">
+          <div class="font-weight-bold">{{ player.pos }}</div>
+          <div :class="statusColor(player.player_id)">
+            {{ nameOf(player.player_id) }}
+          </div>
+        </template>
+      </formation-view>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

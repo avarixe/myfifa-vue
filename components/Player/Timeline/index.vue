@@ -1,22 +1,27 @@
-<template lang="pug">
-  v-card(flat)
-    v-card-text
-      v-timeline(:dense="dense")
-        template(v-if="events.length > 0")
-          player-timeline-item(
+<template>
+  <v-card flat>
+    <v-card-text>
+      <v-timeline :dense="dense">
+        <template v-if="events.length > 0">
+          <player-timeline-item
             v-for="(event, i) in events"
             :key="i"
             :player="player"
             :event="event"
             :dense="dense"
-          )
-        v-timeline-item(
+          />
+        </template>
+        <v-timeline-item(
           v-else
           color="grey"
           icon="mdi-calendar"
           fill-dot
-        )
-          .mt-2 No Player Events
+        >
+          <div class="mt-2">No Player Events</div>
+        </v-timeline-item(>
+      </v-timeline>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

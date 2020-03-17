@@ -1,36 +1,59 @@
-<template lang="pug">
-  v-container(fluid)
-    v-row
-      v-col(cols="12")
-        v-btn(
+<template>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12">
+        <v-btn
           :to="linkToSeason(pageSeason - 1)"
           nuxt
           :disabled="pageSeason === 0"
-        ) Previous Season
-        |&nbsp;
-        v-btn(
+        >
+          Previous Season
+        </v-btn>
+        <v-btn
           :to="linkToSeason(pageSeason + 1)"
           nuxt
           :disabled="pageSeason >= season"
-        ) Next Season
-      v-col(cols="12")
-        v-card
-          v-card-text
-            season-summary(:season="pageSeason")
-      v-col(cols="12")
-        v-card
-          v-card-text
-            v-tabs(v-model="tab" centered)
-              v-tab Competitions
-              v-tab Players
-              v-tab Transfers
-            v-tabs-items(v-model="tab" touchless)
-              v-tab-item
-                competition-grid(:season="pageSeason")
-              v-tab-item
-                player-grid(:season="pageSeason")
-              v-tab-item
-                transfer-grid(:season="pageSeason")
+        >
+          Next Season
+        </v-btn>
+      </v-col>
+      <v-col cols="12">
+        <v-card>
+          <v-card-text>
+            <season-summary :season="pageSeason" />
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12">
+        <v-card>
+          <v-card-text>
+            <v-tabs
+              v-model="tab"
+              centered
+            >
+              <v-tab>Competitions</v-tab>
+              <v-tab>Players</v-tab>
+              <v-tab>Transfers</v-tab>
+            </v-tabs>
+            <v-tabs-items
+              v-model="tab"
+              touchless
+            >
+              <v-tab-item>
+                <competition-grid :season="pageSeason" />
+              </v-tab-item>
+              <v-tab-item>
+                <player-grid :season="pageSeason" />
+              </v-tab-item>
+              <v-tab-item>
+                <transfer-grid :season="pageSeason" />
+              </v-tab-item>
+            </v-tabs-items>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

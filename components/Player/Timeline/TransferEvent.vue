@@ -1,50 +1,78 @@
-<template lang="pug">
-  v-timeline-item(
+<template>
+  <v-timeline-item
     :icon="`mdi-${icon}`"
     :color="color"
     fill-dot
     right
-  )
-    template(#opposite)
-      span.headline.font-weight-bold(:class="`${color}--text`")
-        | Transfer
-      h4.title.font-weight-light.mb-3(:class="`${color}--text`")
-        | {{ transfer.moved_on | formatDate }}
-    v-card(dense flat)
-      v-card-title.py-0(v-if="dense")
-        div(:class="`${color}--text`")
-          span.title.font-weight-bold
-            | Transfer
-          h4.body-2.font-weight-light.mb-3(
-            :class="`${color}--text`"
-          ) {{ transfer.moved_on | formatDate }}
-      v-card-text.py-0
-        table
-          tbody
-            tr
-              td.font-weight-bold Origin
-              td.pl-1 {{ transfer.origin }}
-            tr
-              td.font-weight-bold Destination
-              td.pl-1 {{ transfer.destination }}
-            tr
-              td.font-weight-bold Transfer Fee
-              td.pl-1 {{ transfer.fee | formatMoney(team.currency) }}
-            tr(v-if="transfer.traded_player")
-              td.font-weight-bold Traded Player
-              td.pl-1 {{ transfer.traded_player }}
-            tr(v-if="transfer.addon_clause")
-              td.font-weight-bold Add-On Clause
-              td.pl-1 {{ transfer.addon_clause }}%
-      v-card-actions
-        transfer-form(:player="player" :record="transfer")
-          template(#default="{ on }")
-            v-btn(
+  >
+    <template #opposite>
+      <span :class="`headline font-weight-bold ${color}--text`">
+        Transfer
+      </span>
+      <h4 :class="`title font-weight-light mb-3 ${color}--text`">
+        {{ transfer.moved_on | formatDate }}
+      </h4>
+    </template>
+    <v-card
+      dense
+      flat
+    >
+      <v-card-title
+        v-if="dense"
+        class="py-0"
+      >
+        <div :class="`${color}--text`">
+          <span class="title font-weight-bold">Transfer</span>
+          <h4 :class="`body-2 font-weight-light mb-3 ${color}--text`">
+            {{ transfer.moved_on | formatDate }}
+          </h4>
+        </div>
+      </v-card-title>
+      <v-card-text class="py-0">
+        <table>
+          <tbody>
+            <tr>
+              <td class="font-weight-bold">Origin</td>
+              <td class="pl-1">{{ transfer.origin }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold">Destination</td>
+              <td class="pl-1">{{ transfer.destination }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold">Transfer Fee</td>
+              <td class="pl-1">{{ transfer.fee | formatMoney(team.currency) }}</td>
+            </tr>
+            <tr v-if="transfer.traded_player">
+              <td class="font-weight-bold">Traded Player</td>
+              <td class="pl-1">{{ transfer.traded_player }}</td>
+            </tr>
+            <tr v-if="transfer.addon_clause">
+              <td class="font-weight-bold">Add-On Clause</td>
+              <td class="pl-1">{{ transfer.addon_clause }}%</td>
+            </tr>
+          </tbody>
+        </table>
+      </v-card-text>
+      <v-card-actions>
+        <transfer-form
+          :player="player"
+          :record="transfer"
+        >
+          <template #default="{ on }">
+            <v-btn
               text
               small
               color="orange"
               v-on="on"
-            ) Edit
+            >
+              Edit
+            </v-btn>
+          </template>
+        </transfer-form>
+      </v-card-actions>
+    </v-card>
+  </v-timeline-item>
 </template>
 
 <script>

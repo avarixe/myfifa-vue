@@ -1,19 +1,25 @@
-<template lang="pug">
-  div(:key="key")
-    template(v-if="readonly")
-      span(:class="displayClass") {{ humanizedDisplay }}
-    template(v-else)
-      v-edit-dialog(@close="close")
-        v-tooltip(bottom)
-          template(#activator="{ on }")
-            span(v-on="on")
-              v-badge(color="transparent")
-                template(#badge)
-                  v-icon(color="grey") mdi-circle-edit-outline
-                span(:class="displayClass") {{ humanizedDisplay }}
-          | Click to Edit {{ label }}
-        template(#input)
-          v-combobox(
+<template>
+  <div :key="key">
+    <template v-if="readonly">
+      <span :class="displayClass">{{ humanizedDisplay }}</span>
+    </template>
+    <template v-else>
+      <v-edit-dialog @close="close">
+        <v-tooltip bottom>
+          <template #activator="{ on }">
+            <span v-on="on">
+              <v-badge color="transparent">
+                <template #badge>
+                  <v-icon color="grey">mdi-circle-edit-outline</v-icon>
+                </template>
+                <span :class="displayClass">{{ humanizedDisplay }}</span>
+              </v-badge>
+            </span>
+          </template>
+          Click to Edit {{ label }}
+        </v-tooltip>
+        <template #input>
+          <v-combobox
             v-if="inputType === 'combobox'"
             v-model="value"
             :items="options"
@@ -27,30 +33,40 @@
             autocomplete="off"
             autocorrect="off"
             autofocus
-          )
-            template(#item="{ item }")
-              slot(name="option" :item="item")
-                list-option(
+          >
+            <template #item="{ item }">
+              <slot
+                name="option"
+                :item="item"
+              >
+                <list-option
                   :item="item"
                   :option-avatar="optionAvatar"
                   :option-text="optionText"
-                )
-          v-money-field(
+                />
+              </slot>
+            </template>
+          </v-combobox>
+          <v-money-field
             v-else-if="inputType === 'money'"
             v-model="value"
             :label="label"
             :prefix="team.currency"
             :required="required"
             autofocus
-          )
-          v-text-field(
+          />
+          <v-text-field
             v-else
             v-model="value"
             :label="label"
             :type="inputType"
             :rules="allRules"
             autofocus
-          )
+          />
+        </template>
+      </v-edit-dialog>
+    </template>
+  </div>
 </template>
 
 <script>

@@ -1,37 +1,78 @@
-<template lang="pug">
-  v-container(v-if="player" fluid)
-    v-row.text-center(justify="space-around")
-      v-col(cols=6 sm=2)
-        .display-1 {{ player.pos }}
-        .subheading Position
-      v-col(cols=6 sm=2)
-        .display-1 {{ player.sec_pos | listArray }}
-        .subheading
-          fitty-text(text="Secondary Position(s)" max-size=16)
-      v-col(cols=4 sm=2)
-        .display-1 {{ player.age }}
-        .subheading Age
-      v-col(v-if="player.nationality" cols=4 sm=2)
-        client-only
-          flag(
+<template>
+  <v-container
+    v-if="player"
+    fluid
+  >
+    <v-row
+      class="text-center"
+      justify="space-around"
+    >
+      <v-col
+        cols="6"
+        sm="2"
+      >
+        <div class="display-1">{{ player.pos }}</div>
+        <div class="subheading">Position</div>
+      </v-col>
+      <v-col
+        cols="6"
+        sm="2"
+      >
+        <div class="display-1">{{ player.sec_pos | listArray }}</div>
+        <div class="subheading">
+          <fitty-text
+            text="Secondary Position(s)"
+            max-size="16"
+          />
+        </div>
+      </v-col>
+      <v-col
+        cols="4"
+        sm="2"
+      >
+        <div class="display-1">{{ player.age }}</div>
+        <div class="subheading">Age</div>
+      </v-col>
+      <v-col
+        v-if="player.nationality"
+        cols="4"
+        sm="2"
+      >
+        <client-only>
+          <flag
             :iso="player.flag"
             :title="player.nationality"
             style="font-size: 40px"
-          )
-        .subheading Nationality
-      v-col(cols=4 sm=2)
-        v-icon.display-1(:color="player.statusColor")
-          | mdi-{{ player.statusIcon }}
-        .subheading {{ player.status || 'Status' }}
-      v-col(cols=12)
-        player-actions(:player="player")
-    v-row
-      v-col(cols=12)
-        v-card
-          v-card-text
-            v-row.text-center
-              v-col(cols=12 sm=4)
-                inline-select(
+          />
+        </client-only>
+        <div class="subheading">Nationality</div>
+      </v-col>
+      <v-col
+        cols="4"
+        sm="2"
+      >
+        <v-icon
+          class="display-1"
+          :color="player.statusColor"
+        >
+          mdi-{{ player.statusIcon }}
+        </v-icon>
+        <div class="subheading">{{ player.status || 'Status' }}</div>
+      </v-col>
+      <v-col cols="12">
+        <player-actions :player="player" />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <v-card>
+          <v-card-text>
+            <v-row class="text-center">
+              <v-col
+                cols="12"
+                sm="4"
+              >
+                <inline-select
                   :item="player"
                   attribute="kit_no"
                   label="Kit No"
@@ -39,10 +80,14 @@
                   dense
                   display-class="display-1 blue-grey--text"
                   @change="updatePlayerAttribute(player.id, 'kit_no', $event)"
-                )
-                .subheading Kit No
-              v-col(cols=12 sm=4)
-                inline-select(
+                />
+                <div class="subheading">Kit No</div>
+              </v-col>
+              <v-col
+                cols="12"
+                sm="4"
+              >
+                <inline-select
                   :item="player"
                   attribute="ovr"
                   label="OVR"
@@ -50,10 +95,14 @@
                   dense
                   display-class="display-1 success--text"
                   @change="updatePlayerAttribute(player.id, 'ovr', $event)"
-                )
-                .subheading OVR
-              v-col(cols=12 sm=4)
-                inline-field(
+                />
+                <div class="subheading">OVR</div>
+              </v-col>
+              <v-col
+                cols="12"
+                sm="4"
+              >
+                <inline-field
                   :item="player"
                   attribute="value"
                   label="Value"
@@ -62,35 +111,73 @@
                   display-class="display-1 primary--text"
                   required
                   @close="updatePlayerAttribute(player.id, 'value', $event)"
-                )
-                .subheading Value
-              v-col(cols=6 sm=3)
-                .display-1.teal--text {{ numGames || 0 }}
-                .subheading Matches
-              v-col(cols=6 sm=3)
-                .display-1.pink--text {{ numCs || 0 }}
-                .subheading Clean Sheets
-              v-col(cols=6 sm=3)
-                .display-1.blue--text {{ numGoals || 0 }}
-                .subheading Goals
-              v-col(cols=6 sm=3)
-                .display-1.orange--text {{ numAssists || 0 }}
-                .subheading Assists
-            v-tabs.hidden-lg-and-up(centered)
-              v-tab Timeline
-              v-tab Growth
+                />
+                <div class="subheading">Value</div>
+              </v-col>
+              <v-col
+                cols="6"
+                sm="3"
+              >
+                <div class="display-1 teal--text">{{ numGames || 0 }}</div>
+                <div class="subheading">Matches</div>
+              </v-col>
+              <v-col
+                cols="6"
+                sm="3"
+              >
+                <div class="display-1 pink--text">{{ numCs || 0 }}</div>
+                <div class="subheading">Clean Sheets</div>
+              </v-col>
+              <v-col
+                cols="6"
+                sm="3"
+              >
+                <div class="display-1 blue--text">{{ numGoals || 0 }}</div>
+                <div class="subheading">Goals</div>
+              </v-col>
+              <v-col
+                cols="6"
+                sm="3"
+              >
+                <div class="display-1 orange--text">{{ numAssists || 0 }}</div>
+                <div class="subheading">Assists</div>
+              </v-col>
+            </v-row>
+            <v-tabs
+              class="hidden-lg-and-up"
+              centered
+            >
+              <v-tab>Timeline</v-tab>
+              <v-tab>Growth</v-tab>
 
-              v-tab-item
-                player-timeline(:player="player")
-              v-tab-item
-                player-growth(:player="player")
-            v-row.hidden-md-and-down(cols=12)
-              v-col(cols=6)
-                .title.text-center Timeline
-                player-timeline(:player="player" dense)
-              v-col(cols=6)
-                .title.text-center Growth
-                player-growth(:player="player")
+              <v-tab-item>
+                <player-timeline :player="player" />
+              </v-tab-item>
+              <v-tab-item>
+                <player-growth :player="player" />
+              </v-tab-item>
+            </v-tabs>
+            <v-row
+              class="hidden-md-and-down"
+              cols="12"
+            >
+              <v-col cols="6">
+                <div class="title text-center">Timeline</div>
+                <player-timeline
+                  :player="player"
+                  dense
+                />
+              </v-col>
+              <v-col cols="6">
+                <div class="title text-center">Growth</div>
+                <player-growth :player="player" />
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

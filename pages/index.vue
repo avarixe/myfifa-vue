@@ -1,8 +1,21 @@
-<template lang="pug">
-  v-container.fill-height(fluid)
-    v-row(align="center" justify="center")
-      v-col(cols="12" sm="8" md="4")
-        login-form(v-if="!authenticated")
+<template>
+  <v-container
+    class="fill-height"
+    fluid
+  >
+    <v-row
+      align="center"
+      justify="center"
+    >
+      <v-col
+        cols="12"
+        sm="8"
+        md="4"
+      >
+        <login-form v-if="!authenticated" />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

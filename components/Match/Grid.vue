@@ -1,7 +1,7 @@
-<template lang="pug">
-  v-card
-    v-toolbar(flat)
-      v-select(
+<template>
+  <v-card>
+    <v-toolbar flat>
+      <v-select
         v-model="seasonFilter"
         label="Season"
         :items="seasons"
@@ -10,26 +10,27 @@
         clearable
         hide-details
         @click:clear="clearAllFilters"
-      )
-      v-spacer
-      v-select(
+      />
+      <v-spacer />
+      <v-select
         v-model="competition"
         label="Competition"
         :items="competitions"
         clearable
         hide-details
-      )
-      v-spacer
-      //- Match Search
-      v-text-field(
+      />
+      <v-spacer />
+      <v-text-field
         v-model="search"
         label="Search"
         append-icon="mdi-magnify"
         hide-details
-      )
-    //- Match History Grid
-    v-card-text
-      v-data-table(
+      />
+    </v-toolbar>
+
+    <!-- Match History Grid -->
+    <v-card-text>
+      <v-data-table
         :headers="headers"
         :items="rows"
         sort-by="played_on"
@@ -37,16 +38,23 @@
         :search="search"
         item-key="id"
         no-data-text="No Matches Recorded"
-      )
-        template(#item.score="{ item }")
-          v-btn(
+      >
+        <template #item.score="{ item }">
+          <v-btn
             :to="item.link"
             nuxt
             text
             :color="item.resultColor"
-          ) {{ item.score }}
-        template(#item.played_on="{ item }")
-          | {{ item.played_on | formatDate }}
+          >
+            {{ item.score }}
+          </v-btn>
+        </template>
+        <template #item.played_on="{ item }">
+          {{ item.played_on | formatDate }}
+        </template>
+      </v-data-table>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

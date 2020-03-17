@@ -1,11 +1,36 @@
-<template lang="pug">
-  .d-inline-block(@click.stop="snackbar = true")
-    slot
-      tooltip-button(icon="mdi-delete" :label="`Remove ${label}`" dark)
-    v-snackbar(v-model="snackbar" color="black")
-      | Remove {{ label }}?
-      v-btn(dark text @click="remove") Yes
-      v-btn(dark text @click.stop="snackbar = false") No
+<template>
+  <div
+    class="d-inline-block"
+    @click.stop="snackbar = true"
+  >
+    <slot>
+      <tooltip-button
+        icon="mdi-delete"
+        :label="`Remove ${label}`"
+        dark
+      />
+    </slot>
+    <v-snackbar
+      v-model="snackbar"
+      color="black"
+    >
+      Remove {{ label }}?
+      <v-btn
+        dark
+        text
+        @click="remove"
+      >
+        Yes
+      </v-btn>
+      <v-btn
+        dark
+        text
+        @click.stop="snackbar = false"
+      >
+        No
+      </v-btn>
+    </v-snackbar>
+  </div>
 </template>
 
 <script>

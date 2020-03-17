@@ -1,5 +1,5 @@
-<template lang="pug">
-  v-autocomplete(
+<template>
+  <v-autocomplete
     v-model="nationality"
     :items="items"
     :label="label"
@@ -8,14 +8,22 @@
     :outlined="outlined"
     :hide-details="hideDetails"
     menu-props="auto, offsetY"
-  )
-    template(#prepend-inner)
-      flag.mt-1(:iso="nationalities[nationality]")
-    template(#item="{ item }")
-      v-list-item-avatar(size=20)
-        flag(:iso="nationalities[item]")
-      v-list-item-content
-        v-list-item-title {{ item }}
+  >
+    <template #prepend-inner>
+      <flag
+        class="mt-1"
+        :iso="nationalities[nationality]"
+      />
+    </template>
+    <template #item="{ item }">
+      <v-list-item-avatar size="20">
+        <flag :iso="nationalities[item]" />
+      </v-list-item-avatar>
+      <v-list-item-content>
+        <v-list-item-title>{{ item }}</v-list-item-title>
+      </v-list-item-content>
+    </template>
+  </v-autocomplete>
 </template>
 
 <script>

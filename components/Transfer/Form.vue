@@ -1,20 +1,27 @@
-<template lang="pug">
-  dialog-form(
+<template>
+  <dialog-form
     v-model="dialog"
     :title="title"
     :submit="submit"
     :color="transferColor"
-  )
-    template(#activator="{ on }")
-      slot(:on="on")
-        tooltip-button(
+  >
+    <template #activator="{ on }">
+      <slot :on="on">
+        <tooltip-button
           :label="`Transfer ${transferOut ? 'Out' : 'In'}`"
           :icon="`mdi-airplane-${transferOut ? 'takeoff' : 'landing'}`"
           :color="transferColor"
           :on="on"
-        )
-    template(#form)
-      dynamic-fields(:object="transfer" :fields="fields")
+        />
+      </slot>
+    </template>
+    <template #form>
+      <dynamic-fields
+        :object="transfer"
+        :fields="fields"
+      />
+    </template>
+  </dialog-form>
 </template>
 
 <script>
