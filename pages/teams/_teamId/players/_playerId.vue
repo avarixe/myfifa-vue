@@ -208,11 +208,14 @@
       ]
     }),
     computed: {
+      playerId () {
+        return this.$route.params.playerId
+      },
       player () {
         return Player
           .query()
           .withAll()
-          .find(this.$route.params.playerId)
+          .find(this.playerId)
       }
     },
     watch: {
@@ -238,17 +241,15 @@
         numAssists: data.num_assists[params.playerId]
       }
     },
-    async fetch ({ store, params }) {
+    async fetch () {
       await Promise.all([
-        store.dispatch('players/GET', { playerId: params.playerId }),
-        store.dispatch('playerHistories/SEARCH', { teamId: params.teamId }),
-        store.dispatch('contracts/FETCH', { playerId: params.playerId }),
-        store.dispatch('injuries/FETCH', { playerId: params.playerId }),
-        store.dispatch('loans/FETCH', { playerId: params.playerId }),
-        store.dispatch('transfers/FETCH', { playerId: params.playerId })
+        this.getPlayer({ playerId: this.playerId }),
+        this.searchPlayerHistories({ teamId: this.team.id }),
+        this.fetchContracts({ playerId: this.playerId }),
+        this.fetchInjuries({ playerId: this.playerId }),
+        this.fetchLoans({ playerId: this.playerId }),
+        this.fetchTransfers({ playerId: this.playerId })
       ])
-    },
-    mounted () {
       this.setPage({
         title: this.player.name,
         overline: this.team.title,
@@ -260,8 +261,14 @@
         setPage: 'app/SET_PAGE',
         announce: 'broadcaster/ANNOUNCE'
       }),
-      ...mapActions('players', {
-        updatePlayer: 'UPDATE'
+      ...mapActions({
+        getPlayer: 'players/GET',
+        updatePlayer: 'players/UPDATE',
+        searchPlayerHistories: 'playerHistories/SEARCH',
+        fetchContracts: 'contracts/FETCH',
+        fetchInjuries: 'injuries/FETCH',
+        fetchLoans: 'loans/FETCH',
+        fetchTransfers: 'transfers/FETCH'
       }),
       async updatePlayerAttribute (playerId, attribute, value) {
         try {

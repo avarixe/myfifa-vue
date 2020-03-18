@@ -57,7 +57,7 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex'
+  import { mapMutations, mapActions } from 'vuex'
   import CompetitionGrid from '@/components/Season/CompetitionGrid'
   import PlayerGrid from '@/components/Season/PlayerGrid'
   import TransferGrid from '@/components/Season/TransferGrid'
@@ -90,17 +90,15 @@
         return parseInt(this.$route.params.season)
       }
     },
-    async fetch ({ store, params }) {
+    async fetch () {
       await Promise.all([
-        store.dispatch('competitions/FETCH', { teamId: params.teamId }),
-        store.dispatch('players/FETCH', { teamId: params.teamId }),
-        store.dispatch('playerHistories/SEARCH', { teamId: params.teamId }),
-        store.dispatch('matches/FETCH', { teamId: params.teamId }),
-        store.dispatch('contracts/SEARCH', { teamId: params.teamId }),
-        store.dispatch('transfers/SEARCH', { teamId: params.teamId })
+        this.fetchCompetitions({ teamId: this.team.id }),
+        this.fetchPlayers({ teamId: this.team.id }),
+        this.fetchMatches({ teamId: this.team.id }),
+        this.searchPlayerHistories({ teamId: this.team.id }),
+        this.searchContracts({ teamId: this.team.id }),
+        this.searchTransfers({ teamId: this.team.id })
       ])
-    },
-    mounted () {
       this.setPage({
         title: this.title,
         overline: this.team.title,
@@ -110,6 +108,14 @@
     methods: {
       ...mapMutations('app', {
         setPage: 'SET_PAGE'
+      }),
+      ...mapActions({
+        fetchCompetitions: 'competitions/FETCH',
+        fetchPlayers: 'players/FETCH',
+        fetchMatches: 'matches/FETCH',
+        searchPlayerHistories: 'playerHistories/SEARCH',
+        searchContracts: 'contracts/SEARCH',
+        searchTransfers: 'transfers/SEARCH'
       }),
       linkToSeason (season) {
         return {

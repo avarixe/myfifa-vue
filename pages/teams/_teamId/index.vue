@@ -97,7 +97,7 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex'
+  import { mapMutations, mapActions } from 'vuex'
   import { Match, Player } from '@/models'
   import MatchCard from '@/components/Match/Card'
   import SeasonCard from '@/components/Season/Card'
@@ -152,24 +152,28 @@
         }
       }
     },
-    async fetch ({ store, params }) {
-      await Promise.all([
-        store.dispatch('matches/FETCH', { teamId: params.teamId }),
-        store.dispatch('players/FETCH', { teamId: params.teamId }),
-        store.dispatch('competitions/FETCH', { teamId: params.teamId }),
-        store.dispatch('contracts/SEARCH', { teamId: params.teamId })
-      ])
-    },
-    mounted () {
+    async fetch () {
       this.setPage({
         title: this.team.title,
         overline: this.team.title,
         headline: 'Dashboard'
       })
+      await Promise.all([
+        this.fetchMatches({ teamId: this.team.id }),
+        this.fetchPlayers({ teamId: this.team.id }),
+        this.fetchCompetitions({ teamId: this.team.id }),
+        this.searchContracts({ teamId: this.team.id })
+      ])
     },
     methods: {
       ...mapMutations('app', {
         setPage: 'SET_PAGE'
+      }),
+      ...mapActions({
+        fetchMatches: 'matches/FETCH',
+        fetchPlayers: 'players/FETCH',
+        fetchCompetitions: 'competitions/FETCH',
+        searchContracts: 'contracts/SEARCH'
       }),
       getPlayersByStatus (status) {
         return Player

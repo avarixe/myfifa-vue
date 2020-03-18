@@ -107,7 +107,7 @@
     computed: {
       humanizedDisplay () {
         const value = this.display || this.value
-        return value === null || value === '' ? '-' : value
+        return !value && value !== 0 ? '-' : value
       },
       isDirty () {
         return this.value !== this.original
@@ -133,11 +133,10 @@
       reset () {
         this.value = this.item[this.attribute]
         this.original = this.value
+        this.key++
       },
       close () {
         if (this.allRules.some(rule => typeof rule(this.value) === 'string')) {
-          console.log(this.allRules)
-          console.log('failed validation!')
           this.reset()
         } else if (this.isDirty) {
           this.$emit('close', this.value)

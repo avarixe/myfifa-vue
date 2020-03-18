@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex'
+  import { mapMutations, mapActions } from 'vuex'
   import { TeamAccessible } from '@/mixins'
   import PlayerGrid from '@/components/Player/Grid'
 
@@ -25,21 +25,25 @@
       'authenticated'
     ],
     transition: 'fade-transition',
-    async fetch ({ store, params }) {
+    async fetch () {
       await Promise.all([
-        store.dispatch('players/FETCH', { teamId: params.teamId }),
-        store.dispatch('contracts/SEARCH', { teamId: params.teamId })
+        this.fetchPlayers({ teamId: this.team.id }),
+        this.searchContracts({ teamId: this.team.id })
       ])
-    },
-    mounted () {
       this.setPage({
         title: `${this.team.title} - Players`,
         overline: this.team.title,
         headline: 'Players'
       })
     },
-    methods: mapMutations('app', {
-      setPage: 'SET_PAGE'
-    })
+    methods: {
+      ...mapMutations('app', {
+        setPage: 'SET_PAGE'
+      }),
+      ...mapActions({
+        fetchPlayers: 'players/FETCH',
+        searchContracts: 'contracts/SEARCH'
+      })
+    }
   }
 </script>

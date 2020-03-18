@@ -165,7 +165,7 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex'
+  import { mapMutations, mapActions } from 'vuex'
   import { Competition } from '@/models'
   import CompetitionForm from '@/components/Competition/Form'
   import StageForm from '@/components/Stage/Form'
@@ -192,12 +192,15 @@
       table: 0
     }),
     computed: {
+      competitionId () {
+        return this.$route.params.competitionId
+      },
       competition () {
         return Competition
           .query()
           .with('stages.table_rows')
           .with('stages.fixtures.legs')
-          .find(this.$route.params.competitionId)
+          .find(this.competitionId)
       },
       title () {
         return this.competition
@@ -231,24 +234,26 @@
         }
       }
     },
-    async fetch ({ store, params }) {
+    async fetch () {
       await Promise.all([
-        store.dispatch('competitions/GET', {
-          competitionId: params.competitionId
-        }),
-        store.dispatch('stages/FETCH', { competitionId: params.competitionId })
+        this.getCompetition({ competitionId: this.competitionId }),
+        this.fetchStages({ competitionId: this.competitionId })
       ])
-    },
-    mounted () {
       this.setPage({
         title: this.title,
         overline: this.team.title,
         headline: this.title
       })
     },
-    methods: mapMutations('app', {
-      setPage: 'SET_PAGE'
-    }),
+    methods: {
+      ...mapMutations('app', {
+        setPage: 'SET_PAGE'
+      }),
+      ...mapActions({
+        getCompetition: 'competitions/GET',
+        fetchStages: 'stages/FETCH'
+      })
+    },
     head () {
       return {
         title: this.title

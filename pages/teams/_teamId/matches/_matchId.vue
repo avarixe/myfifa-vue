@@ -157,7 +157,7 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex'
+  import { mapMutations, mapActions } from 'vuex'
   import { Match, Player } from '@/models'
   import MatchForm from '@/components/Match/Form'
   import MatchActions from '@/components/Match/Actions'
@@ -181,11 +181,14 @@
     ],
     transition: 'fade-transition',
     computed: {
+      matchId () {
+        return this.$route.params.matchId
+      },
       match () {
         return Match
           .query()
           .with('team|caps|goals|bookings|substitutions|penalty_shootout')
-          .find(this.$route.params.matchId)
+          .find(this.matchId)
       },
       players () {
         return Player
@@ -225,21 +228,17 @@
         }
       }
     },
-    async fetch ({ store, params }) {
+    async fetch () {
       await Promise.all([
-        store.dispatch('matches/GET', { matchId: params.matchId }),
-
-        store.dispatch('caps/FETCH', { matchId: params.matchId }),
-        store.dispatch('goals/FETCH', { matchId: params.matchId }),
-        store.dispatch('substitutions/FETCH', { matchId: params.matchId }),
-        store.dispatch('bookings/FETCH', { matchId: params.matchId }),
-
-        store.dispatch('players/FETCH', { teamId: params.teamId }),
-        store.dispatch('playerHistories/SEARCH', { teamId: params.teamId }),
-        store.dispatch('squads/FETCH', { teamId: params.teamId })
+        this.getMatch({ matchId: this.matchId }),
+        this.fetchCaps({ matchId: this.matchId }),
+        this.fetchGoals({ matchId: this.matchId }),
+        this.fetchSubstitutions({ matchId: this.matchId }),
+        this.fetchBookings({ matchId: this.matchId }),
+        this.fetchPlayers({ teamId: this.team.id }),
+        this.searchPlayerHistories({ teamId: this.team.id }),
+        this.fetchSquads({ teamId: this.team.id })
       ])
-    },
-    mounted () {
       this.setPage({
         title: `${this.match.home} vs ${this.match.away}`,
         overline: this.team.title,
@@ -247,8 +246,20 @@
         caption: `v ${this.match.opponent}`
       })
     },
-    methods: mapMutations('app', {
-      setPage: 'SET_PAGE'
-    })
+    methods: {
+      ...mapMutations('app', {
+        setPage: 'SET_PAGE'
+      }),
+      ...mapActions({
+        getMatch: 'matches/GET',
+        fetchCaps: 'caps/FETCH',
+        fetchGoals: 'goals/FETCH',
+        fetchSubstitutions: 'substitutions/FETCH',
+        fetchBookings: 'bookings/FETCH',
+        fetchPlayers: 'players/FETCH',
+        searchPlayerHistories: 'playerHistories/SEARCH',
+        fetchSquads: 'squads/FETCH'
+      })
+    }
   }
 </script>
