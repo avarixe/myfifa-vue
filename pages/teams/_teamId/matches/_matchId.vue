@@ -47,111 +47,120 @@
           </v-btn>
         </record-remove>
       </v-col>
-      <v-container class="py-0">
-        <v-row class="text-center">
-          <v-col cols="12">
-            <div class="display-2">
-              <fitty-text :text="match.competition" />
-            </div>
-            <div
-              v-if="match.stage"
-              class="display-1"
-            >
-              <fitty-text
-                :text="match.stage"
-                max-size="30"
-              />
-            </div>
-            <div class="subheading">{{ match.played_on | formatDate }}</div>
-          </v-col>
-          <v-container class="py-0">
-            <v-row
-              class="display-1"
-              justify="space-between"
-              align="center"
-            >
-              <v-col
-                class="font-weight-thin pa-3"
-                cols="5"
-              >
-                <fitty-text :text="match.home" />
-                <div :class="`font-weight-bold ${match.resultColor}--text`">
-                  {{ match.home_score }}
-                  <span v-if="match.penalty_shootout">
-                    ({{ match.penalty_shootout.home_score }})
-                  </span>
-                </div>
-              </v-col>
-              <v-col
-                class="font-weight-thin pa-3"
-                cols="5"
-              >
-                <fitty-text :text="match.away" />
-                <div :class="`font-weight-bold ${match.resultColor}--text`">
-                  {{ match.away_score }}
-                  <span v-if="match.penalty_shootout">
-                    ({{ match.penalty_shootout.away_score }})
-                  </span>
-                </div>
-              </v-col>
-            </v-row>
-          </v-container>
-          <v-col
-            v-if="!readonly"
-            cols="12"
-          >
-            <match-actions :match="match" />
-          </v-col>
-        </v-row>
-      </v-container>
+
       <v-col
-        class="hidden-lg-and-up"
+        v-if="$fetchState.pending"
         cols="12"
       >
-        <v-card>
-          <v-card-text>
-            <v-tabs centered>
-              <v-tab>Lineup</v-tab>
-              <v-tab>Timeline</v-tab>
-              <v-tab-item>
-                <match-lineup :match="match" />
-              </v-tab-item>
-              <v-tab-item>
-                <match-timeline :match="match" />
-              </v-tab-item>
-            </v-tabs>
-          </v-card-text>
-        </v-card>
+        <v-skeleton-loader type="article" />
       </v-col>
-      <v-col
-        class="hidden-md-and-down"
-        cols="12"
-      >
+      <template v-else>
         <v-container class="py-0">
-          <v-row>
-            <v-col cols="6">
-              <v-card>
-                <v-card-title class="justify-center font-weight-light">
-                  Lineup
-                </v-card-title>
-                <v-card-text>
-                  <match-lineup :match="match" />
-                </v-card-text>
-              </v-card>
+          <v-row class="text-center">
+            <v-col cols="12">
+              <div class="display-2">
+                <fitty-text :text="match.competition" />
+              </div>
+              <div
+                v-if="match.stage"
+                class="display-1"
+              >
+                <fitty-text
+                  :text="match.stage"
+                  max-size="30"
+                />
+              </div>
+              <div class="subheading">{{ match.played_on | formatDate }}</div>
             </v-col>
-            <v-col cols="6">
-              <v-card>
-                <v-card-title class="justify-center font-weight-light">
-                  Timeline
-                </v-card-title>
-                <v-card-text>
-                  <match-timeline :match="match" />
-                </v-card-text>
-              </v-card>
+            <v-container class="py-0">
+              <v-row
+                class="display-1"
+                justify="space-between"
+                align="center"
+              >
+                <v-col
+                  class="font-weight-thin pa-3"
+                  cols="5"
+                >
+                  <fitty-text :text="match.home" />
+                  <div :class="`font-weight-bold ${match.resultColor}--text`">
+                    {{ match.home_score }}
+                    <span v-if="match.penalty_shootout">
+                      ({{ match.penalty_shootout.home_score }})
+                    </span>
+                  </div>
+                </v-col>
+                <v-col
+                  class="font-weight-thin pa-3"
+                  cols="5"
+                >
+                  <fitty-text :text="match.away" />
+                  <div :class="`font-weight-bold ${match.resultColor}--text`">
+                    {{ match.away_score }}
+                    <span v-if="match.penalty_shootout">
+                      ({{ match.penalty_shootout.away_score }})
+                    </span>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-container>
+            <v-col
+              v-if="!readonly"
+              cols="12"
+            >
+              <match-actions :match="match" />
             </v-col>
           </v-row>
         </v-container>
-      </v-col>
+        <v-col
+          class="hidden-lg-and-up"
+          cols="12"
+        >
+          <v-card>
+            <v-card-text>
+              <v-tabs centered>
+                <v-tab>Lineup</v-tab>
+                <v-tab>Timeline</v-tab>
+                <v-tab-item>
+                  <match-lineup :match="match" />
+                </v-tab-item>
+                <v-tab-item>
+                  <match-timeline :match="match" />
+                </v-tab-item>
+              </v-tabs>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col
+          class="hidden-md-and-down"
+          cols="12"
+        >
+          <v-container class="py-0">
+            <v-row>
+              <v-col cols="6">
+                <v-card>
+                  <v-card-title class="justify-center font-weight-light">
+                    Lineup
+                  </v-card-title>
+                  <v-card-text>
+                    <match-lineup :match="match" />
+                  </v-card-text>
+                </v-card>
+              </v-col>
+              <v-col cols="6">
+                <v-card>
+                  <v-card-title class="justify-center font-weight-light">
+                    Timeline
+                  </v-card-title>
+                  <v-card-text>
+                    <match-timeline :match="match" />
+                  </v-card-text>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-col>
+      </template>
     </v-row>
   </v-container>
 </template>
