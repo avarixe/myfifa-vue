@@ -11,14 +11,14 @@
             :dense="dense"
           />
         </template>
-        <v-timeline-item(
+        <v-timeline-item
           v-else
           color="grey"
           icon="mdi-calendar"
           fill-dot
         >
           <div class="mt-2">No Player Events</div>
-        </v-timeline-item(>
+        </v-timeline-item>
       </v-timeline>
     </v-card-text>
   </v-card>
