@@ -7,7 +7,7 @@
     :color="color"
   >
     <template #activator="{ on }">
-      <slot on="on">
+      <slot :on="on">
         <tooltip-button
           label="Goal"
           icon="mdi-soccer"
