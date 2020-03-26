@@ -32,7 +32,7 @@
       </template>
     </h2>
     <span class="font-weight-bold">{{ booking.player_name }}</span>
-    | has received a {{ bookingType }}
+    has received a {{ bookingType }}
   </v-timeline-item>
 </template>
 
