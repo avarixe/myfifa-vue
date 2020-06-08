@@ -51,7 +51,11 @@ export const actions = {
     return http({
       method: 'post',
       path: routes.token.get,
-      data: payload,
+      data: {
+        ...payload,
+        client_id: process.env['CLIENT_ID'],
+        client_secret: process.env['CLIENT_SECRET']
+      },
       success ({ data }) {
         Cookie.set('token', data.access_token, {
           expires: data.expires_in / 86400
@@ -69,7 +73,11 @@ export const actions = {
       method: 'post',
       path: routes.token.revoke,
       token: state.token,
-      success ({ data }) {
+      data: {
+        client_id: process.env['CLIENT_ID'],
+        client_secret: process.env['CLIENT_SECRET']
+      },
+      success () {
         Cookie.remove('token')
         commit('SET_TOKEN', null)
         commit('broadcaster/ANNOUNCE', {

@@ -89,8 +89,7 @@
             type: 'money',
             attribute: 'fee',
             label: 'Fee',
-            prefix: this.team.currency,
-            hideDetails: true
+            prefix: this.team.currency
           },
           {
             type: 'string',
