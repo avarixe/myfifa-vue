@@ -6,11 +6,11 @@
     >
       <template #activator="{ on }">
         <div
-          :class="`display-1 ${color}--text`"
+          :class="`text-h4 ${color}--text`"
           v-on="on"
         >
           <v-icon
-            class="display-1"
+            class="text-h4"
             :color="color"
           >
             mdi-{{ icon }}

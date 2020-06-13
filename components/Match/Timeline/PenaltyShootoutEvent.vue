@@ -4,9 +4,9 @@
     icon="mdi-human"
     fill-dot
   >
-    <h2 class="headline font-weight-light my-0 indigo--text">
+    <h2 class="text-h5 font-weight-light my-0 indigo--text">
       {{ match.extra_time ? 120 : 90 }}"
-      <span class="caption text-truncate mx-1 indigo--text">
+      <span class="text-caption text-truncate mx-1 indigo--text">
         Penalty Shootout
       </span>
       <template v-if="!readonly">

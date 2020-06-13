@@ -6,15 +6,15 @@
       dense
     >
       <v-col>
-        <div class="display-1 primary--text">{{ defOVR }}</div>
+        <div class="text-h4 primary--text">{{ defOVR }}</div>
         <div class="subheading">DEF</div>
       </v-col>
       <v-col>
-        <div class="display-1 success--text">{{ midOVR }}</div>
+        <div class="text-h4 success--text">{{ midOVR }}</div>
         <div class="subheading">MID</div>
       </v-col>
       <v-col>
-        <div class="display-1 warning--text">{{ attOVR }}</div>
+        <div class="text-h4 warning--text">{{ attOVR }}</div>
         <div class="subheading">ATT</div>
       </v-col>
     </v-row>

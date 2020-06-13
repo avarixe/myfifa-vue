@@ -37,35 +37,35 @@
         cols="4"
         sm="2"
       >
-        <div class="display-1 success--text">{{ numWins }}</div>
+        <div class="text-h4 success--text">{{ numWins }}</div>
         <div class="subheading">Wins</div>
       </v-col>
       <v-col
         cols="4"
         sm="2"
       >
-        <div class="display-1 warning--text">{{ numDraws }}</div>
+        <div class="text-h4 warning--text">{{ numDraws }}</div>
         <div class="subheading">Draws</div>
       </v-col>
       <v-col
         cols="4"
         sm="2"
       >
-        <div class="display-1 red--text">{{ numLosses }}</div>
+        <div class="text-h4 red--text">{{ numLosses }}</div>
         <div class="subheading">Losses</div>
       </v-col>
       <v-col
         cols="6"
         sm="2"
       >
-        <div class="display-1 teal--text">{{ numGoalsFor }}</div>
+        <div class="text-h4 teal--text">{{ numGoalsFor }}</div>
         <div class="subheading">Goals For</div>
       </v-col>
       <v-col
         cols="6"
         sm="2"
       >
-        <div class="display-1 pink--text">{{ numGoalsAgainst }}</div>
+        <div class="text-h4 pink--text">{{ numGoalsAgainst }}</div>
         <div class="subheading">Goals Against</div>
       </v-col>
     </v-row>

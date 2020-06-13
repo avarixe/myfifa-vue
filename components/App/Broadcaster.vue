@@ -3,6 +3,7 @@
     v-model="snackbar"
     :color="color"
     bottom
+    app
   >
     {{ message }}
     <v-btn

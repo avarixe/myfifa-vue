@@ -4,9 +4,9 @@
     :icon="`mdi-${icon}`"
     fill-dot
   >
-    <h2 :class="`headline font-weight-light my-0 ${color}--text`">
+    <h2 :class="`text-h5 font-weight-light my-0 ${color}--text`">
       {{ goal.minute }}"
-      <span :class="`caption text-truncate mx-1 ${captionColor}--text`">
+      <span :class="`text-caption text-truncate mx-1 ${captionColor}--text`">
         {{ goal.home ? match.home : match.away }}
       </span>
       <template v-if="!readonly">

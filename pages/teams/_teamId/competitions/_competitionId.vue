@@ -17,7 +17,7 @@
         cols="12"
       >
         <div class="subheading">{{ competitionSeason }}</div>
-        <div class="display-1 primary--text">
+        <div class="text-h4 primary--text">
           <fitty-text :text="competition.name" />
         </div>
         <div

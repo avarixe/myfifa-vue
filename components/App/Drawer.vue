@@ -4,12 +4,12 @@
     :value="drawer"
     app
     clipped
-    mobile-break-point="991"
+    mobile-breakpoint="991"
     @input="setDrawer"
   >
     <v-list-item>
       <v-list-item-content>
-        <v-list-item-title class="title">MyFIFA Manager</v-list-item-title>
+        <v-list-item-title class="text-h6">MyFIFA Manager</v-list-item-title>
         <v-list-item-subtitle>v{{ version }}</v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>

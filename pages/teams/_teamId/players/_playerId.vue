@@ -12,14 +12,14 @@
           cols="6"
           sm="2"
         >
-          <div class="display-1">{{ player.pos }}</div>
+          <div class="text-h4">{{ player.pos }}</div>
           <div class="subheading">Position</div>
         </v-col>
         <v-col
           cols="6"
           sm="2"
         >
-          <div class="display-1">{{ player.sec_pos | listArray }}</div>
+          <div class="text-h4">{{ player.sec_pos | listArray }}</div>
           <div class="subheading">
             <fitty-text
               text="Secondary Position(s)"
@@ -31,7 +31,7 @@
           cols="4"
           sm="2"
         >
-          <div class="display-1">{{ player.age }}</div>
+          <div class="text-h4">{{ player.age }}</div>
           <div class="subheading">Age</div>
         </v-col>
         <v-col
@@ -53,7 +53,7 @@
           sm="2"
         >
           <v-icon
-            class="display-1"
+            class="text-h4"
             :color="player.statusColor"
           >
             mdi-{{ player.statusIcon }}
@@ -79,7 +79,7 @@
                     label="Kit No"
                     :options="Array.from({ length: 98 }, (v, k) => k + 1)"
                     dense
-                    display-class="display-1 blue-grey--text"
+                    display-class="text-h4 blue-grey--text"
                     @change="updatePlayerAttribute(player.id, 'kit_no', $event)"
                   />
                   <div class="subheading">Kit No</div>
@@ -94,7 +94,7 @@
                     label="OVR"
                     :options="Array.from({ length: 61 }, (v, k) => k + 40)"
                     dense
-                    display-class="display-1 success--text"
+                    display-class="text-h4 success--text"
                     @change="updatePlayerAttribute(player.id, 'ovr', $event)"
                   />
                   <div class="subheading">OVR</div>
@@ -109,7 +109,7 @@
                     label="Value"
                     input-type="money"
                     :display="player.value | formatMoney(team.currency)"
-                    display-class="display-1 primary--text"
+                    display-class="text-h4 primary--text"
                     required
                     @close="updatePlayerAttribute(player.id, 'value', $event)"
                   />
@@ -119,28 +119,28 @@
                   cols="6"
                   sm="3"
                 >
-                  <div class="display-1 teal--text">{{ numGames || 0 }}</div>
+                  <div class="text-h4 teal--text">{{ numGames || 0 }}</div>
                   <div class="subheading">Matches</div>
                 </v-col>
                 <v-col
                   cols="6"
                   sm="3"
                 >
-                  <div class="display-1 pink--text">{{ numCs || 0 }}</div>
+                  <div class="text-h4 pink--text">{{ numCs || 0 }}</div>
                   <div class="subheading">Clean Sheets</div>
                 </v-col>
                 <v-col
                   cols="6"
                   sm="3"
                 >
-                  <div class="display-1 blue--text">{{ numGoals || 0 }}</div>
+                  <div class="text-h4 blue--text">{{ numGoals || 0 }}</div>
                   <div class="subheading">Goals</div>
                 </v-col>
                 <v-col
                   cols="6"
                   sm="3"
                 >
-                  <div class="display-1 orange--text">{{ numAssists || 0 }}</div>
+                  <div class="text-h4 orange--text">{{ numAssists || 0 }}</div>
                   <div class="subheading">Assists</div>
                 </v-col>
               </v-row>
@@ -163,14 +163,14 @@
                 cols="12"
               >
                 <v-col cols="6">
-                  <div class="title text-center">Timeline</div>
+                  <div class="text-h6 text-center">Timeline</div>
                   <player-timeline
                     :player="player"
                     dense
                   />
                 </v-col>
                 <v-col cols="6">
-                  <div class="title text-center">Growth</div>
+                  <div class="text-h6 text-center">Growth</div>
                   <player-growth :player="player" />
                 </v-col>
               </v-row>

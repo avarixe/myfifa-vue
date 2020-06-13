@@ -6,10 +6,10 @@
     right
   >
     <template #opposite>
-      <span class="headline font-weight-bold pink--text">
+      <span class="text-h5 font-weight-bold pink--text">
         {{ injury.description }} Injury
       </span>
-      <h4 class="title font-weight-light mb-3 pink--text">
+      <h4 class="text-h6 font-weight-light mb-3 pink--text">
         {{ injury.started_on | formatDate }} -
         <span v-if="injury.ended_on">{{ injury.ended_on | formatDate }}</span>
         <span v-else>Present</span>
@@ -24,7 +24,7 @@
         class="py-0"
       >
         <div class="pink--text">
-          <span class="title font-weight-bold">
+          <span class="text-h6 font-weight-bold">
             {{ injury.description }} Injury
           </span>
           <h4 class="body-2 font-weight-light mb-3">
