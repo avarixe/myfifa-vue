@@ -6,10 +6,10 @@
     right
   >
     <template #opposite>
-      <span :class="`headline font-weight-bold ${color}--text`">
+      <span :class="`text-h5 font-weight-bold ${color}--text`">
         Transfer
       </span>
-      <h4 :class="`title font-weight-light mb-3 ${color}--text`">
+      <h4 :class="`text-h6 font-weight-light mb-3 ${color}--text`">
         {{ transfer.moved_on | formatDate }}
       </h4>
     </template>
@@ -22,8 +22,8 @@
         class="py-0"
       >
         <div :class="`${color}--text`">
-          <span class="title font-weight-bold">Transfer</span>
-          <h4 :class="`body-2 font-weight-light mb-3 ${color}--text`">
+          <span class="text-h6 font-weight-bold">Transfer</span>
+          <h4 :class="`text-body-2 font-weight-light mb-3 ${color}--text`">
             {{ transfer.moved_on | formatDate }}
           </h4>
         </div>

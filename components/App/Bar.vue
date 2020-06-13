@@ -19,8 +19,8 @@
       />
     </span>
     <v-toolbar-title>
-      <div class="overline">{{ overline }}</div>
-      <div class="headline font-weight-thin">
+      <div class="text-overline">{{ overline }}</div>
+      <div class="text-h5 font-weight-thin">
         {{ headline }}
         <small v-if="caption">{{ caption }}</small>
       </div>

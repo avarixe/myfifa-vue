@@ -58,12 +58,12 @@
         <v-container class="py-0">
           <v-row class="text-center">
             <v-col cols="12">
-              <div class="display-2">
+              <div class="text-h3">
                 <fitty-text :text="match.competition" />
               </div>
               <div
                 v-if="match.stage"
-                class="display-1"
+                class="text-h4"
               >
                 <fitty-text
                   :text="match.stage"
@@ -74,7 +74,7 @@
             </v-col>
             <v-container class="py-0">
               <v-row
-                class="display-1"
+                class="text-h4"
                 justify="space-between"
                 align="center"
               >

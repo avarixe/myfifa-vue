@@ -6,10 +6,10 @@
     right
   >
     <template #opposite>
-      <span class="headline font-weight-bold indigo--text">
+      <span class="text-h5 font-weight-bold indigo--text">
         Loan at {{ loan.destination }}
       </span>
-      <h4 class="title font-weight-light mb-3 indigo--text">
+      <h4 class="text-h6 font-weight-light mb-3 indigo--text">
         {{ loan.started_on | formatDate }} -
         <span v-if="loan.ended_on">{{ loan.ended_on | formatDate }}</span>
         <span v-else>Present</span>
@@ -24,10 +24,10 @@
         class="py-0"
       >
         <div class="indigo--text">
-          <span class="title font-weight-bold">
+          <span class="text-h6 font-weight-bold">
             Loan at {{ loan.destination }}
           </span>
-          <h4 class="body-2 font-weight-light mb-3">
+          <h4 class="text-body-2 font-weight-light mb-3">
             {{ loan.started_on | formatDate }} -
             <span v-if="loan.ended_on">{{ loan.ended_on | formatDate }}</span>
             <span v-else>Present</span>

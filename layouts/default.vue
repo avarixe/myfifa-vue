@@ -5,10 +5,10 @@
       <app-drawer />
     </client-only>
     <app-broadcaster />
-    <v-content>
+    <v-main>
       <team-channel v-if="teamPage" />
       <nuxt />
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 

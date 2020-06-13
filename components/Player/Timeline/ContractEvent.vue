@@ -6,8 +6,8 @@
     right
   >
     <template #opposite>
-      <span class="headline font-weight-bold blue--text">Contract</span>
-      <h4 class="title font-weight-light mb-3 blue--text">
+      <span class="text-h5 font-weight-bold blue--text">Contract</span>
+      <h4 class="text-h6 font-weight-light mb-3 blue--text">
         {{ contract.started_on | formatDate }} - {{ contract.ended_on | formatDate }}
         <span
           v-if="contract.conclusion"
@@ -26,8 +26,8 @@
         class="py-0"
       >
         <div class="blue--text">
-          <span class="title font-weight-bold">Contract</span>
-          <h4 class="body-2 font-weight-light mb-3">
+          <span class="text-h6 font-weight-bold">Contract</span>
+          <h4 class="text-body-2 font-weight-light mb-3">
             {{ contract.started_on | formatDate }} - {{ contract.ended_on | formatDate }}
             <span
               v-if="contract.conclusion"

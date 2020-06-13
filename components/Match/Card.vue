@@ -22,10 +22,10 @@
         <p class="font-weight-thin mb-0">
           {{ match.competition }}
         </p>
-        <h4 class="title font-weight-light mt-0 mb-3">
+        <h4 class="text-h6 font-weight-light mt-0 mb-3">
           {{ match.home }} v {{ match.away }}
         </h4>
-        <h4 class="title font-weight-light mb-0">
+        <h4 class="text-h6 font-weight-light mb-0">
           {{ match.score }}
         </h4>
         <p class="font-weight-thin mt-0">

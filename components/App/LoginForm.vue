@@ -6,8 +6,8 @@
     <v-card>
       <v-toolbar flat>
         <v-toolbar-title>
-          <div class="headline font-weight-light">MyFIFA Manager</div>
-          <div class="caption">v{{ version }}</div>
+          <div class="text-h5 font-weight-light">MyFIFA Manager</div>
+          <div class="text-caption">v{{ version }}</div>
         </v-toolbar-title>
       </v-toolbar>
       <v-card-text>
