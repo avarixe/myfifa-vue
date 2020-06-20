@@ -72,21 +72,9 @@
 
 <script>
   import { Team } from '@/models'
-  import CompetitionForm from '@/components/Competition/Form'
-  import MatchForm from '@/components/Match/Form'
-  import PlayerForm from '@/components/Player/Form'
-  import SquadForm from '@/components/Squad/Form'
-  import TeamForm from '@/components/Team/Form'
 
   export default {
     name: 'AppFormsMenu',
-    components: {
-      CompetitionForm,
-      MatchForm,
-      PlayerForm,
-      SquadForm,
-      TeamForm
-    },
     computed: {
       team () {
         return this.$route.params.teamId && Team.find(this.$route.params.teamId)

@@ -40,13 +40,13 @@
               touchless
             >
               <v-tab-item>
-                <competition-grid :season="pageSeason" />
+                <season-competition-grid :season="pageSeason" />
               </v-tab-item>
               <v-tab-item>
-                <player-grid :season="pageSeason" />
+                <season-player-grid :season="pageSeason" />
               </v-tab-item>
               <v-tab-item>
-                <transfer-grid :season="pageSeason" />
+                <season-transfer-grid :season="pageSeason" />
               </v-tab-item>
             </v-tabs-items>
           </v-card-text>
@@ -58,20 +58,10 @@
 
 <script>
   import { mapMutations, mapActions } from 'vuex'
-  import CompetitionGrid from '@/components/Season/CompetitionGrid'
-  import PlayerGrid from '@/components/Season/PlayerGrid'
-  import TransferGrid from '@/components/Season/TransferGrid'
-  import SeasonSummary from '@/components/Season/Summary'
   import { TeamAccessible } from '@/mixins'
 
   export default {
     name: 'SeasonPage',
-    components: {
-      CompetitionGrid,
-      PlayerGrid,
-      TransferGrid,
-      SeasonSummary
-    },
     mixins: [
       TeamAccessible
     ],

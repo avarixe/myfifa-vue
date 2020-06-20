@@ -34,13 +34,9 @@
   import { mapState, mapMutations, mapActions } from 'vuex'
   import { Team } from '@/models'
   import { baseURL } from '@/api'
-  import AppFormsMenu from './FormsMenu'
 
   export default {
     name: 'AppBar',
-    components: {
-      AppFormsMenu
-    },
     data: () => ({
       responsive: false
     }),

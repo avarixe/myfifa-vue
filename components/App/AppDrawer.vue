@@ -94,17 +94,9 @@
 <script>
   import { mapState, mapMutations, mapActions } from 'vuex'
   import { TeamAccessible } from '@/mixins'
-  import SettingsForm from './SettingsForm'
-  import TeamDatePicker from '@/components/Team/DatePicker'
-  import UserForm from './UserForm'
 
   export default {
     name: 'AppDrawer',
-    components: {
-      SettingsForm,
-      TeamDatePicker,
-      UserForm
-    },
     mixins: [
       TeamAccessible
     ],

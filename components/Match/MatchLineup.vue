@@ -49,15 +49,9 @@
   import { TeamAccessible } from '@/mixins'
   import { Player } from '@/models'
   import { positions } from '@/models/Match'
-  import CapView from '@/components/Cap/View'
-  import CapSubView from '@/components/Cap/SubView'
 
   export default {
     name: 'MatchLineup',
-    components: {
-      CapView,
-      CapSubView
-    },
     mixins: [
       TeamAccessible
     ],

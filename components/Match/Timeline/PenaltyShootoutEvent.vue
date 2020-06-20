@@ -36,13 +36,8 @@
 </template>
 
 <script>
-  import PenaltyShootoutForm from '@/components/PenaltyShootout/Form'
-
   export default {
     name: 'PenaltyShootoutEvent',
-    components: {
-      PenaltyShootoutForm
-    },
     props: {
       match: { type: Object, required: true },
       penaltyShootout: { type: Object, required: true },

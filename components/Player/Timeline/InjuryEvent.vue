@@ -68,13 +68,9 @@
 <script>
   import { formatDistance, parseISO } from 'date-fns'
   import { TeamAccessible } from '@/mixins'
-  import InjuryForm from '@/components/Injury/Form'
 
   export default {
     name: 'InjuryEvent',
-    components: {
-      InjuryForm
-    },
     mixins: [
       TeamAccessible
     ],

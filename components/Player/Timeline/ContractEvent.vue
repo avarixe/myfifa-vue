@@ -92,13 +92,9 @@
 
 <script>
   import { TeamAccessible } from '@/mixins'
-  import ContractForm from '@/components/Contract/Form'
 
   export default {
     name: 'ContractEvent',
-    components: {
-      ContractForm
-    },
     mixins: [
       TeamAccessible
     ],

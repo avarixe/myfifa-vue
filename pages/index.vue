@@ -20,16 +20,12 @@
 
 <script>
   import { mapGetters, mapMutations } from 'vuex'
-  import LoginForm from '@/components/App/LoginForm'
 
   export default {
     name: 'AppPage',
     middleware: [
       'authenticated'
     ],
-    components: {
-      LoginForm
-    },
     transition: 'fade-transition',
     computed: mapGetters([
       'authenticated'

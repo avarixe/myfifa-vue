@@ -86,13 +86,9 @@
 <script>
   import { mapMutations, mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
-  import TableRowForm from '@/components/TableRow/Form'
 
   export default {
     name: 'TableStage',
-    components: {
-      TableRowForm
-    },
     mixins: [
       CompetitionAccessible
     ],

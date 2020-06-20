@@ -76,13 +76,9 @@
 <script>
   import { formatDistance, parseISO } from 'date-fns'
   import { TeamAccessible } from '@/mixins'
-  import LoanForm from '@/components/Loan/Form'
 
   export default {
     name: 'LoanEvent',
-    components: {
-      LoanForm
-    },
     mixins: [
       TeamAccessible
     ],

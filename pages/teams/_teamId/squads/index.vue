@@ -11,13 +11,9 @@
 <script>
   import { mapMutations, mapActions } from 'vuex'
   import { TeamAccessible } from '@/mixins'
-  import SquadGrid from '@/components/Squad/Grid'
 
   export default {
     name: 'SquadsPage',
-    components: {
-      SquadGrid
-    },
     mixins: [
       TeamAccessible
     ],

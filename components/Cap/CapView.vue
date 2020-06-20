@@ -49,15 +49,9 @@
   import { mapMutations, mapActions } from 'vuex'
   import { activePlayers } from '@/models/Player'
   import { positions } from '@/models/Match'
-  import CapEvents from './Events'
-  import PlayerCard from '@/components/Player/Card'
 
   export default {
     name: 'CapView',
-    components: {
-      CapEvents,
-      PlayerCard
-    },
     props: {
       cap: { type: Object, required: true },
       match: { type: Object, required: true },

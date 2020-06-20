@@ -71,15 +71,11 @@
 
 <script>
   import { Match } from '@/models'
-  import MatchCard from '@/components/Match/Card'
   import { TeamAccessible } from '@/mixins'
   import { format, parseISO } from 'date-fns'
 
   export default {
     name: 'TeamCalendar',
-    components: {
-      MatchCard
-    },
     mixins: [
       TeamAccessible
     ],

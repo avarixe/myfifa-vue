@@ -77,13 +77,9 @@
 
 <script>
   import { TeamAccessible } from '@/mixins'
-  import TransferForm from '@/components/Transfer/Form'
 
   export default {
     name: 'TransferEvent',
-    components: {
-      TransferForm
-    },
     mixins: [
       TeamAccessible
     ],

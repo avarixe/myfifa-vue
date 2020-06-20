@@ -38,13 +38,8 @@
 </template>
 
 <script>
-  import SubstitutionForm from '@/components/Substitution/Form'
-
   export default {
     name: 'SubstitutionEvent',
-    components: {
-      SubstitutionForm
-    },
     props: {
       match: { type: Object, required: true },
       substitution: { type: Object, required: true },

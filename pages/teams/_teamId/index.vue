@@ -99,22 +99,10 @@
 <script>
   import { mapMutations, mapActions } from 'vuex'
   import { Match, Player } from '@/models'
-  import MatchCard from '@/components/Match/Card'
-  import SeasonCard from '@/components/Season/Card'
-  import TeamDatePicker from '@/components/Team/DatePicker'
-  import TeamForm from '@/components/Team/Form'
-  import PlayerListCard from '@/components/Player/ListCard'
   import { TeamAccessible } from '@/mixins'
 
   export default {
     name: 'TeamPage',
-    components: {
-      MatchCard,
-      PlayerListCard,
-      SeasonCard,
-      TeamDatePicker,
-      TeamForm
-    },
     mixins: [
       TeamAccessible
     ],
