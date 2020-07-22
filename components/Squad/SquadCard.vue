@@ -62,13 +62,9 @@
 
 <script>
   import { Player } from '@/models'
-  import SquadForm from './Form'
 
   export default {
     name: 'SquadCard',
-    components: {
-      SquadForm
-    },
     props: {
       squad: { type: Object, required: true }
     },

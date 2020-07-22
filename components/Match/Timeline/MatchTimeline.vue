@@ -22,13 +22,9 @@
 
 <script>
   import orderBy from 'lodash.orderby'
-  import MatchTimelineItem from './Item'
   import { TeamAccessible } from '@/mixins'
 
   export default {
-    components: {
-      MatchTimelineItem
-    },
     mixins: [
       TeamAccessible
     ],

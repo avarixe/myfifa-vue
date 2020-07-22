@@ -185,18 +185,10 @@
 <script>
   import { mapMutations, mapActions } from 'vuex'
   import { Player } from '@/models'
-  import PlayerActions from '@/components/Player/Actions'
-  import PlayerGrowth from '@/components/Player/Growth'
-  import PlayerTimeline from '@/components/Player/Timeline'
   import { TeamAccessible } from '@/mixins'
 
   export default {
     name: 'PlayerPage',
-    components: {
-      PlayerActions,
-      PlayerGrowth,
-      PlayerTimeline
-    },
     mixins: [
       TeamAccessible
     ],

@@ -167,20 +167,10 @@
 <script>
   import { mapMutations, mapActions } from 'vuex'
   import { Competition } from '@/models'
-  import CompetitionForm from '@/components/Competition/Form'
-  import StageForm from '@/components/Stage/Form'
-  import RoundStage from '@/components/Stage/Round'
-  import TableStage from '@/components/Stage/Table'
   import { TeamAccessible } from '@/mixins'
 
   export default {
     name: 'CompetitionPage',
-    components: {
-      CompetitionForm,
-      RoundStage,
-      TableStage,
-      StageForm
-    },
     mixins: [
       TeamAccessible
     ],

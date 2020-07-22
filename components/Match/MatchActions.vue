@@ -30,25 +30,8 @@
 </template>
 
 <script>
-  import CapForm from '@/components/Cap/Form'
-  import MatchSquadApplier from './SquadApplier'
-  import MatchSquadSaver from './SquadSaver'
-  import GoalForm from '@/components/Goal/Form'
-  import BookingForm from '@/components/Booking/Form'
-  import SubstitutionForm from '@/components/Substitution/Form'
-  import PenaltyShootoutForm from '@/components/PenaltyShootout/Form'
-
   export default {
     name: 'MatchActions',
-    components: {
-      CapForm,
-      MatchSquadApplier,
-      MatchSquadSaver,
-      GoalForm,
-      BookingForm,
-      SubstitutionForm,
-      PenaltyShootoutForm
-    },
     props: {
       match: { type: Object, required: true }
     },

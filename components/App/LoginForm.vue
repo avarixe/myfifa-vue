@@ -54,13 +54,9 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import UserForm from '@/components/App/UserForm'
 
   export default {
     name: 'LoginForm',
-    components: {
-      UserForm
-    },
     data: () => ({
       loading: false,
       errorMessage: '',

@@ -11,13 +11,9 @@
 <script>
   import { mapMutations, mapActions } from 'vuex'
   import { TeamAccessible } from '@/mixins'
-  import MatchGrid from '@/components/Match/Grid'
 
   export default {
     name: 'MatchesPage',
-    components: {
-      MatchGrid
-    },
     mixins: [
       TeamAccessible
     ],

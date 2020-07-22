@@ -13,14 +13,10 @@
 
 <script>
   import { Squad } from '@/models'
-  import SquadCard from './Card'
   import { TeamAccessible } from '@/mixins'
 
   export default {
     name: 'SquadGrid',
-    components: {
-      SquadCard
-    },
     mixins: [
       TeamAccessible
     ],

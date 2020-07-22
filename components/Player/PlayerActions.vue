@@ -37,25 +37,9 @@
 
 <script>
   import { Loan, Injury } from '@/models'
-  import ContractForm from '@/components/Contract/Form'
-  import InjuryForm from '@/components/Injury/Form'
-  import LoanForm from '@/components/Loan/Form'
-  import TransferForm from '@/components/Transfer/Form'
-  import PlayerRetire from './Retire'
-  import PlayerRelease from './Release'
-  import PlayerForm from './Form'
 
   export default {
     name: 'PlayerAction',
-    components: {
-      ContractForm,
-      InjuryForm,
-      LoanForm,
-      TransferForm,
-      PlayerRetire,
-      PlayerRelease,
-      PlayerForm
-    },
     props: {
       player: { type: Object, required: true }
     },

@@ -71,13 +71,9 @@
 <script>
   import { mapMutations, mapActions } from 'vuex'
   import { CompetitionAccessible } from '@/mixins'
-  import FixtureForm from '@/components/Fixture/Form'
 
   export default {
     name: 'RoundStage',
-    components: {
-      FixtureForm
-    },
     mixins: [
       CompetitionAccessible
     ],

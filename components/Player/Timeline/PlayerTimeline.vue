@@ -26,14 +26,10 @@
 
 <script>
   import orderBy from 'lodash.orderby'
-  import PlayerTimelineItem from './Item'
   import { TeamAccessible } from '@/mixins'
 
   export default {
     name: 'PlayerTimeline',
-    components: {
-      PlayerTimelineItem
-    },
     mixins: [
       TeamAccessible
     ],

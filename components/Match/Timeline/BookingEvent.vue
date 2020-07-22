@@ -37,13 +37,8 @@
 </template>
 
 <script>
-  import BookingForm from '@/components/Booking/Form'
-
   export default {
     name: 'BookingEvent',
-    components: {
-      BookingForm
-    },
     props: {
       match: { type: Object, required: true },
       booking: { type: Object, required: true },

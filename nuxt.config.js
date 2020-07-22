@@ -44,6 +44,8 @@ export default {
     '@nuxtjs/dotenv'
   ],
 
+  components: true,
+
   // vuetify: {},
 
   /*
@@ -51,7 +53,6 @@ export default {
   */
   plugins: [
     '@/plugins/fitty.js',
-    '@/plugins/custom/components.js',
     '@/plugins/custom/filters.js',
     '@/plugins/vue-chartist.js',
     '@/plugins/vue-flag-icon.client.js'

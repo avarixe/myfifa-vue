@@ -39,13 +39,8 @@
 </template>
 
 <script>
-  import GoalForm from '@/components/Goal/Form'
-
   export default {
     name: 'GoalEvent',
-    components: {
-      GoalForm
-    },
     props: {
       match: { type: Object, required: true },
       goal: { type: Object, required: true },

@@ -168,20 +168,10 @@
 <script>
   import { mapMutations, mapActions } from 'vuex'
   import { Match, Player } from '@/models'
-  import MatchForm from '@/components/Match/Form'
-  import MatchActions from '@/components/Match/Actions'
-  import MatchLineup from '@/components/Match/Lineup'
-  import MatchTimeline from '@/components/Match/Timeline'
   import { TeamAccessible } from '@/mixins'
 
   export default {
     name: 'MatchPage',
-    components: {
-      MatchForm,
-      MatchActions,
-      MatchLineup,
-      MatchTimeline
-    },
     mixins: [
       TeamAccessible
     ],

@@ -76,13 +76,9 @@
   import { addYears, format, parseISO } from 'date-fns'
   import { Match, Team } from '@/models'
   import { sum } from '@/functions'
-  import SeasonTeamGrowth from './TeamGrowth'
 
   export default {
     name: 'SeasonSummary',
-    components: {
-      SeasonTeamGrowth
-    },
     props: {
       season: { type: [String, Number], required: true }
     },

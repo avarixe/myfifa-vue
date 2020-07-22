@@ -102,13 +102,9 @@
   import XLSX from 'xlsx/dist/xlsx.mini.min'
   import { format } from 'date-fns'
   import { TeamAccessible } from '@/mixins'
-  import PlayerImportRow from '@/components/Player/ImportRow'
 
   export default {
     name: 'ImportPlayersPage',
-    components: {
-      PlayerImportRow
-    },
     mixins: [
       TeamAccessible
     ],

@@ -15,19 +15,9 @@
 <script>
   import { mapState, mapGetters } from 'vuex'
   import { Team } from '@/models'
-  import AppBar from '@/components/App/Bar'
-  import AppBroadcaster from '@/components/App/Broadcaster'
-  import TeamChannel from '@/components/Team/Channel'
-  import AppDrawer from '@/components/App/Drawer'
 
   export default {
     name: 'Layout',
-    components: {
-      AppBar,
-      AppBroadcaster,
-      TeamChannel,
-      AppDrawer
-    },
     head () {
       return {
         title: this.title
