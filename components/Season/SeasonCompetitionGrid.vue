@@ -22,13 +22,13 @@
 </template>
 
 <script>
-  import { sum } from '@/functions'
   import { Competition, Team } from '@/models'
 
   export default {
     name: 'SeasonCompetitionGrid',
     props: {
-      season: { type: Number, required: true }
+      season: { type: Number, required: true },
+      results: { type: Object, required: true }
     },
     data: () => ({
       headers: [
@@ -57,24 +57,13 @@
       },
       rows () {
         return this.competitions.map(competition => {
-          const matches = competition.matches
-
-          const wins = matches
-            .filter(match => match.team_result === 'win')
-            .length
-          const draws = matches
-            .filter(match => match.team_result === 'draw')
-            .length
-          const losses = matches
-            .filter(match => match.team_result === 'loss')
-            .length
-
-          const gf = sum(matches.map(match =>
-            match.home === this.team.title ? match.home_score : match.away_score
-          ))
-          const ga = sum(matches.map(match =>
-            match.home === this.team.title ? match.away_score : match.home_score
-          ))
+          const {
+            wins,
+            draws,
+            losses,
+            gf,
+            ga
+          } = this.results[competition.name]
 
           return {
             name: competition.name,

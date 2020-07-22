@@ -20,7 +20,11 @@
       <v-col cols="12">
         <v-card>
           <v-card-text>
-            <season-summary :season="pageSeason" />
+            <season-summary
+              :season-start="seasonStart"
+              :season-end="seasonEnd"
+              :season-data="seasonData"
+            />
           </v-card-text>
         </v-card>
       </v-col>
@@ -40,10 +44,17 @@
               touchless
             >
               <v-tab-item>
-                <season-competition-grid :season="pageSeason" />
+                <season-competition-grid
+                  :season="pageSeason"
+                  :results="seasonData.results"
+                />
               </v-tab-item>
               <v-tab-item>
-                <season-player-grid :season="pageSeason" />
+                <season-player-grid
+                  :season-start="seasonStart"
+                  :season-end="seasonEnd"
+                  :season-data="seasonData"
+                />
               </v-tab-item>
               <v-tab-item>
                 <season-transfer-grid :season="pageSeason" />
@@ -58,6 +69,7 @@
 
 <script>
   import { mapMutations, mapActions } from 'vuex'
+  import { addYears, format, parseISO } from 'date-fns'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -69,24 +81,38 @@
       'authenticated'
     ],
     transition: 'fade-transition',
-    data: () => ({
-      tab: 0
-    }),
     computed: {
       title () {
         return `${this.seasonLabel(this.pageSeason)} Season`
       },
       pageSeason () {
         return parseInt(this.$route.params.season)
+      },
+      seasonStart () {
+        let date = parseISO(this.team.started_on)
+        date = addYears(date, parseInt(this.pageSeason))
+        return format(date, 'yyyy-MM-dd')
+      },
+      seasonEnd () {
+        let date = parseISO(this.team.started_on)
+        date = addYears(date, parseInt(this.pageSeason) + 1)
+        return format(date, 'yyyy-MM-dd')
+      }
+    },
+    async asyncData ({ params, store }) {
+      const { data } = await store.dispatch('teams/ANALYZE_SEASON', {
+        teamId: params.teamId,
+        season: params.season
+      })
+      return {
+        seasonData: data,
+        tab: 0
       }
     },
     async fetch () {
       await Promise.all([
         this.fetchCompetitions({ teamId: this.team.id }),
         this.fetchPlayers({ teamId: this.team.id }),
-        this.fetchMatches({ teamId: this.team.id }),
-        this.searchPlayerHistories({ teamId: this.team.id }),
-        this.searchContracts({ teamId: this.team.id }),
         this.searchTransfers({ teamId: this.team.id })
       ])
       this.setPage({
@@ -102,9 +128,6 @@
       ...mapActions({
         fetchCompetitions: 'competitions/FETCH',
         fetchPlayers: 'players/FETCH',
-        fetchMatches: 'matches/FETCH',
-        searchPlayerHistories: 'playerHistories/SEARCH',
-        searchContracts: 'contracts/SEARCH',
         searchTransfers: 'transfers/SEARCH'
       }),
       linkToSeason (season) {

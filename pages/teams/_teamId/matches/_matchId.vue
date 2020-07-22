@@ -230,14 +230,14 @@
     async fetch () {
       await Promise.all([
         this.getMatch({ matchId: this.matchId }),
-        this.fetchCaps({ matchId: this.matchId }),
-        this.fetchGoals({ matchId: this.matchId }),
-        this.fetchSubstitutions({ matchId: this.matchId }),
-        this.fetchBookings({ matchId: this.matchId }),
         this.fetchPlayers({ teamId: this.team.id }),
-        this.searchPlayerHistories({ teamId: this.team.id }),
-        this.fetchSquads({ teamId: this.team.id })
+        this.searchPlayerHistories({ teamId: this.team.id })
       ])
+
+      if (!this.readonly) {
+        this.fetchSquads({ teamId: this.team.id })
+      }
+
       this.setPage({
         title: `${this.match.home} vs ${this.match.away}`,
         overline: this.team.title,

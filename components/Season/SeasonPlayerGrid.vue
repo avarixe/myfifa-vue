@@ -61,15 +61,16 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import { addYears, format, parseISO } from 'date-fns'
   import { Team, Player } from '@/models'
   import { positions } from '@/models/Player'
+  import findLast from 'lodash.findlast'
 
   export default {
     name: 'SeasonPlayerGrid',
     props: {
-      season: { type: [String, Number], required: true }
+      seasonStart: { type: String, required: true },
+      seasonEnd: { type: String, required: true },
+      seasonData: { type: Object, required: true }
     },
     data: () => ({
       mode: 0,
@@ -79,15 +80,7 @@
       ],
       loading: false,
       filterActive: true,
-      search: '',
-      stats: {
-        player_ids: [],
-        num_games: {},
-        num_minutes: {},
-        num_goals: {},
-        num_assists: {},
-        num_cs: {}
-      }
+      search: ''
     }),
     computed: {
       team () {
@@ -126,14 +119,19 @@
       players () {
         return Player
           .query()
-          .with('contracts|histories')
-          .whereIdIn(this.stats.player_ids.map(id => parseInt(id)))
+          .whereIdIn(this.seasonData.player_ids.map(id => parseInt(id)))
           .get()
       },
       rows () {
         return this.players.map(player => {
-          const firstRecord = player.recordAt(this.seasonStart) || player.histories[0]
-          const lastRecord = player.recordAt(this.seasonEnd)
+          const firstRecord = findLast(
+            this.seasonData.records[player.id],
+            record => record.recorded_on <= this.seasonStart
+          ) || this.seasonData.records[player.id][0]
+          const lastRecord = findLast(
+            this.seasonData.records[player.id],
+            record => record.recorded_on <= this.seasonEnd
+          )
 
           const startOvr = firstRecord.ovr
           const startValue = firstRecord.value
@@ -143,11 +141,11 @@
           const ovrChange = endOvr - startOvr
           const valueChange = (endValue - startValue) / startValue * 100
 
-          const numGames = this.stats.num_games[player.id] || 0
-          const numMinutes = this.stats.num_minutes[player.id] || 0
-          const numGoals = this.stats.num_goals[player.id] || 0
-          const numAssists = this.stats.num_assists[player.id] || 0
-          const numCs = this.stats.num_cs[player.id] || 0
+          const numGames = this.seasonData.num_games[player.id] || 0
+          const numMinutes = this.seasonData.num_minutes[player.id] || 0
+          const numGoals = this.seasonData.num_goals[player.id] || 0
+          const numAssists = this.seasonData.num_assists[player.id] || 0
+          const numCs = this.seasonData.num_cs[player.id] || 0
 
           return {
             ...player,
@@ -165,33 +163,9 @@
             valueChange
           }
         })
-      },
-      seasonStart () {
-        let date = parseISO(this.team.started_on)
-        date = addYears(date, parseInt(this.season))
-        return format(date, 'yyyy-MM-dd')
-      },
-      seasonEnd () {
-        let date = parseISO(this.team.started_on)
-        date = addYears(date, parseInt(this.season) + 1)
-        return format(date, 'yyyy-MM-dd')
       }
     },
-    mounted () {
-      this.getSeasonStats()
-    },
     methods: {
-      ...mapActions('teams', {
-        analyzeSeason: 'ANALYZE_SEASON'
-      }),
-      async getSeasonStats () {
-        const { data } = await this.analyzeSeason({
-          teamId: this.team.id,
-          season: this.season
-        })
-
-        this.stats = data
-      },
       sortPos (posA, posB) {
         return positions.indexOf(posA) - positions.indexOf(posB)
       },
