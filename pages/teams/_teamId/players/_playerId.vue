@@ -236,14 +236,8 @@
       }
     },
     async fetch () {
-      await Promise.all([
-        this.getPlayer({ playerId: this.playerId }),
-        this.searchPlayerHistories({ teamId: this.team.id }),
-        this.fetchContracts({ playerId: this.playerId }),
-        this.fetchInjuries({ playerId: this.playerId }),
-        this.fetchLoans({ playerId: this.playerId }),
-        this.fetchTransfers({ playerId: this.playerId })
-      ])
+      await this.getPlayer({ playerId: this.playerId })
+
       this.setPage({
         title: this.player.name,
         overline: this.team.title,

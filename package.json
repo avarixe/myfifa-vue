@@ -19,6 +19,7 @@
     "date-fns": "^2.8.1",
     "js-cookie": "^2.2.0",
     "lodash.compact": "^3.0.1",
+    "lodash.findlast": "^4.6.0",
     "lodash.orderby": "^4.6.0",
     "lodash.pick": "^4.4.0",
     "nuxt": "^2.11.0",

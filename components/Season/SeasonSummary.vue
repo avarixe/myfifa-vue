@@ -9,25 +9,23 @@
         cols="12"
         sm="6"
       >
-        <season-team-growth
+        <delta-statistic
           label="Team Value"
-          attribute="value"
           :formatter="x => `${team.currency}${parseInt(x).toLocaleString()}`"
-          :season-start="seasonStart"
-          :season-end="seasonEnd"
+          :start-value="startTeamValue"
+          :end-value="endTeamValue"
         />
       </v-col>
       <v-col
         cols="12"
         sm="6"
       >
-        <season-team-growth
+        <delta-statistic
           label="Team OVR"
-          attribute="ovr"
           :formatter="parseInt"
           average
-          :season-start="seasonStart"
-          :season-end="seasonEnd"
+          :start-value="startTeamOvr"
+          :end-value="endTeamOvr"
         />
       </v-col>
       <v-col cols="12">
@@ -73,56 +71,78 @@
 </template>
 
 <script>
-  import { addYears, format, parseISO } from 'date-fns'
-  import { Match, Team } from '@/models'
-  import { sum } from '@/functions'
+  import findLast from 'lodash.findlast'
+  import { Team } from '@/models'
+
+  function calcTotal (records, attribute) {
+    return records.reduce((total, record) => total + record[attribute], 0)
+  }
+
+  function calcAverage (records, attribute) {
+    return calcTotal(records, attribute) / records.length
+  }
 
   export default {
     name: 'SeasonSummary',
     props: {
-      season: { type: [String, Number], required: true }
+      seasonStart: { type: String, required: true },
+      seasonEnd: { type: String, required: true },
+      seasonData: { type: Object, required: true }
     },
     computed: {
       team () {
         return Team.find(this.$route.params.teamId)
       },
-      seasonStart () {
-        let date = parseISO(this.team.started_on)
-        date = addYears(date, parseInt(this.season))
-        return format(date, 'yyyy-MM-dd')
+      recordsAtStart () {
+        let records = []
+        for (const playerId in this.seasonData.records) {
+          const record = findLast(
+            this.seasonData.records[playerId],
+            record => record.recorded_on <= this.seasonStart
+          )
+          record && records.push(record)
+        }
+        return records
       },
-      seasonEnd () {
-        let date = parseISO(this.team.started_on)
-        date = addYears(date, parseInt(this.season) + 1)
-        return format(date, 'yyyy-MM-dd')
+      recordsAtEnd () {
+        let records = []
+        for (const playerId in this.seasonData.records) {
+          if (this.seasonData.expired_players.indexOf(parseInt(playerId)) < 0) {
+            const record = findLast(
+              this.seasonData.records[playerId],
+              record => record.recorded_on <= this.seasonEnd
+            )
+            record && records.push(record)
+          }
+        }
+        return records
       },
-      matches () {
-        return Match
-          .query()
-          .where('team_id', this.team.id)
-          .where('played_on', date => {
-            return this.seasonStart <= date && date < this.seasonEnd
-          })
-          .get()
+      startTeamValue () {
+        return calcTotal(this.recordsAtStart, 'value')
+      },
+      endTeamValue () {
+        return calcTotal(this.recordsAtEnd, 'value')
+      },
+      startTeamOvr () {
+        return calcAverage(this.recordsAtStart, 'ovr')
+      },
+      endTeamOvr () {
+        return calcAverage(this.recordsAtEnd, 'ovr')
       },
       numWins () {
-        return this.matches.filter(match => match.team_result === 'win').length
+        return calcTotal(Object.values(this.seasonData.results), 'wins')
       },
       numDraws () {
-        return this.matches.filter(match => match.team_result === 'draw').length
+        return calcTotal(Object.values(this.seasonData.results), 'draws')
       },
       numLosses () {
-        return this.matches.filter(match => match.team_result === 'loss').length
+        return calcTotal(Object.values(this.seasonData.results), 'losses')
       },
       numGoalsFor () {
-        return sum(this.matches.map(match =>
-          match.home === this.team.title ? match.home_score : match.away_score
-        ))
+        return calcTotal(Object.values(this.seasonData.results), 'gf')
       },
       numGoalsAgainst () {
-        return sum(this.matches.map(match =>
-          match.home === this.team.title ? match.away_score : match.home_score
-        ))
+        return calcTotal(Object.values(this.seasonData.results), 'ga')
       }
     }
   }

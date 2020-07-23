@@ -1,5 +1,5 @@
 import { crud, http, routes } from '@/api'
-import { Player, PlayerHistory } from '@/models'
+import { Player } from '@/models'
 
 // actions
 export const actions = {
@@ -32,30 +32,6 @@ export const actions = {
     return http({
       method: 'post',
       path: routes.players.release,
-      pathData: { playerId },
-      token: rootState.token
-    })
-  },
-  GET_HISTORY ({ rootState }, { playerId }) {
-    return http({
-      path: routes.players.history,
-      pathData: { playerId },
-      token: rootState.token,
-      success ({ data }) {
-        PlayerHistory.insert({ data })
-      }
-    })
-  },
-  GET_CURRENT_INJURY ({ rootState }, { playerId }) {
-    return http({
-      path: routes.players.currentInjury,
-      pathData: { playerId },
-      token: rootState.token
-    })
-  },
-  GET_CURRENT_LOAN ({ rootState }, { playerId }) {
-    return http({
-      path: routes.players.currentLoan,
       pathData: { playerId },
       token: rootState.token
     })
