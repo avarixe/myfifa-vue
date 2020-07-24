@@ -58,12 +58,12 @@
       rows () {
         return this.competitions.map(competition => {
           const {
-            wins,
-            draws,
-            losses,
-            gf,
-            ga
-          } = this.results[competition.name]
+            wins = 0,
+            draws = 0,
+            losses = 0,
+            gf = 0,
+            ga = 0
+          } = this.results[competition.name] || {}
 
           return {
             name: competition.name,
