@@ -39,12 +39,15 @@
           store="matches"
           :label="`${match.home} v ${match.away}`"
         >
-          <v-btn
-            dark
-            class="mb-1"
-          >
-            Remove
-          </v-btn>
+          <template #default="{ on }">
+            <v-btn
+              dark
+              class="mb-1"
+              v-on="on"
+            >
+              Remove
+            </v-btn>
+          </template>
         </record-remove>
       </v-col>
 

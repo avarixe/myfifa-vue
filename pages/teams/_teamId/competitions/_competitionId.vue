@@ -84,12 +84,15 @@
           store="competitions"
           :label="`${competitionSeason} ${competition.name}`"
         >
-          <v-btn
-            class="my-1"
-            dark
-          >
-            Remove
-          </v-btn>
+          <template #default="{ on }">
+            <v-btn
+              class="my-1"
+              dark
+              v-on="on"
+            >
+              Remove
+            </v-btn>
+          </template>
         </record-remove>
       </v-col>
 

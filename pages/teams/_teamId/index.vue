@@ -36,12 +36,15 @@
           :label="team.title"
           :redirect="{ name: 'teams' }"
         >
-          <v-btn
-            dark
-            class="mb-1"
-          >
-            Remove
-          </v-btn>
+          <template #default="{ on }">
+            <v-btn
+              dark
+              class="mb-1"
+              v-on="on"
+            >
+              Remove
+            </v-btn>
+          </template>
         </record-remove>
       </v-col>
       <v-col

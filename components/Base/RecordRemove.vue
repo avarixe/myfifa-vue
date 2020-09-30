@@ -1,36 +1,57 @@
 <template>
-  <div
-    class="d-inline-block"
-    @click.stop="snackbar = true"
+  <v-dialog
+    v-model="dialog"
+    :persistent="loading"
+    max-width="500px"
   >
-    <slot>
-      <tooltip-button
-        icon="mdi-delete"
-        :label="`Remove ${label}`"
-        dark
-      />
-    </slot>
-    <v-snackbar
-      v-model="snackbar"
-      color="black"
-    >
-      Remove {{ label }}?
-      <v-btn
-        dark
-        text
-        @click="remove"
+    <template #activator="{ on }">
+      <slot :on="on">
+        <tooltip-button
+          icon="mdi-delete"
+          dark
+          :label="`Remove ${label}`"
+          :on="on"
+        />
+      </slot>
+    </template>
+    <v-card>
+      <v-card-title>
+        <v-toolbar-title>
+          <v-icon left>mdi-alert</v-icon>
+          Confirm Action
+        </v-toolbar-title>
+      </v-card-title>
+      <v-card-text>
+        Remove {{ label }}?
+      </v-card-text>
+      <v-alert
+        v-model="error"
+        type="error"
+        dismissible
+        tile
       >
-        Yes
-      </v-btn>
-      <v-btn
-        dark
-        text
-        @click.stop="snackbar = false"
-      >
-        No
-      </v-btn>
-    </v-snackbar>
-  </div>
+        {{ errorMessage }}
+      </v-alert>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn
+          text
+          :disabled="loading"
+          @click="dialog = false"
+        >
+          No
+        </v-btn>
+        <v-btn
+          text
+          color="red"
+          :loading="loading"
+          @click="remove"
+        >
+          Yes
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -48,17 +69,31 @@
       label: { type: String, default: null }
     },
     data: () => ({
-      snackbar: false
+      dialog: false,
+      loading: false,
+      error: false,
+      errorMessage: ''
     }),
     methods: {
-      remove () {
-        this.$store.dispatch(
-          `${this.store}/REMOVE`,
-          this.record.id
-        )
+      async remove () {
+        try {
+          this.loading = true
 
-        if (this.redirect) {
-          this.$router.push(this.redirect)
+          await this.$store.dispatch(
+            `${this.store}/REMOVE`,
+            this.record.id
+          )
+
+          if (this.redirect) {
+            this.$router.push(this.redirect)
+          }
+
+          this.dialog = false
+        } catch (e) {
+          this.errorMessage = e.message
+          this.error = true
+        } finally {
+          this.loading = false
         }
       }
     }

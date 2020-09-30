@@ -1,32 +1,59 @@
 <template>
-  <div class="d-inline-block">
-    <tooltip-button
-      label="Retire"
-      icon="mdi-human-greeting"
-      color="purple"
-      @click="snackbar = true"
-    />
-    <v-snackbar
-      v-model="snackbar"
-      color="purple"
-    >
-      {{ player.name }} is Retiring End of Season?
-      <v-btn
-        dark
-        text
-        @click="retirePlayer(player.id)"
+  <v-dialog
+    v-model="dialog"
+    :persistent="loading"
+    max-width="500px"
+  >
+    <template #activator="{ on }">
+      <tooltip-button
+        label="Retire"
+        icon="mdi-human-greeting"
+        color="purple"
+        :on="on"
+      />
+    </template>
+    <v-card>
+      <v-card-title class="purple">
+        <v-toolbar-title>
+          <v-icon left>mdi-human-greeting</v-icon>
+          Confirm Action
+        </v-toolbar-title>
+      </v-card-title>
+      <v-card-text class="pb-0">
+        <v-row>
+          <v-col cols="12">
+            {{ player.name }} is Retiring End of Season?
+          </v-col>
+        </v-row>
+      </v-card-text>
+      <v-alert
+        v-model="error"
+        type="error"
+        dismissible
+        tile
       >
-        Yes
-      </v-btn>
-      <v-btn
-        dark
-        text
-        @click.stop="snackbar = false"
-      >
-        No
-      </v-btn>
-    </v-snackbar>
-  </div>
+        {{ errorMessage }}
+      </v-alert>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn
+          text
+          :disabled="loading"
+          @click="dialog = false"
+        >
+          No
+        </v-btn>
+        <v-btn
+          text
+          color="purple"
+          :loading="loading"
+          @click="retire"
+        >
+          Yes
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -38,10 +65,27 @@
       player: { type: Object, required: true }
     },
     data: () => ({
-      snackbar: false
+      dialog: false,
+      loading: false,
+      error: false,
+      errorMessage: ''
     }),
-    methods: mapActions('players', {
-      retirePlayer: 'RETIRE'
-    })
+    methods: {
+      ...mapActions('players', {
+        retirePlayer: 'RETIRE'
+      }),
+      async retire () {
+        try {
+          this.loading = true
+          await this.retirePlayer(this.player.id)
+          this.dialog = false
+        } catch (e) {
+          this.errorMessage = e.message
+          this.error = true
+        } finally {
+          this.loading = false
+        }
+      }
+    }
   }
 </script>
