@@ -6,13 +6,16 @@
     app
   >
     {{ message }}
-    <v-btn
-      dark
-      text
-      @click="snackbar = false"
-    >
-      Close
-    </v-btn>
+    <template #action="{ attrs }">
+      <v-btn
+        dark
+        text
+        v-bind="attrs"
+        @click="snackbar = false"
+      >
+        Close
+      </v-btn>
+    </template>
   </v-snackbar>
 </template>
 

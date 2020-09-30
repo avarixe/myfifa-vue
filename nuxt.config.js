@@ -2,8 +2,6 @@ import pkg from './package'
 import nodeExternals from 'webpack-node-externals'
 
 export default {
-  mode: 'universal',
-
   server: {
     host: '0.0.0.0',
     port: process.env.NODE_ENV === 'production' ? '8080' : '4000'
