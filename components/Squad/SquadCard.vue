@@ -48,14 +48,17 @@
         </v-col>
       </v-row>
       <v-divider class="mx-3" />
-      <formation-view :formation="squad.squad_players">
-        <template #item="{ player }">
-          <div class="font-weight-bold">{{ player.pos }}</div>
-          <div :class="statusColor(player.player_id)">
+      <formation-grid :formation="squad.squad_players">
+        <template #position="{ players }">
+          <div
+            v-for="player in players"
+            :key="player.id"
+            :class="statusColor(player.player_id)"
+          >
             {{ nameOf(player.player_id) }}
           </div>
         </template>
-      </formation-view>
+      </formation-grid>
     </v-card-text>
   </v-card>
 </template>
