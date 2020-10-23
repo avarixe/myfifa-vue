@@ -19,15 +19,17 @@
       </v-col>
     </v-row>
     <v-divider class="mx-3 mb-2" />
-    <formation-view :formation="starters">
-      <template #item="{ player }">
+    <formation-grid :formation="starters">
+      <template #position="{ players }">
         <cap-view
+          v-for="player in players"
+          :key="player.id"
           :cap="player"
           :match="match"
           :readonly="readonly"
         />
       </template>
-    </formation-view>
+    </formation-grid>
     <v-row v-if="substitutes.length > 0">
       <v-col>
         <v-list dense>
