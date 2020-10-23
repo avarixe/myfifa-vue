@@ -215,7 +215,8 @@
           contracts_attributes: [
             {
               started_on: this.team.currently_on,
-              ended_on: format(player['Contract Ends'], 'yyyy-MM-dd'),
+              ended_on: player['Contract Ends'] &&
+                format(player['Contract Ends'], 'yyyy-MM-dd'),
               wage: player['Wage'],
               release_clause: player['Release Clause'],
               signing_bonus: player['Signing Bonus'],
