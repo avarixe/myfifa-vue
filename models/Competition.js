@@ -84,7 +84,7 @@ class Competition extends Model {
         }, [])
       ]
     }, [])
-    return [ ...new Set(array.filter(team => team !== null && team !== '')) ]
+    return [ ...new Set(array.filter(team => team !== null && team !== '')) ].sort()
   }
 
   get seasonStart () {

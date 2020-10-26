@@ -60,7 +60,7 @@
         if (this.close) {
           return [
             {
-              type: 'select',
+              type: 'autocomplete',
               attribute: 'champion',
               items: this.record.teamOptions,
               label: 'Champion',

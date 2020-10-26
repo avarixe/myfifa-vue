@@ -3,6 +3,7 @@
     :items="players"
     :item-value="itemValue"
     item-text="name"
+    menu-props="auto"
     :label="label"
     :prepend-icon="icon"
     :disabled="disabled"

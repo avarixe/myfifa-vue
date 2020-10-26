@@ -40,6 +40,27 @@
       :value="fieldValue(field)"
       @input="updateField(field, $event)"
     />
+    <!-- Autcomplete -->
+    <v-autocomplete
+      v-else-if="field.type === 'autocomplete'"
+      :label="field.label"
+      :prepend-icon="field.prependIcon"
+      :items="field.items"
+      :item-key="field.itemKey"
+      :item-value="field.itemValue"
+      :multiple="field.multiple"
+      :chips="field.multiple"
+      :deletable-chips="field.multiple"
+      :hide-details="field.hideDetails || false"
+      :dense="field.dense"
+      :outlined="field.outlined"
+      menu-props="auto, offsetY"
+      :loading="field.loading"
+      :clearable="field.clearable"
+      :rules="rulesFor(field)"
+      :value="fieldValue(field)"
+      @input="updateField(field, $event)"
+    />
     <!-- Combobox -->
     <v-combobox
       v-else-if="field.type === 'combobox'"
