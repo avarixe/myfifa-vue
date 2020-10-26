@@ -44,7 +44,9 @@
               >
                 <thead>
                   <tr>
-                    <th />
+                    <th class="stick-left text-center">
+                      <v-icon>mdi-list-status</v-icon>
+                    </th>
                     <th>Name</th>
                     <th>Nationality</th>
                     <th>Position</th>
