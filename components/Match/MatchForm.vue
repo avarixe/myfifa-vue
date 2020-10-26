@@ -144,6 +144,7 @@
       competitions () {
         return Competition
           .query()
+          .where('team_id', this.team.id)
           .where('season', this.season)
           .where(comp => this.match.competition === comp.name || !comp.champion)
           .get()
@@ -153,6 +154,7 @@
         if (this.match.competition) {
           const competition = Competition
             .query()
+            .where('team_id', this.team.id)
             .where('season', this.season)
             .where('name', this.match.competition)
             .first()
@@ -164,6 +166,7 @@
         const competition = Competition
           .query()
           .with('stages')
+          .where('team_id', this.team.id)
           .where('season', this.season)
           .where('name', this.match.competition)
           .first()
