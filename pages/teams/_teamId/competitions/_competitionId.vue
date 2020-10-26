@@ -221,8 +221,11 @@
       competition () {
         if (!this.competition) {
           this.$router.push({
-            name: 'teams-teamId-seasons',
-            params: this.$route.params
+            name: 'teams-teamId-seasons-season',
+            params: {
+              teamId: this.team.id,
+              season: this.season
+            }
           })
         }
       }
