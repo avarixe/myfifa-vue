@@ -70,8 +70,6 @@
             attribute: 'started_on',
             label: 'Effective Date',
             prependIcon: 'mdi-calendar-today',
-            min: this.team.currently_on,
-            max: this.contract.ended_on,
             required: true
           },
           {
@@ -161,6 +159,11 @@
             this.contract.started_on = this.team.currently_on
             this.contract.ended_on = this.team.currently_on
           }
+        }
+      },
+      'contract.started_on' (val) {
+        if (val && this.contract.ended_on && this.contract.ended_on < val) {
+          this.contract.ended_on = val
         }
       }
     },
