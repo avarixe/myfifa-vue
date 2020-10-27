@@ -37,7 +37,7 @@
           ...this.match.bookings,
           ...this.match.substitutions,
           ...this.match.goals
-        ], 'minute', 'asc')
+        ], ['minute', 'created_at'], ['asc', 'asc'])
 
         if (this.match.penalty_shootout) {
           events.push(this.match.penalty_shootout)
