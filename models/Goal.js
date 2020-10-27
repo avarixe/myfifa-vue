@@ -25,6 +25,7 @@ export default class Goal extends Model {
       home: this.boolean(true),
       own_goal: this.boolean(false),
       penalty: this.boolean(false),
+      created_at: this.string(''),
 
       // Calculated fields
       event_type: this.string('Goal'),
