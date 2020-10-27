@@ -15,9 +15,10 @@
           :pos="pos"
           :players="playersByPosition[pos] || []"
         >
-          <template #default="{ players }">
+          <template #default="{ pos, players }">
             <slot
               name="position"
+              :pos="pos"
               :players="players"
             />
           </template>

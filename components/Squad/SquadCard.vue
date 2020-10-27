@@ -50,6 +50,7 @@
       <v-divider class="mx-3" />
       <formation-grid :formation="squad.squad_players">
         <template #position="{ players }">
+          <v-icon>mdi-account</v-icon>
           <div
             v-for="player in players"
             :key="player.id"
