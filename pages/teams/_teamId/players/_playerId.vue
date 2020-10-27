@@ -43,7 +43,7 @@
             <flag
               :iso="player.flag"
               :title="player.nationality"
-              style="font-size: 40px"
+              size="xl"
             />
           </client-only>
           <div class="subheading">Nationality</div>

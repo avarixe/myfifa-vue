@@ -359,7 +359,7 @@ export const nationalities = {
   'Nicaragua': 'ni',
   'Panama': 'pa',
   'Puerto Rico': 'pr',
-  'St Kitts Nevis': 'kn',
+  'St Kitts Nevis': 'kn-sk',
   'St Lucia': 'lc',
   'St Vincent Grenadine': 'vc',
   'Turks & Caicos': 'tc',

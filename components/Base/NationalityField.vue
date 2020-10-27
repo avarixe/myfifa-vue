@@ -11,6 +11,7 @@
   >
     <template #prepend-inner>
       <flag
+        v-if="nationality"
         class="mt-1"
         :iso="nationalities[nationality]"
       />
