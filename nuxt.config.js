@@ -52,8 +52,7 @@ export default {
   plugins: [
     '@/plugins/fitty.js',
     '@/plugins/custom/filters.js',
-    '@/plugins/vue-chartist.js',
-    '@/plugins/vue-flag-icon.client.js'
+    '@/plugins/vue-chartist.js'
   ],
 
   /*
@@ -62,7 +61,7 @@ export default {
   build: {
     // analyze: true,
 
-    transpile: [/^vuetify/],
+    transpile: [/^vuetify/, /^flagpack/],
 
     extractCSS: true,
 

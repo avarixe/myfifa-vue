@@ -87,7 +87,6 @@
               color="info"
             >
               <flag
-                v-if="item.nationality"
                 :iso="item.flag"
                 :title="item.nationality"
                 class="mr-2"

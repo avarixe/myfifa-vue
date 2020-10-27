@@ -3984,10 +3984,9 @@ fitty@^2.2.6:
   resolved "https://registry.yarnpkg.com/fitty/-/fitty-2.3.2.tgz#6638f3e46d2d133b7da914c43631a4a6ad081f28"
   integrity sha512-aC0d+N7ORRnKG9JIXunZVgLvJRWf2HES7F529CoGQJGLdxF1aHJPLUdaBDQIMDtLFcZhmY1CgtQgFEDWu9vK+w==
 
-flag-icon-css@^2.8.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/flag-icon-css/-/flag-icon-css-2.9.0.tgz#5793c15244e3c63ae36631478a758a3fc29c86be"
-  integrity sha512-SeHvGEB43XFPZiJz6lFFRGHfp+Db+s1qGiClW70cZauQVbPM42wImlNUEuXSXs94kPchz7xvoxP0QK1y6FxLfg==
+"flagpack-core@https://github.com/avarixe/flagpack-core.git#add-dz-and-xk":
+  version "0.0.43"
+  resolved "https://github.com/avarixe/flagpack-core.git#110ad34e1f8691a5847e7de239d52a841ef8fdb8"
 
 flat-cache@^2.0.1:
   version "2.0.1"
@@ -8481,13 +8480,6 @@ vue-fitty@^0.1.7:
   dependencies:
     fitty "^2.2.6"
     vue "^2.5.22"
-
-vue-flag-icon@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/vue-flag-icon/-/vue-flag-icon-1.0.6.tgz#0304fdfeebd982a6bf985c633c346ff3c6d2f9d7"
-  integrity sha1-AwT9/uvZgqa/mFxjPDRv88bS+dc=
-  dependencies:
-    flag-icon-css "^2.8.0"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
