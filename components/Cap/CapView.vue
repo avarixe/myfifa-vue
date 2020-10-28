@@ -1,43 +1,17 @@
 <template>
-  <div>
-    <div class="font-weight-bold">
-      <inline-select
-        :item="cap"
-        attribute="pos"
-        :label="`${cap.name} Position`"
-        :options="positions"
-        :readonly="readonly"
-        @change="setPosition($event)"
-      />
-    </div>
-    <div>
-      <inline-select
-        v-if="!readonly"
-        :item="cap"
-        attribute="player_id"
-        :label="`${cap.pos} Player`"
-        :options="players"
-        option-avatar="pos"
-        option-text="name"
-        option-value="id"
-        :display="cap.name"
-        @change="setPlayer($event)"
-      />
-      <v-dialog
-        v-else
-        width="500"
-      >
-        <template #activator="{ on }">
-          <a
-            style="color: inherit"
-            v-on="on"
-          >
-            {{ cap.name }}
-          </a>
-        </template>
-        <player-card :player-id="cap.player_id" />
-      </v-dialog>
-    </div>
+  <div class="cap">
+    <div class="font-weight-bold">{{ cap.pos }}</div>
+    <v-dialog width="500">
+      <template #activator="{ on }">
+        <a
+          class="player-name"
+          v-on="on"
+        >
+          {{ cap.name }}
+        </a>
+      </template>
+      <player-card :player-id="cap.player_id" />
+    </v-dialog>
     <cap-events
       :cap="cap"
       :match="match"
@@ -46,51 +20,24 @@
 </template>
 
 <script>
-  import { mapMutations, mapActions } from 'vuex'
-  import { activePlayers } from '@/models/Player'
-  import { positions } from '@/models/Match'
-
   export default {
     name: 'CapView',
     props: {
       cap: { type: Object, required: true },
-      match: { type: Object, required: true },
-      readonly: { type: Boolean, default: false }
-    },
-    computed: {
-      positions () {
-        return Object.keys(positions)
-      },
-      players () {
-        return activePlayers(parseInt(this.$route.params.teamId))
-      }
-    },
-    methods: {
-      ...mapMutations('broadcaster', {
-        announce: 'ANNOUNCE'
-      }),
-      ...mapActions('caps', {
-        updateCap: 'UPDATE'
-      }),
-      async setPosition (position) {
-        await this.updateCapAttribute('pos', position)
-      },
-      async setPlayer (playerId) {
-        await this.updateCapAttribute('player_id', playerId)
-      },
-      async updateCapAttribute (key, value) {
-        try {
-          await this.updateCap({
-            id: this.cap.id,
-            [key]: value
-          })
-        } catch (e) {
-          this.announce({
-            message: e.message,
-            color: 'red'
-          })
-        }
-      }
+      match: { type: Object, required: true }
     }
   }
 </script>
+
+<style scoped lang="scss">
+  .cap {
+    line-height: 1.25;
+
+    a.player-name {
+      color: inherit;
+      font-size: 0.8em;
+      line-height: 1;
+      display: inline-block;
+    }
+  }
+</style>

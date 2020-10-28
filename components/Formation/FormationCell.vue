@@ -4,10 +4,10 @@
     class="text-center"
     :style="style"
   >
-    <template v-if="pos">
+    <template v-if="pos && player">
       <slot
         :pos="pos"
-        :players="players"
+        :player="player"
       />
     </template>
   </v-col>
@@ -18,24 +18,12 @@
     name: 'FormationCell',
     props: {
       pos: { type: String, default: null },
-      players: { type: Array, required: true }
+      player: { type: Object, default: null }
     },
     computed: {
-      isEmpty () {
-        return this.players.length === 0
-      },
-      icon () {
-        if (this.isEmpty) {
-          return 'mdi-account-outline'
-        } else if (this.players.length > 1) {
-          return 'mdi-account-multiple'
-        } else {
-          return 'mdi-account'
-        }
-      },
       style () {
         return {
-          visibility: this.isEmpty ? 'hidden' : null
+          visibility: this.player === null ? 'hidden' : null
         }
       }
     }

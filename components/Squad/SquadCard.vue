@@ -48,14 +48,10 @@
         </v-col>
       </v-row>
       <v-divider class="mx-3" />
-      <formation-grid :formation="squad.squad_players">
-        <template #position="{ players }">
+      <formation-grid :players="squad.squad_players">
+        <template #position="{ player }">
           <v-icon>mdi-account</v-icon>
-          <div
-            v-for="player in players"
-            :key="player.id"
-            :class="statusColor(player.player_id)"
-          >
+          <div :class="['player', statusColor(player.player_id)]">
             {{ nameOf(player.player_id) }}
           </div>
         </template>
@@ -115,3 +111,10 @@
     }
   }
 </script>
+
+<style scoped>
+  .player {
+    font-size: 0.8em;
+    line-height: 1;
+  }
+</style>

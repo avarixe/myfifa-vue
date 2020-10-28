@@ -1,45 +1,36 @@
 <template>
-  <v-row dense>
-    <v-col
+  <v-container>
+    <v-row
       v-for="(row, i) in positions"
       :key="i"
-      cols="12"
+      justify="space-around"
+      dense
     >
-      <v-row
-        justify="space-around"
-        dense
+      <formation-cell
+        v-for="(pos, j) in row"
+        :key="j"
+        :pos="pos"
+        :player="playerInPosition(pos)"
       >
-        <formation-cell
-          v-for="(pos, j) in row"
-          :key="j"
-          :pos="pos"
-          :players="playersByPosition[pos] || []"
-        >
-          <template #default="{ pos, players }">
-            <slot
-              name="position"
-              :pos="pos"
-              :players="players"
-            />
-          </template>
-        </formation-cell>
-      </v-row>
-    </v-col>
-  </v-row>
+        <template #default="{ pos, player }">
+          <slot
+            name="position"
+            :pos="pos"
+            :player="player"
+          />
+        </template>
+      </formation-cell>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-  import groupBy from 'lodash.groupby'
-
   export default {
     name: 'FormationGrid',
     props: {
-      formation: { type: Array, required: true }
+      players: { type: Array, required: true }
     },
     computed: {
-      playersByPosition () {
-        return groupBy(this.formation, 'pos')
-      },
       positions () {
         return [
           [null, 'LS', 'ST', 'RS', null],
@@ -53,11 +44,12 @@
       }
     },
     methods: {
-      isPositionEmpty (pos) {
-        return !(pos in this.playersByPosition)
+      playerInPosition (pos) {
+        return this.players.find(player => player.pos === pos)
       },
       isRowEmpty (row) {
-        return row.every(pos => this.isPositionEmpty(pos))
+        const positions = row.filter(pos => pos)
+        return this.players.every(player => positions.indexOf(player.pos) < 0)
       }
     }
   }

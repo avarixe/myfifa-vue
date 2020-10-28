@@ -19,14 +19,17 @@
       </v-col>
     </v-row>
     <v-divider class="mx-3 mb-2" />
-    <formation-grid :formation="starters">
-      <template #position="{ players }">
+    <formation-grid :players="starters">
+      <template #position="{ player }">
         <cap-view
-          v-for="player in players"
-          :key="player.id"
+          v-if="readonly"
           :cap="player"
           :match="match"
-          :readonly="readonly"
+        />
+        <cap-card
+          v-else
+          :cap="player"
+          :match="match"
         />
       </template>
     </formation-grid>
