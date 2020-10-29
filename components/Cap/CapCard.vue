@@ -2,6 +2,7 @@
   <v-menu
     v-model="menu"
     :close-on-content-click="false"
+    offset-overflow
   >
     <template #activator="{ attrs, on }">
       <div
@@ -47,32 +48,27 @@
         </v-tab>
 
         <v-tab-item>
-          <v-card flat>
-            <v-card-subtitle class="text-subtitle-2 py-2">
-              Edit Player and Position
-            </v-card-subtitle>
-          </v-card>
+          <cap-editor :cap="cap" />
         </v-tab-item>
         <v-tab-item>
-          <v-card flat>
-            <v-card-subtitle class="text-subtitle-2 py-2">
-              Add Goal
-            </v-card-subtitle>
-          </v-card>
+          <cap-goal-form
+            :cap="cap"
+            :match="match"
+          />
         </v-tab-item>
         <v-tab-item>
-          <v-card flat>
-            <v-card-subtitle class="text-subtitle-2 py-2">
+          <div class="pa-2">
+            <div class="text-subtitle-2 pb-2">
               Substitute Player
-            </v-card-subtitle>
-          </v-card>
+            </div>
+          </div>
         </v-tab-item>
         <v-tab-item>
-          <v-card flat>
-            <v-card-subtitle class="text-subtitle-2 py-2">
+          <div class="pa-2">
+            <div class="text-subtitle-2 pb-2">
               Book Player
-            </v-card-subtitle>
-          </v-card>
+            </div>
+          </div>
         </v-tab-item>
       </v-tabs>
     </v-card>
@@ -80,7 +76,7 @@
 </template>
 
 <script>
-  import { Player } from '@/models'
+  import { Player, Team } from '@/models'
 
   export default {
     name: 'CapView',
@@ -92,6 +88,9 @@
       menu: false
     }),
     computed: {
+      team () {
+        return Team.find(this.$routes.params.teamId)
+      },
       player () {
         return Player.find(this.cap.player_id)
       }
