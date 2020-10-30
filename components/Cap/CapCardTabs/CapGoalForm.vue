@@ -1,6 +1,6 @@
 <template>
   <base-form :submit="saveGoal">
-    <template #default="{ valid }">
+    <template #default="{ valid, loading }">
       <div class="pa-2">
         <div class="text-subtitle-2 pb-2">
           Add Goal
@@ -75,9 +75,6 @@
         return this.unsubbedPlayers.filter(cap =>
           cap.player_id !== this.goal.player_id
         )
-      },
-      isHome () {
-        return this.match.home === this.team.title
       }
     },
     watch: {

@@ -17,6 +17,7 @@
       :players="activePlayers"
       item-value="id"
       required
+      :disabled="cap.start > 0"
       @input="setPlayer"
     />
   </div>

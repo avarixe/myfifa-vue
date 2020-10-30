@@ -57,18 +57,16 @@
           />
         </v-tab-item>
         <v-tab-item>
-          <div class="pa-2">
-            <div class="text-subtitle-2 pb-2">
-              Substitute Player
-            </div>
-          </div>
+          <cap-substitution-form
+            :cap="cap"
+            :match="match"
+          />
         </v-tab-item>
         <v-tab-item>
-          <div class="pa-2">
-            <div class="text-subtitle-2 pb-2">
-              Book Player
-            </div>
-          </div>
+          <cap-booking-form
+            :cap="cap"
+            :match="match"
+          />
         </v-tab-item>
       </v-tabs>
     </v-card>
@@ -100,8 +98,7 @@
 
 <style scoped lang="scss">
   .cap {
-    line-height: 1.25;
-    color: inherit;
+    line-height: 1.5;
     border-radius: 3px;
 
     .player-name {

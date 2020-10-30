@@ -31,7 +31,7 @@
 
 <style scoped lang="scss">
   .cap {
-    line-height: 1.25;
+    line-height: 1.5;
 
     a.player-name {
       color: inherit;

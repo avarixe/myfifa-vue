@@ -22,7 +22,7 @@
     <formation-grid :players="starters">
       <template #position="{ player }">
         <cap-view
-          v-if="readonly"
+          v-if="readonly || player.subbed_out"
           :cap="player"
           :match="match"
         />
@@ -34,17 +34,28 @@
       </template>
     </formation-grid>
     <v-row v-if="substitutes.length > 0">
-      <v-col>
-        <v-list dense>
-          <v-subheader>Substitutes</v-subheader>
-          <cap-sub-view
-            v-for="cap in substitutes"
-            :key="cap.id"
-            :cap="cap"
-            :match="match"
-            :readonly="readonly"
-          />
-        </v-list>
+      <v-col
+        cols="12"
+        class="pa-0"
+      >
+        <v-subheader>Substitutes</v-subheader>
+      </v-col>
+      <v-col
+        v-for="cap in substitutes"
+        :key="cap.id"
+        cols="2"
+        class="text-center"
+      >
+        <cap-view
+          v-if="readonly || cap.subbed_out"
+          :cap="cap"
+          :match="match"
+        />
+        <cap-card
+          v-else
+          :cap="cap"
+          :match="match"
+        />
       </v-col>
     </v-row>
   </v-container>
