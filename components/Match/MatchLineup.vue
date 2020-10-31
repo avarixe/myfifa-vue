@@ -91,7 +91,7 @@
           cols="2"
           class="text-center"
         >
-          <match-opponent-card :match="match" />
+          <opponent-card :match="match" />
         </v-col>
       </v-row>
       <v-row

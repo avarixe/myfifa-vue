@@ -3,6 +3,7 @@
     v-model="menu"
     :close-on-content-click="false"
     offset-overflow
+    eager
   >
     <template #activator="{ attrs, on }">
       <div
@@ -58,7 +59,7 @@
   import { Team } from '@/models'
 
   export default {
-    name: 'MatchOpponentCard',
+    name: 'OpponentCard',
     props: {
       match: { type: Object, required: true }
     },
