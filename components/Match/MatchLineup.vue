@@ -1,6 +1,14 @@
 <template>
   <v-container>
     <v-row
+      v-if="!readonly"
+      dense
+    >
+      <v-col>
+        <match-actions :match="match" />
+      </v-col>
+    </v-row>
+    <v-row
       v-if="match.caps.length >= 11"
       class="text-center"
       dense
@@ -33,31 +41,90 @@
         />
       </template>
     </formation-grid>
-    <v-row v-if="substitutes.length > 0">
-      <v-col
-        cols="12"
-        class="pa-0"
+    <v-container v-if="substitutes.length > 0 || !readonly">
+      <v-row dense>
+        <v-col
+          cols="10"
+          class="pa-0"
+        >
+          <div class="text-caption text-grey lighten-2">Substitutes</div>
+        </v-col>
+        <v-col
+          v-if="!readonly"
+          cols="2"
+          class="pa-0"
+        >
+          <div class="text-caption text-grey lighten-2">vs</div>
+        </v-col>
+      </v-row>
+      <v-row
+        align="stretch"
+        justify="space-around"
+        dense
       >
-        <v-subheader>Substitutes</v-subheader>
-      </v-col>
-      <v-col
-        v-for="cap in substitutes"
-        :key="cap.id"
-        cols="2"
-        class="text-center"
+        <v-col
+          v-for="cap in firstSubstitutesRow"
+          :key="cap.id"
+          cols="2"
+          class="text-center"
+        >
+          <cap-view
+            v-if="readonly || cap.subbed_out"
+            :cap="cap"
+            :match="match"
+          />
+          <cap-card
+            v-else
+            :cap="cap"
+            :match="match"
+          />
+        </v-col>
+        <template v-if="substitutes.length < substitutesRowLength">
+          <v-col
+            v-for="index in firstRowPadding"
+            :key="`blank-${index}`"
+            cols="2"
+          />
+        </template>
+        <v-col
+          v-if="!readonly"
+          cols="2"
+          class="text-center"
+        >
+          <match-opponent-card :match="match" />
+        </v-col>
+      </v-row>
+      <v-row
+        v-for="row in numExtraSubstitutesRows"
+        :key="row"
+        align="stretch"
+        justify="space-around"
+        dense
       >
-        <cap-view
-          v-if="readonly || cap.subbed_out"
-          :cap="cap"
-          :match="match"
+        <v-col
+          v-for="cap in substitutesRow(row)"
+          :key="cap.id"
+          cols="2"
+          class="text-center"
+        >
+          <cap-view
+            v-if="readonly || cap.subbed_out"
+            :cap="cap"
+            :match="match"
+          />
+          <cap-card
+            v-else
+            :cap="cap"
+            :match="match"
+          />
+        </v-col>
+        <v-col
+          v-for="index in (5 - substitutesRow(row).length)"
+          :key="`blank-${index}`"
+          cols="2"
         />
-        <cap-card
-          v-else
-          :cap="cap"
-          :match="match"
-        />
-      </v-col>
-    </v-row>
+      </v-row>
+    </v-container>
   </v-container>
 </template>
 
@@ -83,6 +150,18 @@
       },
       substitutes () {
         return this.match.caps.filter(c => c.start > 0)
+      },
+      substitutesRowLength () {
+        return this.readonly ? 5 : 4
+      },
+      firstSubstitutesRow () {
+        return this.substitutes.slice(0, this.substitutesRowLength)
+      },
+      firstRowPadding () {
+        return this.substitutesRowLength - this.substitutes.length
+      },
+      numExtraSubstitutesRows () {
+        return Math.floor(this.substitutes.length / this.substitutesRowLength)
       },
       defOVR () {
         return this.avgOVR('DEF')
@@ -114,6 +193,13 @@
           )
 
         return Math.round(totalOvr / playerIds.length)
+      },
+      substitutesRow (i) {
+        console.log(i)
+        return this.substitutes.slice(
+          i * this.substitutesRowLength,
+          (i + 1) * this.substitutesRowLength
+        )
       }
     }
   }

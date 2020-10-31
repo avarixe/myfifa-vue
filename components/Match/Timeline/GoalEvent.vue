@@ -1,12 +1,13 @@
 <template>
   <v-timeline-item
-    :color="color"
-    :icon="`mdi-${icon}`"
+    :color="teamColor"
     fill-dot
   >
-    <h2 :class="`text-h5 font-weight-light my-0 ${color}--text`">
-      {{ goal.minute }}"
-      <span :class="`text-caption text-truncate mx-1 ${captionColor}--text`">
+    <template #icon>
+      {{ goal.minute }}'
+    </template>
+    <h2 class="font-weight-light my-0">
+      <span :class="`text-caption text-truncate mx-1 ${teamColor}--text`">
         {{ goal.home ? match.home : match.away }}
       </span>
       <template v-if="!readonly">
@@ -31,10 +32,26 @@
         />
       </template>
     </h2>
-    {{ goalType }} scored by <b>{{ goal.player_name }}</b>
-    <span v-if="goal.assisted_by">
-      (assisted by <b>{{ goal.assisted_by }}</b>)
-    </span>
+    <div>
+      <v-icon
+        :color="color"
+        small
+        left
+      >
+        mdi-{{ icon }}
+      </v-icon>
+      {{ goal.player_name }}
+    </div>
+    <div v-if="goal.assisted_by">
+      <v-icon
+        color="light-blue accent-1"
+        small
+        left
+      >
+        mdi-human-greeting
+      </v-icon>
+      {{ goal.assisted_by }}
+    </div>
   </v-timeline-item>
 </template>
 
@@ -56,14 +73,20 @@
           return 'Goal'
         }
       },
+      teamColor () {
+        return this.goal.home ? 'teal' : 'purple'
+      },
       color () {
         return this.goal.own_goal ? 'blue-grey' : 'blue'
       },
-      captionColor () {
-        return this.goal.home ? 'teal' : 'pink'
-      },
       icon () {
-        return this.goal.penalty ? 'alpha-p-circle-outline' : 'soccer'
+        if (this.goal.penalty) {
+          return 'target'
+        } else if (this.goal.own_goal) {
+          return 'alert-circle'
+        } else {
+          return 'soccer'
+        }
       }
     }
   }

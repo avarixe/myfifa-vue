@@ -7,22 +7,18 @@
     <template #activator="{ attrs, on }">
       <div
         v-ripple
-        class="cap pa-2 elevation-5"
+        class="cap pa-2 elevation-5 d-inline-block"
         v-bind="attrs"
         v-on="on"
       >
-        <div class="font-weight-bold">{{ cap.pos }}</div>
-        <div class="player-name">{{ cap.name }}</div>
-        <cap-events
-          :cap="cap"
-          :match="match"
-        />
+        <div class="font-weight-bold">TEAM</div>
+        <div class="opponent-team">{{ opponent }}</div>
       </div>
     </template>
     <v-card>
       <v-card-title class="text-subtitle-1 pa-2">
-        <span class="mr-2">{{ cap.pos }}</span>
-        <span class="font-weight-light">{{ player.name }}</span>
+        <span class="mr-2">vs</span>
+        <span class="font-weight-light">{{ opponent }}</span>
         <v-spacer />
         <v-btn
           icon
@@ -35,38 +31,20 @@
       <v-divider />
       <v-tabs vertical>
         <v-tab>
-          <v-icon>mdi-account</v-icon>
-        </v-tab>
-        <v-tab>
           <v-icon>mdi-soccer</v-icon>
-        </v-tab>
-        <v-tab>
-          <v-icon>mdi-repeat</v-icon>
         </v-tab>
         <v-tab>
           <v-icon>mdi-book</v-icon>
         </v-tab>
 
         <v-tab-item>
-          <cap-editor :cap="cap" />
-        </v-tab-item>
-        <v-tab-item>
-          <cap-goal-form
-            :cap="cap"
+          <opponent-goal-form
             :match="match"
             @submitted="menu = false"
           />
         </v-tab-item>
         <v-tab-item>
-          <cap-substitution-form
-            :cap="cap"
-            :match="match"
-            @submitted="menu = false"
-          />
-        </v-tab-item>
-        <v-tab-item>
-          <cap-booking-form
-            :cap="cap"
+          <opponent-booking-form
             :match="match"
             @submitted="menu = false"
           />
@@ -77,20 +55,24 @@
 </template>
 
 <script>
-  import { Player } from '@/models'
+  import { Team } from '@/models'
 
   export default {
-    name: 'CapView',
+    name: 'MatchOpponentCard',
     props: {
-      cap: { type: Object, required: true },
       match: { type: Object, required: true }
     },
     data: () => ({
       menu: false
     }),
     computed: {
-      player () {
-        return Player.find(this.cap.player_id)
+      team () {
+        return Team.find(this.$route.params.teamId)
+      },
+      opponent () {
+        return this.team.title === this.match.home
+          ? this.match.away
+          : this.match.home
       }
     }
   }
@@ -101,7 +83,7 @@
     line-height: 1.5;
     border-radius: 3px;
 
-    .player-name {
+    .opponent-team {
       font-size: 0.8em;
       line-height: 1;
     }

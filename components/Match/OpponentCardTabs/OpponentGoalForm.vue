@@ -6,14 +6,26 @@
           Add Goal
         </div>
         <minute-field v-model="minute" />
-        <player-select
-          v-model="goal.assist_id"
-          :players="assistOptions"
+        <v-text-field
+          v-model="goal.player_name"
+          label="Goal Scorer"
+          prepend-icon="mdi-account"
+          :rules="rules.player_name"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+        <v-text-field
+          v-model="goal.assisted_by"
           label="Assisted By"
-          icon="mdi-human-greeting"
+          prepend-icon="mdi-human-greeting"
           :disabled="goal.penalty || goal.own_goal"
-          clearable
           hide-details
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
         />
         <v-checkbox
           v-model="goal.penalty"
@@ -49,6 +61,7 @@
 <script>
   import { mapActions } from 'vuex'
   import { TeamAccessible, MatchAccessible } from '@/mixins'
+  import { requiredRule } from '@/functions/rules'
 
   export default {
     name: 'CapGoalForm',
@@ -56,39 +69,27 @@
       TeamAccessible,
       MatchAccessible
     ],
-    props: {
-      cap: { type: Object, required: true }
-    },
     data: () => ({
       goal: {
         home: true,
-        player_id: null,
         player_name: '',
         assisted_by: '',
-        assist_id: '',
         own_goal: false,
         penalty: false
       }
     }),
     computed: {
-      assistOptions () {
-        return this.unsubbedPlayers.filter(cap =>
-          cap.player_id !== this.goal.player_id
-        )
+      rules () {
+        return {
+          player_name: [requiredRule({ label: 'Goal Scorer' })]
+        }
       }
     },
     watch: {
-      cap: {
-        immediate: true,
-        handler (cap) {
-          this.goal.player_id = cap.player_id
-          this.goal.player_name = cap.name
-        }
-      },
       'match.home': {
         immediate: true,
         handler (home) {
-          this.goal.home = home === this.team.title
+          this.goal.home = home !== this.team.title
         }
       }
     },
@@ -98,7 +99,6 @@
       }),
       clearAssistedBy (bool) {
         if (bool) {
-          this.goal.assist_id = null
           this.goal.assisted_by = null
         }
       },

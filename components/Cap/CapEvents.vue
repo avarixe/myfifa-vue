@@ -1,12 +1,5 @@
 <template>
   <div>
-    <v-icon
-      v-if="parseInt(cap.start) > 0"
-      color="green"
-      small
-    >
-      mdi-subdirectory-arrow-right
-    </v-icon>
     <v-badge
       v-if="numGoals > 0"
       bottom

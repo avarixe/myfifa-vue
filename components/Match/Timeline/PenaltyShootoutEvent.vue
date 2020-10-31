@@ -4,8 +4,10 @@
     icon="mdi-human"
     fill-dot
   >
-    <h2 class="text-h5 font-weight-light my-0 indigo--text">
+    <template #icon>
       {{ match.extra_time ? 120 : 90 }}"
+    </template>
+    <h2 class="text-h5 font-weight-light my-0 indigo--text">
       <span class="text-caption text-truncate mx-1 indigo--text">
         Penalty Shootout
       </span>
@@ -31,7 +33,12 @@
         />
       </template>
     </h2>
-    <b>{{ winner }}</b> wins by Penalty Shootout (<b>{{ score }}</b>)
+    <div :class="{ 'font-weight-bold': match.home === winner }">
+      {{ penaltyShootout.home_score }} - {{ match.home }}
+    </div>
+    <div :class="{ 'font-weight-bold': match.away === winner }">
+      {{ penaltyShootout.away_score }} - {{ match.away }}
+    </div>
   </v-timeline-item>
 </template>
 

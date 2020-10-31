@@ -1,12 +1,14 @@
 <template>
   <v-timeline-item
-    :color="color"
+    :color="teamColor"
     icon="mdi-book"
     fill-dot
   >
-    <h2 :class="`text-h5 font-weight-light my-0 ${color}--text`">
-      {{ booking.minute }}"
-      <span :class="`text-caption text-truncate mx-1 ${captionColor}--text`">
+    <template #icon>
+      {{ booking.minute }}'
+    </template>
+    <h2 class="font-weight-light my-0">
+      <span :class="`text-caption text-truncate mx-1 ${teamColor}--text`">
         {{ booking.home ? match.home : match.away }}
       </span>
       <template v-if="!readonly">
@@ -31,8 +33,17 @@
         />
       </template>
     </h2>
-    <span class="font-weight-bold">{{ booking.player_name }}</span>
-    has received a {{ bookingType }}
+
+    <div>
+      <v-icon
+        :color="color"
+        small
+        left
+      >
+        mdi-book
+      </v-icon>
+      {{ booking.player_name }}
+    </div>
   </v-timeline-item>
 </template>
 
@@ -51,8 +62,8 @@
       color () {
         return this.booking.red_card ? 'red' : 'amber'
       },
-      captionColor () {
-        return this.booking.home ? 'teal' : 'pink'
+      teamColor () {
+        return this.booking.home ? 'teal' : 'purple'
       }
     }
   }

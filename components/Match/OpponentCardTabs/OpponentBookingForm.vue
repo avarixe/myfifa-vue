@@ -6,6 +6,16 @@
           Book Player
         </div>
         <minute-field v-model="minute" />
+        <v-text-field
+          v-model="booking.player_name"
+          label="Player"
+          prepend-icon="mdi-account"
+          :rules="rules.player_name"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
         <v-radio-group v-model="booking.red_card">
           <v-radio
             label="Yellow Card"
@@ -38,6 +48,7 @@
 <script>
   import { mapActions } from 'vuex'
   import { TeamAccessible, MatchAccessible } from '@/mixins'
+  import { requiredRule } from '@/functions/rules'
 
   export default {
     name: 'CapBookingForm',
@@ -45,29 +56,25 @@
       TeamAccessible,
       MatchAccessible
     ],
-    props: {
-      cap: { type: Object, required: true }
-    },
     data: () => ({
       booking: {
         home: true,
-        player_id: null,
         player_name: '',
         red_card: false
       }
     }),
-    watch: {
-      cap: {
-        immediate: true,
-        handler (cap) {
-          this.booking.player_id = cap.player_id
-          this.booking.player_name = cap.name
+    computed: {
+      rules () {
+        return {
+          player_name: [requiredRule({ label: 'Player' })]
         }
-      },
+      }
+    },
+    watch: {
       'match.home': {
         immediate: true,
         handler (home) {
-          this.booking.home = home === this.team.title
+          this.booking.home = home !== this.team.title
         }
       }
     },

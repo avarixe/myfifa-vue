@@ -90,6 +90,7 @@
             minute: this.minute
           }
         })
+        this.$emit('submitted')
       }
     }
   }
