@@ -48,7 +48,10 @@
         </v-tab>
 
         <v-tab-item>
-          <cap-editor :cap="cap" />
+          <cap-editor
+            :cap="cap"
+            @submitted="menu = false"
+          />
         </v-tab-item>
         <v-tab-item>
           <cap-goal-form

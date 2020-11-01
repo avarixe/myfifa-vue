@@ -73,6 +73,7 @@
             id: this.cap.id,
             [key]: value
           })
+          this.$emit('submitted')
         } catch (e) {
           this.pos = this.cap.pos
           this.playerId = this.cap.player_id
