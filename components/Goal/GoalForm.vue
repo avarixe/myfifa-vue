@@ -91,6 +91,9 @@
         return this.unsubbedPlayers.filter(cap =>
           cap.player_id !== this.goal.player_id
         )
+      },
+      teamGoal () {
+        return !this.goal.home ^ this.match.home === this.team.title
       }
     },
     watch: {
@@ -110,7 +113,7 @@
         }
       },
       'goal.assist_id' (val) {
-        if (!val) {
+        if (!val && this.teamGoal) {
           this.goal.assisted_by = ''
         }
       },
@@ -127,6 +130,7 @@
         updateGoal: 'UPDATE'
       }),
       clearAssistedBy (val) {
+        console.log(`clearAssistedBy `, val)
         if (val) {
           this.goal.assist_id = null
           this.goal.assisted_by = null
