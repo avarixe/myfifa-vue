@@ -107,12 +107,6 @@
                 </v-col>
               </v-row>
             </v-container>
-            <v-col
-              v-if="!readonly"
-              cols="12"
-            >
-              <match-actions :match="match" />
-            </v-col>
           </v-row>
         </v-container>
         <v-col
@@ -140,7 +134,7 @@
         >
           <v-container class="py-0">
             <v-row>
-              <v-col cols="6">
+              <v-col cols="7">
                 <v-card>
                   <v-card-title class="justify-center font-weight-light">
                     Lineup
@@ -150,7 +144,7 @@
                   </v-card-text>
                 </v-card>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="5">
                 <v-card>
                   <v-card-title class="justify-center font-weight-light">
                     Timeline

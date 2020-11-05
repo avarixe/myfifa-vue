@@ -82,7 +82,7 @@ class Player extends Model {
       case 'Pending':
         return 'deep-orange'
       default:
-        return 'black'
+        return null
     }
   }
 

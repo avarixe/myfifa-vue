@@ -11,7 +11,16 @@
       {{ item.moved_on | formatDate }}
     </template>
     <template #item.name="{ item }">
-      <nuxt-link :to="playerLink(item)">{{ item.name }}</nuxt-link>
+      <v-btn
+        :to="playerLink(item)"
+        nuxt
+        small
+        text
+        color="primary"
+        class="text-capitalize"
+      >
+        {{ item.name }}
+      </v-btn>
     </template>
     <template #item.dir="{ item }">
       <v-icon :color="item.dir === 'in' ? 'green' : 'red'">

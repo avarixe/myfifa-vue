@@ -71,16 +71,14 @@
           </v-list-item>
         </template>
       </user-form>
-      <settings-form class="d-block">
-        <template #default="{ on }">
-          <v-list-item v-on="on">
-            <v-list-item-action>
-              <v-icon>mdi-cog</v-icon>
-            </v-list-item-action>
-            <v-list-item-title>Settings</v-list-item-title>
-          </v-list-item>
-        </template>
-      </settings-form>
+      <v-list-item @click="toggleMode">
+        <v-list-item-action>
+          <v-icon>{{ modeIcon }}</v-icon>
+        </v-list-item-action>
+        <v-list-item-title class="text-capitalize">
+          {{ mode }} Mode
+        </v-list-item-title>
+      </v-list-item>
       <v-list-item @click="logUserOut">
         <v-list-item-action>
           <v-icon>mdi-exit-to-app</v-icon>
@@ -105,7 +103,8 @@
         'version'
       ]),
       ...mapState('app', [
-        'drawer'
+        'drawer',
+        'mode'
       ]),
       teamId () {
         return this.$route.params.teamId
@@ -149,6 +148,11 @@
         } else {
           return []
         }
+      },
+      modeIcon () {
+        return this.mode === 'dark'
+          ? 'mdi-weather-night'
+          : 'mdi-weather-sunny'
       }
     },
     mounted () {
@@ -156,11 +160,15 @@
     },
     methods: {
       ...mapMutations('app', {
-        setDrawer: 'SET_DRAWER'
+        setDrawer: 'SET_DRAWER',
+        setMode: 'SET_MODE'
       }),
       ...mapActions({
         logout: 'LOGOUT'
       }),
+      toggleMode () {
+        this.setMode(this.mode === 'dark' ? 'light' : 'dark')
+      },
       async logUserOut () {
         await this.logout()
       }

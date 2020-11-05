@@ -1,32 +1,40 @@
 <template>
   <div>
-    <v-icon
-      v-if="parseInt(cap.start) > 0"
-      color="green"
-      small
+    <v-badge
+      v-if="numGoals > 0"
+      bottom
+      overlap
+      color="transparent"
     >
-      mdi-subdirectory-arrow-right
-    </v-icon>
-    <v-icon
-      v-for="index in goals"
-      :key="`goal${index}`"
-      color="blue"
-      small
+      <template #badge>
+        <div class="counter font-weight-black">{{ numGoals }}</div>
+      </template>
+      <v-icon
+        color="blue"
+        small
+      >
+        mdi-soccer
+      </v-icon>
+    </v-badge>
+    <v-badge
+      v-if="numAssists > 0"
+      bottom
+      overlap
+      color="transparent"
     >
-      mdi-soccer
-    </v-icon>
+      <template #badge>
+        <div class="counter font-weight-black">{{ numAssists }}</div>
+      </template>
+      <v-icon
+        color="light-blue accent-1"
+        small
+      >
+        mdi-human-greeting
+      </v-icon>
+    </v-badge>
     <v-icon
-      v-for="index in assists"
-      :key="`assist${index}`"
-      color="light-blue accent-1"
-      small
-    >
-      mdi-human-greeting
-    </v-icon>
-    <v-icon
-      v-for="(color, i) in bookings"
-      :key="`booking${i}`"
-      :color="color"
+      v-if="booking"
+      :color="booking"
       small
     >
       mdi-book
@@ -40,7 +48,7 @@
     </v-icon>
     <v-icon
       v-if="cap.subbed_out"
-      color="red"
+      color="orange darken-2"
       small
     >
       mdi-subdirectory-arrow-left
@@ -56,20 +64,28 @@
       match: { type: Object, required: true }
     },
     computed: {
-      goals () {
+      numGoals () {
         return this.match.goals
           .filter(g => g.player_id === this.cap.player_id && !g.own_goal)
           .length
       },
-      assists () {
+      numAssists () {
         return this.match.goals
           .filter(g => g.assist_id === this.cap.player_id)
           .length
       },
-      bookings () {
-        return this.match.bookings
-          .filter(b => b.player_id === this.cap.player_id)
-          .map(b => b.red_card ? 'red' : 'yellow darken-2')
+      booking () {
+        const bookings = this.match.bookings.filter(booking =>
+          booking.player_id === this.cap.player_id
+        )
+
+        if (bookings.some(b => b.red_card)) {
+          return 'red'
+        } else if (bookings.length > 0) {
+          return 'yellow darken-2'
+        } else {
+          return null
+        }
       },
       injured () {
         return this.match.substitutions.some(s =>
@@ -79,3 +95,13 @@
     }
   }
 </script>
+
+<style scoped lang="scss">
+  .counter {
+    color: black;
+
+    .theme--dark & {
+      color: white;
+    }
+  }
+</style>
