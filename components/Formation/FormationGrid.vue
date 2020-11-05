@@ -46,10 +46,6 @@
     methods: {
       playerInPosition (pos) {
         return this.players.find(player => player.pos === pos)
-      },
-      isRowEmpty (row) {
-        const positions = row.filter(pos => pos)
-        return this.players.every(player => positions.indexOf(player.pos) < 0)
       }
     }
   }
