@@ -8,7 +8,16 @@
     hide-default-footer
   >
     <template #item.name="{ item }">
-      <nuxt-link :to="item.link">{{ item.name }}</nuxt-link>
+      <v-btn
+        :to="item.link"
+        nuxt
+        small
+        text
+        color="primary"
+        class="text-capitalize"
+      >
+        {{ item.name }}
+      </v-btn>
     </template>
     <template #item.status="{ item }">
       <v-icon

@@ -85,6 +85,7 @@
               text
               nuxt
               color="info"
+              class="text-capitalize"
             >
               <flag
                 :iso="item.flag"
