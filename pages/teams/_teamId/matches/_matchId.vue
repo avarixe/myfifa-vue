@@ -232,7 +232,7 @@
       ])
 
       if (!this.readonly) {
-        this.fetchSquads({ teamId: this.team.id })
+        await this.fetchSquads({ teamId: this.team.id })
       }
 
       this.setPage({
