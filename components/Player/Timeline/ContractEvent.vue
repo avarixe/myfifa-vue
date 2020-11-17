@@ -10,7 +10,7 @@
       <h4 class="text-h6 font-weight-light mb-3 blue--text">
         {{ contract.started_on | formatDate }} - {{ contract.ended_on | formatDate }}
         <span
-          v-if="contract.conclusion"
+          v-if="contract.conclusion && contract.ended_on <= team.currently_on"
           class="pl-1"
         >
           ({{ contract.conclusion }})
@@ -30,7 +30,7 @@
           <h4 class="text-body-2 font-weight-light mb-3">
             {{ contract.started_on | formatDate }} - {{ contract.ended_on | formatDate }}
             <span
-              v-if="contract.conclusion"
+              v-if="contract.conclusion && contract.ended_on <= team.currently_on"
               class="pl-1"
             >
               ({{ contract.conclusion }})

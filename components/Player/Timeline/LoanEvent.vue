@@ -10,9 +10,14 @@
         Loan at {{ loan.destination }}
       </span>
       <h4 class="text-h6 font-weight-light mb-3 indigo--text">
-        {{ loan.started_on | formatDate }} -
-        <span v-if="loan.ended_on">{{ loan.ended_on | formatDate }}</span>
-        <span v-else>Present</span>
+        <template v-if="loan.started_on > team.currently_on">
+          Scheduled on {{ loan.started_on | formatDate }}
+        </template>
+        <template v-else>
+          {{ loan.started_on | formatDate }} -
+          <span v-if="loan.ended_on">{{ loan.ended_on | formatDate }}</span>
+          <span v-else>Present</span>
+        </template>
       </h4>
     </template>
     <v-card
@@ -28,9 +33,14 @@
             Loan at {{ loan.destination }}
           </span>
           <h4 class="text-body-2 font-weight-light mb-3">
-            {{ loan.started_on | formatDate }} -
-            <span v-if="loan.ended_on">{{ loan.ended_on | formatDate }}</span>
-            <span v-else>Present</span>
+            <template v-if="loan.started_on > team.currently_on">
+              Scheduled on {{ loan.started_on | formatDate }}
+            </template>
+            <template v-else>
+              {{ loan.started_on | formatDate }} -
+              <span v-if="loan.ended_on">{{ loan.ended_on | formatDate }}</span>
+              <span v-else>Present</span>
+            </template>
           </h4>
         </div>
       </v-card-title>
@@ -47,7 +57,7 @@
             </tr>
             <tr>
               <td class="font-weight-bold">Duration</td>
-              <td class="pl-1">Away for {{ length }}</td>
+              <td class="pl-1">{{ duration }}</td>
             </tr>
           </tbody>
         </table>
@@ -93,6 +103,11 @@
           parseISO(this.loan.ended_on || this.team.currently_on),
           parseISO(this.loan.started_on)
         )
+      },
+      duration () {
+        return this.loan.started_on > this.team.currently_on
+          ? `Departs in ${this.length}`
+          : `Away for ${this.length}`
       }
     }
   }
