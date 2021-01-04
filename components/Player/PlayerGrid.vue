@@ -88,6 +88,7 @@
               class="text-capitalize"
             >
               <flag
+                v-if="item.flag"
                 :iso="item.flag"
                 :title="item.nationality"
                 class="mr-2"

@@ -11,8 +11,11 @@
         v-bind="attrs"
         v-on="on"
       >
-        <div class="font-weight-bold">{{ cap.pos }}</div>
-        <div class="player-name">{{ cap.name }}</div>
+        <div class="player-pos font-weight-bold">{{ cap.pos }}</div>
+        <div class="player-name">
+          <span class="hidden-sm-and-down">{{ cap.name }}</span>
+          <span class="hidden-md-and-up">{{ identifier }}</span>
+        </div>
         <cap-events
           :cap="cap"
           :match="match"
@@ -22,7 +25,7 @@
     <v-card>
       <v-card-title class="text-subtitle-1 pa-2">
         <span class="mr-2">{{ cap.pos }}</span>
-        <span class="font-weight-light">{{ player.name }}</span>
+        <span class="font-weight-light">{{ cap.name }}</span>
         <v-spacer />
         <v-btn
           icon
@@ -83,7 +86,7 @@
   import { Player } from '@/models'
 
   export default {
-    name: 'CapView',
+    name: 'CapCard',
     props: {
       cap: { type: Object, required: true },
       match: { type: Object, required: true }
@@ -94,6 +97,14 @@
     computed: {
       player () {
         return Player.find(this.cap.player_id)
+      },
+      abbreviatedName () {
+        return this.cap.name.split(/\s+/).map(term => term[0]).join('')
+      },
+      identifier () {
+        return this.player && this.player.kit_no
+          ? `${this.abbreviatedName}${this.player.kit_no}`
+          : this.abbreviatedName
       }
     }
   }
@@ -104,9 +115,21 @@
     line-height: 1.5;
     border-radius: 3px;
 
+    .player-pos {
+      margin-left: -100%;
+      margin-right: -100%;
+      text-align: center;
+    }
+
     .player-name {
       font-size: 0.8em;
       line-height: 1;
+
+      .hidden-md-and-up {
+        margin-left: -100%;
+        margin-right: -100%;
+        text-align: center;
+      }
     }
   }
 </style>
