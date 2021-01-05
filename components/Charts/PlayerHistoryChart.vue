@@ -1,10 +1,14 @@
 <template>
-  <chartist
-    type="Line"
+  <base-line-chart
+    :chart-data="chartData"
+    :color="color"
+    :min="min"
+    :max="max"
+    :prefix="prefix"
     :ratio="ratio"
-    :data="chartData"
-    :options="options"
-    :event-handlers="eventHandlers"
+    show-area
+    :tooltip-x-modifier="x => formatDate(x)"
+    :axis-x="dateAxis"
   />
 </template>
 
@@ -60,45 +64,17 @@
 
         return { series }
       },
-      options () {
-        const prefix = this.prefix || ''
+      dateAxis () {
         return {
-          axisX: {
-            type: this.$chartist.FixedScaleAxis,
-            divisor: 5,
-            labelInterpolationFnc: value => format(value, 'MMM d, yyyy')
-          },
-          axisY: {
-            offset: 80,
-            labelInterpolationFnc (value) {
-              return `${prefix}${value.toLocaleString()}`
-            }
-          },
-          low: this.min,
-          high: this.max,
-          onlyInteger: true,
-          showArea: true
+          type: this.$chartist.FixedScaleAxis,
+          divisor: 5,
+          labelInterpolationFnc: value => format(value, 'MMM d, yyyy')
         }
-      },
-      eventHandlers () {
-        const color = this.color
-        return [{
-          event: 'draw',
-          fn (context) {
-            switch (context.type) {
-              case 'area':
-                context.element.attr({
-                  style: `fill: ${color}`
-                })
-                break
-              case 'point':
-              case 'line':
-                context.element.attr({
-                  style: `stroke: ${color}`
-                })
-            }
-          }
-        }]
+      }
+    },
+    methods: {
+      formatDate (date) {
+        return format(date, 'MMM d, yyyy')
       }
     }
   }
