@@ -21,6 +21,7 @@ export default class Loan extends Model {
       ended_on: this.string('').nullable(),
       origin: this.string(''),
       destination: this.string(''),
+      wage_percentage: this.number(0).nullable(),
       returned: this.boolean(false)
     }
   }

@@ -55,6 +55,10 @@
               <td class="font-weight-bold">Destination</td>
               <td class="pl-1">{{ loan.destination }}</td>
             </tr>
+            <tr v-if="loan.wage_percentage">
+              <td class="font-weight-bold">Wage Percentage</td>
+              <td class="pl-1">{{ loan.wage_percentage }}%</td>
+            </tr>
             <tr>
               <td class="font-weight-bold">Duration</td>
               <td class="pl-1">{{ duration }}</td>
