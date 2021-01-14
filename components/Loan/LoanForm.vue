@@ -96,6 +96,13 @@
             autocorrect: 'off'
           },
           {
+            type: 'string',
+            attribute: 'wage_percentage',
+            label: 'Wage Percentage (%)',
+            inputmode: 'numeric',
+            range: { min: 0, max: 100 }
+          },
+          {
             type: 'checkbox',
             attribute: 'returned',
             label: 'Player Returned',
