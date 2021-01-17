@@ -2,7 +2,6 @@ import VuexORM from '@vuex-orm/core'
 import Cookie from 'js-cookie'
 import database from '@/database'
 import cookieparser from 'cookieparser'
-import { http, routes } from '@/api'
 import pkg from '@/package.json'
 
 // initial state
@@ -47,45 +46,32 @@ export const actions = {
       commit('app/SET_MODE', mode || 'light')
     }
   },
-  LOGIN ({ commit }, payload) {
-    return http({
-      method: 'post',
-      path: routes.token.get,
-      data: {
-        ...payload,
-        client_id: process.env['CLIENT_ID'],
-        client_secret: process.env['CLIENT_SECRET']
-      },
-      success ({ data }) {
-        Cookie.set('token', data.access_token, {
-          expires: data.expires_in / 86400
-        })
-        commit('SET_TOKEN', data.access_token)
-        commit('broadcaster/ANNOUNCE', {
-          message: 'You have successfully logged in!',
-          color: 'success'
-        }, { root: true })
-      }
+  async LOGIN ({ commit }, payload) {
+    const data = await this.$axios.$post('oauth/token', {
+      ...payload,
+      client_id: this.$config.clientId,
+      client_secret: this.$config.clientSecret
     })
+    Cookie.set('token', data.access_token, {
+      expires: data.expires_in / 86400
+    })
+    commit('SET_TOKEN', data.access_token)
+    commit('broadcaster/ANNOUNCE', {
+      message: 'You have successfully logged in!',
+      color: 'success'
+    }, { root: true })
   },
-  LOGOUT ({ commit, state }) {
-    return http({
-      method: 'post',
-      path: routes.token.revoke,
-      token: state.token,
-      data: {
-        client_id: process.env['CLIENT_ID'],
-        client_secret: process.env['CLIENT_SECRET']
-      },
-      success () {
-        Cookie.remove('token')
-        commit('SET_TOKEN', null)
-        commit('broadcaster/ANNOUNCE', {
-          message: 'You have successfully logged out!',
-          color: 'danger'
-        }, { root: true })
-      }
+  async LOGOUT ({ commit }) {
+    await this.$axios.$post('oauth/revoke', {
+      client_id: this.$config.clientId,
+      client_secret: this.$config.clientSecret
     })
+    Cookie.remove('token')
+    commit('SET_TOKEN', null)
+    commit('broadcaster/ANNOUNCE', {
+      message: 'You have successfully logged out!',
+      color: 'danger'
+    }, { root: true })
   }
 }
 
