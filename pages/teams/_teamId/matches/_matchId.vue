@@ -248,10 +248,6 @@
       }),
       ...mapActions({
         getMatch: 'matches/GET',
-        fetchCaps: 'caps/FETCH',
-        fetchGoals: 'goals/FETCH',
-        fetchSubstitutions: 'substitutions/FETCH',
-        fetchBookings: 'bookings/FETCH',
         fetchPlayers: 'players/FETCH',
         searchPlayerHistories: 'playerHistories/SEARCH',
         fetchSquads: 'squads/FETCH'

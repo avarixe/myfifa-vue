@@ -9,8 +9,9 @@ export default {
 
   publicRuntimeConfig: {
     axios: {
-      browserBaseURL: process.env.BASE_URL
+      browserBaseURL: process.env.BASE_URL,
     },
+    cableURL: process.env.CABLE_URL,
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET
   },
