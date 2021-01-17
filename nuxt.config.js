@@ -7,6 +7,18 @@ export default {
     port: process.env.NODE_ENV === 'production' ? '8080' : '4000'
   },
 
+  publicRuntimeConfig: {
+    axios: {
+      browserBaseURL: process.env.BASE_URL
+    }
+  },
+
+  privateRuntimeConfig: {
+    axios: {
+      baseURL: process.env.BASE_URL
+    }
+  },
+
   /*
   ** Headers of the page
   */
@@ -39,6 +51,7 @@ export default {
   ],
 
   modules: [
+    '@nuxtjs/axios',
     '@nuxtjs/dotenv'
   ],
 
@@ -50,6 +63,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '@/plugins/axios.js',
     '@/plugins/fitty.js',
     '@/plugins/custom/filters.js',
     '@/plugins/vue-chartist.js'

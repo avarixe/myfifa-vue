@@ -2,11 +2,8 @@ import { http, routes } from '@/api'
 
 // actions
 export const actions = {
-  GET ({ rootState }) {
-    return http({
-      path: routes.users.sync,
-      token: rootState.token
-    })
+  GET () {
+    return this.$axios.$get(routes.users.sync)
   },
   CREATE ({ commit }, user) {
     return http({
