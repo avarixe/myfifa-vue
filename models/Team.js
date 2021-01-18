@@ -1,5 +1,4 @@
 import { Model } from '@vuex-orm/core'
-import { baseURL } from '@/api/routes'
 import Player from './Player'
 import Match from './Match'
 import Squad from './Squad'
@@ -43,10 +42,6 @@ export default class Team extends Model {
       name: 'teams-teamId',
       params: { teamId: this.id }
     }
-  }
-
-  get badgeUrl () {
-    return `${baseURL.replace(/\/api/, '')}${this.badge_path}`
   }
 
   linkTo (page) {

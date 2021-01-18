@@ -64,8 +64,10 @@
       async currentDate (val, oldVal) {
         if (oldVal) {
           await this.updateTeam({
-            id: this.team.id,
-            currently_on: val
+            team: {
+              id: this.team.id,
+              currently_on: val
+            }
           })
           this.calendar = false
         }

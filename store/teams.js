@@ -1,35 +1,32 @@
-import { crud, http, routes } from '@/api'
 import { Team } from '@/models'
 
 // actions
 export const actions = {
-  ...crud({ model: Team }),
-  FETCH ({ commit, rootState }) {
-    return http({
-      path: routes.teams.index,
-      token: rootState.token,
-      success ({ data }) {
-        Team.insert({ data })
-      }
-    })
+  async FETCH () {
+    const data = await this.$axios.$get('teams')
+    Team.insert({ data })
   },
-  CREATE ({ commit, rootState }, data) {
-    return http({
-      method: 'post',
-      path: routes.teams.index,
-      token: rootState.token,
-      data,
-      success ({ data }) {
-        Team.insert({ data })
-      }
-    })
+  async GET (_, { teamId }) {
+    const data = await this.$axios.$get(`teams/${teamId}`)
+    Team.insert({ data })
   },
-  ANALYZE_SEASON ({ rootState }, { teamId, season }) {
-    return http({
-      method: 'post',
-      path: routes.analyze.season,
-      pathData: { teamId, season },
-      token: rootState.token
-    })
+  async CREATE (_, { formData, team }) {
+    const data = await this.$axios.$post('teams', formData || { team })
+    Team.insert({ data })
+    return data
+  },
+  async UPDATE (_, { formData, team }) {
+    const data = await this.$axios.$patch(
+      `teams/${team.id}`,
+      formData || { team }
+    )
+    Team.insert({ data })
+  },
+  async REMOVE (_, teamId) {
+    await this.$axios.$delete(`teams/${teamId}`)
+    Team.delete(teamId)
+  },
+  ANALYZE_SEASON (_, { teamId, season }) {
+    return this.$axios.$post(`teams/${teamId}/analyze/season/${season}`)
   }
 }

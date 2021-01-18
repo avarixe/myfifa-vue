@@ -251,12 +251,7 @@
       }),
       ...mapActions({
         getPlayer: 'players/GET',
-        updatePlayer: 'players/UPDATE',
-        searchPlayerHistories: 'playerHistories/SEARCH',
-        fetchContracts: 'contracts/FETCH',
-        fetchInjuries: 'injuries/FETCH',
-        fetchLoans: 'loans/FETCH',
-        fetchTransfers: 'transfers/FETCH'
+        updatePlayer: 'players/UPDATE'
       }),
       async updatePlayerAttribute (playerId, attribute, value) {
         try {

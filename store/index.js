@@ -36,7 +36,7 @@ export const actions = {
 
           // load current Team, if present
           if ('teamId' in params) {
-            await dispatch('teams/GET', params)
+            await dispatch('teams/GET', { teamId: params.teamId })
           }
         } catch (e) {
           commit('SET_TOKEN', null)

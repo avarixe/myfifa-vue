@@ -108,16 +108,14 @@
 
         if (this.record) {
           await this.updateTeam({
-            id: this.team.id,
+            team: { id: this.team.id },
             formData
           })
         } else {
-          const { data } = await this.createTeam(formData)
+          const { id: teamId } = await this.createTeam({ formData })
           this.$router.push({
             name: 'teams-teamId',
-            params: {
-              teamId: data.id
-            }
+            params: { teamId }
           })
         }
       }
