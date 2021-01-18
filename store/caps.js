@@ -1,22 +1,13 @@
-import { crud, http, routes } from '@/api'
 import { Cap } from '@/models'
 
 // actions
 export const actions = {
-  ...crud({
-    model: Cap,
-    parent: 'match'
-  }),
-  SEARCH ({ rootState }, { teamId, filters }) {
-    return http({
-      method: 'post',
-      path: routes.caps.search,
-      pathData: { teamId },
-      data: { filters },
-      token: rootState.token,
-      success ({ data }) {
-        Cap.insert({ data })
-      }
-    })
+  async CREATE (_, { matchId, cap }) {
+    const data = await this.$axios.$post(`matches/${matchId}/caps`, { cap })
+    Cap.insert({ data })
+  },
+  async UPDATE (_, cap) {
+    const data = await this.$axios.$patch(`caps/${cap.id}`, { cap })
+    Cap.insert({ data })
   }
 }

@@ -264,7 +264,7 @@
         if (this.record) {
           await this.updateMatch(this.match)
         } else {
-          const { data } = await this.createMatch({
+          const { id: matchId } = await this.createMatch({
             teamId: this.team.id,
             match: this.match
           })
@@ -272,7 +272,7 @@
             name: 'teams-teamId-matches-matchId',
             params: {
               teamId: this.team.id,
-              matchId: data.id
+              matchId
             }
           })
         }

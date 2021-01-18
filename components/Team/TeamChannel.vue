@@ -4,7 +4,6 @@
 
 <script>
   import { mapState } from 'vuex'
-  import { cableURL } from '@/api'
   import * as models from '@/models'
 
   export default {
@@ -23,7 +22,7 @@
         const ActionCable = require('actioncable')
 
         this.cable = ActionCable.createConsumer(
-          `${cableURL}?access_token=${this.token}`
+          `${this.$config.cableURL}?access_token=${this.token}`
         )
 
         this.cable.subscriptions.create({

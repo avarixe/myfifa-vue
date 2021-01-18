@@ -1,4 +1,3 @@
-import { crud, http, routes } from '@/api'
 import { Match, Cap } from '@/models'
 
 // state
@@ -15,31 +14,36 @@ export const mutations = {
 
 // actions
 export const actions = {
-  ...crud({
-    model: Match,
-    parent: 'team'
-  }),
-  APPLY_SQUAD ({ rootState }, { matchId, squadId }) {
-    return http({
-      method: 'post',
-      path: routes.matches.applySquad,
-      pathData: { matchId, squadId },
-      token: rootState.token,
-      success ({ data }) {
-        Cap.delete(cap => cap.match_id === matchId)
-        Match.insert({ data })
-      }
-    })
+  async FETCH (_, { teamId }) {
+    const data = await this.$axios.$get(`teams/${teamId}/matches`)
+    Match.insert({ data })
   },
-  FETCH_TEAM_OPTIONS ({ commit, rootState }, { teamId }) {
-    return http({
-      method: 'get',
-      path: routes.matches.teamOptions,
-      pathData: { teamId },
-      token: rootState.token,
-      success ({ data }) {
-        commit('SET_TEAM_OPTIONS', data)
-      }
-    })
+  async GET (_, { matchId }) {
+    const data = await this.$axios.$get(`matches/${matchId}`)
+    Match.insert({ data })
+  },
+  async CREATE (_, { teamId, match }) {
+    const data = await this.$axios.$post(`teams/${teamId}/matches`, { match })
+    Match.insert({ data })
+    return data
+  },
+  async UPDATE (_, match) {
+    const data = await this.$axios.$patch(`matches/${match.id}`, { match })
+    Match.insert({ data })
+  },
+  async REMOVE (_, matchId) {
+    await this.$axios.$delete(`matches/${matchId}`)
+    Match.delete(matchId)
+  },
+  async APPLY_SQUAD (_, { matchId, squadId }) {
+    const data = await this.$axios.$post(
+      `matches/${matchId}/apply_squad/${squadId}`
+    )
+    Cap.delete(cap => cap.match_id === matchId)
+    Match.insert({ data })
+  },
+  async FETCH_TEAM_OPTIONS ({ commit }, { teamId }) {
+    const data = await this.$axios.$get(`teams/${teamId}/matches/team_options`)
+    commit('SET_TEAM_OPTIONS', data)
   }
 }

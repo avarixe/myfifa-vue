@@ -21,7 +21,7 @@
           <template #item.badge_path="{ item }">
             <v-img
               v-if="item.badge_path"
-              :src="item.badgeUrl"
+              :src="badgeUrl(item)"
               height="32px"
               width="32px"
               contain
@@ -57,6 +57,14 @@
     computed: {
       teams () {
         return Team.query().orderBy('id', 'desc').get()
+      }
+    },
+    methods: {
+      badgeUrl (team) {
+        const { browserBaseURL } = this.$config.axios
+        return team.badge_path
+          ? `${browserBaseURL.replace(/\/api/, '')}${team.badge_path}`
+          : null
       }
     }
   }

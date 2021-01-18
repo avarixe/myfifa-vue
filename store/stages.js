@@ -1,22 +1,24 @@
-import { crud, http, routes } from '@/api'
 import { Stage } from '@/models'
 
 // actions
 export const actions = {
-  ...crud({
-    model: Stage,
-    parent: 'competition'
-  }),
-  SEARCH ({ rootState }, { teamId, filters }) {
-    return http({
-      method: 'post',
-      path: routes.stages.search,
-      pathData: { teamId },
-      data: { filters },
-      token: rootState.token,
-      success ({ data }) {
-        Stage.insert({ data })
-      }
-    })
+  async FETCH (_, { competitionId }) {
+    const data = await this.$axios.$get(`competitions/${competitionId}/stages`)
+    Stage.insert({ data })
+  },
+  async CREATE (_, { competitionId, stage }) {
+    const data = await this.$axios.$post(
+      `competitions/${competitionId}/stages`,
+      { stage }
+    )
+    Stage.insert({ data })
+  },
+  async UPDATE (_, stage) {
+    const data = await this.$axios.$patch(`stages/${stage.id}`, { stage })
+    Stage.insert({ data })
+  },
+  async REMOVE (_, stageId) {
+    await this.$axios.$delete(`stages/${stageId}`)
+    Stage.delete(stageId)
   }
 }

@@ -1,38 +1,20 @@
-import { http, routes } from '@/api'
-
 // actions
 export const actions = {
-  GET ({ rootState }) {
-    return http({
-      path: routes.users.sync,
-      token: rootState.token
-    })
+  GET () {
+    return this.$axios.$get('users/sync')
   },
-  CREATE ({ commit }, user) {
-    return http({
-      method: 'post',
-      path: routes.users.record,
-      data: { user },
-      success () {
-        commit('broadcaster/ANNOUNCE', {
-          message: 'Account has been registered!',
-          color: 'success'
-        }, { root: true })
-      }
-    })
+  async CREATE ({ commit }, user) {
+    await this.$axios.$post('users.json', { user })
+    commit('broadcaster/ANNOUNCE', {
+      message: 'Account has been registered!',
+      color: 'success'
+    }, { root: true })
   },
-  UPDATE ({ commit, rootState }, user) {
-    return http({
-      method: 'patch',
-      path: routes.users.record,
-      token: rootState.token,
-      data: { user },
-      success () {
-        commit('broadcaster/ANNOUNCE', {
-          message: 'Account has been updated!',
-          color: 'success'
-        }, { root: true })
-      }
-    })
+  async UPDATE ({ commit }, user) {
+    await this.$axios.$patch('users.json', { user })
+    commit('broadcaster/ANNOUNCE', {
+      message: 'Account has been updated!',
+      color: 'success'
+    }, { root: true })
   }
 }

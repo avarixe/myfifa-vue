@@ -197,7 +197,7 @@
         if (this.record) {
           await this.updateCompetition(this.competition)
         } else {
-          const { data } = await this.createCompetition({
+          const { id: competitionId } = await this.createCompetition({
             teamId: this.team.id,
             competition: this.competition
           })
@@ -205,7 +205,7 @@
             name: 'teams-teamId-competitions-competitionId',
             params: {
               teamId: this.team.id,
-              competitionId: data.id
+              competitionId
             }
           })
         }

@@ -33,7 +33,6 @@
 <script>
   import { mapState, mapMutations, mapActions } from 'vuex'
   import { Team } from '@/models'
-  import { baseURL } from '@/api'
 
   export default {
     name: 'AppBar',
@@ -52,8 +51,9 @@
           : null
       },
       badgeUrl () {
+        const { browserBaseURL } = this.$config.axios
         return this.team && this.team.badge_path
-          ? `${baseURL.replace(/\/api/, '')}${this.team.badge_path}`
+          ? `${browserBaseURL.replace(/\/api/, '')}${this.team.badge_path}`
           : null
       }
     },

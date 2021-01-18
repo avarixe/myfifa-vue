@@ -123,7 +123,7 @@
     watch: {
       async dialog (val) {
         if (val && this.authenticated) {
-          const { data } = await this.getUser()
+          const data = await this.getUser()
           this.user = data
         }
       }

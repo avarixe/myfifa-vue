@@ -100,12 +100,12 @@
       }
     },
     async asyncData ({ params, store }) {
-      const { data } = await store.dispatch('teams/ANALYZE_SEASON', {
+      const seasonData = await store.dispatch('teams/ANALYZE_SEASON', {
         teamId: params.teamId,
         season: params.season
       })
       return {
-        seasonData: data,
+        seasonData,
         tab: 0
       }
     },

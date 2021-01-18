@@ -1,33 +1,24 @@
-import { http, routes } from '@/api'
 import { PenaltyShootout } from '@/models'
 
 // actions
 export const actions = {
-  CREATE ({ rootState }, { matchId, penaltyShootout }) {
-    return http({
-      method: 'post',
-      path: routes.matches.penaltyShootout,
-      pathData: { matchId },
-      token: rootState.token,
-      data: { penalty_shootout: penaltyShootout }
-    })
+  async CREATE (_, { matchId, penaltyShootout }) {
+    const data = await this.$axios.$post(
+      `matches/${matchId}/penalty_shootout`,
+      { penalty_shootout: penaltyShootout }
+    )
+    PenaltyShootout.insert({ data })
   },
-  UPDATE ({ rootState }, { matchId, penaltyShootout }) {
-    return http({
-      method: 'patch',
-      path: routes.matches.penaltyShootout,
-      pathData: { matchId },
-      token: rootState.token,
-      data: { penalty_shootout: penaltyShootout }
-    })
+  async UPDATE (_, { matchId, penaltyShootout }) {
+    const data = await this.$axios.$patch(
+      `matches/${matchId}/penalty_shootout`,
+      { penalty_shootout: penaltyShootout }
+    )
+    PenaltyShootout.insert({ data })
   },
-  REMOVE ({ rootState }, id) {
-    const ps = PenaltyShootout.find(id)
-    return http({
-      method: 'delete',
-      path: routes.matches.penaltyShootout,
-      pathData: { matchId: ps.match_id },
-      token: rootState.token
-    })
+  async REMOVE (_, id) {
+    const { match_id: matchId } = PenaltyShootout.find(id)
+    await this.$axios.$delete(`matches/${matchId}/penalty_shootout`)
+    PenaltyShootout.delete(id)
   }
 }
