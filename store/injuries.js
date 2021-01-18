@@ -1,22 +1,21 @@
-import { crud, http, routes } from '@/api'
 import { Injury } from '@/models'
 
 // actions
 export const actions = {
-  ...crud({
-    model: Injury,
-    parent: 'player'
-  }),
-  SEARCH ({ rootState }, { teamId, filters }) {
-    return http({
-      method: 'post',
-      path: routes.injuries.search,
-      pathData: { teamId },
-      data: { filters },
-      token: rootState.token,
-      success ({ data }) {
-        Injury.insert({ data })
-      }
+  async CREATE (_, { playerId, injury }) {
+    const data = await this.$axios.$post(`players/${playerId}/injuries`, {
+      injury
     })
+    Injury.insert({ data })
+  },
+  async UPDATE (_, injury) {
+    const data = await this.$axios.$patch(`injuries/${injury.id}`, {
+      injury
+    })
+    Injury.insert({ data })
+  },
+  async REMOVE (_, injuryId) {
+    await this.$axios.$delete(`injuries/${injuryId}`)
+    Injury.delete(injuryId)
   }
 }

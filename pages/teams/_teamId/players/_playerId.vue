@@ -223,7 +223,7 @@
       }
     },
     async asyncData ({ store, params }) {
-      const { data } = await store.dispatch('players/ANALYZE', {
+      const data = await store.dispatch('players/ANALYZE', {
         teamId: params.teamId,
         playerIds: [params.playerId]
       })

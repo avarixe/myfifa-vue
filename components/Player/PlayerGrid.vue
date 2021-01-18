@@ -296,7 +296,7 @@
       async getPlayerStats () {
         try {
           this.loading = true
-          const { data } = await this.analyzePlayers({
+          const data = await this.analyzePlayers({
             teamId: this.team.id,
             playerIds: this.players.map(player => player.id)
           })

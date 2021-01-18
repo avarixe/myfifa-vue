@@ -153,7 +153,7 @@
         if (this.record) {
           await this.updatePlayer(this.player)
         } else {
-          const { data } = await this.createPlayer({
+          const { id: playerId } = await this.createPlayer({
             teamId: this.team.id,
             player: this.player
           })
@@ -161,7 +161,7 @@
             name: 'teams-teamId-players-playerId',
             params: {
               teamId: this.team.id,
-              playerId: data.id
+              playerId
             }
           })
         }
