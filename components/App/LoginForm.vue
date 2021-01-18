@@ -113,8 +113,10 @@
           }
 
           this.$router.push(this.$route.hash.slice(1) || { name: 'teams' })
-        } catch (e) {
-          this.errorMessage = e.message
+        } catch ({ response }) {
+          this.errorMessage = response
+            ? 'Invalid Username/Password. Please try again.'
+            : 'API is not enabled.'
           this.loading = false
         }
       }
