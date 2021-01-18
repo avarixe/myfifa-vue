@@ -54,8 +54,7 @@ export default {
   ],
 
   modules: [
-    '@nuxtjs/axios',
-    '@nuxtjs/dotenv'
+    '@nuxtjs/axios'
   ],
 
   components: true,

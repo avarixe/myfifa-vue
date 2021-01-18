@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.12.5",
-    "@nuxtjs/dotenv": "^1.4.0",
     "@vuex-orm/core": "^0.36.2",
     "actioncable": "^5.2.1",
     "cookieparser": "^0.1.0",
