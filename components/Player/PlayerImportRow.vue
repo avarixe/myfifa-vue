@@ -39,26 +39,176 @@
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </td>
-    <td
-      v-for="field in fields"
-      :key="field.value"
-      class="pa-1"
-      style="width:150px"
-    >
-      <dynamic-field
-        :object="player"
-        :field="field"
-      >
-        <template #field.nationality>
-          <nationality-field
-            v-model="player.nationality"
-            :icon="null"
-            dense
-            outlined
-            hide-details
-          />
-        </template>
-      </dynamic-field>
+    <td>
+      <v-text-field
+        v-model="player.name"
+        label="Name"
+        :rules="rulesFor.name"
+        dense
+        outlined
+        hide-details
+        spellcheck="false"
+        autocapitalize="words"
+        autocomplete="off"
+        autocorrect="off"
+      />
+    </td>
+    <td>
+      <nationality-field
+        v-model="player.nationality"
+        :icon="null"
+        dense
+        outlined
+        hide-details
+      />
+    </td>
+    <td>
+      <v-select
+        v-model="player.pos"
+        label="Position"
+        :items="positions"
+        :rules="rulesFor.pos"
+        dense
+        outlined
+        hide-details
+      />
+    </td>
+    <td>
+      <v-select
+        v-model="player.sec_pos"
+        label="2nd Position(s)"
+        :items="positions"
+        multiple
+        chips
+        small-chips
+        deletable-chips
+        dense
+        outlined
+        hide-details
+      />
+    </td>
+    <td>
+      <v-text-field
+        v-model="player.age"
+        label="Age"
+        :rules="rulesFor.age"
+        dense
+        outlined
+        hide-details
+        inputmode="numeric"
+      />
+    </td>
+    <td>
+      <v-text-field
+        v-model="player.ovr"
+        label="OVR"
+        :rules="rulesFor.ovr"
+        dense
+        outlined
+        hide-details
+        input="numeric"
+      />
+    </td>
+    <td>
+      <v-money-field
+        v-model="player.value"
+        label="Value"
+        :prefix="team.currency"
+        required
+        dense
+        outlined
+        hide-details
+      />
+    </td>
+    <td>
+      <v-text-field
+        v-model="player.kit_no"
+        label="Kit Number"
+        :rules="rulesFor.kit_no"
+        dense
+        outlined
+        hide-details
+        inputmode="numeric"
+      />
+    </td>
+    <td>
+      <v-date-field
+        v-model="contract.ended_on"
+        label="Contract Ends"
+        :min="contract.started_on"
+        :max="maxEndDate"
+        required
+        dense
+        outlined
+        hide-details
+        start-with-year
+      />
+    </td>
+    <td>
+      <v-money-field
+        v-model="contract.wage"
+        label="Wage"
+        :prefix="team.currency"
+        required
+        dense
+        outlined
+        hide-details
+      />
+    </td>
+    <td>
+      <v-money-field
+        v-model="contract.signing_bonus"
+        label="Signing Bonus"
+        :prefix="team.currency"
+        dense
+        outlined
+        hide-details
+      />
+    </td>
+    <td>
+      <v-money-field
+        v-model="contract.release_clause"
+        label="Release Clause"
+        :prefix="team.currency"
+        dense
+        outlined
+        hide-details
+      />
+    </td>
+    <td>
+      <v-money-field
+        v-model="contract.performance_bonus"
+        label="Perf. Bonus"
+        :prefix="team.currency"
+        dense
+        outlined
+        hide-details
+      />
+    </td>
+    <td>
+      <v-text-field
+        v-if="contract.performance_bonus"
+        v-model="contract.bonus_req"
+        label="Bonus Req."
+        prefix="if"
+        :rules="rulesFor.bonus_req"
+        dense
+        outlined
+        hide-details
+        inputmode="numeric"
+      />
+    </td>
+    <td>
+      <v-select
+        v-if="contract.performance_bonus"
+        v-model="contract.bonus_req_type"
+        label="Bonus Req. Type"
+        :items="bonusRequirementTypes"
+        :rules="rulesFor.bonus_req_type"
+        dense
+        outlined
+        hide-details
+      />
     </td>
   </tr>
 </template>
@@ -68,13 +218,7 @@
   import { addYears, format, parseISO } from 'date-fns'
   import { Team } from '@/models'
   import { positions } from '@/models/Player'
-
-  const bonusRequirementTypes = [
-    'Appearances',
-    'Goals',
-    'Assists',
-    'Clean Sheets'
-  ]
+  import { requiredRule, formatRule, rangeRule } from '@/functions/rules'
 
   export default {
     name: 'PlayerImportRow',
@@ -86,7 +230,35 @@
     data: () => ({
       loading: false,
       saved: false,
-      error: ''
+      error: '',
+      rulesFor: {
+        name: [requiredRule({ label: 'Name' })],
+        pos: [requiredRule({ label: 'Position' })],
+        age: [
+          requiredRule({ label: 'Age' }),
+          formatRule({ label: 'Age', type: 'number' })
+        ],
+        ovr: [
+          requiredRule({ label: 'OVR' }),
+          formatRule({ label: 'OVR', type: 'number' }),
+          rangeRule({ label: 'OVR', min: 40, max: 100 })
+        ],
+        kit_no: [
+          formatRule({ label: 'Kit No', type: 'number' }),
+          rangeRule({ label: 'Kit No', min: 1, max: 99 })
+        ],
+        bonus_req: [
+          requiredRule({ label: 'Bonus Req.' }),
+          formatRule({ label: 'Bonus Req.', type: 'number' })
+        ],
+        bonus_req_type: [requiredRule({ label: 'Bonus Req. Type' })]
+      },
+      bonusRequirementTypes: [
+        'Appearances',
+        'Goals',
+        'Assists',
+        'Clean Sheets'
+      ]
     }),
     computed: {
       team () {
@@ -95,164 +267,14 @@
       contract () {
         return this.player.contracts_attributes[0]
       },
-      fields () {
-        return [
-          {
-            type: 'string',
-            attribute: 'name',
-            label: 'Name',
-            required: true,
-            dense: true,
-            outlined: true,
-            hideDetails: true,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          },
-          { slot: 'nationality' },
-          {
-            type: 'select',
-            attribute: 'pos',
-            label: 'Position',
-            items: positions,
-            required: true,
-            dense: true,
-            outlined: true,
-            hideDetails: true
-          },
-          {
-            type: 'select',
-            attribute: 'sec_pos',
-            label: '2nd Position(s)',
-            items: positions,
-            multiple: true,
-            dense: true,
-            outlined: true,
-            hideDetails: true
-          },
-          {
-            type: 'string',
-            attribute: 'age',
-            label: 'Age',
-            required: true,
-            dense: true,
-            outlined: true,
-            hideDetails: true,
-            inputmode: 'numeric'
-          },
-          {
-            type: 'string',
-            attribute: 'ovr',
-            label: 'OVR',
-            required: true,
-            dense: true,
-            outlined: true,
-            hideDetails: true,
-            inputmode: 'numeric',
-            range: { min: 40, max: 100 }
-          },
-          {
-            type: 'money',
-            attribute: 'value',
-            label: 'Value',
-            prefix: this.team.currency,
-            required: true,
-            dense: true,
-            outlined: true,
-            hideDetails: true
-          },
-          {
-            type: 'string',
-            attribute: 'kit_no',
-            label: 'Kit Number',
-            dense: true,
-            outlined: true,
-            hideDetails: true,
-            inputmode: 'numeric',
-            range: { min: 1, max: 99 }
-          },
-          {
-            type: 'date',
-            object: this.contract,
-            attribute: 'ended_on',
-            label: 'Contract Ends',
-            min: this.contract.started_on,
-            max: this.maxEndDate(this.contract),
-            required: true,
-            dense: true,
-            outlined: true,
-            hideDetails: true,
-            startWithYear: true
-          },
-          {
-            type: 'money',
-            object: this.contract,
-            attribute: 'wage',
-            label: 'Wage',
-            prefix: this.team.currency,
-            required: true,
-            dense: true,
-            outlined: true,
-            hideDetails: true
-          },
-          {
-            type: 'money',
-            object: this.contract,
-            attribute: 'signing_bonus',
-            label: 'Signing Bonus',
-            prefix: this.team.currency,
-            dense: true,
-            outlined: true,
-            hideDetails: true
-          },
-          {
-            type: 'money',
-            object: this.contract,
-            attribute: 'release_clause',
-            label: 'Release Clause',
-            prefix: this.team.currency,
-            dense: true,
-            outlined: true,
-            hideDetails: true
-          },
-          {
-            type: 'money',
-            object: this.contract,
-            attribute: 'performance_bonus',
-            label: 'Perf. Bonus',
-            prefix: this.team.currency,
-            dense: true,
-            outlined: true,
-            hideDetails: true
-          },
-          {
-            type: 'string',
-            object: this.contract,
-            attribute: 'bonus_req',
-            label: 'Bonus Req.',
-            prefix: 'if',
-            required: true,
-            dense: true,
-            outlined: true,
-            hideDetails: true,
-            inputmode: 'numeric',
-            hidden: !this.contract.performance_bonus
-          },
-          {
-            type: 'select',
-            object: this.contract,
-            attribute: 'bonus_req_type',
-            label: 'Bonus Req. Type',
-            items: bonusRequirementTypes,
-            required: true,
-            clearable: true,
-            dense: true,
-            outlined: true,
-            hideDetails: true,
-            hidden: !this.contract.performance_bonus
-          }
-        ]
+      positions () {
+        return positions
+      },
+      maxEndDate () {
+        return this.contract.started_on && format(
+          addYears(parseISO(this.contract.started_on), 6),
+          'yyyy-MM-dd'
+        )
       }
     },
     watch: {
@@ -284,18 +306,15 @@
         } finally {
           this.loading = false
         }
-      },
-      maxEndDate (contract) {
-        return contract.started_on && format(
-          addYears(parseISO(contract.started_on), 6),
-          'yyyy-MM-dd'
-        )
       }
     }
   }
 </script>
 
 <style scoped>
+  td:not(:first-child) {
+    padding: 4px;
+  }
   td >>> .v-input {
     width: 150px
   }

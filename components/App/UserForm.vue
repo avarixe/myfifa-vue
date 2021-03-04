@@ -8,10 +8,78 @@
       <slot :on="on" />
     </template>
     <template #form>
-      <dynamic-fields
-        :object="user"
-        :fields="fields"
-      />
+      <v-col
+        v-if="passwordMode"
+        cols="12"
+      >
+        <v-text-field
+          v-model="user.current_password"
+          label="Current Password"
+          :rules="rulesFor.current_password"
+          :type="visible ? 'text' : 'password'"
+          :append-icon="`mdi-eye${visible ? '' : '-off'}`"
+          @click:append="visible = !visible"
+        />
+      </v-col>
+      <v-row
+        v-else
+        dense
+      >
+        <v-col cols="12">
+          <v-text-field
+            v-model="user.full_name"
+            label="Name"
+            :rules="rulesFor.full_name"
+            spellcheck="false"
+            autocapitalize="words"
+            autocomplete="off"
+            autocorrect="off"
+          />
+        </v-col>
+        <v-col cols="12">
+          <v-text-field
+            v-model="user.username"
+            label="Username"
+            :rules="rulesFor.username"
+            spellcheck="false"
+            autocapitalize="off"
+            autocorrect="off"
+          />
+        </v-col>
+        <v-col cols="12">
+          <v-text-field
+            v-model="user.email"
+            label="Email Address"
+            :rules="rulesFor.email"
+            type="email"
+          />
+        </v-col>
+      </v-row>
+      <v-row
+        v-if="!authenticated || passwordMode"
+        dense
+      >
+        <v-col cols="12">
+          <v-text-field
+            v-model="user.password"
+            :label="passwordLabel"
+            :rules="rulesForPassword"
+            :type="visible ? 'text' : 'password'"
+            :append-icon="`mdi-eye${visible ? '' : '-off'}`"
+            @click:append="visible = !visible"
+          />
+        </v-col>
+        <v-col cols="12">
+          <v-text-field
+            v-model="user.password_confirmation"
+            label="Confirm Password"
+            :rules="rulesFor.password_confirmation"
+            :type="visible ? 'text' : 'password'"
+            :append-icon="`mdi-eye${visible ? '' : '-off'}`"
+            @click:append="visible = !visible"
+          />
+        </v-col>
+      </v-row>
     </template>
     <template #additional-actions>
       <v-btn
@@ -29,6 +97,7 @@
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import { DialogFormable } from '@/mixins'
+  import { requiredRule } from '@/functions/rules'
 
   export default {
     name: 'UserForm',
@@ -43,65 +112,20 @@
         email: '',
         password: '',
         password_confirmation: ''
-      }
+      },
+      rulesFor: {
+        full_name: [requiredRule({ label: 'Name' })],
+        username: [requiredRule({ label: 'Username' })],
+        email: [requiredRule({ label: 'Email Address' })],
+        current_password: [requiredRule({ label: 'Current Password' })],
+        password_confirmation: [requiredRule({ label: 'Password Confirmation' })]
+      },
+      visible: false
     }),
     computed: {
       ...mapGetters([
         'authenticated'
       ]),
-      fields () {
-        let fields = []
-
-        if (this.passwordMode) {
-          fields.push({
-            type: 'password',
-            attribute: 'current_password',
-            label: 'Current Password'
-          })
-        } else {
-          fields = [
-            {
-              type: 'string',
-              attribute: 'full_name',
-              label: 'Name',
-              required: true,
-              autocapitalize: 'word'
-            },
-            {
-              type: 'string',
-              attribute: 'username',
-              label: 'Username',
-              required: true,
-              autocapitalize: 'off'
-            },
-            {
-              type: 'string',
-              attribute: 'email',
-              label: 'Email',
-              required: true,
-              inputmode: 'email'
-            }
-          ]
-        }
-
-        if (!this.authenticated || this.passwordMode) {
-          fields = [
-            ...fields,
-            {
-              type: 'password',
-              attribute: 'password',
-              label: this.passwordLabel
-            },
-            {
-              type: 'password',
-              attribute: 'password_confirmation',
-              label: 'Confirm Password'
-            }
-          ]
-        }
-
-        return fields
-      },
       title () {
         if (this.passwordMode) {
           return 'Change Password'
@@ -113,6 +137,9 @@
       },
       passwordLabel () {
         return this.passwordMode ? 'New Password' : 'Password'
+      },
+      rulesForPassword () {
+        return [requiredRule({ label: this.passwordLabel })]
       },
       editParams () {
         return this.passwordMode

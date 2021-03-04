@@ -14,10 +14,83 @@
       </slot>
     </template>
     <template #form>
-      <dynamic-fields
-        :object="match"
-        :fields="fields"
-      />
+      <v-col cols="12">
+        <v-date-field
+          v-model="match.played_on"
+          label="Date Played"
+          prepend-icon="mdi-calendar-today"
+          required
+          :color="color"
+          :min="record ? null : team.currently_on"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-select
+          v-model="match.competition"
+          label="Competition"
+          prepend-icon="mdi-trophy"
+          :items="competitions"
+          :rules="rulesFor.competition"
+          :loading="loadingCompetitions"
+        />
+      </v-col>
+      <v-scroll-y-transition mode="out-in">
+        <v-col
+          v-if="match.competition"
+          cols="12"
+        >
+          <v-combobox
+            v-model="match.stage"
+            label="Stage"
+            prepend-icon="mdi-tournament"
+            :items="stages"
+            :loading="loadingStages"
+            spellcheck="false"
+            autocapitalize="words"
+            autocomplete="off"
+            autocorrect="off"
+          />
+        </v-col>
+      </v-scroll-y-transition>
+      <v-col cols="12">
+        <v-combobox
+          v-model="match.home"
+          label="Home Team"
+          prepend-icon="mdi-home"
+          :items="teamOptions"
+          :rules="rulesFor.home"
+          :loading="loadingTeams"
+          :append-outer-icon="`mdi-shield-${isHome ? 'star' : 'outline'}`"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+          @click:append-outer="setHome"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-combobox
+          v-model="match.away"
+          label="Away Team"
+          prepend-icon="mdi-bus"
+          :items="teamOptions"
+          :rules="rulesFor.away"
+          :loading="loadingTeams"
+          :append-outer-icon="`mdi-shield-${isAway ? 'star' : 'outline'}`"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+          @click:append-outer="setAway"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-checkbox
+          v-model="match.extra_time"
+          label="Extra Time Required"
+          hide-details
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>
@@ -28,6 +101,7 @@
   import { parseISO } from 'date-fns'
   import { Competition } from '@/models'
   import { TeamAccessible, DialogFormable } from '@/mixins'
+  import { requiredRule } from '@/functions/rules'
 
   export default {
     name: 'MatchForm',
@@ -46,87 +120,21 @@
       match: {
         played_on: null,
         competition: '',
+        stage: null,
         home: '',
         away: '',
         extra_time: false
+      },
+      rulesFor: {
+        competition: [requiredRule({ label: 'Competition' })],
+        home: [requiredRule({ label: 'Home Team' })],
+        away: [requiredRule({ label: 'Away Team' })]
       }
     }),
     computed: {
       ...mapState('matches', [
         'teamOptions'
       ]),
-      fields () {
-        return [
-          {
-            type: 'date',
-            attribute: 'played_on',
-            label: 'Date Played',
-            prependIcon: 'mdi-calendar-today',
-            required: true,
-            color: this.color,
-            min: this.record ? null : this.team.currently_on
-          },
-          {
-            type: 'select',
-            attribute: 'competition',
-            items: this.competitions,
-            label: 'Competition',
-            prependIcon: 'mdi-trophy',
-            required: true,
-            loading: this.loadingCompetitions
-          },
-          {
-            type: 'combobox',
-            attribute: 'stage',
-            items: this.stages,
-            label: 'Stage',
-            prependIcon: 'mdi-tournament',
-            loading: this.loadingStages,
-            hidden: !this.match.competition ||
-              this.match.competition.length === 0,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          },
-          {
-            type: 'combobox',
-            attribute: 'home',
-            items: this.teamOptions,
-            label: 'Home Team',
-            prependIcon: 'mdi-home',
-            appendOuterIcon: `mdi-shield-${this.isHome ? 'star' : 'outline'}`,
-            clickAppendOuter: this.setHome,
-            required: true,
-            loading: this.loadingTeams,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          },
-          {
-            type: 'combobox',
-            attribute: 'away',
-            items: this.teamOptions,
-            label: 'Away Team',
-            prependIcon: 'mdi-bus',
-            appendOuterIcon: `mdi-shield-${this.isAway ? 'star' : 'outline'}`,
-            clickAppendOuter: this.setAway,
-            loading: this.loadingTeams,
-            required: true,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          },
-          {
-            type: 'checkbox',
-            attribute: 'extra_time',
-            label: 'Extra Time Required',
-            hideDetails: true
-          }
-        ]
-      },
       title () {
         return this.record ? 'Edit Match' : 'New Match'
       },

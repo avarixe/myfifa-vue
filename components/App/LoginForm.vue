@@ -11,10 +11,25 @@
         </v-toolbar-title>
       </v-toolbar>
       <v-card-text>
-        <dynamic-fields
-          :object="credentials"
-          :fields="fields"
-        />
+        <v-row dense>
+          <v-col cols="12">
+            <v-text-field
+              v-model="credentials.username"
+              label="Username"
+              autofocus
+              autocapitalize="off"
+            />
+          </v-col>
+          <v-col cols="12">
+            <v-text-field
+              v-model="credentials.password"
+              label="Password"
+              :type="visible ? 'text' : 'password'"
+              :append-icon="`mdi-eye${visible ? '' : '-off'}`"
+              @click:append="visible = !visible"
+            />
+          </v-col>
+        </v-row>
       </v-card-text>
       <v-alert
         v-model="formError"
@@ -64,28 +79,13 @@
         username: '',
         password: '',
         grant_type: 'password'
-      }
+      },
+      visible: false
     }),
     computed: {
       ...mapState([
         'version'
       ]),
-      fields () {
-        return [
-          {
-            type: 'string',
-            attribute: 'username',
-            label: 'Username',
-            autofocus: true,
-            autocapitalize: 'off'
-          },
-          {
-            type: 'password',
-            attribute: 'password',
-            label: 'Password'
-          }
-        ]
-      },
       formError: {
         get () {
           return this.errorMessage.length > 0

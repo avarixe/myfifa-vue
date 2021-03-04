@@ -16,10 +16,53 @@
       </slot>
     </template>
     <template #form>
-      <dynamic-fields
-        :object="injury"
-        :fields="fields"
-      />
+      <v-row
+        v-if="record && record.ended_on"
+        dense
+      >
+        <v-col cols="12">
+          <v-date-field
+            v-model="injury.started_on"
+            label="Injury Date"
+            prepend-icon="mdi-calendar-today"
+            color="pink"
+            :max="contract && contract.ended_on"
+            required
+          />
+        </v-col>
+        <v-col cols="12">
+          <v-date-field
+            v-model="injury.ended_on"
+            label="Recovery Date"
+            prepend-icon="mdi-calendar"
+            color="pink"
+            :min="contract && contract.started_on"
+            required
+          />
+        </v-col>
+      </v-row>
+      <v-col cols="12">
+        <v-text-field
+          v-model="injury.description"
+          label="Description"
+          prepend-icon="mdi-ambulance"
+          :rules="rulesFor.description"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col
+        v-if="record && !record.ended_on"
+        cols="12"
+      >
+        <v-checkbox
+          v-model="injury.recovered"
+          label="Player Recovered"
+          hide-details
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>
@@ -47,57 +90,8 @@
       }
     }),
     computed: {
-      fields () {
-        let fields = []
-
-        if (this.record && this.record.ended_on) {
-          fields = [
-            {
-              type: 'date',
-              attribute: 'started_on',
-              label: 'Injury Date',
-              prependIcon: 'mdi-calendar-today',
-              color: 'pink',
-              max: this.contract && this.contract.ended_on,
-              required: true
-            },
-            {
-              type: 'date',
-              attribute: 'ended_on',
-              label: 'Recovery Date',
-              prependIcon: 'mdi-calendar',
-              color: 'pink',
-              min: this.contract && this.contract.started_on,
-              required: true
-            }
-          ]
-        }
-
-        return [
-          ...fields,
-          {
-            type: 'string',
-            attribute: 'description',
-            label: 'Description',
-            prependIcon: 'mdi-ambulance',
-            required: true,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          },
-          {
-            type: 'checkbox',
-            attribute: 'recovered',
-            label: 'Player Recovered',
-            hidden: !this.record || this.record.ended_on
-          }
-        ]
-      },
       title () {
-        return this.record
-          ? 'Update Injury'
-          : 'Record New Injury'
+        return this.record ? 'Update Injury' : 'Record New Injury'
       }
     },
     watch: {

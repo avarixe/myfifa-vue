@@ -17,29 +17,34 @@
       </slot>
     </template>
     <template #form>
-      <dynamic-fields :fields="fields">
-        <template #field.minute>
-          <minute-field v-model="minute" />
-        </template>
-        <template #field.player_id>
-          <player-select
-            v-model="substitution.player_id"
-            :players="unsubbedPlayers"
-            icon="mdi-subdirectory-arrow-left"
-            required
-          />
-        </template>
-        <template #field.replacement_id>
-          <player-select
-            v-model="substitution.replacement_id"
-            :players="availablePlayers"
-            item-value="id"
-            label="Replaced By"
-            icon="mdi-subdirectory-arrow-right"
-            required
-          />
-        </template>
-      </dynamic-fields>
+      <v-col cols="12">
+        <minute-field v-model="minute" />
+      </v-col>
+      <v-col cols="12">
+        <player-select
+          v-model="substitution.player_id"
+          :players="unsubbedPlayers"
+          icon="mdi-subdirectory-arrow-left"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <player-select
+          v-model="substitution.replacement_id"
+          :players="availablePlayers"
+          item-value="id"
+          label="Replaced By"
+          icon="mdi-subdirectory-arrow-right"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-checkbox
+          v-model="substitution.injury"
+          label="Injury"
+          hide-details
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>
@@ -49,7 +54,6 @@
   import pick from 'lodash.pick'
   import { activePlayers } from '@/models/Player'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
-  import { SubstitutionFields } from '@/functions/fields'
 
   export default {
     name: 'SubstitutionForm',
@@ -69,9 +73,6 @@
       }
     }),
     computed: {
-      fields () {
-        return SubstitutionFields(this)
-      },
       title () {
         return `${this.record ? 'Edit' : 'Record'} Substitution`
       },

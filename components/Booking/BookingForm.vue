@@ -17,21 +17,65 @@
       </slot>
     </template>
     <template #form>
-      <dynamic-fields
-        :object="booking"
-        :fields="fields"
-      >
-        <template #field.minute>
-          <minute-field v-model="minute" />
-        </template>
-        <template #field.player_id>
-          <player-select
-            v-model="booking.player_id"
-            :players="unsubbedPlayers"
-            required
+      <v-col cols="12">
+        <v-radio-group
+          v-model="booking.home"
+          row
+          hide-details
+          @change="clearNames"
+        >
+          <v-radio
+            :label="match.home"
+            :value="true"
+            color="teal"
           />
-        </template>
-      </dynamic-fields>
+          <v-radio
+            :label="match.away"
+            :value="false"
+            color="pink"
+          />
+        </v-radio-group>
+      </v-col>
+      <v-col cols="12">
+        <minute-field v-model="minute" />
+      </v-col>
+      <v-col cols="12">
+        <player-select
+          v-if="!booking.home ^ match.home === team.title"
+          v-model="booking.player_id"
+          :players="unsubbedPlayers"
+          required
+        />
+        <v-text-field
+          v-else
+          v-model="booking.player_name"
+          label="Player"
+          prepend-icon="mdi-account"
+          :rules="rulesFor.player_name"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-radio-group
+          v-model="booking.red_card"
+          row
+          hide-details
+        >
+          <v-radio
+            label="Yellow Card"
+            :value="false"
+            color="orange darken-2"
+          />
+          <v-radio
+            label="Red Card"
+            :value="true"
+            color="red darken-2"
+          />
+        </v-radio-group>
+      </v-col>
     </template>
   </dialog-form>
 </template>
@@ -40,7 +84,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
-  import { BookingFields } from '@/functions/fields'
+  import { requiredRule } from '@/functions/rules'
 
   export default {
     name: 'BookingForm',
@@ -58,12 +102,12 @@
         player_id: null,
         player_name: '',
         red_card: false
+      },
+      rulesFor: {
+        player_name: [requiredRule({ label: 'Player' })]
       }
     }),
     computed: {
-      fields () {
-        return BookingFields(this)
-      },
       title () {
         return `${this.record ? 'Edit' : 'Record'} Booking`
       }
@@ -87,6 +131,10 @@
         createBooking: 'CREATE',
         updateBooking: 'UPDATE'
       }),
+      clearNames () {
+        this.booking.player_id = null
+        this.booking.player_name = null
+      },
       async submit () {
         const booking = {
           ...this.booking,

@@ -9,10 +9,41 @@
       <slot :on="on" />
     </template>
     <template #form>
-      <dynamic-fields
-        :object="team"
-        :fields="fields"
-      />
+      <v-col cols="12">
+        <v-text-field
+          v-model="team.title"
+          label="Team"
+          prepend-icon="mdi-shield-half-full"
+          :rules="rulesFor.title"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-date-field
+          v-model="team.started_on"
+          label="Start Date"
+          prepend-icon="mdi-calendar-today"
+          :disabled="record"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="team.currency"
+          label="Currency"
+          prepend-icon="mdi-cash"
+          :rules="rulesFor.currency"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-file-input
+          v-model="team.badge"
+          label="Badge"
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>
@@ -22,6 +53,7 @@
   import { format } from 'date-fns'
   import pick from 'lodash.pick'
   import { DialogFormable } from '@/mixins'
+  import { requiredRule } from '@/functions/rules'
 
   export default {
     name: 'TeamForm',
@@ -37,46 +69,15 @@
         started_on: format(new Date(), 'yyyy-MM-dd'),
         currency: '$',
         badge: null
+      },
+      rulesFor: {
+        title: [requiredRule({ label: 'Title' })],
+        currency: [requiredRule({ label: 'Currency' })]
       }
     }),
     computed: {
       title () {
         return this.record ? `Edit ${this.record.title}` : 'New Team'
-      },
-      fields () {
-        return [
-          {
-            type: 'string',
-            attribute: 'title',
-            label: 'Team',
-            prependIcon: 'mdi-shield-half-full',
-            required: true,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          },
-          {
-            type: 'date',
-            attribute: 'started_on',
-            label: 'Start Date',
-            prependIcon: 'mdi-calendar-today',
-            disabled: this.team.id > 0,
-            required: true
-          },
-          {
-            type: 'string',
-            attribute: 'currency',
-            label: 'Currency',
-            prependIcon: 'mdi-cash',
-            required: true
-          },
-          {
-            type: 'file',
-            attribute: 'badge',
-            label: 'Badge'
-          }
-        ]
       }
     },
     watch: {

@@ -18,10 +18,57 @@
       </slot>
     </template>
     <template #form>
-      <dynamic-fields
-        :object="stage"
-        :fields="fields"
-      />
+      <v-col cols="12">
+        <v-text-field
+          v-model="stage.name"
+          label="Name"
+          prepend-icon="mdi-table"
+          :rules="rulesFor.name"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-radio-group
+          v-model="stage.table"
+          row
+          hide-details
+        >
+          <v-radio
+            label="Table"
+            :value="true"
+          />
+          <v-radio
+            label="Elimination Round"
+            :value="false"
+          />
+        </v-radio-group>
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="stage.num_teams"
+          label="Number of Teams"
+          prepend-icon="mdi-account-group"
+          :rules="rulesFor.num_teams"
+          inputmode="numeric"
+        />
+      </v-col>
+      <v-scroll-y-transition mode="out-in">
+        <v-col
+          v-if="!stage.table"
+          cols="12"
+        >
+          <v-text-field
+            v-model="stage.num_fixtures"
+            label="Number of Fixtures"
+            prepend-icon="mdi-sword-cross"
+            :rules="rulesFor.num_fixtures"
+            inputmode="numeric"
+          />
+        </v-col>
+      </v-scroll-y-transition>
     </template>
   </dialog-form>
 </template>
@@ -29,6 +76,7 @@
 <script>
   import { mapActions } from 'vuex'
   import { DialogFormable } from '@/mixins'
+  import { requiredRule, formatRule } from '@/functions/rules'
 
   export default {
     name: 'StageForm',
@@ -45,50 +93,19 @@
         num_teams: null,
         num_fixtures: null,
         table: false
-      }
-    }),
-    computed: {
-      fields () {
-        return [
-          {
-            type: 'string',
-            attribute: 'name',
-            label: 'Name',
-            prependIcon: 'mdi-table',
-            required: true,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          },
-          {
-            type: 'radio',
-            attribute: 'table',
-            items: [
-              { label: 'Table', value: true },
-              { label: 'Elimination Round', value: false }
-            ],
-            hideDetails: true
-          },
-          {
-            type: 'string',
-            attribute: 'num_teams',
-            label: 'Number of Teams',
-            prependIcon: 'mdi-account-group',
-            inputmode: 'numeric',
-            required: true
-          },
-          {
-            type: 'string',
-            attribute: 'num_fixtures',
-            label: 'Number of Fixtures',
-            prependIcon: 'mdi-sword-cross',
-            inputmode: 'numeric',
-            hidden: this.stage.table
-          }
+      },
+      rulesFor: {
+        name: [requiredRule({ label: 'Name' })],
+        num_teams: [
+          requiredRule({ label: 'Number of Teams' }),
+          formatRule({ label: 'Number of Teams', type: 'number' })
+        ],
+        num_fixtures: [
+          requiredRule({ label: 'Number of Fixtures' }),
+          formatRule({ label: 'Number of Fixtures', type: 'number' })
         ]
       }
-    },
+    }),
     watch: {
       'stage.table' (val) {
         if (val) {

@@ -16,10 +16,78 @@
       </slot>
     </template>
     <template #form>
-      <dynamic-fields
-        :object="contract"
-        :fields="fields"
-      />
+      <v-col cols="12">
+        <v-date-field
+          v-model="contract.started_on"
+          label="Effective Date"
+          prepend-icon="mdi-calendar-today"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-date-field
+          v-model="contract.ended_on"
+          label="End Date"
+          prepend-icon="mdi-calendar"
+          :min="contract.started_on"
+          :max="maxEndDate"
+          required
+          start-with-year
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-money-field
+          v-model="contract.wage"
+          label="Wage"
+          :prefix="team.currency"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-money-field
+          v-model="contract.signing_bonus"
+          label="Signing Bonus"
+          :prefix="team.currency"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-money-field
+          v-model="contract.release_clause"
+          label="Release Clause"
+          :prefix="team.currency"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-money-field
+          v-model="contract.performance_bonus"
+          label="Performance Bonus"
+          :prefix="team.currency"
+        />
+      </v-col>
+      <v-scroll-y-transition mode="out-in">
+        <v-row
+          v-if="contract.performance_bonus"
+          dense
+        >
+          <v-col cols="6">
+            <v-text-field
+              v-model="contract.bonus_req"
+              label="Bonus Req."
+              prefix="if"
+              :rules="rulesFor.bonus_req"
+              inputmode="numeric"
+            />
+          </v-col>
+          <v-col cols="6">
+            <v-select
+              v-model="contract.bonus_req_type"
+              label="Bonus Req. Type"
+              :items="bonusRequirementTypes"
+              :rules="rulesFor.bonus_req_type"
+            />
+          </v-col>
+        </v-row>
+      </v-scroll-y-transition>
     </template>
   </dialog-form>
 </template>
@@ -29,13 +97,7 @@
   import { addYears, format, parseISO } from 'date-fns'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable } from '@/mixins'
-
-  const bonusRequirementTypes = [
-    'Appearances',
-    'Goals',
-    'Assists',
-    'Clean Sheets'
-  ]
+  import { requiredRule } from '@/functions/rules'
 
   export default {
     name: 'ContractForm',
@@ -60,78 +122,21 @@
         performance_bonus: null,
         bonus_req: null,
         bonus_req_type: null
-      }
+      },
+      rulesFor: {
+        bonus_req: [requiredRule({ label: 'Bonus Req.' })],
+        bonus_req_type: [requiredRule({ label: 'Bonus Req. Type' })]
+      },
+      bonusRequirementTypes: [
+        'Appearances',
+        'Goals',
+        'Assists',
+        'Clean Sheets'
+      ]
     }),
     computed: {
-      fields () {
-        return [
-          {
-            type: 'date',
-            attribute: 'started_on',
-            label: 'Effective Date',
-            prependIcon: 'mdi-calendar-today',
-            required: true
-          },
-          {
-            type: 'date',
-            attribute: 'ended_on',
-            label: 'End Date',
-            prependIcon: 'mdi-calendar',
-            min: this.contract.started_on,
-            max: this.maxEndDate,
-            required: true,
-            startWithYear: true
-          },
-          {
-            type: 'money',
-            attribute: 'wage',
-            label: 'Wage',
-            prefix: this.team.currency
-          },
-          {
-            type: 'money',
-            attribute: 'signing_bonus',
-            label: 'Signing Bonus',
-            prefix: this.team.currency
-          },
-          {
-            type: 'money',
-            attribute: 'release_clause',
-            label: 'Release Clause',
-            prefix: this.team.currency
-          },
-          {
-            type: 'money',
-            attribute: 'performance_bonus',
-            label: 'Performance Bonus',
-            prefix: this.team.currency
-          },
-          {
-            cols: 6,
-            type: 'string',
-            attribute: 'bonus_req',
-            label: 'Bonus Req.',
-            prefix: 'if',
-            inputmode: 'numeric',
-            hidden: !this.contract.performance_bonus,
-            required: true
-          },
-          {
-            cols: 6,
-            type: 'select',
-            attribute: 'bonus_req_type',
-            label: 'Bonus Req. Type',
-            items: bonusRequirementTypes,
-            clearable: true,
-            hidden: !this.contract.performance_bonus,
-            required: true
-          }
-        ]
-      },
       title () {
-        return this.record
-          ? 'Edit Contract'
-          : 'Sign New Contract'
+        return this.record ? 'Edit Contract' : 'Sign New Contract'
       },
       maxEndDate () {
         return this.contract.started_on && format(

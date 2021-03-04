@@ -16,10 +16,73 @@
       </slot>
     </template>
     <template #form>
-      <dynamic-fields
-        :object="loan"
-        :fields="fields"
-      />
+      <v-col cols="12">
+        <v-date-field
+          v-model="loan.started_on"
+          label="Start Date"
+          prepend-icon="mdi-calendar-today"
+          :min="record ? null : team.currently_on"
+          color="indigo"
+          required
+        />
+      </v-col>
+      <v-col
+        v-if="record && record.ended_on"
+        cols="12"
+      >
+        <v-date-field
+          v-model="loan.ended_on"
+          label="Return Date"
+          prepend-icon="mdi-calendar"
+          :min="loan.started_on"
+          color="indigo"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="loan.origin"
+          label="Origin"
+          prepend-icon="mdi-airplane-takeoff"
+          :rules="rulesFor.origin"
+          :disabled="loanOut"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="loan.destination"
+          label="Destination"
+          prepend-icon="mdi-airplane-landing"
+          :rules="rulesFor.destination"
+          :disabled="!loanOut"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="loan.wage_percentage"
+          label="Wage Percentage (%)"
+          :rules="rulesFor.wage_percentage"
+          inputmode="numeric"
+        />
+      </v-col>
+      <v-col
+        v-if="record && !record.ended_on"
+        cols="12"
+      >
+        <v-checkbox
+          v-model="loan.returned"
+          label="Player Returned"
+          hide-details
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>
@@ -28,6 +91,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable } from '@/mixins'
+  import { requiredRule, formatRule, rangeRule } from '@/functions/rules'
 
   export default {
     name: 'LoanForm',
@@ -47,69 +111,17 @@
         origin: '',
         destination: '',
         returned: false
+      },
+      rulesFor: {
+        origin: [requiredRule({ label: 'Origin' })],
+        destination: [requiredRule({ label: 'Destination' })],
+        wage_percentage: [
+          formatRule({ label: 'Wage Percentage', type: 'number' }),
+          rangeRule({ label: 'Wage Percentage', min: 0, max: 100 })
+        ]
       }
     }),
     computed: {
-      fields () {
-        return [
-          {
-            type: 'date',
-            attribute: 'started_on',
-            label: 'Start Date',
-            prependIcon: 'mdi-calendar-today',
-            min: this.record ? null : this.team.currently_on,
-            color: 'indigo',
-            required: true
-          },
-          {
-            type: 'date',
-            attribute: 'ended_on',
-            label: 'Return Date',
-            prependIcon: 'mdi-calendar',
-            min: this.loan.started_on,
-            color: 'indigo',
-            required: true,
-            hidden: !(this.record && this.record.ended_on)
-          },
-          {
-            type: 'string',
-            attribute: 'origin',
-            label: 'Origin',
-            prependIcon: 'mdi-airplane-takeoff',
-            disabled: this.loanOut,
-            required: true,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          },
-          {
-            type: 'string',
-            attribute: 'destination',
-            label: 'Destination',
-            prependIcon: 'mdi-airplane-landing',
-            disabled: !this.loanOut,
-            required: true,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          },
-          {
-            type: 'string',
-            attribute: 'wage_percentage',
-            label: 'Wage Percentage (%)',
-            inputmode: 'numeric',
-            range: { min: 0, max: 100 }
-          },
-          {
-            type: 'checkbox',
-            attribute: 'returned',
-            label: 'Player Returned',
-            hidden: !this.record || this.record.ended_on
-          }
-        ]
-      },
       loanOut () {
         return this.record
           ? this.team.title === this.record.origin

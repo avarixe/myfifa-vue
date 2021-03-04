@@ -15,10 +15,65 @@
       </slot>
     </template>
     <template #form>
-      <dynamic-fields
-        :object="row"
-        :fields="fields"
-      />
+      <v-col cols="12">
+        <v-text-field
+          v-model="row.name"
+          label="Team"
+          prepend-icon="mdi-shield-half-full"
+          hide-details
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="4">
+        <v-text-field
+          v-model="row.wins"
+          prepend-icon="mdi-alpha-w"
+          :rules="rulesFor.wins"
+          hide-details
+          inputmode="numeric"
+        />
+      </v-col>
+      <v-col cols="4">
+        <v-text-field
+          v-model="row.draws"
+          prepend-icon="mdi-alpha-d"
+          :rules="rulesFor.draws"
+          hide-details
+          inputmode="numeric"
+        />
+      </v-col>
+      <v-col cols="4">
+        <v-text-field
+          v-model="row.losses"
+          prepend-icon="mdi-alpha-l"
+          :rules="rulesFor.losses"
+          hide-details
+          inputmode="numeric"
+        />
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          v-model="row.goals_for"
+          label="GF"
+          prepend-icon="mdi-soccer"
+          :rules="rulesFor.goals_for"
+          hide-details
+          inputmode="numeric"
+        />
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          v-model="row.goals_against"
+          label="GA"
+          prepend-icon="mdi-soccer"
+          :rules="rulesFor.goals_against"
+          hide-details
+          inputmode="numeric"
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>
@@ -27,6 +82,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { DialogFormable } from '@/mixins'
+  import { formatRule } from '@/functions/rules'
 
   export default {
     name: 'TableRowForm',
@@ -45,66 +101,16 @@
         losses: null,
         goals_for: null,
         goals_against: null
+      },
+      rulesFor: {
+        wins: [formatRule({ type: 'number' })],
+        draws: [formatRule({ type: 'number' })],
+        losses: [formatRule({ type: 'number' })],
+        goals_for: [formatRule({ type: 'number' })],
+        goals_against: [formatRule({ type: 'number' })]
       }
     }),
     computed: {
-      fields () {
-        return [
-          {
-            type: 'string',
-            attribute: 'name',
-            label: 'Team',
-            prependIcon: 'mdi-shield-half-full',
-            hideDetails: true,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          },
-          {
-            cols: 4,
-            type: 'string',
-            attribute: 'wins',
-            prependIcon: 'mdi-alpha-w',
-            inputmode: 'numeric',
-            hideDetails: true
-          },
-          {
-            cols: 4,
-            type: 'string',
-            attribute: 'draws',
-            prependIcon: 'mdi-alpha-d',
-            inputmode: 'numeric',
-            hideDetails: true
-          },
-          {
-            cols: 4,
-            type: 'string',
-            attribute: 'losses',
-            prependIcon: 'mdi-alpha-l',
-            inputmode: 'numeric',
-            hideDetails: true
-          },
-          {
-            cols: 6,
-            type: 'string',
-            attribute: 'goals_for',
-            label: 'GF',
-            prependIcon: 'mdi-soccer',
-            inputmode: 'numeric',
-            hideDetails: true
-          },
-          {
-            cols: 6,
-            type: 'string',
-            attribute: 'goals_against',
-            label: 'GA',
-            prependIcon: 'mdi-soccer',
-            inputmode: 'numeric',
-            hideDetails: true
-          }
-        ]
-      },
       title () {
         return `${this.record ? 'Edit' : 'Add'} Table Row`
       }

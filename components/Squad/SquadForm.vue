@@ -9,17 +9,46 @@
       <slot :on="on" />
     </template>
     <template #form>
-      <dynamic-fields :fields="fields">
-        <template #field.player="{ object, attribute }">
+      <v-col cols="12">
+        <v-text-field
+          v-model="squad.name"
+          label="Name"
+          prepend-icon="mdi-clipboard-text"
+          :rules="rulesFor.name"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <template v-for="(squadPlayer, i) in squad.squad_players_attributes">
+        <v-col
+          :key="`pos${i}`"
+          cols="4"
+        >
+          <v-select
+            v-model="squadPlayer.pos"
+            label="Position"
+            prepend-icon="mdi-run"
+            :items="positions"
+            :rules="rulesFor.pos"
+            hide-details
+          />
+        </v-col>
+        <v-col
+          :key="`player${i}`"
+          cols="8"
+        >
           <player-select
-            v-model="object[attribute]"
+            v-model="squadPlayer.player_id"
             :players="players"
             item-value="id"
             label="Player"
+            required
             hide-details
           />
-        </template>
-      </dynamic-fields>
+        </v-col>
+      </template>
     </template>
   </dialog-form>
 </template>
@@ -30,6 +59,7 @@
   import { positions } from '@/models/Match'
   import { activePlayers } from '@/models/Player'
   import { DialogFormable, TeamAccessible } from '@/mixins'
+  import { requiredRule } from '@/functions/rules'
 
   export default {
     name: 'SquadForm',
@@ -49,50 +79,15 @@
           player_id: null,
           pos: null
         }))
+      },
+      rulesFor: {
+        name: [requiredRule({ label: 'Name' })],
+        pos: [requiredRule({ label: 'Position' })]
       }
     }),
     computed: {
       title () {
         return this.record ? 'Edit Squad' : 'New Squad'
-      },
-      fields () {
-        let fields = [
-          {
-            type: 'string',
-            object: this.squad,
-            attribute: 'name',
-            label: 'Name',
-            prependIcon: 'mdi-clipboard-text',
-            required: true,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          }
-        ]
-
-        for (const i in this.squad.squad_players_attributes) {
-          fields.push({
-            cols: 4,
-            type: 'select',
-            object: this.squad.squad_players_attributes[i],
-            attribute: 'pos',
-            label: 'Position',
-            prependIcon: 'mdi-run',
-            items: this.positions,
-            required: true,
-            hideDetails: true
-          })
-          fields.push({
-            cols: 8,
-            slot: 'player',
-            object: this.squad.squad_players_attributes[i],
-            attribute: 'player_id',
-            loading: this.loadingPlayers
-          })
-        }
-
-        return fields
       },
       positions () {
         return Object.keys(positions)

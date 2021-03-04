@@ -14,10 +14,95 @@
       </slot>
     </template>
     <template #form>
-      <dynamic-fields
-        :object="competition"
-        :fields="fields"
-      />
+      <v-col
+        v-if="close"
+        cols="12"
+      >
+        <v-autocomplete
+          v-model="competition.champion"
+          label="Champion"
+          prepend-icon="mdi-crown"
+          :items="record.teamOptions"
+          :rules="rulesFor.champion"
+        />
+      </v-col>
+      <v-row
+        v-else
+        dense
+      >
+        <v-col cols="12">
+          <v-text-field
+            :value="seasonLabel(season)"
+            label="Season"
+            prepend-icon="mdi-calendar-text"
+            disabled
+          />
+        </v-col>
+        <v-col cols="12">
+          <v-combobox
+            v-model="competition.name"
+            label="Name"
+            prepend-icon="mdi-trophy"
+            :items="competitions"
+            :rules="rulesFor.name"
+            :loading="loadingCompetitions"
+            spellcheck="false"
+            autocapitalize="words"
+            autocomplete="off"
+            autocorrect="off"
+          />
+        </v-col>
+        <template v-if="!record">
+          <v-col cols="12">
+            <v-select
+              v-model="competition.preset_format"
+              label="Preset Format"
+              prepend-icon="mdi-cogs"
+              :items="presetFormats"
+              clearable
+            />
+          </v-col>
+          <v-scroll-y-transition mode="out-in">
+            <v-col
+              v-if="competition.preset_format"
+              cols="12"
+            >
+              <v-text-field
+                v-model="competition.num_teams"
+                label="Number of Teams"
+                prepend-icon="mdi-account-group"
+                :rules="rulesFor.num_teams"
+                inputmode="numeric"
+              />
+            </v-col>
+          </v-scroll-y-transition>
+          <v-scroll-y-transition mode="out-in">
+            <v-row
+              v-if="competition.preset_format === 'Group + Knockout'"
+              dense
+            >
+              <v-col cols="12">
+                <v-text-field
+                  v-model="competition.num_teams_per_group"
+                  label="Teams per Group"
+                  prepend-icon="mdi-table"
+                  :rules="rulesFor.num_teams_per_group"
+                  inputmode="numeric"
+                />
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="competition.num_advances_from_group"
+                  label="Teams Advance per Group"
+                  prepend-icon="mdi-tournament"
+                  :rules="rulesFor.num_advances_from_group"
+                  inputmode="numeric"
+                />
+              </v-col>
+            </v-row>
+          </v-scroll-y-transition>
+        </template>
+      </v-row>
     </template>
   </dialog-form>
 </template>
@@ -27,6 +112,7 @@
   import pick from 'lodash.pick'
   import { Competition } from '@/models'
   import { TeamAccessible, DialogFormable } from '@/mixins'
+  import { requiredRule, formatRule } from '@/functions/rules'
 
   const presetFormats = [
     'League',
@@ -49,92 +135,30 @@
       loadingCompetitions: false,
       competition: {
         season: null,
+        name: '',
         preset_format: null,
         num_teams: null,
         num_teams_per_group: null,
         num_advances_from_group: null
+      },
+      rulesFor: {
+        name: [requiredRule({ label: 'Name' })],
+        num_teams: [
+          requiredRule({ label: 'Number of Teams' }),
+          formatRule({ label: 'Number of Teams', type: 'number' })
+        ],
+        num_teams_per_group: [
+          requiredRule({ label: 'Teams per Group' }),
+          formatRule({ label: 'Teams per Group', type: 'number' })
+        ],
+        num_advances_from_group: [
+          requiredRule({ label: 'Teams Advance per Group' }),
+          formatRule({ label: 'Teams Advance per Group', type: 'number' })
+        ],
+        champion: [requiredRule({ label: 'Champion' })]
       }
     }),
     computed: {
-      fields () {
-        if (this.close) {
-          return [
-            {
-              type: 'autocomplete',
-              attribute: 'champion',
-              items: this.record.teamOptions,
-              label: 'Champion',
-              prependIcon: 'mdi-crown',
-              required: true
-            }
-          ]
-        } else {
-          let fields = [
-            {
-              type: 'string',
-              value: this.seasonLabel(this.season),
-              label: 'Season',
-              prependIcon: 'mdi-calendar-text',
-              disabled: true
-            },
-            {
-              type: 'combobox',
-              attribute: 'name',
-              items: this.competitions,
-              label: 'Name',
-              prependIcon: 'mdi-trophy',
-              required: true,
-              loading: this.loadingCompetitions,
-              spellcheck: 'false',
-              autocapitalize: 'words',
-              autocomplete: 'off',
-              autocorrect: 'off'
-            }
-          ]
-
-          if (!this.record) {
-            fields = [
-              ...fields,
-              {
-                type: 'select',
-                attribute: 'preset_format',
-                items: presetFormats,
-                label: 'Preset Format',
-                prependIcon: 'mdi-cogs',
-                clearable: true
-              },
-              {
-                type: 'string',
-                attribute: 'num_teams',
-                label: 'Number of Teams',
-                prependIcon: 'mdi-account-group',
-                inputmode: 'numeric',
-                hidden: !this.competition.preset_format
-              },
-              {
-                type: 'string',
-                attribute: 'num_teams_per_group',
-                label: 'Teams per Group',
-                prependIcon: 'mdi-table',
-                inputmode: 'numeric',
-                required: true,
-                hidden: this.isNotGroupAndKnockout
-              },
-              {
-                type: 'string',
-                attribute: 'num_advances_from_group',
-                label: 'Teams Advance per Group',
-                prependIcon: 'mdi-tournament',
-                inputmode: 'numeric',
-                required: true,
-                hidden: this.isNotGroupAndKnockout
-              }
-            ]
-          }
-
-          return fields
-        }
-      },
       title () {
         if (this.close) {
           return 'Close Competition'
@@ -155,8 +179,8 @@
           )
         ]
       },
-      isNotGroupAndKnockout () {
-        return this.competition.preset_format !== 'Group + Knockout'
+      presetFormats () {
+        return presetFormats
       }
     },
     watch: {
