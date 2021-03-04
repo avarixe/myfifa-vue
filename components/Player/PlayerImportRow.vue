@@ -43,7 +43,7 @@
       <v-text-field
         v-model="player.name"
         label="Name"
-        :rules="rulesFor.name"
+        :rules="[isRequired]"
         dense
         outlined
         hide-details
@@ -67,7 +67,7 @@
         v-model="player.pos"
         label="Position"
         :items="positions"
-        :rules="rulesFor.pos"
+        :rules="[isRequired]"
         dense
         outlined
         hide-details
@@ -91,7 +91,7 @@
       <v-text-field
         v-model="player.age"
         label="Age"
-        :rules="rulesFor.age"
+        :rules="[isRequired, isNumber]"
         dense
         outlined
         hide-details
@@ -102,7 +102,7 @@
       <v-text-field
         v-model="player.ovr"
         label="OVR"
-        :rules="rulesFor.ovr"
+        :rules="[isRequired, isNumber, inRange(null, [40, 100])]"
         dense
         outlined
         hide-details
@@ -124,7 +124,7 @@
       <v-text-field
         v-model="player.kit_no"
         label="Kit Number"
-        :rules="rulesFor.kit_no"
+        :rules="[isNumber, inRange(null, [1, 99])]"
         dense
         outlined
         hide-details
@@ -191,7 +191,7 @@
         v-model="contract.bonus_req"
         label="Bonus Req."
         prefix="if"
-        :rules="rulesFor.bonus_req"
+        :rules="[isRequired, isNumber]"
         dense
         outlined
         hide-details
@@ -204,7 +204,7 @@
         v-model="contract.bonus_req_type"
         label="Bonus Req. Type"
         :items="bonusRequirementTypes"
-        :rules="rulesFor.bonus_req_type"
+        :rules="[isRequired]"
         dense
         outlined
         hide-details
@@ -218,7 +218,7 @@
   import { addYears, format, parseISO } from 'date-fns'
   import { Team } from '@/models'
   import { positions } from '@/models/Player'
-  import { requiredRule, formatRule, rangeRule } from '@/functions/rules'
+  import { isRequired, isNumber, inRange } from '@/functions'
 
   export default {
     name: 'PlayerImportRow',
@@ -231,28 +231,10 @@
       loading: false,
       saved: false,
       error: '',
-      rulesFor: {
-        name: [requiredRule({ label: 'Name' })],
-        pos: [requiredRule({ label: 'Position' })],
-        age: [
-          requiredRule({ label: 'Age' }),
-          formatRule({ label: 'Age', type: 'number' })
-        ],
-        ovr: [
-          requiredRule({ label: 'OVR' }),
-          formatRule({ label: 'OVR', type: 'number' }),
-          rangeRule({ label: 'OVR', min: 40, max: 100 })
-        ],
-        kit_no: [
-          formatRule({ label: 'Kit No', type: 'number' }),
-          rangeRule({ label: 'Kit No', min: 1, max: 99 })
-        ],
-        bonus_req: [
-          requiredRule({ label: 'Bonus Req.' }),
-          formatRule({ label: 'Bonus Req.', type: 'number' })
-        ],
-        bonus_req_type: [requiredRule({ label: 'Bonus Req. Type' })]
-      },
+      isRequired: isRequired(),
+      isNumber: isNumber(),
+      inRange: inRange,
+      positions,
       bonusRequirementTypes: [
         'Appearances',
         'Goals',
@@ -266,9 +248,6 @@
       },
       contract () {
         return this.player.contracts_attributes[0]
-      },
-      positions () {
-        return positions
       },
       maxEndDate () {
         return this.contract.started_on && format(

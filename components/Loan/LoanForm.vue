@@ -91,7 +91,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable } from '@/mixins'
-  import { requiredRule, formatRule, rangeRule } from '@/functions/rules'
+  import { isRequired, isNumber, inRange } from '@/functions'
 
   export default {
     name: 'LoanForm',
@@ -113,11 +113,11 @@
         returned: false
       },
       rulesFor: {
-        origin: [requiredRule({ label: 'Origin' })],
-        destination: [requiredRule({ label: 'Destination' })],
+        origin: [isRequired('Origin')],
+        destination: [isRequired('Destination')],
         wage_percentage: [
-          formatRule({ label: 'Wage Percentage', type: 'number' }),
-          rangeRule({ label: 'Wage Percentage', min: 0, max: 100 })
+          isNumber('Wage Percentage'),
+          inRange('Wage Percentage', [0, 100])
         ]
       }
     }),

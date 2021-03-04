@@ -96,7 +96,7 @@
   import pick from 'lodash.pick'
   import { DialogFormable, TeamAccessible } from '@/mixins'
   import { positions } from '@/models/Player'
-  import { requiredRule, rangeRule, formatRule } from '@/functions/rules'
+  import { isRequired, inRange, isNumber } from '@/functions'
 
   export default {
     name: 'PlayerForm',
@@ -121,29 +121,27 @@
         youth: false
       },
       rulesFor: {
-        name: [requiredRule({ label: 'Name' })],
-        pos: [requiredRule({ label: 'Position' })],
+        name: [isRequired('Name')],
+        pos: [isRequired('Position')],
         age: [
-          requiredRule({ label: 'Age' }),
-          formatRule({ label: 'Age', type: 'number' })
+          isRequired('Age'),
+          isNumber('Age')
         ],
         ovr: [
-          requiredRule({ label: 'OVR' }),
-          formatRule({ label: 'OVR', type: 'number' }),
-          rangeRule({ label: 'OVR', min: 40, max: 100 })
+          isRequired('OVR'),
+          isNumber('OVR'),
+          inRange('OVR', [40, 100])
         ],
         kit_no: [
-          formatRule({ label: 'Kit Number', type: 'number' }),
-          rangeRule({ label: 'Kit Number', min: 1, max: 99 })
+          isNumber('Kit Number'),
+          inRange('Kit Number', [1, 99])
         ]
-      }
+      },
+      positions
     }),
     computed: {
       title () {
         return this.record ? `Edit ${this.player.name}` : 'New Player'
-      },
-      positions () {
-        return positions
       }
     },
     watch: {

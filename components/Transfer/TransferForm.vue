@@ -75,7 +75,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable } from '@/mixins'
-  import { requiredRule, formatRule, rangeRule } from '@/functions/rules'
+  import { isRequired, isNumber, inRange } from '@/functions'
 
   export default {
     name: 'TransferForm',
@@ -97,11 +97,11 @@
         addon_clause: 0
       },
       rulesFor: {
-        origin: [requiredRule({ label: 'Origin' })],
-        destination: [requiredRule({ label: 'Destination' })],
+        origin: [isRequired('Origin')],
+        destination: [isRequired('Destination')],
         addon_clause: [
-          formatRule({ label: 'Add-On Clause', type: 'number' }),
-          rangeRule({ label: 'Add-On Clause', min: 0, max: 25 })
+          isNumber('Add-On Clause'),
+          inRange('Add-On Clause', [0, 25])
         ]
       }
     }),

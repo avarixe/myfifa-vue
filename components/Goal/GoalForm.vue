@@ -107,7 +107,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
-  import { requiredRule } from '@/functions/rules'
+  import { isRequired } from '@/functions'
 
   export default {
     name: 'GoalForm',
@@ -130,7 +130,7 @@
         penalty: false
       },
       rulesFor: {
-        player_name: [requiredRule({ label: 'Goal Scorer' })]
+        player_name: [isRequired('Goal Scorer')]
       }
     }),
     computed: {

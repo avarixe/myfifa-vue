@@ -97,7 +97,7 @@
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import { DialogFormable } from '@/mixins'
-  import { requiredRule } from '@/functions/rules'
+  import { isRequired, isEmail } from '@/functions'
 
   export default {
     name: 'UserForm',
@@ -114,11 +114,14 @@
         password_confirmation: ''
       },
       rulesFor: {
-        full_name: [requiredRule({ label: 'Name' })],
-        username: [requiredRule({ label: 'Username' })],
-        email: [requiredRule({ label: 'Email Address' })],
-        current_password: [requiredRule({ label: 'Current Password' })],
-        password_confirmation: [requiredRule({ label: 'Password Confirmation' })]
+        full_name: [isRequired('Name')],
+        username: [isRequired('Username')],
+        email: [
+          isRequired('Email Address'),
+          isEmail
+        ],
+        current_password: [isRequired('Current Password')],
+        password_confirmation: [isRequired('Password Confirmation')]
       },
       visible: false
     }),
@@ -139,7 +142,7 @@
         return this.passwordMode ? 'New Password' : 'Password'
       },
       rulesForPassword () {
-        return [requiredRule({ label: this.passwordLabel })]
+        return [isRequired(this.passwordLabel)]
       },
       editParams () {
         return this.passwordMode

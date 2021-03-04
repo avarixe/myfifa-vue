@@ -43,7 +43,7 @@
   import { positions } from '@/models/Match'
   import { activePlayers } from '@/models/Player'
   import { DialogFormable } from '@/mixins'
-  import { requiredRule } from '@/functions/rules'
+  import { isRequired } from '@/functions'
 
   export default {
     name: 'CapForm',
@@ -59,7 +59,7 @@
         pos: ''
       },
       rulesFor: {
-        pos: [requiredRule({ label: 'Position' })]
+        pos: [isRequired('Position')]
       }
     }),
     computed: {

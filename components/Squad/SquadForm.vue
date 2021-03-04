@@ -59,7 +59,7 @@
   import { positions } from '@/models/Match'
   import { activePlayers } from '@/models/Player'
   import { DialogFormable, TeamAccessible } from '@/mixins'
-  import { requiredRule } from '@/functions/rules'
+  import { isRequired } from '@/functions'
 
   export default {
     name: 'SquadForm',
@@ -81,8 +81,8 @@
         }))
       },
       rulesFor: {
-        name: [requiredRule({ label: 'Name' })],
-        pos: [requiredRule({ label: 'Position' })]
+        name: [isRequired('Name')],
+        pos: [isRequired('Position')]
       }
     }),
     computed: {

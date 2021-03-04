@@ -76,7 +76,7 @@
 <script>
   import { mapActions } from 'vuex'
   import { DialogFormable } from '@/mixins'
-  import { requiredRule, formatRule } from '@/functions/rules'
+  import { isRequired, isNumber } from '@/functions'
 
   export default {
     name: 'StageForm',
@@ -95,14 +95,14 @@
         table: false
       },
       rulesFor: {
-        name: [requiredRule({ label: 'Name' })],
+        name: [isRequired('Name')],
         num_teams: [
-          requiredRule({ label: 'Number of Teams' }),
-          formatRule({ label: 'Number of Teams', type: 'number' })
+          isRequired('Number of Teams'),
+          isNumber('Number of Teams')
         ],
         num_fixtures: [
-          requiredRule({ label: 'Number of Fixtures' }),
-          formatRule({ label: 'Number of Fixtures', type: 'number' })
+          isRequired('Number of Fixtures'),
+          isNumber('Number of Fixtures')
         ]
       }
     }),

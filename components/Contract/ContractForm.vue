@@ -97,7 +97,7 @@
   import { addYears, format, parseISO } from 'date-fns'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable } from '@/mixins'
-  import { requiredRule } from '@/functions/rules'
+  import { isRequired } from '@/functions'
 
   export default {
     name: 'ContractForm',
@@ -124,8 +124,8 @@
         bonus_req_type: null
       },
       rulesFor: {
-        bonus_req: [requiredRule({ label: 'Bonus Req.' })],
-        bonus_req_type: [requiredRule({ label: 'Bonus Req. Type' })]
+        bonus_req: [isRequired('Bonus Req.')],
+        bonus_req_type: [isRequired('Bonus Req. Type')]
       },
       bonusRequirementTypes: [
         'Appearances',

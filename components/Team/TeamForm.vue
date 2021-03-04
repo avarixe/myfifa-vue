@@ -53,7 +53,7 @@
   import { format } from 'date-fns'
   import pick from 'lodash.pick'
   import { DialogFormable } from '@/mixins'
-  import { requiredRule } from '@/functions/rules'
+  import { isRequired } from '@/functions'
 
   export default {
     name: 'TeamForm',
@@ -71,8 +71,8 @@
         badge: null
       },
       rulesFor: {
-        title: [requiredRule({ label: 'Title' })],
-        currency: [requiredRule({ label: 'Currency' })]
+        title: [isRequired('Title')],
+        currency: [isRequired('Currency')]
       }
     }),
     computed: {

@@ -101,7 +101,7 @@
   import { parseISO } from 'date-fns'
   import { Competition } from '@/models'
   import { TeamAccessible, DialogFormable } from '@/mixins'
-  import { requiredRule } from '@/functions/rules'
+  import { isRequired } from '@/functions'
 
   export default {
     name: 'MatchForm',
@@ -126,9 +126,9 @@
         extra_time: false
       },
       rulesFor: {
-        competition: [requiredRule({ label: 'Competition' })],
-        home: [requiredRule({ label: 'Home Team' })],
-        away: [requiredRule({ label: 'Away Team' })]
+        competition: [isRequired('Competition')],
+        home: [isRequired('Home Team')],
+        away: [isRequired('Away Team')]
       }
     }),
     computed: {

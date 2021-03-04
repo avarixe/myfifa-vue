@@ -11,7 +11,7 @@
 
 <script>
   import { Match } from '@/models'
-  import { requiredRule, rangeRule } from '@/functions/rules'
+  import { isRequired, inRange } from '@/functions'
 
   export default {
     name: 'MinuteField',
@@ -25,8 +25,8 @@
       rules () {
         const label = 'Minute'
         return [
-          requiredRule({ label }),
-          rangeRule({ label, min: 1, max: this.match.extra_time ? 120 : 90 })
+          isRequired(label),
+          inRange(label, [1, this.match.extra_time ? 120 : 90])
         ]
       }
     },

@@ -16,7 +16,7 @@
 
 <script>
   import { VMoney } from 'v-money'
-  import { requiredRule } from '@/functions/rules'
+  import { isRequired } from '@/functions'
 
   export default {
     name: 'VMoneyField',
@@ -53,7 +53,7 @@
         }
       },
       rules () {
-        return this.required ? [requiredRule({ label: this.label })] : []
+        return this.required ? [isRequired(this.label)] : []
       }
     },
     watch: {

@@ -112,7 +112,7 @@
   import pick from 'lodash.pick'
   import { Competition } from '@/models'
   import { TeamAccessible, DialogFormable } from '@/mixins'
-  import { requiredRule, formatRule } from '@/functions/rules'
+  import { isRequired, isNumber } from '@/functions'
 
   const presetFormats = [
     'League',
@@ -142,20 +142,20 @@
         num_advances_from_group: null
       },
       rulesFor: {
-        name: [requiredRule({ label: 'Name' })],
+        name: [isRequired('Name')],
         num_teams: [
-          requiredRule({ label: 'Number of Teams' }),
-          formatRule({ label: 'Number of Teams', type: 'number' })
+          isRequired('Number of Teams'),
+          isNumber('Number of Teams')
         ],
         num_teams_per_group: [
-          requiredRule({ label: 'Teams per Group' }),
-          formatRule({ label: 'Teams per Group', type: 'number' })
+          isRequired('Teams per Group'),
+          isNumber('Teams per Group')
         ],
         num_advances_from_group: [
-          requiredRule({ label: 'Teams Advance per Group' }),
-          formatRule({ label: 'Teams Advance per Group', type: 'number' })
+          isRequired('Teams Advance per Group'),
+          isNumber('Teams Advance per Group')
         ],
-        champion: [requiredRule({ label: 'Champion' })]
+        champion: [isRequired('Champion')]
       }
     }),
     computed: {

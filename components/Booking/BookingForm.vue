@@ -84,7 +84,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
-  import { requiredRule } from '@/functions/rules'
+  import { isRequired } from '@/functions'
 
   export default {
     name: 'BookingForm',
@@ -104,7 +104,7 @@
         red_card: false
       },
       rulesFor: {
-        player_name: [requiredRule({ label: 'Player' })]
+        player_name: [isRequired('Player')]
       }
     }),
     computed: {

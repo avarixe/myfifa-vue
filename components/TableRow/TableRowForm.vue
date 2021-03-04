@@ -31,7 +31,7 @@
         <v-text-field
           v-model="row.wins"
           prepend-icon="mdi-alpha-w"
-          :rules="rulesFor.wins"
+          :rules="rulesForNumber"
           hide-details
           inputmode="numeric"
         />
@@ -40,7 +40,7 @@
         <v-text-field
           v-model="row.draws"
           prepend-icon="mdi-alpha-d"
-          :rules="rulesFor.draws"
+          :rules="rulesForNumber"
           hide-details
           inputmode="numeric"
         />
@@ -49,7 +49,7 @@
         <v-text-field
           v-model="row.losses"
           prepend-icon="mdi-alpha-l"
-          :rules="rulesFor.losses"
+          :rules="rulesForNumber"
           hide-details
           inputmode="numeric"
         />
@@ -59,7 +59,7 @@
           v-model="row.goals_for"
           label="GF"
           prepend-icon="mdi-soccer"
-          :rules="rulesFor.goals_for"
+          :rules="rulesForNumber"
           hide-details
           inputmode="numeric"
         />
@@ -69,7 +69,7 @@
           v-model="row.goals_against"
           label="GA"
           prepend-icon="mdi-soccer"
-          :rules="rulesFor.goals_against"
+          :rules="rulesForNumber"
           hide-details
           inputmode="numeric"
         />
@@ -82,7 +82,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { DialogFormable } from '@/mixins'
-  import { formatRule } from '@/functions/rules'
+  import { isNumber } from '@/functions'
 
   export default {
     name: 'TableRowForm',
@@ -102,13 +102,7 @@
         goals_for: null,
         goals_against: null
       },
-      rulesFor: {
-        wins: [formatRule({ type: 'number' })],
-        draws: [formatRule({ type: 'number' })],
-        losses: [formatRule({ type: 'number' })],
-        goals_for: [formatRule({ type: 'number' })],
-        goals_against: [formatRule({ type: 'number' })]
-      }
+      rulesForNumber: [isNumber()]
     }),
     computed: {
       title () {

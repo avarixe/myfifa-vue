@@ -43,7 +43,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
-  import { requiredRule, formatRule } from '@/functions/rules'
+  import { isRequired, isNumber } from '@/functions'
 
   export default {
     name: 'PenaltyShootoutForm',
@@ -62,12 +62,12 @@
       },
       rulesFor: {
         home_score: [
-          requiredRule({ label: 'Home Score' }),
-          formatRule({ label: 'Home Score', type: 'number' })
+          isRequired('Home Score'),
+          isNumber('Home Score')
         ],
         away_score: [
-          requiredRule({ label: 'Away Score' }),
-          formatRule({ label: 'Away Score', type: 'number' })
+          isRequired('Away Score'),
+          isNumber('Away Score')
         ]
       }
     }),
