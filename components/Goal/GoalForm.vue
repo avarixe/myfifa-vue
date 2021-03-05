@@ -17,33 +17,88 @@
       </slot>
     </template>
     <template #form>
-      <dynamic-fields
-        :object="goal"
-        :fields="fields"
-      >
-        <template #field.minute>
-          <minute-field v-model="minute" />
-        </template>
-        <template #field.player_id>
-          <player-select
-            v-model="goal.player_id"
-            :players="scorerOptions"
-            label="Goal Scorer"
-            required
+      <v-col cols="12">
+        <v-radio-group
+          v-model="goal.home"
+          row
+          hide-details
+          @change="clearNames"
+        >
+          <v-radio
+            :label="match.home"
+            :value="true"
+            color="teal"
           />
-        </template>
-        <template #field.assist_id>
-          <player-select
-            v-model="goal.assist_id"
-            :players="assistOptions"
-            label="Assisted By"
-            icon="mdi-human-greeting"
-            :disabled="goal.penalty || goal.own_goal"
-            clearable
-            hide-details
+          <v-radio
+            :label="match.away"
+            :value="false"
+            color="pink"
           />
-        </template>
-      </dynamic-fields>
+        </v-radio-group>
+      </v-col>
+      <v-col cols="12">
+        <minute-field v-model="minute" />
+      </v-col>
+      <v-col cols="12">
+        <player-select
+          v-if="teamGoal"
+          v-model="goal.player_id"
+          :players="scorerOptions"
+          label="Goal Scorer"
+          required
+        />
+        <v-text-field
+          v-else
+          v-model="goal.player_name"
+          label="Goal Scorer"
+          prepend-icon="mdi-account"
+          :rules="rulesFor.player_name"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <player-select
+          v-if="teamGoal"
+          v-model="goal.assist_id"
+          :players="assistOptions"
+          label="Assisted By"
+          icon="mdi-human-greeting"
+          :disabled="goal.penalty || goal.own_goal"
+          clearable
+          hide-details
+        />
+        <v-text-field
+          v-else
+          v-model="goal.assisted_by"
+          label="Assisted By"
+          prepend-icon="mdi-human-greeting"
+          hide-details
+          :disabled="goal.penalty || goal.own_goal"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-checkbox
+          v-model="goal.penalty"
+          label="Penalty"
+          :disabled="goal.own_goal"
+          hide-details
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-checkbox
+          v-model="goal.own_goal"
+          label="Own Goal"
+          :disabled="goal.penalty"
+          hide-details
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>
@@ -52,7 +107,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
-  import { GoalFields } from '@/functions/fields'
+  import { isRequired } from '@/functions'
 
   export default {
     name: 'GoalForm',
@@ -73,12 +128,12 @@
         assist_id: '',
         own_goal: false,
         penalty: false
+      },
+      rulesFor: {
+        player_name: [isRequired('Goal Scorer')]
       }
     }),
     computed: {
-      fields () {
-        return GoalFields(this)
-      },
       title () {
         return `${this.record ? 'Edit' : 'Record'} Goal`
       },
@@ -129,6 +184,12 @@
         createGoal: 'CREATE',
         updateGoal: 'UPDATE'
       }),
+      clearNames () {
+        this.goal.player_id = null
+        this.goal.player_name = null
+        this.goal.assist_id = null
+        this.goal.assisted_by = null
+      },
       clearAssistedBy (val) {
         console.log(`clearAssistedBy `, val)
         if (val) {

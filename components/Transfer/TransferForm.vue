@@ -16,10 +16,57 @@
       </slot>
     </template>
     <template #form>
-      <dynamic-fields
-        :object="transfer"
-        :fields="fields"
-      />
+      <v-col cols="12">
+        <v-date-field
+          v-model="transfer.moved_on"
+          label="Effective Date"
+          prepend-icon="mdi-calendar-today"
+          :min="record ? null : team.currently_on"
+          :color="transferColor"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="transfer.origin"
+          label="Origin"
+          prepend-icon="mdi-airplane-takeoff"
+          :rules="rulesFor.origin"
+          :disabled="transferOut"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="transfer.destination"
+          label="Destination"
+          prepend-icon="mdi-airplane-landing"
+          :rules="rulesFor.destination"
+          :disabled="!transferOut"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-money-field
+          v-model="transfer.fee"
+          label="Fee"
+          :prefix="team.currency"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="transfer.addon_clause"
+          label="Add-On Clause (%)"
+          :rules="rulesFor.addon_clause"
+          inputmode="numeric"
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>
@@ -28,6 +75,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable } from '@/mixins'
+  import { isRequired, isNumber, inRange } from '@/functions'
 
   export default {
     name: 'TransferForm',
@@ -47,59 +95,17 @@
         destination: '',
         fee: null,
         addon_clause: 0
+      },
+      rulesFor: {
+        origin: [isRequired('Origin')],
+        destination: [isRequired('Destination')],
+        addon_clause: [
+          isNumber('Add-On Clause'),
+          inRange('Add-On Clause', [0, 25])
+        ]
       }
     }),
     computed: {
-      fields () {
-        return [
-          {
-            type: 'date',
-            attribute: 'moved_on',
-            label: 'Effective Date',
-            prependIcon: 'mdi-calendar-today',
-            min: this.record ? null : this.team.currently_on,
-            color: this.transferColor,
-            required: true
-          },
-          {
-            type: 'string',
-            attribute: 'origin',
-            label: 'Origin',
-            prependIcon: 'mdi-airplane-takeoff',
-            required: true,
-            disabled: this.transferOut,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          },
-          {
-            type: 'string',
-            attribute: 'destination',
-            label: 'Destination',
-            prependIcon: 'mdi-airplane-landing',
-            required: true,
-            disabled: !this.transferOut,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          },
-          {
-            type: 'money',
-            attribute: 'fee',
-            label: 'Fee',
-            prefix: this.team.currency
-          },
-          {
-            type: 'string',
-            attribute: 'addon_clause',
-            label: 'Add-On Clause (%)',
-            inputmode: 'numeric',
-            range: { min: 0, max: 25 }
-          }
-        ]
-      },
       transferOut () {
         return this.record
           ? this.team.title === this.record.origin

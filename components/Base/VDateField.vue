@@ -34,7 +34,7 @@
 
 <script>
   import { format, parseISO } from 'date-fns'
-  import { requiredRule } from '@/functions/rules'
+  import { isRequired } from '@/functions'
 
   export default {
     name: 'VDateField',
@@ -64,7 +64,7 @@
           : null
       },
       rules () {
-        return this.required ? [requiredRule({ label: this.label })] : []
+        return this.required ? [isRequired(this.label)] : []
       }
     },
     watch: {

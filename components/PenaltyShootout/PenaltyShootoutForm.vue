@@ -17,10 +17,24 @@
       </slot>
     </template>
     <template #form>
-      <dynamic-fields
-        :object="penaltyShootout"
-        :fields="fields"
-      />
+      <v-col cols="6">
+        <v-text-field
+          v-model="penaltyShootout.home_score"
+          label="Home Score"
+          prepend-icon="mdi-soccer"
+          :rules="rulesFor.home_score"
+          inputmode="numeric"
+        />
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          v-model="penaltyShootout.away_score"
+          label="Away Score"
+          prepend-icon="mdi-soccer"
+          :rules="rulesFor.away_score"
+          inputmode="numeric"
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>
@@ -29,7 +43,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
-  import { PenaltyShootoutFields } from '@/functions/fields'
+  import { isRequired, isNumber } from '@/functions'
 
   export default {
     name: 'PenaltyShootoutForm',
@@ -45,12 +59,19 @@
       penaltyShootout: {
         home_score: null,
         away_score: null
+      },
+      rulesFor: {
+        home_score: [
+          isRequired('Home Score'),
+          isNumber('Home Score')
+        ],
+        away_score: [
+          isRequired('Away Score'),
+          isNumber('Away Score')
+        ]
       }
     }),
     computed: {
-      fields () {
-        return PenaltyShootoutFields()
-      },
       title () {
         return `${this.record ? 'Edit' : 'Record'} Penalty Shootout`
       }

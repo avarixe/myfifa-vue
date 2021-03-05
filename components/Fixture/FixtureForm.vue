@@ -15,10 +15,32 @@
       </slot>
     </template>
     <template #form>
-      <dynamic-fields
-        :object="fixture"
-        :fields="fields"
-      />
+      <v-col cols="12">
+        <v-combobox
+          v-model="fixture.home_team"
+          label="Home Team"
+          prepend-icon="mdi-home"
+          :items="competitionTeams"
+          hide-details
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-combobox
+          v-model="fixture.away_team"
+          label="Away Team"
+          prepend-icon="mdi-bus"
+          :items="competitionTeams"
+          hide-details
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
       <v-col
         class="mt-3 text-center"
         cols="12"
@@ -84,34 +106,6 @@
       }
     }),
     computed: {
-      fields () {
-        return [
-          {
-            type: 'combobox',
-            attribute: 'home_team',
-            label: 'Home Team',
-            prependIcon: 'mdi-home',
-            items: this.competitionTeams,
-            hideDetails: true,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          },
-          {
-            type: 'combobox',
-            attribute: 'away_team',
-            label: 'Away Team',
-            prependIcon: 'mdi-bus',
-            items: this.competitionTeams,
-            hideDetails: true,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          }
-        ]
-      },
       title () {
         return this.fixtureData ? 'Edit Fixture' : 'Add Fixture'
       }

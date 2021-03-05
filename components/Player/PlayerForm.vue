@@ -9,14 +9,84 @@
       <slot :on="on" />
     </template>
     <template #form>
-      <dynamic-fields
-        :object="player"
-        :fields="fields"
-      >
-        <template #field.nationality>
-          <nationality-field v-model="player.nationality" />
-        </template>
-      </dynamic-fields>
+      <v-col cols="12">
+        <v-text-field
+          v-model="player.name"
+          label="Name"
+          prepend-icon="mdi-account"
+          :rules="rulesFor.name"
+          spellcheck="false"
+          autocapitalize="words"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </v-col>
+      <v-col cols="12">
+        <nationality-field v-model="player.nationality" />
+      </v-col>
+      <v-col cols="12">
+        <v-select
+          v-model="player.pos"
+          label="Position"
+          prepend-icon="mdi-run"
+          :items="positions"
+          :rules="rulesFor.pos"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-select
+          v-model="player.sec_pos"
+          label="Secondary Position(s)"
+          prepend-icon="mdi-walk"
+          :items="positions"
+          multiple
+          chips
+          deletable-chips
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="player.age"
+          label="Age"
+          prepend-icon="mdi-calendar"
+          :rules="rulesFor.age"
+          inputmode="numeric"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="player.ovr"
+          label="OVR"
+          prepend-icon="mdi-trending-up"
+          :rules="rulesFor.ovr"
+          inputmode="numeric"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-money-field
+          v-model="player.value"
+          label="Value"
+          :prefix="team.currency"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model="player.kit_no"
+          label="Kit Number"
+          prepend-icon="mdi-tshirt-crew"
+          :rules="rulesFor.kit_no"
+          inputmode="numeric"
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-checkbox
+          v-model="player.youth"
+          label="Youth Player"
+          :disabled="record"
+          hide-details
+        />
+      </v-col>
     </template>
   </dialog-form>
 </template>
@@ -26,6 +96,7 @@
   import pick from 'lodash.pick'
   import { DialogFormable, TeamAccessible } from '@/mixins'
   import { positions } from '@/models/Player'
+  import { isRequired, inRange, isNumber } from '@/functions'
 
   export default {
     name: 'PlayerForm',
@@ -48,80 +119,27 @@
         kit_no: null,
         age: null,
         youth: false
-      }
-    }),
-    computed: {
-      fields () {
-        return [
-          {
-            type: 'string',
-            attribute: 'name',
-            label: 'Name',
-            prependIcon: 'mdi-account',
-            required: true,
-            spellcheck: 'false',
-            autocapitalize: 'words',
-            autocomplete: 'off',
-            autocorrect: 'off'
-          },
-          { slot: 'nationality' },
-          {
-            type: 'select',
-            attribute: 'pos',
-            label: 'Position',
-            prependIcon: 'mdi-run',
-            items: positions,
-            required: true
-          },
-          {
-            type: 'select',
-            attribute: 'sec_pos',
-            label: 'Secondary Position(s)',
-            prependIcon: 'mdi-walk',
-            items: positions,
-            multiple: true
-          },
-          {
-            type: 'string',
-            attribute: 'age',
-            label: 'Age',
-            prependIcon: 'mdi-calendar',
-            required: true,
-            inputmode: 'numeric'
-          },
-          {
-            type: 'string',
-            attribute: 'ovr',
-            label: 'OVR',
-            prependIcon: 'mdi-trending-up',
-            required: true,
-            inputmode: 'numeric',
-            range: { min: 40, max: 100 }
-          },
-          {
-            type: 'money',
-            attribute: 'value',
-            label: 'Value',
-            prefix: this.team.currency,
-            required: true
-          },
-          {
-            type: 'string',
-            attribute: 'kit_no',
-            label: 'Kit Number',
-            prependIcon: 'mdi-tshirt-crew',
-            inputmode: 'numeric',
-            range: { min: 1, max: 99 }
-          },
-          {
-            type: 'checkbox',
-            attribute: 'youth',
-            label: 'Youth Player',
-            disabled: this.record !== null,
-            hideDetails: true
-          }
+      },
+      rulesFor: {
+        name: [isRequired('Name')],
+        pos: [isRequired('Position')],
+        age: [
+          isRequired('Age'),
+          isNumber('Age')
+        ],
+        ovr: [
+          isRequired('OVR'),
+          isNumber('OVR'),
+          inRange('OVR', [40, 100])
+        ],
+        kit_no: [
+          isNumber('Kit Number'),
+          inRange('Kit Number', [1, 99])
         ]
       },
+      positions
+    }),
+    computed: {
       title () {
         return this.record ? `Edit ${this.player.name}` : 'New Player'
       }

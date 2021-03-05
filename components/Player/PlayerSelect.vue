@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import { requiredRule } from '@/functions/rules'
+  import { isRequired } from '@/functions'
 
   export default {
     name: 'PlayerSelect',
@@ -42,7 +42,7 @@
     },
     computed: {
       rules () {
-        return this.required ? [requiredRule({ label: this.label })] : []
+        return this.required ? [isRequired(this.label)] : []
       }
     },
     methods: {

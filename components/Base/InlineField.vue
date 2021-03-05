@@ -71,7 +71,7 @@
 
 <script>
   import { TeamAccessible } from '@/mixins'
-  import { requiredRule } from '@/functions/rules'
+  import { isRequired } from '@/functions'
   import ListOption from './ListOption'
   import VMoneyField from './VMoneyField'
 
@@ -114,7 +114,7 @@
       },
       allRules () {
         return this.required
-          ? [requiredRule({ label: this.label }), ...this.rules]
+          ? [isRequired(this.label), ...this.rules]
           : this.rules
       }
     },

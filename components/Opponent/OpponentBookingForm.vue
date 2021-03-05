@@ -48,7 +48,7 @@
 <script>
   import { mapActions } from 'vuex'
   import { TeamAccessible, MatchAccessible } from '@/mixins'
-  import { requiredRule } from '@/functions/rules'
+  import { isRequired } from '@/functions'
 
   export default {
     name: 'CapBookingForm',
@@ -66,7 +66,7 @@
     computed: {
       rules () {
         return {
-          player_name: [requiredRule({ label: 'Player' })]
+          player_name: [isRequired('Player')]
         }
       }
     },
