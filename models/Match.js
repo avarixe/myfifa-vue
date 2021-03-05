@@ -9,13 +9,7 @@ import Cap from './Cap'
 import Player from './Player'
 
 class Match extends Model {
-  static get entity () {
-    return 'matches'
-  }
-
-  static get title () {
-    return 'Match'
-  }
+  static entity = 'Match'
 
   static fields () {
     return {

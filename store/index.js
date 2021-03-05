@@ -1,6 +1,6 @@
 import VuexORM from '@vuex-orm/core'
 import Cookie from 'js-cookie'
-import database from '@/database'
+import * as models from '@/models'
 import cookieparser from 'cookieparser'
 import pkg from '@/package.json'
 
@@ -75,7 +75,13 @@ export const actions = {
   }
 }
 
+// setup VuexORM database
+const database = new VuexORM.Database()
+for (const key in models) {
+  database.register(models[key])
+}
+
 // plugins
 export const plugins = [
-  VuexORM.install(database)
+  VuexORM.install(database, { namespace: 'orm' })
 ]

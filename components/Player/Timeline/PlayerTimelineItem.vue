@@ -12,7 +12,7 @@
       dense: { type: Boolean, default: false }
     },
     render (createElement, { props: { player, event, dense } }) {
-      switch (event.constructor.title) {
+      switch (event.constructor.entity) {
         case 'Contract':
           return createElement(ContractEvent, {
             props: { player, contract: event, dense }

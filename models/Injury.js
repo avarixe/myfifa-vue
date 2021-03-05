@@ -1,13 +1,7 @@
 import { Model } from '@vuex-orm/core'
 
 export default class Injury extends Model {
-  static get entity () {
-    return 'injuries'
-  }
-
-  static get title () {
-    return 'Injury'
-  }
+  static entity = 'Injury'
 
   static fields () {
     return {

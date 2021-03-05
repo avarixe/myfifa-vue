@@ -2,13 +2,7 @@ import { Model } from '@vuex-orm/core'
 import FixtureLeg from './FixtureLeg'
 
 export default class Fixture extends Model {
-  static get entity () {
-    return 'fixtures'
-  }
-
-  static get title () {
-    return 'Fixture'
-  }
+  static entity = 'Fixture'
 
   static fields () {
     return {

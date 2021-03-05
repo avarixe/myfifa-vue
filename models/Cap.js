@@ -2,13 +2,7 @@ import { Model } from '@vuex-orm/core'
 import Match from './Match'
 
 export default class Cap extends Model {
-  static get entity () {
-    return 'caps'
-  }
-
-  static get title () {
-    return 'Cap'
-  }
+  static entity = 'Cap'
 
   static fields () {
     return {

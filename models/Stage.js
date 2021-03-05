@@ -3,13 +3,7 @@ import Fixture from './Fixture'
 import TableRow from './TableRow'
 
 export default class Stage extends Model {
-  static get entity () {
-    return 'stages'
-  }
-
-  static get title () {
-    return 'Stage'
-  }
+  static entity = 'Stage'
 
   static fields () {
     return {

@@ -4,7 +4,6 @@
 
 <script>
   import { mapState } from 'vuex'
-  import * as models from '@/models'
 
   export default {
     name: 'TeamChannel',
@@ -59,12 +58,12 @@
       updateStore () {
         Object.keys(this.deleteBuffer).forEach(async type => {
           const ids = this.deleteBuffer[type].map(data => data.id)
-          await models[type].delete(record => ids.indexOf(record.id) > -1)
+          await this.$store.$db().model(type).delete(record => ids.indexOf(record.id) > -1)
           delete this.deleteBuffer[type]
         })
 
         Object.keys(this.insertBuffer).forEach(async type => {
-          await models[type].insert({ data: this.insertBuffer[type] })
+          await this.$store.$db().model(type).insert({ data: this.insertBuffer[type] })
           delete this.insertBuffer[type]
         })
       }

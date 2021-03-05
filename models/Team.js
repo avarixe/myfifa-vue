@@ -5,13 +5,7 @@ import Squad from './Squad'
 import Competition from './Competition'
 
 export default class Team extends Model {
-  static get entity () {
-    return 'teams'
-  }
-
-  static get title () {
-    return 'Team'
-  }
+  static entity =  'Team'
 
   static fields () {
     return {

@@ -12,7 +12,7 @@
       readonly: { type: Boolean, default: false }
     },
     render (createElement, { props: { match, event, readonly } }) {
-      switch (event.constructor.title) {
+      switch (event.constructor.entity) {
         case 'Booking':
           return createElement(BookingEvent, {
             props: { match, booking: event, readonly }

@@ -12,13 +12,7 @@ import Booking from './Booking'
 import Team from './Team'
 
 class Player extends Model {
-  static get entity () {
-    return 'players'
-  }
-
-  static get title () {
-    return 'Player'
-  }
+  static entity = 'Player'
 
   static fields () {
     return {

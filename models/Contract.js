@@ -2,13 +2,7 @@ import { Model } from '@vuex-orm/core'
 import Player from './Player'
 
 export default class Contract extends Model {
-  static get entity () {
-    return 'contracts'
-  }
-
-  static get title () {
-    return 'Contract'
-  }
+  static entity = 'Contract'
 
   static fields () {
     return {

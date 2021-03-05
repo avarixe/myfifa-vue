@@ -71,7 +71,7 @@
         toggleDrawer: 'TOGGLE_DRAWER'
       }),
       ...mapActions({
-        clearStore: 'entities/deleteAll'
+        clearStore: 'orm/deleteAll'
       }),
       updateResponsiveState () {
         this.responsive = window.innerWidth < 991

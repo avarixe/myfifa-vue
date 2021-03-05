@@ -2,13 +2,7 @@ import { Model } from '@vuex-orm/core'
 import { positions } from './Match'
 
 export default class SquadPlayer extends Model {
-  static get entity () {
-    return 'squadPlayers'
-  }
-
-  static get title () {
-    return 'Squad Player'
-  }
+  static entity = 'SquadPlayer'
 
   static fields () {
     return {

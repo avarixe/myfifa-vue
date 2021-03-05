@@ -2,13 +2,7 @@ import { Model } from '@vuex-orm/core'
 import Player from './Player'
 
 export default class Transfer extends Model {
-  static get entity () {
-    return 'transfers'
-  }
-
-  static get title () {
-    return 'Transfer'
-  }
+  static entity = 'Transfer'
 
   static fields () {
     return {
