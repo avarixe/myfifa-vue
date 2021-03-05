@@ -16,6 +16,7 @@
     "actioncable": "^5.2.1",
     "cookieparser": "^0.1.0",
     "date-fns": "^2.8.1",
+    "email-validator": "^2.0.4",
     "flagpack-core": "https://github.com/avarixe/flagpack-core.git#add-dz-and-xk",
     "js-cookie": "^2.2.0",
     "lodash.findlast": "^4.6.0",
