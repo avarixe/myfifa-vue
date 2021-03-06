@@ -286,12 +286,12 @@
       }
     },
     methods: {
-      ...mapMutations('broadcaster', {
-        announce: 'ANNOUNCE'
-      }),
+      ...mapMutations('broadcaster', [
+        'announce'
+      ]),
       ...mapActions('players', {
-        updatePlayer: 'UPDATE',
-        analyzePlayers: 'ANALYZE'
+        updatePlayer: 'update',
+        analyzePlayers: 'analyze'
       }),
       async getPlayerStats () {
         try {

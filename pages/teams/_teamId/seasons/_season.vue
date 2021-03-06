@@ -100,7 +100,7 @@
       }
     },
     async asyncData ({ params, store }) {
-      const seasonData = await store.dispatch('teams/ANALYZE_SEASON', {
+      const seasonData = await store.dispatch('teams/analyzeSeason', {
         teamId: params.teamId,
         season: params.season
       })
@@ -123,12 +123,12 @@
     },
     methods: {
       ...mapMutations('app', {
-        setPage: 'SET_PAGE'
+        setPage: 'setPage'
       }),
       ...mapActions({
-        fetchCompetitions: 'competitions/FETCH',
-        fetchPlayers: 'players/FETCH',
-        searchTransfers: 'transfers/SEARCH'
+        fetchCompetitions: 'competitions/fetch',
+        fetchPlayers: 'players/fetch',
+        searchTransfers: 'transfers/search'
       }),
       linkToSeason (season) {
         return {

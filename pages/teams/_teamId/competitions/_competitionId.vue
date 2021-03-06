@@ -243,11 +243,11 @@
     },
     methods: {
       ...mapMutations('app', {
-        setPage: 'SET_PAGE'
+        setPage: 'setPage'
       }),
       ...mapActions({
-        getCompetition: 'competitions/GET',
-        fetchStages: 'stages/FETCH'
+        getCompetition: 'competitions/get',
+        fetchStages: 'stages/fetch'
       })
     },
     head () {

@@ -158,13 +158,13 @@
     },
     methods: {
       ...mapMutations('app', {
-        setPage: 'SET_PAGE'
+        setPage: 'setPage'
       }),
       ...mapActions({
-        fetchMatches: 'matches/FETCH',
-        fetchPlayers: 'players/FETCH',
-        fetchCompetitions: 'competitions/FETCH',
-        searchContracts: 'contracts/SEARCH'
+        fetchMatches: 'matches/fetch',
+        fetchPlayers: 'players/fetch',
+        fetchCompetitions: 'competitions/fetch',
+        searchContracts: 'contracts/search'
       }),
       getPlayersByStatus (status) {
         return Player

@@ -95,7 +95,7 @@
     },
     methods: {
       ...mapActions('goals', {
-        createGoal: 'CREATE'
+        createGoal: 'create'
       }),
       clearAssistedBy (bool) {
         if (bool) {

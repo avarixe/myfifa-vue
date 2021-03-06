@@ -55,11 +55,11 @@
       }
     },
     methods: {
-      ...mapMutations('broadcaster', {
-        announce: 'ANNOUNCE'
-      }),
+      ...mapMutations('broadcaster', [
+        'announce'
+      ]),
       ...mapActions('caps', {
-        updateCap: 'UPDATE'
+        updateCap: 'update'
       }),
       async setPosition (position) {
         await this.updateCapAttribute('pos', position)

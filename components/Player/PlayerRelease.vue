@@ -72,7 +72,7 @@
     }),
     methods: {
       ...mapActions('players', {
-        releasePlayer: 'RELEASE'
+        releasePlayer: 'release'
       }),
       async release () {
         try {

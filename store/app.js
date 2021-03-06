@@ -14,22 +14,22 @@ export const state = () => ({
 
 // mutations
 export const mutations = {
-  SET_TITLE (state, title) {
+  setTitle (state, title) {
     state.title = title || appTitle
   },
-  SET_PAGE (state, { title, overline, headline, caption }) {
+  setPage (state, { title, overline, headline, caption }) {
     state.title = title || appTitle
     state.overline = overline
     state.headline = headline
     state.caption = caption
   },
-  SET_DRAWER (state, drawer) {
+  setDrawer (state, drawer) {
     state.drawer = drawer
   },
-  TOGGLE_DRAWER (state) {
+  toggleDrawer (state) {
     state.drawer = !state.drawer
   },
-  SET_MODE (state, mode) {
+  setMode (state, mode) {
     state.mode = mode || 'light'
     Cookie.set('mode', state.mode, { expires: 365 })
   }

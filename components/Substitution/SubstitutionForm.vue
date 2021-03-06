@@ -109,8 +109,8 @@
     },
     methods: {
       ...mapActions('substitutions', {
-        createSubstitution: 'CREATE',
-        updateSubstitution: 'UPDATE'
+        createSubstitution: 'create',
+        updateSubstitution: 'update'
       }),
       async submit () {
         const substitution = {

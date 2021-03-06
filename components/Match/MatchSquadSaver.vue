@@ -77,8 +77,8 @@
     },
     methods: {
       ...mapActions('squads', {
-        createSquad: 'CREATE',
-        storeLineup: 'STORE_LINEUP'
+        createSquad: 'create',
+        storeLineup: 'storeLineup'
       }),
       async saveLineupToSquad (squadId) {
         try {

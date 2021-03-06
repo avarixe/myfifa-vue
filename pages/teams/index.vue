@@ -25,10 +25,10 @@
     },
     methods: {
       ...mapMutations('app', {
-        setPage: 'SET_PAGE'
+        setPage: 'setPage'
       }),
       ...mapActions('teams', {
-        fetchTeams: 'FETCH'
+        fetchTeams: 'fetch'
       })
     }
   }

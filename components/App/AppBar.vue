@@ -67,9 +67,9 @@
       this.$router.push({ name: 'index' })
     },
     methods: {
-      ...mapMutations('app', {
-        toggleDrawer: 'TOGGLE_DRAWER'
-      }),
+      ...mapMutations('app', [
+        'toggleDrawer'
+      ]),
       ...mapActions({
         clearStore: 'orm/deleteAll'
       }),

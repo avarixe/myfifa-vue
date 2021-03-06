@@ -89,8 +89,8 @@
     },
     methods: {
       ...mapActions('penaltyShootout', {
-        createPenaltyShootout: 'CREATE',
-        updatePenaltyShootout: 'UPDATE'
+        createPenaltyShootout: 'create',
+        updatePenaltyShootout: 'update'
       }),
       async submit () {
         const save = this.record

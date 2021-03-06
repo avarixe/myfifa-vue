@@ -55,9 +55,9 @@
       }
     },
     methods: {
-      ...mapActions('matches', {
-        applySquad: 'APPLY_SQUAD'
-      }),
+      ...mapActions('matches', [
+        'applySquad'
+      ]),
       async applySquadToMatch (squadId) {
         try {
           await this.applySquad({

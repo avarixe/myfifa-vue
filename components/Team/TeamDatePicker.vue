@@ -74,7 +74,7 @@
       }
     },
     methods: mapActions('teams', {
-      updateTeam: 'UPDATE'
+      updateTeam: 'update'
     })
   }
 </script>

@@ -174,8 +174,8 @@
     },
     methods: {
       ...mapActions('contracts', {
-        createContract: 'CREATE',
-        updateContract: 'UPDATE'
+        createContract: 'create',
+        updateContract: 'update'
       }),
       async submit () {
         if (this.record) {

@@ -160,9 +160,9 @@
     },
     methods: {
       ...mapActions('user', {
-        getUser: 'GET',
-        createUser: 'CREATE',
-        updateUser: 'UPDATE'
+        getUser: 'get',
+        createUser: 'create',
+        updateUser: 'update'
       }),
       async submit () {
         if (!this.authenticated) {

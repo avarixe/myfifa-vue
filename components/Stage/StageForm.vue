@@ -115,7 +115,7 @@
     },
     methods: {
       ...mapActions('stages', {
-        createStage: 'CREATE'
+        createStage: 'create'
       }),
       async submit () {
         await this.createStage({

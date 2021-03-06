@@ -126,8 +126,8 @@
     },
     methods: {
       ...mapActions('tableRows', {
-        createRow: 'CREATE',
-        updateRow: 'UPDATE'
+        createRow: 'create',
+        updateRow: 'update'
       }),
       async submit () {
         if (this.record) {

@@ -164,8 +164,8 @@
     },
     methods: {
       ...mapActions('players', {
-        createPlayer: 'CREATE',
-        updatePlayer: 'UPDATE'
+        createPlayer: 'create',
+        updatePlayer: 'update'
       }),
       async submit () {
         if (this.record) {

@@ -118,9 +118,9 @@
     },
     methods: {
       ...mapActions({
-        fetchPlayers: 'players/FETCH',
-        createSquad: 'squads/CREATE',
-        updateSquad: 'squads/UPDATE'
+        fetchPlayers: 'players/fetch',
+        createSquad: 'squads/create',
+        updateSquad: 'squads/update'
       }),
       async loadPlayers () {
         try {

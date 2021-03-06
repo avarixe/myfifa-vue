@@ -80,7 +80,7 @@
     },
     methods: {
       ...mapActions('substitutions', {
-        createSubstitution: 'CREATE'
+        createSubstitution: 'create'
       }),
       async saveSubstitution () {
         await this.createSubstitution({

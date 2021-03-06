@@ -223,7 +223,7 @@
       }
     },
     async asyncData ({ store, params }) {
-      const data = await store.dispatch('players/ANALYZE', {
+      const data = await store.dispatch('players/analyze', {
         teamId: params.teamId,
         playerIds: [params.playerId]
       })
@@ -246,12 +246,12 @@
     },
     methods: {
       ...mapMutations({
-        setPage: 'app/SET_PAGE',
-        announce: 'broadcaster/ANNOUNCE'
+        setPage: 'app/setPage',
+        announce: 'broadcaster/announce'
       }),
       ...mapActions({
-        getPlayer: 'players/GET',
-        updatePlayer: 'players/UPDATE'
+        getPlayer: 'players/get',
+        updatePlayer: 'players/update'
       }),
       async updatePlayerAttribute (playerId, attribute, value) {
         try {

@@ -108,8 +108,8 @@
     },
     methods: {
       ...mapActions('injuries', {
-        createInjury: 'CREATE',
-        updateInjury: 'UPDATE'
+        createInjury: 'create',
+        updateInjury: 'update'
       }),
       async submit () {
         if (this.record) {

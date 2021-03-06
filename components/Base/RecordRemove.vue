@@ -80,7 +80,7 @@
           this.loading = true
 
           await this.$store.dispatch(
-            `${this.store}/REMOVE`,
+            `${this.store}/remove`,
             this.record.id
           )
 

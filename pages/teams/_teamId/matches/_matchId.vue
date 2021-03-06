@@ -244,13 +244,13 @@
     },
     methods: {
       ...mapMutations('app', {
-        setPage: 'SET_PAGE'
+        setPage: 'setPage'
       }),
       ...mapActions({
-        getMatch: 'matches/GET',
-        fetchPlayers: 'players/FETCH',
-        searchPlayerHistories: 'playerHistories/SEARCH',
-        fetchSquads: 'squads/FETCH'
+        getMatch: 'matches/get',
+        fetchPlayers: 'players/fetch',
+        searchPlayerHistories: 'playerHistories/search',
+        fetchSquads: 'squads/fetch'
       })
     }
   }

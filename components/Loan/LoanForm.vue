@@ -155,8 +155,8 @@
     },
     methods: {
       ...mapActions('loans', {
-        createLoan: 'CREATE',
-        updateLoan: 'UPDATE'
+        createLoan: 'create',
+        updateLoan: 'update'
       }),
       async submit () {
         if (this.record) {

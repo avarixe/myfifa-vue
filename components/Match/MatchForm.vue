@@ -230,11 +230,11 @@
     },
     methods: {
       ...mapActions({
-        fetchTeamOptions: 'matches/FETCH_TEAM_OPTIONS',
-        createMatch: 'matches/CREATE',
-        updateMatch: 'matches/UPDATE',
-        fetchCompetitions: 'competitions/FETCH',
-        fetchStages: 'stages/FETCH'
+        fetchTeamOptions: 'matches/fetchTeamOptions',
+        createMatch: 'matches/create',
+        updateMatch: 'matches/update',
+        fetchCompetitions: 'competitions/fetch',
+        fetchStages: 'stages/fetch'
       }),
       setHome () {
         this.match.home = this.team.title

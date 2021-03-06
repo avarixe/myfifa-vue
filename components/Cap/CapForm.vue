@@ -72,7 +72,7 @@
     },
     methods: {
       ...mapActions('caps', {
-        createCap: 'CREATE'
+        createCap: 'create'
       }),
       async submit () {
         await this.createCap({

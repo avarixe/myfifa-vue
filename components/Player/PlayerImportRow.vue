@@ -270,7 +270,7 @@
     },
     methods: {
       ...mapActions('players', {
-        createPlayer: 'CREATE'
+        createPlayer: 'create'
       }),
       async savePlayer () {
         try {

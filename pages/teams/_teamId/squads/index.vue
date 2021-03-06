@@ -34,11 +34,11 @@
     },
     methods: {
       ...mapMutations('app', {
-        setPage: 'SET_PAGE'
+        setPage: 'setPage'
       }),
       ...mapActions({
-        fetchSquads: 'squads/FETCH',
-        fetchPlayers: 'players/FETCH'
+        fetchSquads: 'squads/fetch',
+        fetchPlayers: 'players/fetch'
       })
     }
   }

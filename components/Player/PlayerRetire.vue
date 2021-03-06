@@ -72,7 +72,7 @@
     }),
     methods: {
       ...mapActions('players', {
-        retirePlayer: 'RETIRE'
+        retirePlayer: 'retire'
       }),
       async retire () {
         try {

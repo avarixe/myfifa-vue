@@ -2,7 +2,7 @@ import { PlayerHistory } from '@/models'
 
 // actions
 export const actions = {
-  async SEARCH (_, { teamId }) {
+  async search (_, { teamId }) {
     const data = await this.$axios.$post(
       `teams/${teamId}/player_histories/search`
     )

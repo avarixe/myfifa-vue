@@ -148,7 +148,7 @@
     },
     methods: {
       ...mapMutations('app', {
-        setPage: 'SET_PAGE'
+        setPage: 'setPage'
       }),
       addPlayer () {
         this.players.push({

@@ -203,9 +203,9 @@
     },
     methods: {
       ...mapActions('competitions', {
-        fetchCompetitions: 'FETCH',
-        createCompetition: 'CREATE',
-        updateCompetition: 'UPDATE'
+        fetchCompetitions: 'fetch',
+        createCompetition: 'create',
+        updateCompetition: 'update'
       }),
       async loadCompetitions () {
         try {

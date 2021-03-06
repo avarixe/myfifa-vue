@@ -97,8 +97,8 @@
     },
     methods: {
       ...mapActions({
-        login: 'LOGIN',
-        getTeam: 'teams/GET'
+        login: 'login',
+        getTeam: 'teams/get'
       }),
       async authenticate () {
         try {

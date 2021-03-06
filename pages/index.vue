@@ -34,7 +34,7 @@
       this.setTitle('')
     },
     methods: mapMutations('app', {
-      setTitle: 'SET_TITLE'
+      setTitle: 'setTitle'
     })
   }
 </script>
