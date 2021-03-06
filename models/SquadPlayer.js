@@ -1,5 +1,5 @@
 import { Model } from '@vuex-orm/core'
-import { positions } from './Match'
+import { matchPositions } from '@/constants'
 
 export default class SquadPlayer extends Model {
   static entity = 'SquadPlayer'
@@ -17,6 +17,6 @@ export default class SquadPlayer extends Model {
   }
 
   get positionType () {
-    return positions[this.pos]
+    return matchPositions[this.pos]
   }
 }

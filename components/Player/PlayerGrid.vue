@@ -148,8 +148,7 @@
 <script>
   import { mapMutations, mapActions } from 'vuex'
   import { TeamAccessible } from '@/mixins'
-  import { Player } from '@/models'
-  import { positions } from '@/models/Player'
+  import { positions } from '@/constants'
 
   export default {
     name: 'PlayerGrid',
@@ -185,7 +184,7 @@
     }),
     computed: {
       players () {
-        return Player
+        return this.$store.$db().model('Player')
           .query()
           .with('team|contracts')
           .where('team_id', parseInt(this.$route.params.teamId))

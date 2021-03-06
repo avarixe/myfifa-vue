@@ -21,7 +21,7 @@
           Confirm Action
         </v-toolbar-title>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="pt-4 pb-0">
         Remove {{ label }}?
       </v-card-text>
       <v-alert

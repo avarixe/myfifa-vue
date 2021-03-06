@@ -216,8 +216,7 @@
 <script>
   import { mapActions } from 'vuex'
   import { addYears, format, parseISO } from 'date-fns'
-  import { Team } from '@/models'
-  import { positions } from '@/models/Player'
+  import { positions } from '@/constants'
   import { isRequired, isNumber, inRange } from '@/functions'
 
   export default {
@@ -244,7 +243,7 @@
     }),
     computed: {
       team () {
-        return Team.find(this.$route.params.teamId)
+        return this.$store.$db().model('Team').find(this.$route.params.teamId)
       },
       contract () {
         return this.player.contracts_attributes[0]

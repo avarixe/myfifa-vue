@@ -1,5 +1,5 @@
 import orderBy from 'lodash.orderby'
-import { positions } from '@/models/Match'
+import { matchPositions } from '@/constants'
 
 export default {
   props: {
@@ -10,7 +10,7 @@ export default {
   }),
   computed: {
     positions () {
-      return Object.keys(positions)
+      return Object.keys(matchPositions)
     },
     sortedCaps () {
       return orderBy(

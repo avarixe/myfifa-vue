@@ -14,7 +14,6 @@
 
 <script>
   import { format, parseISO } from 'date-fns'
-  import { Contract, Team } from '@/models'
 
   export default {
     name: 'PlayerHistoryChart',
@@ -29,10 +28,10 @@
     },
     computed: {
       team () {
-        return Team.find(this.$route.params.teamId)
+        return this.$store.$db().model('Team').find(this.$route.params.teamId)
       },
       lastContract () {
-        return Contract
+        return this.$store.$db().model('Contract')
           .query()
           .orderBy('ended_on')
           .where('player_id', this.player.id)

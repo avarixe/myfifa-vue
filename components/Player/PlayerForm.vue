@@ -83,7 +83,7 @@
         <v-checkbox
           v-model="player.youth"
           label="Youth Player"
-          :disabled="record"
+          :disabled="record !== null"
           hide-details
         />
       </v-col>
@@ -95,7 +95,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { DialogFormable, TeamAccessible } from '@/mixins'
-  import { positions } from '@/models/Player'
+  import { positions } from '@/constants'
   import { isRequired, inRange, isNumber } from '@/functions'
 
   export default {

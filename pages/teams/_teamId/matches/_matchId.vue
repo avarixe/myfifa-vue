@@ -132,7 +132,7 @@
           class="hidden-md-and-down"
           cols="12"
         >
-          <v-container class="py-0">
+          <v-container>
             <v-row>
               <v-col cols="7">
                 <v-card>
@@ -164,7 +164,6 @@
 
 <script>
   import { mapMutations, mapActions } from 'vuex'
-  import { Match, Player } from '@/models'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -181,13 +180,13 @@
         return this.$route.params.matchId
       },
       match () {
-        return Match
+        return this.$store.$db().model('Match')
           .query()
           .with('team|caps|goals|bookings|substitutions|penalty_shootout')
           .find(this.matchId)
       },
       players () {
-        return Player
+        return this.$store.$db().model('Player')
           .query()
           .where('team_id', this.team.id)
           .get()
@@ -196,7 +195,7 @@
         return this.match.played_on !== this.team.currently_on
       },
       prevMatchLink () {
-        const prevMatch = Match
+        const prevMatch = this.$store.$db().model('Match')
           .query()
           .where('team_id', this.match.team_id)
           .where('played_on', date => date < this.match.played_on)
@@ -205,7 +204,7 @@
         return prevMatch && prevMatch.link
       },
       nextMatchLink () {
-        const nextMatch = Match
+        const nextMatch = this.$store.$db().model('Match')
           .query()
           .where('team_id', this.match.team_id)
           .where('played_on', date => date > this.match.played_on)

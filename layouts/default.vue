@@ -14,7 +14,6 @@
 
 <script>
   import { mapState, mapGetters } from 'vuex'
-  import { Team } from '@/models'
 
   export default {
     name: 'Layout',
@@ -35,7 +34,7 @@
         return 'teamId' in this.$route.params
       },
       team () {
-        return Team.find(this.$route.params.teamId)
+        return this.$store.$db().model('Team').find(this.$route.params.teamId)
       }
     },
     watch: {

@@ -1,10 +1,12 @@
 import { addYears, differenceInYears, format, parseISO } from 'date-fns'
-import { Team } from '@/models'
 
 export default {
   computed: {
+    teamId () {
+      return parseInt(this.$route.params.teamId)
+    },
     team () {
-      return Team.find(this.$route.params.teamId)
+      return this.$store.$db().model('Team').find(this.teamId)
     },
     season () {
       const date = parseISO(this.team.started_on)

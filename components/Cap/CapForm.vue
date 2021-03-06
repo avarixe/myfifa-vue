@@ -27,7 +27,7 @@
       <v-col cols="12">
         <player-select
           v-model="cap.player_id"
-          :players="players"
+          :players="activePlayers"
           item-value="id"
           :disabled="cap.start > 0"
           label="Player"
@@ -40,14 +40,14 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import { positions } from '@/models/Match'
-  import { activePlayers } from '@/models/Player'
-  import { DialogFormable } from '@/mixins'
+  import { matchPositions } from '@/constants'
+  import { ActivePlayerSelectable, DialogFormable } from '@/mixins'
   import { isRequired } from '@/functions'
 
   export default {
     name: 'CapForm',
     mixins: [
+      ActivePlayerSelectable,
       DialogFormable
     ],
     props: {
@@ -63,11 +63,8 @@
       }
     }),
     computed: {
-      players () {
-        return activePlayers(parseInt(this.$route.params.teamId))
-      },
       positions () {
-        return Object.keys(positions)
+        return Object.keys(matchPositions)
       }
     },
     methods: {

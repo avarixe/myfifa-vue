@@ -38,13 +38,12 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import { TeamAccessible, MatchAccessible } from '@/mixins'
-  import { activePlayers } from '@/models/Player'
+  import { ActivePlayerSelectable, MatchAccessible } from '@/mixins'
 
   export default {
     name: 'CapSubstitutionForm',
     mixins: [
-      TeamAccessible,
+      ActivePlayerSelectable,
       MatchAccessible
     ],
     props: {
@@ -60,7 +59,7 @@
     computed: {
       availablePlayers () {
         const selectedIds = this.sortedCaps.map(cap => cap.player_id)
-        return activePlayers(this.team.id)
+        return this.activePlayers
           .filter(player => {
             if (selectedIds.indexOf(player.id) < 0) {
               return true

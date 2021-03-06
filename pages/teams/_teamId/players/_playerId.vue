@@ -184,7 +184,6 @@
 
 <script>
   import { mapMutations, mapActions } from 'vuex'
-  import { Player } from '@/models'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -206,7 +205,7 @@
         return this.$route.params.playerId
       },
       player () {
-        return Player
+        return this.$store.$db().model('Player')
           .query()
           .withAll()
           .find(this.playerId)

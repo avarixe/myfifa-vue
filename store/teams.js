@@ -1,18 +1,16 @@
-import { Team } from '@/models'
-
 // actions
 export const actions = {
   async fetch () {
     const data = await this.$axios.$get('teams')
-    Team.insert({ data })
+    this.$db().model('Team').insert({ data })
   },
   async get (_, { teamId }) {
     const data = await this.$axios.$get(`teams/${teamId}`)
-    Team.insert({ data })
+    this.$db().model('Team').insert({ data })
   },
   async create (_, { formData, team }) {
     const data = await this.$axios.$post('teams', formData || { team })
-    Team.insert({ data })
+    this.$db().model('Team').insert({ data })
     return data
   },
   async update (_, { formData, team }) {
@@ -20,11 +18,11 @@ export const actions = {
       `teams/${team.id}`,
       formData || { team }
     )
-    Team.insert({ data })
+    this.$db().model('Team').insert({ data })
   },
   async remove (_, teamId) {
     await this.$axios.$delete(`teams/${teamId}`)
-    Team.delete(teamId)
+    this.$db().model('Team').delete(teamId)
   },
   analyzeSeason (_, { teamId, season }) {
     return this.$axios.$post(`teams/${teamId}/analyze/season/${season}`)

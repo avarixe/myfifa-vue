@@ -38,7 +38,6 @@
 
 <script>
   import { addYears, format, parseISO } from 'date-fns'
-  import { Team, Player, Transfer } from '@/models'
 
   export default {
     name: 'SeasonTransferGrid',
@@ -56,7 +55,7 @@
     }),
     computed: {
       team () {
-        return Team.find(this.$route.params.teamId)
+        return this.$store.$db().model('Team').find(this.$route.params.teamId)
       },
       seasonStart () {
         let date = parseISO(this.team.started_on)
@@ -69,13 +68,13 @@
         return format(date, 'yyyy-MM-dd')
       },
       transfers () {
-        const playerIds = Player
+        const playerIds = this.$store.$db().model('Player')
           .query()
           .where('team_id', this.team.id)
           .get()
           .map(player => player.id)
 
-        return Transfer
+        return this.$store.$db().model('Transfer')
           .query()
           .with('player.histories')
           .where('player_id', id => playerIds.indexOf(id) > -1)

@@ -41,7 +41,7 @@
         >
           <player-select
             v-model="squadPlayer.player_id"
-            :players="players"
+            :players="activePlayers"
             item-value="id"
             label="Player"
             required
@@ -56,14 +56,14 @@
 <script>
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
-  import { positions } from '@/models/Match'
-  import { activePlayers } from '@/models/Player'
-  import { DialogFormable, TeamAccessible } from '@/mixins'
+  import { ActivePlayerSelectable, DialogFormable, TeamAccessible } from '@/mixins'
+  import { matchPositions } from '@/constants'
   import { isRequired } from '@/functions'
 
   export default {
     name: 'SquadForm',
     mixins: [
+      ActivePlayerSelectable,
       DialogFormable,
       TeamAccessible
     ],
@@ -90,10 +90,7 @@
         return this.record ? 'Edit Squad' : 'New Squad'
       },
       positions () {
-        return Object.keys(positions)
-      },
-      players () {
-        return activePlayers(this.team.id)
+        return Object.keys(matchPositions)
       }
     },
     watch: {
@@ -111,7 +108,7 @@
             }))
         }
 
-        if (this.players.length === 0) {
+        if (this.activePlayers.length === 0) {
           this.loadPlayers()
         }
       }

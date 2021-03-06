@@ -27,8 +27,6 @@
 </template>
 
 <script>
-  import { Team } from '@/models'
-
   export default {
     name: 'PlayerGrowth',
     props: {
@@ -36,7 +34,7 @@
     },
     computed: {
       team () {
-        return Team.find(this.$route.params.teamId)
+        return this.$store.$db().model('Team').find(this.$route.params.teamId)
       }
     }
   }

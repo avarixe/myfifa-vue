@@ -21,7 +21,7 @@
           return createElement(GoalEvent, {
             props: { match, goal: event, readonly }
           })
-        case 'Penalty Shootout':
+        case 'PenaltyShootout':
           return createElement(PenaltyShootoutEvent, {
             props: { match, penaltyShootout: event, readonly }
           })

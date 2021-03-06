@@ -19,12 +19,8 @@
           Confirm Action
         </v-toolbar-title>
       </v-card-title>
-      <v-card-text class="pb-0">
-        <v-row>
-          <v-col cols="12">
-            Release Player: {{ player.name }}?
-          </v-col>
-        </v-row>
+      <v-card-text class="pt-4 pb-0">
+        Release Player: {{ player.name }}?
       </v-card-text>
       <v-alert
         v-model="error"

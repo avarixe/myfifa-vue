@@ -110,7 +110,6 @@
 <script>
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
-  import { Competition } from '@/models'
   import { TeamAccessible, DialogFormable } from '@/mixins'
   import { isRequired, isNumber } from '@/functions'
 
@@ -171,7 +170,7 @@
       competitions () {
         return [
           ...new Set(
-            Competition
+            this.$store.$db().model('Competition')
               .query()
               .where('team_id', this.team.id)
               .get()

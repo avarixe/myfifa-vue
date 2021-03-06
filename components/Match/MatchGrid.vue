@@ -59,7 +59,6 @@
 
 <script>
   import { addYears, parseISO } from 'date-fns'
-  import { Competition, Match } from '@/models'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -81,7 +80,7 @@
     }),
     computed: {
       matches () {
-        return Match
+        return this.$store.$db().model('Match')
           .query()
           .where('team_id', this.team.id)
           .get()
@@ -119,7 +118,7 @@
         return seasons
       },
       competitions () {
-        return Competition
+        return this.$store.$db().model('Competition')
           .query()
           .where('team_id', this.team.id)
           .where(comp => {

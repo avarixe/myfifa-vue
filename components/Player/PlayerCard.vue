@@ -58,8 +58,6 @@
 </template>
 
 <script>
-  import { Player, Team } from '@/models'
-
   export default {
     name: 'PlayerCard',
     props: {
@@ -68,10 +66,10 @@
     },
     computed: {
       player () {
-        return Player.find(this.playerId)
+        return this.$store.$db().model('Player').find(this.playerId)
       },
       team () {
-        return Team.find(this.$route.params.teamId)
+        return this.$store.$db().model('Team').find(this.$route.params.teamId)
       }
     }
   }

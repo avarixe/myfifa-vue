@@ -130,8 +130,7 @@
 
 <script>
   import { TeamAccessible } from '@/mixins'
-  import { Player } from '@/models'
-  import { positions } from '@/models/Match'
+  import { matchPositions } from '@/constants'
 
   export default {
     name: 'MatchLineup',
@@ -178,12 +177,12 @@
         let playerIds = []
 
         this.match.caps.forEach(cap => {
-          if (positions[cap.pos] === positionType) {
+          if (matchPositions[cap.pos] === positionType) {
             playerIds.push(cap.player_id)
           }
         })
 
-        const totalOvr = Player
+        const totalOvr = this.$store.$db().model('Player')
           .query()
           .whereIdIn(playerIds)
           .get()
@@ -195,7 +194,6 @@
         return Math.round(totalOvr / playerIds.length)
       },
       substitutesRow (i) {
-        console.log(i)
         return this.substitutes.slice(
           i * this.substitutesRowLength,
           (i + 1) * this.substitutesRowLength
