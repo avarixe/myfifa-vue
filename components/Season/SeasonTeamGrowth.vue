@@ -42,7 +42,7 @@
           .get()
       },
       contractsAtEnd () {
-        return Contract
+        return this.$store.$db().model('Contract')
           .query()
           .where(contract =>
             contract.started_on <= this.seasonEnd &&
@@ -51,7 +51,7 @@
           .get()
       },
       playersAtEnd () {
-        return Player
+        return this.$store.$db().model('Player')
           .query()
           .with('histories')
           .where('team_id', this.team.id)
