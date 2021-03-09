@@ -31,8 +31,6 @@
 </template>
 
 <script>
-  import { Competition, Team } from '@/models'
-
   export default {
     name: 'SeasonCompetitionGrid',
     props: {
@@ -54,10 +52,10 @@
     }),
     computed: {
       team () {
-        return Team.find(this.$route.params.teamId)
+        return this.$store.$db().model('Team').find(this.$route.params.teamId)
       },
       competitions () {
-        return Competition
+        return this.$store.$db().model('Competition')
           .query()
           .with('team')
           .where('team_id', this.team.id)
@@ -92,7 +90,7 @@
     },
     methods: {
       competitionLink (competition) {
-        const record = Competition
+        const record = this.$store.$db().model('Competition')
           .query()
           .where('season', this.season)
           .where('name', competition)

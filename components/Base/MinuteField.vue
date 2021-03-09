@@ -10,7 +10,6 @@
 </template>
 
 <script>
-  import { Match } from '@/models'
   import { isRequired, inRange } from '@/functions'
 
   export default {
@@ -20,7 +19,7 @@
     },
     computed: {
       match () {
-        return Match.find(this.$route.params.matchId)
+        return this.$store.$db().model('Match').find(this.$route.params.matchId)
       },
       rules () {
         const label = 'Minute'

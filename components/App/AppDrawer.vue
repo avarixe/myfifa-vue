@@ -159,13 +159,13 @@
       this.setDrawer(window.innerWidth >= 991)
     },
     methods: {
-      ...mapMutations('app', {
-        setDrawer: 'SET_DRAWER',
-        setMode: 'SET_MODE'
-      }),
-      ...mapActions({
-        logout: 'LOGOUT'
-      }),
+      ...mapMutations('app', [
+        'setDrawer',
+        'setMode'
+      ]),
+      ...mapActions([
+        'logout'
+      ]),
       toggleMode () {
         this.setMode(this.mode === 'dark' ? 'light' : 'dark')
       },

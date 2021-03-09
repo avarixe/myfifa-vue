@@ -1,28 +1,26 @@
-import { Squad, SquadPlayer } from '@/models'
-
 // actions
 export const actions = {
-  async FETCH (_, { teamId }) {
+  async fetch (_, { teamId }) {
     const data = await this.$axios.$get(`teams/${teamId}/squads`)
-    Squad.insert({ data })
+    this.$db().model('Squad').insert({ data })
   },
-  async CREATE (_, { teamId, squad }) {
+  async create (_, { teamId, squad }) {
     const data = await this.$axios.$post(`teams/${teamId}/squads`, { squad })
-    Squad.insert({ data })
+    this.$db().model('Squad').insert({ data })
   },
-  async UPDATE (_, squad) {
+  async update (_, squad) {
     const data = await this.$axios.$patch(`squads/${squad.id}`, { squad })
-    Squad.insert({ data })
+    this.$db().model('Squad').insert({ data })
   },
-  async REMOVE (_, squadId) {
+  async remove (_, squadId) {
     await this.$axios.$delete(`squads/${squadId}`)
-    Squad.delete(squadId)
+    this.$db().model('Squad').delete(squadId)
   },
-  async STORE_LINEUP (_, { matchId, squadId }) {
+  async storeLineup (_, { matchId, squadId }) {
     const data = await this.$axios.$post(
       `squads/${squadId}/store_lineup/${matchId}`
     )
-    SquadPlayer.delete(player => player.squad_id === squadId)
-    Squad.insert({ data })
+    this.$db().model('SquadPlayer').delete(plyr => plyr.squad_id === squadId)
+    this.$db().model('Squad').insert({ data })
   }
 }

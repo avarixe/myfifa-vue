@@ -8,7 +8,6 @@
 </template>
 
 <script>
-  import { Player, Contract, Team } from '@/models'
   import { sum } from '@/functions'
 
   export default {
@@ -23,10 +22,10 @@
     },
     computed: {
       team () {
-        return Team.find(this.$route.params.teamId)
+        return this.$store.$db().model('Team').find(this.$route.params.teamId)
       },
       contractsAtStart () {
-        return Contract
+        return this.$store.$db().model('Contract')
           .query()
           .where(contract =>
             contract.started_on <= this.seasonStart &&
@@ -35,7 +34,7 @@
           .get()
       },
       playersAtStart () {
-        return Player
+        return this.$store.$db().model('Player')
           .query()
           .with('histories')
           .where('team_id', this.team.id)

@@ -36,8 +36,6 @@
 </template>
 
 <script>
-  import { Loan, Injury } from '@/models'
-
   export default {
     name: 'PlayerAction',
     props: {
@@ -45,13 +43,13 @@
     },
     computed: {
       injury () {
-        return Injury
+        return this.$store.$db().model('Injury')
           .query()
           .where('player_id', this.player.id)
           .last()
       },
       loan () {
-        return Loan
+        return this.$store.$db().model('Loan')
           .query()
           .where('player_id', this.player.id)
           .last()

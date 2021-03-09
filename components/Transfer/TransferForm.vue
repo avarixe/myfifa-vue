@@ -143,8 +143,8 @@
     },
     methods: {
       ...mapActions('transfers', {
-        createTransfer: 'CREATE',
-        updateTransfer: 'UPDATE'
+        createTransfer: 'create',
+        updateTransfer: 'update'
       }),
       async submit () {
         if (this.record) {

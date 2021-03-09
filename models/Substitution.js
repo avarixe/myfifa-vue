@@ -2,13 +2,7 @@ import { Model } from '@vuex-orm/core'
 import Player from './Player'
 
 export default class Substitution extends Model {
-  static get entity () {
-    return 'substitutions'
-  }
-
-  static get title () {
-    return 'Substitution'
-  }
+  static entity = 'Substitution'
 
   static fields () {
     return {

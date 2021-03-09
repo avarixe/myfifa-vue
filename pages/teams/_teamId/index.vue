@@ -101,7 +101,6 @@
 
 <script>
   import { mapMutations, mapActions } from 'vuex'
-  import { Match, Player } from '@/models'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -115,7 +114,7 @@
     transition: 'fade-transition',
     computed: {
       lastMatch () {
-        return Match
+        return this.$store.$db().model('Match')
           .query()
           .with('team')
           .where('team_id', this.team.id)
@@ -129,7 +128,7 @@
         return this.getPlayersByStatus('Loaned')
       },
       playersWithExpiringContracts () {
-        return Player
+        return this.$store.$db().model('Player')
           .query()
           .with('team')
           .where('team_id', this.team.id)
@@ -158,16 +157,16 @@
     },
     methods: {
       ...mapMutations('app', {
-        setPage: 'SET_PAGE'
+        setPage: 'setPage'
       }),
       ...mapActions({
-        fetchMatches: 'matches/FETCH',
-        fetchPlayers: 'players/FETCH',
-        fetchCompetitions: 'competitions/FETCH',
-        searchContracts: 'contracts/SEARCH'
+        fetchMatches: 'matches/fetch',
+        fetchPlayers: 'players/fetch',
+        fetchCompetitions: 'competitions/fetch',
+        searchContracts: 'contracts/search'
       }),
       getPlayersByStatus (status) {
-        return Player
+        return this.$store.$db().model('Player')
           .query()
           .with('team')
           .where('team_id', this.team.id)

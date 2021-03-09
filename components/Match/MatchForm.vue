@@ -99,7 +99,6 @@
   import { mapState, mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { parseISO } from 'date-fns'
-  import { Competition } from '@/models'
   import { TeamAccessible, DialogFormable } from '@/mixins'
   import { isRequired } from '@/functions'
 
@@ -150,7 +149,7 @@
         return parseInt((datePlayed - startDate) / (525600 * 60 * 1000))
       },
       competitions () {
-        return Competition
+        return this.$store.$db().model('Competition')
           .query()
           .where('team_id', this.team.id)
           .where('season', this.season)
@@ -160,7 +159,7 @@
       },
       competitionId () {
         if (this.match.competition) {
-          const competition = Competition
+          const competition = this.$store.$db().model('Competition')
             .query()
             .where('team_id', this.team.id)
             .where('season', this.season)
@@ -171,7 +170,7 @@
         return null
       },
       stages () {
-        const competition = Competition
+        const competition = this.$store.$db().model('Competition')
           .query()
           .with('stages')
           .where('team_id', this.team.id)
@@ -230,11 +229,11 @@
     },
     methods: {
       ...mapActions({
-        fetchTeamOptions: 'matches/FETCH_TEAM_OPTIONS',
-        createMatch: 'matches/CREATE',
-        updateMatch: 'matches/UPDATE',
-        fetchCompetitions: 'competitions/FETCH',
-        fetchStages: 'stages/FETCH'
+        fetchTeamOptions: 'matches/fetchTeamOptions',
+        createMatch: 'matches/create',
+        updateMatch: 'matches/update',
+        fetchCompetitions: 'competitions/fetch',
+        fetchStages: 'stages/fetch'
       }),
       setHome () {
         this.match.home = this.team.title

@@ -70,7 +70,6 @@
 </template>
 
 <script>
-  import { Match } from '@/models'
   import { TeamAccessible } from '@/mixins'
   import { format, parseISO } from 'date-fns'
 
@@ -92,7 +91,7 @@
     },
     methods: {
       matchesOn (date) {
-        return Match
+        return this.$store.$db().model('Match')
           .query()
           .with('team')
           .where('team_id', this.team.id)

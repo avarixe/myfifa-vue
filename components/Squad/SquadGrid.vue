@@ -12,7 +12,6 @@
 </template>
 
 <script>
-  import { Squad } from '@/models'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -22,7 +21,7 @@
     ],
     computed: {
       squads () {
-        return Squad
+        return this.$store.$db().model('Squad')
           .query()
           .with('squad_players')
           .where('team_id', this.team.id)

@@ -61,8 +61,6 @@
 </template>
 
 <script>
-  import { Player } from '@/models'
-
   export default {
     name: 'SquadCard',
     props: {
@@ -89,7 +87,7 @@
           }
         })
 
-        const totalOvr = Player
+        const totalOvr = this.$store.$db().model('Player')
           .query()
           .whereIdIn(playerIds)
           .sum('ovr')
@@ -97,11 +95,11 @@
         return Math.round(totalOvr / playerIds.length)
       },
       nameOf (playerId) {
-        const player = Player.find(playerId)
+        const player = this.$store.$db().model('Player').find(playerId)
         return player ? player.name : ''
       },
       statusColor (playerId) {
-        const player = Player.find(playerId)
+        const player = this.$store.$db().model('Player').find(playerId)
         if (player && player.status === 'Active') {
           return ''
         } else {

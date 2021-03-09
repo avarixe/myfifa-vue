@@ -1,30 +1,28 @@
-import { Competition } from '@/models'
-
 // actions
 export const actions = {
-  async FETCH (_, { teamId }) {
+  async fetch (_, { teamId }) {
     const data = await this.$axios.$get(`teams/${teamId}/competitions`)
-    Competition.insert({ data })
+    this.$db().model('Competition').insert({ data })
   },
-  async GET (_, { competitionId }) {
+  async get (_, { competitionId }) {
     const data = await this.$axios.$get(`competitions/${competitionId}`)
-    Competition.insert({ data })
+    this.$db().model('Competition').insert({ data })
   },
-  async CREATE (_, { teamId, competition }) {
+  async create (_, { teamId, competition }) {
     const data = await this.$axios.$post(`teams/${teamId}/competitions`, {
       competition
     })
-    Competition.insert({ data })
+    this.$db().model('Competition').insert({ data })
     return data
   },
-  async UPDATE (_, competition) {
+  async update (_, competition) {
     const data = await this.$axios.$patch(`competitions/${competition.id}`, {
       competition
     })
-    Competition.insert({ data })
+    this.$db().model('Competition').insert({ data })
   },
-  async REMOVE (_, competitionId) {
+  async remove (_, competitionId) {
     await this.$axios.$delete(`competitions/${competitionId}`)
-    Competition.delete(competitionId)
+    this.$db().model('Competition').delete(competitionId)
   }
 }

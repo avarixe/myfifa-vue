@@ -127,8 +127,8 @@
     },
     methods: {
       ...mapActions('fixtures', {
-        createFixture: 'CREATE',
-        updateFixture: 'UPDATE'
+        createFixture: 'create',
+        updateFixture: 'update'
       }),
       addLeg () {
         this.fixture.legs_attributes.push({

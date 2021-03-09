@@ -19,12 +19,8 @@
           Confirm Action
         </v-toolbar-title>
       </v-card-title>
-      <v-card-text class="pb-0">
-        <v-row>
-          <v-col cols="12">
-            {{ player.name }} is Retiring End of Season?
-          </v-col>
-        </v-row>
+      <v-card-text class="pt-4 pb-0">
+        {{ player.name }} is Retiring End of Season?
       </v-card-text>
       <v-alert
         v-model="error"
@@ -72,7 +68,7 @@
     }),
     methods: {
       ...mapActions('players', {
-        retirePlayer: 'RETIRE'
+        retirePlayer: 'retire'
       }),
       async retire () {
         try {

@@ -3,13 +3,7 @@ import SquadPlayer from './SquadPlayer'
 import Player from './Player'
 
 export default class Squad extends Model {
-  static get entity () {
-    return 'squads'
-  }
-
-  static get title () {
-    return 'Squad'
-  }
+  static entity = 'Squad'
 
   static fields () {
     return {

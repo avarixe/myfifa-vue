@@ -1,6 +1,6 @@
 import VuexORM from '@vuex-orm/core'
 import Cookie from 'js-cookie'
-import database from '@/database'
+import * as models from '@/models'
 import cookieparser from 'cookieparser'
 import pkg from '@/package.json'
 
@@ -17,7 +17,7 @@ export const getters = {
 
 // mutations
 export const mutations = {
-  SET_TOKEN (state, token) {
+  setToken (state, token) {
     state.token = token
   }
 }
@@ -29,24 +29,24 @@ export const actions = {
       var { token, mode } = cookieparser.parse(req.headers.cookie)
 
       if (token) {
-        commit('SET_TOKEN', token)
+        commit('setToken', token)
 
         try {
-          await dispatch('user/GET')
+          await dispatch('user/get')
 
           // load current Team, if present
           if ('teamId' in params) {
-            await dispatch('teams/GET', { teamId: params.teamId })
+            await dispatch('teams/get', { teamId: params.teamId })
           }
         } catch (e) {
-          commit('SET_TOKEN', null)
+          commit('setToken', null)
         }
       }
 
-      commit('app/SET_MODE', mode || 'light')
+      commit('app/setMode', mode || 'light')
     }
   },
-  async LOGIN ({ commit }, payload) {
+  async login ({ commit }, payload) {
     const data = await this.$axios.$post('oauth/token', {
       ...payload,
       client_id: this.$config.clientId,
@@ -55,27 +55,33 @@ export const actions = {
     Cookie.set('token', data.access_token, {
       expires: data.expires_in / 86400
     })
-    commit('SET_TOKEN', data.access_token)
-    commit('broadcaster/ANNOUNCE', {
+    commit('setToken', data.access_token)
+    commit('broadcaster/announce', {
       message: 'You have successfully logged in!',
       color: 'success'
     }, { root: true })
   },
-  async LOGOUT ({ commit }) {
+  async logout ({ commit }) {
     await this.$axios.$post('oauth/revoke', {
       client_id: this.$config.clientId,
       client_secret: this.$config.clientSecret
     })
     Cookie.remove('token')
-    commit('SET_TOKEN', null)
-    commit('broadcaster/ANNOUNCE', {
+    commit('setToken', null)
+    commit('broadcaster/announce', {
       message: 'You have successfully logged out!',
       color: 'danger'
     }, { root: true })
   }
 }
 
+// setup VuexORM database
+const database = new VuexORM.Database()
+for (const key in models) {
+  database.register(models[key])
+}
+
 // plugins
 export const plugins = [
-  VuexORM.install(database)
+  VuexORM.install(database, { namespace: 'orm' })
 ]

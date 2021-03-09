@@ -56,8 +56,6 @@
 </template>
 
 <script>
-  import { Team } from '@/models'
-
   export default {
     name: 'OpponentCard',
     props: {
@@ -68,7 +66,7 @@
     }),
     computed: {
       team () {
-        return Team.find(this.$route.params.teamId)
+        return this.$store.$db().model('Team').find(this.$route.params.teamId)
       },
       opponent () {
         return this.team.title === this.match.home

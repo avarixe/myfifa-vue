@@ -83,8 +83,6 @@
 </template>
 
 <script>
-  import { Player } from '@/models'
-
   export default {
     name: 'CapCard',
     props: {
@@ -96,7 +94,7 @@
     }),
     computed: {
       player () {
-        return Player.find(this.cap.player_id)
+        return this.$store.$db().model('Player').find(this.cap.player_id)
       },
       abbreviatedName () {
         return this.cap.name.split(/\s+/).map(term => term[0]).join('')

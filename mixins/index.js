@@ -1,3 +1,4 @@
+export { default as ActivePlayerSelectable } from './ActivePlayerSelectable'
 export { default as CompetitionAccessible } from './CompetitionAccessible'
 export { default as DialogFormable } from './DialogFormable'
 export { default as MatchAccessible } from './MatchAccessible'

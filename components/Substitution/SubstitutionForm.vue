@@ -52,15 +52,14 @@
 <script>
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
-  import { activePlayers } from '@/models/Player'
-  import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
+  import { ActivePlayerSelectable, DialogFormable, MatchAccessible } from '@/mixins'
 
   export default {
     name: 'SubstitutionForm',
     mixins: [
+      ActivePlayerSelectable,
       DialogFormable,
-      MatchAccessible,
-      TeamAccessible
+      MatchAccessible
     ],
     props: {
       record: { type: Object, default: null }
@@ -78,14 +77,13 @@
       },
       availablePlayers () {
         const selectedIds = this.sortedCaps.map(cap => cap.player_id)
-        return activePlayers(this.team.id)
-          .filter(player => {
-            if (selectedIds.indexOf(player.id) < 0) {
-              return true
-            } else if (this.record) {
-              return player.id === this.record.replacement_id
-            }
-          })
+        return this.activePlayers.filter(player => {
+          if (selectedIds.indexOf(player.id) < 0) {
+            return true
+          } else if (this.record) {
+            return player.id === this.record.replacement_id
+          }
+        })
       },
       unsubbedPlayers () {
         return this.sortedCaps.filter(cap =>
@@ -109,8 +107,8 @@
     },
     methods: {
       ...mapActions('substitutions', {
-        createSubstitution: 'CREATE',
-        updateSubstitution: 'UPDATE'
+        createSubstitution: 'create',
+        updateSubstitution: 'update'
       }),
       async submit () {
         const substitution = {

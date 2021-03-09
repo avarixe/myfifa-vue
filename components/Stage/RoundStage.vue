@@ -112,11 +112,11 @@
       }
     },
     methods: {
-      ...mapMutations('broadcaster', {
-        announce: 'ANNOUNCE'
-      }),
+      ...mapMutations('broadcaster', [
+        'announce'
+      ]),
       ...mapActions('stages', {
-        updateStage: 'UPDATE'
+        updateStage: 'update'
       }),
       async updateStageAttribute (stageId, attribute, value) {
         try {

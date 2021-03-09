@@ -34,11 +34,11 @@
     },
     methods: {
       ...mapMutations('app', {
-        setPage: 'SET_PAGE'
+        setPage: 'setPage'
       }),
       ...mapActions({
-        fetchMatches: 'matches/FETCH',
-        fetchCompetitions: 'competitions/FETCH'
+        fetchMatches: 'matches/fetch',
+        fetchCompetitions: 'competitions/fetch'
       })
     }
   }

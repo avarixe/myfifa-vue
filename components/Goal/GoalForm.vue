@@ -181,8 +181,8 @@
     },
     methods: {
       ...mapActions('goals', {
-        createGoal: 'CREATE',
-        updateGoal: 'UPDATE'
+        createGoal: 'create',
+        updateGoal: 'update'
       }),
       clearNames () {
         this.goal.player_id = null

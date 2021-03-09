@@ -40,7 +40,7 @@
       }
     },
     methods: mapMutations('broadcaster', {
-      clearBroadcast: 'CLEAR'
+      clearBroadcast: 'clear'
     })
   }
 </script>

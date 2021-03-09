@@ -73,7 +73,7 @@
     },
     methods: {
       ...mapActions('bookings', {
-        createBooking: 'CREATE'
+        createBooking: 'create'
       }),
       async saveBooking () {
         await this.createBooking({

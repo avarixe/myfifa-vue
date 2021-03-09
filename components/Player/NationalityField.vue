@@ -28,7 +28,7 @@
 </template>
 
 <script>
-  import { nationalities } from '@/models/Player'
+  import { nationalities } from '@/constants'
 
   export default {
     name: 'NationalityField',

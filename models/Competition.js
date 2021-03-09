@@ -5,13 +5,7 @@ import Team from './Team'
 import { parseISO, format, addYears } from 'date-fns'
 
 class Competition extends Model {
-  static get entity () {
-    return 'competitions'
-  }
-
-  static get title () {
-    return 'Competition'
-  }
+  static entity = 'Competition'
 
   static fields () {
     return {

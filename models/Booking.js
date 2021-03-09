@@ -3,13 +3,7 @@ import Match from './Match'
 import Player from './Player'
 
 export default class Booking extends Model {
-  static get entity () {
-    return 'bookings'
-  }
-
-  static get title () {
-    return 'Booking'
-  }
+  static entity = 'Booking'
 
   static fields () {
     return {

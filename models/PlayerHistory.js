@@ -1,13 +1,7 @@
 import { Model } from '@vuex-orm/core'
 
 export default class PlayerHistory extends Model {
-  static get entity () {
-    return 'playerHistories'
-  }
-
-  static get title () {
-    return 'Player History'
-  }
+  static entity = 'PlayerHistory'
 
   static fields () {
     return {

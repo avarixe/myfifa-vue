@@ -8,14 +8,8 @@ import Booking from './Booking'
 import Cap from './Cap'
 import Player from './Player'
 
-class Match extends Model {
-  static get entity () {
-    return 'matches'
-  }
-
-  static get title () {
-    return 'Match'
-  }
+export default class Match extends Model {
+  static entity = 'Match'
 
   static fields () {
     return {
@@ -83,47 +77,3 @@ class Match extends Model {
     }
   }
 }
-
-function allByRecency (teamId) {
-  return Match
-    .query()
-    .where('team_id', teamId)
-    .orderBy('played_on', 'desc')
-    .get()
-}
-
-export function competitions (teamId) {
-  return [
-    ...new Set(allByRecency(teamId).map(match => match.competition))
-  ]
-}
-
-export const positions = {
-  GK: 'DEF',
-  LB: 'DEF',
-  LWB: 'DEF',
-  LCB: 'DEF',
-  CB: 'DEF',
-  RCB: 'DEF',
-  RB: 'DEF',
-  RWB: 'DEF',
-  LM: 'MID',
-  LDM: 'MID',
-  LCM: 'MID',
-  CDM: 'MID',
-  CM: 'MID',
-  RDM: 'MID',
-  RCM: 'MID',
-  RM: 'MID',
-  LAM: 'MID',
-  CAM: 'MID',
-  RAM: 'MID',
-  LW: 'ATT',
-  CF: 'ATT',
-  LS: 'ATT',
-  ST: 'ATT',
-  RS: 'ATT',
-  RW: 'ATT'
-}
-
-export default Match

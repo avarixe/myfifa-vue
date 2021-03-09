@@ -72,7 +72,6 @@
 
 <script>
   import findLast from 'lodash.findlast'
-  import { Team } from '@/models'
 
   function calcTotal (records, attribute) {
     return records.reduce((total, record) => total + record[attribute], 0)
@@ -91,7 +90,7 @@
     },
     computed: {
       team () {
-        return Team.find(this.$route.params.teamId)
+        return this.$store.$db().model('Team').find(this.$route.params.teamId)
       },
       recordsAtStart () {
         let records = []

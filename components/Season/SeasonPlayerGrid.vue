@@ -70,8 +70,7 @@
 </template>
 
 <script>
-  import { Team, Player } from '@/models'
-  import { positions } from '@/models/Player'
+  import { positions } from '@/constants'
   import findLast from 'lodash.findlast'
 
   export default {
@@ -93,7 +92,7 @@
     }),
     computed: {
       team () {
-        return Team.find(this.$route.params.teamId)
+        return this.$store.$db().model('Team').find(this.$route.params.teamId)
       },
       currentMode () {
         return this.modes[this.mode]
@@ -126,7 +125,7 @@
         }
       },
       players () {
-        return Player
+        return this.$store.$db().model('Player')
           .query()
           .whereIdIn(this.seasonData.player_ids.map(id => parseInt(id)))
           .get()

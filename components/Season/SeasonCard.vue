@@ -44,7 +44,6 @@
 
 <script>
   import { addYears, format, parseISO } from 'date-fns'
-  import { Team, Competition } from '@/models'
 
   export default {
     name: 'SeasonCard',
@@ -53,10 +52,10 @@
     },
     computed: {
       team () {
-        return Team.find(this.$route.params.teamId)
+        return this.$store.$db().model('Team').find(this.$route.params.teamId)
       },
       competitions () {
-        return Competition
+        return this.$store.$db().model('Competition')
           .query()
           .with('team')
           .where('team_id', this.team.id)

@@ -1,13 +1,7 @@
 import { Model } from '@vuex-orm/core'
 
 export default class PenaltyShootout extends Model {
-  static get entity () {
-    return 'penaltyShootouts'
-  }
-
-  static get title () {
-    return 'Penalty Shootout'
-  }
+  static entity = 'PenaltyShootout'
 
   static fields () {
     return {

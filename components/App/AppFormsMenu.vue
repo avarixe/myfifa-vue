@@ -71,13 +71,12 @@
 </template>
 
 <script>
-  import { Team } from '@/models'
-
   export default {
     name: 'AppFormsMenu',
     computed: {
       team () {
-        return this.$route.params.teamId && Team.find(this.$route.params.teamId)
+        return this.$route.params.teamId &&
+          this.$store.$db().model('Team').find(this.$route.params.teamId)
       },
       links () {
         if (this.team) {

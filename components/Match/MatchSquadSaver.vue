@@ -47,7 +47,6 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import { Squad } from '@/models'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -65,7 +64,7 @@
     }),
     computed: {
       squads () {
-        return Squad
+        return this.$store.$db().model('Squad')
           .query()
           .with('squad_players')
           .where('team_id', this.team.id)
@@ -77,8 +76,8 @@
     },
     methods: {
       ...mapActions('squads', {
-        createSquad: 'CREATE',
-        storeLineup: 'STORE_LINEUP'
+        createSquad: 'create',
+        storeLineup: 'storeLineup'
       }),
       async saveLineupToSquad (squadId) {
         try {

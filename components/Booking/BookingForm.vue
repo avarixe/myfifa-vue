@@ -128,8 +128,8 @@
     },
     methods: {
       ...mapActions('bookings', {
-        createBooking: 'CREATE',
-        updateBooking: 'UPDATE'
+        createBooking: 'create',
+        updateBooking: 'update'
       }),
       clearNames () {
         this.booking.player_id = null

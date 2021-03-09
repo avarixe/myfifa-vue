@@ -1,5 +1,4 @@
 import TeamAccessible from './TeamAccessible'
-import { Competition } from '@/models'
 
 export default {
   mixins: [
@@ -7,7 +6,7 @@ export default {
   ],
   computed: {
     competition () {
-      return Competition
+      return this.$store.$db().model('Competition')
         .query()
         .with('stages.table_rows|fixtures')
         .find(this.$route.params.competitionId)

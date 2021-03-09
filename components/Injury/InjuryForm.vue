@@ -71,6 +71,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { DialogFormable } from '@/mixins'
+  import { isRequired } from '@/functions'
 
   export default {
     name: 'InjuryForm',
@@ -87,6 +88,9 @@
       injury: {
         description: '',
         recovered: false
+      },
+      rulesFor: {
+        description: [isRequired('Description')]
       }
     }),
     computed: {
@@ -108,8 +112,8 @@
     },
     methods: {
       ...mapActions('injuries', {
-        createInjury: 'CREATE',
-        updateInjury: 'UPDATE'
+        createInjury: 'create',
+        updateInjury: 'update'
       }),
       async submit () {
         if (this.record) {

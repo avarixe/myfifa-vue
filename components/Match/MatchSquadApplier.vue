@@ -35,7 +35,6 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import { Squad } from '@/models'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -48,16 +47,16 @@
     },
     computed: {
       squads () {
-        return Squad
+        return this.$store.$db().model('Squad')
           .query()
           .where('team_id', this.team.id)
           .get()
       }
     },
     methods: {
-      ...mapActions('matches', {
-        applySquad: 'APPLY_SQUAD'
-      }),
+      ...mapActions('matches', [
+        'applySquad'
+      ]),
       async applySquadToMatch (squadId) {
         try {
           await this.applySquad({

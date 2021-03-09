@@ -1,18 +1,18 @@
 // actions
 export const actions = {
-  GET () {
+  get () {
     return this.$axios.$get('users/sync')
   },
-  async CREATE ({ commit }, user) {
+  async create ({ commit }, user) {
     await this.$axios.$post('users.json', { user })
-    commit('broadcaster/ANNOUNCE', {
+    commit('broadcaster/announce', {
       message: 'Account has been registered!',
       color: 'success'
     }, { root: true })
   },
-  async UPDATE ({ commit }, user) {
+  async update ({ commit }, user) {
     await this.$axios.$patch('users.json', { user })
-    commit('broadcaster/ANNOUNCE', {
+    commit('broadcaster/announce', {
       message: 'Account has been updated!',
       color: 'success'
     }, { root: true })

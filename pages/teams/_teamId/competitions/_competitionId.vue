@@ -169,7 +169,6 @@
 
 <script>
   import { mapMutations, mapActions } from 'vuex'
-  import { Competition } from '@/models'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -189,7 +188,7 @@
         return this.$route.params.competitionId
       },
       competition () {
-        return Competition
+        return this.$store.$db().model('Competition')
           .query()
           .with('stages.table_rows')
           .with('stages.fixtures.legs')
@@ -243,11 +242,11 @@
     },
     methods: {
       ...mapMutations('app', {
-        setPage: 'SET_PAGE'
+        setPage: 'setPage'
       }),
       ...mapActions({
-        getCompetition: 'competitions/GET',
-        fetchStages: 'stages/FETCH'
+        getCompetition: 'competitions/get',
+        fetchStages: 'stages/fetch'
       })
     },
     head () {

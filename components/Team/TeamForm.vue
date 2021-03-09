@@ -95,8 +95,8 @@
     },
     methods: {
       ...mapActions('teams', {
-        createTeam: 'CREATE',
-        updateTeam: 'UPDATE'
+        createTeam: 'create',
+        updateTeam: 'update'
       }),
       async submit () {
         const formData = new FormData()

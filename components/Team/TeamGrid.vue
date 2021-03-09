@@ -41,8 +41,6 @@
 </template>
 
 <script>
-  import { Team } from '@/models'
-
   export default {
     name: 'TeamGrid',
     data: () => ({
@@ -56,7 +54,10 @@
     }),
     computed: {
       teams () {
-        return Team.query().orderBy('id', 'desc').get()
+        return this.$store.$db().model('Team')
+          .query()
+          .orderBy('id', 'desc')
+          .get()
       }
     },
     methods: {

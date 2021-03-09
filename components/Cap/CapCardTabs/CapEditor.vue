@@ -25,11 +25,14 @@
 
 <script>
   import { mapMutations, mapActions } from 'vuex'
-  import { activePlayers } from '@/models/Player'
-  import { positions } from '@/models/Match'
+  import { ActivePlayerSelectable } from '@/mixins'
+  import { matchPositions } from '@/constants'
 
   export default {
     name: 'CapEditor',
+    mixins: [
+      ActivePlayerSelectable
+    ],
     props: {
       cap: { type: Object, required: true }
     },
@@ -39,10 +42,7 @@
     }),
     computed: {
       positions () {
-        return Object.keys(positions)
-      },
-      activePlayers () {
-        return activePlayers(parseInt(this.$route.params.teamId))
+        return Object.keys(matchPositions)
       }
     },
     watch: {
@@ -55,11 +55,11 @@
       }
     },
     methods: {
-      ...mapMutations('broadcaster', {
-        announce: 'ANNOUNCE'
-      }),
+      ...mapMutations('broadcaster', [
+        'announce'
+      ]),
       ...mapActions('caps', {
-        updateCap: 'UPDATE'
+        updateCap: 'update'
       }),
       async setPosition (position) {
         await this.updateCapAttribute('pos', position)

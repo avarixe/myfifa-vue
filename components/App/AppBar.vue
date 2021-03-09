@@ -32,7 +32,6 @@
 
 <script>
   import { mapState, mapMutations, mapActions } from 'vuex'
-  import { Team } from '@/models'
 
   export default {
     name: 'AppBar',
@@ -45,10 +44,11 @@
         'headline',
         'caption'
       ]),
-      team () {
+      teamId () {
         return this.$route.params.teamId
-          ? Team.find(this.$route.params.teamId)
-          : null
+      },
+      team () {
+        return this.teamId && this.$store.$db().model('Team').find(this.teamId)
       },
       badgeUrl () {
         const { browserBaseURL } = this.$config.axios
@@ -67,11 +67,11 @@
       this.$router.push({ name: 'index' })
     },
     methods: {
-      ...mapMutations('app', {
-        toggleDrawer: 'TOGGLE_DRAWER'
-      }),
+      ...mapMutations('app', [
+        'toggleDrawer'
+      ]),
       ...mapActions({
-        clearStore: 'entities/deleteAll'
+        clearStore: 'orm/deleteAll'
       }),
       updateResponsiveState () {
         this.responsive = window.innerWidth < 991
