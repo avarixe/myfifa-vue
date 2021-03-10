@@ -3,7 +3,6 @@
     id="app-drawer"
     :value="drawer"
     app
-    clipped
     mobile-breakpoint="991"
     @input="setDrawer"
   >
