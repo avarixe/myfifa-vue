@@ -57,7 +57,10 @@ export default {
     '@nuxtjs/axios'
   ],
 
-  components: true,
+  components: [{
+    path: '~/components',
+    pathPrefix: false
+  }],
 
   // vuetify: {},
 
