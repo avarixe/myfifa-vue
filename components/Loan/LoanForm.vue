@@ -110,6 +110,7 @@
         started_on: '',
         origin: '',
         destination: '',
+        wage_percentage: null,
         returned: false
       },
       rulesFor: {
@@ -140,7 +141,8 @@
               'started_on',
               'ended_on',
               'origin',
-              'destination'
+              'destination',
+              'wage_percentage'
             ])
           } else {
             this.loan.started_on = this.team.currently_on
