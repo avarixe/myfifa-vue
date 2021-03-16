@@ -21,7 +21,7 @@
           autocorrect="off"
         />
       </v-col>
-      <template v-for="(squadPlayer, i) in squad.squad_players_attributes">
+      <template v-for="(squadPlayer, i) in sortedSquadPlayers">
         <v-col
           :key="`pos${i}`"
           cols="4"
@@ -91,6 +91,13 @@
       },
       positions () {
         return Object.keys(matchPositions)
+      },
+      sortedSquadPlayers () {
+        return [...this.squad.squad_players_attributes].sort((a, b) => {
+          return this.positions.indexOf(a.pos) < this.positions.indexOf(b.pos)
+            ? -1
+            : 1
+        })
       }
     },
     watch: {
