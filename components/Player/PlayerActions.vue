@@ -1,5 +1,5 @@
 <template>
-  <div class="d-inline-block">
+  <div>
     <player-form
       :record="player"
       color="orange"
