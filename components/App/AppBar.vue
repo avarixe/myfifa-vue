@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  import { mapState, mapMutations, mapActions } from 'vuex'
+  import { mapState, mapMutations } from 'vuex'
 
   export default {
     name: 'AppBar',
@@ -62,16 +62,11 @@
     },
     beforeDestroy () {
       window.removeEventListener('resize', this.updateResponsiveState)
-      this.clearStore()
-      this.$router.push({ name: 'index' })
     },
     methods: {
       ...mapMutations('app', [
         'toggleDrawer'
       ]),
-      ...mapActions({
-        clearStore: 'orm/deleteAll'
-      }),
       updateResponsiveState () {
         this.responsive = window.innerWidth < 991
       }

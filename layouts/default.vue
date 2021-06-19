@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <client-only v-if="authenticated">
+    <client-only v-if="currentUser">
       <app-bar />
       <app-drawer />
     </client-only>
@@ -24,11 +24,10 @@
     },
     computed: {
       ...mapState('app', [
-        'title',
-        'mode'
+        'title'
       ]),
       ...mapGetters([
-        'authenticated'
+        'currentUser'
       ]),
       teamPage () {
         return 'teamId' in this.$route.params
@@ -38,10 +37,10 @@
       }
     },
     watch: {
-      mode: {
+      'currentUser.dark_mode': {
         immediate: true,
-        handler (val) {
-          this.$vuetify.theme.dark = val === 'dark'
+        handler (darkModeOn) {
+          this.$vuetify.theme.dark = darkModeOn
         }
       }
     }

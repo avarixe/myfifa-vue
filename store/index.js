@@ -7,18 +7,28 @@ import pkg from '@/package.json'
 // initial state
 export const state = () => ({
   version: pkg.version,
-  token: null
+  token: null,
+  userId: null
 })
 
 // getters
 export const getters = {
-  authenticated: state => state.token !== null
+  authenticated: state => state.token !== null,
+  currentUser: state => state.userId && models.User.find(state.userId)
 }
 
 // mutations
 export const mutations = {
-  setToken (state, token) {
+  setToken (state, { token, expires }) {
+    if (token) {
+      expires && Cookie.set('token', token, { expires })
+    } else {
+      Cookie.remove('token')
+    }
     state.token = token
+  },
+  setUserId (state, userId) {
+    state.userId = userId
   }
 }
 
@@ -26,10 +36,10 @@ export const mutations = {
 export const actions = {
   async nuxtServerInit ({ commit, dispatch }, { req, params }) {
     if (req.headers.cookie) {
-      var { token, mode } = cookieparser.parse(req.headers.cookie)
+      var { token } = cookieparser.parse(req.headers.cookie)
 
       if (token) {
-        commit('setToken', token)
+        commit('setToken', { token })
 
         try {
           await dispatch('user/get')
@@ -42,8 +52,6 @@ export const actions = {
           commit('setToken', null)
         }
       }
-
-      commit('app/setMode', mode || 'light')
     }
   },
   async login ({ commit }, payload) {
@@ -52,22 +60,24 @@ export const actions = {
       client_id: this.$config.clientId,
       client_secret: this.$config.clientSecret
     })
-    Cookie.set('token', data.access_token, {
+    commit('setToken', {
+      token: data.access_token,
       expires: data.expires_in / 86400
     })
-    commit('setToken', data.access_token)
+    this.$db().model('User').insert({ data: data.user })
     commit('broadcaster/announce', {
       message: 'You have successfully logged in!',
       color: 'success'
     }, { root: true })
   },
-  async logout ({ commit }) {
+  async logout ({ commit, dispatch }) {
     await this.$axios.$post('oauth/revoke', {
       client_id: this.$config.clientId,
       client_secret: this.$config.clientSecret
     })
-    Cookie.remove('token')
-    commit('setToken', null)
+    await dispatch('orm/deleteAll')
+    commit('setToken', { token: null })
+    this.$router.push({ name: 'index' })
     commit('broadcaster/announce', {
       message: 'You have successfully logged out!',
       color: 'danger'

@@ -70,15 +70,18 @@
           </v-list-item>
         </template>
       </user-form>
-      <v-list-item @click="toggleMode">
+      <v-list-item
+        :disabled="togglingMode"
+        @click="toggleMode"
+      >
         <v-list-item-action>
           <v-icon>{{ modeIcon }}</v-icon>
         </v-list-item-action>
         <v-list-item-title class="text-capitalize">
-          {{ mode }} Mode
+          {{ darkModeOn ? 'Dark Mode' : 'Light Mode' }}
         </v-list-item-title>
       </v-list-item>
-      <v-list-item @click="logUserOut">
+      <v-list-item @click="logout">
         <v-list-item-action>
           <v-icon>mdi-exit-to-app</v-icon>
         </v-list-item-action>
@@ -89,7 +92,7 @@
 </template>
 
 <script>
-  import { mapState, mapMutations, mapActions } from 'vuex'
+  import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -97,13 +100,18 @@
     mixins: [
       TeamAccessible
     ],
+    data: () => ({
+      togglingMode: false
+    }),
     computed: {
       ...mapState([
         'version'
       ]),
       ...mapState('app', [
-        'drawer',
-        'mode'
+        'drawer'
+      ]),
+      ...mapGetters([
+        'currentUser'
       ]),
       teamId () {
         return this.$route.params.teamId
@@ -148,10 +156,11 @@
           return []
         }
       },
+      darkModeOn () {
+        return this.currentUser.dark_mode
+      },
       modeIcon () {
-        return this.mode === 'dark'
-          ? 'mdi-weather-night'
-          : 'mdi-weather-sunny'
+        return `mdi-weather-${this.darkModeOn ? 'night' : 'sunny'}`
       }
     },
     mounted () {
@@ -159,17 +168,21 @@
     },
     methods: {
       ...mapMutations('app', [
-        'setDrawer',
-        'setMode'
+        'setDrawer'
       ]),
-      ...mapActions([
-        'logout'
-      ]),
-      toggleMode () {
-        this.setMode(this.mode === 'dark' ? 'light' : 'dark')
-      },
-      async logUserOut () {
-        await this.logout()
+      ...mapActions({
+        logout: 'logout',
+        setDarkMode: 'user/setDarkMode'
+      }),
+      async toggleMode () {
+        try {
+          this.togglingMode = true
+          await this.setDarkMode(!this.darkModeOn)
+        } catch (e) {
+          console.error(e)
+        } finally {
+          this.togglingMode = false
+        }
       }
     }
   }
