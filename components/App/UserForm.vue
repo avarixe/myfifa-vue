@@ -56,7 +56,7 @@
         </v-col>
       </v-row>
       <v-row
-        v-if="!authenticated || passwordMode"
+        v-if="!currentUser || passwordMode"
         dense
       >
         <v-col cols="12">
@@ -96,6 +96,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
+  import pick from 'lodash.pick'
   import { DialogFormable } from '@/mixins'
   import { isRequired, isEmail } from '@/functions'
 
@@ -127,12 +128,12 @@
     }),
     computed: {
       ...mapGetters([
-        'authenticated'
+        'currentUser'
       ]),
       title () {
         if (this.passwordMode) {
           return 'Change Password'
-        } else if (this.authenticated) {
+        } else if (this.currentUser) {
           return 'Edit Account'
         } else {
           return 'New Account'
@@ -152,20 +153,23 @@
     },
     watch: {
       async dialog (val) {
-        if (val && this.authenticated) {
-          const data = await this.getUser()
-          this.user = data
+        if (val && this.currentUser) {
+          this.user = pick(this.currentUser, [
+            'id',
+            'full_name',
+            'username',
+            'email'
+          ])
         }
       }
     },
     methods: {
       ...mapActions('user', {
-        getUser: 'get',
         createUser: 'create',
         updateUser: 'update'
       }),
       async submit () {
-        if (!this.authenticated) {
+        if (!this.currentUser) {
           await this.createUser(this.user)
         } else {
           let params = {}
