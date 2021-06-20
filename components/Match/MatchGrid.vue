@@ -72,7 +72,8 @@
         { text: 'Home', value: 'home', align: 'end' },
         { text: 'Score', value: 'score', align: 'center', sortable: false },
         { text: 'Away', value: 'away' },
-        { text: 'Date Played', value: 'played_on' }
+        { text: 'Date Played', value: 'played_on' },
+        { text: 'Stage', value: 'stage' }
       ],
       search: '',
       seasonFilter: null,
@@ -83,36 +84,28 @@
         return this.$store.$db().model('Match')
           .query()
           .where('team_id', this.team.id)
+          .where(match => !this.competition || match.competition === this.competition)
           .get()
       },
       rows () {
         const teamStart = parseISO(this.team.started_on)
 
-        return this.matches
-          .filter(match => {
-            if (typeof this.seasonFilter === 'number') {
-              const datePlayed = parseISO(match.played_on)
-              const seasonStart = addYears(teamStart, this.seasonFilter)
-              const seasonEnd = addYears(teamStart, this.seasonFilter + 1)
-              return seasonStart <= datePlayed && datePlayed < seasonEnd
-            } else {
-              return true
-            }
-          })
-          .filter(match => {
-            return typeof this.competition === 'string'
-              ? match.competition === this.competition
-              : true
-          })
+        return this.matches.filter(match => {
+          if (this.seasonFilter !== null) {
+            const datePlayed = parseISO(match.played_on)
+            const seasonStart = addYears(teamStart, this.seasonFilter)
+            const seasonEnd = addYears(teamStart, this.seasonFilter + 1)
+            return seasonStart <= datePlayed && datePlayed < seasonEnd
+          } else {
+            return true
+          }
+        })
       },
       seasons () {
         let seasons = []
 
         for (let i = 0; i <= this.season; i++) {
-          seasons.push({
-            id: i,
-            label: this.seasonLabel(i)
-          })
+          seasons.push({ id: i, label: this.seasonLabel(i) })
         }
 
         return seasons
@@ -121,11 +114,7 @@
         return this.$store.$db().model('Competition')
           .query()
           .where('team_id', this.team.id)
-          .where(comp => {
-            return typeof this.seasonFilter === 'number'
-              ? comp.season === this.seasonFilter
-              : true
-          })
+          .where(comp => !this.seasonFilter || comp.season === this.seasonFilter)
           .get()
           .map(comp => comp.name)
       }
