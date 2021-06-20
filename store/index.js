@@ -49,12 +49,12 @@ export const actions = {
             await dispatch('teams/get', { teamId: params.teamId })
           }
         } catch (e) {
-          commit('setToken', null)
+          commit('setToken', { token: null })
         }
       }
     }
   },
-  async login ({ commit }, payload) {
+  async login ({ commit, dispatch }, payload) {
     const data = await this.$axios.$post('oauth/token', {
       ...payload,
       client_id: this.$config.clientId,
@@ -64,7 +64,7 @@ export const actions = {
       token: data.access_token,
       expires: data.expires_in / 86400
     })
-    this.$db().model('User').insert({ data: data.user })
+    await dispatch('user/get')
     commit('broadcaster/announce', {
       message: 'You have successfully logged in!',
       color: 'success'
