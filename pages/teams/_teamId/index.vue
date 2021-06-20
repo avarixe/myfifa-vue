@@ -1,11 +1,7 @@
 <template>
-  <v-container
-    v-if="team"
-    fluid
-  >
+  <v-container>
     <v-row>
       <v-col cols="12">
-        <team-date-picker />
         <team-form
           :record="team"
           color="orange"
@@ -145,7 +141,6 @@
     async fetch () {
       this.setPage({
         title: this.team.title,
-        overline: this.team.title,
         headline: 'Dashboard'
       })
       await Promise.all([

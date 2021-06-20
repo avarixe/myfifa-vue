@@ -1,12 +1,16 @@
 <template>
   <v-app dark>
-    <client-only v-if="currentUser">
+    <template v-if="currentUser">
       <app-bar />
-      <app-drawer />
-    </client-only>
+      <template v-if="teamPage">
+        <team-navigator />
+        <client-only>
+          <team-channel />
+        </client-only>
+      </template>
+    </template>
     <app-broadcaster />
     <v-main>
-      <team-channel v-if="teamPage" />
       <nuxt />
     </v-main>
   </v-app>

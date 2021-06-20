@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-row>
       <v-col>
         <player-grid />
@@ -28,7 +28,6 @@
       ])
       this.setPage({
         title: `${this.team.title} - Players`,
-        overline: this.team.title,
         headline: 'Players'
       })
     },

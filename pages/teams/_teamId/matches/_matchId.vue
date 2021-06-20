@@ -1,8 +1,5 @@
 <template>
-  <v-container
-    v-if="match"
-    fluid
-  >
+  <v-container>
     <v-row>
       <v-col cols="12">
         <v-btn
@@ -236,7 +233,6 @@
 
       this.setPage({
         title: `${this.match.home} vs ${this.match.away}`,
-        overline: this.team.title,
         headline: 'Match',
         caption: `v ${this.match.opponent}`
       })

@@ -12,12 +12,13 @@
         :date="currentDate"
       >
         <v-btn
-          color="cyan"
           dark
           class="mb-1"
+          text
           v-on="on"
         >
-          {{ formattedDate }}
+          <v-icon left>mdi-calendar</v-icon>
+          {{ currentDate | formatDate('MMM dd') }}
         </v-btn>
       </slot>
     </template>
@@ -43,7 +44,7 @@
     ],
     props: {
       menuClass: { type: String, default: 'd-inline-block' },
-      origin: { type: String, default: 'top left' }
+      origin: { type: String, default: 'top right' }
     },
     data: () => ({
       calendar: false,

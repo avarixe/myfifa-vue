@@ -1,7 +1,17 @@
 <template>
   <v-container>
     <v-row>
-      <v-col>
+      <v-col cols="12">
+        <team-form>
+          <template #default="{ on }">
+            <v-btn v-on="on">
+              <v-icon left>mdi-plus</v-icon>
+              Team
+            </v-btn>
+          </template>
+        </team-form>
+      </v-col>
+      <v-col cols="12">
         <team-grid />
       </v-col>
     </v-row>

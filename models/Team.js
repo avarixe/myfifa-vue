@@ -1,4 +1,5 @@
 import { Model } from '@vuex-orm/core'
+import { parseISO, differenceInYears } from 'date-fns'
 import Player from './Player'
 import Match from './Match'
 import Squad from './Squad'
@@ -36,6 +37,12 @@ export default class Team extends Model {
       name: 'teams-teamId',
       params: { teamId: this.id }
     }
+  }
+
+  get season () {
+    const date = parseISO(this.team.started_on)
+    const currentDate = parseISO(this.team.currently_on)
+    return differenceInYears(currentDate, date)
   }
 
   linkTo (page) {
