@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-row>
       <v-col cols="12">
         <v-btn
@@ -117,7 +117,6 @@
       ])
       this.setPage({
         title: this.title,
-        overline: this.team.title,
         headline: this.title
       })
     },

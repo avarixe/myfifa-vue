@@ -12,7 +12,10 @@
       />
       <v-spacer />
       <template v-if="!readonly">
-        <fixture-form :stage="round" />
+        <fixture-form
+          :stage="round"
+          class="d-inline-block"
+        />
         <record-remove
           :record="round"
           store="stages"
@@ -46,6 +49,7 @@
         <fixture-form
           :stage="round"
           :fixture-data="item"
+          class="d-inline-block"
         >
           <template #default="{ on }">
             <tooltip-button

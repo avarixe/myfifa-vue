@@ -12,7 +12,10 @@
       />
       <v-spacer />
       <template v-if="!readonly">
-        <table-row-form :stage="table" />
+        <table-row-form
+          :stage="table"
+          class="d-inline-block"
+        />
         <record-remove
           :record="table"
           store="stages"
@@ -59,6 +62,7 @@
         <table-row-form
           :stage="table"
           :record="item"
+          class="d-inline-block"
         >
           <template #default="{ on }">
             <tooltip-button

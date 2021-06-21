@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-skeleton-loader
       :loading="$fetchState.pending"
       type="article"
@@ -239,7 +239,6 @@
 
       this.setPage({
         title: this.player.name,
-        overline: this.team.title,
         headline: this.player.name
       })
     },

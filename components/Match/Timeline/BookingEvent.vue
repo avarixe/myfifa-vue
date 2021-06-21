@@ -15,6 +15,7 @@
         <booking-form
           :match="match"
           :record="booking"
+          class="d-inline-block"
         >
           <template #default="{ on }">
             <tooltip-button

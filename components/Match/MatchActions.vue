@@ -10,6 +10,7 @@
       v-if="validMatch && matchDraw && !match.penalty_shootout"
       :match="match"
       color="indigo"
+      class="d-inline-block"
     />
   </div>
 </template>
