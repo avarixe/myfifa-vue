@@ -43,6 +43,8 @@
       </v-list>
     </v-menu>
 
+    <app-info v-model="infoDialog" />
+
     <template #extension>
       <team-bar-extension
         v-if="team"
@@ -63,6 +65,7 @@
   export default {
     name: 'AppBar',
     data: () => ({
+      infoDialog: false,
       togglingMode: false
     }),
     computed: {
@@ -97,6 +100,11 @@
             loading: this.togglingMode
           },
           {
+            icon: 'mdi-information-outline',
+            text: 'About',
+            click: this.openInfoDialog
+          },
+          {
             icon: 'mdi-exit-to-app',
             text: 'Log Out',
             click: this.logout
@@ -109,6 +117,15 @@
         logout: 'logout',
         setDarkMode: 'user/setDarkMode'
       }),
+      goToTeams () {
+        this.$router.push({ name: 'teams' })
+      },
+      goToAccount () {
+        this.$router.push({ name: 'account' })
+      },
+      openInfoDialog () {
+        this.infoDialog = true
+      },
       async toggleMode () {
         try {
           this.togglingMode = true
@@ -118,12 +135,6 @@
         } finally {
           this.togglingMode = false
         }
-      },
-      goToTeams () {
-        this.$router.push({ name: 'teams' })
-      },
-      goToAccount () {
-        this.$router.push({ name: 'account' })
       }
     }
   }
