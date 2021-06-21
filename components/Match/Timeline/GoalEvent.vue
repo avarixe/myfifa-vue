@@ -14,6 +14,7 @@
         <goal-form
           :match="match"
           :record="goal"
+          class="d-inline-block"
         >
           <template #default="{ on }">
             <tooltip-button

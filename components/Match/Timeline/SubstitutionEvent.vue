@@ -15,6 +15,7 @@
         <substitution-form
           :match="match"
           :record="substitution"
+          class="d-inline-block"
         >
           <template #default="{ on }">
             <tooltip-button

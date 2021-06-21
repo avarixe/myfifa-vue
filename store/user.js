@@ -12,13 +12,12 @@ export const actions = {
       color: 'success'
     }, { root: true })
   },
-  async update ({ commit, dispatch }, user) {
+  async update ({ dispatch }, user) {
     await this.$axios.$patch('users.json', { user })
     await dispatch('get')
-    commit('broadcaster/announce', {
-      message: 'Account has been updated!',
-      color: 'success'
-    }, { root: true })
+  },
+  async changePassword (_, user) {
+    await this.$axios.$patch('users.json', { user })
   },
   async setDarkMode ({ dispatch }, darkModeOn) {
     await this.$axios.$patch('users.json', {

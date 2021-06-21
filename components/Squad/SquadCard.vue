@@ -17,6 +17,7 @@
           <squad-form
             :record="squad"
             color="orange"
+            class="d-inline-block"
           >
             <template #default="{ on }">
               <tooltip-button

@@ -15,6 +15,7 @@
         <penalty-shootout-form
           :match="match"
           :record="penaltyShootout"
+          class="d-inline-block"
         >
           <template #default="{ on }">
             <tooltip-button

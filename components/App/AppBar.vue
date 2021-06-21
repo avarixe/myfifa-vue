@@ -14,16 +14,13 @@
     >
       <v-icon>mdi-shield-search</v-icon>
     </v-btn>
-    <user-form class="d-block">
-      <template #default="{ on }">
-        <v-btn
-          icon
-          v-on="on"
-        >
-          <v-icon>mdi-account</v-icon>
-        </v-btn>
-      </template>
-    </user-form>
+    <v-btn
+      v-if="$route.name !== 'account'"
+      icon
+      @click="$router.push({ name: 'account' })"
+    >
+      <v-icon>mdi-account</v-icon>
+    </v-btn>
     <v-btn
       icon
       :loading="togglingMode"
