@@ -1,39 +1,47 @@
 <template>
   <v-app-bar app>
-    <v-app-bar-title>
-      <v-icon class="mr-2">mdi-soccer</v-icon>
-      <span class="text-h5 font-weight-light">
-        MyFIFA Manager
-      </span>
-    </v-app-bar-title>
+    <span class="text-h5 font-weight-light">
+      <v-icon left>mdi-soccer</v-icon>
+      MyFIFA Manager
+    </span>
+
     <v-spacer />
+
     <v-btn
-      v-if="$route.name !== 'teams'"
+      v-for="(action, i) in actions"
+      :key="i"
       icon
-      @click="$router.push({ name: 'teams' })"
+      class="hidden-xs-only"
+      @click="action.click"
     >
-      <v-icon>mdi-shield-search</v-icon>
+      <v-icon>{{ action.icon }}</v-icon>
     </v-btn>
-    <v-btn
-      v-if="$route.name !== 'account'"
-      icon
-      @click="$router.push({ name: 'account' })"
-    >
-      <v-icon>mdi-account</v-icon>
-    </v-btn>
-    <v-btn
-      icon
-      :loading="togglingMode"
-      @click="toggleMode"
-    >
-      <v-icon>{{ modeIcon }}</v-icon>
-    </v-btn>
-    <v-btn
-      icon
-      @click="logout"
-    >
-      <v-icon>mdi-exit-to-app</v-icon>
-    </v-btn>
+
+    <v-menu>
+      <template #activator="{ on }">
+        <v-btn
+          icon
+          class="hidden-sm-and-up"
+          v-on="on"
+        >
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item
+          v-for="(action, i) in actions"
+          :key="i"
+          @click="action.click"
+        >
+          <v-list-item-icon>
+            <v-icon>{{ action.icon }}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>{{ action.text }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-menu>
 
     <template #extension>
       <team-bar-extension
@@ -70,11 +78,30 @@
       team () {
         return this.$store.$db().model('Team').find(this.teamId)
       },
-      darkModeOn () {
-        return this.currentUser.dark_mode
-      },
-      modeIcon () {
-        return `mdi-weather-${this.darkModeOn ? 'night' : 'sunny'}`
+      actions () {
+        return [
+          {
+            icon: 'mdi-shield-search',
+            text: 'Teams',
+            click: this.goToTeams
+          },
+          {
+            icon: 'mdi-account',
+            text: 'Account',
+            click: this.goToAccount
+          },
+          {
+            icon: `mdi-weather-${this.currentUser.dark_mode ? 'night' : 'sunny'}`,
+            text: `${this.currentUser.dark_mode ? 'Dark' : 'Light'} Mode`,
+            click: this.toggleMode,
+            loading: this.togglingMode
+          },
+          {
+            icon: 'mdi-exit-to-app',
+            text: 'Log Out',
+            click: this.logout
+          }
+        ]
       }
     },
     methods: {
@@ -85,12 +112,18 @@
       async toggleMode () {
         try {
           this.togglingMode = true
-          await this.setDarkMode(!this.darkModeOn)
+          await this.setDarkMode(!this.currentUser.dark_mode)
         } catch (e) {
           console.error(e)
         } finally {
           this.togglingMode = false
         }
+      },
+      goToTeams () {
+        this.$router.push({ name: 'teams' })
+      },
+      goToAccount () {
+        this.$router.push({ name: 'account' })
       }
     }
   }
