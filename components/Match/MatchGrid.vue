@@ -16,6 +16,7 @@
             label="Filter"
             prepend-inner-icon="mdi-filter"
             :items="filterTypeOptions"
+            @change="openFilterValueField"
           />
           <v-select
             v-else-if="filterValueOptions.length > 0"
@@ -24,16 +25,19 @@
             :items="filterValueOptions"
             prepend-inner-icon="mdi-filter"
             append-icon="mdi-backspace"
+            :menu-props="{ value: filterValueMenuOpen }"
             @click:append="filterType = null"
             @change="applyFilter"
           />
           <v-text-field
             v-else
+            ref="filterValueField"
             v-model="filterValue"
             :label="`Filter by ${filterType}`"
             prepend-inner-icon="mdi-filter"
             append-icon="mdi-backspace"
             append-outer-icon="mdi-magnify"
+            autofocus
             @click:append="filterType = null"
             @keydown.enter="applyFilter"
             @click:append-outer="applyFilter"
@@ -91,6 +95,7 @@
       competition: null,
       filterType: null,
       filterValue: null,
+      filterValueMenuOpen: false,
       filters: {
         Season: null,
         Competition: null,
@@ -165,6 +170,11 @@
         this.seasonFilter = null
         this.competition = null
       },
+      openFilterValueField () {
+        if (this.filterValueOptions.length > 0) {
+          this.filterValueMenuOpen = true
+        }
+      },
       applyFilter () {
         this.filters[this.filterType] = this.filterValue
         this.filterValue = null
@@ -183,7 +193,8 @@
           case 'Competition':
             return filterValue === match.competition
           case 'Stage':
-            return (match.stage || '').toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
+            return match.stage &&
+              match.stage.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
           case 'Team':
             return match.home.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0 ||
               match.away.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
