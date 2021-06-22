@@ -42,6 +42,7 @@
         if (this.$refs.form.validate()) {
           try {
             this.loading = true
+            this.error = false
             await this.submit()
             this.$emit('success')
             this.resetAfterSubmit && this.resetForm()

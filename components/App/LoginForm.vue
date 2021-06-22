@@ -58,7 +58,6 @@
           text
           large
           :loading="loading"
-          @click="loading = true"
         >
           Log In
         </v-btn>
@@ -102,6 +101,8 @@
       }),
       async authenticate () {
         try {
+          this.loading = true
+          this.errorMessage = ''
           await this.login(this.credentials)
 
           // load Team if required
