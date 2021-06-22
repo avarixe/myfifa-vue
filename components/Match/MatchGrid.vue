@@ -1,44 +1,56 @@
 <template>
   <v-card>
-    <v-toolbar flat>
-      <v-select
-        v-model="seasonFilter"
-        label="Season"
-        :items="seasons"
-        item-text="label"
-        item-value="id"
-        clearable
-        hide-details
-        @click:clear="clearAllFilters"
-      />
-      <v-spacer />
-      <v-select
-        v-model="competition"
-        label="Competition"
-        :items="competitions"
-        clearable
-        hide-details
-      />
-      <v-spacer />
-      <v-text-field
-        v-model="search"
-        label="Search"
-        append-icon="mdi-magnify"
-        hide-details
-      />
-    </v-toolbar>
-
-    <!-- Match History Grid -->
     <v-card-text>
       <v-data-table
         :headers="headers"
-        :items="rows"
+        :items="matches"
         sort-by="played_on"
         sort-desc
-        :search="search"
         item-key="id"
         no-data-text="No Matches Recorded"
       >
+        <template #top>
+          <v-select
+            v-if="!filterType"
+            v-model="filterType"
+            label="Filter"
+            prepend-inner-icon="mdi-filter"
+            :items="filterTypeOptions"
+          />
+          <v-select
+            v-else-if="filterValueOptions.length > 0"
+            v-model="filterValue"
+            :label="`Filter by ${filterType}`"
+            :items="filterValueOptions"
+            prepend-inner-icon="mdi-filter"
+            append-icon="mdi-backspace"
+            @click:append="filterType = null"
+            @change="applyFilter"
+          />
+          <v-text-field
+            v-else
+            v-model="filterValue"
+            :label="`Filter by ${filterType}`"
+            prepend-inner-icon="mdi-filter"
+            append-icon="mdi-backspace"
+            append-outer-icon="mdi-magnify"
+            @click:append="filterType = null"
+            @keydown.enter="applyFilter"
+            @click:append-outer="applyFilter"
+          />
+          <div class="mb-2">
+            <v-chip
+              v-for="filter in Object.keys(filterValues)"
+              :key="filter"
+              small
+              close
+              class="mr-1 mb-1"
+              @click:close="filters[filter] = null"
+            >
+              {{ filter }}:&nbsp;<i>{{ filterValues[filter] }}</i>
+            </v-chip>
+          </div>
+        </template>
         <template #item.score="{ item }">
           <v-btn
             :to="item.link"
@@ -75,54 +87,116 @@
         { text: 'Date Played', value: 'played_on' },
         { text: 'Stage', value: 'stage' }
       ],
-      search: '',
       seasonFilter: null,
-      competition: null
+      competition: null,
+      filterType: null,
+      filterValue: null,
+      filters: {
+        Season: null,
+        Competition: null,
+        Stage: null,
+        Team: null,
+        Result: null
+      }
     }),
     computed: {
       matches () {
         return this.$store.$db().model('Match')
           .query()
           .where('team_id', this.team.id)
-          .where(match => !this.competition || match.competition === this.competition)
+          .where(match => {
+            for (const filter in this.filters) {
+              if (!this.matchPassesFilter(match, filter)) {
+                return false
+              }
+            }
+
+            return true
+          })
           .get()
       },
-      rows () {
-        const teamStart = parseISO(this.team.started_on)
-
-        return this.matches.filter(match => {
-          if (this.seasonFilter !== null) {
-            const datePlayed = parseISO(match.played_on)
-            const seasonStart = addYears(teamStart, this.seasonFilter)
-            const seasonEnd = addYears(teamStart, this.seasonFilter + 1)
-            return seasonStart <= datePlayed && datePlayed < seasonEnd
-          } else {
-            return true
-          }
-        })
-      },
       seasons () {
-        let seasons = []
-
-        for (let i = 0; i <= this.season; i++) {
-          seasons.push({ id: i, label: this.seasonLabel(i) })
-        }
-
-        return seasons
+        return [...Array(this.season).keys()].map(i => ({
+          value: i,
+          text: this.seasonLabel(i)
+        }))
       },
       competitions () {
         return this.$store.$db().model('Competition')
           .query()
           .where('team_id', this.team.id)
-          .where(comp => !this.seasonFilter || comp.season === this.seasonFilter)
+          .where(comp => this.filters.Season === null || comp.season === this.filters.Season)
           .get()
           .map(comp => comp.name)
+      },
+      filterTypeOptions () {
+        return Object.keys(this.filters)
+          .filter(filterType => this.filters[filterType] === null)
+      },
+      filterValueOptions () {
+        switch (this.filterType) {
+          case 'Season':
+            return this.seasons
+          case 'Competition':
+            return this.competitions
+          case 'Result':
+            return ['Win', 'Draw', 'Loss']
+          default:
+            return []
+        }
+      },
+      filterValues () {
+        const values = {}
+        for (const filter in this.filters) {
+          const filterValue = this.filters[filter]
+          if (filterValue !== null) {
+            if (filter === 'Season') {
+              values[filter] = this.seasonLabel(filterValue)
+            } else {
+              values[filter] = filterValue
+            }
+          }
+        }
+        return values
       }
     },
     methods: {
       clearAllFilters () {
         this.seasonFilter = null
         this.competition = null
+      },
+      applyFilter () {
+        this.filters[this.filterType] = this.filterValue
+        this.filterValue = null
+        this.filterType = null
+      },
+      matchPassesFilter (match, filter) {
+        const filterValue = this.filters[filter]
+
+        if (filterValue === null) {
+          return true
+        }
+
+        switch (filter) {
+          case 'Season':
+            return this.matchInSeason(match)
+          case 'Competition':
+            return filterValue === match.competition
+          case 'Stage':
+            return (match.stage || '').toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
+          case 'Team':
+            return match.home.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0 ||
+              match.away.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
+          case 'Result':
+            return filterValue.toLowerCase() === match.team_result
+        }
+      },
+      matchInSeason (match) {
+        const teamStart = parseISO(this.team.started_on)
+        const datePlayed = parseISO(match.played_on)
+        const seasonStart = addYears(teamStart, this.filters.Season)
+        const seasonEnd = addYears(teamStart, this.filters.Season + 1)
+        return seasonStart <= datePlayed && datePlayed < seasonEnd
       }
     }
   }
