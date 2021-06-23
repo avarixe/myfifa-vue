@@ -24,7 +24,7 @@
       </div>
       <div class="text-h6 font-weight-thin">
         {{ headline }}
-        <small v-if="caption">{{ caption }}</small>
+        <small v-show="caption">{{ caption }}</small>
       </div>
     </v-toolbar-title>
     <v-spacer />

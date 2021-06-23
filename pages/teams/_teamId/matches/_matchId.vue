@@ -1,60 +1,57 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="12">
-        <v-btn
-          v-if="prevMatchLink"
-          :to="prevMatchLink"
-          class="mb-1"
-        >
-          Previous Match
-        </v-btn>
-        <v-btn
-          v-if="nextMatchLink"
-          :to="nextMatchLink"
-          class="mb-1"
-        >
-          Next Match
-        </v-btn>
-        <match-form
-          :record="match"
-          color="orange"
-        >
-          <template #default="{ on }">
-            <v-btn
-              color="orange"
-              dark
-              class="mb-1"
-              v-on="on"
-            >
-              Edit
-            </v-btn>
-          </template>
-        </match-form>
-        <record-remove
-          :record="match"
-          store="matches"
-          :label="`${match.home} v ${match.away}`"
-        >
-          <template #default="{ on }">
-            <v-btn
-              dark
-              class="mb-1"
-              v-on="on"
-            >
-              Remove
-            </v-btn>
-          </template>
-        </record-remove>
-      </v-col>
+    <v-skeleton-loader
+      :loading="$fetchState.pending"
+      type="article"
+    >
+      <v-row>
+        <v-col cols="12">
+          <v-btn
+            v-if="prevMatchLink"
+            :to="prevMatchLink"
+            class="mb-1"
+          >
+            Previous Match
+          </v-btn>
+          <v-btn
+            v-if="nextMatchLink"
+            :to="nextMatchLink"
+            class="mb-1"
+          >
+            Next Match
+          </v-btn>
+          <match-form
+            :record="match"
+            color="orange"
+          >
+            <template #default="{ on }">
+              <v-btn
+                color="orange"
+                dark
+                class="mb-1"
+                v-on="on"
+              >
+                Edit
+              </v-btn>
+            </template>
+          </match-form>
+          <record-remove
+            :record="match"
+            store="matches"
+            :label="`${match.home} v ${match.away}`"
+          >
+            <template #default="{ on }">
+              <v-btn
+                dark
+                class="mb-1"
+                v-on="on"
+              >
+                Remove
+              </v-btn>
+            </template>
+          </record-remove>
+        </v-col>
 
-      <v-col
-        v-if="$fetchState.pending"
-        cols="12"
-      >
-        <v-skeleton-loader type="article" />
-      </v-col>
-      <template v-else>
         <v-container class="py-0">
           <v-row class="text-center">
             <v-col cols="12">
@@ -154,8 +151,8 @@
             </v-row>
           </v-container>
         </v-col>
-      </template>
-    </v-row>
+      </v-row>
+    </v-skeleton-loader>
   </v-container>
 </template>
 
