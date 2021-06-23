@@ -12,7 +12,6 @@
         :date="currentDate"
       >
         <v-btn
-          dark
           class="mb-1"
           text
           v-on="on"
