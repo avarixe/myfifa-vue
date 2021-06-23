@@ -3,6 +3,7 @@
     <cap-form
       v-if="match.caps.length < 11"
       :match="match"
+      class="d-inline-block"
     />
     <match-squad-applier :match="match" />
     <match-squad-saver :match="match" />
