@@ -5,7 +5,11 @@
     fill-dot
   >
     <template #icon>
-      {{ match.extra_time ? 120 : 90 }}"
+      <v-sheet
+        dark
+        color="transparent"
+        v-text="`${match.extra_time ? 120 : 90}'`"
+      />
     </template>
     <h2 class="text-h5 font-weight-light my-0 indigo--text">
       <span class="text-caption text-truncate mx-1 indigo--text">

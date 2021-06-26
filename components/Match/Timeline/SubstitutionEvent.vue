@@ -5,7 +5,11 @@
     fill-dot
   >
     <template #icon>
-      {{ substitution.minute }}'
+      <v-sheet
+        dark
+        color="transparent"
+        v-text="`${substitution.minute}'`"
+      />
     </template>
     <h2 class="font-weight-light my-0">
       <span :class="`text-caption text-truncate mx-1 ${teamColor}--text`">

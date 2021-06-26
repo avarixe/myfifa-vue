@@ -121,7 +121,7 @@
           .get()
       },
       seasons () {
-        return [...Array(this.season).keys()].map(i => ({
+        return [...Array(this.season + 1).keys()].reverse().map(i => ({
           value: i,
           text: this.seasonLabel(i)
         }))

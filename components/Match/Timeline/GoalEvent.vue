@@ -4,7 +4,11 @@
     fill-dot
   >
     <template #icon>
-      {{ goal.minute }}'
+      <v-sheet
+        dark
+        color="transparent"
+        v-text="`${goal.minute}'`"
+      />
     </template>
     <h2 class="font-weight-light my-0">
       <span :class="`text-caption text-truncate mx-1 ${teamColor}--text`">
@@ -38,10 +42,11 @@
         :color="color"
         small
         left
-      >
-        mdi-{{ icon }}
-      </v-icon>
+        v-text="'mdi-soccer'"
+      />
       {{ goal.player_name }}
+      <span v-if="goal.penalty">(P)</span>
+      <span v-else-if="goal.own_goal">(OG)</span>
     </div>
     <div v-if="goal.assisted_by">
       <v-icon
