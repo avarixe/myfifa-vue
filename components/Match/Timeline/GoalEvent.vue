@@ -1,42 +1,9 @@
 <template>
-  <v-timeline-item
-    :color="teamColor"
-    fill-dot
+  <base-match-event
+    :match="match"
+    :event="event"
+    :readonly="readonly"
   >
-    <template #icon>
-      <v-sheet
-        dark
-        color="transparent"
-        v-text="`${goal.minute}'`"
-      />
-    </template>
-    <h2 class="font-weight-light my-0">
-      <span :class="`text-caption text-truncate mx-1 ${teamColor}--text`">
-        {{ goal.home ? match.home : match.away }}
-      </span>
-      <template v-if="!readonly">
-        <goal-form
-          :match="match"
-          :record="goal"
-          class="d-inline-block"
-        >
-          <template #default="{ on }">
-            <tooltip-button
-              label="Edit Goal"
-              icon="mdi-pencil"
-              color="orange"
-              small
-              :on="on"
-            />
-          </template>
-        </goal-form>
-        <record-remove
-          :record="goal"
-          store="goals"
-          :label="goalType"
-        />
-      </template>
-    </h2>
     <div>
       <v-icon
         :color="color"
@@ -44,21 +11,20 @@
         left
         v-text="'mdi-soccer'"
       />
-      {{ goal.player_name }}
-      <span v-if="goal.penalty">(P)</span>
-      <span v-else-if="goal.own_goal">(OG)</span>
+      {{ event.player_name }}
+      <span v-if="event.penalty">(P)</span>
+      <span v-else-if="event.own_goal">(OG)</span>
     </div>
-    <div v-if="goal.assisted_by">
+    <div v-if="event.assisted_by">
       <v-icon
         color="light-blue accent-1"
         small
         left
-      >
-        mdi-human-greeting
-      </v-icon>
-      {{ goal.assisted_by }}
+        v-text="`mdi-human-greeting`"
+      />
+      {{ event.assisted_by }}
     </div>
-  </v-timeline-item>
+  </base-match-event>
 </template>
 
 <script>
@@ -66,33 +32,12 @@
     name: 'GoalEvent',
     props: {
       match: { type: Object, required: true },
-      goal: { type: Object, required: true },
+      event: { type: Object, required: true },
       readonly: { type: Boolean, default: false }
     },
     computed: {
-      goalType () {
-        if (this.goal.penalty) {
-          return 'Penalty'
-        } else if (this.goal.own_goal) {
-          return 'Own Goal'
-        } else {
-          return 'Goal'
-        }
-      },
-      teamColor () {
-        return this.goal.home ? 'teal' : 'purple'
-      },
       color () {
-        return this.goal.own_goal ? 'blue-grey' : 'blue'
-      },
-      icon () {
-        if (this.goal.penalty) {
-          return 'target'
-        } else if (this.goal.own_goal) {
-          return 'alert-circle'
-        } else {
-          return 'soccer'
-        }
+        return this.event.own_goal ? 'blue-grey' : 'blue'
       }
     }
   }

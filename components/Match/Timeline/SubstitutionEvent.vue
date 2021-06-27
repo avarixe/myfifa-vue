@@ -1,65 +1,28 @@
 <template>
-  <v-timeline-item
-    :color="teamColor"
-    :icon="`mdi-${icon}`"
-    fill-dot
+  <base-match-event
+    :match="match"
+    :event="event"
+    :readonly="readonly"
   >
-    <template #icon>
-      <v-sheet
-        dark
-        color="transparent"
-        v-text="`${substitution.minute}'`"
-      />
-    </template>
-    <h2 class="font-weight-light my-0">
-      <span :class="`text-caption text-truncate mx-1 ${teamColor}--text`">
-        {{ substitution.home ? match.home : match.away }}
-      </span>
-      <template v-if="!readonly">
-        <substitution-form
-          :match="match"
-          :record="substitution"
-          class="d-inline-block"
-        >
-          <template #default="{ on }">
-            <tooltip-button
-              label="Edit Substitution"
-              icon="mdi-pencil"
-              color="orange"
-              small
-              :on="on"
-            />
-          </template>
-        </substitution-form>
-        <record-remove
-          :record="substitution"
-          store="substitutions"
-          label="Substitution"
-        />
-      </template>
-    </h2>
-
     <div>
       <v-icon
         :color="color"
         small
         left
-      >
-        mdi-{{ icon }}
-      </v-icon>
-      {{ substitution.player_name }}
+        v-text="`mdi-${icon}`"
+      />
+      {{ event.player_name }}
     </div>
     <div>
       <v-icon
         color="green"
         small
         left
-      >
-        mdi-subdirectory-arrow-right
-      </v-icon>
-      {{ substitution.replaced_by }}
+        v-text="'mdi-subdirectory-arrow-right'"
+      />
+      {{ event.replaced_by }}
     </div>
-  </v-timeline-item>
+  </base-match-event>
 </template>
 
 <script>
@@ -67,18 +30,15 @@
     name: 'SubstitutionEvent',
     props: {
       match: { type: Object, required: true },
-      substitution: { type: Object, required: true },
+      event: { type: Object, required: true },
       readonly: { type: Boolean, default: false }
     },
     computed: {
       color () {
-        return this.substitution.injury ? 'pink' : 'orange'
-      },
-      teamColor () {
-        return this.substitution.home ? 'teal' : 'purple'
+        return this.event.injury ? 'pink' : 'orange'
       },
       icon () {
-        return this.substitution.injury ? 'ambulance' : 'subdirectory-arrow-left'
+        return this.event.injury ? 'ambulance' : 'subdirectory-arrow-left'
       }
     }
   }

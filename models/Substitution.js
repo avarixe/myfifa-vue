@@ -20,11 +20,14 @@ export default class Substitution extends Model {
       created_at: this.string(''),
 
       // Calculated fields
-      event_type: this.string('Substitution'),
       home: this.boolean(true),
 
       // Associations
       replacement: this.belongsTo(Player, 'replacement_id', 'id')
     }
+  }
+
+  get type () {
+    return 'substitution'
   }
 }
