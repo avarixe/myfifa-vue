@@ -30,4 +30,8 @@ export default class Contract extends Model {
   get date () {
     return this.started_on
   }
+
+  get type () {
+    return 'contract'
+  }
 }

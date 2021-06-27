@@ -1,90 +1,41 @@
 <template>
-  <v-timeline-item
+  <base-player-event
+    :player="player"
+    :event="event"
+    :title="title"
     icon="mdi-transit-transfer"
     color="indigo"
-    fill-dot
-    right
+    :dense="dense"
   >
-    <template #opposite>
-      <span class="text-h5 font-weight-bold indigo--text">
-        Loan at {{ loan.destination }}
-      </span>
-      <h4 class="text-h6 font-weight-light mb-3 indigo--text">
-        <template v-if="loan.started_on > team.currently_on">
-          Scheduled on {{ loan.started_on | formatDate }}
-        </template>
-        <template v-else>
-          {{ loan.started_on | formatDate }} -
-          <span v-if="loan.ended_on">{{ loan.ended_on | formatDate }}</span>
-          <span v-else>Present</span>
-        </template>
-      </h4>
+    <template #heading>
+      <template v-if="event.started_on > team.currently_on">
+        Scheduled on {{ event.started_on | formatDate }}
+      </template>
+      <template v-else>
+        {{ event.started_on | formatDate }} -
+        <span v-if="event.ended_on">{{ event.ended_on | formatDate }}</span>
+        <span v-else>Present</span>
+      </template>
     </template>
-    <v-card
-      dense
-      flat
-    >
-      <v-card-title
-        v-if="dense"
-        class="py-0"
-      >
-        <div class="indigo--text">
-          <span class="text-h6 font-weight-bold">
-            Loan at {{ loan.destination }}
-          </span>
-          <h4 class="text-body-2 font-weight-light mb-3">
-            <template v-if="loan.started_on > team.currently_on">
-              Scheduled on {{ loan.started_on | formatDate }}
-            </template>
-            <template v-else>
-              {{ loan.started_on | formatDate }} -
-              <span v-if="loan.ended_on">{{ loan.ended_on | formatDate }}</span>
-              <span v-else>Present</span>
-            </template>
-          </h4>
-        </div>
-      </v-card-title>
-      <v-card-text class="py-0">
-        <table>
-          <tbody>
-            <tr>
-              <td class="font-weight-bold">Origin</td>
-              <td class="pl-1">{{ loan.origin }}</td>
-            </tr>
-            <tr>
-              <td class="font-weight-bold">Destination</td>
-              <td class="pl-1">{{ loan.destination }}</td>
-            </tr>
-            <tr v-if="loan.wage_percentage">
-              <td class="font-weight-bold">Wage Percentage</td>
-              <td class="pl-1">{{ loan.wage_percentage }}%</td>
-            </tr>
-            <tr>
-              <td class="font-weight-bold">Duration</td>
-              <td class="pl-1">{{ duration }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </v-card-text>
-      <v-card-actions>
-        <loan-form
-          :player="player"
-          :record="loan"
-        >
-          <template #default="{ on }">
-            <v-btn
-              text
-              small
-              color="orange"
-              v-on="on"
-            >
-              Edit
-            </v-btn>
-          </template>
-        </loan-form>
-      </v-card-actions>
-    </v-card>
-  </v-timeline-item>
+    <template #details>
+      <tr>
+        <td class="font-weight-bold">Origin</td>
+        <td class="pl-1">{{ event.origin }}</td>
+      </tr>
+      <tr>
+        <td class="font-weight-bold">Destination</td>
+        <td class="pl-1">{{ event.destination }}</td>
+      </tr>
+      <tr v-if="event.wage_percentage">
+        <td class="font-weight-bold">Wage Percentage</td>
+        <td class="pl-1">{{ event.wage_percentage }}%</td>
+      </tr>
+      <tr>
+        <td class="font-weight-bold">Duration</td>
+        <td class="pl-1">{{ duration }}</td>
+      </tr>
+    </template>
+  </base-player-event>
 </template>
 
 <script>
@@ -98,18 +49,23 @@
     ],
     props: {
       player: { type: Object, required: true },
-      loan: { type: Object, required: true },
+      event: { type: Object, required: true },
       dense: { type: Boolean, default: false }
     },
     computed: {
+      title () {
+        return this.team.title === this.event.origin
+          ? `Loan at ${this.event.destination}`
+          : `Loan from ${this.event.origin}`
+      },
       length () {
         return formatDistance(
-          parseISO(this.loan.ended_on || this.team.currently_on),
-          parseISO(this.loan.started_on)
+          parseISO(this.event.ended_on || this.team.currently_on),
+          parseISO(this.event.started_on)
         )
       },
       duration () {
-        return this.loan.started_on > this.team.currently_on
+        return this.event.started_on > this.team.currently_on
           ? `Departs in ${this.length}`
           : `Away for ${this.length}`
       }

@@ -3,13 +3,15 @@
     <v-card-text>
       <v-timeline :dense="dense">
         <template v-if="events.length > 0">
-          <player-timeline-item
-            v-for="(event, i) in events"
-            :key="i"
-            :player="player"
-            :event="event"
-            :dense="dense"
-          />
+          <template v-for="event in events">
+            <component
+              :is="`${event.type}-event`"
+              :key="`${event.type}-${event.id}`"
+              :player="player"
+              :event="event"
+              :dense="dense"
+            />
+          </template>
         </template>
         <v-timeline-item
           v-else

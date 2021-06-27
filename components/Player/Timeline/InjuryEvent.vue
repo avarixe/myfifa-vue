@@ -1,68 +1,24 @@
 <template>
-  <v-timeline-item
+  <base-player-event
+    :player="player"
+    :event="event"
+    :title="`${event.description} Injury`"
     icon="mdi-ambulance"
     color="pink"
-    fill-dot
-    right
+    :dense="dense"
   >
-    <template #opposite>
-      <span class="text-h5 font-weight-bold pink--text">
-        {{ injury.description }} Injury
-      </span>
-      <h4 class="text-h6 font-weight-light mb-3 pink--text">
-        {{ injury.started_on | formatDate }} -
-        <span v-if="injury.ended_on">{{ injury.ended_on | formatDate }}</span>
-        <span v-else>Present</span>
-      </h4>
+    <template #heading>
+      {{ event.started_on | formatDate }} -
+      <span v-if="event.ended_on">{{ event.ended_on | formatDate }}</span>
+      <span v-else>Present</span>
     </template>
-    <v-card
-      dense
-      flat
-    >
-      <v-card-title
-        v-if="dense"
-        class="py-0"
-      >
-        <div class="pink--text">
-          <span class="text-h6 font-weight-bold">
-            {{ injury.description }} Injury
-          </span>
-          <h4 class="body-2 font-weight-light mb-3">
-            {{ injury.started_on | formatDate }} -
-            <span v-if="injury.ended_on">{{ injury.ended_on | formatDate }}</span>
-            <span v-else>Present</span>
-          </h4>
-        </div>
-      </v-card-title>
-      <v-card-text class="py-0">
-        <table>
-          <tbody>
-            <tr>
-              <td class="font-weight-bold">Duration</td>
-              <td class="pl-1">Injured for {{ length }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </v-card-text>
-      <v-card-actions>
-        <injury-form
-          :player="player"
-          :record="injury"
-        >
-          <template #default="{ on }">
-            <v-btn
-              text
-              small
-              color="orange"
-              v-on="on"
-            >
-              Edit
-            </v-btn>
-          </template>
-        </injury-form>
-      </v-card-actions>
-    </v-card>
-  </v-timeline-item>
+    <template #details>
+      <tr>
+        <td class="font-weight-bold">Duration</td>
+        <td class="pl-1">Injured for {{ length }}</td>
+      </tr>
+    </template>
+  </base-player-event>
 </template>
 
 <script>
@@ -76,14 +32,14 @@
     ],
     props: {
       player: { type: Object, required: true },
-      injury: { type: Object, required: true },
+      event: { type: Object, required: true },
       dense: { type: Boolean, default: false }
     },
     computed: {
       length () {
         return formatDistance(
-          parseISO(this.injury.ended_on || this.team.currently_on),
-          parseISO(this.injury.started_on)
+          parseISO(this.event.ended_on || this.team.currently_on),
+          parseISO(this.event.started_on)
         )
       }
     }
