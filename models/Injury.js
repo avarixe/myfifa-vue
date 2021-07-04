@@ -20,4 +20,8 @@ export default class Injury extends Model {
   get date () {
     return this.started_on
   }
+
+  get type () {
+    return 'injury'
+  }
 }

@@ -19,12 +19,15 @@ export default class Booking extends Model {
       created_at: this.string(''),
 
       // Calculated fields
-      event_type: this.string('Booking'),
       home: this.boolean(true),
 
       // Associations
       match: this.belongsTo(Match, 'match_id'),
       player: this.belongsTo(Player, 'player_id')
     }
+  }
+
+  get type () {
+    return 'booking'
   }
 }

@@ -1,13 +1,15 @@
 <template>
   <v-timeline dense>
     <template v-if="events.length > 0 || match.penalty_shootout">
-      <match-timeline-item
-        v-for="(event, i) in events"
-        :key="`${event.id}_${i}`"
-        :event="event"
-        :match="match"
-        :readonly="readonly"
-      />
+      <template v-for="event in events">
+        <component
+          :is="`${event.type}-event`"
+          :key="`${event.type}-${event.id}`"
+          :event="event"
+          :match="match"
+          :readonly="readonly"
+        />
+      </template>
     </template>
     <v-timeline-item
       v-else

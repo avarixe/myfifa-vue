@@ -23,4 +23,8 @@ export default class Loan extends Model {
   get date () {
     return this.started_on
   }
+
+  get type () {
+    return 'loan'
+  }
 }

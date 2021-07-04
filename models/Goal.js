@@ -21,12 +21,13 @@ export default class Goal extends Model {
       penalty: this.boolean(false),
       created_at: this.string(''),
 
-      // Calculated fields
-      event_type: this.string('Goal'),
-
       // Associations
       player: this.belongsTo(Player, 'player_id', 'id'),
       assisting_player: this.belongsTo(Player, 'assist_id', 'id')
     }
+  }
+
+  get type () {
+    return 'goal'
   }
 }

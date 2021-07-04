@@ -14,4 +14,8 @@ export default class PenaltyShootout extends Model {
       away_score: this.number(0)
     }
   }
+
+  get type () {
+    return 'penalty-shootout'
+  }
 }

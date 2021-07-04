@@ -28,4 +28,8 @@ export default class Transfer extends Model {
   get date () {
     return this.moved_on
   }
+
+  get type () {
+    return 'transfer'
+  }
 }
