@@ -14,15 +14,15 @@ export default class Team extends Model {
       id: this.number(0),
 
       // Database fields
-      title: this.string(''),
-      started_on: this.string(''),
-      currently_on: this.string(''),
+      name: this.string(''),
+      startedOn: this.string(''),
+      currentlyOn: this.string(''),
       active: this.boolean(true),
       currency: this.string('$'),
 
       // Calculated fields
-      time_period: this.string(''),
-      badge_path: this.string('').nullable(),
+      timePeriod: this.string(''),
+      badgePath: this.string('').nullable(),
 
       // Associations
       players: this.hasMany(Player, 'team_id'),
@@ -40,8 +40,8 @@ export default class Team extends Model {
   }
 
   get season () {
-    const date = parseISO(this.team.started_on)
-    const currentDate = parseISO(this.team.currently_on)
+    const date = parseISO(this.team.startedOn)
+    const currentDate = parseISO(this.team.currentlyOn)
     return differenceInYears(currentDate, date)
   }
 

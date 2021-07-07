@@ -18,10 +18,10 @@
     <template #form>
       <v-col cols="12">
         <v-date-field
-          v-model="loan.started_on"
+          v-model="loan.startedOn"
           label="Start Date"
           prepend-icon="mdi-calendar-today"
-          :min="record ? null : team.currently_on"
+          :min="record ? null : team.currentlyOn"
           color="indigo"
           required
         />
@@ -34,7 +34,7 @@
           v-model="loan.ended_on"
           label="Return Date"
           prepend-icon="mdi-calendar"
-          :min="loan.started_on"
+          :min="loan.startedOn"
           color="indigo"
           required
         />
@@ -107,7 +107,7 @@
     },
     data: () => ({
       loan: {
-        started_on: '',
+        startedOn: '',
         origin: '',
         destination: '',
         wage_percentage: null,
@@ -125,7 +125,7 @@
     computed: {
       loanOut () {
         return this.record
-          ? this.team.title === this.record.origin
+          ? this.team.name === this.record.origin
           : this.player.status && this.player.status.length > 0
       },
       title () {
@@ -138,18 +138,18 @@
           if (this.record) {
             this.loan = pick(this.record, [
               'id',
-              'started_on',
+              'startedOn',
               'ended_on',
               'origin',
               'destination',
               'wage_percentage'
             ])
           } else {
-            this.loan.started_on = this.team.currently_on
+            this.loan.startedOn = this.team.currentlyOn
             if (this.loanOut) {
-              this.loan.origin = this.team.title
+              this.loan.origin = this.team.name
             } else {
-              this.loan.destination = this.team.title
+              this.loan.destination = this.team.name
             }
           }
         }

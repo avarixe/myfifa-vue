@@ -39,9 +39,9 @@
       },
       lastDate () {
         const contractEnd = this.lastContract && this.lastContract.ended_on
-        return contractEnd && this.team.currently_on >= contractEnd
+        return contractEnd && this.team.currentlyOn >= contractEnd
           ? contractEnd
-          : this.team.currently_on
+          : this.team.currentlyOn
       },
       chartData () {
         let series = []

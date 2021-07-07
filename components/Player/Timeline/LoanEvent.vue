@@ -8,11 +8,11 @@
     :dense="dense"
   >
     <template #heading>
-      <template v-if="event.started_on > team.currently_on">
-        Scheduled on {{ event.started_on | formatDate }}
+      <template v-if="event.startedOn > team.currentlyOn">
+        Scheduled on {{ event.startedOn | formatDate }}
       </template>
       <template v-else>
-        {{ event.started_on | formatDate }} -
+        {{ event.startedOn | formatDate }} -
         <span v-if="event.ended_on">{{ event.ended_on | formatDate }}</span>
         <span v-else>Present</span>
       </template>
@@ -54,18 +54,18 @@
     },
     computed: {
       title () {
-        return this.team.title === this.event.origin
+        return this.team.name === this.event.origin
           ? `Loan at ${this.event.destination}`
           : `Loan from ${this.event.origin}`
       },
       length () {
         return formatDistance(
-          parseISO(this.event.ended_on || this.team.currently_on),
-          parseISO(this.event.started_on)
+          parseISO(this.event.ended_on || this.team.currentlyOn),
+          parseISO(this.event.startedOn)
         )
       },
       duration () {
-        return this.event.started_on > this.team.currently_on
+        return this.event.startedOn > this.team.currentlyOn
           ? `Departs in ${this.length}`
           : `Away for ${this.length}`
       }

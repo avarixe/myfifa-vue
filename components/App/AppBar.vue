@@ -94,8 +94,8 @@
             click: this.goToAccount
           },
           {
-            icon: `mdi-weather-${this.currentUser.dark_mode ? 'night' : 'sunny'}`,
-            text: `${this.currentUser.dark_mode ? 'Dark' : 'Light'} Mode`,
+            icon: `mdi-weather-${this.currentUser.darkMode ? 'night' : 'sunny'}`,
+            text: `${this.currentUser.darkMode ? 'Dark' : 'Light'} Mode`,
             click: this.toggleMode,
             loading: this.togglingMode
           },
@@ -129,7 +129,7 @@
       async toggleMode () {
         try {
           this.togglingMode = true
-          await this.setDarkMode(!this.currentUser.dark_mode)
+          await this.setDarkMode(!this.currentUser.darkMode)
         } catch (e) {
           console.error(e)
         } finally {

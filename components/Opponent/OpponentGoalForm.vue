@@ -89,7 +89,7 @@
       'match.home': {
         immediate: true,
         handler (home) {
-          this.goal.home = home !== this.team.title
+          this.goal.home = home !== this.team.name
         }
       }
     },

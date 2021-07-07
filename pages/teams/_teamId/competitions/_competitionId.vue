@@ -244,11 +244,6 @@
         getCompetition: 'competitions/get',
         fetchStages: 'stages/fetch'
       })
-    },
-    head () {
-      return {
-        title: this.title
-      }
     }
   }
 </script>

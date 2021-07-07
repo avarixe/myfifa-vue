@@ -27,7 +27,7 @@
         this.fetchCompetitions({ teamId: this.team.id })
       ])
       this.setPage({
-        title: `${this.team.title} - Matches`,
+        title: `${this.team.name} - Matches`,
         headline: 'Matches'
       })
     },

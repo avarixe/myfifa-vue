@@ -27,7 +27,7 @@
         this.searchContracts({ teamId: this.team.id })
       ])
       this.setPage({
-        title: `${this.team.title} - Players`,
+        title: `${this.team.name} - Players`,
         headline: 'Players'
       })
     },

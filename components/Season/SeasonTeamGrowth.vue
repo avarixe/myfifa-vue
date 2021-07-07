@@ -28,7 +28,7 @@
         return this.$store.$db().model('Contract')
           .query()
           .where(contract =>
-            contract.started_on <= this.seasonStart &&
+            contract.startedOn <= this.seasonStart &&
             this.seasonStart < contract.ended_on
           )
           .get()
@@ -45,7 +45,7 @@
         return this.$store.$db().model('Contract')
           .query()
           .where(contract =>
-            contract.started_on <= this.seasonEnd &&
+            contract.startedOn <= this.seasonEnd &&
             this.seasonEnd < contract.ended_on
           )
           .get()

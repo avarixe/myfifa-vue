@@ -18,9 +18,9 @@
             <v-row dense>
               <v-col cols="12">
                 <v-text-field
-                  v-model="user.full_name"
+                  v-model="attributes.fullName"
                   label="Name"
-                  :rules="rulesFor.full_name"
+                  :rules="rulesFor.fullName"
                   spellcheck="false"
                   autocapitalize="words"
                   autocomplete="off"
@@ -29,7 +29,7 @@
               </v-col>
               <v-col cols="12">
                 <v-text-field
-                  v-model="user.username"
+                  v-model="attributes.username"
                   label="Username"
                   :rules="rulesFor.username"
                   spellcheck="false"
@@ -39,7 +39,7 @@
               </v-col>
               <v-col cols="12">
                 <v-text-field
-                  v-model="user.email"
+                  v-model="attributes.email"
                   label="Email Address"
                   :rules="rulesFor.email"
                   type="email"
@@ -74,14 +74,13 @@
   export default {
     name: 'UserProfile',
     data: () => ({
-      user: {
-        id: null,
-        full_name: null,
+      attributes: {
+        fullName: null,
         username: null,
         email: null
       },
       rulesFor: {
-        full_name: [isRequired('Name')],
+        fullName: [isRequired('Name')],
         username: [isRequired('Username')],
         email: [
           isRequired('Email Address'),
@@ -95,9 +94,8 @@
       ])
     },
     mounted () {
-      this.user = pick(this.currentUser, [
-        'id',
-        'full_name',
+      this.attributes = pick(this.currentUser, [
+        'fullName',
         'username',
         'email'
       ])
@@ -112,27 +110,14 @@
       async submit () {
         try {
           this.loading = true
-          await this.updateUser(this.user)
+          await this.updateUser(this.attributes)
           this.announce({
             message: 'Profile has been updated!',
             color: 'success'
           })
-        } catch ({ response }) {
-          let errorMessage = ''
-          if (response) {
-            const { data: { errors } } = response
-            for (const attribute in errors) {
-              const attributeTitle = attribute
-                .split('_')
-                .map(token => `${token[0].toUpperCase()}${token.slice(1)}`)
-              errorMessage = `${attributeTitle} ${errors[attribute][0]}`
-              break
-            }
-          } else {
-            errorMessage = 'API is not enabled.'
-          }
+        } catch (e) {
           this.announce({
-            message: errorMessage,
+            message: e.message,
             color: 'red'
           })
         } finally {

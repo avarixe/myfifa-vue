@@ -46,13 +46,14 @@
             await this.submit()
             this.$emit('success')
             this.resetAfterSubmit && this.resetForm()
-          } catch ({ response }) {
-            if (response) {
-              const { data: { errors } } = response
-              this.errorMessage = errors[0]
-            } else {
-              this.errorMessage = 'API is not enabled.'
-            }
+          } catch (err) {
+            this.errorMessage = err.message
+            // if (err.response) {
+            //   const { data: { errors } } = err.response
+            //   this.errorMessage = errors[0]
+            // } else {
+            //   this.errorMessage = 'API is not enabled.'
+            // }
             this.error = true
           } finally {
             this.loading = false

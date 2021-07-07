@@ -148,7 +148,7 @@
         )
       },
       teamGoal () {
-        return !this.goal.home ^ this.match.home === this.team.title
+        return !this.goal.home ^ this.match.home === this.team.name
       }
     },
     watch: {

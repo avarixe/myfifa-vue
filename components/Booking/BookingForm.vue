@@ -41,7 +41,7 @@
       </v-col>
       <v-col cols="12">
         <player-select
-          v-if="!booking.home ^ match.home === team.title"
+          v-if="!booking.home ^ match.home === team.name"
           v-model="booking.player_id"
           :players="unsubbedPlayers"
           required

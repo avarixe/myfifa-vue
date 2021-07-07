@@ -21,7 +21,7 @@
           prepend-icon="mdi-calendar-today"
           required
           :color="color"
-          :min="record ? null : team.currently_on"
+          :min="record ? null : team.currentlyOn"
         />
       </v-col>
       <v-col cols="12">
@@ -138,13 +138,13 @@
         return this.record ? 'Edit Match' : 'New Match'
       },
       isHome () {
-        return this.match.home === this.team.title
+        return this.match.home === this.team.name
       },
       isAway () {
-        return this.match.away === this.team.title
+        return this.match.away === this.team.name
       },
       season () {
-        const startDate = parseISO(this.team.started_on)
+        const startDate = parseISO(this.team.startedOn)
         const datePlayed = parseISO(this.match.played_on)
         return parseInt((datePlayed - startDate) / (525600 * 60 * 1000))
       },
@@ -201,7 +201,7 @@
               'extra_time'
             ])
           } else {
-            this.match.played_on = this.team.currently_on
+            this.match.played_on = this.team.currentlyOn
           }
 
           this.loadTeamOptions()
@@ -236,14 +236,14 @@
         fetchStages: 'stages/fetch'
       }),
       setHome () {
-        this.match.home = this.team.title
-        if (this.match.away === this.team.title) {
+        this.match.home = this.team.name
+        if (this.match.away === this.team.name) {
           this.match.away = ''
         }
       },
       setAway () {
-        this.match.away = this.team.title
-        if (this.match.home === this.team.title) {
+        this.match.away = this.team.name
+        if (this.match.home === this.team.name) {
           this.match.home = ''
         }
       },

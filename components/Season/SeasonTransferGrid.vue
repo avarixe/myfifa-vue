@@ -58,12 +58,12 @@
         return this.$store.$db().model('Team').find(this.$route.params.teamId)
       },
       seasonStart () {
-        let date = parseISO(this.team.started_on)
+        let date = parseISO(this.team.startedOn)
         date = addYears(date, parseInt(this.season))
         return format(date, 'yyyy-MM-dd')
       },
       seasonEnd () {
-        let date = parseISO(this.team.started_on)
+        let date = parseISO(this.team.startedOn)
         date = addYears(date, parseInt(this.season) + 1)
         return format(date, 'yyyy-MM-dd')
       },
@@ -87,8 +87,8 @@
         return this.transfers.map(transfer => ({
           ...transfer,
           name: transfer.player.name,
-          dir: transfer.origin === this.team.title ? 'out' : 'in',
-          team: transfer.origin === this.team.title
+          dir: transfer.origin === this.team.name ? 'out' : 'in',
+          team: transfer.origin === this.team.name
             ? transfer.destination
             : transfer.origin
         }))

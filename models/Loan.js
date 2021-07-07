@@ -10,7 +10,7 @@ export default class Loan extends Model {
       player_id: this.number(null),
 
       // Database fields
-      started_on: this.string(''),
+      startedOn: this.string(''),
       signed_on: this.string(''),
       ended_on: this.string('').nullable(),
       origin: this.string(''),
@@ -21,7 +21,7 @@ export default class Loan extends Model {
   }
 
   get date () {
-    return this.started_on
+    return this.startedOn
   }
 
   get type () {

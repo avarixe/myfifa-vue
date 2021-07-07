@@ -29,7 +29,7 @@
         <record-remove
           :record="team"
           store="teams"
-          :label="team.title"
+          :label="team.name"
           :redirect="{ name: 'teams' }"
         >
           <template #default="{ on }">
@@ -140,15 +140,15 @@
     },
     async fetch () {
       this.setPage({
-        title: this.team.title,
+        title: this.team.name,
         headline: 'Dashboard'
       })
-      await Promise.all([
-        this.fetchMatches({ teamId: this.team.id }),
-        this.fetchPlayers({ teamId: this.team.id }),
-        this.fetchCompetitions({ teamId: this.team.id }),
-        this.searchContracts({ teamId: this.team.id })
-      ])
+      // await Promise.all([
+      //   this.fetchMatches({ teamId: this.team.id }),
+      //   this.fetchPlayers({ teamId: this.team.id }),
+      //   this.fetchCompetitions({ teamId: this.team.id }),
+      //   this.searchContracts({ teamId: this.team.id })
+      // ])
     },
     methods: {
       ...mapMutations('app', {

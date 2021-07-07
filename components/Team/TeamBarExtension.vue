@@ -5,7 +5,7 @@
     class="d-flex align-center"
   >
     <span
-      v-if="team.badge_path"
+      v-if="team.badgePath"
       class="mr-2"
     >
       <v-img
@@ -19,9 +19,8 @@
       <div
         class="text-overline"
         :style="{ lineHeight: '1rem' }"
-      >
-        {{ team.title }}
-      </div>
+        v-text="team.name"
+      />
       <div class="text-h6 font-weight-thin">
         {{ headline }}
         <small v-show="caption">{{ caption }}</small>
@@ -47,8 +46,8 @@
       ]),
       badgeUrl () {
         const { browserBaseURL } = this.$config.axios
-        return this.team.badge_path &&
-          `${browserBaseURL.replace(/\/api/, '')}${this.team.badge_path}`
+        return this.team.badgePath &&
+          `${browserBaseURL.replace(/\/api/, '')}${this.team.badgePath}`
       }
     }
   }

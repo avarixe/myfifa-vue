@@ -89,12 +89,12 @@
         return parseInt(this.$route.params.season)
       },
       seasonStart () {
-        let date = parseISO(this.team.started_on)
+        let date = parseISO(this.team.startedOn)
         date = addYears(date, parseInt(this.pageSeason))
         return format(date, 'yyyy-MM-dd')
       },
       seasonEnd () {
-        let date = parseISO(this.team.started_on)
+        let date = parseISO(this.team.startedOn)
         date = addYears(date, parseInt(this.pageSeason) + 1)
         return format(date, 'yyyy-MM-dd')
       }
@@ -137,11 +137,6 @@
             season
           }
         }
-      }
-    },
-    head () {
-      return {
-        title: this.title
       }
     }
   }

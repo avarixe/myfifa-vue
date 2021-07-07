@@ -53,13 +53,13 @@ export default class Match extends Model {
   }
 
   get opponent () {
-    return this.home === this.team.title
+    return this.home === this.team.home
       ? this.away
       : this.home
   }
 
   get season () {
-    const startDate = parseISO(this.team.started_on)
+    const startDate = parseISO(this.team.startedOn)
     const datePlayed = parseISO(this.played_on)
     return parseInt((datePlayed - startDate) / (525600 * 60 * 1000))
   }

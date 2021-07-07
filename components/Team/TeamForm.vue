@@ -11,10 +11,10 @@
     <template #form>
       <v-col cols="12">
         <v-text-field
-          v-model="team.title"
-          label="Team"
+          v-model="attributes.name"
+          label="Name"
           prepend-icon="mdi-shield-half-full"
-          :rules="rulesFor.title"
+          :rules="rulesFor.name"
           spellcheck="false"
           autocapitalize="words"
           autocomplete="off"
@@ -23,25 +23,19 @@
       </v-col>
       <v-col cols="12">
         <v-date-field
-          v-model="team.started_on"
+          v-model="attributes.startedOn"
           label="Start Date"
           prepend-icon="mdi-calendar-today"
-          :disabled="record"
+          :disabled="!!record"
           required
         />
       </v-col>
       <v-col cols="12">
         <v-text-field
-          v-model="team.currency"
+          v-model="attributes.currency"
           label="Currency"
           prepend-icon="mdi-cash"
           :rules="rulesFor.currency"
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-file-input
-          v-model="team.badge"
-          label="Badge"
         />
       </v-col>
     </template>
@@ -64,31 +58,28 @@
       record: { type: Object, default: null }
     },
     data: () => ({
-      team: {
-        title: '',
-        started_on: format(new Date(), 'yyyy-MM-dd'),
-        currency: '$',
-        badge: null
+      attributes: {
+        name: '',
+        startedOn: format(new Date(), 'yyyy-MM-dd'),
+        currency: '$'
       },
       rulesFor: {
-        title: [isRequired('Title')],
+        name: [isRequired('Name')],
         currency: [isRequired('Currency')]
       }
     }),
     computed: {
       title () {
-        return this.record ? `Edit ${this.record.title}` : 'New Team'
+        return this.record ? 'Edit Team' : 'New Team'
       }
     },
     watch: {
       dialog (val) {
         if (val && this.record) {
-          this.team = pick(this.record, [
-            'id',
-            'title',
-            'started_on',
-            'currency',
-            'badge'
+          this.attributes = pick(this.record, [
+            'name',
+            'startedOn',
+            'currency'
           ])
         }
       }
@@ -99,21 +90,14 @@
         updateTeam: 'update'
       }),
       async submit () {
-        const formData = new FormData()
-
-        for (let k in this.team) {
-          if (this.team[k]) {
-            formData.append(`team[${k}]`, this.team[k])
-          }
-        }
-
         if (this.record) {
+          console.log('calling updateTeam!')
           await this.updateTeam({
-            team: { id: this.team.id },
-            formData
+            id: this.record.id,
+            attributes: this.attributes
           })
         } else {
-          const { id: teamId } = await this.createTeam({ formData })
+          const { id: teamId } = await this.createTeam(this.attributes)
           this.$router.push({
             name: 'teams-teamId',
             params: { teamId }

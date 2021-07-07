@@ -162,8 +162,8 @@
           age: null,
           contracts_attributes: [
             {
-              started_on: this.team.currently_on,
-              ended_on: this.team.currently_on,
+              startedOn: this.team.currentlyOn,
+              ended_on: this.team.currentlyOn,
               wage: null,
               release_clause: null,
               signing_bonus: null,
@@ -215,7 +215,7 @@
           age: player['Age'],
           contracts_attributes: [
             {
-              started_on: this.team.currently_on,
+              startedOn: this.team.currentlyOn,
               ended_on: player['Contract Ends'] &&
                 format(player['Contract Ends'], 'yyyy-MM-dd'),
               wage: player['Wage'],

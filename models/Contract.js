@@ -19,7 +19,7 @@ export default class Contract extends Model {
       bonus_req: this.number(null).nullable(),
       bonus_req_type: this.string(null).nullable(),
       ended_on: this.string(''),
-      started_on: this.string(''),
+      startedOn: this.string(''),
       conclusion: this.string(null).nullable(),
 
       // Associations
@@ -28,7 +28,7 @@ export default class Contract extends Model {
   }
 
   get date () {
-    return this.started_on
+    return this.startedOn
   }
 
   get type () {

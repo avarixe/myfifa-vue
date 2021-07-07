@@ -27,7 +27,7 @@
         this.fetchPlayers({ teamId: this.team.id })
       ])
       this.setPage({
-        title: `${this.team.title} - Squads`,
+        title: `${this.team.name} - Squads`,
         headline: 'Squads'
       })
     },

@@ -48,7 +48,7 @@
         return events
       },
       readonly () {
-        return this.team.currently_on !== this.match.played_on
+        return this.team.currentlyOn !== this.match.played_on
       }
     }
   }

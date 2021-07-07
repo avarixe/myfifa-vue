@@ -22,7 +22,7 @@
       >
         <v-col cols="12">
           <v-date-field
-            v-model="injury.started_on"
+            v-model="injury.startedOn"
             label="Injury Date"
             prepend-icon="mdi-calendar-today"
             color="pink"
@@ -36,7 +36,7 @@
             label="Recovery Date"
             prepend-icon="mdi-calendar"
             color="pink"
-            :min="contract && contract.started_on"
+            :min="contract && contract.startedOn"
             required
           />
         </v-col>
@@ -103,7 +103,7 @@
         if (val && this.record) {
           this.injury = pick(this.record, [
             'id',
-            'started_on',
+            'startedOn',
             'ended_on',
             'description'
           ])

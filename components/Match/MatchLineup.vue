@@ -142,7 +142,7 @@
     },
     computed: {
       readonly () {
-        return this.team.currently_on !== this.match.played_on
+        return this.team.currentlyOn !== this.match.played_on
       },
       starters () {
         return this.match.caps.filter(c => c.start === 0)

@@ -27,6 +27,7 @@
       }
     },
     computed: {
+      ...mapState(['token']),
       ...mapState('app', [
         'title'
       ]),
@@ -41,10 +42,20 @@
       }
     },
     watch: {
-      'currentUser.dark_mode': {
+      'currentUser.darkMode': {
         immediate: true,
         handler (darkModeOn) {
           this.$vuetify.theme.dark = darkModeOn
+        }
+      },
+      token: {
+        immediate: true,
+        handler (token) {
+          if (token) {
+            this.$graphql.default.setHeader('authorization', `Bearer ${token}`)
+          } else {
+            this.$graphql.default.setHeaders({})
+          }
         }
       }
     }

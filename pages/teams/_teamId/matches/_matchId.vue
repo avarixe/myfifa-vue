@@ -186,7 +186,7 @@
           .get()
       },
       readonly () {
-        return this.match.played_on !== this.team.currently_on
+        return this.match.played_on !== this.team.currentlyOn
       },
       prevMatchLink () {
         const prevMatch = this.$store.$db().model('Match')

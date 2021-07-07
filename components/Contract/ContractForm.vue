@@ -18,7 +18,7 @@
     <template #form>
       <v-col cols="12">
         <v-date-field
-          v-model="contract.started_on"
+          v-model="contract.startedOn"
           label="Effective Date"
           prepend-icon="mdi-calendar-today"
           required
@@ -29,7 +29,7 @@
           v-model="contract.ended_on"
           label="End Date"
           prepend-icon="mdi-calendar"
-          :min="contract.started_on"
+          :min="contract.startedOn"
           :max="maxEndDate"
           required
           start-with-year
@@ -114,7 +114,7 @@
     data: () => ({
       valid: false,
       contract: {
-        started_on: null,
+        startedOn: null,
         ended_on: null,
         wage: null,
         signing_bonus: null,
@@ -139,8 +139,8 @@
         return this.record ? 'Edit Contract' : 'Sign New Contract'
       },
       maxEndDate () {
-        return this.contract.started_on && format(
-          addYears(parseISO(this.contract.started_on), 6),
+        return this.contract.startedOn && format(
+          addYears(parseISO(this.contract.startedOn), 6),
           'yyyy-MM-dd'
         )
       }
@@ -151,7 +151,7 @@
           if (this.record) {
             this.contract = pick(this.record, [
               'id',
-              'started_on',
+              'startedOn',
               'ended_on',
               'wage',
               'signing_bonus',
@@ -161,12 +161,12 @@
               'bonus_req_type'
             ])
           } else {
-            this.contract.started_on = this.team.currently_on
-            this.contract.ended_on = this.team.currently_on
+            this.contract.startedOn = this.team.currentlyOn
+            this.contract.ended_on = this.team.currentlyOn
           }
         }
       },
-      'contract.started_on' (val) {
+      'contract.startedOn' (val) {
         if (val && this.contract.ended_on && this.contract.ended_on < val) {
           this.contract.ended_on = val
         }

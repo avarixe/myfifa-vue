@@ -18,7 +18,7 @@ export default {
   methods: {
     teamClass (name) {
       switch (name) {
-        case this.team.title:
+        case this.team.name:
           return 'primary--text'
         case this.competition.champion:
           return name ? 'red--text' : ''

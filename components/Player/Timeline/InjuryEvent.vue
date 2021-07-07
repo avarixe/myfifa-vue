@@ -8,7 +8,7 @@
     :dense="dense"
   >
     <template #heading>
-      {{ event.started_on | formatDate }} -
+      {{ event.startedOn | formatDate }} -
       <span v-if="event.ended_on">{{ event.ended_on | formatDate }}</span>
       <span v-else>Present</span>
     </template>
@@ -38,8 +38,8 @@
     computed: {
       length () {
         return formatDistance(
-          parseISO(this.event.ended_on || this.team.currently_on),
-          parseISO(this.event.started_on)
+          parseISO(this.event.ended_on || this.team.currentlyOn),
+          parseISO(this.event.startedOn)
         )
       }
     }

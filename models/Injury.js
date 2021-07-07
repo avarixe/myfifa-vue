@@ -10,7 +10,7 @@ export default class Injury extends Model {
       player_id: this.number(0),
 
       // Database fields
-      started_on: this.string(''),
+      startedOn: this.string(''),
       ended_on: this.string('').nullable(),
       description: this.string(''),
       recovered: this.boolean(false)
@@ -18,7 +18,7 @@ export default class Injury extends Model {
   }
 
   get date () {
-    return this.started_on
+    return this.startedOn
   }
 
   get type () {

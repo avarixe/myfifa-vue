@@ -21,7 +21,7 @@
           v-model="transfer.moved_on"
           label="Effective Date"
           prepend-icon="mdi-calendar-today"
-          :min="record ? null : team.currently_on"
+          :min="record ? null : team.currentlyOn"
           :color="transferColor"
           required
         />
@@ -108,7 +108,7 @@
     computed: {
       transferOut () {
         return this.record
-          ? this.team.title === this.record.origin
+          ? this.team.name === this.record.origin
           : this.player.status && this.player.status.length > 0
       },
       title () {
@@ -131,11 +131,11 @@
               'addon_clause'
             ])
           } else {
-            this.transfer.moved_on = this.team.currently_on
+            this.transfer.moved_on = this.team.currentlyOn
             if (this.transferOut) {
-              this.transfer.origin = this.team.title
+              this.transfer.origin = this.team.name
             } else {
-              this.transfer.destination = this.team.title
+              this.transfer.destination = this.team.name
             }
           }
         }

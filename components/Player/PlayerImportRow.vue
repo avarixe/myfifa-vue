@@ -135,7 +135,7 @@
       <v-date-field
         v-model="contract.ended_on"
         label="Contract Ends"
-        :min="contract.started_on"
+        :min="contract.startedOn"
         :max="maxEndDate"
         required
         dense
@@ -249,8 +249,8 @@
         return this.player.contracts_attributes[0]
       },
       maxEndDate () {
-        return this.contract.started_on && format(
-          addYears(parseISO(this.contract.started_on), 6),
+        return this.contract.startedOn && format(
+          addYears(parseISO(this.contract.startedOn), 6),
           'yyyy-MM-dd'
         )
       }

@@ -67,7 +67,7 @@
       'match.home': {
         immediate: true,
         handler (home) {
-          this.booking.home = home === this.team.title
+          this.booking.home = home === this.team.name
         }
       }
     },

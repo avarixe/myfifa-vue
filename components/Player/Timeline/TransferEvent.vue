@@ -50,7 +50,7 @@
     },
     computed: {
       transferOut () {
-        return this.event.origin === this.team.title
+        return this.event.origin === this.team.name
       },
       title () {
         return this.transferOut

@@ -63,7 +63,7 @@
           .get()
       },
       seasonLabel () {
-        let start = addYears(parseISO(this.team.started_on), this.season)
+        let start = addYears(parseISO(this.team.startedOn), this.season)
         const end = addYears(start, 1)
         return `${format(start, 'yyyy')} - ${format(end, 'yyyy')}`
       },

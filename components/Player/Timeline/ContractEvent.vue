@@ -8,9 +8,9 @@
     :dense="dense"
   >
     <template #heading>
-      {{ event.started_on | formatDate }} - {{ event.ended_on | formatDate }}
+      {{ event.startedOn | formatDate }} - {{ event.ended_on | formatDate }}
       <span
-        v-if="event.conclusion && event.ended_on <= team.currently_on"
+        v-if="event.conclusion && event.ended_on <= team.currentlyOn"
         class="pl-1"
         v-text="`(${event.conclusion})`"
       />

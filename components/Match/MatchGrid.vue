@@ -203,7 +203,7 @@
         }
       },
       matchInSeason (match) {
-        const teamStart = parseISO(this.team.started_on)
+        const teamStart = parseISO(this.team.startedOn)
         const datePlayed = parseISO(match.played_on)
         const seasonStart = addYears(teamStart, this.filters.Season)
         const seasonEnd = addYears(teamStart, this.filters.Season + 1)
