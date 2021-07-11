@@ -42,7 +42,7 @@
       }
     },
     watch: {
-      'currentUser.darkMode': {
+      'currentUser.dark_mode': {
         immediate: true,
         handler (darkModeOn) {
           this.$vuetify.theme.dark = darkModeOn

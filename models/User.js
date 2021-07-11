@@ -9,11 +9,11 @@ export default class User extends Model {
       id: this.number(0),
 
       // Database fields
-      fullName: this.string(''),
+      full_name: this.string(''),
       username: this.string(''),
       email: this.string(''),
       admin: this.boolean(false),
-      darkMode: this.boolean(false)
+      dark_mode: this.boolean(false)
     }
   }
 }

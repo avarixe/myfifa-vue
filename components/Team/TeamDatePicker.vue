@@ -55,20 +55,17 @@
       }
     },
     watch: {
-      // 'team.currentlyOn': {
-      //   handler (currentlyOn) {
-      //     this.currentDate = currentlyOn
-      //   },
-      //   immediate: true
-      // },
+      'team.currentlyOn': {
+        handler (currentlyOn) {
+          this.currentDate = currentlyOn
+        },
+        immediate: true
+      },
       async currentDate (val, oldVal) {
         if (oldVal) {
-          console.log('updating Team')
           await this.updateTeam({
-            team: {
-              id: this.team.id,
-              currentlyOn: val
-            }
+            id: this.team.id,
+            attributes: { currentlyOn: val }
           })
           this.calendar = false
         }

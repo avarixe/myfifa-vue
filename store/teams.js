@@ -32,7 +32,6 @@ export const actions = {
     `
 
     const { team } = await this.$graphql.default.request(query, { teamId })
-    console.log(team)
     this.$db().model('Team').insert({ data: team })
   },
   async create (_, attributes) {
@@ -53,10 +52,9 @@ export const actions = {
       }
     `
 
-    const { addTeam: { errors, team } } = await this.$graphql.default.request(
-      query,
-      { attributes }
-    )
+    const { addTeam: { errors, team } } =
+      await this.$graphql.default.request(query, { attributes })
+
     if (team) {
       this.$db().model('Team').insert({ data: team })
       return team
@@ -80,12 +78,9 @@ export const actions = {
       }
     `
 
-    console.log(query)
+    const { updateTeam: { errors, team } } =
+      await this.$graphql.default.request(query, { id, attributes })
 
-    const { updateTeam: { errors, team } } = await this.$graphql.default.request(
-      query,
-      { id, attributes }
-    )
     if (team) {
       this.$db().model('Team').update({ data: team })
     } else {
@@ -103,10 +98,9 @@ export const actions = {
       }
     `
 
-    const { removeTeam: { errors } } = await this.$graphql.default.request(
-      query,
-      { id: teamId }
-    )
+    const { removeTeam: { errors } } =
+      await this.$graphql.default.request(query, { id: teamId })
+
     if (errors) {
       throw new Error(errors.fullMessages[0])
     } else {

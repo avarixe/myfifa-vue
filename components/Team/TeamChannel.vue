@@ -4,6 +4,8 @@
 
 <script>
   import { mapState } from 'vuex'
+  import mapKeys from 'lodash.mapkeys'
+  import camelCase from 'lodash.camelcase'
 
   export default {
     name: 'TeamChannel',
@@ -63,7 +65,10 @@
         })
 
         Object.keys(this.insertBuffer).forEach(async type => {
-          await this.$store.$db().model(type).insert({ data: this.insertBuffer[type] })
+          const data = this.insertBuffer[type].map(
+            record => mapKeys(record, (_v, k) => camelCase(k))
+          )
+          await this.$store.$db().model(type).insert({ data })
           delete this.insertBuffer[type]
         })
       }
