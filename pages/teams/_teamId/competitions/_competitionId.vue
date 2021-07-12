@@ -178,12 +178,12 @@
     }),
     computed: {
       competitionId () {
-        return this.$route.params.competitionId
+        return parseInt(this.$route.params.competitionId)
       },
       competition () {
         return this.$store.$db().model('Competition')
           .query()
-          .with('stages.table_rows')
+          .with('stages.tableRows')
           .with('stages.fixtures.legs')
           .find(this.competitionId)
       },
@@ -223,10 +223,7 @@
       }
     },
     async fetch () {
-      await Promise.all([
-        this.getCompetition({ competitionId: this.competitionId }),
-        this.fetchStages({ competitionId: this.competitionId })
-      ])
+      await this.getCompetition(this.competitionId)
       this.setPage({
         title: this.title,
         headline: this.title

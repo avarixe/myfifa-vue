@@ -48,10 +48,10 @@
       </v-col>
       <v-col cols="12">
         <v-text-field
-          v-model="stage.num_teams"
+          v-model="stage.numTeams"
           label="Number of Teams"
           prepend-icon="mdi-account-group"
-          :rules="rulesFor.num_teams"
+          :rules="rulesFor.numTeams"
           inputmode="numeric"
         />
       </v-col>
@@ -61,10 +61,10 @@
           cols="12"
         >
           <v-text-field
-            v-model="stage.num_fixtures"
+            v-model="stage.numFixtures"
             label="Number of Fixtures"
             prepend-icon="mdi-sword-cross"
-            :rules="rulesFor.num_fixtures"
+            :rules="rulesFor.numFixtures"
             inputmode="numeric"
           />
         </v-col>
@@ -90,17 +90,17 @@
       valid: false,
       stage: {
         name: '',
-        num_teams: null,
-        num_fixtures: null,
+        numTeams: null,
+        numFixtures: null,
         table: false
       },
       rulesFor: {
         name: [isRequired('Name')],
-        num_teams: [
+        numTeams: [
           isRequired('Number of Teams'),
           isNumber('Number of Teams')
         ],
-        num_fixtures: [
+        numFixtures: [
           isRequired('Number of Fixtures'),
           isNumber('Number of Fixtures')
         ]
@@ -109,7 +109,7 @@
     watch: {
       'stage.table' (val) {
         if (val) {
-          this.stage.num_fixtures = null
+          this.stage.numFixtures = null
         }
       }
     },

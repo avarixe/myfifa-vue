@@ -4,9 +4,10 @@ import { gql } from 'nuxt-graphql-request'
 export const actions = {
   async get (_, id) {
     const query = gql`
-      mutation fetchPlayer($id: ID!) {
+      query fetchPlayer($id: ID!) {
         player(id: $id) {
           id
+          teamId
           name
           nationality
           pos

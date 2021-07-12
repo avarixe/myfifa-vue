@@ -17,14 +17,14 @@ class Competition extends Model {
       season: this.number(0),
       name: this.string(''),
       champion: this.string(null).nullable(),
-      preset_format: this.attr(null),
-      num_teams: this.number(null).nullable(),
-      num_teams_per_group: this.number(null).nullable(),
-      num_advances_from_group: this.number(null).nullable(),
+      presetFormat: this.attr(null),
+      numTeams: this.number(null).nullable(),
+      numTeamsPerGroup: this.number(null).nullable(),
+      numAdvancesFromGroup: this.number(null).nullable(),
 
       // Associations
       team: this.belongsTo(Team, 'teamId'),
-      stages: this.hasMany(Stage, 'competition_id')
+      stages: this.hasMany(Stage, 'competitionId')
     }
   }
 
@@ -72,9 +72,9 @@ class Competition extends Model {
     let array = this.stages.reduce((arr, stage) => {
       return [
         ...arr,
-        ...stage.table_rows.map(row => row.name),
+        ...stage.tableRows.map(row => row.name),
         ...stage.fixtures.reduce((names, fixture) => {
-          return [ ...names, fixture.home_team, fixture.away_team ]
+          return [ ...names, fixture.homeTeam, fixture.awayTeam ]
         }, [])
       ]
     }, [])

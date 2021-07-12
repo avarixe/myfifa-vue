@@ -7,7 +7,7 @@ export default class FixtureLeg extends Model {
     return {
       // Primary/Foreign keys
       id: this.number(0),
-      fixture_id: this.number(0),
+      fixtureId: this.number(0),
 
       // Database fields
       homeScore: this.string('').nullable(),

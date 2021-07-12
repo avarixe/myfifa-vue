@@ -1,9 +1,5 @@
 // actions
 export const actions = {
-  async fetch (_, { competitionId }) {
-    const data = await this.$axios.$get(`competitions/${competitionId}/stages`)
-    this.$db().model('Stage').insert({ data })
-  },
   async create (_, { competitionId, stage }) {
     const data = await this.$axios.$post(
       `competitions/${competitionId}/stages`,

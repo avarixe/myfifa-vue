@@ -17,7 +17,7 @@
     <template #form>
       <v-col cols="12">
         <v-combobox
-          v-model="fixture.home_team"
+          v-model="fixture.homeTeam"
           label="Home Team"
           prepend-icon="mdi-home"
           :items="competitionTeams"
@@ -30,7 +30,7 @@
       </v-col>
       <v-col cols="12">
         <v-combobox
-          v-model="fixture.away_team"
+          v-model="fixture.awayTeam"
           label="Away Team"
           prepend-icon="mdi-bus"
           :items="competitionTeams"
@@ -96,8 +96,8 @@
     data: () => ({
       key: 0,
       fixture: {
-        home_team: '',
-        away_team: '',
+        homeTeam: '',
+        awayTeam: '',
         legs_attributes: [{
           homeScore: '',
           awayScore: '',
@@ -115,8 +115,8 @@
         if (val && this.fixtureData) {
           this.fixture = pick(this.fixtureData, [
             'id',
-            'home_team',
-            'away_team'
+            'homeTeam',
+            'awayTeam'
           ])
           this.fixture.legs_attributes = this.fixtureData.legs.map(leg => ({
             ...leg,

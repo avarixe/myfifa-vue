@@ -16,9 +16,10 @@ export const mutations = {
 export const actions = {
   async get (_, id) {
     const query = gql`
-      mutation fetchMatch($id: ID!) {
+      query fetchMatch($id: ID!) {
         match(id: $id) {
           id
+          teamId
           name
           nationality
           pos

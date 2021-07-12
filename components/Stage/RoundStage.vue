@@ -31,8 +31,8 @@
       disable-sort
       hide-default-footer
     >
-      <template #item.home_team="{ item }">
-        <span :class="teamClass(item.home_team)">{{ item.home_team }}</span>
+      <template #item.homeTeam="{ item }">
+        <span :class="teamClass(item.homeTeam)">{{ item.homeTeam }}</span>
       </template>
       <template #item.score="{ item }">
         <div
@@ -42,8 +42,8 @@
           {{ leg.score }}
         </div>
       </template>
-      <template #item.away_team="{ item }">
-        <span :class="teamClass(item.away_team)">{{ item.away_team }}</span>
+      <template #item.awayTeam="{ item }">
+        <span :class="teamClass(item.awayTeam)">{{ item.awayTeam }}</span>
       </template>
       <template #item.edit="{ item }">
         <fixture-form
@@ -94,9 +94,9 @@
       },
       headers () {
         const headers = [
-          { text: 'Home Team', value: 'home_team', align: 'right' },
+          { text: 'Home Team', value: 'homeTeam', align: 'right' },
           { text: 'Score', value: 'score', align: 'center' },
-          { text: 'Away Team', value: 'away_team' }
+          { text: 'Away Team', value: 'awayTeam' }
         ]
 
         if (!this.readonly) {

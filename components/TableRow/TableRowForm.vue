@@ -56,7 +56,7 @@
       </v-col>
       <v-col cols="6">
         <v-text-field
-          v-model="row.goals_for"
+          v-model="row.goalsFor"
           label="GF"
           prepend-icon="mdi-soccer"
           :rules="rulesForNumber"
@@ -66,7 +66,7 @@
       </v-col>
       <v-col cols="6">
         <v-text-field
-          v-model="row.goals_against"
+          v-model="row.goalsAgainst"
           label="GA"
           prepend-icon="mdi-soccer"
           :rules="rulesForNumber"
@@ -99,8 +99,8 @@
         wins: null,
         draws: null,
         losses: null,
-        goals_for: null,
-        goals_against: null
+        goalsFor: null,
+        goalsAgainst: null
       },
       rulesForNumber: [isNumber()]
     }),
@@ -118,8 +118,8 @@
             'wins',
             'draws',
             'losses',
-            'goals_for',
-            'goals_against'
+            'goalsFor',
+            'goalsAgainst'
           ])
         }
       }

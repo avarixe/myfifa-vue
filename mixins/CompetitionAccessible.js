@@ -8,7 +8,7 @@ export default {
     competition () {
       return this.$store.$db().model('Competition')
         .query()
-        .with('stages.table_rows|fixtures')
+        .with('stages.tableRows|fixtures')
         .find(this.$route.params.competitionId)
     },
     competitionTeams () {
