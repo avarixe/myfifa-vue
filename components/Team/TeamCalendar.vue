@@ -94,8 +94,8 @@
         return this.$store.$db().model('Match')
           .query()
           .with('team')
-          .where('team_id', this.team.id)
-          .where('played_on', date)
+          .where('teamId', this.team.id)
+          .where('playedOn', date)
           .get()
       }
     }

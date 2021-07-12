@@ -109,8 +109,8 @@
         return this.$store.$db().model('Match')
           .query()
           .with('team')
-          .where('team_id', this.team.id)
-          .orderBy('played_on', 'desc')
+          .where('teamId', this.team.id)
+          .orderBy('playedOn', 'desc')
           .first()
       },
       injuredPlayers () {
@@ -123,7 +123,7 @@
         return this.$store.$db().model('Player')
           .query()
           .with('team')
-          .where('team_id', this.team.id)
+          .where('teamId', this.team.id)
           .get()
           .filter(player => player.contract().ended_on <= this.seasonEnd)
       },
@@ -160,7 +160,7 @@
         return this.$store.$db().model('Player')
           .query()
           .with('team')
-          .where('team_id', this.team.id)
+          .where('teamId', this.team.id)
           .where('status', status)
           .get()
       }

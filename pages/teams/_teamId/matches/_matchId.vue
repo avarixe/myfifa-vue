@@ -67,7 +67,7 @@
                   max-size="30"
                 />
               </div>
-              <div class="subheading">{{ match.played_on | formatDate }}</div>
+              <div class="subheading">{{ match.playedOn | formatDate }}</div>
             </v-col>
             <v-container class="py-0">
               <v-row
@@ -81,9 +81,9 @@
                 >
                   <fitty-text :text="match.home" />
                   <div :class="`font-weight-bold ${match.resultColor}--text`">
-                    {{ match.home_score }}
-                    <span v-if="match.penalty_shootout">
-                      ({{ match.penalty_shootout.home_score }})
+                    {{ match.homeScore }}
+                    <span v-if="match.penaltyShootout">
+                      ({{ match.penaltyShootout.homeScore }})
                     </span>
                   </div>
                 </v-col>
@@ -93,9 +93,9 @@
                 >
                   <fitty-text :text="match.away" />
                   <div :class="`font-weight-bold ${match.resultColor}--text`">
-                    {{ match.away_score }}
-                    <span v-if="match.penalty_shootout">
-                      ({{ match.penalty_shootout.away_score }})
+                    {{ match.awayScore }}
+                    <span v-if="match.penaltyShootout">
+                      ({{ match.penaltyShootout.awayScore }})
                     </span>
                   </div>
                 </v-col>
@@ -172,33 +172,33 @@
       match () {
         return this.$store.$db().model('Match')
           .query()
-          .with('team|caps|goals|bookings|substitutions|penalty_shootout')
+          .with('team|caps|goals|bookings|substitutions|penaltyShootout')
           .find(this.matchId)
       },
       players () {
         return this.$store.$db().model('Player')
           .query()
-          .where('team_id', this.team.id)
+          .where('teamId', this.team.id)
           .get()
       },
       readonly () {
-        return this.match.played_on !== this.team.currentlyOn
+        return this.match.playedOn !== this.team.currentlyOn
       },
       prevMatchLink () {
         const prevMatch = this.$store.$db().model('Match')
           .query()
-          .where('team_id', this.match.team_id)
-          .where('played_on', date => date < this.match.played_on)
-          .orderBy('played_on')
+          .where('teamId', this.match.teamId)
+          .where('playedOn', date => date < this.match.playedOn)
+          .orderBy('playedOn')
           .last()
         return prevMatch && prevMatch.link
       },
       nextMatchLink () {
         const nextMatch = this.$store.$db().model('Match')
           .query()
-          .where('team_id', this.match.team_id)
-          .where('played_on', date => date > this.match.played_on)
-          .orderBy('played_on')
+          .where('teamId', this.match.teamId)
+          .where('playedOn', date => date > this.match.playedOn)
+          .orderBy('playedOn')
           .first()
         return nextMatch && nextMatch.link
       }

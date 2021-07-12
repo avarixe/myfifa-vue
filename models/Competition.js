@@ -11,7 +11,7 @@ class Competition extends Model {
     return {
       // Primary/Foreign keys
       id: this.number(0),
-      team_id: this.number(0),
+      teamId: this.number(0),
 
       // Database fields
       season: this.number(0),
@@ -23,7 +23,7 @@ class Competition extends Model {
       num_advances_from_group: this.number(null).nullable(),
 
       // Associations
-      team: this.belongsTo(Team, 'team_id'),
+      team: this.belongsTo(Team, 'teamId'),
       stages: this.hasMany(Stage, 'competition_id')
     }
   }
@@ -32,7 +32,7 @@ class Competition extends Model {
     return {
       name: 'teams-teamId-competitions-competitionId',
       params: {
-        teamId: this.team_id,
+        teamId: this.teamId,
         competitionId: this.id
       }
     }
@@ -42,7 +42,7 @@ class Competition extends Model {
     return {
       name: 'teams-teamId-seasons-season',
       params: {
-        teamId: this.team_id,
+        teamId: this.teamId,
         season: this.season
       }
     }
@@ -97,8 +97,8 @@ class Competition extends Model {
     return Match
       .query()
       .where('competition', this.name)
-      .where('team_id', this.team_id)
-      .where('played_on', date => start <= date && date <= end)
+      .where('teamId', this.teamId)
+      .where('playedOn', date => start <= date && date <= end)
       .get()
   }
 }

@@ -25,9 +25,8 @@
         <v-icon
           left
           dark
-        >
-          mdi-alert
-        </v-icon>
+          v-text="'mdi-alert'"
+        />
         {{ error }}
       </v-tooltip>
       <v-btn
@@ -75,7 +74,7 @@
     </td>
     <td>
       <v-select
-        v-model="player.sec_pos"
+        v-model="player.secPos"
         label="2nd Position(s)"
         :items="positions"
         multiple
@@ -122,7 +121,7 @@
     </td>
     <td>
       <v-text-field
-        v-model="player.kit_no"
+        v-model="player.kitNo"
         label="Kit Number"
         :rules="[isNumber, inRange(null, [1, 99])]"
         dense
@@ -133,7 +132,7 @@
     </td>
     <td>
       <v-date-field
-        v-model="contract.ended_on"
+        v-model="contract.endedOn"
         label="Contract Ends"
         :min="contract.startedOn"
         :max="maxEndDate"
@@ -157,7 +156,7 @@
     </td>
     <td>
       <v-money-field
-        v-model="contract.signing_bonus"
+        v-model="contract.signingBonus"
         label="Signing Bonus"
         :prefix="team.currency"
         dense
@@ -167,7 +166,7 @@
     </td>
     <td>
       <v-money-field
-        v-model="contract.release_clause"
+        v-model="contract.releaseClause"
         label="Release Clause"
         :prefix="team.currency"
         dense
@@ -177,7 +176,7 @@
     </td>
     <td>
       <v-money-field
-        v-model="contract.performance_bonus"
+        v-model="contract.performanceBonus"
         label="Perf. Bonus"
         :prefix="team.currency"
         dense
@@ -187,8 +186,8 @@
     </td>
     <td>
       <v-text-field
-        v-if="contract.performance_bonus"
-        v-model="contract.bonus_req"
+        v-if="contract.performanceBonus"
+        v-model="contract.bonusReq"
         label="Bonus Req."
         prefix="if"
         :rules="[isRequired, isNumber]"
@@ -200,8 +199,8 @@
     </td>
     <td>
       <v-select
-        v-if="contract.performance_bonus"
-        v-model="contract.bonus_req_type"
+        v-if="contract.performanceBonus"
+        v-model="contract.bonusReqType"
         label="Bonus Req. Type"
         :items="bonusRequirementTypes"
         :rules="[isRequired]"
@@ -246,7 +245,7 @@
         return this.$store.$db().model('Team').find(this.$route.params.teamId)
       },
       contract () {
-        return this.player.contracts_attributes[0]
+        return this.player.contractsAttributes[0]
       },
       maxEndDate () {
         return this.contract.startedOn && format(
@@ -276,7 +275,7 @@
           this.loading = true
           await this.createPlayer({
             teamId: this.team.id,
-            player: this.player
+            attributes: this.player
           })
           this.saved = true
         } catch (e) {

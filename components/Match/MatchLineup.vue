@@ -142,7 +142,7 @@
     },
     computed: {
       readonly () {
-        return this.team.currentlyOn !== this.match.played_on
+        return this.team.currentlyOn !== this.match.playedOn
       },
       starters () {
         return this.match.caps.filter(c => c.start === 0)
@@ -187,7 +187,7 @@
           .whereIdIn(playerIds)
           .get()
           .reduce(
-            (sum, player) => sum + player.ovrAt(this.match.played_on),
+            (sum, player) => sum + player.ovrAt(this.match.playedOn),
             0
           )
 

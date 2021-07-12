@@ -4,7 +4,7 @@
       <v-data-table
         :headers="headers"
         :items="matches"
-        sort-by="played_on"
+        sort-by="playedOn"
         sort-desc
         item-key="id"
         no-data-text="No Matches Recorded"
@@ -65,8 +65,8 @@
             {{ item.score }}
           </v-btn>
         </template>
-        <template #item.played_on="{ item }">
-          {{ item.played_on | formatDate }}
+        <template #item.playedOn="{ item }">
+          {{ item.playedOn | formatDate }}
         </template>
       </v-data-table>
     </v-card-text>
@@ -88,7 +88,7 @@
         { text: 'Home', value: 'home', align: 'end' },
         { text: 'Score', value: 'score', align: 'center', sortable: false },
         { text: 'Away', value: 'away' },
-        { text: 'Date Played', value: 'played_on' },
+        { text: 'Date Played', value: 'playedOn' },
         { text: 'Stage', value: 'stage' }
       ],
       seasonFilter: null,
@@ -108,7 +108,7 @@
       matches () {
         return this.$store.$db().model('Match')
           .query()
-          .where('team_id', this.team.id)
+          .where('teamId', this.team.id)
           .where(match => {
             for (const filter in this.filters) {
               if (!this.matchPassesFilter(match, filter)) {
@@ -129,7 +129,7 @@
       competitions () {
         return this.$store.$db().model('Competition')
           .query()
-          .where('team_id', this.team.id)
+          .where('teamId', this.team.id)
           .where(comp => this.filters.Season === null || comp.season === this.filters.Season)
           .get()
           .map(comp => comp.name)
@@ -199,12 +199,12 @@
             return match.home.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0 ||
               match.away.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
           case 'Result':
-            return filterValue.toLowerCase() === match.team_result
+            return filterValue.toLowerCase() === match.teamResult
         }
       },
       matchInSeason (match) {
         const teamStart = parseISO(this.team.startedOn)
-        const datePlayed = parseISO(match.played_on)
+        const datePlayed = parseISO(match.playedOn)
         const seasonStart = addYears(teamStart, this.filters.Season)
         const seasonEnd = addYears(teamStart, this.filters.Season + 1)
         return seasonStart <= datePlayed && datePlayed < seasonEnd

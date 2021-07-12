@@ -18,26 +18,25 @@ export default class Player extends Model {
     return {
       // Primary/Foreign keys
       id: this.number(0),
-      team_id: this.number(0),
+      teamId: this.number(0),
 
       // Database fields
       name: this.string(''),
       nationality: this.string('').nullable(),
       pos: this.string(''),
-      sec_pos: this.attr([]),
+      secPos: this.attr([]),
       ovr: this.number(60),
       value: this.number(null).nullable(),
-      birth_year: this.number(null).nullable(),
       status: this.string(null).nullable(),
       youth: this.boolean(false),
-      kit_no: this.number(null).nullable(),
+      kitNo: this.number(null).nullable(),
 
       // Calculated fields
       age: this.number(16),
-      pos_idx: this.number(0),
+      posIdx: this.number(0),
 
       // Associations
-      team: this.belongsTo(Team, 'team_id'),
+      team: this.belongsTo(Team, 'teamId'),
       histories: this.hasMany(PlayerHistory, 'player_id'),
       injuries: this.hasMany(Injury, 'player_id'),
       loans: this.hasMany(Loan, 'player_id'),
@@ -55,7 +54,7 @@ export default class Player extends Model {
     return {
       name: 'teams-teamId-players-playerId',
       params: {
-        teamId: this.team_id,
+        teamId: this.teamId,
         playerId: this.id
       }
     }

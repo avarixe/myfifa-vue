@@ -37,7 +37,7 @@
         return this.$store.$db().model('Player')
           .query()
           .with('histories')
-          .where('team_id', this.team.id)
+          .where('teamId', this.team.id)
           .whereIdIn(this.contractsAtStart.map(contract => contract.player_id))
           .get()
       },
@@ -54,7 +54,7 @@
         return this.$store.$db().model('Player')
           .query()
           .with('histories')
-          .where('team_id', this.team.id)
+          .where('teamId', this.team.id)
           .whereIdIn(this.contractsAtEnd.map(contract => contract.player_id))
           .get()
       },

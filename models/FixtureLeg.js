@@ -10,12 +10,12 @@ export default class FixtureLeg extends Model {
       fixture_id: this.number(0),
 
       // Database fields
-      home_score: this.string('').nullable(),
-      away_score: this.string('').nullable()
+      homeScore: this.string('').nullable(),
+      awayScore: this.string('').nullable()
     }
   }
 
   get score () {
-    return `${this.home_score || ''} - ${this.away_score || ''}`
+    return `${this.homeScore || ''} - ${this.awayScore || ''}`
   }
 }

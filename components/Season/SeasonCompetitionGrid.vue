@@ -58,7 +58,7 @@
         return this.$store.$db().model('Competition')
           .query()
           .with('team')
-          .where('team_id', this.team.id)
+          .where('teamId', this.team.id)
           .where('season', this.season)
           .get()
       },

@@ -2,9 +2,28 @@ import { gql } from 'nuxt-graphql-request'
 
 // actions
 export const actions = {
-  async get (_, { playerId }) {
-    const data = await this.$axios.$get(`players/${playerId}`)
-    this.$db().model('Player').insert({ data })
+  async get (_, id) {
+    const query = gql`
+      mutation fetchPlayer($id: ID!) {
+        player(id: $id) {
+          id
+          name
+          nationality
+          pos
+          secPos
+          ovr
+          value
+          status
+          youth
+          kitNo
+          age
+          posIdx
+        }
+      }
+    `
+
+    const { player } = await this.$graphql.default.request(query, { id })
+    this.$db().model('Player').insertOrUpdate({ data: player })
   },
   async create (_, { teamId, attributes }) {
     const query = gql`

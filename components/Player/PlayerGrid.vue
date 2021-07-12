@@ -96,14 +96,14 @@
               {{ item.name }}
             </v-btn>
           </template>
-          <template #item.kit_no="{ item }">
+          <template #item.kitNo="{ item }">
             <inline-select
               :item="item"
-              attribute="kit_no"
+              attribute="kitNo"
               label="Kit No"
               :options="Array.from({ length: 98 }, (v, k) => k + 1)"
               dense
-              @change="updatePlayerAttribute(item.id, 'kit_no', $event)"
+              @change="updatePlayerAttribute(item.id, 'kitNo', $event)"
             />
           </template>
           <template #item.ovr="{ item }">
@@ -130,8 +130,8 @@
           <template #item.status="{ item }">
             <v-icon :color="item.statusColor">mdi-{{ item.statusIcon }}</v-icon>
           </template>
-          <template #item.sec_pos="{ item }">
-            {{ item.sec_pos | listArray('-') }}
+          <template #item.secPos="{ item }">
+            {{ item.secPos | listArray('-') }}
           </template>
           <template #item.wage="{ item }">
             {{ item.wage | formatMoney(team.currency, '-') }}
@@ -187,7 +187,7 @@
         return this.$store.$db().model('Player')
           .query()
           .with('team|contracts')
-          .where('team_id', parseInt(this.$route.params.teamId))
+          .where('teamId', parseInt(this.$route.params.teamId))
           .get()
       },
       currentMode () {
@@ -202,13 +202,13 @@
           { text: 'Status', value: 'status', align: 'center', sortable: false, width: 40 },
           { text: 'Age', value: 'age', align: 'center' },
           { text: 'Position', value: 'pos', align: 'center', sort: this.sortPos },
-          { text: 'Kit No', value: 'kit_no', align: 'center' }
+          { text: 'Kit No', value: 'kitNo', align: 'center' }
         ]
 
         switch (this.mode) {
           case 0: // Overall
             return headers.concat([
-              { text: '2nd Position(s)', value: 'sec_pos', sortable: false, align: 'center' },
+              { text: '2nd Position(s)', value: 'secPos', sortable: false, align: 'center' },
               { text: 'OVR', value: 'ovr', align: 'center' },
               { text: 'Value', value: 'value', align: 'end' }
             ])
@@ -216,7 +216,7 @@
             return [
               { text: 'Name', value: 'name' },
               { text: 'Position', value: 'pos', align: 'center', sort: this.sortPos },
-              { text: 'Kit No', value: 'kit_no', align: 'center' },
+              { text: 'Kit No', value: 'kitNo', align: 'center' },
               { text: 'OVR', value: 'ovr', align: 'center' },
               { text: 'Value', value: 'value', align: 'end' }
             ]

@@ -67,7 +67,7 @@
         return this.$store.$db().model('Squad')
           .query()
           .with('squad_players')
-          .where('team_id', this.team.id)
+          .where('teamId', this.team.id)
           .get()
       },
       starters () {

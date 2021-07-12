@@ -10,8 +10,8 @@ export default class PenaltyShootout extends Model {
       match_id: this.number(0),
 
       // Database fields
-      home_score: this.number(0),
-      away_score: this.number(0)
+      homeScore: this.number(0),
+      awayScore: this.number(0)
     }
   }
 

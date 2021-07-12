@@ -23,6 +23,6 @@ export default class Fixture extends Model {
     return ''
   }
   // get score () {
-  //   return `${this.home_score || ''} - ${this.away_score || ''}`
+  //   return `${this.homeScore || ''} - ${this.awayScore || ''}`
   // }
 }

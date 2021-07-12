@@ -19,19 +19,19 @@
     <template #form>
       <v-col cols="6">
         <v-text-field
-          v-model="penaltyShootout.home_score"
+          v-model="penaltyShootout.homeScore"
           label="Home Score"
           prepend-icon="mdi-soccer"
-          :rules="rulesFor.home_score"
+          :rules="rulesFor.homeScore"
           inputmode="numeric"
         />
       </v-col>
       <v-col cols="6">
         <v-text-field
-          v-model="penaltyShootout.away_score"
+          v-model="penaltyShootout.awayScore"
           label="Away Score"
           prepend-icon="mdi-soccer"
-          :rules="rulesFor.away_score"
+          :rules="rulesFor.awayScore"
           inputmode="numeric"
         />
       </v-col>
@@ -57,15 +57,15 @@
     },
     data: () => ({
       penaltyShootout: {
-        home_score: null,
-        away_score: null
+        homeScore: null,
+        awayScore: null
       },
       rulesFor: {
-        home_score: [
+        homeScore: [
           isRequired('Home Score'),
           isNumber('Home Score')
         ],
-        away_score: [
+        awayScore: [
           isRequired('Away Score'),
           isNumber('Away Score')
         ]
@@ -81,8 +81,8 @@
         if (val && this.record) {
           this.penaltyShootout = pick(this.record, [
             'id',
-            'home_score',
-            'away_score'
+            'homeScore',
+            'awayScore'
           ])
         }
       }

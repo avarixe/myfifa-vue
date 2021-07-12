@@ -19,7 +19,7 @@
           cols="6"
           sm="2"
         >
-          <div class="text-h4">{{ player.sec_pos | listArray }}</div>
+          <div class="text-h4">{{ player.secPos | listArray }}</div>
           <div class="subheading">
             <fitty-text
               text="Secondary Position(s)"
@@ -75,12 +75,12 @@
                 >
                   <inline-select
                     :item="player"
-                    attribute="kit_no"
+                    attribute="kitNo"
                     label="Kit No"
                     :options="Array.from({ length: 98 }, (v, k) => k + 1)"
                     dense
                     display-class="text-h4 blue-grey--text"
-                    @change="updatePlayerAttribute(player.id, 'kit_no', $event)"
+                    @change="updatePlayerAttribute(player.id, 'kitNo', $event)"
                   />
                   <div class="subheading">Kit No</div>
                 </v-col>

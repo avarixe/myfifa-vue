@@ -56,7 +56,7 @@
         >
           <v-col cols="6">
             <v-text-field
-              v-model="leg.home_score"
+              v-model="leg.homeScore"
               label="Home Score"
               prepend-icon="mdi-soccer"
               hide-details
@@ -64,7 +64,7 @@
           </v-col>
           <v-col cols="6">
             <v-text-field
-              v-model="leg.away_score"
+              v-model="leg.awayScore"
               label="Away Score"
               prepend-icon="mdi-soccer"
               append-outer-icon="mdi-delete"
@@ -99,8 +99,8 @@
         home_team: '',
         away_team: '',
         legs_attributes: [{
-          home_score: '',
-          away_score: '',
+          homeScore: '',
+          awayScore: '',
           _destroy: false
         }]
       }
@@ -132,8 +132,8 @@
       }),
       addLeg () {
         this.fixture.legs_attributes.push({
-          home_score: '',
-          away_score: '',
+          homeScore: '',
+          awayScore: '',
           _destroy: false
         })
         this.key++

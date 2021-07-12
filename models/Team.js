@@ -25,10 +25,10 @@ export default class Team extends Model {
       badgePath: this.string('').nullable(),
 
       // Associations
-      players: this.hasMany(Player, 'team_id'),
-      matches: this.hasMany(Match, 'team_id'),
-      squads: this.hasMany(Squad, 'team_id'),
-      competitions: this.hasMany(Competition, 'team_id')
+      players: this.hasMany(Player, 'teamId'),
+      matches: this.hasMany(Match, 'teamId'),
+      squads: this.hasMany(Squad, 'teamId'),
+      competitions: this.hasMany(Competition, 'teamId')
     }
   }
 

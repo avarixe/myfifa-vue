@@ -100,8 +100,8 @@
         return this.cap.name.split(/\s+/).map(term => term[0]).join('')
       },
       identifier () {
-        return this.player && this.player.kit_no
-          ? `${this.abbreviatedName}${this.player.kit_no}`
+        return this.player && this.player.kitNo
+          ? `${this.abbreviatedName}${this.player.kitNo}`
           : this.abbreviatedName
       }
     }

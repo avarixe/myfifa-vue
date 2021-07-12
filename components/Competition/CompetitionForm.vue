@@ -172,7 +172,7 @@
           ...new Set(
             this.$store.$db().model('Competition')
               .query()
-              .where('team_id', this.team.id)
+              .where('teamId', this.team.id)
               .get()
               .map(c => c.name)
           )

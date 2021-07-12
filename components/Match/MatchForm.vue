@@ -16,7 +16,7 @@
     <template #form>
       <v-col cols="12">
         <v-date-field
-          v-model="match.played_on"
+          v-model="attributes.playedOn"
           label="Date Played"
           prepend-icon="mdi-calendar-today"
           required
@@ -26,7 +26,7 @@
       </v-col>
       <v-col cols="12">
         <v-select
-          v-model="match.competition"
+          v-model="attributes.competition"
           label="Competition"
           prepend-icon="mdi-trophy"
           :items="competitions"
@@ -36,11 +36,11 @@
       </v-col>
       <v-scroll-y-transition mode="out-in">
         <v-col
-          v-if="match.competition"
+          v-if="attributes.competition"
           cols="12"
         >
           <v-combobox
-            v-model="match.stage"
+            v-model="attributes.stage"
             label="Stage"
             prepend-icon="mdi-tournament"
             :items="stages"
@@ -54,7 +54,7 @@
       </v-scroll-y-transition>
       <v-col cols="12">
         <v-combobox
-          v-model="match.home"
+          v-model="attributes.home"
           label="Home Team"
           prepend-icon="mdi-home"
           :items="teamOptions"
@@ -70,7 +70,7 @@
       </v-col>
       <v-col cols="12">
         <v-combobox
-          v-model="match.away"
+          v-model="attributes.away"
           label="Away Team"
           prepend-icon="mdi-bus"
           :items="teamOptions"
@@ -86,7 +86,7 @@
       </v-col>
       <v-col cols="12">
         <v-checkbox
-          v-model="match.extra_time"
+          v-model="attributes.extraTime"
           label="Extra Time Required"
           hide-details
         />
@@ -116,13 +116,13 @@
       loadingTeams: false,
       loadingCompetitions: false,
       loadingStages: false,
-      match: {
-        played_on: null,
+      attributes: {
+        playedOn: null,
         competition: '',
         stage: null,
         home: '',
         away: '',
-        extra_time: false
+        extraTime: false
       },
       rulesFor: {
         competition: [isRequired('Competition')],
@@ -138,32 +138,32 @@
         return this.record ? 'Edit Match' : 'New Match'
       },
       isHome () {
-        return this.match.home === this.team.name
+        return this.attributes.home === this.team.name
       },
       isAway () {
-        return this.match.away === this.team.name
+        return this.attributes.away === this.team.name
       },
       season () {
         const startDate = parseISO(this.team.startedOn)
-        const datePlayed = parseISO(this.match.played_on)
+        const datePlayed = parseISO(this.attributes.playedOn)
         return parseInt((datePlayed - startDate) / (525600 * 60 * 1000))
       },
       competitions () {
         return this.$store.$db().model('Competition')
           .query()
-          .where('team_id', this.team.id)
+          .where('teamId', this.team.id)
           .where('season', this.season)
-          .where(comp => this.match.competition === comp.name || !comp.champion)
+          .where(comp => this.attributes.competition === comp.name || !comp.champion)
           .get()
           .map(competition => competition.name)
       },
       competitionId () {
-        if (this.match.competition) {
+        if (this.attributes.competition) {
           const competition = this.$store.$db().model('Competition')
             .query()
-            .where('team_id', this.team.id)
+            .where('teamId', this.team.id)
             .where('season', this.season)
-            .where('name', this.match.competition)
+            .where('name', this.attributes.competition)
             .first()
           return competition ? competition.id : null
         }
@@ -173,9 +173,9 @@
         const competition = this.$store.$db().model('Competition')
           .query()
           .with('stages')
-          .where('team_id', this.team.id)
+          .where('teamId', this.team.id)
           .where('season', this.season)
-          .where('name', this.match.competition)
+          .where('name', this.attributes.competition)
           .first()
 
         if (competition) {
@@ -191,17 +191,16 @@
       dialog (val) {
         if (val) {
           if (this.record) {
-            this.match = pick(this.record, [
-              'id',
-              'played_on',
+            this.attributes = pick(this.record, [
+              'playedOn',
               'competition',
               'stage',
               'home',
               'away',
-              'extra_time'
+              'extraTime'
             ])
           } else {
-            this.match.played_on = this.team.currentlyOn
+            this.attributes.playedOn = this.team.currentlyOn
           }
 
           this.loadTeamOptions()
@@ -236,15 +235,15 @@
         fetchStages: 'stages/fetch'
       }),
       setHome () {
-        this.match.home = this.team.name
-        if (this.match.away === this.team.name) {
-          this.match.away = ''
+        this.attributes.home = this.team.name
+        if (this.attributes.away === this.team.name) {
+          this.attributes.away = ''
         }
       },
       setAway () {
-        this.match.away = this.team.name
-        if (this.match.home === this.team.name) {
-          this.match.home = ''
+        this.attributes.away = this.team.name
+        if (this.attributes.home === this.team.name) {
+          this.attributes.home = ''
         }
       },
       async loadCompetitions () {
@@ -269,11 +268,14 @@
       },
       async submit () {
         if (this.record) {
-          await this.updateMatch(this.match)
+          await this.updateMatch({
+            id: this.record.id,
+            attributes: this.attributes
+          })
         } else {
           const { id: matchId } = await this.createMatch({
             teamId: this.team.id,
-            match: this.match
+            attributes: this.attributes
           })
           this.$router.push({
             name: 'teams-teamId-matches-matchId',

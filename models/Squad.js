@@ -9,7 +9,7 @@ export default class Squad extends Model {
     return {
       // Primary/Foreign keys
       id: this.number(0),
-      team_id: this.number(0),
+      teamId: this.number(0),
 
       // Database fields
       name: this.string(''),

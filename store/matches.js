@@ -1,3 +1,5 @@
+import { gql } from 'nuxt-graphql-request'
+
 // state
 export const state = () => ({
   teamOptions: []
@@ -12,36 +14,112 @@ export const mutations = {
 
 // actions
 export const actions = {
-  async fetch (_, { teamId }) {
-    const data = await this.$axios.$get(`teams/${teamId}/matches`)
-    this.$db().model('Match').insert({ data })
+  async get (_, id) {
+    const query = gql`
+      mutation fetchMatch($id: ID!) {
+        match(id: $id) {
+          id
+          name
+          nationality
+          pos
+          secPos
+          ovr
+          value
+          status
+          youth
+          kitNo
+          age
+          posIdx
+        }
+      }
+    `
+
+    const { match } = await this.$graphql.default.request(query, { id })
+    this.$db().model('Match').insertOrUpdate({ data: match })
   },
-  async get (_, { matchId }) {
-    const data = await this.$axios.$get(`matches/${matchId}`)
-    this.$db().model('Match').insert({ data })
+  async create (_, { teamId, attributes }) {
+    const query = gql`
+      mutation createMatch($teamId: ID!, $attributes: MatchAttributes!) {
+        addMatch(teamId: $teamId, attributes: $attributes) {
+          match { id }
+          errors { fullMessages }
+        }
+      }
+    `
+
+    const { addMatch: { errors, match } } =
+      await this.$graphql.default.request(query, { teamId, attributes })
+
+    if (match) {
+      this.$db().model('Match').insert({ data: match })
+      return match
+    } else {
+      throw new Error(errors.fullMessages[0])
+    }
   },
-  async create (_, { teamId, match }) {
-    const data = await this.$axios.$post(`teams/${teamId}/matches`, { match })
-    this.$db().model('Match').insert({ data })
-    return data
+  async update (_, { id, attributes }) {
+    const query = gql`
+      mutation ($id: ID!, $attributes: MatchAttributes!) {
+        updateMatch(id: $id, attributes: $attributes) {
+          match { id }
+          errors { fullMessages }
+        }
+      }
+    `
+
+    const { updateMatch: { errors } } =
+      await this.$graphql.default.request(query, { id, attributes })
+
+    if (errors) {
+      throw new Error(errors.fullMessages[0])
+    }
   },
-  async update (_, match) {
-    const data = await this.$axios.$patch(`matches/${match.id}`, { match })
-    this.$db().model('Match').insert({ data })
-  },
-  async remove (_, matchId) {
-    await this.$axios.$delete(`matches/${matchId}`)
-    this.$db().model('Match').delete(matchId)
+  async remove (_, id) {
+    const query = gql`
+      mutation removeMatch($id: ID!) {
+        removeMatch(id: $id) {
+          errors { fullMessages }
+        }
+      }
+    `
+
+    const { removeMatch: { errors } } =
+      await this.$graphql.default.request(query, { id })
+
+    if (errors) {
+      throw new Error(errors.fullMessages[0])
+    } else {
+      this.$db().model('Match').delete(id)
+    }
   },
   async applySquad (_, { matchId, squadId }) {
-    const data = await this.$axios.$post(
-      `matches/${matchId}/apply_squad/${squadId}`
-    )
-    this.$db().model('Cap').delete(cap => cap.match_id === matchId)
-    this.$db().model('Match').insert({ data })
+    const query = gql`
+      mutation applySquadToMatch($matchId: ID!, $squadId: ID!) {
+        applySquadToMatch(matchId: $matchId, squadId: $squadId) {
+          match { id }
+        }
+      }
+    `
+
+    const { applySquadToMatch: { match } } =
+      await this.$graphql.default.request(query, { matchId, squadId })
+
+    if (match) {
+      this.$db().model('Cap').delete(cap => cap.match_id === matchId)
+    }
   },
   async fetchTeamOptions ({ commit }, { teamId }) {
-    const data = await this.$axios.$get(`teams/${teamId}/matches/team_options`)
-    commit('setTeamOptions', data)
+    const query = gql`
+      query fetchTeam($id: ID!) {
+        team(id: $id) {
+          opponents
+        }
+      }
+    `
+
+    const { team: { opponents } } =
+      await this.$graphql.default.request(query, { id: teamId })
+
+    commit('setTeamOptions', opponents)
   }
 }

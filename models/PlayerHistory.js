@@ -13,7 +13,7 @@ export default class PlayerHistory extends Model {
       recorded_on: this.string(''),
       ovr: this.number(60),
       value: this.number(0),
-      kit_no: this.number(0).nullable()
+      kitNo: this.number(0).nullable()
     }
   }
 }
