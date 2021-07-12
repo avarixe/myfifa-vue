@@ -165,10 +165,6 @@
     mixins: [
       TeamAccessible
     ],
-    middleware: [
-      'authenticated'
-    ],
-    transition: 'fade-transition',
     computed: {
       matchId () {
         return this.$route.params.matchId

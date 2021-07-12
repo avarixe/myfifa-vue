@@ -191,10 +191,6 @@
     mixins: [
       TeamAccessible
     ],
-    middleware: [
-      'authenticated'
-    ],
-    transition: 'fade-transition',
     head: () => ({
       link: [
         { rel: 'stylesheet', href: '//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css' }

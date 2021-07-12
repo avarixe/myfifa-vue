@@ -47,7 +47,7 @@ export const actions = {
 
           // load current Team, if present
           if ('teamId' in params) {
-            await dispatch('teams/get', { teamId: params.teamId })
+            await dispatch('teams/get', { id: params.teamId })
           }
         } catch (e) {
           console.error(e)

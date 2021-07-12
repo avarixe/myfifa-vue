@@ -23,10 +23,6 @@
 
   export default {
     name: 'TeamsPage',
-    middleware: [
-      'authenticated'
-    ],
-    transition: 'fade-transition',
     async fetch () {
       this.setPage({
         headline: 'Teams'

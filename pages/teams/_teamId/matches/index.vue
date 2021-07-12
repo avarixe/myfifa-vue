@@ -17,10 +17,6 @@
     mixins: [
       TeamAccessible
     ],
-    middleware: [
-      'authenticated'
-    ],
-    transition: 'fade-transition',
     async fetch () {
       await Promise.all([
         this.fetchMatches({ teamId: this.team.id }),

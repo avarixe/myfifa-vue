@@ -104,10 +104,6 @@
     mixins: [
       TeamAccessible
     ],
-    middleware: [
-      'authenticated'
-    ],
-    transition: 'fade-transition',
     computed: {
       lastMatch () {
         return this.$store.$db().model('Match')

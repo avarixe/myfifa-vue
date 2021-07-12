@@ -17,10 +17,10 @@ export const actions = {
     `)
     this.$db().model('Team').insert({ data: teams })
   },
-  async get (_, { teamId }) {
+  async get (_, { id }) {
     const query = gql`
-      query fetchTeam($teamId: ID!) {
-        team(id: $teamId) {
+      query fetchTeam($id: ID!) {
+        team(id: $id) {
           id
           name
           startedOn
@@ -31,23 +31,15 @@ export const actions = {
       }
     `
 
-    const { team } = await this.$graphql.default.request(query, { teamId })
-    this.$db().model('Team').insert({ data: team })
+    const { team } = await this.$graphql.default.request(query, { id })
+    this.$db().model('Team').insertOrUpdate({ data: team })
   },
   async create (_, attributes) {
     const query = gql`
       mutation createTeam($attributes: TeamAttributes!) {
         addTeam(attributes: $attributes) {
-          team {
-            id
-            name
-            currency
-            startedOn
-            currentlyOn
-          }
-          errors {
-            fullMessages
-          }
+          team { id }
+          errors { fullMessages }
         }
       }
     `
@@ -66,24 +58,16 @@ export const actions = {
     const query = gql`
       mutation ($id: ID!, $attributes: TeamAttributes!) {
         updateTeam(id: $id, attributes: $attributes) {
-          team {
-            id
-            name
-            currency
-          }
-          errors {
-            fullMessages
-          }
+          team { id }
+          errors { fullMessages }
         }
       }
     `
 
-    const { updateTeam: { errors, team } } =
+    const { updateTeam: { errors } } =
       await this.$graphql.default.request(query, { id, attributes })
 
-    if (team) {
-      this.$db().model('Team').update({ data: team })
-    } else {
+    if (errors) {
       throw new Error(errors.fullMessages[0])
     }
   },
@@ -91,9 +75,7 @@ export const actions = {
     const query = gql`
       mutation removeTeam($id: ID!) {
         removeTeam(id: $id) {
-          errors {
-            fullMessages
-          }
+          errors { fullMessages }
         }
       }
     `

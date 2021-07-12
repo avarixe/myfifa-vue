@@ -173,10 +173,6 @@
     mixins: [
       TeamAccessible
     ],
-    middleware: [
-      'authenticated'
-    ],
-    transition: 'fade-transition',
     data: () => ({
       table: 0
     }),

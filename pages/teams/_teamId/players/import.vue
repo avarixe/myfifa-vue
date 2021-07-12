@@ -110,10 +110,6 @@
     mixins: [
       TeamAccessible
     ],
-    middleware: [
-      'authenticated'
-    ],
-    transition: 'fade-transition',
     data: () => ({
       valid: false,
       numPlayers: 0,

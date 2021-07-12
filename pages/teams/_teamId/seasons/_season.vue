@@ -77,10 +77,6 @@
     mixins: [
       TeamAccessible
     ],
-    middleware: [
-      'authenticated'
-    ],
-    transition: 'fade-transition',
     computed: {
       title () {
         return `${this.seasonLabel(this.pageSeason)} Season`

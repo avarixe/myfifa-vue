@@ -91,7 +91,6 @@
       }),
       async submit () {
         if (this.record) {
-          console.log('calling updateTeam!')
           await this.updateTeam({
             id: this.record.id,
             attributes: this.attributes

@@ -21,6 +21,10 @@
 
   export default {
     name: 'Layout',
+    middleware: [
+      'authenticated'
+    ],
+    transition: 'fade-transition',
     head () {
       return {
         title: this.title
