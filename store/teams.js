@@ -17,8 +17,8 @@ export const actions = {
     `)
     this.$db().model('Team').insert({ data: teams })
   },
-  async get (_, { id }) {
-    const query = gql`
+  async get (_, { id, query }) {
+    query = query || gql`
       query fetchTeam($id: ID!) {
         team(id: $id) {
           id

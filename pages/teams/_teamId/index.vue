@@ -97,7 +97,14 @@
 
 <script>
   import { mapMutations, mapActions } from 'vuex'
+  import { gql } from 'nuxt-graphql-request'
   import { TeamAccessible } from '@/mixins'
+  import {
+    matchFragment,
+    playerFragment,
+    contractFragment,
+    competitionFragment
+  } from '@/fragments'
 
   export default {
     name: 'TeamPage',
@@ -139,22 +146,33 @@
         title: this.team.name,
         headline: 'Dashboard'
       })
-      // await Promise.all([
-      //   this.fetchMatches({ teamId: this.team.id }),
-      //   this.fetchPlayers({ teamId: this.team.id }),
-      //   this.fetchCompetitions({ teamId: this.team.id }),
-      //   this.searchContracts({ teamId: this.team.id })
-      // ])
+
+      const query = gql`
+        query loadDashboard($id: ID!) {
+          team(id: $id) {
+            id
+            matches { ...MatchData }
+            players {
+              ...PlayerData
+              contracts { ...ContractData }
+            }
+            competitions { ...CompetitionData }
+          }
+        }
+        ${matchFragment}
+        ${playerFragment}
+        ${contractFragment}
+        ${competitionFragment}
+      `
+
+      await this.getTeam({ id: this.team.id, query })
     },
     methods: {
       ...mapMutations('app', {
         setPage: 'setPage'
       }),
       ...mapActions({
-        fetchMatches: 'matches/fetch',
-        fetchPlayers: 'players/fetch',
-        fetchCompetitions: 'competitions/fetch',
-        searchContracts: 'contracts/search'
+        getTeam: 'teams/get'
       }),
       getPlayersByStatus (status) {
         return this.$store.$db().model('Player')
