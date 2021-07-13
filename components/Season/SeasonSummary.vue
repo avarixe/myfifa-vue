@@ -97,7 +97,7 @@
         for (const playerId in this.seasonData.records) {
           const record = findLast(
             this.seasonData.records[playerId],
-            record => record.recorded_on <= this.seasonStart
+            record => record.recordedOn <= this.seasonStart
           )
           record && records.push(record)
         }
@@ -109,7 +109,7 @@
           if (this.seasonData.expired_players.indexOf(parseInt(playerId)) < 0) {
             const record = findLast(
               this.seasonData.records[playerId],
-              record => record.recorded_on <= this.seasonEnd
+              record => record.recordedOn <= this.seasonEnd
             )
             record && records.push(record)
           }

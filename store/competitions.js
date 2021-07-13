@@ -4,9 +4,9 @@ import { gql } from 'nuxt-graphql-request'
 export const actions = {
   async fetch (_, { teamId }) {
     const query = gql`
-      mutation fetchCompetitions($teamId: ID!) {
+      query fetchCompetitions($teamId: ID!) {
         team(id: $teamId) {
-          competition {
+          competitions {
             id
             teamId
             season
@@ -17,7 +17,7 @@ export const actions = {
       }
     `
 
-    const { team: competitions } =
+    const { team: { competitions } } =
       await this.$graphql.default.request(query, { teamId })
     this.$db().model('Competition').insertOrUpdate({ data: competitions })
   },

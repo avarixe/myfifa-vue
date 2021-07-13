@@ -14,23 +14,102 @@ export const mutations = {
 
 // actions
 export const actions = {
+  async fetch (_, { teamId }) {
+    const query = gql`
+      query fetchMatches($teamId: ID!) {
+        team(id: $teamId) {
+          matches {
+            id
+            teamId
+            home
+            away
+            competition
+            stage
+            playedOn
+            extraTime
+            homeScore
+            awayScore
+            score
+            teamResult
+          }
+        }
+      }
+    `
+
+    const { team: { matches } } =
+      await this.$graphql.default.request(query, { teamId })
+    this.$db().model('Match').insertOrUpdate({ data: matches })
+  },
   async get (_, id) {
     const query = gql`
       query fetchMatch($id: ID!) {
         match(id: $id) {
           id
           teamId
-          name
-          nationality
-          pos
-          secPos
-          ovr
-          value
-          status
-          youth
-          kitNo
-          age
-          posIdx
+          home
+          away
+          competition
+          stage
+          playedOn
+          extraTime
+          homeScore
+          awayScore
+          score
+          teamResult
+          caps {
+            id
+            matchId
+            playerId
+            pos
+            start
+            stop
+            subbedOut
+            player {
+              id
+              name
+              pos
+              value
+              ovr
+              histories {
+                id
+                playerId
+                value
+                ovr
+              }
+            }
+          }
+          goals {
+            id
+            createdAt
+            matchId
+            playerId
+            playerName
+            assistId
+            assistedBy
+            minute
+            penalty
+            ownGoal
+          }
+          substitutions {
+            id
+            createdAt
+            matchId
+            playerId
+            playerName
+            replacementId
+            replacedBy
+            minute
+            injury
+          }
+          bookings {
+            id
+            createdAt
+            matchId
+            playerId
+            playerName
+            minute
+            redCard
+          }
         }
       }
     `
@@ -106,7 +185,7 @@ export const actions = {
       await this.$graphql.default.request(query, { matchId, squadId })
 
     if (match) {
-      this.$db().model('Cap').delete(cap => cap.match_id === matchId)
+      this.$db().model('Cap').delete(cap => cap.matchId === matchId)
     }
   },
   async fetchTeamOptions ({ commit }, { teamId }) {

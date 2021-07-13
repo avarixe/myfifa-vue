@@ -269,7 +269,7 @@
               statusColor: player.statusColor,
 
               wage: contract.wage,
-              endDate: contract.ended_on,
+              endDate: contract.endedOn,
 
               numGames,
               numGoals,

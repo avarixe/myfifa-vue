@@ -9,7 +9,7 @@
   >
     <template #heading>
       {{ event.startedOn | formatDate }} -
-      <span v-if="event.ended_on">{{ event.ended_on | formatDate }}</span>
+      <span v-if="event.endedOn">{{ event.endedOn | formatDate }}</span>
       <span v-else>Present</span>
     </template>
     <template #details>
@@ -38,7 +38,7 @@
     computed: {
       length () {
         return formatDistance(
-          parseISO(this.event.ended_on || this.team.currentlyOn),
+          parseISO(this.event.endedOn || this.team.currentlyOn),
           parseISO(this.event.startedOn)
         )
       }

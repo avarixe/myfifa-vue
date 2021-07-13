@@ -66,7 +66,7 @@
       squads () {
         return this.$store.$db().model('Squad')
           .query()
-          .with('squad_players')
+          .with('squadPlayers')
           .where('teamId', this.team.id)
           .get()
       },
@@ -89,14 +89,14 @@
             let squadPlayers = []
 
             this.starters.forEach(cap => {
-              squadPlayers.push({ player_id: cap.player_id, pos: cap.pos })
+              squadPlayers.push({ playerId: cap.playerId, pos: cap.pos })
             })
 
             await this.createSquad({
               teamId: this.team.id,
               squad: {
                 name: this.squadName,
-                squad_players_attributes: squadPlayers
+                squadPlayersAttributes: squadPlayers
               }
             })
           }

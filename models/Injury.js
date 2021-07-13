@@ -7,13 +7,12 @@ export default class Injury extends Model {
     return {
       // Primary/Foreign keys
       id: this.number(0),
-      player_id: this.number(0),
+      playerId: this.number(0),
 
       // Database fields
       startedOn: this.string(''),
-      ended_on: this.string('').nullable(),
-      description: this.string(''),
-      recovered: this.boolean(false)
+      endedOn: this.string('').nullable(),
+      description: this.string('')
     }
   }
 

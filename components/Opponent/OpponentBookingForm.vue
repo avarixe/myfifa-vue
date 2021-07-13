@@ -7,16 +7,16 @@
         </div>
         <minute-field v-model="minute" />
         <v-text-field
-          v-model="booking.player_name"
+          v-model="booking.playerName"
           label="Player"
           prepend-icon="mdi-account"
-          :rules="rules.player_name"
+          :rules="rules.playerName"
           spellcheck="false"
           autocapitalize="words"
           autocomplete="off"
           autocorrect="off"
         />
-        <v-radio-group v-model="booking.red_card">
+        <v-radio-group v-model="booking.redCard">
           <v-radio
             label="Yellow Card"
             color="orange darken-2"
@@ -59,14 +59,14 @@
     data: () => ({
       booking: {
         home: true,
-        player_name: '',
-        red_card: false
+        playerName: '',
+        redCard: false
       }
     }),
     computed: {
       rules () {
         return {
-          player_name: [isRequired('Player')]
+          playerName: [isRequired('Player')]
         }
       }
     },

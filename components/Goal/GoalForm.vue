@@ -42,17 +42,17 @@
       <v-col cols="12">
         <player-select
           v-if="teamGoal"
-          v-model="goal.player_id"
+          v-model="goal.playerId"
           :players="scorerOptions"
           label="Goal Scorer"
           required
         />
         <v-text-field
           v-else
-          v-model="goal.player_name"
+          v-model="goal.playerName"
           label="Goal Scorer"
           prepend-icon="mdi-account"
-          :rules="rulesFor.player_name"
+          :rules="rulesFor.playerName"
           spellcheck="false"
           autocapitalize="words"
           autocomplete="off"
@@ -62,21 +62,21 @@
       <v-col cols="12">
         <player-select
           v-if="teamGoal"
-          v-model="goal.assist_id"
+          v-model="goal.assistId"
           :players="assistOptions"
           label="Assisted By"
           icon="mdi-human-greeting"
-          :disabled="goal.penalty || goal.own_goal"
+          :disabled="goal.penalty || goal.ownGoal"
           clearable
           hide-details
         />
         <v-text-field
           v-else
-          v-model="goal.assisted_by"
+          v-model="goal.assistedBy"
           label="Assisted By"
           prepend-icon="mdi-human-greeting"
           hide-details
-          :disabled="goal.penalty || goal.own_goal"
+          :disabled="goal.penalty || goal.ownGoal"
           spellcheck="false"
           autocapitalize="words"
           autocomplete="off"
@@ -87,13 +87,13 @@
         <v-checkbox
           v-model="goal.penalty"
           label="Penalty"
-          :disabled="goal.own_goal"
+          :disabled="goal.ownGoal"
           hide-details
         />
       </v-col>
       <v-col cols="12">
         <v-checkbox
-          v-model="goal.own_goal"
+          v-model="goal.ownGoal"
           label="Own Goal"
           :disabled="goal.penalty"
           hide-details
@@ -122,15 +122,15 @@
     data: () => ({
       goal: {
         home: true,
-        player_id: null,
-        player_name: '',
-        assisted_by: '',
-        assist_id: '',
-        own_goal: false,
+        playerId: null,
+        playerName: '',
+        assistedBy: '',
+        assistId: '',
+        ownGoal: false,
         penalty: false
       },
       rulesFor: {
-        player_name: [isRequired('Goal Scorer')]
+        playerName: [isRequired('Goal Scorer')]
       }
     }),
     computed: {
@@ -139,12 +139,12 @@
       },
       scorerOptions () {
         return this.unsubbedPlayers.filter(cap =>
-          cap.player_id !== this.goal.assist_id
+          cap.playerId !== this.goal.assistId
         )
       },
       assistOptions () {
         return this.unsubbedPlayers.filter(cap =>
-          cap.player_id !== this.goal.player_id
+          cap.playerId !== this.goal.playerId
         )
       },
       teamGoal () {
@@ -157,25 +157,25 @@
           this.goal = pick(this.record, [
             'id',
             'home',
-            'player_id',
-            'player_name',
-            'assisted_by',
-            'assist_id',
-            'own_goal',
+            'playerId',
+            'playerName',
+            'assistedBy',
+            'assistId',
+            'ownGoal',
             'penalty'
           ])
           this.minute = this.record.minute
         }
       },
-      'goal.assist_id' (val) {
+      'goal.assistId' (val) {
         if (!val && this.teamGoal) {
-          this.goal.assisted_by = ''
+          this.goal.assistedBy = ''
         }
       },
       'goal.penalty' (val) {
         this.clearAssistedBy(val)
       },
-      'goal.own_goal' (val) {
+      'goal.ownGoal' (val) {
         this.clearAssistedBy(val)
       }
     },
@@ -185,16 +185,16 @@
         updateGoal: 'update'
       }),
       clearNames () {
-        this.goal.player_id = null
-        this.goal.player_name = null
-        this.goal.assist_id = null
-        this.goal.assisted_by = null
+        this.goal.playerId = null
+        this.goal.playerName = null
+        this.goal.assistId = null
+        this.goal.assistedBy = null
       },
       clearAssistedBy (val) {
         console.log(`clearAssistedBy `, val)
         if (val) {
-          this.goal.assist_id = null
-          this.goal.assisted_by = null
+          this.goal.assistId = null
+          this.goal.assistedBy = null
         }
       },
       async submit () {

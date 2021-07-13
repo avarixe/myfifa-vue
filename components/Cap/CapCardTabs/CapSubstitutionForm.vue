@@ -7,7 +7,7 @@
         </div>
         <minute-field v-model="minute" />
         <player-select
-          v-model="substitution.replacement_id"
+          v-model="substitution.replacementId"
           :players="availablePlayers"
           item-value="id"
           label="Replaced By"
@@ -51,20 +51,20 @@
     },
     data: () => ({
       substitution: {
-        player_id: null,
-        replacement_id: '',
+        playerId: null,
+        replacementId: '',
         injury: false
       }
     }),
     computed: {
       availablePlayers () {
-        const selectedIds = this.sortedCaps.map(cap => cap.player_id)
+        const selectedIds = this.sortedCaps.map(cap => cap.playerId)
         return this.activePlayers
           .filter(player => {
             if (selectedIds.indexOf(player.id) < 0) {
               return true
             } else if (this.record) {
-              return player.id === this.record.replacement_id
+              return player.id === this.record.replacementId
             }
           })
       }
@@ -73,7 +73,7 @@
       cap: {
         immediate: true,
         handler (cap) {
-          this.substitution.player_id = cap.player_id
+          this.substitution.playerId = cap.playerId
         }
       }
     },

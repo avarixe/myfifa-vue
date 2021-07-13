@@ -18,7 +18,7 @@
     <template #form>
       <v-col cols="12">
         <v-date-field
-          v-model="transfer.moved_on"
+          v-model="transfer.movedOn"
           label="Effective Date"
           prepend-icon="mdi-calendar-today"
           :min="record ? null : team.currentlyOn"
@@ -61,9 +61,9 @@
       </v-col>
       <v-col cols="12">
         <v-text-field
-          v-model="transfer.addon_clause"
+          v-model="transfer.addonClause"
           label="Add-On Clause (%)"
-          :rules="rulesFor.addon_clause"
+          :rules="rulesFor.addonClause"
           inputmode="numeric"
         />
       </v-col>
@@ -90,16 +90,16 @@
     },
     data: () => ({
       transfer: {
-        moved_on: null,
+        movedOn: null,
         origin: '',
         destination: '',
         fee: null,
-        addon_clause: 0
+        addonClause: 0
       },
       rulesFor: {
         origin: [isRequired('Origin')],
         destination: [isRequired('Destination')],
-        addon_clause: [
+        addonClause: [
           isNumber('Add-On Clause'),
           inRange('Add-On Clause', [0, 25])
         ]
@@ -124,14 +124,14 @@
           if (this.record) {
             this.transfer = pick(this.record, [
               'id',
-              'moved_on',
+              'movedOn',
               'origin',
               'destination',
               'fee',
-              'addon_clause'
+              'addonClause'
             ])
           } else {
-            this.transfer.moved_on = this.team.currentlyOn
+            this.transfer.movedOn = this.team.currentlyOn
             if (this.transferOut) {
               this.transfer.origin = this.team.name
             } else {

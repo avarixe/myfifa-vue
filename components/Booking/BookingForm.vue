@@ -42,16 +42,16 @@
       <v-col cols="12">
         <player-select
           v-if="!booking.home ^ match.home === team.name"
-          v-model="booking.player_id"
+          v-model="booking.playerId"
           :players="unsubbedPlayers"
           required
         />
         <v-text-field
           v-else
-          v-model="booking.player_name"
+          v-model="booking.playerName"
           label="Player"
           prepend-icon="mdi-account"
-          :rules="rulesFor.player_name"
+          :rules="rulesFor.playerName"
           spellcheck="false"
           autocapitalize="words"
           autocomplete="off"
@@ -60,7 +60,7 @@
       </v-col>
       <v-col cols="12">
         <v-radio-group
-          v-model="booking.red_card"
+          v-model="booking.redCard"
           row
           hide-details
         >
@@ -99,12 +99,12 @@
     data: () => ({
       booking: {
         home: true,
-        player_id: null,
-        player_name: '',
-        red_card: false
+        playerId: null,
+        playerName: '',
+        redCard: false
       },
       rulesFor: {
-        player_name: [isRequired('Player')]
+        playerName: [isRequired('Player')]
       }
     }),
     computed: {
@@ -118,9 +118,9 @@
           this.booking = pick(this.record, [
             'id',
             'home',
-            'player_id',
-            'player_name',
-            'red_card'
+            'playerId',
+            'playerName',
+            'redCard'
           ])
           this.minute = this.record.minute
         }
@@ -132,8 +132,8 @@
         updateBooking: 'update'
       }),
       clearNames () {
-        this.booking.player_id = null
-        this.booking.player_name = null
+        this.booking.playerId = null
+        this.booking.playerName = null
       },
       async submit () {
         const booking = {

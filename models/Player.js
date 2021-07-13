@@ -37,16 +37,16 @@ export default class Player extends Model {
 
       // Associations
       team: this.belongsTo(Team, 'teamId'),
-      histories: this.hasMany(PlayerHistory, 'player_id'),
-      injuries: this.hasMany(Injury, 'player_id'),
-      loans: this.hasMany(Loan, 'player_id'),
-      contracts: this.hasMany(Contract, 'player_id'),
-      transfers: this.hasMany(Transfer, 'player_id'),
-      caps: this.hasMany(Cap, 'player_id'),
-      matches: this.belongsToMany(Match, Cap, 'player_id', 'match_id'),
-      goals: this.hasMany(Goal, 'player_id'),
-      assists: this.hasMany(Goal, 'assist_id'),
-      bookings: this.hasMany(Booking, 'player_id')
+      histories: this.hasMany(PlayerHistory, 'playerId'),
+      injuries: this.hasMany(Injury, 'playerId'),
+      loans: this.hasMany(Loan, 'playerId'),
+      contracts: this.hasMany(Contract, 'playerId'),
+      transfers: this.hasMany(Transfer, 'playerId'),
+      caps: this.hasMany(Cap, 'playerId'),
+      matches: this.belongsToMany(Match, Cap, 'playerId', 'matchId'),
+      goals: this.hasMany(Goal, 'playerId'),
+      assists: this.hasMany(Goal, 'assistId'),
+      bookings: this.hasMany(Booking, 'playerId')
     }
   }
 
@@ -101,22 +101,22 @@ export default class Player extends Model {
   contract () {
     const contract = Contract
       .query()
-      .where('player_id', this.id)
+      .where('playerId', this.id)
       .where('startedOn', date => date <= this.team.currentlyOn)
-      .where('ended_on', date => this.team.currentlyOn < date)
+      .where('endedOn', date => this.team.currentlyOn < date)
       .last()
     return contract || {}
   }
 
   expiresOn () {
-    return this.contract().ended_on
+    return this.contract().endedOn
   }
 
   recordAt (date) {
     return PlayerHistory
       .query()
-      .where('player_id', this.id)
-      .where('recorded_on', recordedOn => recordedOn <= date)
+      .where('playerId', this.id)
+      .where('recordedOn', recordedOn => recordedOn <= date)
       .last()
   }
 

@@ -8,8 +8,8 @@ export default class SquadPlayer extends Model {
     return {
       // Primary/Foreign keys
       id: this.number(0),
-      squad_id: this.number(0),
-      player_id: this.number(0),
+      squadId: this.number(0),
+      playerId: this.number(0),
 
       // Database fields
       pos: this.string('')

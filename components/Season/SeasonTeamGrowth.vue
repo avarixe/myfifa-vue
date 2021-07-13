@@ -29,7 +29,7 @@
           .query()
           .where(contract =>
             contract.startedOn <= this.seasonStart &&
-            this.seasonStart < contract.ended_on
+            this.seasonStart < contract.endedOn
           )
           .get()
       },
@@ -38,7 +38,7 @@
           .query()
           .with('histories')
           .where('teamId', this.team.id)
-          .whereIdIn(this.contractsAtStart.map(contract => contract.player_id))
+          .whereIdIn(this.contractsAtStart.map(contract => contract.playerId))
           .get()
       },
       contractsAtEnd () {
@@ -46,7 +46,7 @@
           .query()
           .where(contract =>
             contract.startedOn <= this.seasonEnd &&
-            this.seasonEnd < contract.ended_on
+            this.seasonEnd < contract.endedOn
           )
           .get()
       },
@@ -55,7 +55,7 @@
           .query()
           .with('histories')
           .where('teamId', this.team.id)
-          .whereIdIn(this.contractsAtEnd.map(contract => contract.player_id))
+          .whereIdIn(this.contractsAtEnd.map(contract => contract.playerId))
           .get()
       },
       startValue () {

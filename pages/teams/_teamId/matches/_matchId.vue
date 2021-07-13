@@ -167,7 +167,7 @@
     ],
     computed: {
       matchId () {
-        return this.$route.params.matchId
+        return parseInt(this.$route.params.matchId)
       },
       match () {
         return this.$store.$db().model('Match')
@@ -191,7 +191,7 @@
           .where('playedOn', date => date < this.match.playedOn)
           .orderBy('playedOn')
           .last()
-        return prevMatch && prevMatch.link
+        return prevMatch?.link
       },
       nextMatchLink () {
         const nextMatch = this.$store.$db().model('Match')
@@ -200,7 +200,7 @@
           .where('playedOn', date => date > this.match.playedOn)
           .orderBy('playedOn')
           .first()
-        return nextMatch && nextMatch.link
+        return nextMatch?.link
       }
     },
     watch: {
@@ -215,9 +215,8 @@
     },
     async fetch () {
       await Promise.all([
-        this.getMatch({ matchId: this.matchId }),
-        this.fetchPlayers({ teamId: this.team.id }),
-        this.searchPlayerHistories({ teamId: this.team.id })
+        this.getMatch(this.matchId),
+        this.fetchPlayers({ teamId: this.team.id })
       ])
 
       if (!this.readonly) {
@@ -237,7 +236,6 @@
       ...mapActions({
         getMatch: 'matches/get',
         fetchPlayers: 'players/fetch',
-        searchPlayerHistories: 'playerHistories/search',
         fetchSquads: 'squads/fetch'
       })
     }

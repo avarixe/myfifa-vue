@@ -40,7 +40,7 @@
           cols="8"
         >
           <player-select
-            v-model="squadPlayer.player_id"
+            v-model="squadPlayer.playerId"
             :players="activePlayers"
             item-value="id"
             label="Player"
@@ -72,11 +72,10 @@
     },
     data: () => ({
       valid: false,
-      loadingPlayers: false,
       squad: {
         name: '',
-        squad_players_attributes: new Array(11).fill().map(x => ({
-          player_id: null,
+        squadPlayersAttributes: new Array(11).fill().map(x => ({
+          playerId: null,
           pos: null
         }))
       },
@@ -93,7 +92,7 @@
         return Object.keys(matchPositions)
       },
       sortedSquadPlayers () {
-        return [...this.squad.squad_players_attributes].sort((a, b) => {
+        return [...this.squad.squadPlayersAttributes].sort((a, b) => {
           return this.positions.indexOf(a.pos) < this.positions.indexOf(b.pos)
             ? -1
             : 1
@@ -107,35 +106,20 @@
             'id',
             'name'
           ])
-          this.squad.squad_players_attributes = this.record.squad_players
+          this.squad.squadPlayersAttributes = this.record.squadPlayers
             .map(squadPlayer => ({
               id: squadPlayer.id,
-              player_id: squadPlayer.player_id,
+              playerId: squadPlayer.playerId,
               pos: squadPlayer.pos
             }))
-        }
-
-        if (this.activePlayers.length === 0) {
-          this.loadPlayers()
         }
       }
     },
     methods: {
       ...mapActions({
-        fetchPlayers: 'players/fetch',
         createSquad: 'squads/create',
         updateSquad: 'squads/update'
       }),
-      async loadPlayers () {
-        try {
-          this.loadingPlayers = true
-          await this.fetchPlayers({ teamId: this.team.id })
-        } catch (e) {
-          alert(e.message)
-        } finally {
-          this.loadingPlayers = false
-        }
-      },
       async submit () {
         if (this.record) {
           await this.updateSquad(this.squad)

@@ -30,7 +30,7 @@
     <formation-grid :players="starters">
       <template #position="{ player }">
         <cap-view
-          v-if="readonly || player.subbed_out"
+          v-if="readonly || player.subbedOut"
           :cap="player"
           :match="match"
         />
@@ -69,7 +69,7 @@
           class="text-center"
         >
           <cap-view
-            v-if="readonly || cap.subbed_out"
+            v-if="readonly || cap.subbedOut"
             :cap="cap"
             :match="match"
           />
@@ -108,7 +108,7 @@
           class="text-center"
         >
           <cap-view
-            v-if="readonly || cap.subbed_out"
+            v-if="readonly || cap.subbedOut"
             :cap="cap"
             :match="match"
           />
@@ -178,7 +178,7 @@
 
         this.match.caps.forEach(cap => {
           if (matchPositions[cap.pos] === positionType) {
-            playerIds.push(cap.player_id)
+            playerIds.push(cap.playerId)
           }
         })
 

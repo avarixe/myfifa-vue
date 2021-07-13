@@ -7,7 +7,7 @@ export default class PenaltyShootout extends Model {
     return {
       // Primary/Foreign keys
       id: this.number(0),
-      match_id: this.number(0),
+      matchId: this.number(0),
 
       // Database fields
       homeScore: this.number(0),

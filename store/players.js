@@ -2,6 +2,33 @@ import { gql } from 'nuxt-graphql-request'
 
 // actions
 export const actions = {
+  async fetch (_, { teamId }) {
+    const query = gql`
+      query fetchPlayers($teamId: ID!) {
+        team(id: $teamId) {
+          players {
+            id
+            teamId
+            name
+            nationality
+            pos
+            secPos
+            ovr
+            value
+            status
+            youth
+            kitNo
+            age
+            posIdx
+          }
+        }
+      }
+    `
+
+    const { team: { players } } =
+      await this.$graphql.default.request(query, { teamId })
+    this.$db().model('Player').insertOrUpdate({ data: players })
+  },
   async get (_, id) {
     const query = gql`
       query fetchPlayer($id: ID!) {
@@ -19,6 +46,54 @@ export const actions = {
           kitNo
           age
           posIdx
+          contracts {
+            id
+            playerId
+            signedOn
+            wage
+            signingBonus
+            releaseClause
+            performanceBonus
+            bonusReq
+            bonusReqType
+            endedOn
+            startedOn
+            conclusion
+          }
+          transfers {
+            id
+            playerId
+            signedOn
+            movedOn
+            origin
+            destination
+            fee
+            tradedPlayer
+            addonClause
+          }
+          loans {
+            id
+            playerId
+            startedOn
+            signedOn
+            endedOn
+            origin
+            destination
+            wagePercentage
+          }
+          injuries {
+            id
+            playerId
+            startedOn
+            endedOn
+            description
+          }
+          histories {
+            id
+            playerId
+            ovr
+            value
+          }
         }
       }
     `
@@ -116,7 +191,7 @@ export const actions = {
   analyze (_, { teamId, playerIds }) {
     return this.$axios.$post(`teams/${teamId}/analyze/players`, {
       query: {
-        player_ids: playerIds
+        playerIds: playerIds
       }
     })
   }

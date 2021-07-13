@@ -22,7 +22,7 @@
       </v-col>
       <v-col cols="12">
         <player-select
-          v-model="substitution.player_id"
+          v-model="substitution.playerId"
           :players="unsubbedPlayers"
           icon="mdi-subdirectory-arrow-left"
           required
@@ -30,7 +30,7 @@
       </v-col>
       <v-col cols="12">
         <player-select
-          v-model="substitution.replacement_id"
+          v-model="substitution.replacementId"
           :players="availablePlayers"
           item-value="id"
           label="Replaced By"
@@ -66,8 +66,8 @@
     },
     data: () => ({
       substitution: {
-        player_id: null,
-        replacement_id: '',
+        playerId: null,
+        replacementId: '',
         injury: false
       }
     }),
@@ -76,19 +76,19 @@
         return `${this.record ? 'Edit' : 'Record'} Substitution`
       },
       availablePlayers () {
-        const selectedIds = this.sortedCaps.map(cap => cap.player_id)
+        const selectedIds = this.sortedCaps.map(cap => cap.playerId)
         return this.activePlayers.filter(player => {
           if (selectedIds.indexOf(player.id) < 0) {
             return true
           } else if (this.record) {
-            return player.id === this.record.replacement_id
+            return player.id === this.record.replacementId
           }
         })
       },
       unsubbedPlayers () {
         return this.sortedCaps.filter(cap =>
-          (cap.player_id !== this.substitution.replacement_id && !cap.subbed_out) ||
-          (this.record && cap.player_id === this.record.player_id)
+          (cap.playerId !== this.substitution.replacementId && !cap.subbedOut) ||
+          (this.record && cap.playerId === this.record.playerId)
         )
       }
     },
@@ -97,8 +97,8 @@
         if (val && this.record) {
           this.substitution = pick(this.record, [
             'id',
-            'player_id',
-            'replacement_id',
+            'playerId',
+            'replacementId',
             'injury'
           ])
           this.minute = this.record.minute

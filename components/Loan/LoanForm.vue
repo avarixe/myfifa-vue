@@ -27,11 +27,11 @@
         />
       </v-col>
       <v-col
-        v-if="record && record.ended_on"
+        v-if="record && record.endedOn"
         cols="12"
       >
         <v-date-field
-          v-model="loan.ended_on"
+          v-model="loan.endedOn"
           label="Return Date"
           prepend-icon="mdi-calendar"
           :min="loan.startedOn"
@@ -67,14 +67,14 @@
       </v-col>
       <v-col cols="12">
         <v-text-field
-          v-model="loan.wage_percentage"
+          v-model="loan.wagePercentage"
           label="Wage Percentage (%)"
-          :rules="rulesFor.wage_percentage"
+          :rules="rulesFor.wagePercentage"
           inputmode="numeric"
         />
       </v-col>
       <v-col
-        v-if="record && !record.ended_on"
+        v-if="record && !record.endedOn"
         cols="12"
       >
         <v-checkbox
@@ -110,13 +110,13 @@
         startedOn: '',
         origin: '',
         destination: '',
-        wage_percentage: null,
+        wagePercentage: null,
         returned: false
       },
       rulesFor: {
         origin: [isRequired('Origin')],
         destination: [isRequired('Destination')],
-        wage_percentage: [
+        wagePercentage: [
           isNumber('Wage Percentage'),
           inRange('Wage Percentage', [0, 100])
         ]
@@ -139,10 +139,10 @@
             this.loan = pick(this.record, [
               'id',
               'startedOn',
-              'ended_on',
+              'endedOn',
               'origin',
               'destination',
-              'wage_percentage'
+              'wagePercentage'
             ])
           } else {
             this.loan.startedOn = this.team.currentlyOn

@@ -17,7 +17,7 @@
     </template>
     <template #form>
       <v-row
-        v-if="record && record.ended_on"
+        v-if="record && record.endedOn"
         dense
       >
         <v-col cols="12">
@@ -26,13 +26,13 @@
             label="Injury Date"
             prepend-icon="mdi-calendar-today"
             color="pink"
-            :max="contract && contract.ended_on"
+            :max="contract && contract.endedOn"
             required
           />
         </v-col>
         <v-col cols="12">
           <v-date-field
-            v-model="injury.ended_on"
+            v-model="injury.endedOn"
             label="Recovery Date"
             prepend-icon="mdi-calendar"
             color="pink"
@@ -54,7 +54,7 @@
         />
       </v-col>
       <v-col
-        v-if="record && !record.ended_on"
+        v-if="record && !record.endedOn"
         cols="12"
       >
         <v-checkbox
@@ -104,7 +104,7 @@
           this.injury = pick(this.record, [
             'id',
             'startedOn',
-            'ended_on',
+            'endedOn',
             'description'
           ])
         }

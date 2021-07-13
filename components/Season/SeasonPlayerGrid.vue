@@ -127,18 +127,18 @@
       players () {
         return this.$store.$db().model('Player')
           .query()
-          .whereIdIn(this.seasonData.player_ids.map(id => parseInt(id)))
+          .whereIdIn(this.seasonData.playerIds.map(id => parseInt(id)))
           .get()
       },
       rows () {
         return this.players.map(player => {
           const firstRecord = findLast(
             this.seasonData.records[player.id],
-            record => record.recorded_on <= this.seasonStart
+            record => record.recordedOn <= this.seasonStart
           ) || this.seasonData.records[player.id][0]
           const lastRecord = findLast(
             this.seasonData.records[player.id],
-            record => record.recorded_on <= this.seasonEnd
+            record => record.recordedOn <= this.seasonEnd
           )
 
           const startOvr = firstRecord.ovr

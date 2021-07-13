@@ -6,7 +6,7 @@
           Book Player
         </div>
         <minute-field v-model="minute" />
-        <v-radio-group v-model="booking.red_card">
+        <v-radio-group v-model="booking.redCard">
           <v-radio
             label="Yellow Card"
             color="orange darken-2"
@@ -51,17 +51,17 @@
     data: () => ({
       booking: {
         home: true,
-        player_id: null,
-        player_name: '',
-        red_card: false
+        playerId: null,
+        playerName: '',
+        redCard: false
       }
     }),
     watch: {
       cap: {
         immediate: true,
         handler (cap) {
-          this.booking.player_id = cap.player_id
-          this.booking.player_name = cap.name
+          this.booking.playerId = cap.playerId
+          this.booking.playerName = cap.name
         }
       },
       'match.home': {

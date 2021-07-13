@@ -7,20 +7,20 @@
         </div>
         <minute-field v-model="minute" />
         <v-text-field
-          v-model="goal.player_name"
+          v-model="goal.playerName"
           label="Goal Scorer"
           prepend-icon="mdi-account"
-          :rules="rules.player_name"
+          :rules="rules.playerName"
           spellcheck="false"
           autocapitalize="words"
           autocomplete="off"
           autocorrect="off"
         />
         <v-text-field
-          v-model="goal.assisted_by"
+          v-model="goal.assistedBy"
           label="Assisted By"
           prepend-icon="mdi-human-greeting"
-          :disabled="goal.penalty || goal.own_goal"
+          :disabled="goal.penalty || goal.ownGoal"
           hide-details
           spellcheck="false"
           autocapitalize="words"
@@ -30,12 +30,12 @@
         <v-checkbox
           v-model="goal.penalty"
           label="Penalty"
-          :disabled="goal.own_goal"
+          :disabled="goal.ownGoal"
           hide-details
           @change="clearAssistedBy"
         />
         <v-checkbox
-          v-model="goal.own_goal"
+          v-model="goal.ownGoal"
           label="Own Goal"
           :disabled="goal.penalty"
           hide-details
@@ -72,16 +72,16 @@
     data: () => ({
       goal: {
         home: true,
-        player_name: '',
-        assisted_by: '',
-        own_goal: false,
+        playerName: '',
+        assistedBy: '',
+        ownGoal: false,
         penalty: false
       }
     }),
     computed: {
       rules () {
         return {
-          player_name: [isRequired('Goal Scorer')]
+          playerName: [isRequired('Goal Scorer')]
         }
       }
     },
@@ -99,7 +99,7 @@
       }),
       clearAssistedBy (bool) {
         if (bool) {
-          this.goal.assisted_by = null
+          this.goal.assistedBy = null
         }
       },
       async saveGoal () {

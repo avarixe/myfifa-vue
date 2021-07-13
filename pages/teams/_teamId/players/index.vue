@@ -18,10 +18,7 @@
       TeamAccessible
     ],
     async fetch () {
-      await Promise.all([
-        this.fetchPlayers({ teamId: this.team.id }),
-        this.searchContracts({ teamId: this.team.id })
-      ])
+      await this.fetchPlayers({ teamId: this.team.id })
       this.setPage({
         title: `${this.team.name} - Players`,
         headline: 'Players'
@@ -32,8 +29,7 @@
         setPage: 'setPage'
       }),
       ...mapActions({
-        fetchPlayers: 'players/fetch',
-        searchContracts: 'contracts/search'
+        fetchPlayers: 'players/fetch'
       })
     }
   }

@@ -13,7 +13,7 @@
       </template>
       <template v-else>
         {{ event.startedOn | formatDate }} -
-        <span v-if="event.ended_on">{{ event.ended_on | formatDate }}</span>
+        <span v-if="event.endedOn">{{ event.endedOn | formatDate }}</span>
         <span v-else>Present</span>
       </template>
     </template>
@@ -26,9 +26,9 @@
         <td class="font-weight-bold">Destination</td>
         <td class="pl-1">{{ event.destination }}</td>
       </tr>
-      <tr v-if="event.wage_percentage">
+      <tr v-if="event.wagePercentage">
         <td class="font-weight-bold">Wage Percentage</td>
-        <td class="pl-1">{{ event.wage_percentage }}%</td>
+        <td class="pl-1">{{ event.wagePercentage }}%</td>
       </tr>
       <tr>
         <td class="font-weight-bold">Duration</td>
@@ -60,7 +60,7 @@
       },
       length () {
         return formatDistance(
-          parseISO(this.event.ended_on || this.team.currentlyOn),
+          parseISO(this.event.endedOn || this.team.currentlyOn),
           parseISO(this.event.startedOn)
         )
       },

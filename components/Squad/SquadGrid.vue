@@ -23,7 +23,7 @@
       squads () {
         return this.$store.$db().model('Squad')
           .query()
-          .with('squad_players')
+          .with('squadPlayers')
           .where('teamId', this.team.id)
           .get()
       }

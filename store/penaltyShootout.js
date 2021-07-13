@@ -16,7 +16,7 @@ export const actions = {
   },
   async remove (_, id) {
     const penaltyShootout = this.$db().model('PenaltyShootout')
-    const { match_id: matchId } = penaltyShootout.find(id)
+    const { matchId } = penaltyShootout.find(id)
     await this.$axios.$delete(`matches/${matchId}/penaltyShootout`)
     penaltyShootout.delete(id)
   }

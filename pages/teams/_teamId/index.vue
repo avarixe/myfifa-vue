@@ -125,7 +125,7 @@
           .with('team')
           .where('teamId', this.team.id)
           .get()
-          .filter(player => player.contract().ended_on <= this.seasonEnd)
+          .filter(player => player.contract().endedOn <= this.seasonEnd)
       },
       importPlayersLink () {
         return {

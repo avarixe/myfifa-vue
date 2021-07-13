@@ -198,7 +198,7 @@
     }),
     computed: {
       playerId () {
-        return this.$route.params.playerId
+        return parseInt(this.$route.params.playerId)
       },
       player () {
         return this.$store.$db().model('Player')
@@ -217,21 +217,28 @@
         }
       }
     },
-    async asyncData ({ store, params }) {
-      const data = await store.dispatch('players/analyze', {
-        teamId: params.teamId,
-        playerIds: [params.playerId]
-      })
+    // async asyncData ({ store, params }) {
+    async asyncData () {
+      // const data = await store.dispatch('players/analyze', {
+      //   teamId: params.teamId,
+      //   playerIds: [params.playerId]
+      // })
 
+      // return {
+      //   numGames: data.num_games[params.playerId],
+      //   numCs: data.num_cs[params.playerId],
+      //   numGoals: data.num_goals[params.playerId],
+      //   numAssists: data.num_assists[params.playerId]
+      // }
       return {
-        numGames: data.num_games[params.playerId],
-        numCs: data.num_cs[params.playerId],
-        numGoals: data.num_goals[params.playerId],
-        numAssists: data.num_assists[params.playerId]
+        numGames: 0,
+        numCs: 0,
+        numGoals: 0,
+        numAssists: 0
       }
     },
     async fetch () {
-      await this.getPlayer({ playerId: this.playerId })
+      await this.getPlayer(this.playerId)
 
       this.setPage({
         title: this.player.name,

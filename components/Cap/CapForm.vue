@@ -26,7 +26,7 @@
       </v-col>
       <v-col cols="12">
         <player-select
-          v-model="cap.player_id"
+          v-model="cap.playerId"
           :players="activePlayers"
           item-value="id"
           :disabled="cap.start > 0"
@@ -55,7 +55,7 @@
     },
     data: () => ({
       cap: {
-        player_id: null,
+        playerId: null,
         pos: ''
       },
       rulesFor: {

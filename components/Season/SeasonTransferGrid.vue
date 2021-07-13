@@ -7,8 +7,8 @@
     disable-sort
     hide-default-footer
   >
-    <template #item.moved_on="{ item }">
-      {{ item.moved_on | formatDate }}
+    <template #item.movedOn="{ item }">
+      {{ item.movedOn | formatDate }}
     </template>
     <template #item.name="{ item }">
       <v-btn
@@ -30,7 +30,7 @@
     <template #item.fee="{ item }">
       <span :class="`${item.dir === 'in' ? 'red' : 'green'}--text`">
         {{ item.fee | formatMoney }}
-        <span v-if="item.addon_clause">(+{{ item.addon_clause }}%)</span>
+        <span v-if="item.addonClause">(+{{ item.addonClause }}%)</span>
       </span>
     </template>
   </v-data-table>
@@ -46,7 +46,7 @@
     },
     data: () => ({
       headers: [
-        { text: 'Effective Date', value: 'moved_on' },
+        { text: 'Effective Date', value: 'movedOn' },
         { text: 'Player', value: 'name' },
         { text: '', value: 'dir', align: 'center' },
         { text: 'Team', value: 'team' },
@@ -77,8 +77,8 @@
         return this.$store.$db().model('Transfer')
           .query()
           .with('player.histories')
-          .where('player_id', id => playerIds.indexOf(id) > -1)
-          .where('moved_on', date => {
+          .where('playerId', id => playerIds.indexOf(id) > -1)
+          .where('movedOn', date => {
             return this.seasonStart <= date && date < this.seasonEnd
           })
           .get()
@@ -100,7 +100,7 @@
           name: 'teams-teamId-players-playerId',
           params: {
             teamId: this.team.id,
-            playerId: transfer.player_id
+            playerId: transfer.playerId
           }
         }
       }
