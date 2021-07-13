@@ -58,7 +58,6 @@ export const actions = {
     const query = gql`
       mutation ($id: ID!, $attributes: TeamAttributes!) {
         updateTeam(id: $id, attributes: $attributes) {
-          team { id }
           errors { fullMessages }
         }
       }

@@ -22,7 +22,7 @@
       >
         <v-col cols="12">
           <v-date-field
-            v-model="injury.startedOn"
+            v-model="attributes.startedOn"
             label="Injury Date"
             prepend-icon="mdi-calendar-today"
             color="pink"
@@ -32,7 +32,7 @@
         </v-col>
         <v-col cols="12">
           <v-date-field
-            v-model="injury.endedOn"
+            v-model="attributes.endedOn"
             label="Recovery Date"
             prepend-icon="mdi-calendar"
             color="pink"
@@ -43,7 +43,7 @@
       </v-row>
       <v-col cols="12">
         <v-text-field
-          v-model="injury.description"
+          v-model="attributes.description"
           label="Description"
           prepend-icon="mdi-ambulance"
           :rules="rulesFor.description"
@@ -58,7 +58,7 @@
         cols="12"
       >
         <v-checkbox
-          v-model="injury.recovered"
+          v-model="attributes.recovered"
           label="Player Recovered"
           hide-details
         />
@@ -85,7 +85,7 @@
       dark: { type: Boolean, default: false }
     },
     data: () => ({
-      injury: {
+      attributes: {
         description: '',
         recovered: false
       },
@@ -101,8 +101,7 @@
     watch: {
       dialog (val) {
         if (val && this.record) {
-          this.injury = pick(this.record, [
-            'id',
+          this.attributes = pick(this.record, [
             'startedOn',
             'endedOn',
             'description'
@@ -117,11 +116,14 @@
       }),
       async submit () {
         if (this.record) {
-          await this.updateInjury(this.injury)
+          await this.updateInjury({
+            id: this.record.id,
+            attributes: this.attributes
+          })
         } else {
           await this.createInjury({
             playerId: this.player.id,
-            injury: this.injury
+            attributes: this.attributes
           })
         }
       }

@@ -18,7 +18,7 @@
     <template #form>
       <v-col cols="12">
         <v-date-field
-          v-model="loan.startedOn"
+          v-model="attributes.startedOn"
           label="Start Date"
           prepend-icon="mdi-calendar-today"
           :min="record ? null : team.currentlyOn"
@@ -31,17 +31,17 @@
         cols="12"
       >
         <v-date-field
-          v-model="loan.endedOn"
+          v-model="attributes.endedOn"
           label="Return Date"
           prepend-icon="mdi-calendar"
-          :min="loan.startedOn"
+          :min="attributes.startedOn"
           color="indigo"
           required
         />
       </v-col>
       <v-col cols="12">
         <v-text-field
-          v-model="loan.origin"
+          v-model="attributes.origin"
           label="Origin"
           prepend-icon="mdi-airplane-takeoff"
           :rules="rulesFor.origin"
@@ -54,7 +54,7 @@
       </v-col>
       <v-col cols="12">
         <v-text-field
-          v-model="loan.destination"
+          v-model="attributes.destination"
           label="Destination"
           prepend-icon="mdi-airplane-landing"
           :rules="rulesFor.destination"
@@ -67,7 +67,7 @@
       </v-col>
       <v-col cols="12">
         <v-text-field
-          v-model="loan.wagePercentage"
+          v-model.number="attributes.wagePercentage"
           label="Wage Percentage (%)"
           :rules="rulesFor.wagePercentage"
           inputmode="numeric"
@@ -78,7 +78,7 @@
         cols="12"
       >
         <v-checkbox
-          v-model="loan.returned"
+          v-model="attributes.returned"
           label="Player Returned"
           hide-details
         />
@@ -106,7 +106,7 @@
       dark: { type: Boolean, default: false }
     },
     data: () => ({
-      loan: {
+      attributes: {
         startedOn: '',
         origin: '',
         destination: '',
@@ -136,8 +136,7 @@
       dialog (val) {
         if (val) {
           if (this.record) {
-            this.loan = pick(this.record, [
-              'id',
+            this.attributes = pick(this.record, [
               'startedOn',
               'endedOn',
               'origin',
@@ -145,11 +144,11 @@
               'wagePercentage'
             ])
           } else {
-            this.loan.startedOn = this.team.currentlyOn
+            this.attributes.startedOn = this.team.currentlyOn
             if (this.loanOut) {
-              this.loan.origin = this.team.name
+              this.attributes.origin = this.team.name
             } else {
-              this.loan.destination = this.team.name
+              this.attributes.destination = this.team.name
             }
           }
         }
@@ -162,11 +161,14 @@
       }),
       async submit () {
         if (this.record) {
-          await this.updateLoan(this.loan)
+          await this.updateLoan({
+            id: this.record.id,
+            attributes: this.attributes
+          })
         } else {
           await this.createLoan({
             playerId: this.player.id,
-            loan: this.loan
+            attributes: this.attributes
           })
         }
       }

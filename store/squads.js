@@ -1,4 +1,5 @@
 import { gql } from 'nuxt-graphql-request'
+import { squadFragment } from '@/fragments'
 
 // actions
 export const actions = {
@@ -6,25 +7,10 @@ export const actions = {
     const query = gql`
       query fetchSquads($teamId: ID!) {
         team(id: $teamId) {
-          squads {
-            id
-            teamId
-            name
-            squadPlayers {
-              id
-              squadId
-              playerId
-              pos
-              player {
-                id
-                teamId
-                name
-                pos
-              }
-            }
-          }
+          squads { ...SquadData }
         }
       }
+      ${squadFragment}
     `
 
     const { team: { squads } } =

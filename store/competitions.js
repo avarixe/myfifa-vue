@@ -1,4 +1,5 @@
 import { gql } from 'nuxt-graphql-request'
+import { competitionFragment, stageFragment } from '@/fragments'
 
 // actions
 export const actions = {
@@ -6,15 +7,10 @@ export const actions = {
     const query = gql`
       query fetchCompetitions($teamId: ID!) {
         team(id: $teamId) {
-          competitions {
-            id
-            teamId
-            season
-            name
-            champion
-          }
+          competitions { ...CompetitionData }
         }
       }
+      ${competitionFragment}
     `
 
     const { team: { competitions } } =
@@ -25,45 +21,12 @@ export const actions = {
     const query = gql`
       query fetchCompetition($id: ID!) {
         competition(id: $id) {
-          id
-          teamId
-          season
-          name
-          champion
-          stages {
-            id
-            competitionId
-            name
-            numTeams
-            numFixtures
-            table
-            tableRows {
-              id
-              stageId
-              name
-              wins
-              draws
-              losses
-              goalsFor
-              goalsAgainst
-              goalDifference
-              points
-            }
-            fixtures {
-              id
-              stageId
-              homeTeam
-              awayTeam
-              legs {
-                id
-                fixtureId
-                homeScore
-                awayScore
-              }
-            }
-          }
+          ...CompetitionData
+          stages { ...StageData }
         }
       }
+      ${competitionFragment}
+      ${stageFragment}
     `
 
     const { competition } = await this.$graphql.default.request(query, { id })
@@ -93,7 +56,6 @@ export const actions = {
     const query = gql`
       mutation ($id: ID!, $attributes: CompetitionAttributes!) {
         updateCompetition(id: $id, attributes: $attributes) {
-          competition { id }
           errors { fullMessages }
         }
       }

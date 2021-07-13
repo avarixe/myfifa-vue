@@ -1,4 +1,12 @@
 import { gql } from 'nuxt-graphql-request'
+import {
+  contractFragment,
+  transferFragment,
+  loanFragment,
+  injuryFragment,
+  playerFragment,
+  playerHistoryFragment
+} from '@/fragments'
 
 // actions
 export const actions = {
@@ -6,23 +14,10 @@ export const actions = {
     const query = gql`
       query fetchPlayers($teamId: ID!) {
         team(id: $teamId) {
-          players {
-            id
-            teamId
-            name
-            nationality
-            pos
-            secPos
-            ovr
-            value
-            status
-            youth
-            kitNo
-            age
-            posIdx
-          }
+          players { ...PlayerData }
         }
       }
+      ${playerFragment}
     `
 
     const { team: { players } } =
@@ -33,69 +28,20 @@ export const actions = {
     const query = gql`
       query fetchPlayer($id: ID!) {
         player(id: $id) {
-          id
-          teamId
-          name
-          nationality
-          pos
-          secPos
-          ovr
-          value
-          status
-          youth
-          kitNo
-          age
-          posIdx
-          contracts {
-            id
-            playerId
-            signedOn
-            wage
-            signingBonus
-            releaseClause
-            performanceBonus
-            bonusReq
-            bonusReqType
-            endedOn
-            startedOn
-            conclusion
-          }
-          transfers {
-            id
-            playerId
-            signedOn
-            movedOn
-            origin
-            destination
-            fee
-            tradedPlayer
-            addonClause
-          }
-          loans {
-            id
-            playerId
-            startedOn
-            signedOn
-            endedOn
-            origin
-            destination
-            wagePercentage
-          }
-          injuries {
-            id
-            playerId
-            startedOn
-            endedOn
-            description
-          }
-          histories {
-            id
-            playerId
-            ovr
-            value
-          }
+          ...PlayerData
+          contracts { ...ContractData }
+          transfers { ...TransferData }
+          loans { ...LoanData }
+          injuries { ...InjuryData }
+          histories { ...PlayerHistoryData }
         }
       }
+      ${playerFragment}
+      ${contractFragment}
+      ${transferFragment}
+      ${loanFragment}
+      ${injuryFragment}
+      ${playerHistoryFragment}
     `
 
     const { player } = await this.$graphql.default.request(query, { id })
@@ -115,7 +61,7 @@ export const actions = {
       await this.$graphql.default.request(query, { teamId, attributes })
 
     if (player) {
-      this.$db().model('Team').insert({ data: player })
+      this.$db().model('Player').insert({ data: player })
       return player
     } else {
       throw new Error(errors.fullMessages[0])
@@ -125,7 +71,6 @@ export const actions = {
     const query = gql`
       mutation ($id: ID!, $attributes: PlayerAttributes!) {
         updatePlayer(id: $id, attributes: $attributes) {
-          player { id }
           errors { fullMessages }
         }
       }
@@ -160,32 +105,32 @@ export const actions = {
     const query = gql`
       mutation retirePlayer($id: ID!) {
         retirePlayer(id: $id) {
-          errors { fullMessages }
+          player { id }
         }
       }
     `
 
-    const { retirePlayer: { errors } } =
+    const { retirePlayer: { player } } =
       await this.$graphql.default.request(query, { id })
 
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
+    if (!player) {
+      throw new Error('Could not retire Player')
     }
   },
   async release (_, id) {
     const query = gql`
       mutation releasePlayer($id: ID!) {
         releasePlayer(id: $id) {
-          errors { fullMessages }
+          player { id }
         }
       }
     `
 
-    const { releasePlayer: { errors } } =
+    const { releasePlayer: { player } } =
       await this.$graphql.default.request(query, { id })
 
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
+    if (!player) {
+      throw new Error('Could not release Player')
     }
   },
   analyze (_, { teamId, playerIds }) {

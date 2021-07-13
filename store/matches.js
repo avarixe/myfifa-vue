@@ -1,4 +1,12 @@
 import { gql } from 'nuxt-graphql-request'
+import {
+  matchFragment,
+  capFragment,
+  goalFragment,
+  substitutionFragment,
+  bookingFragment,
+  penaltyShootoutFragment
+} from '@/fragments'
 
 // state
 export const state = () => ({
@@ -18,22 +26,10 @@ export const actions = {
     const query = gql`
       query fetchMatches($teamId: ID!) {
         team(id: $teamId) {
-          matches {
-            id
-            teamId
-            home
-            away
-            competition
-            stage
-            playedOn
-            extraTime
-            homeScore
-            awayScore
-            score
-            teamResult
-          }
+          matches { ...MatchData }
         }
       }
+      ${matchFragment}
     `
 
     const { team: { matches } } =
@@ -44,74 +40,20 @@ export const actions = {
     const query = gql`
       query fetchMatch($id: ID!) {
         match(id: $id) {
-          id
-          teamId
-          home
-          away
-          competition
-          stage
-          playedOn
-          extraTime
-          homeScore
-          awayScore
-          score
-          teamResult
-          caps {
-            id
-            matchId
-            playerId
-            pos
-            start
-            stop
-            subbedOut
-            player {
-              id
-              name
-              pos
-              value
-              ovr
-              histories {
-                id
-                playerId
-                value
-                ovr
-              }
-            }
-          }
-          goals {
-            id
-            createdAt
-            matchId
-            playerId
-            playerName
-            assistId
-            assistedBy
-            minute
-            penalty
-            ownGoal
-          }
-          substitutions {
-            id
-            createdAt
-            matchId
-            playerId
-            playerName
-            replacementId
-            replacedBy
-            minute
-            injury
-          }
-          bookings {
-            id
-            createdAt
-            matchId
-            playerId
-            playerName
-            minute
-            redCard
-          }
+          ...MatchData
+          caps { ...CapData }
+          goals { ...GoalData }
+          substitutions { ...SubstitutionData }
+          bookings { ...BookingData }
+          penaltyShootout { ...PenaltyShootoutData }
         }
       }
+      ${matchFragment}
+      ${capFragment}
+      ${goalFragment}
+      ${substitutionFragment}
+      ${bookingFragment}
+      ${penaltyShootoutFragment}
     `
 
     const { match } = await this.$graphql.default.request(query, { id })
@@ -141,7 +83,6 @@ export const actions = {
     const query = gql`
       mutation ($id: ID!, $attributes: MatchAttributes!) {
         updateMatch(id: $id, attributes: $attributes) {
-          match { id }
           errors { fullMessages }
         }
       }
