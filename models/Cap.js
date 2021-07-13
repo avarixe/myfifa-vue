@@ -18,9 +18,6 @@ export default class Cap extends Model {
       stop: this.number(90),
       subbedOut: this.boolean(false),
 
-      // Calculated fields
-      name: this.string(''),
-
       // Associations
       match: this.belongsTo(Match, 'matchId'),
       player: this.belongsTo(Player, 'playerId')

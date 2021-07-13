@@ -172,7 +172,8 @@
       match () {
         return this.$store.$db().model('Match')
           .query()
-          .with('team|caps|goals|bookings|substitutions|penaltyShootout')
+          .with('team|goals|bookings|substitutions|penaltyShootout')
+          .with('caps.player')
           .find(this.matchId)
       },
       players () {

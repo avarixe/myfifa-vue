@@ -5,9 +5,9 @@
         <div class="text-subtitle-2 pb-2">
           Substitute Player
         </div>
-        <minute-field v-model="minute" />
+        <minute-field v-model.number="minute" />
         <player-select
-          v-model="substitution.replacementId"
+          v-model="attributes.replacementId"
           :players="availablePlayers"
           item-value="id"
           label="Replaced By"
@@ -15,7 +15,7 @@
           required
         />
         <v-checkbox
-          v-model="substitution.injury"
+          v-model="attributes.injury"
           label="Injury"
           hide-details
         />
@@ -50,7 +50,7 @@
       cap: { type: Object, required: true }
     },
     data: () => ({
-      substitution: {
+      attributes: {
         playerId: null,
         replacementId: '',
         injury: false
@@ -59,21 +59,20 @@
     computed: {
       availablePlayers () {
         const selectedIds = this.sortedCaps.map(cap => cap.playerId)
-        return this.activePlayers
-          .filter(player => {
-            if (selectedIds.indexOf(player.id) < 0) {
-              return true
-            } else if (this.record) {
-              return player.id === this.record.replacementId
-            }
-          })
+        return this.activePlayers.filter(player => {
+          if (selectedIds.indexOf(player.id) < 0) {
+            return true
+          } else if (this.record) {
+            return player.id === this.record.replacementId
+          }
+        })
       }
     },
     watch: {
       cap: {
         immediate: true,
         handler (cap) {
-          this.substitution.playerId = cap.playerId
+          this.attributes.playerId = cap.playerId
         }
       }
     },
@@ -84,8 +83,8 @@
       async saveSubstitution () {
         await this.createSubstitution({
           matchId: this.match.id,
-          substitution: {
-            ...this.substitution,
+          attributes: {
+            ...this.attributes,
             minute: this.minute
           }
         })

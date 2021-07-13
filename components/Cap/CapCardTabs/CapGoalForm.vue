@@ -5,27 +5,27 @@
         <div class="text-subtitle-2 pb-2">
           Add Goal
         </div>
-        <minute-field v-model="minute" />
-        <player-select
-          v-model="goal.assistId"
-          :players="assistOptions"
+        <minute-field v-model.number="minute" />
+        <cap-select
+          v-model="attributes.assistId"
+          :caps="assistOptions"
           label="Assisted By"
           icon="mdi-human-greeting"
-          :disabled="goal.penalty || goal.ownGoal"
+          :disabled="attributes.penalty || attributes.ownGoal"
           clearable
           hide-details
         />
         <v-checkbox
-          v-model="goal.penalty"
+          v-model="attributes.penalty"
           label="Penalty"
-          :disabled="goal.ownGoal"
+          :disabled="attributes.ownGoal"
           hide-details
           @change="clearAssistedBy"
         />
         <v-checkbox
-          v-model="goal.ownGoal"
+          v-model="attributes.ownGoal"
           label="Own Goal"
-          :disabled="goal.penalty"
+          :disabled="attributes.penalty"
           hide-details
           @change="clearAssistedBy"
         />
@@ -60,7 +60,7 @@
       cap: { type: Object, required: true }
     },
     data: () => ({
-      goal: {
+      attributes: {
         home: true,
         playerId: null,
         playerName: '',
@@ -73,7 +73,7 @@
     computed: {
       assistOptions () {
         return this.unsubbedPlayers.filter(cap =>
-          cap.playerId !== this.goal.playerId
+          cap.playerId !== this.attributes.playerId
         )
       }
     },
@@ -81,14 +81,14 @@
       cap: {
         immediate: true,
         handler (cap) {
-          this.goal.playerId = cap.playerId
-          this.goal.playerName = cap.name
+          this.attributes.playerId = cap.playerId
+          this.attributes.playerName = cap.name
         }
       },
       'match.home': {
         immediate: true,
         handler (home) {
-          this.goal.home = home === this.team.name
+          this.attributes.home = home === this.team.name
         }
       }
     },
@@ -98,15 +98,15 @@
       }),
       clearAssistedBy (bool) {
         if (bool) {
-          this.goal.assistId = null
-          this.goal.assistedBy = null
+          this.attributes.assistId = null
+          this.attributes.assistedBy = null
         }
       },
       async saveGoal () {
         await this.createGoal({
           matchId: this.match.id,
-          goal: {
-            ...this.goal,
+          attributes: {
+            ...this.attributes,
             minute: this.minute
           }
         })

@@ -5,9 +5,9 @@
         <div class="text-subtitle-2 pb-2">
           Book Player
         </div>
-        <minute-field v-model="minute" />
+        <minute-field v-model.number="minute" />
         <v-text-field
-          v-model="booking.playerName"
+          v-model="attributes.playerName"
           label="Player"
           prepend-icon="mdi-account"
           :rules="rules.playerName"
@@ -16,7 +16,7 @@
           autocomplete="off"
           autocorrect="off"
         />
-        <v-radio-group v-model="booking.redCard">
+        <v-radio-group v-model="attributes.redCard">
           <v-radio
             label="Yellow Card"
             color="orange darken-2"
@@ -57,7 +57,7 @@
       MatchAccessible
     ],
     data: () => ({
-      booking: {
+      attributes: {
         home: true,
         playerName: '',
         redCard: false
@@ -74,7 +74,7 @@
       'match.home': {
         immediate: true,
         handler (home) {
-          this.booking.home = home !== this.team.name
+          this.attributes.home = home !== this.team.name
         }
       }
     },
@@ -85,8 +85,8 @@
       async saveBooking () {
         await this.createBooking({
           matchId: this.match.id,
-          booking: {
-            ...this.booking,
+          attributes: {
+            ...this.attributes,
             minute: this.minute
           }
         })

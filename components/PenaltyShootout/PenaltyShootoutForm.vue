@@ -19,7 +19,7 @@
     <template #form>
       <v-col cols="6">
         <v-text-field
-          v-model="penaltyShootout.homeScore"
+          v-model.number="attributes.homeScore"
           label="Home Score"
           prepend-icon="mdi-soccer"
           :rules="rulesFor.homeScore"
@@ -28,7 +28,7 @@
       </v-col>
       <v-col cols="6">
         <v-text-field
-          v-model="penaltyShootout.awayScore"
+          v-model.number="attributes.awayScore"
           label="Away Score"
           prepend-icon="mdi-soccer"
           :rules="rulesFor.awayScore"
@@ -56,7 +56,7 @@
       record: { type: Object, default: null }
     },
     data: () => ({
-      penaltyShootout: {
+      attributes: {
         homeScore: null,
         awayScore: null
       },
@@ -79,8 +79,7 @@
     watch: {
       dialog (val) {
         if (val && this.record) {
-          this.penaltyShootout = pick(this.record, [
-            'id',
+          this.attributes = pick(this.record, [
             'homeScore',
             'awayScore'
           ])
@@ -89,17 +88,12 @@
     },
     methods: {
       ...mapActions('penaltyShootout', {
-        createPenaltyShootout: 'create',
-        updatePenaltyShootout: 'update'
+        savePenaltyShootout: 'save'
       }),
       async submit () {
-        const save = this.record
-          ? this.updatePenaltyShootout
-          : this.createPenaltyShootout
-
-        await save({
+        await this.savePenaltyShootout({
           matchId: this.match.id,
-          penaltyShootout: this.penaltyShootout
+          attributes: this.attributes
         })
       }
     }

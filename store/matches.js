@@ -117,16 +117,20 @@ export const actions = {
     const query = gql`
       mutation applySquadToMatch($matchId: ID!, $squadId: ID!) {
         applySquadToMatch(matchId: $matchId, squadId: $squadId) {
-          match { id }
+          match {
+            id
+            caps { ...CapData }
+          }
         }
       }
+      ${capFragment}
     `
 
     const { applySquadToMatch: { match } } =
       await this.$graphql.default.request(query, { matchId, squadId })
 
     if (match) {
-      this.$db().model('Cap').delete(cap => cap.matchId === matchId)
+      this.$db().model('Match').insertOrUpdate({ data: match })
     }
   },
   async fetchTeamOptions ({ commit }, { teamId }) {

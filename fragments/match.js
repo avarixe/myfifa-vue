@@ -65,7 +65,7 @@ export const goalFragment = gql`
 `
 
 export const substitutionFragment = gql`
-  fragment SubstituionFragment on Substitution {
+  fragment SubstitutionData on Substitution {
     id
     createdAt
     matchId

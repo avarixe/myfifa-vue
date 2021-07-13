@@ -19,7 +19,7 @@
     <template #form>
       <v-col cols="12">
         <v-radio-group
-          v-model="booking.home"
+          v-model="attributes.home"
           row
           hide-details
           @change="clearNames"
@@ -37,18 +37,18 @@
         </v-radio-group>
       </v-col>
       <v-col cols="12">
-        <minute-field v-model="minute" />
+        <minute-field v-model.number="minute" />
       </v-col>
       <v-col cols="12">
-        <player-select
-          v-if="!booking.home ^ match.home === team.name"
-          v-model="booking.playerId"
-          :players="unsubbedPlayers"
+        <cap-select
+          v-if="!attributes.home ^ match.home === team.name"
+          v-model="attributes.playerId"
+          :caps="unsubbedPlayers"
           required
         />
         <v-text-field
           v-else
-          v-model="booking.playerName"
+          v-model="attributes.playerName"
           label="Player"
           prepend-icon="mdi-account"
           :rules="rulesFor.playerName"
@@ -60,7 +60,7 @@
       </v-col>
       <v-col cols="12">
         <v-radio-group
-          v-model="booking.redCard"
+          v-model="attributes.redCard"
           row
           hide-details
         >
@@ -97,7 +97,7 @@
       record: { type: Object, default: null }
     },
     data: () => ({
-      booking: {
+      attributes: {
         home: true,
         playerId: null,
         playerName: '',
@@ -115,8 +115,7 @@
     watch: {
       dialog (val) {
         if (val && this.record) {
-          this.booking = pick(this.record, [
-            'id',
+          this.attributes = pick(this.record, [
             'home',
             'playerId',
             'playerName',
@@ -132,21 +131,24 @@
         updateBooking: 'update'
       }),
       clearNames () {
-        this.booking.playerId = null
-        this.booking.playerName = null
+        this.attributes.playerId = null
+        this.attributes.playerName = null
       },
       async submit () {
-        const booking = {
-          ...this.booking,
+        const attributes = {
+          ...this.attributes,
           minute: this.minute
         }
 
         if (this.record) {
-          await this.updateBooking(booking)
+          await this.updateBooking({
+            id: this.record.id,
+            attributes
+          })
         } else {
           await this.createBooking({
             matchId: this.match.id,
-            booking
+            attributes
           })
         }
       }

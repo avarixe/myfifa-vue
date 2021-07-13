@@ -71,7 +71,7 @@
         try {
           await this.updateCap({
             id: this.cap.id,
-            [key]: value
+            attributes: { [key]: value }
           })
           this.$emit('submitted')
         } catch (e) {

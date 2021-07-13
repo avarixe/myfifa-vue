@@ -80,7 +80,7 @@
       store () {
         return this.event.type === 'penalty-shootout'
           ? 'penaltyShootout'
-          : this.event.type
+          : `${this.event.type}s`
       }
     }
   }
