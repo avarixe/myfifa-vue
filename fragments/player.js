@@ -54,7 +54,6 @@ export const playerFragment = gql`
     youth
     kitNo
     age
-    posIdx
   }
 `
 

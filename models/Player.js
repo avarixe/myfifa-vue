@@ -1,5 +1,5 @@
 import { Model } from '@vuex-orm/core'
-import { nationalities } from '@/constants'
+import { nationalities, positions } from '@/constants'
 import PlayerHistory from './PlayerHistory'
 import Injury from './Injury'
 import Loan from './Loan'
@@ -33,7 +33,6 @@ export default class Player extends Model {
 
       // Calculated fields
       age: this.number(16),
-      posIdx: this.number(0),
 
       // Associations
       team: this.belongsTo(Team, 'teamId'),
@@ -92,6 +91,10 @@ export default class Player extends Model {
       default:
         return 'minus'
     }
+  }
+
+  get posIdx () {
+    return positions.indexOf(this.pos)
   }
 
   get flag () {

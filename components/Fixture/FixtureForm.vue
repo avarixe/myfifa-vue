@@ -17,7 +17,7 @@
     <template #form>
       <v-col cols="12">
         <v-combobox
-          v-model="fixture.homeTeam"
+          v-model="attributes.homeTeam"
           label="Home Team"
           prepend-icon="mdi-home"
           :items="competitionTeams"
@@ -30,7 +30,7 @@
       </v-col>
       <v-col cols="12">
         <v-combobox
-          v-model="fixture.awayTeam"
+          v-model="attributes.awayTeam"
           label="Away Team"
           prepend-icon="mdi-bus"
           :items="competitionTeams"
@@ -49,7 +49,7 @@
       </v-col>
       <v-container :key="key">
         <v-row
-          v-for="(leg, i) in fixture.legs_attributes"
+          v-for="(leg, i) in attributes.legsAttributes"
           v-show="!leg._destroy"
           :key="i"
           dense
@@ -91,14 +91,14 @@
     ],
     props: {
       stage: { type: Object, required: true },
-      fixtureData: { type: Object, default: null }
+      record: { type: Object, default: null }
     },
     data: () => ({
       key: 0,
-      fixture: {
+      attributes: {
         homeTeam: '',
         awayTeam: '',
-        legs_attributes: [{
+        legsAttributes: [{
           homeScore: '',
           awayScore: '',
           _destroy: false
@@ -107,19 +107,18 @@
     }),
     computed: {
       title () {
-        return this.fixtureData ? 'Edit Fixture' : 'Add Fixture'
+        return this.record ? 'Edit Fixture' : 'Add Fixture'
       }
     },
     watch: {
       dialog (val) {
-        if (val && this.fixtureData) {
-          this.fixture = pick(this.fixtureData, [
-            'id',
+        if (val && this.record) {
+          this.attributes = pick(this.record, [
             'homeTeam',
             'awayTeam'
           ])
-          this.fixture.legs_attributes = this.fixtureData.legs.map(leg => ({
-            ...leg,
+          this.attributes.legsAttributes = this.record.legs.map(leg => ({
+            ...pick(leg, ['id', 'homeScore', 'awayScore']),
             _destroy: false
           }))
         }
@@ -131,7 +130,7 @@
         updateFixture: 'update'
       }),
       addLeg () {
-        this.fixture.legs_attributes.push({
+        this.attributes.legsAttributes.push({
           homeScore: '',
           awayScore: '',
           _destroy: false
@@ -139,12 +138,15 @@
         this.key++
       },
       async submit () {
-        if (this.fixtureData) {
-          await this.updateFixture(this.fixture)
+        if (this.record) {
+          await this.updateFixture({
+            id: this.record.id,
+            attributes: this.attributes
+          })
         } else {
           await this.createFixture({
             stageId: this.stage.id,
-            fixture: this.fixture
+            attributes: this.attributes
           })
         }
       }

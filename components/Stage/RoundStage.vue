@@ -48,7 +48,7 @@
       <template #item.edit="{ item }">
         <fixture-form
           :stage="round"
-          :fixture-data="item"
+          :record="item"
           class="d-inline-block"
         >
           <template #default="{ on }">
@@ -126,7 +126,7 @@
         try {
           await this.updateStage({
             id: stageId,
-            [attribute]: value
+            attributes: { [attribute]: value }
           })
         } catch (e) {
           this.key++

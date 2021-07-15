@@ -148,7 +148,7 @@
         try {
           await this.updateStage({
             id: stageId,
-            [attribute]: value
+            attributes: { [attribute]: value }
           })
         } catch (e) {
           this.key++
