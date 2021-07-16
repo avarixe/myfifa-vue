@@ -132,12 +132,5 @@ export const actions = {
     if (!player) {
       throw new Error('Could not release Player')
     }
-  },
-  analyze (_, { teamId, playerIds }) {
-    return this.$axios.$post(`teams/${teamId}/analyze/players`, {
-      query: {
-        playerIds: playerIds
-      }
-    })
   }
 }

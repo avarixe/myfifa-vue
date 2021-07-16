@@ -44,10 +44,7 @@
               touchless
             >
               <v-tab-item>
-                <!-- <season-competition-grid
-                  :season="pageSeason"
-                  :results="seasonData.results"
-                /> -->
+                <season-competition-grid :season="pageSeason" />
               </v-tab-item>
               <v-tab-item>
                 <!-- <season-player-grid
@@ -102,15 +99,16 @@
       }
     },
     // async asyncData ({ params, store }) {
-    //   const seasonData = await store.dispatch('teams/analyzeSeason', {
-    //     teamId: params.teamId,
-    //     season: params.season
-    //   })
-    //   return {
-    //     seasonData,
-    //     tab: 0
-    //   }
-    // },
+    async asyncData () {
+      // const seasonData = await store.dispatch('teams/analyzeSeason', {
+      //   teamId: params.teamId,
+      //   season: params.season
+      // })
+      return {
+        // seasonData,
+        tab: 0
+      }
+    },
     async fetch () {
       this.setPage({
         title: this.title,

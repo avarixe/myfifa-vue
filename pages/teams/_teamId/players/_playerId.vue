@@ -119,14 +119,14 @@
                   cols="6"
                   sm="3"
                 >
-                  <div class="text-h4 teal--text">{{ numGames || 0 }}</div>
+                  <div class="text-h4 teal--text">{{ numMatches || 0 }}</div>
                   <div class="subheading">Matches</div>
                 </v-col>
                 <v-col
                   cols="6"
                   sm="3"
                 >
-                  <div class="text-h4 pink--text">{{ numCs || 0 }}</div>
+                  <div class="text-h4 pink--text">{{ numCleanSheets || 0 }}</div>
                   <div class="subheading">Clean Sheets</div>
                 </v-col>
                 <v-col
@@ -184,7 +184,9 @@
 
 <script>
   import { mapMutations, mapActions } from 'vuex'
+  import { gql } from 'nuxt-graphql-request'
   import { TeamAccessible } from '@/mixins'
+  import { playerStatsFragment } from '@/fragments'
 
   export default {
     name: 'PlayerPage',
@@ -217,25 +219,37 @@
         }
       }
     },
-    // async asyncData ({ store, params }) {
-    async asyncData () {
-      // const data = await store.dispatch('players/analyze', {
-      //   teamId: params.teamId,
-      //   playerIds: [params.playerId]
-      // })
+    async asyncData ({ store, params, $graphql }) {
+      const query = gql`
+        query fetchPlayerStats($id: ID!, $playerId: ID!) {
+          team(id: $id) {
+            playerStats(playerIds: [$playerId]) {
+              ...PlayerStatsData
+            }
+          }
+        }
+        ${playerStatsFragment}
+      `
 
-      // return {
-      //   numGames: data.num_games[params.playerId],
-      //   numCs: data.num_cs[params.playerId],
-      //   numGoals: data.num_goals[params.playerId],
-      //   numAssists: data.num_assists[params.playerId]
-      // }
-      return {
-        numGames: 0,
-        numCs: 0,
+      const { team: { playerStats } } = await $graphql.default.request(query, {
+        id: parseInt(params.teamId),
+        playerId: parseInt(params.playerId)
+      })
+
+      const data = {
+        numMatches: 0,
+        numCleanSheets: 0,
         numGoals: 0,
         numAssists: 0
       }
+
+      playerStats.forEach(stats => {
+        for (const stat in data) {
+          data[stat] += stats[stat]
+        }
+      })
+
+      return data
     },
     async fetch () {
       await this.getPlayer(this.playerId)

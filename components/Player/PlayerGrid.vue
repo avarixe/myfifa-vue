@@ -161,8 +161,7 @@
       modes: [
         { text: 'Overall', color: 'green', icon: 'trending-up' },
         { text: 'Edit', color: 'orange', icon: 'pencil' },
-        { text: 'Contract', color: 'blue', icon: 'file-document-outline' },
-        { text: 'Statistics', color: 'red', icon: 'numeric' }
+        { text: 'Contract', color: 'blue', icon: 'file-document-outline' }
       ],
       filter: 2,
       filters: [
@@ -174,13 +173,7 @@
         { text: 'Pending', color: 'deep-orange', icon: 'lock-clock' }
       ],
       search: '',
-      loading: false,
-      stats: {
-        num_games: {},
-        num_goals: {},
-        num_assists: {},
-        num_cs: {}
-      }
+      loading: false
     }),
     computed: {
       players () {
@@ -226,13 +219,6 @@
               { text: 'Wage', value: 'wage', align: 'end' },
               { text: 'End Date', value: 'endDate', align: 'end' }
             ])
-          case 3: // Statistics
-            return headers.concat([
-              { text: 'Games Played', value: 'numGames', align: 'center' },
-              { text: 'Goals', value: 'numGoals', align: 'center' },
-              { text: 'Assists', value: 'numAssists', align: 'center' },
-              { text: 'Clean Sheets', value: 'numCs', align: 'center' }
-            ])
           default:
             return headers
         }
@@ -255,12 +241,6 @@
           })
           .map(player => {
             const contract = player.contract()
-
-            const numGames = this.stats.num_games[player.id] || 0
-            const numGoals = this.stats.num_goals[player.id] || 0
-            const numAssists = this.stats.num_assists[player.id] || 0
-            const numCs = this.stats.num_cs[player.id] || 0
-
             return {
               ...player,
               flag: player.flag,
@@ -269,19 +249,9 @@
               statusColor: player.statusColor,
 
               wage: contract.wage,
-              endDate: contract.endedOn,
-
-              numGames,
-              numGoals,
-              numAssists,
-              numCs
+              endDate: contract.endedOn
             }
           })
-      }
-    },
-    watch: {
-      mode (val) {
-        val === 3 && this.getPlayerStats()
       }
     },
     methods: {
@@ -289,24 +259,8 @@
         'announce'
       ]),
       ...mapActions('players', {
-        updatePlayer: 'update',
-        analyzePlayers: 'analyze'
+        updatePlayer: 'update'
       }),
-      async getPlayerStats () {
-        try {
-          this.loading = true
-          const data = await this.analyzePlayers({
-            teamId: this.team.id,
-            playerIds: this.players.map(player => player.id)
-          })
-
-          this.stats = data
-        } catch (e) {
-          console.error(e)
-        } finally {
-          this.loading = false
-        }
-      },
       async updatePlayerAttribute (playerId, attribute, value) {
         try {
           await this.updatePlayer({

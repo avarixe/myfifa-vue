@@ -87,8 +87,5 @@ export const actions = {
     } else {
       this.$db().model('Team').delete(teamId)
     }
-  },
-  analyzeSeason (_, { teamId, season }) {
-    return this.$axios.$post(`teams/${teamId}/analyze/season/${season}`)
   }
 }
