@@ -153,17 +153,22 @@
     },
     watch: {
       dialog (val) {
-        if (val && this.record) {
-          this.attributes = pick(this.record, [
-            'home',
-            'playerId',
-            'playerName',
-            'assistedBy',
-            'assistId',
-            'ownGoal',
-            'penalty'
-          ])
-          this.minute = this.record.minute
+        if (val) {
+          if (this.record) {
+            this.attributes = pick(this.record, [
+              'home',
+              'playerId',
+              'playerName',
+              'assistedBy',
+              'assistId',
+              'ownGoal',
+              'penalty'
+            ])
+            this.minute = this.record.minute
+          } else {
+            this.attributes.ownGoal = false
+            this.attributes.penalty = false
+          }
         }
       },
       'attributes.assistId' (val) {

@@ -45,7 +45,10 @@
             this.error = false
             await this.submit()
             this.$emit('success')
-            this.resetAfterSubmit && this.resetForm()
+            if (this.resetAfterSubmit) {
+              this.resetForm()
+              this.$emit('reset')
+            }
           } catch (err) {
             this.errorMessage = err.message
             // if (err.response) {

@@ -106,6 +106,11 @@
       }
     }),
     watch: {
+      dialog (open) {
+        if (open) {
+          this.attributes.table = false
+        }
+      },
       'attributes.table' (val) {
         if (val) {
           this.attributes.numFixtures = null

@@ -1,5 +1,8 @@
 <template>
-  <base-form :submit="saveBooking">
+  <base-form
+    :submit="saveBooking"
+    @reset="attributes.redCard = false"
+  >
     <template #default="{ valid, loading }">
       <div class="pa-2">
         <div class="text-subtitle-2 pb-2">

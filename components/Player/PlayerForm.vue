@@ -146,18 +146,23 @@
     },
     watch: {
       dialog (val) {
-        if (val && this.record) {
-          this.attributes = pick(this.record, [
-            'name',
-            'pos',
-            'age',
-            'nationality',
-            'ovr',
-            'value',
-            'kitNo',
-            'youth'
-          ])
-          this.attributes.secPos = [...this.record.secPos]
+        if (val) {
+          if (this.record) {
+            this.attributes = pick(this.record, [
+              'name',
+              'pos',
+              'age',
+              'nationality',
+              'ovr',
+              'value',
+              'kitNo',
+              'youth'
+            ])
+            this.attributes.secPos = [...this.record.secPos]
+          } else {
+            this.attributes.secPos = []
+            this.attributes.youth = false
+          }
         }
       }
     },

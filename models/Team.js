@@ -40,8 +40,8 @@ export default class Team extends Model {
   }
 
   get season () {
-    const date = parseISO(this.team.startedOn)
-    const currentDate = parseISO(this.team.currentlyOn)
+    const date = parseISO(this.startedOn)
+    const currentDate = parseISO(this.currentlyOn)
     return differenceInYears(currentDate, date)
   }
 

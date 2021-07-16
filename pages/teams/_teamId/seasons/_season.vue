@@ -20,11 +20,10 @@
       <v-col cols="12">
         <v-card>
           <v-card-text>
-            <!-- <season-summary
-              :season-start="seasonStart"
-              :season-end="seasonEnd"
-              :season-data="seasonData"
-            /> -->
+            <season-summary
+              :competition-stats="competitionStats"
+              :player-history-stats="playerHistoryStats"
+            />
           </v-card-text>
         </v-card>
       </v-col>
@@ -44,14 +43,17 @@
               touchless
             >
               <v-tab-item>
-                <season-competition-grid :season="pageSeason" />
+                <season-competition-grid
+                  :season="pageSeason"
+                  :competition-stats="competitionStats"
+                />
               </v-tab-item>
               <v-tab-item>
-                <!-- <season-player-grid
-                  :season-start="seasonStart"
-                  :season-end="seasonEnd"
-                  :season-data="seasonData"
-                /> -->
+                <season-player-grid
+                  :season="pageSeason"
+                  :player-stats="playerStats"
+                  :player-history-stats="playerHistoryStats"
+                />
               </v-tab-item>
               <v-tab-item>
                 <season-transfer-grid :season="pageSeason" />
@@ -67,11 +69,13 @@
 <script>
   import { mapMutations, mapActions } from 'vuex'
   import { gql } from 'nuxt-graphql-request'
-  import { addYears, format, parseISO } from 'date-fns'
   import { TeamAccessible } from '@/mixins'
   import {
     competitionFragment,
+    competitionStatsFragment,
     playerFragment,
+    playerStatsFragment,
+    playerHistoryStatsFragment,
     transferFragment
   } from '@/fragments'
 
@@ -86,26 +90,32 @@
       },
       pageSeason () {
         return parseInt(this.$route.params.season)
-      },
-      seasonStart () {
-        let date = parseISO(this.team.startedOn)
-        date = addYears(date, parseInt(this.pageSeason))
-        return format(date, 'yyyy-MM-dd')
-      },
-      seasonEnd () {
-        let date = parseISO(this.team.startedOn)
-        date = addYears(date, parseInt(this.pageSeason) + 1)
-        return format(date, 'yyyy-MM-dd')
       }
     },
-    // async asyncData ({ params, store }) {
-    async asyncData () {
-      // const seasonData = await store.dispatch('teams/analyzeSeason', {
-      //   teamId: params.teamId,
-      //   season: params.season
-      // })
+    async asyncData ({ params, $graphql }) {
+      const query = gql`
+        query fetchCompetitionStats($id: ID!, $season: Int) {
+          team(id: $id) {
+            competitionStats(season: $season) { ...CompetitionStatsData }
+            playerStats(season: $season) { ...PlayerStatsData }
+            playerHistoryStats(season: $season) { ...PlayerHistoryStatsData }
+          }
+        }
+        ${competitionStatsFragment}
+        ${playerStatsFragment}
+        ${playerHistoryStatsFragment}
+      `
+
+      const { team: { competitionStats, playerStats, playerHistoryStats } } =
+        await $graphql.default.request(query, {
+          id: parseInt(params.teamId),
+          season: parseInt(params.season)
+        })
+
       return {
-        // seasonData,
+        competitionStats,
+        playerStats,
+        playerHistoryStats,
         tab: 0
       }
     },

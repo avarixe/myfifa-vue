@@ -71,14 +71,13 @@
 
 <script>
   import { positions } from '@/constants'
-  import findLast from 'lodash.findlast'
 
   export default {
     name: 'SeasonPlayerGrid',
     props: {
-      seasonStart: { type: String, required: true },
-      seasonEnd: { type: String, required: true },
-      seasonData: { type: Object, required: true }
+      season: { type: Number, required: true },
+      playerStats: { type: Array, required: true },
+      playerHistoryStats: { type: Array, required: true }
     },
     data: () => ({
       mode: 0,
@@ -114,57 +113,48 @@
             ])
           case 1: // Statistics
             return headers.concat([
-              { text: 'Games Played', value: 'numGames', align: 'right' },
+              { text: 'Games Played', value: 'numMatches', align: 'right' },
               { text: 'Minutes', value: 'numMinutes', align: 'right' },
               { text: 'Goals', value: 'numGoals', align: 'right' },
               { text: 'Assists', value: 'numAssists', align: 'right' },
-              { text: 'Clean Sheets', value: 'numCs', align: 'right' }
+              { text: 'Clean Sheets', value: 'numCleanSheets', align: 'right' }
             ])
           default:
             return headers
         }
       },
-      players () {
-        return this.$store.$db().model('Player')
-          .query()
-          .whereIdIn(this.seasonData.playerIds.map(id => parseInt(id)))
-          .get()
-      },
       rows () {
-        return this.players.map(player => {
-          const firstRecord = findLast(
-            this.seasonData.records[player.id],
-            record => record.recordedOn <= this.seasonStart
-          ) || this.seasonData.records[player.id][0]
-          const lastRecord = findLast(
-            this.seasonData.records[player.id],
-            record => record.recordedOn <= this.seasonEnd
-          )
+        return this.playerHistoryStats.map(stats => {
+          const player = this.$store.$db().model('Player').find(stats.playerId)
 
-          const startOvr = firstRecord.ovr
-          const startValue = firstRecord.value
-          const endOvr = lastRecord.ovr
-          const endValue = lastRecord.value
+          const startOvr = stats.ovr[0]
+          const startValue = stats.value[0]
+          const endOvr = stats.ovr[1]
+          const endValue = stats.value[1]
 
           const ovrChange = endOvr - startOvr
           const valueChange = (endValue - startValue) / startValue * 100
 
-          const numGames = this.seasonData.num_games[player.id] || 0
-          const numMinutes = this.seasonData.num_minutes[player.id] || 0
-          const numGoals = this.seasonData.num_goals[player.id] || 0
-          const numAssists = this.seasonData.num_assists[player.id] || 0
-          const numCs = this.seasonData.num_cs[player.id] || 0
+          const matchStats = this.playerStats.reduce((totalStats, data) => {
+            if (data.playerId === stats.playerId) {
+              ['Matches', 'Minutes', 'Goals', 'Assists', 'CleanSheets'].forEach(metric => {
+                totalStats[`num${metric}`] += data[`num${metric}`]
+              })
+            }
+            return totalStats
+          }, {
+            numMatches: 0,
+            numMinutes: 0,
+            numGoals: 0,
+            numAssists: 0,
+            numCleanSheets: 0
+          })
 
           return {
             ...player,
+            ...matchStats,
             link: player.link,
-            age: parseInt(this.seasonEnd) - player.birth_year,
-            numGames,
-            numMinutes,
-            numGoals,
-            numAssists,
-            numCs,
-
+            age: player.age - (this.team.season - this.season),
             endOvr,
             endValue,
             ovrChange,

@@ -88,7 +88,7 @@
     </td>
     <td>
       <v-text-field
-        v-model="player.age"
+        v-model.number="player.age"
         label="Age"
         :rules="[isRequired, isNumber]"
         dense
@@ -99,7 +99,7 @@
     </td>
     <td>
       <v-text-field
-        v-model="player.ovr"
+        v-model.number="player.ovr"
         label="OVR"
         :rules="[isRequired, isNumber, inRange(null, [40, 100])]"
         dense
@@ -110,7 +110,7 @@
     </td>
     <td>
       <v-money-field
-        v-model="player.value"
+        v-model.number="player.value"
         label="Value"
         :prefix="team.currency"
         required
@@ -121,7 +121,7 @@
     </td>
     <td>
       <v-text-field
-        v-model="player.kitNo"
+        v-model.number="player.kitNo"
         label="Kit Number"
         :rules="[isNumber, inRange(null, [1, 99])]"
         dense
@@ -145,7 +145,7 @@
     </td>
     <td>
       <v-money-field
-        v-model="contract.wage"
+        v-model.number="contract.wage"
         label="Wage"
         :prefix="team.currency"
         required
@@ -156,7 +156,7 @@
     </td>
     <td>
       <v-money-field
-        v-model="contract.signingBonus"
+        v-model.number="contract.signingBonus"
         label="Signing Bonus"
         :prefix="team.currency"
         dense
@@ -166,7 +166,7 @@
     </td>
     <td>
       <v-money-field
-        v-model="contract.releaseClause"
+        v-model.number="contract.releaseClause"
         label="Release Clause"
         :prefix="team.currency"
         dense
@@ -176,7 +176,7 @@
     </td>
     <td>
       <v-money-field
-        v-model="contract.performanceBonus"
+        v-model.number="contract.performanceBonus"
         label="Perf. Bonus"
         :prefix="team.currency"
         dense
@@ -187,7 +187,7 @@
     <td>
       <v-text-field
         v-if="contract.performanceBonus"
-        v-model="contract.bonusReq"
+        v-model.number="contract.bonusReq"
         label="Bonus Req."
         prefix="if"
         :rules="[isRequired, isNumber]"
@@ -231,7 +231,7 @@
       error: '',
       isRequired: isRequired(),
       isNumber: isNumber(),
-      inRange: inRange,
+      inRange,
       positions,
       bonusRequirementTypes: [
         'Appearances',

@@ -3,8 +3,8 @@ import { competitionFragment, stageFragment } from '@/fragments'
 
 // actions
 export const actions = {
-  async fetch (_, { teamId }) {
-    const query = gql`
+  async fetch (_, { teamId, query }) {
+    query = query || gql`
       query fetchCompetitions($teamId: ID!) {
         team(id: $teamId) {
           competitions { ...CompetitionData }

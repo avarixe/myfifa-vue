@@ -3,7 +3,6 @@
     :headers="headers"
     :items="rows"
     :items-per-page="-1"
-    :loading="loading"
     :mobile-breakpoint="0"
     disable-sort
     hide-default-footer
@@ -16,8 +15,9 @@
         text
         color="primary"
         class="text-capitalize"
-        v-text="item.name"
-      />
+      >
+        {{ item.name }}
+      </v-btn>
     </template>
     <template #item.status="{ item }">
       <v-icon
@@ -30,13 +30,11 @@
 </template>
 
 <script>
-  import { gql } from 'nuxt-graphql-request'
-  import { competitionStatsFragment } from '@/fragments'
-
   export default {
     name: 'SeasonCompetitionGrid',
     props: {
-      season: { type: Number, required: true }
+      season: { type: Number, required: true },
+      competitionStats: { type: Array, required: true }
     },
     data: () => ({
       headers: [
@@ -49,9 +47,7 @@
         { text: 'GF', value: 'goalsFor', align: 'center' },
         { text: 'GA', value: 'goalsAgainst', align: 'center' },
         { text: 'GD', value: 'goalDifference', align: 'center' }
-      ],
-      loading: true,
-      results: []
+      ]
     }),
     computed: {
       team () {
@@ -64,6 +60,12 @@
           .where('teamId', this.team.id)
           .where('season', this.season)
           .get()
+      },
+      results () {
+        return this.competitionStats.reduce((results, stats) => {
+          results[stats.competition] = stats
+          return results
+        }, {})
       },
       rows () {
         if (this.loading) {
@@ -92,50 +94,6 @@
               goalDifference: goalsFor - goalsAgainst
             }
           })
-        }
-      }
-    },
-    async mounted () {
-      const query = gql`
-        query fetchCompetitionStats($id: ID!, $season: Int) {
-          team(id: $id) {
-            competitionStats(season: $season) {
-              ...CompetitionStatsData
-            }
-          }
-        }
-        ${competitionStatsFragment}
-      `
-
-      const { team: { competitionStats } } =
-        await this.$graphql.default.request(query, {
-          id: this.team.id,
-          season: this.season
-        })
-
-      this.results = competitionStats.reduce((results, stats) => {
-        results[stats.competition] = stats
-        return results
-      }, {})
-
-      this.loading = false
-    },
-    methods: {
-      competitionLink (competition) {
-        const record = this.$store.$db().model('Competition')
-          .query()
-          .where('season', this.season)
-          .where('name', competition)
-          .get()
-
-        if (record.length > 0) {
-          return {
-            name: 'teams-teamId-competitions-competitionId',
-            params: {
-              teamId: this.$route.params.teamId,
-              competitionId: record[0].id
-            }
-          }
         }
       }
     }

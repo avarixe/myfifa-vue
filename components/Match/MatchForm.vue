@@ -44,7 +44,6 @@
             label="Stage"
             prepend-icon="mdi-tournament"
             :items="stages"
-            :loading="loadingStages"
             spellcheck="false"
             autocapitalize="words"
             autocomplete="off"
@@ -97,9 +96,11 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
+  import { gql } from 'nuxt-graphql-request'
   import pick from 'lodash.pick'
   import { parseISO } from 'date-fns'
   import { TeamAccessible, DialogFormable } from '@/mixins'
+  import { competitionFragment, baseStageFragment } from '@/fragments'
   import { isRequired } from '@/functions'
 
   export default {
@@ -115,7 +116,6 @@
       valid: false,
       loadingTeams: false,
       loadingCompetitions: false,
-      loadingStages: false,
       attributes: {
         playedOn: null,
         competition: '',
@@ -201,6 +201,7 @@
             ])
           } else {
             this.attributes.playedOn = this.team.currentlyOn
+            this.attributes.extraTime = false
           }
 
           this.loadTeamOptions()
@@ -209,21 +210,6 @@
             this.loadCompetitions()
           }
         }
-      },
-      competitionId: {
-        async handler (competitionId) {
-          if (competitionId) {
-            try {
-              this.loadingStages = true
-              await this.fetchStages({ competitionId })
-            } catch (e) {
-              alert(e.message)
-            } finally {
-              this.loadingStages = false
-            }
-          }
-        },
-        immediate: true
       }
     },
     methods: {
@@ -231,8 +217,7 @@
         fetchTeamOptions: 'matches/fetchTeamOptions',
         createMatch: 'matches/create',
         updateMatch: 'matches/update',
-        fetchCompetitions: 'competitions/fetch',
-        fetchStages: 'stages/fetch'
+        fetchCompetitions: 'competitions/fetch'
       }),
       setHome () {
         this.attributes.home = this.team.name
@@ -248,8 +233,21 @@
       },
       async loadCompetitions () {
         try {
+          const query = gql`
+            query fetchCompetitions($teamId: ID!) {
+              team(id: $teamId) {
+                competitions {
+                  ...CompetitionData
+                  stages { ...BaseStageData }
+                }
+              }
+            }
+            ${competitionFragment}
+            ${baseStageFragment}
+          `
+
           this.loadingCompetitions = true
-          await this.fetchCompetitions({ teamId: this.team.id })
+          await this.fetchCompetitions({ teamId: this.team.id, query })
         } catch (e) {
           alert(e.message)
         } finally {

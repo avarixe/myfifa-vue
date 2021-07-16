@@ -114,14 +114,18 @@
     },
     watch: {
       dialog (val) {
-        if (val && this.record) {
-          this.attributes = pick(this.record, [
-            'home',
-            'playerId',
-            'playerName',
-            'redCard'
-          ])
-          this.minute = this.record.minute
+        if (val) {
+          if (this.record) {
+            this.attributes = pick(this.record, [
+              'home',
+              'playerId',
+              'playerName',
+              'redCard'
+            ])
+            this.minute = this.record.minute
+          }
+        } else {
+          this.attributes.redCard = false
         }
       }
     },

@@ -1,5 +1,8 @@
 <template>
-  <base-form :submit="saveGoal">
+  <base-form
+    :submit="saveGoal"
+    @reset="resetAttributes"
+  >
     <template #default="{ valid, loading }">
       <div class="pa-2">
         <div class="text-subtitle-2 pb-2">
@@ -111,6 +114,10 @@
           }
         })
         this.$emit('submitted')
+      },
+      resetAttributes () {
+        this.attributes.ownGoal = false
+        this.attributes.penalty = false
       }
     }
   }
