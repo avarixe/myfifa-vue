@@ -273,10 +273,10 @@
       async savePlayer () {
         try {
           this.loading = true
-          await this.createPlayer({
-            teamId: this.team.id,
-            attributes: this.player
-          })
+
+          const attributes = { ...this.player }
+          delete attributes.rowId
+          await this.createPlayer({ teamId: this.team.id, attributes })
           this.saved = true
         } catch (e) {
           this.error = e.message

@@ -1,34 +1,23 @@
 import { gql } from 'nuxt-graphql-request'
+import { teamFragment } from '@/fragments'
 
 // actions
 export const actions = {
   async fetch () {
     const { teams } = await this.$graphql.default.request(gql`
       query fetchTeams {
-        teams {
-          id
-          name
-          startedOn
-          currentlyOn
-          currency
-          badgePath
-        }
+        teams { ...TeamData }
       }
+      ${teamFragment}
     `)
     this.$db().model('Team').insert({ data: teams })
   },
   async get (_, { id, query }) {
     query = query || gql`
       query fetchTeam($id: ID!) {
-        team(id: $id) {
-          id
-          name
-          startedOn
-          currentlyOn
-          currency
-          badgePath
-        }
+        team(id: $id) { ...TeamData }
       }
+      ${teamFragment}
     `
 
     const { team } = await this.$graphql.default.request(query, { id })
@@ -38,10 +27,11 @@ export const actions = {
     const query = gql`
       mutation createTeam($attributes: TeamAttributes!) {
         addTeam(attributes: $attributes) {
-          team { id }
+          team { ...TeamData }
           errors { fullMessages }
         }
       }
+      ${teamFragment}
     `
 
     const { addTeam: { errors, team } } =

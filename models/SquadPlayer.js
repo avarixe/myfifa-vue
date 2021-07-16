@@ -1,5 +1,6 @@
 import { Model } from '@vuex-orm/core'
 import { matchPositions } from '@/constants'
+import Player from './Player'
 
 export default class SquadPlayer extends Model {
   static entity = 'SquadPlayer'
@@ -12,7 +13,10 @@ export default class SquadPlayer extends Model {
       playerId: this.number(0),
 
       // Database fields
-      pos: this.string('')
+      pos: this.string(''),
+
+      // Associations
+      player: this.belongsTo(Player, 'playerId')
     }
   }
 

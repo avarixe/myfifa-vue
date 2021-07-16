@@ -21,15 +21,19 @@ export const actions = {
     const query = gql`
       mutation createSquad($teamId: ID!, $attributes: SquadAttributes!) {
         addSquad(teamId: $teamId, attributes: $attributes) {
+          squad { ...SquadData }
           errors { fullMessages }
         }
       }
+      ${squadFragment}
     `
 
-    const { addSquad: { errors } } =
+    const { addSquad: { squad, errors } } =
       await this.$graphql.default.request(query, { teamId, attributes })
 
-    if (errors) {
+    if (squad) {
+      this.$db().model('Squad').insertOrUpdate({ data: squad })
+    } else {
       throw new Error(errors.fullMessages[0])
     }
   },
@@ -37,15 +41,19 @@ export const actions = {
     const query = gql`
       mutation ($id: ID!, $attributes: SquadAttributes!) {
         updateSquad(id: $id, attributes: $attributes) {
+          squad { ...SquadData }
           errors { fullMessages }
         }
       }
+      ${squadFragment}
     `
 
-    const { updateSquad: { errors } } =
+    const { updateSquad: { squad, errors } } =
       await this.$graphql.default.request(query, { id, attributes })
 
-    if (errors) {
+    if (squad) {
+      this.$db().model('Squad').insertOrUpdate({ data: squad })
+    } else {
       throw new Error(errors.fullMessages[0])
     }
   },

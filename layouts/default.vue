@@ -2,7 +2,7 @@
   <v-app dark>
     <template v-if="currentUser">
       <app-bar />
-      <template v-if="teamPage">
+      <template v-if="team">
         <team-navigator />
         <client-only>
           <team-channel />
@@ -38,9 +38,6 @@
       ...mapGetters([
         'currentUser'
       ]),
-      teamPage () {
-        return 'teamId' in this.$route.params
-      },
       team () {
         return this.$store.$db().model('Team').find(this.$route.params.teamId)
       }

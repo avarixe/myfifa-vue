@@ -31,7 +31,7 @@
           id: this.$route.params.teamId
         }, {
           received: ({ type, data, destroyed }) => {
-            // console.log(type, data, destroyed)
+            console.log(type, data, destroyed)
             this.addToBuffer({ type, data, destroyed })
           },
           connected: () => {}
@@ -68,7 +68,7 @@
           const data = this.insertBuffer[type].map(
             record => mapKeys(record, (_v, k) => camelCase(k))
           )
-          await this.$store.$db().model(type).insert({ data })
+          await this.$store.$db().model(type).insertOrUpdate({ data })
           delete this.insertBuffer[type]
         })
       }
