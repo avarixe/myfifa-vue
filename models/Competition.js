@@ -1,8 +1,6 @@
 import { Model } from '@vuex-orm/core'
-import Match from './Match'
 import Stage from './Stage'
 import Team from './Team'
-import { parseISO, format, addYears } from 'date-fns'
 
 class Competition extends Model {
   static entity = 'Competition'
@@ -79,27 +77,6 @@ class Competition extends Model {
       ]
     }, [])
     return [ ...new Set(array.filter(team => team !== null && team !== '')) ].sort()
-  }
-
-  get seasonStart () {
-    const date = parseISO(this.team.startedOn)
-    return format(addYears(date, this.season), 'yyyy-MM-dd')
-  }
-
-  get seasonEnd () {
-    const date = parseISO(this.seasonStart)
-    return format(addYears(date, 1), 'yyyy-MM-dd')
-  }
-
-  get matches () {
-    const start = this.seasonStart
-    const end = this.seasonEnd
-    return Match
-      .query()
-      .where('competition', this.name)
-      .where('teamId', this.teamId)
-      .where('playedOn', date => start <= date && date <= end)
-      .get()
   }
 }
 

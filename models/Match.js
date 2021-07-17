@@ -1,5 +1,4 @@
 import { Model } from '@vuex-orm/core'
-import { parseISO } from 'date-fns'
 import Team from './Team'
 import PenaltyShootout from './PenaltyShootout'
 import Goal from './Goal'
@@ -56,12 +55,6 @@ export default class Match extends Model {
     return this.home === this.team.home
       ? this.away
       : this.home
-  }
-
-  get season () {
-    const startDate = parseISO(this.team.startedOn)
-    const datePlayed = parseISO(this.playedOn)
-    return parseInt((datePlayed - startDate) / (525600 * 60 * 1000))
   }
 
   get resultColor () {
