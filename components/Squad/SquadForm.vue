@@ -21,9 +21,9 @@
           autocorrect="off"
         />
       </v-col>
-      <template v-for="squadPlayer in sortedSquadPlayers">
+      <template v-for="(squadPlayer, i) in sortedSquadPlayers">
         <v-col
-          :key="`pos${squadPlayer.id}`"
+          :key="`pos${i}`"
           cols="4"
         >
           <v-select
@@ -37,7 +37,7 @@
           />
         </v-col>
         <v-col
-          :key="`player${squadPlayer.id}`"
+          :key="`player${i}`"
           cols="8"
         >
           <player-select
