@@ -10,7 +10,7 @@
   export default {
     name: 'TeamChannel',
     data: () => ({
-      cable: null,
+      socket: null,
       timeout: null,
       insertBuffer: {},
       deleteBuffer: {}
@@ -20,26 +20,32 @@
     ]),
     mounted () {
       if (!this.cable && this.token) {
-        const ActionCable = require('actioncable')
-
-        this.cable = ActionCable.createConsumer(
+        this.socket = new WebSocket(
           `${this.$config.cableURL}?access_token=${this.token}`
         )
 
-        this.cable.subscriptions.create({
-          channel: 'TeamChannel',
-          id: this.$route.params.teamId
-        }, {
-          received: ({ type, data, destroyed }) => {
-            console.log(type, data, destroyed)
+        this.socket.onmessage = event => {
+          const { message } = JSON.parse(event.data)
+          const { type, data, destroyed } = message || {}
+          if (type) {
+            // console.log(type, data, destroyed)
             this.addToBuffer({ type, data, destroyed })
-          },
-          connected: () => {}
-        })
+          }
+        }
+
+        this.socket.onopen = () => {
+          this.socket.send(JSON.stringify({
+            command: 'subscribe',
+            identifier: JSON.stringify({
+              channel: 'TeamChannel',
+              id: this.$route.params.teamId
+            })
+          }))
+        }
       }
     },
     destroyed () {
-      this.cable.subscriptions.consumer.disconnect()
+      this.socket.close()
     },
     methods: {
       addToBuffer ({ type, data, destroyed }) {

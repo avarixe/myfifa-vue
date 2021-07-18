@@ -14,9 +14,8 @@
               nuxt
               text
               color="primary"
-            >
-              {{ item.name }}
-            </v-btn>
+              v-text="item.name"
+            />
           </template>
           <template #item.badgePath="{ item }">
             <v-img

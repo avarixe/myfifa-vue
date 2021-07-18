@@ -13,7 +13,6 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.12.5",
     "@vuex-orm/core": "^0.36.2",
-    "actioncable": "^5.2.1",
     "cookieparser": "^0.1.0",
     "date-fns": "^2.8.1",
     "email-validator": "^2.0.4",
