@@ -1,52 +1,7 @@
 import { gql } from 'nuxt-graphql-request'
-import {
-  contractFragment,
-  transferFragment,
-  loanFragment,
-  injuryFragment,
-  playerFragment,
-  playerHistoryFragment
-} from '@/fragments'
 
 // actions
 export const actions = {
-  async fetch (_, { teamId }) {
-    const query = gql`
-      query fetchPlayers($teamId: ID!) {
-        team(id: $teamId) {
-          players { ...PlayerData }
-        }
-      }
-      ${playerFragment}
-    `
-
-    const { team: { players } } =
-      await this.$graphql.default.request(query, { teamId })
-    this.$db().model('Player').insertOrUpdate({ data: players })
-  },
-  async get (_, id) {
-    const query = gql`
-      query fetchPlayer($id: ID!) {
-        player(id: $id) {
-          ...PlayerData
-          contracts { ...ContractData }
-          transfers { ...TransferData }
-          loans { ...LoanData }
-          injuries { ...InjuryData }
-          histories { ...PlayerHistoryData }
-        }
-      }
-      ${playerFragment}
-      ${contractFragment}
-      ${transferFragment}
-      ${loanFragment}
-      ${injuryFragment}
-      ${playerHistoryFragment}
-    `
-
-    const { player } = await this.$graphql.default.request(query, { id })
-    this.$db().model('Player').insertOrUpdate({ data: player })
-  },
   async create (_, { teamId, attributes }) {
     const query = gql`
       mutation createPlayer($teamId: ID!, $attributes: PlayerAttributes!) {

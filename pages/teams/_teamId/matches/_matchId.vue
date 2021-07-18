@@ -157,8 +157,19 @@
 </template>
 
 <script>
-  import { mapMutations, mapActions } from 'vuex'
+  import { mapMutations } from 'vuex'
+  import { gql } from 'nuxt-graphql-request'
   import { TeamAccessible } from '@/mixins'
+  import {
+    matchFragment,
+    capFragment,
+    goalFragment,
+    substitutionFragment,
+    bookingFragment,
+    penaltyShootoutFragment,
+    playerFragment,
+    baseSquadFragment
+  } from '@/fragments'
 
   export default {
     name: 'MatchPage',
@@ -215,14 +226,42 @@
       }
     },
     async fetch () {
-      await Promise.all([
-        this.getMatch(this.matchId),
-        this.fetchPlayers({ teamId: this.team.id })
-      ])
+      const query = gql`
+        query fetchMatchPage($matchId: ID!, $teamId: ID!) {
+          match(id: $matchId) {
+            ...MatchData
+            caps { ...CapData }
+            goals { ...GoalData }
+            substitutions { ...SubstitutionData }
+            bookings { ...BookingData }
+            penaltyShootout { ...PenaltyShootoutData }
+          }
+          team(id: $teamId) {
+            players { ...PlayerData }
+            squads { ...BaseSquadData }
+          }
+        }
+        ${matchFragment}
+        ${capFragment}
+        ${goalFragment}
+        ${substitutionFragment}
+        ${bookingFragment}
+        ${penaltyShootoutFragment}
+        ${playerFragment}
+        ${baseSquadFragment}
+      `
 
-      if (!this.readonly) {
-        await this.fetchSquads({ teamId: this.team.id })
-      }
+      const { match, team: { players, squads } } =
+        await this.$graphql.default.request(query, {
+          matchId: this.matchId,
+          teamId: this.team.id
+        })
+
+      await Promise.all([
+        this.$store.$db().model('Match').insertOrUpdate({ data: match }),
+        this.$store.$db().model('Player').insertOrUpdate({ data: players }),
+        this.$store.$db().model('Squad').insertOrUpdate({ data: squads })
+      ])
 
       this.setPage({
         title: `${this.match.home} vs ${this.match.away}`,
@@ -230,15 +269,8 @@
         caption: `v ${this.match.opponent}`
       })
     },
-    methods: {
-      ...mapMutations('app', {
-        setPage: 'setPage'
-      }),
-      ...mapActions({
-        getMatch: 'matches/get',
-        fetchPlayers: 'players/fetch',
-        fetchSquads: 'squads/fetch'
-      })
-    }
+    methods: mapMutations('app', {
+      setPage: 'setPage'
+    })
   }
 </script>

@@ -9,8 +9,10 @@
 </template>
 
 <script>
-  import { mapMutations, mapActions } from 'vuex'
+  import { mapMutations } from 'vuex'
+  import { gql } from 'nuxt-graphql-request'
   import { TeamAccessible } from '@/mixins'
+  import { playerFragment } from '@/fragments'
 
   export default {
     name: 'PlayersPage',
@@ -18,19 +20,27 @@
       TeamAccessible
     ],
     async fetch () {
-      await this.fetchPlayers({ teamId: this.team.id })
+      const query = gql`
+        query fetchPlayersPage($teamId: ID!) {
+          team(id: $teamId) {
+            players { ...PlayerData }
+          }
+        }
+        ${playerFragment}
+      `
+
+      const { team: { players } } =
+        await this.$graphql.default.request(query, { teamId: this.team.id })
+
+      await this.$store.$db().model('Player').insertOrUpdate({ data: players })
+
       this.setPage({
         title: `${this.team.name} - Players`,
         headline: 'Players'
       })
     },
-    methods: {
-      ...mapMutations('app', {
-        setPage: 'setPage'
-      }),
-      ...mapActions({
-        fetchPlayers: 'players/fetch'
-      })
-    }
+    methods: mapMutations('app', {
+      setPage: 'setPage'
+    })
   }
 </script>

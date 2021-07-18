@@ -3,15 +3,6 @@ import { teamFragment } from '@/fragments'
 
 // actions
 export const actions = {
-  async fetch () {
-    const { teams } = await this.$graphql.default.request(gql`
-      query fetchTeams {
-        teams { ...TeamData }
-      }
-      ${teamFragment}
-    `)
-    this.$db().model('Team').insert({ data: teams })
-  },
   async get (_, { id, query }) {
     query = query || gql`
       query fetchTeam($id: ID!) {

@@ -174,18 +174,17 @@
         this.players = this.players.filter(player => player.rowId !== row.rowId)
       },
       upload (event) {
-        /* Boilerplate to set up FileReader */
         const reader = new FileReader()
         reader.onload = (e) => {
-          /* Parse data */
+          // Parse data
           const bstr = e.target.result
           const wb = XLSX.read(bstr, { type: 'binary', cellDates: true })
-          /* Get first worksheet */
+          // Get first worksheet
           const wsname = wb.SheetNames[0]
           const ws = wb.Sheets[wsname]
-          /* Convert array of arrays */
+          // Convert array of arrays
           const data = XLSX.utils.sheet_to_json(ws)
-          /* Update state */
+          // Update state
           data.forEach(player => this.importPlayer(player))
         }
 

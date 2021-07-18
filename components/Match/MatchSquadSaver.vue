@@ -86,17 +86,14 @@
           } else if (this.squadName) {
             this.loading = true
 
-            let squadPlayers = []
-
-            this.starters.forEach(cap => {
-              squadPlayers.push({ playerId: cap.playerId, pos: cap.pos })
-            })
-
             await this.createSquad({
               teamId: this.team.id,
-              squad: {
+              attributes: {
                 name: this.squadName,
-                squadPlayersAttributes: squadPlayers
+                squadPlayersAttributes: this.starters.map(cap => ({
+                  playerId: cap.playerId,
+                  pos: cap.pos
+                }))
               }
             })
           }

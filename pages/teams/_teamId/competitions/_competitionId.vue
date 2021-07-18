@@ -165,8 +165,10 @@
 </template>
 
 <script>
-  import { mapMutations, mapActions } from 'vuex'
+  import { mapMutations } from 'vuex'
+  import { gql } from 'nuxt-graphql-request'
   import { TeamAccessible } from '@/mixins'
+  import { competitionFragment, stageFragment } from '@/fragments'
 
   export default {
     name: 'CompetitionPage',
@@ -223,21 +225,30 @@
       }
     },
     async fetch () {
-      await this.getCompetition(this.competitionId)
+      const query = gql`
+        query fetchCompetition($id: ID!) {
+          competition(id: $id) {
+            ...CompetitionData
+            stages { ...StageData }
+          }
+        }
+        ${competitionFragment}
+        ${stageFragment}
+      `
+
+      const { competition } = await this.$graphql.default.request(query, {
+        id: this.competitionId
+      })
+      await this.$store.$db().model('Competition').insertOrUpdate({ data: competition })
+
       this.setPage({
         title: this.title,
         headline: this.title
       })
     },
-    methods: {
-      ...mapMutations('app', {
-        setPage: 'setPage'
-      }),
-      ...mapActions({
-        getCompetition: 'competitions/get',
-        fetchStages: 'stages/fetch'
-      })
-    }
+    methods: mapMutations('app', {
+      setPage: 'setPage'
+    })
   }
 </script>
 

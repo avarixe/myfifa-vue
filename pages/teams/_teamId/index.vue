@@ -96,7 +96,7 @@
 </template>
 
 <script>
-  import { mapMutations, mapActions } from 'vuex'
+  import { mapMutations } from 'vuex'
   import { gql } from 'nuxt-graphql-request'
   import { TeamAccessible } from '@/mixins'
   import {
@@ -150,7 +150,6 @@
       const query = gql`
         query loadDashboard($id: ID!) {
           team(id: $id) {
-            id
             matches { ...MatchData }
             players {
               ...PlayerData
@@ -165,14 +164,18 @@
         ${competitionFragment}
       `
 
-      await this.getTeam({ id: this.team.id, query })
+      const { team: { matches, players, competitions } } =
+        await this.$graphql.default.request(query, { id: this.team.id })
+
+      await Promise.all([
+        this.$store.$db().model('Match').insertOrUpdate({ data: matches }),
+        this.$store.$db().model('Player').insertOrUpdate({ data: players }),
+        this.$store.$db().model('Competition').insertOrUpdate({ data: competitions })
+      ])
     },
     methods: {
       ...mapMutations('app', {
         setPage: 'setPage'
-      }),
-      ...mapActions({
-        getTeam: 'teams/get'
       }),
       getPlayersByStatus (status) {
         return this.$store.$db().model('Player')

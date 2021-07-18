@@ -6,16 +6,14 @@
           :to="linkToSeason(pageSeason - 1)"
           nuxt
           :disabled="pageSeason === 0"
-        >
-          Previous Season
-        </v-btn>
+          v-text="'Previous Season'"
+        />
         <v-btn
           :to="linkToSeason(pageSeason + 1)"
           nuxt
           :disabled="pageSeason >= season"
-        >
-          Next Season
-        </v-btn>
+          v-text="'Next Season'"
+        />
       </v-col>
       <v-col cols="12">
         <v-card>
@@ -67,7 +65,7 @@
 </template>
 
 <script>
-  import { mapMutations, mapActions } from 'vuex'
+  import { mapMutations } from 'vuex'
   import { gql } from 'nuxt-graphql-request'
   import { TeamAccessible } from '@/mixins'
   import {
@@ -92,25 +90,44 @@
         return parseInt(this.$route.params.season)
       }
     },
-    async asyncData ({ params, $graphql }) {
+    async asyncData ({ store, params, $graphql }) {
       const query = gql`
-        query fetchCompetitionStats($id: ID!, $season: Int) {
+        query fetchSeason($id: ID!, $season: Int) {
           team(id: $id) {
+            competitions { ...CompetitionData }
+            players {
+              ...PlayerData
+              transfers { ...TransferData }
+            }
             competitionStats(season: $season) { ...CompetitionStatsData }
             playerStats(season: $season) { ...PlayerStatsData }
             playerHistoryStats(season: $season) { ...PlayerHistoryStatsData }
           }
         }
+        ${competitionFragment}
+        ${playerFragment}
+        ${transferFragment}
         ${competitionStatsFragment}
         ${playerStatsFragment}
         ${playerHistoryStatsFragment}
       `
 
-      const { team: { competitionStats, playerStats, playerHistoryStats } } =
+      const { team: {
+        competitions,
+        players,
+        competitionStats,
+        playerStats,
+        playerHistoryStats
+      } } =
         await $graphql.default.request(query, {
           id: parseInt(params.teamId),
           season: parseInt(params.season)
         })
+
+      await Promise.all([
+        store.$db().model('Competition').insertOrUpdate({ data: competitions }),
+        store.$db().model('Player').insertOrUpdate({ data: players })
+      ])
 
       return {
         competitionStats,
@@ -124,31 +141,10 @@
         title: this.title,
         headline: this.title
       })
-
-      const query = gql`
-        query fetchSeason($id: ID!) {
-          team(id: $id) {
-            id
-            competitions { ...CompetitionData }
-            players {
-              ...PlayerData
-              transfers { ...TransferData }
-            }
-          }
-        }
-        ${competitionFragment}
-        ${playerFragment}
-        ${transferFragment}
-      `
-
-      await this.getTeam({ id: this.team.id, query })
     },
     methods: {
       ...mapMutations('app', {
         setPage: 'setPage'
-      }),
-      ...mapActions({
-        getTeam: 'teams/get'
       }),
       linkToSeason (season) {
         return {

@@ -1,12 +1,5 @@
 import { gql } from 'nuxt-graphql-request'
-import {
-  matchFragment,
-  capFragment,
-  goalFragment,
-  substitutionFragment,
-  bookingFragment,
-  penaltyShootoutFragment
-} from '@/fragments'
+import { capFragment } from '@/fragments'
 
 // state
 export const state = () => ({
@@ -22,43 +15,6 @@ export const mutations = {
 
 // actions
 export const actions = {
-  async fetch (_, { teamId }) {
-    const query = gql`
-      query fetchMatches($teamId: ID!) {
-        team(id: $teamId) {
-          matches { ...MatchData }
-        }
-      }
-      ${matchFragment}
-    `
-
-    const { team: { matches } } =
-      await this.$graphql.default.request(query, { teamId })
-    this.$db().model('Match').insertOrUpdate({ data: matches })
-  },
-  async get (_, id) {
-    const query = gql`
-      query fetchMatch($id: ID!) {
-        match(id: $id) {
-          ...MatchData
-          caps { ...CapData }
-          goals { ...GoalData }
-          substitutions { ...SubstitutionData }
-          bookings { ...BookingData }
-          penaltyShootout { ...PenaltyShootoutData }
-        }
-      }
-      ${matchFragment}
-      ${capFragment}
-      ${goalFragment}
-      ${substitutionFragment}
-      ${bookingFragment}
-      ${penaltyShootoutFragment}
-    `
-
-    const { match } = await this.$graphql.default.request(query, { id })
-    this.$db().model('Match').insertOrUpdate({ data: match })
-  },
   async create (_, { teamId, attributes }) {
     const query = gql`
       mutation createMatch($teamId: ID!, $attributes: MatchAttributes!) {

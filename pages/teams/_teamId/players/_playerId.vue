@@ -186,7 +186,15 @@
   import { mapMutations, mapActions } from 'vuex'
   import { gql } from 'nuxt-graphql-request'
   import { TeamAccessible } from '@/mixins'
-  import { playerStatsFragment } from '@/fragments'
+  import {
+    contractFragment,
+    transferFragment,
+    loanFragment,
+    injuryFragment,
+    playerFragment,
+    playerHistoryFragment,
+    playerStatsFragment
+  } from '@/fragments'
 
   export default {
     name: 'PlayerPage',
@@ -221,20 +229,37 @@
     },
     async asyncData ({ store, params, $graphql }) {
       const query = gql`
-        query fetchPlayerStats($id: ID!, $playerId: ID!) {
-          team(id: $id) {
+        query fetchPlayerPage($teamId: ID!, $playerId: ID!) {
+          player(id: $playerId) {
+            ...PlayerData
+            contracts { ...ContractData }
+            transfers { ...TransferData }
+            loans { ...LoanData }
+            injuries { ...InjuryData }
+            histories { ...PlayerHistoryData }
+          }
+          team(id: $teamId) {
             playerStats(playerIds: [$playerId]) {
               ...PlayerStatsData
             }
           }
         }
+        ${playerFragment}
+        ${contractFragment}
+        ${transferFragment}
+        ${loanFragment}
+        ${injuryFragment}
+        ${playerHistoryFragment}
         ${playerStatsFragment}
       `
 
-      const { team: { playerStats } } = await $graphql.default.request(query, {
-        id: parseInt(params.teamId),
-        playerId: parseInt(params.playerId)
-      })
+      const { player, team: { playerStats } } =
+        await $graphql.default.request(query, {
+          teamId: parseInt(params.teamId),
+          playerId: parseInt(params.playerId)
+        })
+
+      await store.$db().model('Player').insertOrUpdate({ data: player })
 
       const data = {
         numMatches: 0,
@@ -252,8 +277,6 @@
       return data
     },
     async fetch () {
-      await this.getPlayer(this.playerId)
-
       this.setPage({
         title: this.player.name,
         headline: this.player.name
@@ -264,9 +287,8 @@
         setPage: 'app/setPage',
         announce: 'broadcaster/announce'
       }),
-      ...mapActions({
-        getPlayer: 'players/get',
-        updatePlayer: 'players/update'
+      ...mapActions('players', {
+        updatePlayer: 'update'
       }),
       async updatePlayerAttribute (playerId, attribute, value) {
         try {

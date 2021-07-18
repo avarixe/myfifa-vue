@@ -1,5 +1,5 @@
 import { gql } from 'nuxt-graphql-request'
-import { competitionFragment, stageFragment } from '@/fragments'
+import { competitionFragment } from '@/fragments'
 
 // actions
 export const actions = {
@@ -16,21 +16,6 @@ export const actions = {
     const { team: { competitions } } =
       await this.$graphql.default.request(query, { teamId })
     this.$db().model('Competition').insertOrUpdate({ data: competitions })
-  },
-  async get (_, id) {
-    const query = gql`
-      query fetchCompetition($id: ID!) {
-        competition(id: $id) {
-          ...CompetitionData
-          stages { ...StageData }
-        }
-      }
-      ${competitionFragment}
-      ${stageFragment}
-    `
-
-    const { competition } = await this.$graphql.default.request(query, { id })
-    this.$db().model('Competition').insertOrUpdate({ data: competition })
   },
   async create (_, { teamId, attributes }) {
     const query = gql`
