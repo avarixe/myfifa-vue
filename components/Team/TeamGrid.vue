@@ -26,6 +26,15 @@
               contain
               class="text-center"
             />
+            <v-tooltip
+              v-else
+              bottom
+            >
+              <template #activator="{ on }">
+                <v-icon v-on="on">mdi-shield-off-outline</v-icon>
+              </template>
+              <span>Edit Team to upload Badge</span>
+            </v-tooltip>
           </template>
           <template #item.startedOn="{ item }">
             {{ item.startedOn | formatDate }}

@@ -39,6 +39,22 @@
         />
       </v-col>
     </template>
+    <template #additional-actions>
+      <team-badge-uploader
+        v-if="record"
+        :team="record"
+        color="info"
+      >
+        <template #default="{ on }">
+          <v-btn
+            color="info"
+            text
+            v-on="on"
+            v-text="`${record.badgePath ? 'Change' : 'Upload'} Badge`"
+          />
+        </template>
+      </team-badge-uploader>
+    </template>
   </dialog-form>
 </template>
 
