@@ -75,31 +75,31 @@
     name: 'SeasonSummary',
     props: {
       competitionStats: { type: Array, required: true },
-      playerHistoryStats: { type: Array, required: true }
+      playerDevelopmentStats: { type: Array, required: true }
     },
     computed: {
       team () {
         return this.$store.$db().model('Team').find(this.$route.params.teamId)
       },
       startTeamValue () {
-        return this.playerHistoryStats
+        return this.playerDevelopmentStats
           .reduce((total, stats) => total + stats.value[0], 0)
       },
       endTeamValue () {
-        return this.playerHistoryStats
+        return this.playerDevelopmentStats
           .reduce((total, stats) => total + stats.value[1], 0)
       },
       startTeamOvr () {
-        return this.playerHistoryStats.reduce(
+        return this.playerDevelopmentStats.reduce(
           (total, stats) => total + stats.ovr[0],
           0
-        ) / (this.playerHistoryStats.length || 1)
+        ) / (this.playerDevelopmentStats.length || 1)
       },
       endTeamOvr () {
-        return this.playerHistoryStats.reduce(
+        return this.playerDevelopmentStats.reduce(
           (total, stats) => total + stats.ovr[1],
           0
-        ) / (this.playerHistoryStats.length || 1)
+        ) / (this.playerDevelopmentStats.length || 1)
       },
       numWins () {
         return this.competitionStats

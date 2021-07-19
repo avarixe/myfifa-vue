@@ -20,7 +20,7 @@
         </v-btn>
       </v-col>
       <v-col cols="12">
-        <development-statistics-grid :stats="playerHistoryStats" />
+        <player-development-grid :stats="playerDevelopmentStats" />
       </v-col>
     </v-row>
   </v-container>
@@ -30,7 +30,7 @@
   import { mapMutations } from 'vuex'
   import { gql } from 'nuxt-graphql-request'
   import { TeamAccessible } from '@/mixins'
-  import { playerFragment, playerHistoryStatsFragment } from '@/fragments'
+  import { playerFragment, playerDevelopmentStatsFragment } from '@/fragments'
 
   export default {
     name: 'DevelopmentStatisticsPage',
@@ -42,19 +42,19 @@
         query fetchPlayersPage($teamId: ID!) {
           team(id: $teamId) {
             players { ...PlayerData }
-            playerHistoryStats { ...PlayerHistoryStatsData }
+            playerDevelopmentStats { ...PlayerDevelopmentStatsData }
           }
         }
         ${playerFragment}
-        ${playerHistoryStatsFragment}
+        ${playerDevelopmentStatsFragment}
       `
 
-      const { team: { players, playerHistoryStats } } =
+      const { team: { players, playerDevelopmentStats } } =
         await $graphql.default.request(query, { teamId: parseInt(params.teamId) })
 
       await store.$db().model('Player').insertOrUpdate({ data: players })
 
-      return { playerHistoryStats }
+      return { playerDevelopmentStats }
     },
     async fetch () {
       this.setPage({

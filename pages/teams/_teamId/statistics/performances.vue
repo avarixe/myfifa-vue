@@ -20,7 +20,7 @@
         </v-btn>
       </v-col>
       <v-col cols="12">
-        <performances-statistics-grid :stats="playerStats" />
+        <player-performance-grid :stats="playerPerformanceStats" />
       </v-col>
     </v-row>
   </v-container>
@@ -32,7 +32,7 @@
   import { TeamAccessible } from '@/mixins'
   import {
     playerFragment,
-    playerStatsFragment,
+    playerPerformanceStatsFragment,
     competitionFragment
   } from '@/fragments'
 
@@ -46,16 +46,16 @@
         query fetchPlayersPage($teamId: ID!) {
           team(id: $teamId) {
             players { ...PlayerData }
-            playerStats { ...PlayerStatsData }
+            playerPerformanceStats { ...PlayerPerformanceStatsData }
             competitions { ...CompetitionData }
           }
         }
         ${playerFragment}
-        ${playerStatsFragment}
+        ${playerPerformanceStatsFragment}
         ${competitionFragment}
       `
 
-      const { team: { players, playerStats, competitions } } =
+      const { team: { players, playerPerformanceStats, competitions } } =
         await $graphql.default.request(query, { teamId: parseInt(params.teamId) })
 
       await Promise.all([
@@ -63,7 +63,7 @@
         store.$db().model('Competition').insertOrUpdate({ data: competitions })
       ])
 
-      return { playerStats }
+      return { playerPerformanceStats }
     },
     async fetch () {
       this.setPage({

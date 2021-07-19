@@ -20,7 +20,7 @@
           <v-card-text>
             <season-summary
               :competition-stats="competitionStats"
-              :player-history-stats="playerHistoryStats"
+              :player-development-stats="playerDevelopmentStats"
             />
           </v-card-text>
         </v-card>
@@ -49,8 +49,8 @@
               <v-tab-item>
                 <season-player-grid
                   :season="pageSeason"
-                  :player-stats="playerStats"
-                  :player-history-stats="playerHistoryStats"
+                  :player-performance-stats="playerPerformanceStats"
+                  :player-development-stats="playerDevelopmentStats"
                 />
               </v-tab-item>
               <v-tab-item>
@@ -72,8 +72,8 @@
     competitionFragment,
     competitionStatsFragment,
     playerFragment,
-    playerStatsFragment,
-    playerHistoryStatsFragment,
+    playerPerformanceStatsFragment,
+    playerDevelopmentStatsFragment,
     transferFragment
   } from '@/fragments'
 
@@ -100,24 +100,24 @@
               transfers { ...TransferData }
             }
             competitionStats(season: $season) { ...CompetitionStatsData }
-            playerStats(season: $season) { ...PlayerStatsData }
-            playerHistoryStats(season: $season) { ...PlayerHistoryStatsData }
+            playerPerformanceStats(season: $season) { ...PlayerPerformanceStatsData }
+            playerDevelopmentStats(season: $season) { ...PlayerDevelopmentStatsData }
           }
         }
         ${competitionFragment}
         ${playerFragment}
         ${transferFragment}
         ${competitionStatsFragment}
-        ${playerStatsFragment}
-        ${playerHistoryStatsFragment}
+        ${playerPerformanceStatsFragment}
+        ${playerDevelopmentStatsFragment}
       `
 
       const { team: {
         competitions,
         players,
         competitionStats,
-        playerStats,
-        playerHistoryStats
+        playerPerformanceStats,
+        playerDevelopmentStats
       } } =
         await $graphql.default.request(query, {
           id: parseInt(params.teamId),
@@ -131,8 +131,8 @@
 
       return {
         competitionStats,
-        playerStats,
-        playerHistoryStats,
+        playerPerformanceStats,
+        playerDevelopmentStats,
         tab: 0
       }
     },

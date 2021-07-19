@@ -35,7 +35,7 @@
       <v-data-table
         :headers="headers"
         :items="rows"
-        :loading="loading"
+        :search="search"
         sort-by="pos"
         item-key="id"
         :mobile-breakpoint="0"
@@ -82,8 +82,8 @@
     name: 'SeasonPlayerGrid',
     props: {
       season: { type: Number, required: true },
-      playerStats: { type: Array, required: true },
-      playerHistoryStats: { type: Array, required: true }
+      playerPerformanceStats: { type: Array, required: true },
+      playerDevelopmentStats: { type: Array, required: true }
     },
     data: () => ({
       mode: 0,
@@ -91,7 +91,7 @@
         { text: 'Growth', color: 'green', icon: 'mdi-trending-up' },
         { text: 'Statistics', color: 'red', icon: 'mdi-numeric' }
       ],
-      loading: false
+      search: null
     }),
     computed: {
       team () {
@@ -128,7 +128,7 @@
         }
       },
       rows () {
-        return this.playerHistoryStats.map(stats => {
+        return this.playerDevelopmentStats.map(stats => {
           const player = this.$store.$db().model('Player').find(stats.playerId)
 
           const startOvr = stats.ovr[0]
@@ -139,7 +139,7 @@
           const ovrChange = endOvr - startOvr
           const valueChange = (endValue - startValue) / startValue * 100
 
-          const matchStats = this.playerStats.reduce((totalStats, data) => {
+          const matchStats = this.playerPerformanceStats.reduce((totalStats, data) => {
             if (data.playerId === stats.playerId) {
               ['Matches', 'Minutes', 'Goals', 'Assists', 'CleanSheets'].forEach(metric => {
                 totalStats[`num${metric}`] += data[`num${metric}`]

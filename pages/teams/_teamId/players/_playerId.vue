@@ -193,7 +193,7 @@
     injuryFragment,
     playerFragment,
     playerHistoryFragment,
-    playerStatsFragment
+    playerPerformanceStatsFragment
   } from '@/fragments'
 
   export default {
@@ -239,8 +239,8 @@
             histories { ...PlayerHistoryData }
           }
           team(id: $teamId) {
-            playerStats(playerIds: [$playerId]) {
-              ...PlayerStatsData
+            playerPerformanceStats(playerIds: [$playerId]) {
+              ...PlayerPerformanceStatsData
             }
           }
         }
@@ -250,10 +250,10 @@
         ${loanFragment}
         ${injuryFragment}
         ${playerHistoryFragment}
-        ${playerStatsFragment}
+        ${playerPerformanceStatsFragment}
       `
 
-      const { player, team: { playerStats } } =
+      const { player, team: { playerPerformanceStats } } =
         await $graphql.default.request(query, {
           teamId: parseInt(params.teamId),
           playerId: parseInt(params.playerId)
@@ -268,7 +268,7 @@
         numAssists: 0
       }
 
-      playerStats.forEach(stats => {
+      playerPerformanceStats.forEach(stats => {
         for (const stat in data) {
           data[stat] += stats[stat]
         }

@@ -152,7 +152,7 @@
   }
 
   export default {
-    name: 'DevelopmentStatisticsGrid',
+    name: 'PlayerDevelopmentGrid',
     mixins: [
       TeamAccessible
     ],

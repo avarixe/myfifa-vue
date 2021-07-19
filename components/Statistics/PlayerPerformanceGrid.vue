@@ -97,7 +97,7 @@
             </div>
           </template>
           <template #item="{ item, expand, isExpanded }">
-            <tr @click="expand">
+            <tr @click="expand(!isExpanded)">
               <td :class="{ 'stick-left': !expanded.length }">
                 <v-btn
                   small
@@ -181,7 +181,7 @@
   }
 
   export default {
-    name: 'PerformancesStatisticsGrid',
+    name: 'PlayerPerformanceGrid',
     mixins: [
       TeamAccessible
     ],

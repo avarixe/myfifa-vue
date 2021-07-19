@@ -12,8 +12,8 @@ export const competitionStatsFragment = gql`
   }
 `
 
-export const playerStatsFragment = gql`
-  fragment PlayerStatsData on PlayerStats {
+export const playerPerformanceStatsFragment = gql`
+  fragment PlayerPerformanceStatsData on PlayerPerformanceStats {
     playerId
     season
     competition
@@ -25,8 +25,8 @@ export const playerStatsFragment = gql`
   }
 `
 
-export const playerHistoryStatsFragment = gql`
-  fragment PlayerHistoryStatsData on PlayerHistoryStats {
+export const playerDevelopmentStatsFragment = gql`
+  fragment PlayerDevelopmentStatsData on PlayerDevelopmentStats {
     season
     playerId
     ovr
