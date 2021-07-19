@@ -3,13 +3,11 @@
     <v-row>
       <v-col cols="12">
         <v-btn
-          :to="`/teams/${teamId}/statistics/development`"
+          :to="`/teams/${teamId}/players`"
           nuxt
-          color="teal"
-          dark
         >
-          <v-icon left>mdi-trending-up</v-icon>
-          Development
+          <v-icon left>mdi-arrow-left</v-icon>
+          Back
         </v-btn>
         <v-btn
           :to="`/teams/${teamId}/statistics/performances`"
@@ -22,7 +20,7 @@
         </v-btn>
       </v-col>
       <v-col cols="12">
-        <player-grid />
+        <development-statistics-grid :stats="playerHistoryStats" />
       </v-col>
     </v-row>
   </v-container>
@@ -32,35 +30,36 @@
   import { mapMutations } from 'vuex'
   import { gql } from 'nuxt-graphql-request'
   import { TeamAccessible } from '@/mixins'
-  import { playerFragment, contractFragment } from '@/fragments'
+  import { playerFragment, playerHistoryStatsFragment } from '@/fragments'
 
   export default {
-    name: 'PlayersPage',
+    name: 'DevelopmentStatisticsPage',
     mixins: [
       TeamAccessible
     ],
-    async fetch () {
+    async asyncData ({ params, store, $graphql }) {
       const query = gql`
         query fetchPlayersPage($teamId: ID!) {
           team(id: $teamId) {
-            players {
-              ...PlayerData
-              contracts { ...ContractData }
-            }
+            players { ...PlayerData }
+            playerHistoryStats { ...PlayerHistoryStatsData }
           }
         }
         ${playerFragment}
-        ${contractFragment}
+        ${playerHistoryStatsFragment}
       `
 
-      const { team: { players } } =
-        await this.$graphql.default.request(query, { teamId: this.team.id })
+      const { team: { players, playerHistoryStats } } =
+        await $graphql.default.request(query, { teamId: parseInt(params.teamId) })
 
-      await this.$store.$db().model('Player').insertOrUpdate({ data: players })
+      await store.$db().model('Player').insertOrUpdate({ data: players })
 
+      return { playerHistoryStats }
+    },
+    async fetch () {
       this.setPage({
-        title: `${this.team.name} - Players`,
-        headline: 'Players'
+        title: `${this.team.name} - Player Development`,
+        headline: 'Player Development'
       })
     },
     methods: mapMutations('app', {

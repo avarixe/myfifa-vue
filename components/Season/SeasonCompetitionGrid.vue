@@ -8,24 +8,34 @@
     hide-default-footer
     class="mt-2"
   >
-    <template #item.name="{ item }">
-      <v-btn
-        :to="item.link"
-        nuxt
-        small
-        text
-        color="primary"
-        class="text-capitalize"
-      >
-        {{ item.name }}
-      </v-btn>
-    </template>
-    <template #item.status="{ item }">
-      <v-icon
-        :color="item.statusColor"
-        small
-        v-text="item.statusIcon"
-      />
+    <template #item="{ item }">
+      <tr>
+        <td class="stick-left">
+          <v-btn
+            :to="item.link"
+            nuxt
+            small
+            text
+            color="primary"
+            class="text-capitalize"
+            v-text="item.name"
+          />
+        </td>
+        <td class="text-center">
+          <v-icon
+            :color="item.statusColor"
+            small
+            v-text="item.statusIcon"
+          />
+        </td>
+        <td class="text-center">{{ item.matchesPlayed }}</td>
+        <td class="text-center">{{ item.wins }}</td>
+        <td class="text-center">{{ item.draws }}</td>
+        <td class="text-center">{{ item.losses }}</td>
+        <td class="text-center">{{ item.goalsFor }}</td>
+        <td class="text-center">{{ item.goalsAgainst }}</td>
+        <td class="text-center">{{ item.goalDifference }}</td>
+      </tr>
     </template>
   </v-data-table>
 </template>
@@ -40,7 +50,7 @@
     data: () => ({
       headers: [
         { text: 'Competition', value: 'name', class: 'stick-left', cellClass: 'stick-left' },
-        { text: '', value: 'status' },
+        { text: 'Status', value: 'status', align: 'center' },
         { text: 'GP', value: 'matchesPlayed', align: 'center' },
         { text: 'W', value: 'wins', align: 'center' },
         { text: 'D', value: 'draws', align: 'center' },

@@ -1,46 +1,37 @@
 <template>
   <v-card>
     <v-toolbar flat>
-      <!-- Display Menu -->
-      <v-tooltip
-        bottom
-        :color="currentFilter.color"
-      >
-        <template #activator="{ on: tooltip }">
-          <v-menu
-            bottom
-            right
+      <v-menu>
+        <template #activator="{ on }">
+          <v-btn
+            class="px-3"
+            text
+            v-on="on"
           >
-            <template #activator="{ on: menu }">
-              <v-btn
-                class="px-1"
-                text
-                v-on="{ ...menu, ...tooltip }"
-              >
-                <v-icon :color="currentFilter.color">
-                  mdi-{{ currentFilter.icon }}
-                </v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item
-                v-for="(opt, i) in filters"
-                :key="i"
-                @click="filter = i"
-              >
-                <v-list-item-avatar>
-                  <v-icon :color="opt.color">mdi-{{ opt.icon }}</v-icon>
-                </v-list-item-avatar>
-                <v-list-item-title>{{ opt.text }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+            <v-icon
+              left
+              :color="currentFilter.color"
+              v-text="`mdi-${currentFilter.icon}`"
+            />
+            <div
+              :class="`text-capitalize ${currentFilter.color}--text`"
+              v-text="`${currentFilter.text} Players`"
+            />
+          </v-btn>
         </template>
-        Display {{ currentFilter.text }} Players
-      </v-tooltip>
-      <div :class="`hidden-sm-and-down subheading ${currentFilter.color}--text`">
-        {{ currentFilter.text }} Players
-      </div>
+        <v-list>
+          <v-list-item
+            v-for="(opt, i) in filters"
+            :key="i"
+            @click="filter = i"
+          >
+            <v-list-item-avatar>
+              <v-icon :color="opt.color">mdi-{{ opt.icon }}</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-title>{{ opt.text }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-spacer />
       <v-text-field
         v-model="search"
@@ -65,67 +56,74 @@
           no-data-text="No Players Found"
           :mobile-breakpoint="0"
         >
-          <template #item.name="{ item }">
-            <v-btn
-              :to="item.link"
-              small
-              text
-              nuxt
-              color="info"
-              class="text-capitalize"
-              v-text="item.name"
-            />
-          </template>
-          <template #item.nationality="{ item }">
-            <flag
-              v-if="item.flag"
-              :iso="item.flag"
-              :title="item.nationality"
-              class="mr-2"
-            />
-          </template>
-          <template #item.kitNo="{ item }">
-            <inline-select
-              :item="item"
-              attribute="kitNo"
-              label="Kit No"
-              :options="Array.from({ length: 98 }, (v, k) => k + 1)"
-              dense
-              @change="updatePlayerAttribute(item.id, 'kitNo', $event)"
-            />
-          </template>
-          <template #item.ovr="{ item }">
-            <inline-select
-              :item="item"
-              attribute="ovr"
-              label="OVR"
-              :options="Array.from({ length: 61 }, (v, k) => k + 40)"
-              dense
-              @change="updatePlayerAttribute(item.id, 'ovr', $event)"
-            />
-          </template>
-          <template #item.value="{ item }">
-            <inline-field
-              :item="item"
-              attribute="value"
-              label="Value"
-              input-type="money"
-              :display="item.value | formatMoney(team.currency)"
-              required
-              @close="updatePlayerAttribute(item.id, 'value', $event)"
-            />
-          </template>
-          <template #item.status="{ item }">
-            <v-icon :color="item.statusColor">mdi-{{ item.statusIcon }}</v-icon>
-          </template>
-          <template #item.secPos="{ item }">
-            {{ item.secPos | listArray(' ') }}
-          </template>
-          <template #item.wage="{ item }">
-            {{ item.wage | formatMoney(team.currency, '-') }}
-          </template>
-          <template #item.endDate="{ item }">
-            {{ item.endDate | formatDate('MMM dd, yyyy', '-') }}
+          <template #item="{ item }">
+            <tr>
+              <td class="stick-left">
+                <v-btn
+                  :to="item.link"
+                  small
+                  text
+                  nuxt
+                  color="info"
+                  class="text-capitalize"
+                  v-text="item.name"
+                />
+              </td>
+              <td class="text-center">
+                <flag
+                  v-if="item.flag"
+                  :iso="item.flag"
+                  :title="item.nationality"
+                  class="mr-2"
+                />
+              </td>
+              <td class="text-center">
+                <v-icon
+                  :color="item.statusColor"
+                  v-text="`mdi-${item.statusIcon}`"
+                />
+              </td>
+              <td class="text-center">{{ item.age }}</td>
+              <td class="text-center">{{ item.pos }}</td>
+              <td class="text-center">{{ item.secPos | listArray(' ') }}</td>
+              <td class="text-center">
+                <inline-select
+                  :item="item"
+                  attribute="kitNo"
+                  label="Kit No"
+                  :options="Array.from({ length: 98 }, (v, k) => k + 1)"
+                  dense
+                  @change="updatePlayerAttribute(item.id, 'kitNo', $event)"
+                />
+              </td>
+              <td class="text-center">
+                <inline-select
+                  :item="item"
+                  attribute="ovr"
+                  label="OVR"
+                  :options="Array.from({ length: 61 }, (v, k) => k + 40)"
+                  dense
+                  @change="updatePlayerAttribute(item.id, 'ovr', $event)"
+                />
+              </td>
+              <td class="text-right">
+                <inline-field
+                  :item="item"
+                  attribute="value"
+                  label="Value"
+                  input-type="money"
+                  :display="item.value | formatMoney(team.currency)"
+                  required
+                  @close="updatePlayerAttribute(item.id, 'value', $event)"
+                />
+              </td>
+              <td class="text-right">
+                {{ item.wage | formatMoney(team.currency, '-') }}
+              </td>
+              <td class="text-right">
+                {{ item.endDate | formatDate('MMM dd, yyyy', '-') }}
+              </td>
+            </tr>
           </template>
         </v-data-table>
       </client-only>
@@ -150,7 +148,7 @@
     data: () => ({
       key: 0,
       headers: [
-        { text: 'Name', value: 'name', width: 200, class: 'stick-left', cellClass: 'stick-left' },
+        { text: 'Name', value: 'name', width: 200, class: 'stick-left' },
         { text: 'Nationality', value: 'nationality', align: 'center', width: 120 },
         { text: 'Status', value: 'status', align: 'center', width: 100 },
         { text: 'Age', value: 'age', align: 'center', width: 100 },
@@ -158,9 +156,9 @@
         { text: '2nd Pos', value: 'secPos', sortable: false, align: 'center', width: 100 },
         { text: 'Kit No', value: 'kitNo', align: 'center', width: 100 },
         { text: 'OVR', value: 'ovr', align: 'center', width: 80 },
-        { text: 'Value', value: 'value', align: 'end', width: 100 },
-        { text: 'Wage', value: 'wage', align: 'end', width: 100 },
-        { text: 'Contracts Ends', value: 'endDate', align: 'end', width: 120 }
+        { text: 'Value', value: 'value', align: 'end', width: 100, class: 'text-right' },
+        { text: 'Wage', value: 'wage', align: 'end', width: 100, class: 'text-right' },
+        { text: 'Contracts Ends', value: 'endDate', align: 'end', width: 120, class: 'text-right' }
       ],
       filter: 2,
       filters: [
@@ -192,7 +190,7 @@
               case 0: // All
                 return true
               case 1: // Youth
-                return player.youth && player.contracts.length === 0
+                return player.youth
               case 2: // Active
                 return player.status && player.status !== 'Pending'
               case 3: // Injured

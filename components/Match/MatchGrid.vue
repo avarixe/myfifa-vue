@@ -85,7 +85,6 @@
 </template>
 
 <script>
-  import { addYears, parseISO } from 'date-fns'
   import { TeamAccessible } from '@/mixins'
 
   export default {
@@ -100,8 +99,6 @@
         { text: 'Date Played', value: 'playedOn', width: 120 },
         { text: 'Link', value: 'link', align: 'center', class: 'stick-right', sortable: false, width: 40 }
       ],
-      seasonFilter: null,
-      competition: null,
       filterType: null,
       filterValue: null,
       filterValueMenuOpen: false,
@@ -139,7 +136,7 @@
         return this.$store.$db().model('Competition')
           .query()
           .where('teamId', this.team.id)
-          .where(comp => this.filters.Season === null || comp.season === this.filters.Season)
+          .where(comp => [null, comp.season].includes(this.filters.Season))
           .get()
           .map(comp => comp.name)
       },
@@ -175,10 +172,6 @@
       }
     },
     methods: {
-      clearAllFilters () {
-        this.seasonFilter = null
-        this.competition = null
-      },
       openFilterValueField () {
         if (this.filterValueOptions.length > 0) {
           this.filterValueMenuOpen = true
@@ -198,7 +191,7 @@
 
         switch (filter) {
           case 'Season':
-            return this.matchInSeason(match)
+            return filterValue === match.season
           case 'Competition':
             return filterValue === match.competition
           case 'Stage':
@@ -210,13 +203,6 @@
           case 'Result':
             return filterValue.toLowerCase() === match.teamResult
         }
-      },
-      matchInSeason (match) {
-        const teamStart = parseISO(this.team.startedOn)
-        const datePlayed = parseISO(match.playedOn)
-        const seasonStart = addYears(teamStart, this.filters.Season)
-        const seasonEnd = addYears(teamStart, this.filters.Season + 1)
-        return seasonStart <= datePlayed && datePlayed < seasonEnd
       }
     }
   }

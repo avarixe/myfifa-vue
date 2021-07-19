@@ -27,6 +27,7 @@ export const playerStatsFragment = gql`
 
 export const playerHistoryStatsFragment = gql`
   fragment PlayerHistoryStatsData on PlayerHistoryStats {
+    season
     playerId
     ovr
     value

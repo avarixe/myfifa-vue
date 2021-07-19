@@ -29,6 +29,7 @@ export default class Match extends Model {
       // Calculated fields
       score: this.string(''),
       teamResult: this.attr(null),
+      season: this.number(0),
 
       // Associations
       team: this.belongsTo(Team, 'teamId'),

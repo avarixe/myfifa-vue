@@ -37,7 +37,6 @@
         :items="rows"
         :loading="loading"
         sort-by="pos"
-        :search="search"
         item-key="id"
         :mobile-breakpoint="0"
         no-data-text="No Players Recorded"
@@ -92,9 +91,7 @@
         { text: 'Growth', color: 'green', icon: 'mdi-trending-up' },
         { text: 'Statistics', color: 'red', icon: 'mdi-numeric' }
       ],
-      loading: false,
-      filterActive: true,
-      search: ''
+      loading: false
     }),
     computed: {
       team () {
@@ -115,16 +112,16 @@
             return headers.concat([
               { text: 'OVR', value: 'endOvr', align: 'center' },
               { text: 'OVR Change', value: 'ovrChange', align: 'center' },
-              { text: 'Value', value: 'endValue', align: 'right' },
-              { text: 'Value Change', value: 'valueChange', align: 'right' }
+              { text: 'Value', value: 'endValue', align: 'end', class: 'text-right', cellClass: 'text-right' },
+              { text: 'Value Change', value: 'valueChange', align: 'end', class: 'text-right', cellClass: 'text-right' }
             ])
           case 1: // Statistics
             return headers.concat([
-              { text: 'Games Played', value: 'numMatches', align: 'right' },
-              { text: 'Minutes', value: 'numMinutes', align: 'right' },
-              { text: 'Goals', value: 'numGoals', align: 'right' },
-              { text: 'Assists', value: 'numAssists', align: 'right' },
-              { text: 'Clean Sheets', value: 'numCleanSheets', align: 'right' }
+              { text: 'Games Played', value: 'numMatches', align: 'end', class: 'text-right', cellClass: 'text-right' },
+              { text: 'Minutes', value: 'numMinutes', align: 'end', class: 'text-right', cellClass: 'text-right' },
+              { text: 'Goals', value: 'numGoals', align: 'end', class: 'text-right', cellClass: 'text-right' },
+              { text: 'Assists', value: 'numAssists', align: 'end', class: 'text-right', cellClass: 'text-right' },
+              { text: 'Clean Sheets', value: 'numCleanSheets', align: 'end', class: 'text-right', cellClass: 'text-right' }
             ])
           default:
             return headers

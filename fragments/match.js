@@ -14,6 +14,7 @@ export const matchFragment = gql`
     awayScore
     score
     teamResult
+    season
   }
 `
 
