@@ -6,6 +6,7 @@
     :mobile-breakpoint="0"
     disable-sort
     hide-default-footer
+    class="mt-2"
   >
     <template #item.name="{ item }">
       <v-btn
@@ -38,7 +39,7 @@
     },
     data: () => ({
       headers: [
-        { text: 'Competition', value: 'name' },
+        { text: 'Competition', value: 'name', class: 'stick-left', cellClass: 'stick-left' },
         { text: '', value: 'status' },
         { text: 'GP', value: 'matchesPlayed', align: 'center' },
         { text: 'W', value: 'wins', align: 'center' },

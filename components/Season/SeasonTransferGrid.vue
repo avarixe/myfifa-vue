@@ -6,6 +6,7 @@
     :mobile-breakpoint="0"
     disable-sort
     hide-default-footer
+    class="mt-2"
   >
     <template #item.movedOn="{ item }">
       {{ item.movedOn | formatDate }}

@@ -1,5 +1,8 @@
 <template>
-  <v-card flat>
+  <v-card
+    flat
+    class="mt-2"
+  >
     <v-card-title>
       <v-btn-toggle
         v-model="mode"
@@ -72,6 +75,10 @@
 <script>
   import { positions } from '@/constants'
 
+  function sortPos (posA, posB) {
+    return positions.indexOf(posA) - positions.indexOf(posB)
+  }
+
   export default {
     name: 'SeasonPlayerGrid',
     props: {
@@ -98,8 +105,8 @@
       },
       headers () {
         let headers = [
-          { text: 'Name', value: 'name' },
-          { text: 'Position', value: 'pos', align: 'center', sort: this.sortPos },
+          { text: 'Name', value: 'name', width: 200, class: 'stick-left', cellClass: 'stick-left' },
+          { text: 'Pos', value: 'pos', align: 'center', sort: sortPos },
           { text: 'Age', value: 'age', align: 'center' }
         ]
 
@@ -164,9 +171,6 @@
       }
     },
     methods: {
-      sortPos (posA, posB) {
-        return positions.indexOf(posA) - positions.indexOf(posB)
-      },
       ovrColor (player) {
         switch (true) {
           case player.ovrChange > 6:

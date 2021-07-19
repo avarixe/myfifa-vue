@@ -38,22 +38,8 @@
         </template>
         Display {{ currentFilter.text }} Players
       </v-tooltip>
-      <v-btn-toggle
-        v-model="mode"
-        mandatory
-        rounded
-        class="mx-3"
-      >
-        <v-btn
-          v-for="(opt, i) in modes"
-          :key="i"
-          text
-        >
-          <v-icon :color="opt.color">mdi-{{ opt.icon }}</v-icon>
-        </v-btn>
-      </v-btn-toggle>
-      <div :class="`hidden-sm-and-down subheading ${currentMode.color}--text`">
-        {{ currentMode.text }}
+      <div :class="`hidden-sm-and-down subheading ${currentFilter.color}--text`">
+        {{ currentFilter.text }} Players
       </div>
       <v-spacer />
       <v-text-field
@@ -77,6 +63,7 @@
           :search="search"
           item-key="id"
           no-data-text="No Players Found"
+          :mobile-breakpoint="0"
         >
           <template #item.name="{ item }">
             <v-btn
@@ -86,15 +73,16 @@
               nuxt
               color="info"
               class="text-capitalize"
-            >
-              <flag
-                v-if="item.flag"
-                :iso="item.flag"
-                :title="item.nationality"
-                class="mr-2"
-              />
-              {{ item.name }}
-            </v-btn>
+              v-text="item.name"
+            />
+          </template>
+          <template #item.nationality="{ item }">
+            <flag
+              v-if="item.flag"
+              :iso="item.flag"
+              :title="item.nationality"
+              class="mr-2"
+            />
           </template>
           <template #item.kitNo="{ item }">
             <inline-select
@@ -131,7 +119,7 @@
             <v-icon :color="item.statusColor">mdi-{{ item.statusIcon }}</v-icon>
           </template>
           <template #item.secPos="{ item }">
-            {{ item.secPos | listArray('-') }}
+            {{ item.secPos | listArray(' ') }}
           </template>
           <template #item.wage="{ item }">
             {{ item.wage | formatMoney(team.currency, '-') }}
@@ -150,6 +138,10 @@
   import { TeamAccessible } from '@/mixins'
   import { positions } from '@/constants'
 
+  function sortPos (posA, posB) {
+    return positions.indexOf(posA) - positions.indexOf(posB)
+  }
+
   export default {
     name: 'PlayerGrid',
     mixins: [
@@ -157,11 +149,18 @@
     ],
     data: () => ({
       key: 0,
-      mode: 0,
-      modes: [
-        { text: 'Overall', color: 'green', icon: 'trending-up' },
-        { text: 'Edit', color: 'orange', icon: 'pencil' },
-        { text: 'Contract', color: 'blue', icon: 'file-document-outline' }
+      headers: [
+        { text: 'Name', value: 'name', width: 200, class: 'stick-left', cellClass: 'stick-left' },
+        { text: 'Nationality', value: 'nationality', align: 'center', width: 120 },
+        { text: 'Status', value: 'status', align: 'center', width: 100 },
+        { text: 'Age', value: 'age', align: 'center', width: 100 },
+        { text: 'Pos', value: 'pos', align: 'center', width: 100, sort: sortPos },
+        { text: '2nd Pos', value: 'secPos', sortable: false, align: 'center', width: 100 },
+        { text: 'Kit No', value: 'kitNo', align: 'center', width: 100 },
+        { text: 'OVR', value: 'ovr', align: 'center', width: 80 },
+        { text: 'Value', value: 'value', align: 'end', width: 100 },
+        { text: 'Wage', value: 'wage', align: 'end', width: 100 },
+        { text: 'Contracts Ends', value: 'endDate', align: 'end', width: 120 }
       ],
       filter: 2,
       filters: [
@@ -183,45 +182,8 @@
           .where('teamId', parseInt(this.$route.params.teamId))
           .get()
       },
-      currentMode () {
-        return this.modes[this.mode]
-      },
       currentFilter () {
         return this.filters[this.filter]
-      },
-      headers () {
-        let headers = [
-          { text: 'Name', value: 'name' },
-          { text: 'Status', value: 'status', align: 'center', sortable: false, width: 40 },
-          { text: 'Age', value: 'age', align: 'center' },
-          { text: 'Position', value: 'pos', align: 'center', sort: this.sortPos },
-          { text: 'Kit No', value: 'kitNo', align: 'center' }
-        ]
-
-        switch (this.mode) {
-          case 0: // Overall
-            return headers.concat([
-              { text: '2nd Position(s)', value: 'secPos', sortable: false, align: 'center' },
-              { text: 'OVR', value: 'ovr', align: 'center' },
-              { text: 'Value', value: 'value', align: 'end' }
-            ])
-          case 1: // Edit
-            return [
-              { text: 'Name', value: 'name' },
-              { text: 'Position', value: 'pos', align: 'center', sort: this.sortPos },
-              { text: 'Kit No', value: 'kitNo', align: 'center' },
-              { text: 'OVR', value: 'ovr', align: 'center' },
-              { text: 'Value', value: 'value', align: 'end' }
-            ]
-          case 2: // Contract
-            return headers.concat([
-              { text: 'Value', value: 'value', align: 'end' },
-              { text: 'Wage', value: 'wage', align: 'end' },
-              { text: 'End Date', value: 'endDate', align: 'end' }
-            ])
-          default:
-            return headers
-        }
       },
       rows () {
         return this.players
@@ -274,9 +236,6 @@
             color: 'red'
           })
         }
-      },
-      sortPos (posA, posB) {
-        return positions.indexOf(posA) - positions.indexOf(posB)
       }
     }
   }

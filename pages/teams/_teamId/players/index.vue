@@ -12,7 +12,7 @@
   import { mapMutations } from 'vuex'
   import { gql } from 'nuxt-graphql-request'
   import { TeamAccessible } from '@/mixins'
-  import { playerFragment } from '@/fragments'
+  import { playerFragment, contractFragment } from '@/fragments'
 
   export default {
     name: 'PlayersPage',
@@ -23,10 +23,14 @@
       const query = gql`
         query fetchPlayersPage($teamId: ID!) {
           team(id: $teamId) {
-            players { ...PlayerData }
+            players {
+              ...PlayerData
+              contracts { ...ContractData }
+            }
           }
         }
         ${playerFragment}
+        ${contractFragment}
       `
 
       const { team: { players } } =

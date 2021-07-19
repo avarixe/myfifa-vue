@@ -8,6 +8,7 @@
         sort-desc
         item-key="id"
         no-data-text="No Matches Recorded"
+        :mobile-breakpoint="0"
       >
         <template #top>
           <v-select
@@ -55,18 +56,28 @@
             </v-chip>
           </div>
         </template>
-        <template #item.score="{ item }">
-          <v-btn
-            :to="item.link"
-            nuxt
-            text
-            :color="item.resultColor"
-          >
-            {{ item.score }}
-          </v-btn>
-        </template>
-        <template #item.playedOn="{ item }">
-          {{ item.playedOn | formatDate }}
+        <template #item="{ item }">
+          <tr>
+            <td class="text-center">
+              <div>{{ item.home }} v {{ item.away }}</div>
+              <div :class="`${item.resultColor}--text`">{{ item.score }}</div>
+            </td>
+            <td class="text-center">
+              <div>{{ item.competition }}</div>
+              <i v-if="item.stage">{{ item.stage }}</i>
+            </td>
+            <td>{{ item.playedOn | formatDate }}</td>
+            <td class="stick-right">
+              <v-btn
+                :to="item.link"
+                nuxt
+                block
+                color="info"
+              >
+                <v-icon>mdi-play</v-icon>
+              </v-btn>
+            </td>
+          </tr>
         </template>
       </v-data-table>
     </v-card-text>
@@ -84,12 +95,10 @@
     ],
     data: () => ({
       headers: [
-        { text: 'Competition', value: 'competition', align: 'end' },
-        { text: 'Home', value: 'home', align: 'end' },
-        { text: 'Score', value: 'score', align: 'center', sortable: false },
-        { text: 'Away', value: 'away' },
-        { text: 'Date Played', value: 'playedOn' },
-        { text: 'Stage', value: 'stage' }
+        { text: 'Match', value: 'score', align: 'center', sortable: false, width: 250 },
+        { text: 'Competition', value: 'competition', align: 'center', sortable: false, width: 250 },
+        { text: 'Date Played', value: 'playedOn', width: 120 },
+        { text: 'Link', value: 'link', align: 'center', class: 'stick-right', sortable: false, width: 40 }
       ],
       seasonFilter: null,
       competition: null,
