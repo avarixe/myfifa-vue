@@ -54,7 +54,10 @@
                 />
               </v-tab-item>
               <v-tab-item>
-                <season-transfer-grid :season="pageSeason" />
+                <season-transfer-grid
+                  :season="pageSeason"
+                  :transfer-activity="transferActivity"
+                />
               </v-tab-item>
             </v-tabs-items>
           </v-card-text>
@@ -74,7 +77,9 @@
     playerFragment,
     playerPerformanceStatsFragment,
     playerDevelopmentStatsFragment,
-    transferFragment
+    contractFragment,
+    transferFragment,
+    loanFragment
   } from '@/fragments'
 
   export default {
@@ -95,21 +100,26 @@
         query fetchSeason($id: ID!, $season: Int) {
           team(id: $id) {
             competitions { ...CompetitionData }
-            players {
-              ...PlayerData
-              transfers { ...TransferData }
-            }
+            players { ...PlayerData }
             competitionStats(season: $season) { ...CompetitionStatsData }
             playerPerformanceStats(season: $season) { ...PlayerPerformanceStatsData }
             playerDevelopmentStats(season: $season) { ...PlayerDevelopmentStatsData }
+            transferActivity(season: $season) {
+              arrivals { ...ContractData }
+              departures { ...ContractData }
+              transfers { ...TransferData }
+              loans { ...LoanData }
+            }
           }
         }
         ${competitionFragment}
         ${playerFragment}
-        ${transferFragment}
         ${competitionStatsFragment}
         ${playerPerformanceStatsFragment}
         ${playerDevelopmentStatsFragment}
+        ${contractFragment}
+        ${transferFragment}
+        ${loanFragment}
       `
 
       const { team: {
@@ -117,7 +127,8 @@
         players,
         competitionStats,
         playerPerformanceStats,
-        playerDevelopmentStats
+        playerDevelopmentStats,
+        transferActivity
       } } =
         await $graphql.default.request(query, {
           id: parseInt(params.teamId),
@@ -133,6 +144,7 @@
         competitionStats,
         playerPerformanceStats,
         playerDevelopmentStats,
+        transferActivity,
         tab: 0
       }
     },
