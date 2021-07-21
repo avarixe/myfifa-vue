@@ -26,17 +26,79 @@
         <td class="text-center">
           <v-icon :color="item.iconColor">{{ item.icon }}</v-icon>
         </td>
-        <td>{{ item.origin }}</td>
+        <td>{{ item.fromTo }}</td>
         <td class="text-right">
           <span
             v-if="item.fee"
-            :class="`${item.iconColor}--text`"
+            :class="`${item.feeColor}--text`"
           >
+            {{ item.feeColor === 'green' ? '+' : '-' }}
             {{ item.fee | formatMoney(team.currency, ' ') }}
             <span v-if="item.addonClause">(+{{ item.addonClause }}%)</span>
           </span>
         </td>
       </tr>
+    </template>
+    <template #foot>
+      <tfoot class="font-weight-bold">
+        <tr v-if="rows.length">
+          <td class="stick-left">
+            <span class="pl-3">Summary</span>
+          </td>
+          <td colspan="3" />
+          <td class="py-2">
+            <div>
+              {{ numYouthPlayers }}
+              <v-icon
+                small
+                color="cyan"
+                v-text="'mdi-school'"
+              />
+              Youth Academy
+            </div>
+            <div>
+              {{ arrivals.length - numYouthPlayers }}
+              <v-icon
+                small
+                color="blue"
+                v-text="'mdi-human-greeting'"
+              />
+              Free Arrivals
+            </div>
+            <div>
+              {{ numTransfersIn }}
+              <v-icon
+                small
+                color="green"
+                v-text="'mdi-airplane-landing'"
+              />
+              Transfers (In)
+            </div>
+            <div>
+              {{ transfers.length - numTransfersIn }}
+              <v-icon
+                small
+                color="red"
+                v-text="'mdi-airplane-takeoff'"
+              />
+              Transfers (Out)
+            </div>
+            <div>
+              {{ departures.length }}
+              <v-icon
+                small
+                color="purple"
+                v-text="'mdi-exit-run'"
+              />
+              Departures
+            </div>
+          </td>
+          <td :class="`text-right ${total > 0 ? 'green' : 'red'}--text`">
+            {{ total > 0 ? '+' : '-' }}
+            {{ Math.abs(total) | formatMoney(team.currency, ' ') }}
+          </td>
+        </tr>
+      </tfoot>
     </template>
   </v-data-table>
 </template>
@@ -57,12 +119,12 @@
     },
     data: () => ({
       headers: [
-        { text: 'Player', value: 'name', class: 'stick-left' },
-        { text: 'Pos', value: 'pos', align: 'center', sort: sortPos },
-        { text: 'Date', value: 'date', align: 'center' },
-        { text: '', value: 'icon', align: 'center', sortable: false },
-        { text: 'From/To', value: 'origin' },
-        { text: 'Fee', value: 'fee', align: 'end', class: 'text-right' }
+        { text: 'Player', value: 'name', class: 'stick-left', width: 200 },
+        { text: 'Pos', value: 'pos', align: 'center', sort: sortPos, width: 100 },
+        { text: 'Date', value: 'date', align: 'center', width: 120 },
+        { text: '', value: 'icon', align: 'center', sortable: false, width: 40 },
+        { text: 'From/To', value: 'fromTo', width: 170 },
+        { text: 'Fee', value: 'fee', align: 'end', class: 'text-right', width: 150 }
       ]
     }),
     computed: {
@@ -82,7 +144,7 @@
             return loan.playerId === arrival.playerId &&
               loan.date === arrival.startedOn &&
               loan.iconColor === 'indigo'
-          })
+          }) && arrival.startedOn !== this.team.startedOn
         }).map(arrival => {
           const player = this.$store.$db().model('Player')
             .find(arrival.playerId)
@@ -92,9 +154,9 @@
             name: player.name,
             pos: player.pos,
             date: arrival.startedOn,
-            icon: `mdi-${player.youth ? 'school' : 'file-document-outline'}`,
+            icon: `mdi-${player.youth ? 'school' : 'human-greeting'}`,
             iconColor: player.youth ? 'cyan' : 'blue',
-            origin: player.youth ? 'Youth Academy' : 'Free Agent'
+            fromTo: player.youth ? 'Youth Academy' : 'Free Agent'
           }
         })
       },
@@ -108,8 +170,8 @@
             pos: player.pos,
             date: departure.endedOn,
             icon: 'mdi-exit-run',
-            iconColor: 'red',
-            origin: `(${player.conclusion || 'Expired'})`
+            iconColor: 'purple',
+            fromTo: `(${player.conclusion || 'Expired'})`
           }
         })
       },
@@ -125,8 +187,9 @@
             date: transfer.movedOn,
             icon: `mdi-airplane-${transferOut ? 'takeoff' : 'landing'}`,
             iconColor: transferOut ? 'red' : 'green',
-            origin: transferOut ? transfer.destination : transfer.origin,
+            fromTo: transferOut ? transfer.destination : transfer.origin,
             fee: transfer.fee,
+            feeColor: transferOut ? 'green' : 'red',
             addonClause: transfer.addonClause
           }
         })
@@ -140,22 +203,22 @@
             playerId: loan.playerId,
             name: player.name,
             pos: player.pos,
-            icon: 'mdi-transit-transfer'
+            fromTo: loanOut ? loan.destination : loan.origin
           }
-          if (loan.startedOn < this.seasonEnd) {
+          if (loan.startedOn >= this.seasonStart) {
             loans.push({
               ...row,
               date: loan.startedOn,
-              iconColor: `${loanOut ? 'deep-orange' : 'light-green'}`,
-              origin: loanOut ? loan.destination : loan.origin
+              icon: `mdi-account-arrow-${loanOut ? 'right' : 'left'}`,
+              iconColor: `${loanOut ? 'orange' : 'light-green'}`
             })
           }
-          if (loan.endedOn >= this.seasonStart) {
+          if (loan.endedOn <= this.seasonEnd) {
             loans.push({
               ...row,
               date: loan.endedOn,
-              iconColor: `${loanOut ? 'light-green' : 'deep-orange'}`,
-              origin: loanOut ? null : loan.destination
+              icon: `mdi-account-arrow-${loanOut ? 'left' : 'right'}`,
+              iconColor: `${loanOut ? 'light-green' : 'orange'}`
             })
           }
           return loans
@@ -169,6 +232,25 @@
           ...this.transfers,
           ...this.loans
         ].sort((a, b) => a.date - b.date)
+      },
+      total () {
+        return this.transferActivity.transfers.reduce((total, transfer) => {
+          if (transfer.origin === this.team.name) {
+            return total + transfer.fee
+          } else {
+            return total - transfer.fee
+          }
+        }, 0)
+      },
+      numYouthPlayers () {
+        return this.arrivals
+          .filter(arrival => arrival.fromTo === 'Youth Academy')
+          .length
+      },
+      numTransfersIn () {
+        return this.transfers
+          .filter(transfer => transfer.iconColor === 'green')
+          .length
       },
       seasonStart () {
         const date = parseISO(this.team.startedOn)

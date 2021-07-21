@@ -93,7 +93,7 @@
           .whereIdIn(playerIds)
           .sum('ovr')
 
-        return Math.round(totalOvr / playerIds.length)
+        return Math.round(totalOvr / (playerIds.length || 1))
       },
       nameOf (playerId) {
         const player = this.$store.$db().model('Player').find(playerId)
