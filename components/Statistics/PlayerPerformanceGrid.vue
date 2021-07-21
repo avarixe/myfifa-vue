@@ -283,7 +283,7 @@
             ...player,
             ...matchStats,
             flag: player.flag,
-            playerStats
+            playerStats: playerStats.sort((a, b) => a.season - b.season)
           }
         })
       },

@@ -88,19 +88,5 @@ export const actions = {
     if (match) {
       this.$db().model('Match').insertOrUpdate({ data: match })
     }
-  },
-  async fetchTeamOptions ({ commit }, { teamId }) {
-    const query = gql`
-      query fetchTeam($id: ID!) {
-        team(id: $id) {
-          opponents
-        }
-      }
-    `
-
-    const { team: { opponents } } =
-      await this.$graphql.default.request(query, { id: teamId })
-
-    commit('setTeamOptions', opponents)
   }
 }

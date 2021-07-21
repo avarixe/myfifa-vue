@@ -225,7 +225,7 @@
         try {
           await this.updatePlayer({
             id: playerId,
-            [attribute]: value
+            attributes: { [attribute]: value }
           })
         } catch (e) {
           this.key++

@@ -95,7 +95,7 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapState, mapMutations, mapActions } from 'vuex'
   import { gql } from 'nuxt-graphql-request'
   import pick from 'lodash.pick'
   import { parseISO } from 'date-fns'
@@ -114,8 +114,8 @@
     },
     data: () => ({
       valid: false,
-      loadingTeams: false,
-      loadingCompetitions: false,
+      loading: false,
+      optionsLoaded: false,
       attributes: {
         playedOn: null,
         competition: '',
@@ -204,20 +204,17 @@
             this.attributes.extraTime = false
           }
 
-          this.loadTeamOptions()
-
-          if (this.competitions.length === 0) {
-            this.loadCompetitions()
-          }
+          !this.optionsLoaded && this.loadOptions()
         }
       }
     },
     methods: {
+      ...mapMutations('matches', [
+        'setTeamOptions'
+      ]),
       ...mapActions({
-        fetchTeamOptions: 'matches/fetchTeamOptions',
         createMatch: 'matches/create',
-        updateMatch: 'matches/update',
-        fetchCompetitions: 'competitions/fetch'
+        updateMatch: 'matches/update'
       }),
       setHome () {
         this.attributes.home = this.team.name
@@ -231,11 +228,12 @@
           this.attributes.home = ''
         }
       },
-      async loadCompetitions () {
+      async loadOptions () {
         try {
           const query = gql`
-            query fetchCompetitions($teamId: ID!) {
+            query fetchMatchFormOptions($teamId: ID!) {
               team(id: $teamId) {
+                opponents
                 competitions {
                   ...CompetitionData
                   stages { ...BaseStageData }
@@ -246,22 +244,21 @@
             ${baseStageFragment}
           `
 
-          this.loadingCompetitions = true
-          await this.fetchCompetitions({ teamId: this.team.id, query })
+          this.loading = true
+
+          const { team: { opponents, competitions } } =
+            await this.$graphql.default.request(query, { teamId: this.team.id })
+
+          await Promise.all([
+            this.setTeamOptions(opponents),
+            this.$store.$db().model('Competition').insertOrUpdate({ data: competitions })
+          ])
+
+          this.optionsLoaded = true
         } catch (e) {
           alert(e.message)
         } finally {
-          this.loadingCompetitions = false
-        }
-      },
-      async loadTeamOptions () {
-        try {
-          this.loadingTeams = true
-          await this.fetchTeamOptions({ teamId: this.team.id })
-        } catch (e) {
-          alert(e.message)
-        } finally {
-          this.loadingTeams = false
+          this.loading = false
         }
       },
       async submit () {

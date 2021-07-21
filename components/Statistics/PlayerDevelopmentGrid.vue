@@ -86,7 +86,7 @@
             <tr>
               <td class="stick-left">
                 <v-btn
-                  :to="item.link"
+                  :to="`/teams/${teamId}/players/${item.id}`"
                   small
                   text
                   nuxt
@@ -105,7 +105,7 @@
               </td>
               <td class="text-center">{{ item.pos }}</td>
               <template v-if="metric === 0">
-                <td class="text-right">{{ item.startOVR }}</td>
+                <td class="text-right">{{ item.startovr }}</td>
                 <td
                   v-for="(_, season) in new Array(team.season + 1)"
                   :key="season"
@@ -254,7 +254,7 @@
               valueDiff[stat.season] = (stat.value[1] - stat.value[0]) / stat.value[0] * 100
             })
             playerWithStats.ovrDiff = ovrDiff
-            playerWithStats.startOVR = stats[0].ovr[0]
+            playerWithStats.startovr = stats[0].ovr[0]
             playerWithStats.valueDiff = valueDiff
             playerWithStats.startValue = stats[0].value[0]
           }
