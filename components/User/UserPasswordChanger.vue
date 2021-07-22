@@ -15,9 +15,9 @@
             <v-row dense>
               <v-col cols="12">
                 <v-text-field
-                  v-model="user.current_password"
+                  v-model="attributes.currentPassword"
                   label="Current Password"
-                  :rules="rulesFor.current_password"
+                  :rules="rulesFor.currentPassword"
                   :type="visible ? 'text' : 'password'"
                   :append-icon="`mdi-eye${visible ? '' : '-off'}`"
                   @click:append="visible = !visible"
@@ -25,7 +25,7 @@
               </v-col>
               <v-col cols="12">
                 <v-text-field
-                  v-model="user.password"
+                  v-model="attributes.password"
                   label="New Password"
                   :rules="rulesFor.new_password"
                   :type="visible ? 'text' : 'password'"
@@ -36,9 +36,9 @@
               </v-col>
               <v-col cols="12">
                 <v-text-field
-                  v-model="user.password_confirmation"
+                  v-model="attributes.passwordConfirmation"
                   label="Confirm Password"
-                  :rules="rulesFor.password_confirmation"
+                  :rules="rulesFor.passwordConfirmation"
                   :type="visible ? 'text' : 'password'"
                   :append-icon="`mdi-eye${visible ? '' : '-off'}`"
                   autocomplete="new-password"
@@ -73,16 +73,15 @@
   export default {
     name: 'UserPasswordForm',
     data: () => ({
-      user: {
-        id: null,
-        current_password: null,
+      attributes: {
+        currentPassword: null,
         password: null,
-        password_confirmation: null
+        passwordConfirmation: null
       },
       rulesFor: {
-        current_password: [isRequired('Current Password')],
+        currentPassword: [isRequired('Current Password')],
         new_password: [isRequired('New Password')],
-        password_confirmation: [isRequired('Password Confirmation')]
+        passwordConfirmation: [isRequired('Password Confirmation')]
       },
       visible: false
     }),
@@ -90,9 +89,6 @@
       ...mapGetters([
         'currentUser'
       ])
-    },
-    mounted () {
-      this.user.id = this.currentUser.id
     },
     methods: {
       ...mapMutations('broadcaster', [
@@ -104,27 +100,14 @@
       async submit () {
         try {
           this.loading = true
-          await this.changePassword(this.user)
+          await this.changePassword(this.attributes)
           this.announce({
             message: 'Password has been changed!',
             color: 'success'
           })
-        } catch ({ response }) {
-          let errorMessage = ''
-          if (response) {
-            const { data: { errors } } = response
-            for (const attribute in errors) {
-              const attributeTitle = attribute
-                .split('_')
-                .map(token => `${token[0].toUpperCase()}${token.slice(1)}`)
-              errorMessage = `${attributeTitle} ${errors[attribute][0]}`
-              break
-            }
-          } else {
-            errorMessage = 'API is not enabled.'
-          }
+        } catch (e) {
           this.announce({
-            message: errorMessage,
+            message: e.message,
             color: 'red'
           })
         } finally {

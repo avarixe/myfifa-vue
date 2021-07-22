@@ -11,9 +11,9 @@
       <v-row dense>
         <v-col cols="12">
           <v-text-field
-            v-model="user.full_name"
+            v-model="attributes.fullName"
             label="Name"
-            :rules="rulesFor.full_name"
+            :rules="rulesFor.fullName"
             spellcheck="false"
             autocapitalize="words"
             autocomplete="off"
@@ -22,7 +22,7 @@
         </v-col>
         <v-col cols="12">
           <v-text-field
-            v-model="user.username"
+            v-model="attributes.username"
             label="Username"
             :rules="rulesFor.username"
             spellcheck="false"
@@ -32,7 +32,7 @@
         </v-col>
         <v-col cols="12">
           <v-text-field
-            v-model="user.email"
+            v-model="attributes.email"
             label="Email Address"
             :rules="rulesFor.email"
             type="email"
@@ -40,7 +40,7 @@
         </v-col>
         <v-col cols="12">
           <v-text-field
-            v-model="user.password"
+            v-model="attributes.password"
             label="Password"
             :rules="rulesFor.password"
             :type="visible ? 'text' : 'password'"
@@ -50,9 +50,9 @@
         </v-col>
         <v-col cols="12">
           <v-text-field
-            v-model="user.password_confirmation"
+            v-model="attributes.passwordConfirmation"
             label="Confirm Password"
-            :rules="rulesFor.password_confirmation"
+            :rules="rulesFor.passwordConfirmation"
             :type="visible ? 'text' : 'password'"
             :append-icon="`mdi-eye${visible ? '' : '-off'}`"
             @click:append="visible = !visible"
@@ -75,22 +75,22 @@
     ],
     data: () => ({
       passwordMode: false,
-      user: {
-        full_name: '',
+      attributes: {
+        fullName: '',
         username: '',
         email: '',
         password: '',
-        password_confirmation: ''
+        passwordConfirmation: ''
       },
       rulesFor: {
-        full_name: [isRequired('Name')],
+        fullName: [isRequired('Name')],
         username: [isRequired('Username')],
         email: [
           isRequired('Email Address'),
           isEmail
         ],
         password: [isRequired('Password')],
-        password_confirmation: [isRequired('Password Confirmation')]
+        passwordConfirmation: [isRequired('Password Confirmation')]
       },
       visible: false
     }),
@@ -99,7 +99,7 @@
         createUser: 'create'
       }),
       async submit () {
-        await this.createUser(this.user)
+        await this.createUser(this.attributes)
       }
     }
   }

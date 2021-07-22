@@ -56,7 +56,7 @@ export const actions = {
       }
     }
   },
-  async login ({ commit, dispatch }, payload) {
+  async login ({ commit }, payload) {
     const data = await this.$axios.$post('oauth/token', {
       ...payload,
       client_id: this.$config.clientId,
@@ -66,7 +66,14 @@ export const actions = {
       token: data.access_token,
       expires: data.expires_in / 86400
     })
-    await dispatch('user/get')
+    commit('setUserId', data.user.id)
+    models.User.insert({
+      data: {
+        ...data.user,
+        fullName: data.user.full_name,
+        darkMode: data.user.dark_mode
+      }
+    })
     commit('broadcaster/announce', {
       message: 'You have successfully logged in!',
       color: 'success'

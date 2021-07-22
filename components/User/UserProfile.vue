@@ -18,9 +18,9 @@
             <v-row dense>
               <v-col cols="12">
                 <v-text-field
-                  v-model="attributes.full_name"
+                  v-model="attributes.fullName"
                   label="Name"
-                  :rules="rulesFor.full_name"
+                  :rules="rulesFor.fullName"
                   spellcheck="false"
                   autocapitalize="words"
                   autocomplete="off"
@@ -75,12 +75,12 @@
     name: 'UserProfile',
     data: () => ({
       attributes: {
-        full_name: null,
+        fullName: null,
         username: null,
         email: null
       },
       rulesFor: {
-        full_name: [isRequired('Name')],
+        fullName: [isRequired('Name')],
         username: [isRequired('Username')],
         email: [
           isRequired('Email Address'),
@@ -95,7 +95,7 @@
     },
     mounted () {
       this.attributes = pick(this.currentUser, [
-        'full_name',
+        'fullName',
         'username',
         'email'
       ])
