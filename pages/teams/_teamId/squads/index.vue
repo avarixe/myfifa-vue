@@ -38,7 +38,7 @@
         teamId: this.teamId
       })
 
-      await this.$store.$db().model('Team').insertOrUpdate({ data: team })
+      await this.$store.$db().model('Team').insert({ data: team })
 
       this.setPage({
         title: `${team.name} - Squads`,

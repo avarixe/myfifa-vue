@@ -239,7 +239,7 @@
       const { competition } = await this.$graphql.default.request(query, {
         id: this.competitionId
       })
-      await this.$store.$db().model('Competition').insertOrUpdate({ data: competition })
+      await this.$store.$db().model('Competition').insert({ data: competition })
 
       this.setPage({
         title: this.title,

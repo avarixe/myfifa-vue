@@ -130,7 +130,7 @@
         season: parseInt(params.season)
       })
 
-      await store.$db().model('Team').insertOrUpdate({ data: team })
+      await store.$db().model('Team').insert({ data: team })
 
       const {
         competitionStats,

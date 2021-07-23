@@ -147,7 +147,7 @@
             lastMatch { ...MatchData }
             players {
               ...PlayerData
-              contracts { ...ContractData }
+              currentContract { ...ContractData }
             }
             competitions { ...CompetitionData }
           }
@@ -161,10 +161,12 @@
 
       const { team } =
         await this.$graphql.default.request(query, { id: this.teamId })
+      const contracts = team.players.map(player => player.currentContract)
 
       await Promise.all([
-        this.$store.$db().model('Team').insertOrUpdate({ data: team }),
-        this.$store.$db().model('Match').insertOrUpdate({ data: team.lastMatch })
+        this.$store.$db().model('Team').insert({ data: team }),
+        this.$store.$db().model('Match').insert({ data: team.lastMatch }),
+        this.$store.$db().model('Contract').insert({ data: contracts })
       ])
 
       this.setPage({

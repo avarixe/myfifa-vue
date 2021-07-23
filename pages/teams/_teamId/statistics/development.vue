@@ -52,7 +52,7 @@
       const { team: { players, playerDevelopmentStats } } =
         await $graphql.default.request(query, { teamId: parseInt(params.teamId) })
 
-      await store.$db().model('Player').insertOrUpdate({ data: players })
+      await store.$db().model('Player').insert({ data: players })
 
       return { playerDevelopmentStats }
     },

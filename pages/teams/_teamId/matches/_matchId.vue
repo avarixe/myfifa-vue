@@ -256,8 +256,8 @@
         })
 
       await Promise.all([
-        this.$store.$db().model('Match').insertOrUpdate({ data: match }),
-        this.$store.$db().model('Team').insertOrUpdate({ data: team })
+        this.$store.$db().model('Match').insert({ data: match }),
+        this.$store.$db().model('Team').insert({ data: team })
       ])
 
       this.setPage({

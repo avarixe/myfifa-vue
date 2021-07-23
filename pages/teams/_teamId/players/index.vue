@@ -47,7 +47,7 @@
             ...TeamData
             players {
               ...PlayerData
-              contracts { ...ContractData }
+              currentContract { ...ContractData }
             }
           }
         }
@@ -58,8 +58,12 @@
 
       const { team } =
         await this.$graphql.default.request(query, { teamId: this.teamId })
+      const contracts = team.players.map(player => player.currentContract)
 
-      await this.$store.$db().model('Team').insertOrUpdate({ data: team })
+      await Promise.all([
+        this.$store.$db().model('Team').insert({ data: team }),
+        this.$store.$db().model('Contract').insert({ data: contracts })
+      ])
 
       this.setPage({
         title: `${team.name} - Players`,
