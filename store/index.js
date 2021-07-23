@@ -1,7 +1,8 @@
 import VuexORM from '@vuex-orm/core'
 import Cookie from 'js-cookie'
-import * as models from '@/models'
 import cookieparser from 'cookieparser'
+import * as models from '@/models'
+import { userFragment, teamFragment } from '@/fragments'
 import pkg from '@/package.json'
 
 // initial state
@@ -34,21 +35,30 @@ export const mutations = {
 
 // actions
 export const actions = {
-  async nuxtServerInit ({ commit, dispatch }, { req, params }) {
+  async nuxtServerInit ({ commit }, { req, params, $graphql }) {
     if (req.headers.cookie) {
       var { token } = cookieparser.parse(req.headers.cookie)
 
       if (token) {
         commit('setToken', { token })
-        this.$graphql.default.setHeader('authorization', `Bearer ${token}`)
+        $graphql.default.setHeader('authorization', `Bearer ${token}`)
 
         try {
-          await dispatch('user/get')
+          const query = `
+            query fetchUser${params.teamId ? '($teamId: ID!)' : ''} {
+              user { ...UserData }
+              ${params.teamId ? 'team(id: $teamId) { ...TeamData }' : ''}
+            }
+            ${userFragment}
+            ${params.teamId ? teamFragment : ''}
+          `
 
-          // load current Team, if present
-          if ('teamId' in params) {
-            await dispatch('teams/get', { id: params.teamId })
-          }
+          const { user, team } =
+            await $graphql.default.request(query, { teamId: params.teamId })
+
+          models.User.insert({ data: user })
+          commit('setUserId', parseInt(user.id))
+          team && models.Team.insert({ data: team })
         } catch (e) {
           console.error(e)
           commit('setToken', { token: null })
