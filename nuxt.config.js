@@ -62,6 +62,7 @@ export default {
   ],
 
   modules: [
+    'cookie-universal-nuxt',
     '@nuxtjs/axios'
   ],
 

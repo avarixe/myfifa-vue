@@ -1,33 +1,47 @@
 <template>
-  <v-container class="fill-height">
-    <v-row
-      align="center"
-      justify="center"
-    >
-      <v-col
-        cols="12"
-        sm="8"
-        md="4"
-      >
-        <login-form v-if="!authenticated" />
+  <v-container>
+    <v-row>
+      <v-col cols="12">
+        <team-form>
+          <template #default="{ on }">
+            <v-btn v-on="on">
+              <v-icon left>mdi-plus</v-icon>
+              Team
+            </v-btn>
+          </template>
+        </team-form>
+      </v-col>
+      <v-col cols="12">
+        <team-grid />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-  import { mapGetters, mapMutations } from 'vuex'
+  import { mapMutations } from 'vuex'
+  import { gql } from 'nuxt-graphql-request'
+  import { teamFragment } from '@/fragments'
 
   export default {
-    name: 'AppPage',
-    computed: mapGetters([
-      'authenticated'
-    ]),
-    mounted () {
-      this.setTitle('')
+    name: 'HomePage',
+    async fetch () {
+      this.setPage({
+        headline: 'Home'
+      })
+
+      const query = gql`
+        query fetchTeams {
+          teams { ...TeamData }
+        }
+        ${teamFragment}
+      `
+
+      const { teams } = await this.$graphql.default.request(query)
+      await this.$store.$db().model('Team').insert({ data: teams })
     },
     methods: mapMutations('app', {
-      setTitle: 'setTitle'
+      setPage: 'setPage'
     })
   }
 </script>

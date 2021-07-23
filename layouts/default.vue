@@ -31,7 +31,9 @@
       }
     },
     computed: {
-      ...mapState(['token']),
+      ...mapState('auth', [
+        'token'
+      ]),
       ...mapState('app', [
         'title'
       ]),

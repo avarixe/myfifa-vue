@@ -113,7 +113,7 @@
     },
     methods: {
       ...mapActions({
-        logout: 'logout',
+        logout: 'auth/revokeToken',
         setDarkMode: 'user/setDarkMode'
       }),
       goToTeams () {
