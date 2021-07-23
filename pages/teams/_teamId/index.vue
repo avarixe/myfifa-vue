@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row v-if="team">
       <v-col cols="12">
         <team-form
           :record="team"
@@ -12,9 +12,8 @@
               dark
               class="mb-1"
               v-on="on"
-            >
-              Edit
-            </v-btn>
+              v-text="'Edit'"
+            />
           </template>
         </team-form>
         <v-btn
@@ -23,9 +22,8 @@
           nuxt
           color="primary"
           dark
-        >
-          Import Players
-        </v-btn>
+          v-text="'Import Players'"
+        />
         <record-remove
           :record="team"
           store="teams"
@@ -37,9 +35,8 @@
               dark
               class="mb-1"
               v-on="on"
-            >
-              Remove
-            </v-btn>
+              v-text="'Remove'"
+            />
           </template>
         </record-remove>
       </v-col>
@@ -100,6 +97,7 @@
   import { gql } from 'nuxt-graphql-request'
   import { TeamAccessible } from '@/mixins'
   import {
+    teamFragment,
     matchFragment,
     playerFragment,
     contractFragment,
@@ -116,7 +114,7 @@
         return this.$store.$db().model('Match')
           .query()
           .with('team')
-          .where('teamId', this.team.id)
+          .where('teamId', this.teamId)
           .orderBy('playedOn', 'desc')
           .first()
       },
@@ -130,27 +128,23 @@
         return this.$store.$db().model('Player')
           .query()
           .with('team')
-          .where('teamId', this.team.id)
+          .where('teamId', this.teamId)
           .get()
           .filter(player => player.contract().endedOn <= this.seasonEnd)
       },
       importPlayersLink () {
         return {
           name: 'teams-teamId-players-import',
-          params: { teamId: this.team.id }
+          params: { teamId: this.teamId }
         }
       }
     },
     async fetch () {
-      this.setPage({
-        title: this.team.name,
-        headline: 'Dashboard'
-      })
-
       const query = gql`
         query loadDashboard($id: ID!) {
           team(id: $id) {
-            matches { ...MatchData }
+            ...TeamData
+            lastMatch { ...MatchData }
             players {
               ...PlayerData
               contracts { ...ContractData }
@@ -158,20 +152,25 @@
             competitions { ...CompetitionData }
           }
         }
+        ${teamFragment}
         ${matchFragment}
         ${playerFragment}
         ${contractFragment}
         ${competitionFragment}
       `
 
-      const { team: { matches, players, competitions } } =
-        await this.$graphql.default.request(query, { id: this.team.id })
+      const { team } =
+        await this.$graphql.default.request(query, { id: this.teamId })
 
       await Promise.all([
-        this.$store.$db().model('Match').insertOrUpdate({ data: matches }),
-        this.$store.$db().model('Player').insertOrUpdate({ data: players }),
-        this.$store.$db().model('Competition').insertOrUpdate({ data: competitions })
+        this.$store.$db().model('Team').insertOrUpdate({ data: team }),
+        this.$store.$db().model('Match').insertOrUpdate({ data: team.lastMatch })
       ])
+
+      this.setPage({
+        title: team.name,
+        headline: 'Dashboard'
+      })
     },
     methods: {
       ...mapMutations('app', {
@@ -181,7 +180,7 @@
         return this.$store.$db().model('Player')
           .query()
           .with('team')
-          .where('teamId', this.team.id)
+          .where('teamId', this.teamId)
           .where('status', status)
           .get()
       }

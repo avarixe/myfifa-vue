@@ -177,7 +177,7 @@
         return this.$store.$db().model('Player')
           .query()
           .with('team|contracts')
-          .where('teamId', parseInt(this.$route.params.teamId))
+          .where('teamId', this.teamId)
           .get()
       },
       currentFilter () {

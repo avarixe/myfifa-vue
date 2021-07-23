@@ -83,9 +83,9 @@
       actions () {
         return [
           {
-            icon: 'mdi-shield-search',
-            text: 'Teams',
-            click: this.goToTeams
+            icon: 'mdi-home',
+            text: 'Home',
+            click: this.goToIndex
           },
           {
             icon: 'mdi-account',
@@ -116,8 +116,8 @@
         logout: 'auth/revokeToken',
         setDarkMode: 'user/setDarkMode'
       }),
-      goToTeams () {
-        this.$router.push({ name: 'teams' })
+      goToIndex () {
+        this.$router.push({ name: 'index' })
       },
       goToAccount () {
         this.$router.push({ name: 'account' })

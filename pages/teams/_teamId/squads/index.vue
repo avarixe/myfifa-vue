@@ -11,39 +11,37 @@
 <script>
   import { mapMutations } from 'vuex'
   import { gql } from 'nuxt-graphql-request'
-  import { TeamAccessible } from '@/mixins'
-  import { squadFragment, playerFragment } from '@/fragments'
+  import { teamFragment, squadFragment, playerFragment } from '@/fragments'
 
   export default {
     name: 'SquadsPage',
-    mixins: [
-      TeamAccessible
-    ],
+    computed: {
+      teamId () {
+        return parseInt(this.$route.params.teamId)
+      }
+    },
     async fetch () {
       const query = gql`
         query fetchSquadsPage($teamId: ID!) {
           team(id: $teamId) {
+            ...TeamData
             squads { ...SquadData }
             players { ...PlayerData }
           }
         }
+        ${teamFragment}
         ${squadFragment}
         ${playerFragment}
       `
 
-      const { team: { squads, players } } =
-        await this.$graphql.default.request(query, {
-          matchId: this.matchId,
-          teamId: this.team.id
-        })
+      const { team } = await this.$graphql.default.request(query, {
+        teamId: this.teamId
+      })
 
-      await Promise.all([
-        this.$store.$db().model('Squad').insertOrUpdate({ data: squads }),
-        this.$store.$db().model('Player').insertOrUpdate({ data: players })
-      ])
+      await this.$store.$db().model('Team').insertOrUpdate({ data: team })
 
       this.setPage({
-        title: `${this.team.name} - Squads`,
+        title: `${team.name} - Squads`,
         headline: 'Squads'
       })
     },

@@ -72,6 +72,7 @@
   import { gql } from 'nuxt-graphql-request'
   import { TeamAccessible } from '@/mixins'
   import {
+    teamFragment,
     competitionFragment,
     competitionStatsFragment,
     playerFragment,
@@ -99,6 +100,7 @@
       const query = gql`
         query fetchSeason($id: ID!, $season: Int) {
           team(id: $id) {
+            ...TeamData
             competitions { ...CompetitionData }
             players { ...PlayerData }
             competitionStats(season: $season) { ...CompetitionStatsData }
@@ -112,6 +114,7 @@
             }
           }
         }
+        ${teamFragment}
         ${competitionFragment}
         ${playerFragment}
         ${competitionStatsFragment}
@@ -122,23 +125,19 @@
         ${loanFragment}
       `
 
-      const { team: {
-        competitions,
-        players,
+      const { team } = await $graphql.default.request(query, {
+        id: parseInt(params.teamId),
+        season: parseInt(params.season)
+      })
+
+      await store.$db().model('Team').insertOrUpdate({ data: team })
+
+      const {
         competitionStats,
         playerPerformanceStats,
         playerDevelopmentStats,
         transferActivity
-      } } =
-        await $graphql.default.request(query, {
-          id: parseInt(params.teamId),
-          season: parseInt(params.season)
-        })
-
-      await Promise.all([
-        store.$db().model('Competition').insertOrUpdate({ data: competitions }),
-        store.$db().model('Player').insertOrUpdate({ data: players })
-      ])
+      } = team
 
       return {
         competitionStats,
