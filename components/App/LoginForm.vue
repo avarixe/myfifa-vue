@@ -12,7 +12,7 @@
           <v-row dense>
             <v-col cols="12">
               <v-text-field
-                v-model="credentials.username"
+                v-model="username"
                 label="Username"
                 autofocus
                 autocapitalize="off"
@@ -20,7 +20,7 @@
             </v-col>
             <v-col cols="12">
               <v-text-field
-                v-model="credentials.password"
+                v-model="password"
                 label="Password"
                 :type="visible ? 'text' : 'password'"
                 :append-icon="`mdi-eye${visible ? '' : '-off'}`"
@@ -33,8 +33,9 @@
           v-model="error"
           type="error"
           dismissible
-          v-text="errorMessage"
-        />
+        >
+          {{ errorMessage }}
+        </v-alert>
         <v-card-actions>
           <v-spacer />
           <user-form>
@@ -69,11 +70,8 @@
   export default {
     name: 'LoginForm',
     data: () => ({
-      credentials: {
-        username: '',
-        password: '',
-        grant_type: 'password'
-      },
+      username: null,
+      password: null,
       error: false,
       errorMessage: null,
       visible: false
@@ -89,10 +87,14 @@
         try {
           this.error = false
           this.errorMessage = null
-          await this.createToken(this.credentials)
-        } catch ({ response }) {
+          await this.createToken({
+            username: this.username,
+            password: this.password
+          })
+        } catch (e) {
+          console.error(e)
           this.error = true
-          this.errorMessage = response
+          this.errorMessage = e.response
             ? 'Invalid Username/Password. Please try again.'
             : 'API is not enabled.'
         }
