@@ -114,7 +114,7 @@
       matches () {
         return this.$store.$db().model('Match')
           .query()
-          .where('teamId', this.team.id)
+          .where('teamId', this.teamId)
           .where(match => {
             for (const filter in this.filters) {
               if (!this.matchPassesFilter(match, filter)) {

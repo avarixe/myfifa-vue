@@ -32,20 +32,11 @@
         />
       </v-col>
     </template>
-    <template #additional-actions>
-      <v-btn
-        v-if="team.badgePath"
-        color="red"
-        text
-        dark
-        @click="removeBadge"
-        v-text="'Remove'"
-      />
-    </template>
   </dialog-form>
 </template>
 
 <script>
+  import { gql } from 'nuxt-graphql-request'
   import { DialogFormable } from '@/mixins'
   import { isRequired } from '@/functions'
 
@@ -65,38 +56,35 @@
     }),
     computed: {
       badgeUrl () {
-        const { browserBaseURL } = this.$config.axios
         return this.team.badgePath
-          ? `${browserBaseURL.replace(/\/api/, '')}${this.team.badgePath}`
+          ? `${this.$config.baseURL.replace(/\/api/, '')}${this.team.badgePath}`
           : null
       }
     },
     methods: {
       async submit () {
-        const formData = new FormData()
-        formData.append('team[badge]', this.badge)
-        const badgePath = await this.$axios.$post(
-          `teams/${this.team.id}/badge`,
-          formData
-        )
-        this.$store.$db().model('Team').update({
-          id: this.team.id,
-          badgePath
-        })
-      },
-      async removeBadge () {
-        try {
-          this.loading = true
-          await this.$axios.$delete(`teams/${this.team.id}/badge`)
+        const query = gql`
+          mutation uploadBadge($teamId: ID!, $badge: Upload!) {
+            uploadBadge(teamId: $teamId, badge: $badge) {
+              team { badgePath }
+              errors { fullMessages }
+            }
+          }
+        `
+
+        const { uploadBadge: { team, errors } } =
+          await this.$graphql.default.request(query, {
+            teamId: this.team.id,
+            badge: this.badge
+          })
+
+        if (team) {
           this.$store.$db().model('Team').update({
             id: this.team.id,
-            badgePath: null
+            badgePath: team.badgePath
           })
-          this.key++
-        } catch (e) {
-          console.error(e)
-        } finally {
-          this.loading = false
+        } else {
+          throw new Error(errors.fullMessages[0])
         }
       }
     }

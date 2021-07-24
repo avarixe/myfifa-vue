@@ -1,89 +1,60 @@
 import VuexORM from '@vuex-orm/core'
-import Cookie from 'js-cookie'
 import * as models from '@/models'
-import cookieparser from 'cookieparser'
+import { userFragment, teamFragment } from '@/fragments'
 import pkg from '@/package.json'
 
 // initial state
 export const state = () => ({
   version: pkg.version,
-  token: null,
-  userId: null
+  userId: null,
+  targetRoute: null
 })
 
 // getters
 export const getters = {
-  authenticated: state => state.token !== null,
   currentUser: state => state.userId && models.User.find(state.userId)
 }
 
 // mutations
 export const mutations = {
-  setToken (state, { token, expires }) {
-    if (token) {
-      expires && Cookie.set('token', token, { expires })
-    } else {
-      Cookie.remove('token')
-    }
-    state.token = token
-  },
   setUserId (state, userId) {
     state.userId = userId
+  },
+  setTargetRoute (state, targetRoute) {
+    state.targetRoute = targetRoute
   }
 }
 
 // actions
 export const actions = {
-  async nuxtServerInit ({ commit, dispatch }, { req, params }) {
-    if (req.headers.cookie) {
-      var { token } = cookieparser.parse(req.headers.cookie)
+  async nuxtServerInit ({ commit }, { app, params, $graphql }) {
+    const token = app.$cookies.get('token')
 
-      if (token) {
-        commit('setToken', { token })
-        this.$graphql.default.setHeader('authorization', `Bearer ${token}`)
+    if (token) {
+      commit('auth/setToken', token)
+      $graphql.default.setHeader('authorization', `Bearer ${token}`)
 
-        try {
-          await dispatch('user/get')
-
-          // load current Team, if present
-          if ('teamId' in params) {
-            await dispatch('teams/get', { id: params.teamId })
+      try {
+        const query = `
+          query fetchUser${params.teamId ? '($teamId: ID!)' : ''} {
+            user { ...UserData }
+            ${params.teamId ? 'team(id: $teamId) { ...TeamData }' : ''}
           }
-        } catch (e) {
-          console.error(e)
-          commit('setToken', { token: null })
-        }
+          ${userFragment}
+          ${params.teamId ? teamFragment : ''}
+        `
+
+        const { user, team } =
+          await $graphql.default.request(query, { teamId: params.teamId })
+
+        models.User.insert({ data: user })
+        commit('setUserId', parseInt(user.id))
+        team && models.Team.insert({ data: team })
+      } catch (e) {
+        console.error(e)
+        commit('auth/setToken', null)
       }
     }
-  },
-  async login ({ commit, dispatch }, payload) {
-    const data = await this.$axios.$post('oauth/token', {
-      ...payload,
-      client_id: this.$config.clientId,
-      client_secret: this.$config.clientSecret
-    })
-    commit('setToken', {
-      token: data.access_token,
-      expires: data.expires_in / 86400
-    })
-    await dispatch('user/get')
-    commit('broadcaster/announce', {
-      message: 'You have successfully logged in!',
-      color: 'success'
-    }, { root: true })
-  },
-  async logout ({ commit, dispatch }) {
-    await this.$axios.$post('oauth/revoke', {
-      client_id: this.$config.clientId,
-      client_secret: this.$config.clientSecret
-    })
-    await dispatch('orm/deleteAll')
-    commit('setToken', { token: null })
-    this.$router.push({ name: 'index' })
-    commit('broadcaster/announce', {
-      message: 'You have successfully logged out!',
-      color: 'danger'
-    }, { root: true })
   }
 }
 

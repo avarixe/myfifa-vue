@@ -11,13 +11,11 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.12.5",
     "@vuex-orm/core": "^0.36.2",
-    "cookieparser": "^0.1.0",
+    "cookie-universal-nuxt": "^2.1.5",
     "date-fns": "^2.8.1",
     "email-validator": "^2.0.4",
     "flagpack-core": "https://github.com/avarixe/flagpack-core.git#add-dz-and-xk",
-    "js-cookie": "^2.2.0",
     "lodash.camelcase": "^4.3.0",
     "lodash.findlast": "^4.6.0",
     "lodash.groupby": "^4.6.0",
@@ -28,7 +26,7 @@
     "v-money": "^0.8.1",
     "vue-chartist": "^2.2.1",
     "vue-fitty": "^0.1.7",
-    "xlsx": "^0.15.4"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@babel/traverse": "^7.1.5",

@@ -259,7 +259,7 @@
           playerId: parseInt(params.playerId)
         })
 
-      await store.$db().model('Player').insertOrUpdate({ data: player })
+      await store.$db().model('Player').insert({ data: player })
 
       const data = {
         numMatches: 0,

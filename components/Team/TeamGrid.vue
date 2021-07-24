@@ -70,9 +70,8 @@
     },
     methods: {
       badgeUrl (team) {
-        const { browserBaseURL } = this.$config.axios
         return team.badgePath
-          ? `${browserBaseURL.replace(/\/api/, '')}${team.badgePath}`
+          ? `${this.$config.baseURL.replace(/\/api/, '')}${team.badgePath}`
           : null
       }
     }

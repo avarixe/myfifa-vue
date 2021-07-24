@@ -1,9 +1,10 @@
-export default function ({ store, route, redirect }) {
-  if (store.getters.authenticated) {
-    if (route.name === 'index') {
-      return redirect('/teams')
+export default function ({ app, store, route, redirect }) {
+  if (store.state.auth.token) {
+    if (route.name === 'login') {
+      redirect({ name: 'index' })
     }
-  } else if (route.name !== 'index') {
-    return redirect(`/#${route.path}`)
+  } else if (route.name !== 'login') {
+    app.$cookies.set('targetRoute', route)
+    redirect({ name: 'login' })
   }
 }

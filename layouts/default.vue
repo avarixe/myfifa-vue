@@ -31,7 +31,9 @@
       }
     },
     computed: {
-      ...mapState(['token']),
+      ...mapState('auth', [
+        'token'
+      ]),
       ...mapState('app', [
         'title'
       ]),
@@ -43,7 +45,7 @@
       }
     },
     watch: {
-      'currentUser.dark_mode': {
+      'currentUser.darkMode': {
         immediate: true,
         handler (darkModeOn) {
           this.$vuetify.theme.dark = darkModeOn

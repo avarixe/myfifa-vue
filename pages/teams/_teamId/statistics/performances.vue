@@ -59,8 +59,8 @@
         await $graphql.default.request(query, { teamId: parseInt(params.teamId) })
 
       await Promise.all([
-        store.$db().model('Player').insertOrUpdate({ data: players }),
-        store.$db().model('Competition').insertOrUpdate({ data: competitions })
+        store.$db().model('Player').insert({ data: players }),
+        store.$db().model('Competition').insert({ data: competitions })
       ])
 
       return { playerPerformanceStats }

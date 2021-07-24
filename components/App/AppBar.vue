@@ -83,9 +83,9 @@
       actions () {
         return [
           {
-            icon: 'mdi-shield-search',
-            text: 'Teams',
-            click: this.goToTeams
+            icon: 'mdi-home',
+            text: 'Home',
+            click: this.goToIndex
           },
           {
             icon: 'mdi-account',
@@ -93,8 +93,8 @@
             click: this.goToAccount
           },
           {
-            icon: `mdi-weather-${this.currentUser.dark_mode ? 'night' : 'sunny'}`,
-            text: `${this.currentUser.dark_mode ? 'Dark' : 'Light'} Mode`,
+            icon: `mdi-weather-${this.currentUser.darkMode ? 'night' : 'sunny'}`,
+            text: `${this.currentUser.darkMode ? 'Dark' : 'Light'} Mode`,
             click: this.toggleMode,
             loading: this.togglingMode
           },
@@ -113,11 +113,11 @@
     },
     methods: {
       ...mapActions({
-        logout: 'logout',
+        logout: 'auth/revokeToken',
         setDarkMode: 'user/setDarkMode'
       }),
-      goToTeams () {
-        this.$router.push({ name: 'teams' })
+      goToIndex () {
+        this.$router.push({ name: 'index' })
       },
       goToAccount () {
         this.$router.push({ name: 'account' })
@@ -128,7 +128,7 @@
       async toggleMode () {
         try {
           this.togglingMode = true
-          await this.setDarkMode(!this.currentUser.dark_mode)
+          await this.setDarkMode(!this.currentUser.darkMode)
         } catch (e) {
           console.error(e)
         } finally {

@@ -15,7 +15,7 @@
       insertBuffer: {},
       deleteBuffer: {}
     }),
-    computed: mapState([
+    computed: mapState('auth', [
       'token'
     ]),
     mounted () {

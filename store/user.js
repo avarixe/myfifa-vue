@@ -1,28 +1,77 @@
+import { gql } from 'nuxt-graphql-request'
+import { userFragment } from '@/fragments'
+
 // actions
 export const actions = {
   async get ({ commit }) {
-    const data = await this.$axios.$get('user')
-    this.$db().model('User').insert({ data })
-    commit('setUserId', data.id, { root: true })
+    const { user } = await this.$graphql.default.request(gql`
+      query getUser {
+        user { ...UserData }
+      }
+      ${userFragment}
+    `)
+
+    this.$db().model('User').insert({ data: user })
+    commit('setUserId', parseInt(user.id), { root: true })
   },
-  async create ({ commit }, user) {
-    await this.$axios.$post('user', { user })
-    commit('broadcaster/announce', {
-      message: 'Account has been registered!',
-      color: 'success'
-    }, { root: true })
+  async create ({ commit }, attributes) {
+    const query = gql`
+      mutation createUser($attributes: UserRegistrationAttributes!) {
+        registerUser(attributes: $attributes) {
+          errors { fullMessages }
+        }
+      }
+    `
+
+    const { registerUser: { errors } } =
+      await this.$graphql.default.request(query, { attributes })
+
+    if (errors) {
+      throw new Error(errors.fullMessages[0])
+    } else {
+      commit('broadcaster/announce', {
+        message: 'Account has been registered!',
+        color: 'success'
+      }, { root: true })
+    }
   },
-  async changePassword (_, user) {
-    await this.$axios.$patch('user/password', { user })
+  async changePassword (_, attributes) {
+    const query = gql`
+      mutation changePassword($attributes: UserPasswordChangeAttributes!) {
+        changePassword(attributes: $attributes) {
+          errors { fullMessages }
+        }
+      }
+    `
+
+    const { changePassword: { errors } } =
+      await this.$graphql.default.request(query, { attributes })
+
+    if (errors) {
+      throw new Error(errors.fullMessages[0])
+    }
   },
-  async update (_, user) {
-    const data = await this.$axios.$patch('user', { user })
-    this.$db().model('User').insert({ data })
+  async update (_, attributes) {
+    const query = gql`
+      mutation updateUser($attributes: UserAttributes!) {
+        updateUser(attributes: $attributes) {
+          user { ...UserData }
+          errors { fullMessages }
+        }
+      }
+      ${userFragment}
+    `
+
+    const { updateUser: { user, errors } } =
+      await this.$graphql.default.request(query, { attributes })
+
+    if (user) {
+      this.$db().model('User').update({ data: user })
+    } else {
+      throw new Error(errors.fullMessages[0])
+    }
   },
-  async setDarkMode (_, darkModeOn) {
-    const data = await this.$axios.$patch('user', {
-      user: { dark_mode: darkModeOn }
-    })
-    this.$db().model('User').insert({ data })
+  async setDarkMode ({ dispatch }, darkMode) {
+    await dispatch('update', { darkMode })
   }
 }

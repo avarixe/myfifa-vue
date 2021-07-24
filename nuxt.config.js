@@ -8,24 +8,14 @@ export default {
   },
 
   publicRuntimeConfig: {
-    axios: {
-      browserBaseURL: process.env.BASE_URL,
-    },
+    baseURL: process.env.BASE_URL,
+    cableURL: process.env.CABLE_URL,
     graphql: {
       clients: {
         default: {
           endpoint: `${process.env.BASE_URL}/graphql`
         }
       }
-    },
-    cableURL: process.env.CABLE_URL,
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET
-  },
-
-  privateRuntimeConfig: {
-    axios: {
-      baseURL: process.env.BASE_URL
     }
   },
 
@@ -62,7 +52,7 @@ export default {
   ],
 
   modules: [
-    '@nuxtjs/axios'
+    'cookie-universal-nuxt'
   ],
 
   components: [
@@ -84,7 +74,6 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/axios.js',
     '@/plugins/fitty.js',
     '@/plugins/custom/filters.js',
     '@/plugins/vue-chartist.js'
