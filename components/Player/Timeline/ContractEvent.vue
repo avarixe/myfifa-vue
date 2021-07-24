@@ -12,8 +12,9 @@
       <span
         v-if="event.conclusion && event.endedOn <= team.currentlyOn"
         class="pl-1"
-        v-text="`(${event.conclusion})`"
-      />
+      >
+        ({{ event.conclusion }})
+      </span>
     </template>
     <template #details>
       <tr>

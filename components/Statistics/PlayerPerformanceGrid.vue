@@ -11,12 +11,12 @@
             <v-icon
               left
               :color="currentPlayerFilter.color"
-              v-text="`mdi-${currentPlayerFilter.icon}`"
-            />
-            <div
-              :class="`text-capitalize ${currentPlayerFilter.color}--text`"
-              v-text="`${currentPlayerFilter.text} Players`"
-            />
+            >
+              mdi-{{ currentPlayerFilter.icon }}
+            </v-icon>
+            <div :class="`text-capitalize ${currentPlayerFilter.color}--text`">
+              {{ currentPlayerFilter.text }} Players
+            </div>
           </v-btn>
         </template>
         <v-list>
@@ -36,137 +36,139 @@
 
     <!-- Player Information Grid -->
     <v-card-text>
-      <client-only>
-        <v-data-table
-          :key="key"
-          :headers="headers"
-          :items="rows"
-          item-key="id"
-          sort-by="pos"
-          :sort-desc.sync="sortDesc"
-          must-sort
-          single-expand
-          :expanded.sync="expanded"
-          no-data-text="No Players Found"
-          :mobile-breakpoint="0"
-        >
-          <template #top>
-            <v-select
-              v-if="!filterType"
-              v-model="filterType"
-              label="Filter"
-              prepend-inner-icon="mdi-filter"
-              :items="filterTypeOptions"
-              @change="openFilterValueField"
-            />
-            <v-select
-              v-else-if="filterValueOptions.length > 0"
-              v-model="filterValue"
-              :label="`Filter by ${filterType}`"
-              :items="filterValueOptions"
-              prepend-inner-icon="mdi-filter"
-              append-icon="mdi-backspace"
-              :menu-props="{ value: filterValueMenuOpen }"
-              @click:append="filterType = null"
-              @change="applyFilter"
-            />
-            <v-text-field
-              v-else
-              ref="filterValueField"
-              v-model="filterValue"
-              :label="`Filter by ${filterType}`"
-              prepend-inner-icon="mdi-filter"
-              append-icon="mdi-backspace"
-              append-outer-icon="mdi-magnify"
-              autofocus
-              @click:append="filterType = null"
-              @keydown.enter="applyFilter"
-              @click:append-outer="applyFilter"
-            />
-            <div class="mb-2">
-              <v-chip
-                v-for="filter in Object.keys(filterValues)"
-                :key="filter"
+      <v-data-table
+        :key="key"
+        :headers="headers"
+        :items="rows"
+        item-key="id"
+        sort-by="pos"
+        :sort-desc.sync="sortDesc"
+        must-sort
+        single-expand
+        :expanded.sync="expanded"
+        no-data-text="No Players Found"
+        :mobile-breakpoint="0"
+      >
+        <template #top>
+          <v-select
+            v-if="!filterType"
+            v-model="filterType"
+            label="Filter"
+            prepend-inner-icon="mdi-filter"
+            :items="filterTypeOptions"
+            @change="openFilterValueField"
+          />
+          <v-select
+            v-else-if="filterValueOptions.length > 0"
+            v-model="filterValue"
+            :label="`Filter by ${filterType}`"
+            :items="filterValueOptions"
+            prepend-inner-icon="mdi-filter"
+            append-icon="mdi-backspace"
+            :menu-props="{ value: filterValueMenuOpen }"
+            @click:append="filterType = null"
+            @change="applyFilter"
+          />
+          <v-text-field
+            v-else
+            ref="filterValueField"
+            v-model="filterValue"
+            :label="`Filter by ${filterType}`"
+            prepend-inner-icon="mdi-filter"
+            append-icon="mdi-backspace"
+            append-outer-icon="mdi-magnify"
+            autofocus
+            @click:append="filterType = null"
+            @keydown.enter="applyFilter"
+            @click:append-outer="applyFilter"
+          />
+          <div class="mb-2">
+            <v-chip
+              v-for="filter in Object.keys(filterValues)"
+              :key="filter"
+              small
+              close
+              class="mr-1 mb-1"
+              @click:close="filters[filter] = null"
+            >
+              {{ filter }}:&nbsp;<i>{{ filterValues[filter] }}</i>
+            </v-chip>
+          </div>
+        </template>
+        <template #item="{ item, expand, isExpanded }">
+          <tr @click="expand(!isExpanded)">
+            <td :class="{ 'stick-left': !expanded.length }">
+              <v-btn
                 small
-                close
-                class="mr-1 mb-1"
-                @click:close="filters[filter] = null"
+                text
+                color="info"
+                class="text-capitalize"
+                @click.stop="$router.push(`/teams/${teamId}/players/${item.id}`)"
               >
-                {{ filter }}:&nbsp;<i>{{ filterValues[filter] }}</i>
-              </v-chip>
-            </div>
-          </template>
-          <template #item="{ item, expand, isExpanded }">
-            <tr @click="expand(!isExpanded)">
-              <td :class="{ 'stick-left': !expanded.length }">
-                <v-btn
-                  small
-                  text
-                  color="info"
-                  class="text-capitalize"
-                  @click.stop="$router.push(`/teams/${teamId}/players/${item.id}`)"
-                  v-text="item.name"
-                />
-              </td>
-              <td class="text-center">
-                <flag
-                  v-if="item.flag"
-                  :iso="item.flag"
-                  :title="item.nationality"
-                  class="mr-2"
-                />
-              </td>
-              <td class="text-center">{{ item.pos }}</td>
-              <td class="text-right">{{ item.numMatches }}</td>
-              <td class="text-right">{{ item.numMinutes }}</td>
-              <td class="text-right">{{ item.numGoals }}</td>
-              <td class="text-right">{{ item.numAssists }}</td>
-              <td class="text-right">{{ item.numCleanSheets }}</td>
-              <td>
-                <v-btn
-                  icon
-                  @click.stop="expand(!isExpanded)"
-                >
-                  <v-icon>mdi-chevron-{{ isExpanded ? 'up' : 'down' }}</v-icon>
-                </v-btn>
-              </td>
-            </tr>
-          </template>
-          <template #expanded-item="{ item }">
-            <tr>
-              <td>
+                {{ item.name }}
+              </v-btn>
+            </td>
+            <td class="text-center">
+              <flag
+                v-if="item.flag"
+                :iso="item.flag"
+                :title="item.nationality"
+                class="mr-2"
+              />
+            </td>
+            <td class="text-center">{{ item.pos }}</td>
+            <td class="text-right">{{ item.numMatches }}</td>
+            <td class="text-right">{{ item.numMinutes }}</td>
+            <td class="text-right">{{ item.numGoals }}</td>
+            <td class="text-right">{{ item.numAssists }}</td>
+            <td class="text-right">{{ item.numCleanSheets }}</td>
+            <td>
+              <v-btn
+                icon
+                @click.stop="expand(!isExpanded)"
+              >
+                <v-icon>mdi-chevron-{{ isExpanded ? 'up' : 'down' }}</v-icon>
+              </v-btn>
+            </td>
+          </tr>
+        </template>
+        <template #expanded-item="{ item }">
+          <tr>
+            <td>
+              <div
+                v-for="(stat, i) in item.playerStats"
+                :key="i"
+                class="text-center"
+              >
+                {{ seasonLabel(stat.season) }}
+              </div>
+            </td>
+            <td colspan="2">
+              <div
+                v-for="(stat, i) in item.playerStats"
+                :key="i"
+                class="text-no-wrap"
+              >
+                {{ stat.competition }}
+              </div>
+            </td>
+            <template v-for="metric in metrics">
+              <td
+                :key="metric"
+                class="text-right"
+              >
                 <div
                   v-for="(stat, i) in item.playerStats"
                   :key="i"
-                  class="text-center"
-                  v-text="seasonLabel(stat.season)"
-                />
-              </td>
-              <td colspan="2">
-                <div
-                  v-for="(stat, i) in item.playerStats"
-                  :key="i"
-                  class="text-no-wrap"
-                  v-text="stat.competition"
-                />
-              </td>
-              <template v-for="metric in metrics">
-                <td
-                  :key="metric"
-                  class="text-right"
                 >
-                  <div
-                    v-for="(stat, i) in item.playerStats"
-                    :key="i"
-                    v-text="stat[metric]"
-                  />
-                </td>
-              </template>
-              <td />
-            </tr>
-          </template>
-        </v-data-table>
-      </client-only>
+                  {{ stat[metric] }}
+                </div>
+              </td>
+            </template>
+            <td />
+          </tr>
+        </template>
+      </v-data-table>
     </v-card-text>
   </v-card>
 </template>
@@ -257,7 +259,7 @@
           }
         }).map(player => {
           const playerStats = []
-          const matchStats = this.statsByPlayerId[player.id].reduce(
+          const matchStats = (this.statsByPlayerId[player.id] || []).reduce(
             (totalStats, data) => {
               if (
                 [null, data.season].includes(this.filters.Season) &&

@@ -25,8 +25,9 @@
         <v-icon
           left
           dark
-          v-text="'mdi-alert'"
-        />
+        >
+          mdi-alert
+        </v-icon>
         {{ error }}
       </v-tooltip>
       <v-btn

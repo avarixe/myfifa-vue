@@ -25,8 +25,9 @@
                   <v-icon
                     size="100"
                     v-on="on"
-                    v-text="'mdi-shield-off-outline'"
-                  />
+                  >
+                    mdi-shield-off-outline
+                  </v-icon>
                 </template>
                 <span>Edit Team to upload Badge</span>
               </v-tooltip>
@@ -77,8 +78,9 @@
                     <div
                       class="grey--text"
                       :style="{ minWidth: '75px' }"
-                      v-text="'Last Match:'"
-                    />
+                    >
+                      Last Match:
+                    </div>
                     <div
                       class="d-inline-block text-center px-4"
                       :style="{ width: '100%' }"

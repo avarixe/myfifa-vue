@@ -5,9 +5,7 @@
   >
     <template #default="{ valid, loading }">
       <div class="pa-2">
-        <div class="text-subtitle-2 pb-2">
-          Book Player
-        </div>
+        <div class="text-subtitle-2 pb-2">Book Player</div>
         <minute-field v-model.number="minute" />
         <v-text-field
           v-model="attributes.playerName"
@@ -39,8 +37,9 @@
             primary
             text
             :loading="loading"
-            v-text="'Save'"
-          />
+          >
+            Save
+          </v-btn>
         </div>
       </div>
     </template>

@@ -52,8 +52,9 @@
       <v-toolbar-title
         v-else
         class="text-h6 font-weight-thin"
-        v-text="headline"
-      />
+      >
+        {{ headline }}
+      </v-toolbar-title>
     </template>
   </v-app-bar>
 </template>

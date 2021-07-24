@@ -4,7 +4,10 @@ export default function ({ app, store, route, redirect }) {
       redirect({ name: 'index' })
     }
   } else if (route.name !== 'login') {
-    app.$cookies.set('targetRoute', route)
+    app.$cookies.set('targetRoute', {
+      name: route.name,
+      params: route.params
+    })
     redirect({ name: 'login' })
   }
 }

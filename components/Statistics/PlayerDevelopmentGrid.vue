@@ -11,12 +11,12 @@
             <v-icon
               left
               :color="currentFilter.color"
-              v-text="`mdi-${currentFilter.icon}`"
-            />
-            <div
-              :class="`text-capitalize ${currentFilter.color}--text`"
-              v-text="`${currentFilter.text} Players`"
-            />
+            >
+              mdi-{{ currentFilter.icon }}
+            </v-icon>
+            <div :class="`text-capitalize ${currentFilter.color}--text`">
+              {{ currentFilter.text }} Players
+            </div>
           </v-btn>
         </template>
         <v-list>
@@ -45,12 +45,12 @@
             <v-icon
               left
               :color="currentMetric.color"
-              v-text="`mdi-${currentMetric.icon}`"
-            />
-            <div
-              :class="`text-capitalize ${currentMetric.color}--text`"
-              v-text="currentMetric.text"
-            />
+            >
+              mdi-{{ currentMetric.icon }}
+            </v-icon>
+            <div :class="`text-capitalize ${currentMetric.color}--text`">
+              {{ currentMetric.text }}
+            </div>
           </v-btn>
         </template>
         <v-list>
@@ -70,74 +70,73 @@
 
     <!-- Player Information Grid -->
     <v-card-text>
-      <client-only>
-        <v-data-table
-          :key="key"
-          :headers="headers"
-          :items="rows"
-          item-key="id"
-          sort-by="pos"
-          :sort-desc.sync="sortDesc"
-          must-sort
-          no-data-text="No Players Found"
-          :mobile-breakpoint="0"
-        >
-          <template #item="{ item }">
-            <tr>
-              <td class="stick-left">
-                <v-btn
-                  :to="`/teams/${teamId}/players/${item.id}`"
-                  small
-                  text
-                  nuxt
-                  color="info"
-                  class="text-capitalize"
-                  v-text="item.name"
-                />
+      <v-data-table
+        :key="key"
+        :headers="headers"
+        :items="rows"
+        item-key="id"
+        sort-by="pos"
+        :sort-desc.sync="sortDesc"
+        must-sort
+        no-data-text="No Players Found"
+        :mobile-breakpoint="0"
+      >
+        <template #item="{ item }">
+          <tr>
+            <td class="stick-left">
+              <v-btn
+                :to="`/teams/${teamId}/players/${item.id}`"
+                small
+                text
+                nuxt
+                color="info"
+                class="text-capitalize"
+              >
+                {{ item.name }}
+              </v-btn>
+            </td>
+            <td class="text-center">
+              <flag
+                v-if="item.flag"
+                :iso="item.flag"
+                :title="item.nationality"
+                class="mr-2"
+              />
+            </td>
+            <td class="text-center">{{ item.pos }}</td>
+            <template v-if="metric === 0">
+              <td class="text-right">{{ item.startovr }}</td>
+              <td
+                v-for="(_, season) in new Array(team.season + 1)"
+                :key="season"
+                :class="`text-right ${ovrColor(item.ovrDiff[season])}`"
+              >
+                {{ item.ovrDiff[season] > 0 ? '+' : '' }}
+                {{ item.ovrDiff[season] }}
               </td>
-              <td class="text-center">
-                <flag
-                  v-if="item.flag"
-                  :iso="item.flag"
-                  :title="item.nationality"
-                  class="mr-2"
-                />
+              <td class="text-right">{{ item.ovr }}</td>
+            </template>
+            <template v-else>
+              <td class="text-right">
+                {{ item.startValue | formatMoney(team.currency) }}
               </td>
-              <td class="text-center">{{ item.pos }}</td>
-              <template v-if="metric === 0">
-                <td class="text-right">{{ item.startovr }}</td>
-                <td
-                  v-for="(_, season) in new Array(team.season + 1)"
-                  :key="season"
-                  :class="`text-right ${ovrColor(item.ovrDiff[season])}`"
-                >
-                  {{ item.ovrDiff[season] > 0 ? '+' : '' }}
-                  {{ item.ovrDiff[season] }}
-                </td>
-                <td class="text-right">{{ item.ovr }}</td>
-              </template>
-              <template v-else>
-                <td class="text-right">
-                  {{ item.startValue | formatMoney(team.currency) }}
-                </td>
-                <td
-                  v-for="(_, season) in new Array(team.season + 1)"
-                  :key="season"
-                  :class="`text-right ${valueColor(item.valueDiff[season])}`"
-                >
-                  <span v-if="item.valueDiff[season] !== undefined">
-                    {{ item.valueDiff[season] > 0 ? '+' : '' }}
-                    {{ item.valueDiff[season].toFixed(2) }}%
-                  </span>
-                </td>
-                <td class="text-right">
-                  {{ item.value | formatMoney(team.currency) }}
-                </td>
-              </template>
-            </tr>
-          </template>
-        </v-data-table>
-      </client-only>
+              <td
+                v-for="(_, season) in new Array(team.season + 1)"
+                :key="season"
+                :class="`text-right ${valueColor(item.valueDiff[season])}`"
+              >
+                <span v-if="item.valueDiff[season] !== undefined">
+                  {{ item.valueDiff[season] > 0 ? '+' : '' }}
+                  {{ item.valueDiff[season].toFixed(2) }}%
+                </span>
+              </td>
+              <td class="text-right">
+                {{ item.value | formatMoney(team.currency) }}
+              </td>
+            </template>
+          </tr>
+        </template>
+      </v-data-table>
     </v-card-text>
   </v-card>
 </template>

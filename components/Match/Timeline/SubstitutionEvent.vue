@@ -9,8 +9,9 @@
         :color="color"
         small
         left
-        v-text="`mdi-${icon}`"
-      />
+      >
+        mdi-{{ icon }}
+      </v-icon>
       {{ event.playerName }}
     </div>
     <div>
@@ -18,8 +19,9 @@
         color="green"
         small
         left
-        v-text="'mdi-subdirectory-arrow-right'"
-      />
+      >
+        mdi-subdirectory-arrow-right
+      </v-icon>
       {{ event.replacedBy }}
     </div>
   </base-match-event>

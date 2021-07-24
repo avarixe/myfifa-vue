@@ -50,8 +50,9 @@
             color="info"
             text
             v-on="on"
-            v-text="`${record.badgePath ? 'Change' : 'Upload'} Badge`"
-          />
+          >
+            {{ record.badgePath ? 'Change' : 'Upload' }} Badge
+          </v-btn>
         </template>
       </team-badge-uploader>
     </template>

@@ -7,14 +7,14 @@
       <v-sheet
         dark
         color="transparent"
-        v-text="`${minute}'`"
-      />
+      >
+        {{ minute }}'
+      </v-sheet>
     </template>
     <h2 class="font-weight-light my-0">
-      <span
-        :class="`text-caption text-truncate mx-1 ${itemColor}--text`"
-        v-text="itemTitle"
-      />
+      <span :class="`text-caption text-truncate mx-1 ${itemColor}--text`">
+        {{ itemTitle }}
+      </span>
       <template v-if="!readonly">
         <component
           :is="`${event.type}-form`"

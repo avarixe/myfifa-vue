@@ -45,8 +45,9 @@
                 text
                 large
                 v-on="on"
-                v-text="'Register'"
-              />
+              >
+                Register
+              </v-btn>
             </template>
           </user-form>
           <v-btn

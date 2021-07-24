@@ -11,12 +11,12 @@
             <v-icon
               left
               :color="currentFilter.color"
-              v-text="`mdi-${currentFilter.icon}`"
-            />
-            <div
-              :class="`text-capitalize ${currentFilter.color}--text`"
-              v-text="`${currentFilter.text} Players`"
-            />
+            >
+              mdi-{{ currentFilter.icon }}
+            </v-icon>
+            <div :class="`text-capitalize ${currentFilter.color}--text`">
+              {{ currentFilter.text }} Players
+            </div>
           </v-btn>
         </template>
         <v-list>
@@ -43,90 +43,90 @@
 
     <!-- Player Information Grid -->
     <v-card-text>
-      <client-only>
-        <v-data-table
-          :key="key"
-          :headers="headers"
-          :items="rows"
-          :loading="loading"
-          sort-by="pos"
-          must-sort
-          :search="search"
-          item-key="id"
-          no-data-text="No Players Found"
-          :mobile-breakpoint="0"
-        >
-          <template #item="{ item }">
-            <tr>
-              <td class="stick-left">
-                <v-btn
-                  :to="item.link"
-                  small
-                  text
-                  nuxt
-                  color="info"
-                  class="text-capitalize"
-                  v-text="item.name"
-                />
-              </td>
-              <td class="text-center">
+      <v-data-table
+        :key="key"
+        :headers="headers"
+        :items="rows"
+        :loading="loading"
+        sort-by="pos"
+        must-sort
+        :search="search"
+        item-key="id"
+        no-data-text="No Players Found"
+        :mobile-breakpoint="0"
+      >
+        <template #item="{ item }">
+          <tr>
+            <td class="stick-left">
+              <v-btn
+                :to="item.link"
+                small
+                text
+                nuxt
+                color="info"
+                class="text-capitalize"
+              >
+                {{ item.name }}
+              </v-btn>
+            </td>
+            <td class="text-center">
+              <client-only>
                 <flag
                   v-if="item.flag"
                   :iso="item.flag"
                   :title="item.nationality"
                   class="mr-2"
                 />
-              </td>
-              <td class="text-center">
-                <v-icon
-                  :color="item.statusColor"
-                  v-text="`mdi-${item.statusIcon}`"
-                />
-              </td>
-              <td class="text-center">{{ item.age }}</td>
-              <td class="text-center">{{ item.pos }}</td>
-              <td class="text-center">{{ item.secPos | listArray(' ') }}</td>
-              <td class="text-center">
-                <inline-select
-                  :item="item"
-                  attribute="kitNo"
-                  label="Kit No"
-                  :options="Array.from({ length: 98 }, (v, k) => k + 1)"
-                  dense
-                  @change="updatePlayerAttribute(item.id, 'kitNo', $event)"
-                />
-              </td>
-              <td class="text-center">
-                <inline-select
-                  :item="item"
-                  attribute="ovr"
-                  label="OVR"
-                  :options="Array.from({ length: 61 }, (v, k) => k + 40)"
-                  dense
-                  @change="updatePlayerAttribute(item.id, 'ovr', $event)"
-                />
-              </td>
-              <td class="text-right">
-                <inline-field
-                  :item="item"
-                  attribute="value"
-                  label="Value"
-                  input-type="money"
-                  :display="item.value | formatMoney(team.currency)"
-                  required
-                  @close="updatePlayerAttribute(item.id, 'value', $event)"
-                />
-              </td>
-              <td class="text-right">
-                {{ item.wage | formatMoney(team.currency, '-') }}
-              </td>
-              <td class="text-right">
-                {{ item.endDate | formatDate('MMM dd, yyyy', '-') }}
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
-      </client-only>
+              </client-only>
+            </td>
+            <td class="text-center">
+              <v-icon :color="item.statusColor">
+                mdi-{{ item.statusIcon }}
+              </v-icon>
+            </td>
+            <td class="text-center">{{ item.age }}</td>
+            <td class="text-center">{{ item.pos }}</td>
+            <td class="text-center">{{ item.secPos | listArray(' ') }}</td>
+            <td class="text-center">
+              <inline-select
+                :item="item"
+                attribute="kitNo"
+                label="Kit No"
+                :options="Array.from({ length: 98 }, (v, k) => k + 1)"
+                dense
+                @change="updatePlayerAttribute(item.id, 'kitNo', $event)"
+              />
+            </td>
+            <td class="text-center">
+              <inline-select
+                :item="item"
+                attribute="ovr"
+                label="OVR"
+                :options="Array.from({ length: 61 }, (v, k) => k + 40)"
+                dense
+                @change="updatePlayerAttribute(item.id, 'ovr', $event)"
+              />
+            </td>
+            <td class="text-right">
+              <inline-field
+                :item="item"
+                attribute="value"
+                label="Value"
+                input-type="money"
+                :display="item.value | formatMoney(team.currency)"
+                required
+                @close="updatePlayerAttribute(item.id, 'value', $event)"
+              />
+            </td>
+            <td class="text-right">
+              {{ item.wage | formatMoney(team.currency, '-') }}
+            </td>
+            <td class="text-right">
+              {{ item.endDate | formatDate('MMM dd, yyyy', '-') }}
+            </td>
+          </tr>
+        </template>
+      </v-data-table>
     </v-card-text>
   </v-card>
 </template>

@@ -18,8 +18,9 @@
             text
             color="primary"
             class="text-capitalize"
-            v-text="item.name"
-          />
+          >
+            {{ item.name }}
+          </v-btn>
         </td>
         <td class="text-center">{{ item.pos }}</td>
         <td class="text-center">{{ item.date | formatDate }}</td>
@@ -52,8 +53,9 @@
               <v-icon
                 small
                 color="cyan"
-                v-text="'mdi-school'"
-              />
+              >
+                mdi-school
+              </v-icon>
               Youth Academy
             </div>
             <div>
@@ -61,8 +63,9 @@
               <v-icon
                 small
                 color="blue"
-                v-text="'mdi-human-greeting'"
-              />
+              >
+                mdi-human-greeting
+              </v-icon>
               Free Arrivals
             </div>
             <div>
@@ -70,8 +73,9 @@
               <v-icon
                 small
                 color="green"
-                v-text="'mdi-airplane-landing'"
-              />
+              >
+                mdi-airplane-landing
+              </v-icon>
               Transfers (In)
             </div>
             <div>
@@ -79,8 +83,9 @@
               <v-icon
                 small
                 color="red"
-                v-text="'mdi-airplane-takeoff'"
-              />
+              >
+                mdi-airplane-takeoff
+              </v-icon>
               Transfers (Out)
             </div>
             <div>
@@ -88,8 +93,9 @@
               <v-icon
                 small
                 color="purple"
-                v-text="'mdi-exit-run'"
-              />
+              >
+                mdi-exit-run
+              </v-icon>
               Departures
             </div>
           </td>

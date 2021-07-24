@@ -8,8 +8,9 @@
       :color="color"
       small
       left
-      v-text="'mdi-book'"
-    />
+    >
+      mdi-book
+    </v-icon>
     {{ event.playerName }}
   </base-match-event>
 </template>

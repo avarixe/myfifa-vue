@@ -6,10 +6,9 @@
     right
   >
     <template #opposite>
-      <span
-        :class="`text-h5 font-weight-bold ${color}--text`"
-        v-text="title"
-      />
+      <span :class="`text-h5 font-weight-bold ${color}--text`">
+        {{ title }}
+      </span>
       <h4 :class="`text-h6 font-weight-light mb-3 ${color}--text`">
         <slot name="heading" />
       </h4>
@@ -48,8 +47,9 @@
               small
               color="orange"
               v-on="on"
-              v-text="'Edit'"
-            />
+            >
+              Edit
+            </v-btn>
           </template>
         </component>
       </v-card-actions>

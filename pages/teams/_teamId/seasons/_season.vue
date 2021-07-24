@@ -6,14 +6,16 @@
           :to="linkToSeason(pageSeason - 1)"
           nuxt
           :disabled="pageSeason === 0"
-          v-text="'Previous Season'"
-        />
+        >
+          Previous Season
+        </v-btn>
         <v-btn
           :to="linkToSeason(pageSeason + 1)"
           nuxt
           :disabled="pageSeason >= season"
-          v-text="'Next Season'"
-        />
+        >
+          Next Season
+        </v-btn>
       </v-col>
       <v-col cols="12">
         <v-card>

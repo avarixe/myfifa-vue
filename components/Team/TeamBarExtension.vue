@@ -20,8 +20,9 @@
           <v-icon
             large
             v-on="on"
-            v-text="'mdi-shield-off-outline'"
-          />
+          >
+            mdi-shield-off-outline
+          </v-icon>
         </template>
         <span>Edit Team to upload Badge</span>
       </v-tooltip>
@@ -30,8 +31,9 @@
       <div
         class="text-overline"
         :style="{ lineHeight: '1rem' }"
-        v-text="team.name"
-      />
+      >
+        {{ team.name }}
+      </div>
       <div class="text-h6 font-weight-thin">
         {{ headline }}
         <small v-show="caption">{{ caption }}</small>

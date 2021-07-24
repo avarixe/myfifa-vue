@@ -18,15 +18,17 @@
             text
             color="primary"
             class="text-capitalize"
-            v-text="item.name"
-          />
+          >
+            {{ item.name }}
+          </v-btn>
         </td>
         <td class="text-center">
           <v-icon
             :color="item.statusColor"
             small
-            v-text="item.statusIcon"
-          />
+          >
+            {{ item.statusIcon }}
+          </v-icon>
         </td>
         <td class="text-center">{{ item.matchesPlayed }}</td>
         <td class="text-center">{{ item.wins }}</td>

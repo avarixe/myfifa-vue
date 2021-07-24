@@ -9,8 +9,9 @@
         :color="color"
         small
         left
-        v-text="'mdi-soccer'"
-      />
+      >
+        mdi-soccer
+      </v-icon>
       {{ event.playerName }}
       <span v-if="event.penalty">(P)</span>
       <span v-else-if="event.ownGoal">(OG)</span>
@@ -20,8 +21,9 @@
         color="light-blue accent-1"
         small
         left
-        v-text="`mdi-human-greeting`"
-      />
+      >
+        mdi-human-greeting
+      </v-icon>
       {{ event.assistedBy }}
     </div>
   </base-match-event>

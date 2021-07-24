@@ -12,8 +12,9 @@
               dark
               class="mb-1"
               v-on="on"
-              v-text="'Edit'"
-            />
+            >
+              Edit
+            </v-btn>
           </template>
         </team-form>
         <v-btn
@@ -22,8 +23,9 @@
           nuxt
           color="primary"
           dark
-          v-text="'Import Players'"
-        />
+        >
+          Import Players
+        </v-btn>
         <record-remove
           :record="team"
           store="teams"
@@ -35,8 +37,9 @@
               dark
               class="mb-1"
               v-on="on"
-              v-text="'Remove'"
-            />
+            >
+              Remove
+            </v-btn>
           </template>
         </record-remove>
       </v-col>

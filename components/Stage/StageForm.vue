@@ -12,8 +12,9 @@
           dark
           color="teal"
           v-on="on"
-          v-text="'Add Stage'"
-        />
+        >
+          Add Stage
+        </v-btn>
       </slot>
     </template>
     <template #form>
