@@ -27,34 +27,32 @@ export const mutations = {
 
 // actions
 export const actions = {
-  async nuxtServerInit ({ commit }, { app, req, params, $graphql }) {
-    if (req.headers.cookie) {
-      const token = app.$cookies.get('token')
+  async nuxtServerInit ({ commit }, { app, params, $graphql }) {
+    const token = app.$cookies.get('token')
 
-      if (token) {
-        commit('auth/setToken', token)
-        $graphql.default.setHeader('authorization', `Bearer ${token}`)
+    if (token) {
+      commit('auth/setToken', token)
+      $graphql.default.setHeader('authorization', `Bearer ${token}`)
 
-        try {
-          const query = `
-            query fetchUser${params.teamId ? '($teamId: ID!)' : ''} {
-              user { ...UserData }
-              ${params.teamId ? 'team(id: $teamId) { ...TeamData }' : ''}
-            }
-            ${userFragment}
-            ${params.teamId ? teamFragment : ''}
-          `
+      try {
+        const query = `
+          query fetchUser${params.teamId ? '($teamId: ID!)' : ''} {
+            user { ...UserData }
+            ${params.teamId ? 'team(id: $teamId) { ...TeamData }' : ''}
+          }
+          ${userFragment}
+          ${params.teamId ? teamFragment : ''}
+        `
 
-          const { user, team } =
-            await $graphql.default.request(query, { teamId: params.teamId })
+        const { user, team } =
+          await $graphql.default.request(query, { teamId: params.teamId })
 
-          models.User.insert({ data: user })
-          commit('setUserId', parseInt(user.id))
-          team && models.Team.insert({ data: team })
-        } catch (e) {
-          console.error(e)
-          commit('auth/setToken', null)
-        }
+        models.User.insert({ data: user })
+        commit('setUserId', parseInt(user.id))
+        team && models.Team.insert({ data: team })
+      } catch (e) {
+        console.error(e)
+        commit('auth/setToken', null)
       }
     }
   }
