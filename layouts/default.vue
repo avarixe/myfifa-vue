@@ -55,7 +55,7 @@
         immediate: true,
         handler (token) {
           if (token) {
-            this.$graphql.default.setHeader('authorization', `Bearer ${token}`)
+            this.$graphql.default.setHeader('Authorization', `Bearer ${token}`)
           } else {
             this.$graphql.default.setHeaders({})
           }

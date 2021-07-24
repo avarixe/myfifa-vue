@@ -27,12 +27,12 @@ export const mutations = {
 
 // actions
 export const actions = {
-  async nuxtServerInit ({ commit }, { app, params, $graphql }) {
-    const token = app.$cookies.get('token')
+  async nuxtServerInit ({ commit }, { params, $cookies, $graphql }) {
+    const token = $cookies.get('token')
 
     if (token) {
       commit('auth/setToken', token)
-      $graphql.default.setHeader('authorization', `Bearer ${token}`)
+      $graphql.default.setHeader('Authorization', `Bearer ${token}`)
 
       try {
         const query = `
@@ -44,8 +44,11 @@ export const actions = {
           ${params.teamId ? teamFragment : ''}
         `
 
-        const { user, team } =
-          await $graphql.default.request(query, { teamId: params.teamId })
+        const { user, team } = await $graphql.default.request(
+          query,
+          { teamId: params.teamId },
+          { Authorization: `Bearer ${token}` }
+        )
 
         models.User.insert({ data: user })
         commit('setUserId', parseInt(user.id))

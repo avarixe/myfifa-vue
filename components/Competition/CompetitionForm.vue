@@ -192,7 +192,7 @@
           this.attributes.season = this.season
         }
 
-        if (this.attributes.length === 0) {
+        if (this.competitions.length === 0) {
           this.loadCompetitions()
         }
       }

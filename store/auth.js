@@ -31,7 +31,6 @@ export const actions = {
 
     if (token) {
       commit('setToken', token)
-      this.$graphql.default.setHeader('authorization', `Bearer ${token}`)
       this.$cookies.set('token', token, { expires: parseISO(expiresAt) })
       commit('setUserId', parseInt(user.id), { root: true })
       this.$db().model('User').insert({ data: user })
@@ -55,7 +54,8 @@ export const actions = {
 
           const { team } = await this.$graphql.default.request(
             query,
-            { id: targetRoute.params.teamId }
+            { id: parseInt(targetRoute.params.teamId) },
+            { Authorization: `Bearer ${token}` }
           )
 
           this.$db().model('Team').insert({ data: team })
@@ -85,7 +85,7 @@ export const actions = {
     } else {
       await dispatch('orm/deleteAll', null, { root: true })
       commit('setToken', null)
-      this.$cookies.remove('token')
+      this.$cookies.removeAll()
       this.$router.push({ name: 'login' })
       commit('broadcaster/announce', {
         message: 'You have successfully logged out!',
