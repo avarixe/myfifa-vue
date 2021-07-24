@@ -188,15 +188,8 @@
 
       const { teams } = await $graphql.default.request(query)
 
-      const latestTeams = []
-      teams.reverse().forEach(team => {
-        if (latestTeams.length < 5) {
-          latestTeams.push(team)
-        }
-      })
-
       return {
-        latestTeams,
+        latestTeams: teams.slice(0, 5),
         teamIndex: 0
       }
     },

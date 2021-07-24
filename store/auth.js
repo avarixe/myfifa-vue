@@ -1,4 +1,6 @@
+import { gql } from 'nuxt-graphql-request'
 import { addSeconds } from 'date-fns'
+import { teamFragment } from '@/fragments'
 
 export const state = () => ({
   token: null
@@ -44,7 +46,19 @@ export const actions = {
 
       // load Team if required
       if (targetRoute.params.teamId) {
-        await dispatch('teams/get', { id: targetRoute.params.teamId })
+        const query = gql`
+          fetchTeam($id: ID!) {
+            team(id: $id) { ...TeamData }
+          }
+          ${teamFragment}
+        `
+
+        const { team } = await this.$graphql.default.request(
+          query,
+          { id: targetRoute.params.teamId }
+        )
+
+        this.$db().model('Team').insert({ data: team })
       }
       this.$router.push(targetRoute)
     } else {

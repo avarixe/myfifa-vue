@@ -82,10 +82,9 @@
       'version'
     ]),
     methods: {
-      ...mapActions({
-        createToken: 'auth/createToken',
-        getTeam: 'teams/get'
-      }),
+      ...mapActions('auth', [
+        'createToken'
+      ]),
       async login () {
         try {
           this.error = false

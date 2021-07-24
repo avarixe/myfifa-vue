@@ -3,17 +3,6 @@ import { teamFragment } from '@/fragments'
 
 // actions
 export const actions = {
-  async get (_, { id, query }) {
-    query = query || gql`
-      query fetchTeam($id: ID!) {
-        team(id: $id) { ...TeamData }
-      }
-      ${teamFragment}
-    `
-
-    const { team } = await this.$graphql.default.request(query, { id })
-    this.$db().model('Team').insertOrUpdate({ data: team })
-  },
   async create (_, attributes) {
     const query = gql`
       mutation createTeam($attributes: TeamAttributes!) {
