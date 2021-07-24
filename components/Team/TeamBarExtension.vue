@@ -56,9 +56,8 @@
         'caption'
       ]),
       badgeUrl () {
-        const { browserBaseURL } = this.$config.axios
         return this.team.badgePath &&
-          `${browserBaseURL.replace(/\/api/, '')}${this.team.badgePath}`
+          `${this.$config.baseURL.replace(/\/api/, '')}${this.team.badgePath}`
       }
     }
   }

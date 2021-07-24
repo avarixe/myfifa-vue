@@ -13,9 +13,23 @@
               tile
             >
               <v-img
+                v-if="currentTeam.badgePath"
                 :src="badgeUrl(currentTeam)"
                 contain
               />
+              <v-tooltip
+                v-else
+                bottom
+              >
+                <template #activator="{ on }">
+                  <v-icon
+                    size="100"
+                    v-on="on"
+                    v-text="'mdi-shield-off-outline'"
+                  />
+                </template>
+                <span>Edit Team to upload Badge</span>
+              </v-tooltip>
             </v-avatar>
             <div :style="{ width: '100%' }">
               <v-card-title>
@@ -124,9 +138,11 @@
             tile
           >
             <v-img
+              v-if="team.badgePath"
               :src="badgeUrl(team)"
               contain
             />
+            <div v-else>{{ team.name }}</div>
           </v-avatar>
         </v-card>
       </v-col>
@@ -198,9 +214,8 @@
         setPage: 'setPage'
       }),
       badgeUrl (team) {
-        const { browserBaseURL } = this.$config.axios
         return team.badgePath
-          ? `${browserBaseURL.replace(/\/api/, '')}${team.badgePath}`
+          ? `${this.$config.baseURL.replace(/\/api/, '')}${team.badgePath}`
           : null
       },
       teamLinks (team) {
