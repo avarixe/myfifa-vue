@@ -60,6 +60,7 @@ export const goalFragment = gql`
     assistId
     assistedBy
     minute
+    home
     penalty
     ownGoal
   }
@@ -87,6 +88,7 @@ export const bookingFragment = gql`
     playerId
     playerName
     minute
+    home
     redCard
   }
 `

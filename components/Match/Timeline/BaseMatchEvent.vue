@@ -51,18 +51,27 @@
       readonly: { type: Boolean, default: false }
     },
     computed: {
+      teamIsHome () {
+        if (this.event.type === 'substitution') {
+          const team = this.$store.$db().model('Team')
+            .find(this.$route.params.teamId)
+          return team.name === this.match.home
+        } else {
+          return this.event.home
+        }
+      },
       itemColor () {
         if (this.event.type === 'penalty-shootout') {
           return 'indigo'
         } else {
-          return this.event.home ? 'teal' : 'purple'
+          return this.teamIsHome ? 'teal' : 'purple'
         }
       },
       itemTitle () {
         if (this.event.type === 'penalty-shootout') {
           return 'Penalty Shootout'
         } else {
-          return this.event.home ? this.match.home : this.match.away
+          return this.teamIsHome ? this.match.home : this.match.away
         }
       },
       minute () {
