@@ -25,7 +25,6 @@
     "nuxt": "^2.11.0",
     "v-money": "^0.8.1",
     "vue-chartist": "^2.2.1",
-    "vue-fitty": "^0.1.7",
     "xlsx": "^0.17.0"
   },
   "devDependencies": {

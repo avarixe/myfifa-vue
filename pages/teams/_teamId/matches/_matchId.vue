@@ -51,17 +51,12 @@
       <v-container class="py-0">
         <v-row class="text-center">
           <v-col cols="12">
-            <div class="text-h3">
-              <fitty-text :text="match.competition" />
-            </div>
+            <div class="text-h4">{{ match.competition }}</div>
             <div
               v-if="match.stage"
-              class="text-h4"
+              class="text-h5"
             >
-              <fitty-text
-                :text="match.stage"
-                max-size="30"
-              />
+              {{ match.stage }}
             </div>
             <div class="subheading">{{ match.playedOn | formatDate }}</div>
           </v-col>
@@ -75,7 +70,7 @@
                 class="font-weight-thin pa-3"
                 cols="5"
               >
-                <fitty-text :text="match.home" />
+                {{ match.home }}
                 <div :class="`font-weight-bold ${match.resultColor}--text`">
                   {{ match.homeScore }}
                   <span v-if="match.penaltyShootout">
@@ -87,7 +82,7 @@
                 class="font-weight-thin pa-3"
                 cols="5"
               >
-                <fitty-text :text="match.away" />
+                {{ match.away }}
                 <div :class="`font-weight-bold ${match.resultColor}--text`">
                   {{ match.awayScore }}
                   <span v-if="match.penaltyShootout">

@@ -1,17 +1,7 @@
 <template>
   <div class="cap">
     <div class="font-weight-bold">{{ cap.pos }}</div>
-    <v-dialog width="500">
-      <template #activator="{ on }">
-        <a
-          class="player-name"
-          v-on="on"
-        >
-          {{ player.name }}
-        </a>
-      </template>
-      <player-card :player-id="cap.playerId" />
-    </v-dialog>
+    <div class="player-name">{{ player.name }}</div>
     <cap-events
       :cap="cap"
       :match="match"
@@ -38,8 +28,7 @@
   .cap {
     line-height: 1.5;
 
-    a.player-name {
-      color: inherit;
+    .player-name {
       font-size: 0.8em;
       line-height: 1;
       display: inline-block;
