@@ -17,7 +17,6 @@
     "email-validator": "^2.0.4",
     "flagpack-core": "https://github.com/avarixe/flagpack-core.git#add-dz-and-xk",
     "lodash.camelcase": "^4.3.0",
-    "lodash.findlast": "^4.6.0",
     "lodash.groupby": "^4.6.0",
     "lodash.mapkeys": "^4.6.0",
     "lodash.orderby": "^4.6.0",
@@ -25,7 +24,6 @@
     "nuxt": "^2.11.0",
     "v-money": "^0.8.1",
     "vue-chartist": "^2.2.1",
-    "vue-fitty": "^0.1.7",
     "xlsx": "^0.17.0"
   },
   "devDependencies": {

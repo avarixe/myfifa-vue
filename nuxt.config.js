@@ -74,7 +74,6 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/fitty.js',
     '@/plugins/custom/filters.js',
     '@/plugins/vue-chartist.js'
   ],

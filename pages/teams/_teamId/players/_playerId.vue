@@ -20,12 +20,7 @@
           sm="2"
         >
           <div class="text-h4">{{ player.secPos | listArray }}</div>
-          <div class="subheading">
-            <fitty-text
-              text="Secondary Position(s)"
-              max-size="16"
-            />
-          </div>
+          <div class="subheading">Secondary Position(s)</div>
         </v-col>
         <v-col
           cols="4"
