@@ -149,7 +149,7 @@
           }) && !this.loans.some(loan => {
             return loan.playerId === arrival.playerId &&
               loan.date === arrival.startedOn &&
-              loan.iconColor === 'indigo'
+              loan.iconColor === 'light-green'
           }) && arrival.startedOn !== this.team.startedOn
         }).map(arrival => {
           const player = this.$store.$db().model('Player')
@@ -219,7 +219,13 @@
               iconColor: `${loanOut ? 'orange' : 'light-green'}`
             })
           }
-          if (loan.endedOn <= this.seasonEnd) {
+          if (
+            loan.endedOn <= this.seasonEnd &&
+            !this.transfers.some(transfer => {
+              return transfer.playerId === loan.playerId &&
+                transfer.date === loan.endedOn
+            })
+          ) {
             loans.push({
               ...row,
               date: loan.endedOn,
