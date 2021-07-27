@@ -37,6 +37,8 @@ export const loanFragment = gql`
     origin
     destination
     wagePercentage
+    transferFee
+    addonClause
   }
 `
 

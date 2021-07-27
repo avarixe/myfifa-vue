@@ -135,6 +135,11 @@
             }
           }
         }
+      },
+      'attributes.addonClause' (addonClause) {
+        if (!addonClause) {
+          this.attributes.addonClause = 0
+        }
       }
     },
     methods: {

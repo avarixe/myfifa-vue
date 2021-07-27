@@ -34,6 +34,21 @@
         <td class="font-weight-bold">Duration</td>
         <td class="pl-1">{{ duration }}</td>
       </tr>
+      <template v-if="event.transferFee || event.addonClause">
+        <tr>
+          <td colspan="2">
+            <v-subheader>Loan-to-Buy Option</v-subheader>
+          </td>
+        </tr>
+        <tr v-if="event.transferFee">
+          <td class="font-weight-bold">Transfer Fee</td>
+          <td class="pl-1">{{ event.transferFee | formatMoney(team.currency) }}</td>
+        </tr>
+        <tr v-if="event.addonClause">
+          <td class="font-weight-bold">Add-On Clause</td>
+          <td class="pl-1">{{ event.addonClause }}%</td>
+        </tr>
+      </template>
     </template>
   </base-player-event>
 </template>

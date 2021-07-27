@@ -73,16 +73,39 @@
           inputmode="numeric"
         />
       </v-col>
-      <v-col
-        v-if="record && !record.endedOn"
-        cols="12"
-      >
-        <v-checkbox
-          v-model="attributes.returned"
-          label="Player Returned"
-          hide-details
+      <v-col cols="12">
+        <v-money-field
+          v-model.number="attributes.transferFee"
+          label="Transfer Fee"
+          :prefix="team.currency"
         />
       </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-model.number="attributes.addonClause"
+          label="Add-On Clause (%)"
+          :rules="rulesFor.addonClause"
+          inputmode="numeric"
+        />
+      </v-col>
+      <template v-if="record && !record.endedOn">
+        <v-col cols="12">
+          <v-checkbox
+            v-model="attributes.returned"
+            label="Player Returned"
+            class="d-inline-block"
+            hide-details
+          />
+        </v-col>
+        <v-col cols="12">
+          <v-checkbox
+            v-model="attributes.activatedBuyOption"
+            label="Activate Buy Option"
+            class="d-inline-block"
+            hide-details
+          />
+        </v-col>
+      </template>
     </template>
   </dialog-form>
 </template>
@@ -111,7 +134,10 @@
         origin: '',
         destination: '',
         wagePercentage: null,
-        returned: false
+        transferFee: null,
+        addonClause: 0,
+        returned: false,
+        activatedBuyOption: false
       },
       rulesFor: {
         origin: [isRequired('Origin')],
@@ -119,6 +145,10 @@
         wagePercentage: [
           isNumber('Wage Percentage'),
           inRange('Wage Percentage', [0, 100])
+        ],
+        addonClause: [
+          isNumber('Add-On Clause'),
+          inRange('Add-On Clause', [0, 25])
         ]
       }
     }),
@@ -141,7 +171,9 @@
               'endedOn',
               'origin',
               'destination',
-              'wagePercentage'
+              'wagePercentage',
+              'transferFee',
+              'addonClause'
             ])
           } else {
             this.attributes.startedOn = this.team.currentlyOn
@@ -151,6 +183,11 @@
               this.attributes.destination = this.team.name
             }
           }
+        }
+      },
+      'attributes.addonClause' (addonClause) {
+        if (!addonClause) {
+          this.attributes.addonClause = 0
         }
       }
     },
