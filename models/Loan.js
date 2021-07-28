@@ -15,7 +15,9 @@ export default class Loan extends Model {
       endedOn: this.string('').nullable(),
       origin: this.string(''),
       destination: this.string(''),
-      wagePercentage: this.number(0).nullable()
+      wagePercentage: this.number(null).nullable(),
+      transferFee: this.number(null).nullable(),
+      addonClause: this.number(null).nullable()
     }
   }
 

@@ -19,7 +19,7 @@
         </team-form>
         <v-btn
           class="mb-1"
-          :to="importPlayersLink"
+          :to="`/teams/${teamId}/players/import`"
           nuxt
           color="primary"
           dark
@@ -68,26 +68,26 @@
       >
         <!-- Injured Players -->
         <v-col cols="12">
-          <player-list-card
-            :players="injuredPlayers"
+          <injury-list-card
             title="Injured Players"
             color="pink"
+            :injuries="injuries"
           />
         </v-col>
         <!-- Loaned Players -->
         <v-col cols="12">
-          <player-list-card
-            :players="loanedPlayers"
+          <loan-list-card
             title="Loaned Players"
             color="indigo"
+            :loans="loans"
           />
         </v-col>
         <!-- Expiring Contracts -->
         <v-col cols="12">
-          <player-list-card
-            :players="playersWithExpiringContracts"
+          <contract-list-card
             title="Expiring Contracts"
-            color="orange"
+            color="warning"
+            :contracts="expiringContracts"
           />
         </v-col>
       </v-col>
@@ -96,7 +96,6 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex'
   import { gql } from 'nuxt-graphql-request'
   import { TeamAccessible } from '@/mixins'
   import {
@@ -104,6 +103,8 @@
     matchFragment,
     playerFragment,
     contractFragment,
+    loanFragment,
+    injuryFragment,
     competitionFragment
   } from '@/fragments'
 
@@ -116,33 +117,18 @@
       lastMatch () {
         return this.$store.$db().model('Match')
           .query()
-          .with('team')
           .where('teamId', this.teamId)
           .orderBy('playedOn', 'desc')
           .first()
       },
-      injuredPlayers () {
-        return this.getPlayersByStatus('Injured')
-      },
-      loanedPlayers () {
-        return this.getPlayersByStatus('Loaned')
-      },
-      playersWithExpiringContracts () {
-        return this.$store.$db().model('Player')
-          .query()
-          .with('team')
-          .where('teamId', this.teamId)
-          .get()
-          .filter(player => player.contract().endedOn <= this.seasonEnd)
-      },
-      importPlayersLink () {
-        return {
-          name: 'teams-teamId-players-import',
-          params: { teamId: this.teamId }
-        }
+      expiringContracts () {
+        return this.contracts.filter(contract => {
+          return !contract.conclusion &&
+            (!contract.endedOn || contract.endedOn <= this.seasonEnd)
+        })
       }
     },
-    async fetch () {
+    async asyncData ({ $graphql, params, store }) {
       const query = gql`
         query loadDashboard($id: ID!) {
           team(id: $id) {
@@ -151,6 +137,8 @@
             players {
               ...PlayerData
               currentContract { ...ContractData }
+              currentLoan { ...LoanData }
+              currentInjury { ...InjuryData }
             }
             competitions { ...CompetitionData }
           }
@@ -159,35 +147,37 @@
         ${matchFragment}
         ${playerFragment}
         ${contractFragment}
+        ${loanFragment}
+        ${injuryFragment}
         ${competitionFragment}
       `
 
       const { team } =
-        await this.$graphql.default.request(query, { id: this.teamId })
-      const contracts = team.players.map(player => player.currentContract)
+        await $graphql.default.request(query, { id: parseInt(params.teamId) })
+      const contracts = team.players
+        .map(player => player.currentContract)
+        .filter(contract => contract)
+      const loans = team.players
+        .map(player => player.currentLoan)
+        .filter(loan => loan)
+      const injuries = team.players
+        .map(player => player.currentInjury)
+        .filter(injury => injury)
 
       await Promise.all([
-        this.$store.$db().model('Team').insert({ data: team }),
-        this.$store.$db().model('Match').insert({ data: team.lastMatch }),
-        this.$store.$db().model('Contract').insert({ data: contracts })
+        store.$db().model('Team').insert({ data: team }),
+        store.$db().model('Match').insert({ data: team.lastMatch })
       ])
 
-      this.setPage({
+      store.commit('app/setPage', {
         title: team.name,
         headline: 'Dashboard'
       })
-    },
-    methods: {
-      ...mapMutations('app', {
-        setPage: 'setPage'
-      }),
-      getPlayersByStatus (status) {
-        return this.$store.$db().model('Player')
-          .query()
-          .with('team')
-          .where('teamId', this.teamId)
-          .where('status', status)
-          .get()
+
+      return {
+        contracts,
+        loans,
+        injuries
       }
     }
   }
