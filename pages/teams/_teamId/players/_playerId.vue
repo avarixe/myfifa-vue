@@ -65,7 +65,7 @@
             <v-card-text>
               <v-row class="text-center">
                 <v-col
-                  cols="12"
+                  cols="6"
                   sm="4"
                 >
                   <inline-select
@@ -80,7 +80,7 @@
                   <div class="subheading">Kit No</div>
                 </v-col>
                 <v-col
-                  cols="12"
+                  cols="6"
                   sm="4"
                 >
                   <inline-select

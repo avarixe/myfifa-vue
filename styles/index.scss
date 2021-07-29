@@ -3,7 +3,29 @@ a {
 }
 
 html {
-  overflow-y: auto
+  overflow-y: auto;
+}
+
+#app {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+
+  &.theme--light {
+    background-image: linear-gradient(
+      to right top,
+        rgba(207, 216, 220, 0.7),
+      rgba(176, 190, 197, 0.9)
+    ), url('/background.jpg');
+  }
+  &.theme--dark {
+    background-image: linear-gradient(
+      to right top,
+      rgba(55, 71, 79, 0.7),
+      rgba(38, 50, 56, 0.9)
+    ), url('/background.jpg');
+  }
 }
 
 .stick-left {

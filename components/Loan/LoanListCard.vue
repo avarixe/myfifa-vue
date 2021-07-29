@@ -30,11 +30,11 @@
           <td class="text-center">{{ player.pos }}</td>
           <td class="text-right">{{ player.value | formatMoney(team.currency) }}</td>
           <td class="text-right">
-            <span v-if="player.transferFee">
-              {{ player.transferFee | formatMoney(team.currency) }}
+            <span v-if="player.currentLoan.transferFee">
+              {{ player.currentLoan.transferFee | formatMoney(team.currency) }}
             </span>
-            <span v-if="player.addonClause">
-              (+{{ player.addonClause }}%)
+            <span v-if="player.currentLoan.addonClause">
+              (+{{ player.currentLoan.addonClause }}%)
             </span>
           </td>
         </tr>
@@ -47,7 +47,7 @@
   export default {
     name: 'LoanListCard',
     props: {
-      loans: { type: Array, required: true },
+      players: { type: Array, required: true },
       title: { type: String, required: true },
       color: { type: String, required: true }
     },
@@ -55,22 +55,13 @@
       team () {
         return this.$store.$db().model('Team')
           .find(parseInt(this.$route.params.teamId))
-      },
-      players () {
-        return this.loans.map(loan => {
-          const player = this.$store.$db().model('Player').find(loan.playerId)
-          return {
-            ...player,
-            transferFee: loan.transferFee,
-            addonClause: loan.addonClause
-          }
-        })
       }
     },
     methods: {
       rowColor (player) {
         return {
-          'red--text': player.transferFee && player.transferFee < player.value
+          'red--text': player.currentLoan.transferFee &&
+            player.currentLoan.transferFee < player.value
         }
       }
     }

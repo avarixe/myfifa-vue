@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <template v-if="currentUser">
       <app-bar />
       <template v-if="team">

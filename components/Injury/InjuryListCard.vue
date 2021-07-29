@@ -27,8 +27,8 @@
         >
           <td>{{ player.name }}</td>
           <td class="text-center">{{ player.pos }}</td>
-          <td>{{ player.injuryDescription }}</td>
-          <td class="text-right">{{ player.injuryDuration }}</td>
+          <td>{{ player.currentInjury.description }}</td>
+          <td class="text-right">{{ injuryDuration(player) }}</td>
         </tr>
       </tbody>
     </v-simple-table>
@@ -45,23 +45,16 @@
       TeamAccessible
     ],
     props: {
-      injuries: { type: Array, required: true },
+      players: { type: Array, required: true },
       title: { type: String, required: true },
       color: { type: String, required: true }
     },
-    computed: {
-      players () {
-        return this.injuries.map(injury => {
-          const player = this.$store.$db().model('Player').find(injury.playerId)
-          return {
-            ...player,
-            injuryDescription: injury.description,
-            injuryDuration: formatDistance(
-              parseISO(injury.endedOn || this.team.currentlyOn),
-              parseISO(injury.startedOn)
-            )
-          }
-        })
+    methods: {
+      injuryDuration (player) {
+        return formatDistance(
+          parseISO(player.currentInjury.endedOn || this.team.currentlyOn),
+          parseISO(player.currentInjury.startedOn)
+        )
       }
     }
   }
