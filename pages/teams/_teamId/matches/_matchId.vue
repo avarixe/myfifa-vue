@@ -48,7 +48,7 @@
         </record-remove>
       </v-col>
 
-      <v-container class="py-0">
+      <v-container class="py-0 white--text">
         <v-row class="text-center">
           <v-col cols="12">
             <div class="text-h4">{{ match.competition }}</div>
@@ -62,7 +62,7 @@
           </v-col>
           <v-container class="py-0">
             <v-row
-              class="text-h4"
+              class="text-h6 text-sm-h4"
               justify="space-between"
               align="center"
             >
@@ -71,7 +71,7 @@
                 cols="5"
               >
                 {{ match.home }}
-                <div :class="`font-weight-bold ${match.resultColor}--text`">
+                <div :class="`font-weight-bold ${match.resultColor}--text text-h4`">
                   {{ match.homeScore }}
                   <span v-if="match.penaltyShootout">
                     ({{ match.penaltyShootout.homeScore }})
@@ -83,7 +83,7 @@
                 cols="5"
               >
                 {{ match.away }}
-                <div :class="`font-weight-bold ${match.resultColor}--text`">
+                <div :class="`font-weight-bold ${match.resultColor}--text text-h4`">
                   {{ match.awayScore }}
                   <span v-if="match.penaltyShootout">
                     ({{ match.penaltyShootout.awayScore }})

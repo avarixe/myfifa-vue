@@ -3,7 +3,18 @@ a {
 }
 
 html {
-  overflow-y: auto
+  overflow-y: auto;
+}
+
+#app {
+  background-image: linear-gradient(
+    to right top,
+    rgba(100, 115, 201, 0.33),
+    rgba(25, 32, 72, 0.7)
+  ), url('/background.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 .stick-left {

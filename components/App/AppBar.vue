@@ -1,5 +1,23 @@
 <template>
-  <v-app-bar app>
+  <v-app-bar
+    app
+    dark
+    src="/app-bar-background.jpg"
+  >
+    <template #img="{ props }">
+      <v-img
+        v-bind="props"
+        gradient="to top right, rgba(19,84,122,.5), rgba(128,208,199,.8)"
+      />
+    </template>
+
+    <v-img
+      src="/logo.png"
+      contain
+      max-height="48"
+      max-width="48"
+    />
+
     <span class="text-h5 font-weight-light">
       MyFIFA Manager
     </span>
