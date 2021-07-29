@@ -58,6 +58,7 @@
             this.$graphql.default.setHeader('Authorization', `Bearer ${token}`)
           } else {
             this.$graphql.default.setHeaders({})
+            this.$vuetify.theme.dark = true
           }
         }
       }
