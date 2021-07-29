@@ -31,7 +31,7 @@
         <base-form :submit="login">
           <template #default="{ loading }">
             <v-card
-              color="rgba(255, 255, 255, 0.3)"
+              color="rgba(0, 0, 0, 0.3)"
               class="rounded-xl"
             >
               <v-card-text class="pt-4">
@@ -108,8 +108,8 @@
       errorMessage: null,
       visible: false,
       titleStyle: {
-        backgroundColor: 'rgba(255, 255, 255, 0.3)',
-        textShadow: '0 0 2px white'
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+        textShadow: '0 0 2px black'
       }
     }),
     computed: mapState([
