@@ -10,7 +10,7 @@
         </v-btn>
       </v-col>
       <v-col
-        class="text-center white--text"
+        class="text-center"
         cols="12"
       >
         <div class="subheading">{{ competitionSeason }}</div>

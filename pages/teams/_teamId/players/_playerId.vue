@@ -5,7 +5,7 @@
       type="article"
     >
       <v-row
-        class="text-center white--text"
+        class="text-center"
         justify="space-around"
       >
         <v-col

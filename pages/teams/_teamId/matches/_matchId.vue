@@ -48,7 +48,7 @@
         </record-remove>
       </v-col>
 
-      <v-container class="py-0 white--text">
+      <v-container class="py-0">
         <v-row class="text-center">
           <v-col cols="12">
             <div class="text-h4">{{ match.competition }}</div>
