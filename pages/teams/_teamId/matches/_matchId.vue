@@ -67,7 +67,7 @@
               align="center"
             >
               <v-col
-                class="font-weight-thin pa-3"
+                class="font-weight-light pa-3"
                 cols="5"
               >
                 {{ match.home }}
@@ -79,7 +79,7 @@
                 </div>
               </v-col>
               <v-col
-                class="font-weight-thin pa-3"
+                class="font-weight-light pa-3"
                 cols="5"
               >
                 {{ match.away }}
