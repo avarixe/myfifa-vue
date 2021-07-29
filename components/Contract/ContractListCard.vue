@@ -27,8 +27,12 @@
         >
           <td>{{ player.name }}</td>
           <td class="text-center">{{ player.pos }}</td>
-          <td class="text-right">{{ player.value | formatMoney(team.currency) }}</td>
-          <td class="text-right">{{ player.wage | formatMoney(team.currency) }}</td>
+          <td class="text-right">
+            {{ player.value | formatMoney(team.currency) }}
+          </td>
+          <td class="text-right">
+            {{ player.currentContract.wage | formatMoney(team.currency) }}
+          </td>
         </tr>
       </tbody>
     </v-simple-table>
@@ -44,20 +48,9 @@
       TeamAccessible
     ],
     props: {
-      contracts: { type: Array, required: true },
+      players: { type: Array, required: true },
       title: { type: String, required: true },
       color: { type: String, required: true }
-    },
-    computed: {
-      players () {
-        return this.contracts.map(contract => {
-          const player = this.$store.$db().model('Player').find(contract.playerId)
-          return {
-            ...player,
-            wage: contract.wage
-          }
-        })
-      }
     }
   }
 </script>

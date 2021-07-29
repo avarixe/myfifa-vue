@@ -71,7 +71,7 @@
           <injury-list-card
             title="Injured Players"
             color="pink"
-            :injuries="injuries"
+            :players="injuredPlayers"
           />
         </v-col>
         <!-- Loaned Players -->
@@ -79,7 +79,7 @@
           <loan-list-card
             title="Loaned Players"
             color="indigo"
-            :loans="loans"
+            :players="loanedPlayers"
           />
         </v-col>
         <!-- Expiring Contracts -->
@@ -87,7 +87,7 @@
           <contract-list-card
             title="Expiring Contracts"
             color="warning"
-            :contracts="expiringContracts"
+            :players="expiringPlayers"
           />
         </v-col>
       </v-col>
@@ -101,10 +101,6 @@
   import {
     teamFragment,
     matchFragment,
-    playerFragment,
-    contractFragment,
-    loanFragment,
-    injuryFragment,
     competitionFragment
   } from '@/fragments'
 
@@ -134,35 +130,50 @@
           team(id: $id) {
             ...TeamData
             lastMatch { ...MatchData }
-            players {
-              ...PlayerData
-              currentContract { ...ContractData }
-              currentLoan { ...LoanData }
-              currentInjury { ...InjuryData }
+            injuredPlayers {
+              id
+              name
+              pos
+              currentInjury {
+                description
+                startedOn
+                endedOn
+              }
+            }
+            loanedPlayers {
+              id
+              name
+              pos
+              value
+              currentLoan {
+                transferFee
+                addonClause
+              }
+            }
+            expiringPlayers {
+              id
+              name
+              pos
+              value
+              currentContract {
+                wage
+              }
             }
             competitions { ...CompetitionData }
           }
         }
         ${teamFragment}
         ${matchFragment}
-        ${playerFragment}
-        ${contractFragment}
-        ${loanFragment}
-        ${injuryFragment}
         ${competitionFragment}
       `
 
       const { team } =
         await $graphql.default.request(query, { id: parseInt(params.teamId) })
-      const contracts = team.players
-        .map(player => player.currentContract)
-        .filter(contract => contract)
-      const loans = team.players
-        .map(player => player.currentLoan)
-        .filter(loan => loan)
-      const injuries = team.players
-        .map(player => player.currentInjury)
-        .filter(injury => injury)
+      const {
+        injuredPlayers,
+        loanedPlayers,
+        expiringPlayers
+      } = team
 
       await Promise.all([
         store.$db().model('Team').insert({ data: team }),
@@ -175,9 +186,9 @@
       })
 
       return {
-        contracts,
-        loans,
-        injuries
+        injuredPlayers,
+        loanedPlayers,
+        expiringPlayers
       }
     }
   }
