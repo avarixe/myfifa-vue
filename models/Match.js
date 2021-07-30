@@ -53,7 +53,7 @@ export default class Match extends Model {
   }
 
   get opponent () {
-    return this.home === this.team.home
+    return this.home === this.team.name
       ? this.away
       : this.home
   }

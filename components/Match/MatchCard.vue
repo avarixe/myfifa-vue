@@ -13,13 +13,24 @@
         dark
         nuxt
         text
+        :icon="compact"
+        :small="compact"
       >
-        View Match
+        <v-icon
+          v-if="compact"
+          small
+        >
+          mdi-arrow-right
+        </v-icon>
+        <span v-else>View Match</span>
       </v-btn>
     </v-toolbar>
     <template v-if="match">
       <v-card-text class="text-center font-weight-light">
-        <div class="mb-0">{{ match.competition }}</div>
+        <div class="mb-0">
+          {{ match.competition }}
+          <span v-if="match.stage">· {{ match.stage }}</span>
+        </div>
         <div class="text-h6 mt-0 mb-3">{{ match.home }} v {{ match.away }}</div>
         <div class="text-h6 mb-0">{{ match.score }}</div>
         <div class="mt-0 mb-2">{{ match.playedOn | formatDate }}</div>
@@ -42,7 +53,8 @@
     props: {
       match: { type: Object, default: null },
       title: { type: String, default: null },
-      color: { type: String, default: 'info' }
+      color: { type: String, default: 'info' },
+      compact: { type: Boolean, default: false }
     }
   }
 </script>

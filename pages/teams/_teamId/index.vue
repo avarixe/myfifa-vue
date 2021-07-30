@@ -91,10 +91,6 @@
           />
         </v-col>
       </v-col>
-      <!-- Match Calendar -->
-      <v-col cols="12">
-        <team-calendar />
-      </v-col>
     </v-row>
   </v-container>
 </template>

@@ -1,11 +1,14 @@
 <template>
   <v-card>
-    <v-toolbar flat>
+    <v-toolbar
+      color="transparent"
+      flat
+    >
       <v-btn
         outlined
         class="mr-4"
         color="grey darken-2"
-        @click="day = team.currently_on"
+        @click="day = team.currentlyOn"
       >
         Today
       </v-btn>
@@ -40,11 +43,10 @@
         ref="calendar"
         v-model="day"
         type="month"
-        :now="team.currently_on"
-        :start="team.started_on"
+        :now="team.currentlyOn"
+        :start="team.startedOn"
         :events="events"
-        event-start="played_on"
-        :event-color="getEventColor"
+        event-start="playedOn"
         :show-month-on-first="false"
         @click:event="viewMatch"
       />
@@ -58,8 +60,9 @@
       >
         <match-card
           :match="selectedEvent"
-          :title="selectedEvent.opponent"
+          :title="selectedEvent.competition"
           :color="selectedEvent.color"
+          compact
         />
       </v-menu>
     </v-card-text>
@@ -67,11 +70,20 @@
 </template>
 
 <script>
-  import { Match } from '@/models'
   import { TeamAccessible } from '@/mixins'
 
+  const eventColors = [
+    'blue',
+    'purple',
+    'cyan',
+    'lime darken-2',
+    'teal',
+    'indigo',
+    'blue-grey'
+  ]
+
   export default {
-    name: 'TeamCalendar',
+    name: 'MatchCalendar',
     mixins: [
       TeamAccessible
     ],
@@ -79,28 +91,40 @@
       day: new Date(),
       selectedEvent: {},
       selectedElement: null,
-      selectedOpen: false
+      selectedOpen: false,
+      competitionColors: {}
     }),
     computed: {
       matches () {
-        return Match
+        return this.$store.$db().model('Match')
           .query()
           .with('team')
-          .where('team_id', this.team.id)
+          .where('teamId', this.team.id)
           .get()
       },
       events () {
-        return this.matches.map(match => ({
-          ...match,
-          name: `${match.score} — ${match.opponent}`,
-          opponent: match.opponent,
-          color: match.resultColor,
-          link: match.link
-        }))
+        return this.matches.map(match => {
+          if (!this.competitionColors[match.competition]) {
+            this.$set(
+              this.competitionColors,
+              match.competition,
+              eventColors[Object.keys(this.competitionColors).length % eventColors.length]
+            )
+          }
+          return {
+            ...match,
+            name: match.stage
+              ? `${match.competition} · ${match.stage}`
+              : match.competition,
+            color: this.competitionColors[match.competition],
+            opponent: match.opponent,
+            link: match.link
+          }
+        })
       }
     },
     mounted () {
-      this.day = this.team.currently_on
+      this.day = this.team.currentlyOn
     },
     methods: {
       viewMatch ({ nativeEvent, event }) {
@@ -118,9 +142,6 @@
         } else {
           open()
         }
-      },
-      getEventColor (event) {
-        return event.color
       }
     }
   }

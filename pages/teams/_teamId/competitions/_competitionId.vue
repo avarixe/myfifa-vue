@@ -70,10 +70,7 @@
             </v-btn>
           </template>
         </competition-form>
-        <stage-form
-          :competition="competition"
-          color="teal"
-        />
+        <stage-form :competition="competition" />
         <record-remove
           :record="competition"
           store="competitions"
