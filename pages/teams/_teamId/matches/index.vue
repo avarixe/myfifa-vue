@@ -1,8 +1,26 @@
 <template>
   <v-container>
     <v-row>
-      <v-col>
-        <match-grid />
+      <v-col cols="12">
+        <v-tabs
+          v-model="mode"
+          grow
+        >
+          <v-tab key="calendar">Calendar</v-tab>
+          <v-tab key="grid">Grid</v-tab>
+        </v-tabs>
+
+        <v-tabs-items
+          v-model="mode"
+          touchless
+        >
+          <v-tab-item key="calendar">
+            <match-calendar v-if="!$fetchState.pending" />
+          </v-tab-item>
+          <v-tab-item key="grid">
+            <match-grid />
+          </v-tab-item>
+        </v-tabs-items>
       </v-col>
     </v-row>
   </v-container>
@@ -15,6 +33,9 @@
 
   export default {
     name: 'MatchesPage',
+    data: () => ({
+      mode: 'calendar'
+    }),
     computed: {
       teamId () {
         return parseInt(this.$route.params.teamId)
