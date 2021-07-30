@@ -70,14 +70,12 @@
               </v-btn>
             </td>
             <td class="text-center">
-              <client-only>
-                <flag
-                  v-if="item.flag"
-                  :iso="item.flag"
-                  :title="item.nationality"
-                  class="mr-2"
-                />
-              </client-only>
+              <flag
+                v-if="item.flag"
+                :iso="item.flag"
+                :title="item.nationality"
+                class="mr-2"
+              />
             </td>
             <td class="text-center">
               <v-icon :color="item.statusColor">

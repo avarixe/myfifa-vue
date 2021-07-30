@@ -3969,10 +3969,6 @@ find-up@^4.0.0:
     locate-path "^5.0.0"
     path-exists "^4.0.0"
 
-"flagpack-core@https://github.com/avarixe/flagpack-core.git#add-dz-and-xk":
-  version "0.0.43"
-  resolved "https://github.com/avarixe/flagpack-core.git#110ad34e1f8691a5847e7de239d52a841ef8fdb8"
-
 flat-cache@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/flat-cache/-/flat-cache-2.0.1.tgz#5d296d6f04bda44a4630a301413bdbc2ec085ec0"

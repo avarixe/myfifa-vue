@@ -5,8 +5,6 @@
 </template>
 
 <script>
-  import { imageUrl } from 'flagpack-core'
-
   export default {
     name: 'VFlag',
     props: {
@@ -15,7 +13,9 @@
     },
     computed: {
       imageUrl () {
-        return imageUrl(this.iso.toUpperCase(), this.size === 'xl' ? 'l' : this.size)
+        const size = this.size === 'xl' ? 'l' : this.size
+        const iso = this.iso.toUpperCase()
+        return `//cdn.jsdelivr.net/gh/avarixe/flagpack-core/svg/${size}/${iso}.svg`
       }
     }
   }

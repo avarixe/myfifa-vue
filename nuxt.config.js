@@ -86,7 +86,9 @@ export default {
 
     transpile: [/^vuetify/, /^flagpack/],
 
-    extractCSS: true,
+    extractCSS: {
+      ignoreOrder: true
+    },
 
     extend (config, { isDev, isClient }) {
       // Run ESLint on save
