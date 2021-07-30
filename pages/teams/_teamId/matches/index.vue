@@ -6,19 +6,19 @@
           v-model="mode"
           grow
         >
-          <v-tab key="calendar">Calendar</v-tab>
           <v-tab key="grid">Grid</v-tab>
+          <v-tab key="calendar">Calendar</v-tab>
         </v-tabs>
 
         <v-tabs-items
           v-model="mode"
           touchless
         >
-          <v-tab-item key="calendar">
-            <match-calendar v-if="!$fetchState.pending" />
-          </v-tab-item>
           <v-tab-item key="grid">
             <match-grid />
+          </v-tab-item>
+          <v-tab-item key="calendar">
+            <match-calendar />
           </v-tab-item>
         </v-tabs-items>
       </v-col>
@@ -34,7 +34,7 @@
   export default {
     name: 'MatchesPage',
     data: () => ({
-      mode: 'calendar'
+      mode: 'grid'
     }),
     computed: {
       teamId () {

@@ -47,6 +47,7 @@
           :now="team.currentlyOn"
           :events="events"
           event-start="playedOn"
+          event-ripple
           :show-month-on-first="false"
           :style="{ minWidth: '700px' }"
           @click:event="viewMatch"
