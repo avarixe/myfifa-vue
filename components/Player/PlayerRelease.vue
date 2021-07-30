@@ -7,15 +7,15 @@
     <template #activator="{ on }">
       <tooltip-button
         label="Release"
-        icon="mdi-door-open"
+        icon="mdi-text-box-remove"
         color="brown"
         :on="on"
       />
     </template>
     <v-card>
-      <v-card-title class="brown">
+      <v-card-title>
         <v-toolbar-title>
-          <v-icon left>mdi-door-open</v-icon>
+          <v-icon left>mdi-text-box-remove</v-icon>
           Confirm Action
         </v-toolbar-title>
       </v-card-title>

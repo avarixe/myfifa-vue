@@ -17,10 +17,7 @@
     >
       <template #default="{ error, errorMessage, loading, valid }">
         <v-card>
-          <v-toolbar
-            :class="formColor"
-            dense
-          >
+          <v-toolbar dense>
             <slot name="header">
               <v-toolbar-title>
                 <v-icon left>{{ titleIcon }}</v-icon>
@@ -48,7 +45,6 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
-              color="tertiary"
               text
               large
               :disabled="loading"
@@ -60,7 +56,7 @@
             <v-btn
               type="submit"
               :disabled="!valid"
-              :color="buttonColor"
+              color="primary"
               text
               large
               :loading="loading"
@@ -87,20 +83,11 @@
       submit: { type: Function, required: true },
       title: { type: String, default: '' },
       titleIcon: { type: String, default: '' },
-      color: { type: String, default: '' },
       fullWidth: { type: Boolean, default: false }
     },
     data: () => ({
       dialog: null
     }),
-    computed: {
-      buttonColor () {
-        return this.color ? this.color + ' darken-2' : 'primary'
-      },
-      formColor () {
-        return this.color ? this.color + ' accent-2' : null
-      }
-    },
     watch: {
       dialog (val) {
         this.$emit('input', val)

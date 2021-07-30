@@ -68,11 +68,11 @@ export default class Player extends Model {
       case 'Active':
         return 'light-green'
       case 'Loaned':
-        return 'indigo'
+        return 'deep-orange'
       case 'Injured':
         return 'pink'
       case 'Pending':
-        return 'deep-orange'
+        return 'orange'
       default:
         return null
     }

@@ -163,8 +163,8 @@
         { text: 'Youth', color: 'cyan', icon: 'school' },
         { text: 'Active', color: 'light-green', icon: 'account-check' },
         { text: 'Injured', color: 'pink', icon: 'ambulance' },
-        { text: 'Loaned', color: 'indigo', icon: 'transit-transfer' },
-        { text: 'Pending', color: 'deep-orange', icon: 'lock-clock' }
+        { text: 'Loaned', color: 'deep-orange', icon: 'transit-transfer' },
+        { text: 'Pending', color: 'orange', icon: 'lock-clock' }
       ],
       search: '',
       loading: false

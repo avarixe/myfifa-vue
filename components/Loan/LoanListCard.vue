@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-toolbar
-      color="indigo"
+      :color="color"
       dark
       dense
     >

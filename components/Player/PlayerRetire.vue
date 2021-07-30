@@ -13,9 +13,14 @@
       />
     </template>
     <v-card>
-      <v-card-title class="purple">
+      <v-card-title class="purple white--text">
         <v-toolbar-title>
-          <v-icon left>mdi-human-greeting</v-icon>
+          <v-icon
+            dark
+            left
+          >
+            mdi-human-greeting
+          </v-icon>
           Confirm Action
         </v-toolbar-title>
       </v-card-title>

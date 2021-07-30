@@ -3,14 +3,13 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
-    color="indigo"
   >
     <template #activator="{ on }">
       <slot :on="on">
         <tooltip-button
           :label="title"
           icon="mdi-transit-transfer"
-          color="indigo"
+          color="deep-orange"
           :on="on"
         />
       </slot>

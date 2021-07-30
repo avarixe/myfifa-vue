@@ -17,6 +17,7 @@
           <squad-form
             :record="squad"
             color="orange"
+            title-class="grey--text text--darken-4"
             class="d-inline-block"
           >
             <template #default="{ on }">
