@@ -110,7 +110,6 @@
             </td>
             <td class="text-center">
               <flag
-                v-if="item.flag"
                 :iso="item.flag"
                 :title="item.nationality"
                 class="mr-2"

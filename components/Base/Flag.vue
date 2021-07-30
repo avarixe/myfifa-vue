@@ -14,8 +14,10 @@
     computed: {
       imageUrl () {
         const size = this.size === 'xl' ? 'l' : this.size
-        const iso = this.iso.toUpperCase()
-        return `//cdn.jsdelivr.net/gh/avarixe/flagpack-core/svg/${size}/${iso}.svg`
+        const iso = this.iso && this.iso.toUpperCase()
+        return iso
+          ? `//cdn.jsdelivr.net/gh/avarixe/flagpack-core/svg/${size}/${iso}.svg`
+          : null
       }
     }
   }

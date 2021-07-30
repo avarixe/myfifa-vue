@@ -101,7 +101,6 @@
 
 <script>
   import { mapMutations } from 'vuex'
-  import XLSX from 'xlsx/dist/xlsx.mini.min'
   import { format } from 'date-fns'
   import { TeamAccessible } from '@/mixins'
 
@@ -110,6 +109,11 @@
     mixins: [
       TeamAccessible
     ],
+    head: () => ({
+      script: [
+        { src: '//cdn.jsdelivr.net/npm/xlsx@0.17.0/dist/xlsx.mini.min.js' }
+      ]
+    }),
     data: () => ({
       valid: false,
       numPlayers: 0,
@@ -178,12 +182,12 @@
         reader.onload = (e) => {
           // Parse data
           const bstr = e.target.result
-          const wb = XLSX.read(bstr, { type: 'binary', cellDates: true })
+          const wb = window.XLSX.read(bstr, { type: 'binary', cellDates: true })
           // Get first worksheet
           const wsname = wb.SheetNames[0]
           const ws = wb.Sheets[wsname]
           // Convert array of arrays
-          const data = XLSX.utils.sheet_to_json(ws)
+          const data = window.XLSX.utils.sheet_to_json(ws)
           // Update state
           data.forEach(player => this.importPlayer(player))
         }
