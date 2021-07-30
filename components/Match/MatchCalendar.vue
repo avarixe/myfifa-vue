@@ -39,17 +39,25 @@
     </v-toolbar>
 
     <v-card-text>
-      <v-calendar
-        ref="calendar"
-        v-model="day"
-        type="month"
-        :now="team.currentlyOn"
-        :start="team.startedOn"
-        :events="events"
-        event-start="playedOn"
-        :show-month-on-first="false"
-        @click:event="viewMatch"
-      />
+      <div :style="{ overflowX: 'auto' }">
+        <v-calendar
+          ref="calendar"
+          v-model="day"
+          type="month"
+          :now="team.currentlyOn"
+          :events="events"
+          event-start="playedOn"
+          :show-month-on-first="false"
+          :style="{ minWidth: '700px' }"
+          @click:event="viewMatch"
+        >
+          <template #event="{ event }">
+            <div class="pl-1">
+              <scroll-text :text="event.name" />
+            </div>
+          </template>
+        </v-calendar>
+      </div>
       <v-menu
         v-model="selectedOpen"
         :close-on-content-click="false"
@@ -99,7 +107,7 @@
         return this.$store.$db().model('Match')
           .query()
           .with('team')
-          .where('teamId', this.team.id)
+          .where('teamId', this.teamId)
           .get()
       },
       events () {

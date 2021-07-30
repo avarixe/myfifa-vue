@@ -15,7 +15,7 @@
           touchless
         >
           <v-tab-item key="calendar">
-            <match-calendar />
+            <match-calendar v-if="!$fetchState.pending" />
           </v-tab-item>
           <v-tab-item key="grid">
             <match-grid />
