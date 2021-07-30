@@ -16,10 +16,7 @@
         >
           Next Match
         </v-btn>
-        <match-form
-          :record="match"
-          color="orange"
-        >
+        <match-form :record="match">
           <template #default="{ on }">
             <v-btn
               color="orange"

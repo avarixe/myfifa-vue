@@ -3,7 +3,6 @@
     v-model="dialog"
     :title="`Transfer ${player.name}`"
     :submit="submit"
-    :color="transferColor"
   >
     <template #activator="{ on }">
       <slot :on="on">

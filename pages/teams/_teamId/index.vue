@@ -78,7 +78,7 @@
         <v-col cols="12">
           <loan-list-card
             title="Loaned Players"
-            color="indigo"
+            color="deep-orange"
             :players="loanedPlayers"
           />
         </v-col>
@@ -86,7 +86,7 @@
         <v-col cols="12">
           <contract-list-card
             title="Expiring Contracts"
-            color="warning"
+            color="red darken-1"
             :players="expiringPlayers"
           />
         </v-col>

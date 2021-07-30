@@ -3,7 +3,6 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
-    color="pink"
   >
     <template #activator="{ on }">
       <slot :on="on">
@@ -26,7 +25,6 @@
             label="Injury Date"
             prepend-icon="mdi-calendar-today"
             color="pink"
-            :max="contract && contract.endedOn"
             required
           />
         </v-col>
@@ -36,7 +34,6 @@
             label="Recovery Date"
             prepend-icon="mdi-calendar"
             color="pink"
-            :min="contract && contract.startedOn"
             required
           />
         </v-col>

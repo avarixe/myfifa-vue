@@ -3,7 +3,6 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
-    color="blue"
   >
     <template #activator="{ on }">
       <slot :on="on">

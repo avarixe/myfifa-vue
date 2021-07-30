@@ -3,7 +3,6 @@
     v-model="dialog"
     :title="title"
     :submit="submit"
-    :color="color"
   >
     <template #activator="{ on }">
       <slot :on="on">
@@ -31,7 +30,7 @@
           prepend-icon="mdi-trophy"
           :items="competitions"
           :rules="rulesFor.competition"
-          :loading="loadingCompetitions"
+          :loading="loading"
         />
       </v-col>
       <v-scroll-y-transition mode="out-in">
@@ -58,7 +57,7 @@
           prepend-icon="mdi-home"
           :items="teamOptions"
           :rules="rulesFor.home"
-          :loading="loadingTeams"
+          :loading="loading"
           :append-outer-icon="`mdi-shield-${isHome ? 'star' : 'outline'}`"
           spellcheck="false"
           autocapitalize="words"
@@ -74,7 +73,7 @@
           prepend-icon="mdi-bus"
           :items="teamOptions"
           :rules="rulesFor.away"
-          :loading="loadingTeams"
+          :loading="loading"
           :append-outer-icon="`mdi-shield-${isAway ? 'star' : 'outline'}`"
           spellcheck="false"
           autocapitalize="words"

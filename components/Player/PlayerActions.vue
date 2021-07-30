@@ -1,9 +1,6 @@
 <template>
   <div>
-    <player-form
-      :record="player"
-      color="orange"
-    >
+    <player-form :record="player">
       <template #default="{ on }">
         <tooltip-button
           label="Edit"

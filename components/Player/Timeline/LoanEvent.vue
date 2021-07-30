@@ -4,7 +4,7 @@
     :event="event"
     :title="title"
     icon="mdi-transit-transfer"
-    color="indigo"
+    color="deep-orange"
     :dense="dense"
   >
     <template #heading>

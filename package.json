@@ -15,7 +15,6 @@
     "cookie-universal-nuxt": "^2.1.5",
     "date-fns": "^2.8.1",
     "email-validator": "^2.0.4",
-    "flagpack-core": "https://github.com/avarixe/flagpack-core.git#add-dz-and-xk",
     "lodash.camelcase": "^4.3.0",
     "lodash.groupby": "^4.6.0",
     "lodash.mapkeys": "^4.6.0",
@@ -23,8 +22,7 @@
     "lodash.pick": "^4.4.0",
     "nuxt": "^2.11.0",
     "v-money": "^0.8.1",
-    "vue-chartist": "^2.2.1",
-    "xlsx": "^0.17.0"
+    "vue-chartist": "^2.2.1"
   },
   "devDependencies": {
     "@babel/traverse": "^7.1.5",
