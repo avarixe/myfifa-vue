@@ -42,7 +42,6 @@
 </template>
 
 <script>
-  import orderBy from 'lodash.orderby'
   import { matchPositions } from '@/constants'
 
   const positions = Object.keys(matchPositions)
@@ -55,7 +54,13 @@
     },
     computed: {
       sortedCaps () {
-        return orderBy(this.match.caps, 'start', c => positions.indexOf(c.pos))
+        return [...this.match.caps].sort((a, b) => {
+          if (a.start !== b.start) {
+            return a.start - b.start
+          } else {
+            return positions.indexOf(a.pos) - positions.indexOf(b.pos)
+          }
+        })
       }
     }
   }
