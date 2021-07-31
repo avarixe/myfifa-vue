@@ -98,10 +98,10 @@
         <v-card>
           <v-card-text>
             <v-tabs centered>
-              <v-tab>Lineup</v-tab>
+              <v-tab>Overview</v-tab>
               <v-tab>Timeline</v-tab>
               <v-tab-item>
-                <match-lineup :match="match" />
+                <match-overview :match="match" />
               </v-tab-item>
               <v-tab-item>
                 <match-timeline :match="match" />
@@ -119,10 +119,10 @@
             <v-col cols="7">
               <v-card>
                 <v-card-title class="justify-center font-weight-light">
-                  Lineup
+                  Overview
                 </v-card-title>
                 <v-card-text>
-                  <match-lineup :match="match" />
+                  <match-overview :match="match" />
                 </v-card-text>
               </v-card>
             </v-col>

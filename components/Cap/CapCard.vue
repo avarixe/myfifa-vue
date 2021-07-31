@@ -5,22 +5,32 @@
     offset-overflow
   >
     <template #activator="{ attrs, on }">
-      <div
-        v-ripple
-        class="cap pa-2 elevation-5"
-        v-bind="attrs"
-        v-on="on"
+      <slot
+        name="activator"
+        :attrs="attrs"
+        :on="on"
+        :player="player"
+        :cap="cap"
       >
-        <div class="player-pos font-weight-bold">{{ cap.pos }}</div>
-        <div class="player-name">
-          <span class="hidden-sm-and-down">{{ player.name }}</span>
-          <span class="hidden-md-and-up">{{ identifier }}</span>
-        </div>
-        <cap-events
-          :cap="cap"
-          :match="match"
-        />
-      </div>
+        <v-tooltip bottom>
+          <template #activator="{ on: tooltip }">
+            <div
+              v-ripple
+              class="pa-2 elevation-5 rounded-lg"
+              v-bind="attrs"
+              v-on="{ ...on, ...tooltip }"
+            >
+              <div class="player-pos font-weight-bold">{{ cap.pos }}</div>
+              <v-icon>mdi-shield-account</v-icon>
+              <cap-events
+                :cap="cap"
+                :match="match"
+              />
+            </div>
+          </template>
+          {{ player.name }}
+        </v-tooltip>
+      </slot>
     </template>
     <v-card>
       <v-card-title class="text-subtitle-1 pa-2">
@@ -95,39 +105,15 @@
     computed: {
       player () {
         return this.$store.$db().model('Player').find(this.cap.playerId)
-      },
-      abbreviatedName () {
-        return this.player.name.split(/\s+/).map(term => term[0]).join('')
-      },
-      identifier () {
-        return this.player && this.player.kitNo
-          ? `${this.abbreviatedName}${this.player.kitNo}`
-          : this.abbreviatedName
       }
     }
   }
 </script>
 
-<style scoped lang="scss">
-  .cap {
-    line-height: 1.5;
-    border-radius: 3px;
-
-    .player-pos {
-      margin-left: -100%;
-      margin-right: -100%;
-      text-align: center;
-    }
-
-    .player-name {
-      font-size: 0.8em;
-      line-height: 1;
-
-      .hidden-md-and-up {
-        margin-left: -100%;
-        margin-right: -100%;
-        text-align: center;
-      }
-    }
+<style scoped>
+  .player-pos {
+    margin-left: -100%;
+    margin-right: -100%;
+    text-align: center;
   }
 </style>

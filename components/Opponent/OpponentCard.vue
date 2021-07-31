@@ -6,15 +6,22 @@
     eager
   >
     <template #activator="{ attrs, on }">
-      <div
-        v-ripple
-        class="cap pa-2 elevation-5 d-inline-block"
-        v-bind="attrs"
-        v-on="on"
+      <slot
+        name="activator"
+        :attrs="attrs"
+        :on="on"
+        :opponent="opponent"
       >
-        <div class="font-weight-bold">TEAM</div>
-        <div class="opponent-team">{{ opponent }}</div>
-      </div>
+        <div
+          v-ripple
+          class="pa-2 elevation-5 rounded-lg"
+          v-bind="attrs"
+          v-on="on"
+        >
+          <div class="opponent-label font-weight-bold">TEAM</div>
+          <div class="opponent-team">{{ opponent }}</div>
+        </div>
+      </slot>
     </template>
     <v-card>
       <v-card-title class="text-subtitle-1 pa-2">
@@ -77,14 +84,15 @@
   }
 </script>
 
-<style scoped lang="scss">
-  .cap {
-    line-height: 1.5;
-    border-radius: 3px;
+<style scoped>
+  .opponent-label {
+    margin-left: -100%;
+    margin-right: -100%;
+    text-align: center;
+  }
 
-    .opponent-team {
-      font-size: 0.8em;
-      line-height: 1;
-    }
+  .opponent-team {
+    font-size: 0.8em;
+    line-height: 1;
   }
 </style>

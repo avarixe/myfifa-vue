@@ -51,8 +51,8 @@
       </v-row>
       <v-divider class="mx-3" />
       <formation-grid :players="squad.squadPlayers">
-        <template #position="{ player }">
-          <v-icon>mdi-account</v-icon>
+        <template #position="{ player, pos }">
+          <div class="font-weight-bold">{{ pos }}</div>
           <div :class="['player', statusColor(player.playerId)]">
             {{ nameOf(player.playerId) }}
           </div>

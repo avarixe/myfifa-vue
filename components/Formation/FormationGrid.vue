@@ -21,6 +21,7 @@
         </template>
       </formation-cell>
     </v-row>
+    <slot name="footer" />
   </v-container>
 </template>
 

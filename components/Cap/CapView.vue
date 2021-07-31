@@ -1,12 +1,17 @@
 <template>
-  <div class="cap">
-    <div class="font-weight-bold">{{ cap.pos }}</div>
-    <div class="player-name">{{ player.name }}</div>
-    <cap-events
-      :cap="cap"
-      :match="match"
-    />
-  </div>
+  <v-tooltip bottom>
+    <template #activator="{ on }">
+      <div v-on="on">
+        <div class="font-weight-bold">{{ cap.pos }}</div>
+        <v-icon>mdi-shield-account</v-icon>
+        <cap-events
+          :cap="cap"
+          :match="match"
+        />
+      </div>
+    </template>
+    {{ player.name }}
+  </v-tooltip>
 </template>
 
 <script>
@@ -23,15 +28,3 @@
     }
   }
 </script>
-
-<style scoped lang="scss">
-  .cap {
-    line-height: 1.5;
-
-    .player-name {
-      font-size: 0.8em;
-      line-height: 1;
-      display: inline-block;
-    }
-  }
-</style>
