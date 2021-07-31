@@ -6,9 +6,9 @@
     <v-card-title>
       <v-btn-toggle
         v-model="mode"
-        rounded
         mandatory
-        class="mx-3"
+        dense
+        class="mr-2"
       >
         <v-btn
           v-for="(opt, i) in modes"

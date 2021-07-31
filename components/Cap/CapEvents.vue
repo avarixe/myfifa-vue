@@ -1,6 +1,22 @@
 <template>
   <div>
     <v-badge
+      v-if="cap.start > 0"
+      bottom
+      overlap
+      color="transparent"
+    >
+      <template #badge>
+        <div class="counter font-weight-black">{{ cap.start }}'</div>
+      </template>
+      <v-icon
+        color="green"
+        small
+      >
+        mdi-subdirectory-arrow-right
+      </v-icon>
+    </v-badge>
+    <v-badge
       v-if="numGoals > 0"
       bottom
       overlap
@@ -46,13 +62,22 @@
     >
       mdi-ambulance
     </v-icon>
-    <v-icon
+    <v-badge
       v-if="cap.subbedOut"
-      color="orange darken-2"
-      small
+      bottom
+      overlap
+      color="transparent"
     >
-      mdi-subdirectory-arrow-left
-    </v-icon>
+      <v-icon
+        color="orange darken-2"
+        small
+      >
+        mdi-subdirectory-arrow-left
+      </v-icon>
+      <template #badge>
+        <div class="counter font-weight-black">{{ cap.stop }}'</div>
+      </template>
+    </v-badge>
   </div>
 </template>
 
