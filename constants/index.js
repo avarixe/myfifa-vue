@@ -1,19 +1,19 @@
 export const positions = [
   'GK',
-  'RB',
-  'RWB',
-  'CB',
   'LB',
   'LWB',
-  'RM',
+  'CB',
+  'RB',
+  'RWB',
+  'LM',
   'CDM',
   'CM',
   'CAM',
-  'LM',
-  'RW',
+  'RM',
+  'LW',
   'CF',
   'ST',
-  'LW'
+  'RW'
 ]
 
 export const matchPositions = {
