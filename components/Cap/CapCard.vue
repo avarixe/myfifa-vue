@@ -19,7 +19,10 @@
           v-on="on"
         >
           <div class="player-pos font-weight-bold">{{ cap.pos }}</div>
-          <scroll-text :text="player.name" />
+          <scroll-text
+            :text="player.name"
+            :style="{ fontSize: '0.8em', lineHeight: 1.5 }"
+          />
           <cap-events
             :cap="cap"
             :match="match"
@@ -104,11 +107,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .player-pos {
-    margin-left: -100%;
-    margin-right: -100%;
-    text-align: center;
-  }
-</style>

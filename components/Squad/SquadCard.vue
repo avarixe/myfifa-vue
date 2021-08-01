@@ -53,9 +53,11 @@
       <formation-grid :players="squad.squadPlayers">
         <template #position="{ player, pos }">
           <div class="font-weight-bold">{{ pos }}</div>
-          <div :class="['player', statusColor(player.playerId)]">
-            <scroll-text :text="nameOf(player.playerId)" />
-          </div>
+          <scroll-text
+            :text="nameOf(player.playerId)"
+            :class="statusColor(player.playerId)"
+            :style="{ fontSize: '0.8em', lineHeight: 1.5 }"
+          />
         </template>
       </formation-grid>
     </v-card-text>
@@ -111,10 +113,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .player {
-    font-size: 0.8em;
-    line-height: 1;
-  }
-</style>
