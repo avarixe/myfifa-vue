@@ -1,17 +1,12 @@
 <template>
-  <v-tooltip bottom>
-    <template #activator="{ on }">
-      <div v-on="on">
-        <div class="font-weight-bold">{{ cap.pos }}</div>
-        <v-icon>mdi-shield-account</v-icon>
-        <cap-events
-          :cap="cap"
-          :match="match"
-        />
-      </div>
-    </template>
-    {{ player.name }}
-  </v-tooltip>
+  <div>
+    <div class="font-weight-bold">{{ cap.pos }}</div>
+    <scroll-text :text="player.name" />
+    <cap-events
+      :cap="cap"
+      :match="match"
+    />
+  </div>
 </template>
 
 <script>

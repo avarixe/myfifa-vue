@@ -2,6 +2,8 @@
   <div
     id="scroller"
     ref="scroller"
+    @mouseenter="onEnter"
+    @mouseleave="onLeave"
   >
     <div
       ref="text"
@@ -17,33 +19,41 @@
     name: 'ScrollText',
     props: {
       text: { type: String, default: '' },
-      speed: { type: Number, default: 6 }
+      speed: { type: Number, default: 6 },
+      automatic: { type: Boolean, default: false }
     },
     data: () => ({
-      textClass: null,
+      textClass: 'truncated',
       textCssVars: {},
       resizeListener: null
     }),
-    mounted () {
-      this.toggleScroll()
-      this.resizeListener = window.addEventListener('resize', this.toggleScroll)
-    },
     beforeDestroy () {
       window.removeEventListener('resize', this.resizeListener)
     },
     methods: {
-      toggleScroll () {
-        if (this.isTruncated()) {
-          this.textClass = 'truncated'
-          this.textCssVars = {
-            '--overflow-width': `-${this.getOverflowWidth() + 4}px`,
-            '--duration': `${this.computeScrollDuration()}s`
-          }
-        } else {
-          this.textClass = null
-        }
+      onEnter () {
+        this.toggleScroll()
+        this.resizeListener = window.addEventListener('resize', this.toggleScroll)
       },
-      isTruncated () {
+      onLeave () {
+        window.removeEventListener('resize', this.resizeListener)
+        this.textClass = 'truncated'
+      },
+      toggleScroll () {
+        this.textClass = null
+        this.$nextTick(() => {
+          if (this.hasOverflow()) {
+            this.textClass = 'scrolling'
+            this.textCssVars = {
+              '--overflow-width': `-${this.getOverflowWidth() + 4}px`,
+              '--duration': `${this.computeScrollDuration()}s`
+            }
+          } else {
+            this.textClass = 'truncated'
+          }
+        })
+      },
+      hasOverflow () {
         return this.getOverflowWidth() > 0
       },
       getOverflowWidth () {
@@ -63,16 +73,22 @@
     overflow: hidden;
     div {
       width: max-content;
-      &.truncated {
+      &.scrolling {
         animation: text-scroll var(--duration) linear infinite;
+      }
+      &.truncated {
+        text-overflow: ellipsis;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
       }
     }
   }
 
   @keyframes text-scroll {
-    10% { transform: translateX(0) }
+    0% { transform: translateX(0) }
     40% { transform: translateX(var(--overflow-width)) }
-    60% { transform: translateX(var(--overflow-width)) }
-    90% { transform: translateX(0) }
+    50% { transform: translateX(var(--overflow-width)) }
+    80% { transform: translateX(0) }
   }
 </style>

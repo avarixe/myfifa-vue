@@ -12,24 +12,19 @@
         :player="player"
         :cap="cap"
       >
-        <v-tooltip bottom>
-          <template #activator="{ on: tooltip }">
-            <div
-              v-ripple
-              class="pa-2 elevation-5 rounded-lg"
-              v-bind="attrs"
-              v-on="{ ...on, ...tooltip }"
-            >
-              <div class="player-pos font-weight-bold">{{ cap.pos }}</div>
-              <v-icon>mdi-shield-account</v-icon>
-              <cap-events
-                :cap="cap"
-                :match="match"
-              />
-            </div>
-          </template>
-          {{ player.name }}
-        </v-tooltip>
+        <div
+          v-ripple
+          class="pa-2 elevation-5 rounded-lg"
+          v-bind="attrs"
+          v-on="on"
+        >
+          <div class="player-pos font-weight-bold">{{ cap.pos }}</div>
+          <scroll-text :text="player.name" />
+          <cap-events
+            :cap="cap"
+            :match="match"
+          />
+        </div>
       </slot>
     </template>
     <v-card>
