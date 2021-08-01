@@ -54,7 +54,7 @@
         <template #position="{ player, pos }">
           <div class="font-weight-bold">{{ pos }}</div>
           <div :class="['player', statusColor(player.playerId)]">
-            {{ nameOf(player.playerId) }}
+            <scroll-text :text="nameOf(player.playerId)" />
           </div>
         </template>
       </formation-grid>
