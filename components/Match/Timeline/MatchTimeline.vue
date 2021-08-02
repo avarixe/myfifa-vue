@@ -24,14 +24,11 @@
 
 <script>
   import orderBy from 'lodash.orderby'
-  import { TeamAccessible } from '@/mixins'
 
   export default {
-    mixins: [
-      TeamAccessible
-    ],
     props: {
-      match: { type: Object, required: true }
+      match: { type: Object, required: true },
+      readonly: { type: Boolean, default: true }
     },
     computed: {
       events () {
@@ -46,9 +43,6 @@
         }
 
         return events
-      },
-      readonly () {
-        return this.team.currentlyOn !== this.match.playedOn
       }
     }
   }
