@@ -100,9 +100,11 @@
       }
     },
     mounted () {
-      if (['xs', 'sm'].includes(this.$vuetify.breakpoint.name)) {
-        this.mode = 'lineup'
-      }
+      this.$nextTick(() => {
+        if (['xs', 'sm'].includes(this.$vuetify.breakpoint.name)) {
+          this.mode = 'lineup'
+        }
+      })
     },
     methods: {
       avgOVR (positionType) {
