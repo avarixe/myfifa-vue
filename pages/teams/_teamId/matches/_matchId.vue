@@ -28,6 +28,12 @@
             </v-btn>
           </template>
         </match-form>
+        <v-btn @click="readonly = !readonly">
+          <v-icon left>
+            mdi-{{ readonly ? 'pencil-off' : 'circle-edit-outline' }}
+          </v-icon>
+          {{ readonly ? 'Readonly' : 'Edit' }} Mode
+        </v-btn>
         <record-remove
           :record="match"
           store="matches"
@@ -122,7 +128,10 @@
                   Overview
                 </v-card-title>
                 <v-card-text>
-                  <match-overview :match="match" />
+                  <match-overview
+                    :match="match"
+                    :readonly="readonly"
+                  />
                 </v-card-text>
               </v-card>
             </v-col>
@@ -132,7 +141,10 @@
                   Timeline
                 </v-card-title>
                 <v-card-text>
-                  <match-timeline :match="match" />
+                  <match-timeline
+                    :match="match"
+                    :readonly="readonly"
+                  />
                 </v-card-text>
               </v-card>
             </v-col>
@@ -164,6 +176,9 @@
     mixins: [
       TeamAccessible
     ],
+    data: () => ({
+      readonly: true
+    }),
     computed: {
       matchId () {
         return parseInt(this.$route.params.matchId)
@@ -180,9 +195,6 @@
           .query()
           .where('teamId', this.teamId)
           .get()
-      },
-      readonly () {
-        return this.match.playedOn !== this.team.currentlyOn
       },
       prevMatchLink () {
         const prevMatch = this.$store.$db().model('Match')
@@ -251,6 +263,8 @@
         this.$store.$db().model('Match').insert({ data: match }),
         this.$store.$db().model('Team').insert({ data: team })
       ])
+
+      this.readonly = match.playedOn !== team.currentlyOn
 
       this.setPage({
         title: `${match.home} vs ${match.away}`,

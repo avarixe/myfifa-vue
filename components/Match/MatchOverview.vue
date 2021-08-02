@@ -61,24 +61,18 @@
 </template>
 
 <script>
-  import { TeamAccessible } from '@/mixins'
   import { matchPositions } from '@/constants'
 
   export default {
     name: 'MatchOverview',
-    mixins: [
-      TeamAccessible
-    ],
     props: {
-      match: { type: Object, required: true }
+      match: { type: Object, required: true },
+      readonly: { type: Boolean, default: true }
     },
     data: () => ({
       mode: 'formation'
     }),
     computed: {
-      readonly () {
-        return this.team.currentlyOn !== this.match.playedOn
-      },
       modeText () {
         switch (this.mode) {
           case 'formation':
