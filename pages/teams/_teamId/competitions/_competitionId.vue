@@ -6,7 +6,14 @@
           :to="competition.linkToSeason"
           nuxt
         >
+          <v-icon left>mdi-calendar</v-icon>
           View Season
+        </v-btn>
+        <v-btn @click="readonly = !readonly">
+          <v-icon left>
+            mdi-{{ readonly ? 'pencil-off' : 'circle-edit-outline' }}
+          </v-icon>
+          {{ readonly ? 'Readonly' : 'Edit' }} Mode
         </v-btn>
       </v-col>
       <v-col
@@ -16,7 +23,7 @@
         <div class="subheading">{{ competitionSeason }}</div>
         <div class="text-h4">{{ competition.name }}</div>
         <div
-          v-if="readonly"
+          v-if="competition.champion"
           class="title"
         >
           <v-icon
@@ -171,7 +178,8 @@
       TeamAccessible
     ],
     data: () => ({
-      table: 0
+      table: 0,
+      readonly: true
     }),
     computed: {
       competitionId () {
@@ -197,10 +205,6 @@
       },
       rounds () {
         return this.stages.filter(stage => !stage.table)
-      },
-      readonly () {
-        return this.competition.champion &&
-          this.competition.champion.length > 0
       },
       competitionSeason () {
         return this.seasonLabel(this.competition.season)
@@ -235,6 +239,8 @@
         id: this.competitionId
       })
       await this.$store.$db().model('Competition').insert({ data: competition })
+
+      this.readonly = competition.champion && competition.champion.length > 0
 
       this.setPage({
         title: this.title,
