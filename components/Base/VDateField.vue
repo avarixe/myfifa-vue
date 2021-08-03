@@ -12,13 +12,14 @@
         :rules="rules"
         :label="label"
         :prepend-icon="prependIcon"
+        :append-outer-icon="appendOuterIcon"
         readonly
         :clearable="clearable"
         :disabled="disabled"
         :dense="dense"
         :outlined="outlined"
         :hide-details="hideDetails"
-        v-on="on"
+        v-on="{ ...on, ...$listeners }"
       />
     </template>
     <v-date-picker
@@ -27,6 +28,7 @@
       :color="color"
       :min="min"
       :max="max"
+      :active-picker.sync="activePicker"
       @input="menu = false"
     />
   </v-menu>
@@ -45,6 +47,7 @@
       max: { type: String, default: null },
       color: { type: String, default: null },
       prependIcon: { type: String, default: null },
+      appendOuterIcon: { type: String, default: null },
       required: { type: Boolean, default: false },
       startWithYear: { type: Boolean, default: false },
       disabled: { type: Boolean, default: false },
@@ -55,7 +58,8 @@
     },
     data: () => ({
       menu: false,
-      date: null
+      date: null,
+      activePicker: 'DATE'
     }),
     computed: {
       formattedDate () {
@@ -80,7 +84,7 @@
       menu (val) {
         if (val && this.startWithYear) {
           this.$nextTick(() => {
-            this.$refs.picker.activePicker = 'YEAR'
+            this.activePicker = 'YEAR'
           })
         }
       }

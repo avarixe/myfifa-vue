@@ -50,6 +50,24 @@
         </tr>
       </template>
     </template>
+    <template #additional-actions>
+      <loan-buy-option-activator
+        v-if="event.endedOn > team.currentlyOn"
+        :player="player"
+        :loan="event"
+      >
+        <template #activator="{ on }">
+          <v-btn
+            text
+            small
+            :color="event.origin === team.name ? 'red' : 'green'"
+            v-on="on"
+          >
+            Activate Buy Option
+          </v-btn>
+        </template>
+      </loan-buy-option-activator>
+    </template>
   </base-player-event>
 </template>
 

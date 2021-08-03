@@ -17,11 +17,18 @@
     <template #form>
       <v-col cols="12">
         <v-date-field
+          v-model="attributes.signedOn"
+          label="Signed Date"
+          prepend-icon="mdi-calendar-edit"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-date-field
           v-model="attributes.movedOn"
           label="Effective Date"
           prepend-icon="mdi-calendar-today"
-          :min="record ? null : team.currentlyOn"
-          :color="transferColor"
+          :min="attributes.signedOn"
           required
         />
       </v-col>
@@ -89,6 +96,7 @@
     },
     data: () => ({
       attributes: {
+        signedOn: null,
         movedOn: null,
         origin: '',
         destination: '',
@@ -119,6 +127,7 @@
         if (val) {
           if (this.record) {
             this.attributes = pick(this.record, [
+              'signedOn',
               'movedOn',
               'origin',
               'destination',
@@ -126,6 +135,7 @@
               'addonClause'
             ])
           } else {
+            this.attributes.signedOn = this.team.currentlyOn
             this.attributes.movedOn = this.team.currentlyOn
             if (this.transferOut) {
               this.attributes.origin = this.team.name

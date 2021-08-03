@@ -5,10 +5,8 @@
     max-width="500px"
   >
     <template #activator="{ on }">
-      <tooltip-button
-        label="Retire"
-        icon="mdi-human-greeting"
-        color="purple"
+      <slot
+        name="activator"
         :on="on"
       />
     </template>
@@ -19,13 +17,13 @@
             dark
             left
           >
-            mdi-human-greeting
+            mdi-airplane
           </v-icon>
           Confirm Action
         </v-toolbar-title>
       </v-card-title>
       <v-card-text class="pt-4 pb-0">
-        {{ player.name }} is Retiring End of Season?
+        Activate Loan-to-Buy Option for {{ player.name }}?
       </v-card-text>
       <v-alert
         v-model="error"
@@ -46,9 +44,9 @@
         </v-btn>
         <v-btn
           text
-          color="purple"
+          color="red"
           :loading="loading"
-          @click="retire"
+          @click="activateBuyOption"
         >
           Yes
         </v-btn>
@@ -59,11 +57,13 @@
 
 <script>
   import { mapActions } from 'vuex'
+  import pick from 'lodash.pick'
 
   export default {
-    name: 'PlayerRetire',
+    name: 'LoanBuyOptionActivator',
     props: {
-      player: { type: Object, required: true }
+      player: { type: Object, required: true },
+      loan: { type: Object, required: true }
     },
     data: () => ({
       dialog: false,
@@ -71,14 +71,32 @@
       error: false,
       errorMessage: ''
     }),
+    computed: {
+      team () {
+        return this.$store.$db().model('Team').find(this.$route.params.teamId)
+      }
+    },
     methods: {
-      ...mapActions('players', {
-        retirePlayer: 'retire'
+      ...mapActions('loans', {
+        updateLoan: 'update'
       }),
-      async retire () {
+      async activateBuyOption () {
         try {
           this.loading = true
-          await this.retirePlayer(this.player.id)
+          await this.updateLoan({
+            id: this.loan.id,
+            attributes: {
+              ...pick(this.loan, [
+                'signedOn',
+                'startedOn',
+                'wage',
+                'origin',
+                'destination'
+              ]),
+              endedOn: this.team.currentlyOn,
+              activatedBuyOption: true
+            }
+          })
           this.dialog = false
         } catch (e) {
           this.errorMessage = e.message

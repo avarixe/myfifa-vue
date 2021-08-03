@@ -17,21 +17,44 @@
     <template #form>
       <v-col cols="12">
         <v-date-field
-          v-model="attributes.startedOn"
-          label="Effective Date"
-          prepend-icon="mdi-calendar-today"
+          v-model="attributes.signedOn"
+          label="Signed Date"
+          prepend-icon="mdi-calendar-edit"
           required
         />
       </v-col>
       <v-col cols="12">
         <v-date-field
+          v-model="attributes.startedOn"
+          label="Effective Date"
+          prepend-icon="mdi-calendar-today"
+          :min="attributes.signedOn"
+          :max="attributes.endedOn"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
+          v-if="numSeasonsOn"
+          v-model="attributes.numSeasons"
+          label="Number of Seasons"
+          prepend-icon="mdi-pound"
+          append-outer-icon="mdi-calendar"
+          :rules="rulesFor.numSeasons"
+          type="number"
+          @click:append-outer="numSeasonsOn = false"
+        />
+        <v-date-field
+          v-else
           v-model="attributes.endedOn"
           label="End Date"
           prepend-icon="mdi-calendar"
+          :append-outer-icon="record ? null : 'mdi-pound'"
           :min="attributes.startedOn"
           :max="maxEndDate"
           required
           start-with-year
+          @click:append-outer="numSeasonsOn = true"
         />
       </v-col>
       <v-col cols="12">
@@ -123,6 +146,7 @@
         bonusReqType: null
       },
       rulesFor: {
+        numSeasons: [isRequired('Number of Seasons')],
         bonusReq: [isRequired('Bonus Req.')],
         bonusReqType: [isRequired('Bonus Req. Type')]
       },
@@ -131,7 +155,8 @@
         'Goals',
         'Assists',
         'Clean Sheets'
-      ]
+      ],
+      numSeasonsOn: true
     }),
     computed: {
       title () {
@@ -149,6 +174,7 @@
         if (val) {
           if (this.record) {
             this.attributes = pick(this.record, [
+              'signedOn',
               'startedOn',
               'endedOn',
               'wage',
@@ -158,21 +184,23 @@
               'bonusReq',
               'bonusReqType'
             ])
+            this.numSeasonsOn = false
           } else {
+            this.attributes.signedOn = this.team.currentlyOn
             this.attributes.startedOn = this.team.currentlyOn
-            this.attributes.endedOn = this.team.currentlyOn
+            this.numSeasonsOn = true
           }
-        }
-      },
-      'attributes.startedOn' (val) {
-        if (val && this.attributes?.endedOn < val) {
-          this.attributes.endedOn = val
         }
       },
       'attributes.performanceBonus' (val) {
         if (!val) {
           this.attributes.bonusReq = null
           this.attributes.bonusReqType = null
+        }
+      },
+      numSeasonsOn (numSeasonsOn) {
+        if (!numSeasonsOn) {
+          this.numSeasons = null
         }
       }
     },

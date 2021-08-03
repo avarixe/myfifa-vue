@@ -17,24 +17,28 @@
     <template #form>
       <v-col cols="12">
         <v-date-field
-          v-model="attributes.startedOn"
-          label="Start Date"
-          prepend-icon="mdi-calendar-today"
-          :min="record ? null : team.currentlyOn"
-          color="indigo"
+          v-model="attributes.signedOn"
+          label="Signed Date"
+          prepend-icon="mdi-calendar-edit"
           required
         />
       </v-col>
-      <v-col
-        v-if="record && record.endedOn"
-        cols="12"
-      >
+      <v-col cols="12">
+        <v-date-field
+          v-model="attributes.startedOn"
+          label="Start Date"
+          prepend-icon="mdi-calendar-today"
+          :min="attributes.signedOn"
+          :max="attributes.endedOn"
+          required
+        />
+      </v-col>
+      <v-col cols="12">
         <v-date-field
           v-model="attributes.endedOn"
           label="Return Date"
           prepend-icon="mdi-calendar"
           :min="attributes.startedOn"
-          color="indigo"
           required
         />
       </v-col>
@@ -87,24 +91,6 @@
           inputmode="numeric"
         />
       </v-col>
-      <template v-if="record && !record.endedOn">
-        <v-col cols="12">
-          <v-checkbox
-            v-model="attributes.returned"
-            label="Player Returned"
-            class="d-inline-block"
-            hide-details
-          />
-        </v-col>
-        <v-col cols="12">
-          <v-checkbox
-            v-model="attributes.activatedBuyOption"
-            label="Activate Buy Option"
-            class="d-inline-block"
-            hide-details
-          />
-        </v-col>
-      </template>
     </template>
   </dialog-form>
 </template>
@@ -129,14 +115,14 @@
     },
     data: () => ({
       attributes: {
-        startedOn: '',
-        origin: '',
-        destination: '',
+        signedOn: null,
+        startedOn: null,
+        endedOn: null,
+        origin: null,
+        destination: null,
         wagePercentage: null,
         transferFee: null,
-        addonClause: 0,
-        returned: false,
-        activatedBuyOption: false
+        addonClause: 0
       },
       rulesFor: {
         origin: [isRequired('Origin')],
@@ -166,6 +152,7 @@
         if (val) {
           if (this.record) {
             this.attributes = pick(this.record, [
+              'signedOn',
               'startedOn',
               'endedOn',
               'origin',
@@ -175,6 +162,7 @@
               'addonClause'
             ])
           } else {
+            this.attributes.signedOn = this.team.currentlyOn
             this.attributes.startedOn = this.team.currentlyOn
             if (this.loanOut) {
               this.attributes.origin = this.team.name
