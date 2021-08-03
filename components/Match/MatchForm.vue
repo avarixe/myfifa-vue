@@ -19,8 +19,6 @@
           label="Date Played"
           prepend-icon="mdi-calendar-today"
           required
-          :color="color"
-          :min="record ? null : team.currentlyOn"
         />
       </v-col>
       <v-col cols="12">

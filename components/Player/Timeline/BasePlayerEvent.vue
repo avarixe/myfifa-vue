@@ -52,6 +52,7 @@
             </v-btn>
           </template>
         </component>
+        <slot name="additional-actions" />
       </v-card-actions>
     </v-card>
   </v-timeline-item>

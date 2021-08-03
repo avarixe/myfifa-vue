@@ -15,29 +15,49 @@
       </slot>
     </template>
     <template #form>
-      <v-row
-        v-if="record && record.endedOn"
-        dense
+      <v-col cols="12">
+        <v-date-field
+          v-model="attributes.startedOn"
+          label="Injury Date"
+          prepend-icon="mdi-calendar-today"
+          required
+        />
+      </v-col>
+      <template v-if="durationOn">
+        <v-col cols="6">
+          <v-text-field
+            v-model="attributes.duration['length']"
+            label="Length of Duration"
+            prepend-icon="mdi-ruler"
+            :rules="rulesFor.durationLength"
+            type="number"
+          />
+        </v-col>
+        <v-col cols="6">
+          <v-select
+            v-model="attributes.duration.timespan"
+            :items="timespans"
+            label="Timespan"
+            append-outer-icon="mdi-calendar"
+            :rules="rulesFor.durationTimespan"
+            @click:append-outer="durationOn = false"
+          />
+        </v-col>
+      </template>
+      <v-col
+        v-else
+        cols="12"
       >
-        <v-col cols="12">
-          <v-date-field
-            v-model="attributes.startedOn"
-            label="Injury Date"
-            prepend-icon="mdi-calendar-today"
-            color="pink"
-            required
-          />
-        </v-col>
-        <v-col cols="12">
-          <v-date-field
-            v-model="attributes.endedOn"
-            label="Recovery Date"
-            prepend-icon="mdi-calendar"
-            color="pink"
-            required
-          />
-        </v-col>
-      </v-row>
+        <v-date-field
+          v-model="attributes.endedOn"
+          label="Recovery Date"
+          prepend-icon="mdi-calendar"
+          :append-outer-icon="record ? null : 'mdi-ruler'"
+          :min="attributes.startedOn"
+          required
+          @click:append-outer="durationOn = true"
+        />
+      </v-col>
       <v-col cols="12">
         <v-text-field
           v-model="attributes.description"
@@ -48,16 +68,6 @@
           autocapitalize="words"
           autocomplete="off"
           autocorrect="off"
-        />
-      </v-col>
-      <v-col
-        v-if="record && !record.endedOn"
-        cols="12"
-      >
-        <v-checkbox
-          v-model="attributes.recovered"
-          label="Player Recovered"
-          hide-details
         />
       </v-col>
     </template>
@@ -83,26 +93,60 @@
     },
     data: () => ({
       attributes: {
-        description: '',
-        recovered: false
+        startedOn: null,
+        endedOn: null,
+        duration: {
+          length: null,
+          timespan: null
+        },
+        description: ''
       },
       rulesFor: {
-        description: [isRequired('Description')]
-      }
+        description: [isRequired('Description')],
+        durationLength: [isRequired('Length of Duration')],
+        durationTimespan: [isRequired('Timespan')]
+      },
+      timespans: [
+        'Days',
+        'Weeks',
+        'Months',
+        'Years'
+      ],
+      durationOn: false
     }),
     computed: {
+      team () {
+        return this.$store.$db().model('Team').find(this.$route.params.teamId)
+      },
       title () {
         return this.record ? 'Update Injury' : 'Record New Injury'
       }
     },
     watch: {
       dialog (val) {
-        if (val && this.record) {
-          this.attributes = pick(this.record, [
-            'startedOn',
-            'endedOn',
-            'description'
-          ])
+        if (val) {
+          if (this.record) {
+            this.attributes = pick(this.record, [
+              'startedOn',
+              'endedOn',
+              'description'
+            ])
+            this.durationOn = false
+          } else {
+            this.attributes.startedOn = this.team.currentlyOn
+            this.attributes.endedOn = this.team.currentlyOn
+            this.durationOn = true
+          }
+        }
+      },
+      durationOn (durationOn) {
+        if (durationOn) {
+          this.$set(this.attributes, 'duration', {
+            length: null,
+            timespan: null
+          })
+        } else {
+          this.$delete(this.attributes, 'duration')
         }
       }
     },
