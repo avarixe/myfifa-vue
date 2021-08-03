@@ -5,11 +5,15 @@
         <v-btn
           :to="competition.linkToSeason"
           nuxt
+          class="mb-1"
         >
           <v-icon left>mdi-calendar</v-icon>
           View Season
         </v-btn>
-        <v-btn @click="readonly = !readonly">
+        <v-btn
+          class="mb-1"
+          @click="readonly = !readonly"
+        >
           <v-icon left>
             mdi-{{ readonly ? 'pencil-off' : 'circle-edit-outline' }}
           </v-icon>

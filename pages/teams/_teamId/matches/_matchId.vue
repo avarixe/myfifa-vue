@@ -28,7 +28,10 @@
             </v-btn>
           </template>
         </match-form>
-        <v-btn @click="readonly = !readonly">
+        <v-btn
+          class="mb-1"
+          @click="readonly = !readonly"
+        >
           <v-icon left>
             mdi-{{ readonly ? 'pencil-off' : 'circle-edit-outline' }}
           </v-icon>
@@ -101,16 +104,22 @@
         class="hidden-lg-and-up"
         cols="12"
       >
-        <v-card>
+        <v-card class="mt-2">
           <v-card-text>
             <v-tabs centered>
               <v-tab>Overview</v-tab>
               <v-tab>Timeline</v-tab>
               <v-tab-item>
-                <match-overview :match="match" />
+                <match-overview
+                  :match="match"
+                  :readonly="readonly"
+                />
               </v-tab-item>
               <v-tab-item>
-                <match-timeline :match="match" />
+                <match-timeline
+                  :match="match"
+                  :readonly="readonly"
+                />
               </v-tab-item>
             </v-tabs>
           </v-card-text>
