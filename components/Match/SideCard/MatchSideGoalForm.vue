@@ -63,15 +63,17 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import { TeamAccessible, MatchAccessible } from '@/mixins'
+  import { MatchAccessible } from '@/mixins'
   import { isRequired } from '@/functions'
 
   export default {
-    name: 'CapGoalForm',
+    name: 'MatchSideGoalForm',
     mixins: [
-      TeamAccessible,
       MatchAccessible
     ],
+    props: {
+      side: { type: String, required: true }
+    },
     data: () => ({
       attributes: {
         home: true,
@@ -89,10 +91,10 @@
       }
     },
     watch: {
-      'match.home': {
+      side: {
         immediate: true,
-        handler (home) {
-          this.attributes.home = home !== this.team.name
+        handler (side) {
+          this.attributes.home = side === 'home'
         }
       }
     },

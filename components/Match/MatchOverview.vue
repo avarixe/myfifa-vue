@@ -4,8 +4,22 @@
       v-if="!readonly"
       dense
     >
-      <v-col>
-        <match-actions :match="match" />
+      <v-col class="text-center">
+        <template v-if="teamPlayed">
+          <cap-form
+            v-if="match.caps.length < 11"
+            :match="match"
+            class="d-inline-block"
+          />
+          <match-squad-applier :match="match" />
+          <match-squad-saver :match="match" />
+        </template>
+        <penalty-shootout-form
+          v-if="!match.penaltyShootout"
+          :match="match"
+          color="indigo"
+          class="d-inline-block"
+        />
       </v-col>
     </v-row>
     <v-row
@@ -27,7 +41,10 @@
       </v-col>
     </v-row>
     <v-divider class="my-2" />
-    <v-row dense>
+    <v-row
+      v-if="teamPlayed"
+      dense
+    >
       <v-col class="d-flex align-center">
         <v-btn-toggle
           v-model="mode"
@@ -73,6 +90,12 @@
       mode: 'formation'
     }),
     computed: {
+      team () {
+        return this.$store.$db().model('Team').find(this.$route.params.teamId)
+      },
+      teamPlayed () {
+        return [this.match.home, this.match.away].includes(this.team.name)
+      },
       modeText () {
         switch (this.mode) {
           case 'formation':
@@ -94,6 +117,10 @@
       }
     },
     mounted () {
+      if (!this.teamPlayed) {
+        this.mode = 'lineup'
+      }
+
       this.$nextTick(() => {
         if (['xs', 'sm'].includes(this.$vuetify.breakpoint.name)) {
           this.mode = 'lineup'

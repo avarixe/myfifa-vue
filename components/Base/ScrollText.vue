@@ -57,7 +57,9 @@
         return this.getOverflowWidth() > 0
       },
       getOverflowWidth () {
-        return this.$refs.text.clientWidth - this.$refs.scroller.clientWidth
+        return this.$refs.text
+          ? this.$refs.text.clientWidth - this.$refs.scroller.clientWidth
+          : 0
       },
       computeScrollDuration () {
         // distance in pixels divided by desired scroll speed

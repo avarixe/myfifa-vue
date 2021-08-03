@@ -8,7 +8,7 @@
     <template #activator="{ on }">
       <slot :on="on">
         <tooltip-button
-          label="Penalty Shootout"
+          label="Record Penalty Shootout"
           icon="mdi-human"
           color="indigo"
           :on="on"

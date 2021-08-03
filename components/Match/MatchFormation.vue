@@ -65,7 +65,10 @@
           cols="2"
           class="text-center"
         >
-          <opponent-card :match="match" />
+          <match-side-card
+            :match="match"
+            :side="match.home === team.name ? 'away' : 'home'"
+          />
         </v-col>
       </v-row>
       <v-row
@@ -110,6 +113,9 @@
       readonly: { type: Boolean, default: false }
     },
     computed: {
+      team () {
+        return this.$store.$db().model('Team').find(this.$route.params.teamId)
+      },
       starters () {
         return this.match.caps.filter(c => c.start === 0)
       },
