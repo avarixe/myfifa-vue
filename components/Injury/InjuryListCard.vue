@@ -52,7 +52,7 @@
     methods: {
       injuryDuration (player) {
         return formatDistance(
-          parseISO(player.currentInjury.endedOn || this.team.currentlyOn),
+          parseISO(player.currentInjury.endedOn),
           parseISO(player.currentInjury.startedOn)
         )
       }

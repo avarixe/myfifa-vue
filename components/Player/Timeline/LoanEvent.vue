@@ -13,7 +13,9 @@
       </template>
       <template v-else>
         {{ event.startedOn | formatDate }} -
-        <span v-if="event.endedOn">{{ event.endedOn | formatDate }}</span>
+        <span v-if="event.endedOn < team.currentlyOn">
+          {{ event.endedOn | formatDate }}
+        </span>
         <span v-else>Present</span>
       </template>
     </template>
@@ -29,6 +31,10 @@
       <tr v-if="event.wagePercentage">
         <td class="font-weight-bold">Wage Percentage</td>
         <td class="pl-1">{{ event.wagePercentage }}%</td>
+      </tr>
+      <tr v-if="event.startedOn > team.currentlyOn">
+        <td class="font-weight-bold">Departs In</td>
+        <td class="pl-1">{{ timeBeforeDeparture }}</td>
       </tr>
       <tr>
         <td class="font-weight-bold">Duration</td>
@@ -52,7 +58,7 @@
     </template>
     <template #additional-actions>
       <loan-buy-option-activator
-        v-if="event.endedOn > team.currentlyOn"
+        v-if="buyOptionAvailable"
         :player="player"
         :loan="event"
       >
@@ -91,16 +97,21 @@
           ? `Loan at ${this.event.destination}`
           : `Loan from ${this.event.origin}`
       },
-      length () {
+      timeBeforeDeparture () {
         return formatDistance(
-          parseISO(this.event.endedOn || this.team.currentlyOn),
-          parseISO(this.event.startedOn)
+          parseISO(this.event.startedOn),
+          parseISO(this.team.currentlyOn)
         )
       },
       duration () {
-        return this.event.startedOn > this.team.currentlyOn
-          ? `Departs in ${this.length}`
-          : `Away for ${this.length}`
+        return formatDistance(
+          parseISO(this.event.endedOn),
+          parseISO(this.event.startedOn)
+        )
+      },
+      buyOptionAvailable () {
+        return this.event.endedOn > this.team.currentlyOn &&
+          (this.event.transferFee || this.event.addonClause)
       }
     }
   }
