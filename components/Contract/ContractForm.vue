@@ -36,12 +36,12 @@
       <v-col cols="12">
         <v-text-field
           v-if="numSeasonsOn"
-          v-model="attributes.numSeasons"
+          v-model.number="attributes.numSeasons"
           label="Number of Seasons"
           prepend-icon="mdi-pound"
           append-outer-icon="mdi-calendar"
           :rules="rulesFor.numSeasons"
-          type="number"
+          inputmode="numeric"
           @click:append-outer="numSeasonsOn = false"
         />
         <v-date-field
@@ -119,7 +119,7 @@
   import { addYears, format, parseISO } from 'date-fns'
   import pick from 'lodash.pick'
   import { TeamAccessible, DialogFormable } from '@/mixins'
-  import { isRequired } from '@/functions'
+  import { isRequired, isNumber } from '@/functions'
 
   export default {
     name: 'ContractForm',
@@ -138,6 +138,7 @@
       attributes: {
         startedOn: null,
         endedOn: null,
+        numSeasons: null,
         wage: null,
         signingBonus: null,
         releaseClause: null,
@@ -146,7 +147,10 @@
         bonusReqType: null
       },
       rulesFor: {
-        numSeasons: [isRequired('Number of Seasons')],
+        numSeasons: [
+          isRequired('Number of Seasons'),
+          isNumber('Number of Seasons')
+        ],
         bonusReq: [isRequired('Bonus Req.')],
         bonusReqType: [isRequired('Bonus Req. Type')]
       },
@@ -199,8 +203,10 @@
         }
       },
       numSeasonsOn (numSeasonsOn) {
-        if (!numSeasonsOn) {
-          this.numSeasons = null
+        if (numSeasonsOn) {
+          this.$set(this.attributes, 'numSeasons', null)
+        } else {
+          this.$delete(this.attributes, 'numSeasons')
         }
       }
     },
