@@ -26,11 +26,11 @@
       <template v-if="durationOn">
         <v-col cols="6">
           <v-text-field
-            v-model="attributes.duration['length']"
+            v-model.number="attributes.duration['length']"
             label="Length of Duration"
             prepend-icon="mdi-ruler"
             :rules="rulesFor.durationLength"
-            type="number"
+            inputmode="numeric"
           />
         </v-col>
         <v-col cols="6">
@@ -78,7 +78,7 @@
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
   import { DialogFormable } from '@/mixins'
-  import { isRequired } from '@/functions'
+  import { isRequired, isNumber } from '@/functions'
 
   export default {
     name: 'InjuryForm',
@@ -103,7 +103,10 @@
       },
       rulesFor: {
         description: [isRequired('Description')],
-        durationLength: [isRequired('Length of Duration')],
+        durationLength: [
+          isRequired('Length of Duration'),
+          isNumber('Length of Duration')
+        ],
         durationTimespan: [isRequired('Timespan')]
       },
       timespans: [

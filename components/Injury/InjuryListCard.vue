@@ -15,7 +15,7 @@
           <th>Player</th>
           <th class="text-center">Position</th>
           <th>Injury</th>
-          <th class="text-right">Duration</th>
+          <th class="text-right">Recovers On</th>
         </tr>
       </thead>
       <tbody>
@@ -28,7 +28,9 @@
           <td>{{ player.name }}</td>
           <td class="text-center">{{ player.pos }}</td>
           <td>{{ player.currentInjury.description }}</td>
-          <td class="text-right">{{ injuryDuration(player) }}</td>
+          <td class="text-right">
+            {{ player.currentInjury.endedOn | formatDate }}
+          </td>
         </tr>
       </tbody>
     </v-simple-table>
