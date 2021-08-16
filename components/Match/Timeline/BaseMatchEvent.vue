@@ -21,7 +21,7 @@
           :match="match"
           :record="event"
         >
-          <template #default="{ on }">
+          <template #activator="{ on }">
             <tooltip-button
               icon="mdi-pencil"
               color="orange"

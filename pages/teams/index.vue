@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12">
         <team-form>
-          <template #default="{ on }">
+          <template #activator="{ on }">
             <v-btn v-on="on">
               <v-icon left>mdi-plus</v-icon>
               Team

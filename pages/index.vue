@@ -157,7 +157,7 @@
           View All Teams
         </v-btn>
         <team-form>
-          <template #default="{ on }">
+          <template #activator="{ on }">
             <v-btn v-on="on">
               <v-icon left>mdi-plus</v-icon>
               Create New Team

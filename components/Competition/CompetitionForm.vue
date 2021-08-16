@@ -5,7 +5,10 @@
     :submit="submit"
   >
     <template #activator="{ on }">
-      <slot :on="on">
+      <slot
+        name="activator"
+        :on="on"
+      >
         <v-btn v-on="on">
           <v-icon left>mdi-plus-circle-outline</v-icon>
           Competition

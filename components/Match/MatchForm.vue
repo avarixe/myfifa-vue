@@ -5,12 +5,10 @@
     :submit="submit"
   >
     <template #activator="{ on }">
-      <slot :on="on">
-        <v-btn v-on="on">
-          <v-icon left>mdi-plus-circle-outline</v-icon>
-          Match
-        </v-btn>
-      </slot>
+      <slot
+        name="activator"
+        :on="on"
+      />
     </template>
     <template #form>
       <v-col cols="12">

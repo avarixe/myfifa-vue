@@ -8,6 +8,7 @@
   >
     <template #activator="{ on }">
       <slot
+        name="activator"
         :on="on"
         :date="currentDate"
       >

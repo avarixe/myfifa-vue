@@ -5,7 +5,10 @@
     :submit="submit"
   >
     <template #activator="{ on }">
-      <slot :on="on" />
+      <slot
+        name="activator"
+        :on="on"
+      />
     </template>
     <template #form>
       <v-col cols="12">
@@ -44,7 +47,7 @@
         :team="record"
         color="info"
       >
-        <template #default="{ on }">
+        <template #activator="{ on }">
           <v-btn
             color="info"
             text

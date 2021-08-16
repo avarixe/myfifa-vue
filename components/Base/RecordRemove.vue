@@ -5,7 +5,10 @@
     max-width="500px"
   >
     <template #activator="{ on }">
-      <slot :on="on">
+      <slot
+        name="activator"
+        :on="on"
+      >
         <tooltip-button
           icon="mdi-delete"
           dark

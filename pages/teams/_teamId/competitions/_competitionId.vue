@@ -54,7 +54,7 @@
           :record="competition"
           color="orange"
         >
-          <template #default="{ on }">
+          <template #activator="{ on }">
             <v-btn
               class="my-1"
               dark
@@ -70,7 +70,7 @@
           color="red"
           close
         >
-          <template #default="{ on }">
+          <template #activator="{ on }">
             <v-btn
               class="my-1"
               dark
@@ -87,7 +87,7 @@
           store="competitions"
           :label="`${competitionSeason} ${competition.name}`"
         >
-          <template #default="{ on }">
+          <template #activator="{ on }">
             <v-btn
               class="my-1"
               dark

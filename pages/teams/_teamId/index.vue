@@ -6,7 +6,7 @@
           :record="team"
           color="orange"
         >
-          <template #default="{ on }">
+          <template #activator="{ on }">
             <v-btn
               color="orange"
               dark
@@ -32,7 +32,7 @@
           :label="team.name"
           :redirect="{ name: 'teams' }"
         >
-          <template #default="{ on }">
+          <template #activator="{ on }">
             <v-btn
               dark
               class="mb-1"

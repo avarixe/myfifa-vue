@@ -7,7 +7,10 @@
     :color="color"
   >
     <template #activator="{ on }">
-      <slot :on="on" />
+      <slot
+        name="activator"
+        :on="on"
+      />
     </template>
     <template #form>
       <v-col

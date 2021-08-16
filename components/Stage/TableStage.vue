@@ -64,7 +64,7 @@
           :record="item"
           class="d-inline-block"
         >
-          <template #default="{ on }">
+          <template #activator="{ on }">
             <tooltip-button
               label="Edit Table Row"
               icon="mdi-pencil"

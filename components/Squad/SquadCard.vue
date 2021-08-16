@@ -20,7 +20,7 @@
             title-class="grey--text text--darken-4"
             class="d-inline-block"
           >
-            <template #default="{ on }">
+            <template #activator="{ on }">
               <tooltip-button
                 label="Edit"
                 icon="mdi-pencil"
