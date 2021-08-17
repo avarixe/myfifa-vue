@@ -5,7 +5,10 @@
     :submit="submit"
   >
     <template #activator="{ on }">
-      <slot :on="on">
+      <slot
+        name="activator"
+        :on="on"
+      >
         <v-btn
           class="my-1"
           dark

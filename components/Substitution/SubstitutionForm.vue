@@ -6,14 +6,10 @@
     :submit="submit"
   >
     <template #activator="{ on }">
-      <slot :on="on">
-        <tooltip-button
-          label="Substitution"
-          icon="mdi-repeat"
-          color="green"
-          :on="on"
-        />
-      </slot>
+      <slot
+        name="activator"
+        :on="on"
+      />
     </template>
     <template #form>
       <v-col cols="12">

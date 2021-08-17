@@ -67,7 +67,7 @@
               <v-card-actions>
                 <v-spacer />
                 <user-form>
-                  <template #default="{ on }">
+                  <template #activator="{ on }">
                     <v-btn
                       color="orange"
                       text

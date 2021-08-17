@@ -41,7 +41,7 @@
           :player="player"
           :record="event"
         >
-          <template #default="{ on }">
+          <template #activator="{ on }">
             <v-btn
               text
               small

@@ -17,7 +17,7 @@
           Next Match
         </v-btn>
         <match-form :record="match">
-          <template #default="{ on }">
+          <template #activator="{ on }">
             <v-btn
               color="orange"
               dark
@@ -42,7 +42,7 @@
           store="matches"
           :label="`${match.home} v ${match.away}`"
         >
-          <template #default="{ on }">
+          <template #activator="{ on }">
             <v-btn
               dark
               class="mb-1"

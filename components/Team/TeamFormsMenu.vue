@@ -13,7 +13,7 @@
     </template>
     <v-list dense>
       <player-form>
-        <template #default="{ on }">
+        <template #activator="{ on }">
           <v-list-item v-on="on">
             <v-list-item-avatar>
               <v-icon>mdi-account-plus</v-icon>
@@ -23,7 +23,7 @@
         </template>
       </player-form>
       <match-form>
-        <template #default="{ on }">
+        <template #activator="{ on }">
           <v-list-item v-on="on">
             <v-list-item-avatar>
               <v-icon>mdi-soccer-field</v-icon>
@@ -33,7 +33,7 @@
         </template>
       </match-form>
       <squad-form>
-        <template #default="{ on }">
+        <template #activator="{ on }">
           <v-list-item v-on="on">
             <v-list-item-avatar>
               <v-icon>mdi-clipboard-plus</v-icon>
@@ -43,7 +43,7 @@
         </template>
       </squad-form>
       <competition-form>
-        <template #default="{ on }">
+        <template #activator="{ on }">
           <v-list-item v-on="on">
             <v-list-item-avatar>
               <v-icon>mdi-trophy</v-icon>

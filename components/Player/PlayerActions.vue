@@ -1,7 +1,7 @@
 <template>
   <div>
     <player-form :record="player">
-      <template #default="{ on }">
+      <template #activator="{ on }">
         <tooltip-button
           label="Edit"
           icon="mdi-pencil"

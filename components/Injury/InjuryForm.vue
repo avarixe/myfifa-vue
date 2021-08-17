@@ -5,7 +5,10 @@
     :submit="submit"
   >
     <template #activator="{ on }">
-      <slot :on="on">
+      <slot
+        name="activator"
+        :on="on"
+      >
         <tooltip-button
           :label="title"
           icon="mdi-ambulance"
