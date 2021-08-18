@@ -6,14 +6,14 @@
 
 ``` bash
 # install dependencies
-yarn
+npm install
 
 # serve with hot reload at localhost:4000
-yarn dev [-p PORT]
+npm run dev [-p PORT]
 
 # build for production with minification
-yarn build
+npm run build
 
 # build for production and view the bundle analyzer report
-yarn build -a
+npm run build -a
 ```
