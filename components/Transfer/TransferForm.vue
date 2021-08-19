@@ -36,29 +36,21 @@
         />
       </v-col>
       <v-col cols="12">
-        <v-text-field
+        <team-combobox
           v-model="attributes.origin"
           label="Origin"
           prepend-icon="mdi-airplane-takeoff"
           :rules="rulesFor.origin"
           :disabled="transferOut"
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
         />
       </v-col>
       <v-col cols="12">
-        <v-text-field
+        <team-combobox
           v-model="attributes.destination"
           label="Destination"
           prepend-icon="mdi-airplane-landing"
           :rules="rulesFor.destination"
           :disabled="!transferOut"
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
         />
       </v-col>
       <v-col cols="12">

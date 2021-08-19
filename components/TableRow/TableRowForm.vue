@@ -18,15 +18,11 @@
     </template>
     <template #form>
       <v-col cols="12">
-        <v-text-field
+        <team-combobox
           v-model="attributes.name"
           label="Team"
           prepend-icon="mdi-shield-half-full"
           hide-details
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
         />
       </v-col>
       <v-col cols="4">
