@@ -11,50 +11,7 @@
         :mobile-breakpoint="0"
       >
         <template #top>
-          <v-select
-            v-if="!filterType"
-            v-model="filterType"
-            label="Filter"
-            prepend-inner-icon="mdi-filter"
-            :items="filterTypeOptions"
-            @change="openFilterValueField"
-          />
-          <v-select
-            v-else-if="filterValueOptions.length > 0"
-            v-model="filterValue"
-            :label="`Filter by ${filterType}`"
-            :items="filterValueOptions"
-            prepend-inner-icon="mdi-filter"
-            append-icon="mdi-backspace"
-            :menu-props="{ value: filterValueMenuOpen }"
-            @click:append="filterType = null"
-            @change="applyFilter"
-          />
-          <v-text-field
-            v-else
-            ref="filterValueField"
-            v-model="filterValue"
-            :label="`Filter by ${filterType}`"
-            prepend-inner-icon="mdi-filter"
-            append-icon="mdi-backspace"
-            append-outer-icon="mdi-magnify"
-            autofocus
-            @click:append="filterType = null"
-            @keydown.enter="applyFilter"
-            @click:append-outer="applyFilter"
-          />
-          <div class="mb-2">
-            <v-chip
-              v-for="filter in Object.keys(filterValues)"
-              :key="filter"
-              small
-              close
-              class="mr-1 mb-1"
-              @click:close="filters[filter] = null"
-            >
-              {{ filter }}:&nbsp;<i>{{ filterValues[filter] }}</i>
-            </v-chip>
-          </div>
+          <match-filters :filters.sync="filters" />
         </template>
         <template #item="{ item }">
           <tr>
@@ -85,13 +42,8 @@
 </template>
 
 <script>
-  import { TeamAccessible } from '@/mixins'
-
   export default {
     name: 'MatchGrid',
-    mixins: [
-      TeamAccessible
-    ],
     data: () => ({
       headers: [
         { text: 'Match', value: 'score', align: 'center', sortable: false, width: 250 },
@@ -99,9 +51,6 @@
         { text: 'Date Played', value: 'playedOn', width: 120 },
         { text: 'Link', value: 'link', align: 'center', class: 'stick-right', sortable: false, width: 40 }
       ],
-      filterType: null,
-      filterValue: null,
-      filterValueMenuOpen: false,
       filters: {
         Season: null,
         Competition: null,
@@ -114,7 +63,7 @@
       matches () {
         return this.$store.$db().model('Match')
           .query()
-          .where('teamId', this.teamId)
+          .where('teamId', parseInt(this.$route.params.teamId))
           .where(match => {
             for (const filter in this.filters) {
               if (!this.matchPassesFilter(match, filter)) {
@@ -125,63 +74,9 @@
             return true
           })
           .get()
-      },
-      seasons () {
-        return [...Array(this.season + 1).keys()].reverse().map(i => ({
-          value: i,
-          text: this.seasonLabel(i)
-        }))
-      },
-      competitions () {
-        return this.$store.$db().model('Competition')
-          .query()
-          .where('teamId', this.team.id)
-          .where(comp => [null, comp.season].includes(this.filters.Season))
-          .get()
-          .map(comp => comp.name)
-      },
-      filterTypeOptions () {
-        return Object.keys(this.filters)
-          .filter(filterType => this.filters[filterType] === null)
-      },
-      filterValueOptions () {
-        switch (this.filterType) {
-          case 'Season':
-            return this.seasons
-          case 'Competition':
-            return this.competitions
-          case 'Result':
-            return ['Win', 'Draw', 'Loss']
-          default:
-            return []
-        }
-      },
-      filterValues () {
-        const values = {}
-        for (const filter in this.filters) {
-          const filterValue = this.filters[filter]
-          if (filterValue !== null) {
-            if (filter === 'Season') {
-              values[filter] = this.seasonLabel(filterValue)
-            } else {
-              values[filter] = filterValue
-            }
-          }
-        }
-        return values
       }
     },
     methods: {
-      openFilterValueField () {
-        if (this.filterValueOptions.length > 0) {
-          this.filterValueMenuOpen = true
-        }
-      },
-      applyFilter () {
-        this.filters[this.filterType] = this.filterValue
-        this.filterValue = null
-        this.filterType = null
-      },
       matchPassesFilter (match, filter) {
         const filterValue = this.filters[filter]
 

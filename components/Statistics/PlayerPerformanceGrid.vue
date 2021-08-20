@@ -50,50 +50,7 @@
         :mobile-breakpoint="0"
       >
         <template #top>
-          <v-select
-            v-if="!filterType"
-            v-model="filterType"
-            label="Filter"
-            prepend-inner-icon="mdi-filter"
-            :items="filterTypeOptions"
-            @change="openFilterValueField"
-          />
-          <v-select
-            v-else-if="filterValueOptions.length > 0"
-            v-model="filterValue"
-            :label="`Filter by ${filterType}`"
-            :items="filterValueOptions"
-            prepend-inner-icon="mdi-filter"
-            append-icon="mdi-backspace"
-            :menu-props="{ value: filterValueMenuOpen }"
-            @click:append="filterType = null"
-            @change="applyFilter"
-          />
-          <v-text-field
-            v-else
-            ref="filterValueField"
-            v-model="filterValue"
-            :label="`Filter by ${filterType}`"
-            prepend-inner-icon="mdi-filter"
-            append-icon="mdi-backspace"
-            append-outer-icon="mdi-magnify"
-            autofocus
-            @click:append="filterType = null"
-            @keydown.enter="applyFilter"
-            @click:append-outer="applyFilter"
-          />
-          <div class="mb-2">
-            <v-chip
-              v-for="filter in Object.keys(filterValues)"
-              :key="filter"
-              small
-              close
-              class="mr-1 mb-1"
-              @click:close="filters[filter] = null"
-            >
-              {{ filter }}:&nbsp;<i>{{ filterValues[filter] }}</i>
-            </v-chip>
-          </div>
+          <match-filters :filters.sync="filters" />
         </template>
         <template #item="{ item, expand, isExpanded }">
           <tr @click="expand(!isExpanded)">
@@ -300,61 +257,9 @@
             return a < b ? -1 : 1
           }
         }
-      },
-      seasons () {
-        return [...Array(this.season + 1).keys()].reverse().map(i => ({
-          value: i,
-          text: this.seasonLabel(i)
-        }))
-      },
-      competitions () {
-        return this.$store.$db().model('Competition')
-          .query()
-          .where('teamId', this.team.id)
-          .where(comp => [null, comp.season].includes(this.filters.Season))
-          .get()
-          .map(comp => comp.name)
-      },
-      filterTypeOptions () {
-        return Object.keys(this.filters)
-          .filter(filterType => this.filters[filterType] === null)
-      },
-      filterValueOptions () {
-        switch (this.filterType) {
-          case 'Season':
-            return this.seasons
-          case 'Competition':
-            return this.competitions
-          default:
-            return []
-        }
-      },
-      filterValues () {
-        const values = {}
-        for (const filter in this.filters) {
-          const filterValue = this.filters[filter]
-          if (filterValue !== null) {
-            if (filter === 'Season') {
-              values[filter] = this.seasonLabel(filterValue)
-            } else {
-              values[filter] = filterValue
-            }
-          }
-        }
-        return values
       }
     },
     methods: {
-      openFilterValueField () {
-        if (this.filterValueOptions.length > 0) {
-          this.filterValueMenuOpen = true
-        }
-      },
-      applyFilter () {
-        this.filters[this.filterType] = this.filterValue
-        this.filterValue = null
-        this.filterType = null
-      },
       ovrColor (ovrDiff) {
         switch (true) {
           case ovrDiff > 6:
