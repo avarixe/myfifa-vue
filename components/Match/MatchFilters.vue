@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :key="resetKey">
     <v-select
       v-if="!filterType"
       v-model="filterType"
@@ -12,14 +12,13 @@
       v-else-if="filterValueOptions.length > 0"
       ref="filterValueSelect"
       v-model="filterValue"
-      v-click-outside="closeFilterValueField"
       :label="`Filter by ${filterType}`"
       :items="filterValueOptions"
       prepend-inner-icon="mdi-filter"
       append-icon="mdi-backspace"
-      :menu-props="{ value: filterValueMenuOpen }"
       @click:append="filterType = null"
       @change="applyFilter"
+      @blur="closeFilterValueField"
     />
     <v-text-field
       v-else
@@ -29,16 +28,15 @@
       prepend-inner-icon="mdi-filter"
       append-icon="mdi-backspace"
       append-outer-icon="mdi-magnify"
-      autofocus
       @click:append="filterType = null"
       @input="filters[filterType] = $event"
       @keydown.enter="applyFilter"
       @click:append-outer="applyFilter"
+      @blur="closeFilterValueField"
     />
     <div class="mb-2">
       <v-chip
         v-for="filter in Object.keys(filterValues)"
-        v-show="filterValues[filter]"
         :key="filter"
         small
         close
@@ -55,7 +53,7 @@
   import { TeamAccessible } from '@/mixins'
 
   export default {
-    name: 'MatchGrid',
+    name: 'MatchFilters',
     mixins: [
       TeamAccessible
     ],
@@ -72,6 +70,7 @@
       }
     },
     data: () => ({
+      resetKey: 0,
       filterType: null,
       filterValue: null,
       filterValueMenuOpen: false
@@ -123,15 +122,17 @@
     },
     methods: {
       openFilterValueField () {
-        if (this.filterValueOptions.length > 0) {
-          this.filterValueMenuOpen = true
-        }
+        this.$nextTick(() => {
+          if (this.filterValueOptions.length > 0) {
+            this.$refs.filterValueSelect.activateMenu()
+          } else {
+            this.$refs.filterValueField.focus()
+          }
+        })
       },
       closeFilterValueField () {
-        if (this.filterValueMenuOpen) {
-          this.filterValueMenuOpen = false
-          this.filterType = null
-        }
+        this.filterType = null
+        this.resetKey++
       },
       applyFilter () {
         this.filters[this.filterType] = this.filterValue
