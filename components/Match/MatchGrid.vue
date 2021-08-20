@@ -21,7 +21,9 @@
           />
           <v-select
             v-else-if="filterValueOptions.length > 0"
+            ref="filterValueSelect"
             v-model="filterValue"
+            v-click-outside="closeFilterValueField"
             :label="`Filter by ${filterType}`"
             :items="filterValueOptions"
             prepend-inner-icon="mdi-filter"
@@ -40,12 +42,14 @@
             append-outer-icon="mdi-magnify"
             autofocus
             @click:append="filterType = null"
+            @input="filters[filterType] = $event"
             @keydown.enter="applyFilter"
             @click:append-outer="applyFilter"
           />
           <div class="mb-2">
             <v-chip
               v-for="filter in Object.keys(filterValues)"
+              v-show="filterValues[filter]"
               :key="filter"
               small
               close
@@ -137,6 +141,7 @@
           .query()
           .where('teamId', this.team.id)
           .where(comp => [null, comp.season].includes(this.filters.Season))
+          .orderBy('season', 'desc')
           .get()
           .map(comp => comp.name)
       },
@@ -149,7 +154,7 @@
           case 'Season':
             return this.seasons
           case 'Competition':
-            return this.competitions
+            return [...new Set(this.competitions)]
           case 'Result':
             return ['Win', 'Draw', 'Loss']
           default:
@@ -161,11 +166,9 @@
         for (const filter in this.filters) {
           const filterValue = this.filters[filter]
           if (filterValue !== null) {
-            if (filter === 'Season') {
-              values[filter] = this.seasonLabel(filterValue)
-            } else {
-              values[filter] = filterValue
-            }
+            values[filter] = filter === 'Season'
+              ? this.seasonLabel(filterValue)
+              : filterValue
           }
         }
         return values
@@ -175,6 +178,12 @@
       openFilterValueField () {
         if (this.filterValueOptions.length > 0) {
           this.filterValueMenuOpen = true
+        }
+      },
+      closeFilterValueField () {
+        if (this.filterValueMenuOpen) {
+          this.filterValueMenuOpen = false
+          this.filterType = null
         }
       },
       applyFilter () {
