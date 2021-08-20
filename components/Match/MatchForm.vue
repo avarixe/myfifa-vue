@@ -47,34 +47,22 @@
         </v-col>
       </v-scroll-y-transition>
       <v-col cols="12">
-        <v-combobox
+        <team-combobox
           v-model="attributes.home"
           label="Home Team"
           prepend-icon="mdi-home"
-          :items="teamOptions"
           :rules="rulesFor.home"
-          :loading="loading"
           :append-outer-icon="`mdi-shield-${isHome ? 'star' : 'outline'}`"
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
           @click:append-outer="setHome"
         />
       </v-col>
       <v-col cols="12">
-        <v-combobox
+        <team-combobox
           v-model="attributes.away"
           label="Away Team"
           prepend-icon="mdi-bus"
-          :items="teamOptions"
           :rules="rulesFor.away"
-          :loading="loading"
           :append-outer-icon="`mdi-shield-${isAway ? 'star' : 'outline'}`"
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
           @click:append-outer="setAway"
         />
       </v-col>
@@ -90,7 +78,7 @@
 </template>
 
 <script>
-  import { mapState, mapMutations, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
   import { gql } from 'nuxt-graphql-request'
   import pick from 'lodash.pick'
   import { parseISO } from 'date-fns'
@@ -110,7 +98,7 @@
     data: () => ({
       valid: false,
       loading: false,
-      optionsLoaded: false,
+      competitionsLoaded: false,
       attributes: {
         playedOn: null,
         competition: '',
@@ -126,9 +114,6 @@
       }
     }),
     computed: {
-      ...mapState('matches', [
-        'teamOptions'
-      ]),
       title () {
         return this.record ? 'Edit Match' : 'New Match'
       },
@@ -199,14 +184,11 @@
             this.attributes.extraTime = false
           }
 
-          !this.optionsLoaded && this.loadOptions()
+          !this.competitionsLoaded && this.loadCompetitions()
         }
       }
     },
     methods: {
-      ...mapMutations('matches', [
-        'setTeamOptions'
-      ]),
       ...mapActions({
         createMatch: 'matches/create',
         updateMatch: 'matches/update'
@@ -223,12 +205,11 @@
           this.attributes.home = ''
         }
       },
-      async loadOptions () {
+      async loadCompetitions () {
         try {
           const query = gql`
-            query fetchMatchFormOptions($teamId: ID!) {
+            query fetchCompetitions($teamId: ID!) {
               team(id: $teamId) {
-                opponents
                 competitions {
                   ...CompetitionData
                   stages { ...BaseStageData }
@@ -241,15 +222,10 @@
 
           this.loading = true
 
-          const { team: { opponents, competitions } } =
+          const { team: { competitions } } =
             await this.$graphql.default.request(query, { teamId: this.team.id })
 
-          await Promise.all([
-            this.setTeamOptions(opponents),
-            this.$store.$db().model('Competition').insertOrUpdate({ data: competitions })
-          ])
-
-          this.optionsLoaded = true
+          await this.$store.$db().model('Competition').insertOrUpdate({ data: competitions })
         } catch (e) {
           alert(e.message)
         } finally {
