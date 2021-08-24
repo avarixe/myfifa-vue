@@ -175,10 +175,10 @@
         expiringPlayers
       } = team
 
-      await Promise.all([
-        store.$db().model('Team').insert({ data: team }),
-        store.$db().model('Match').insert({ data: team.lastMatch })
-      ])
+      await store.$db().model('Team').insert({ data: team })
+      if (team.lastMatch) {
+        await store.$db().model('Match').insert({ data: team.lastMatch })
+      }
 
       store.commit('app/setPage', {
         title: team.name,
