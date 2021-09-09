@@ -14,6 +14,7 @@ export const contractFragment = gql`
     endedOn
     startedOn
     conclusion
+    createdAt
   }
 `
 
@@ -24,6 +25,7 @@ export const injuryFragment = gql`
     startedOn
     endedOn
     description
+    createdAt
   }
 `
 
@@ -39,6 +41,7 @@ export const loanFragment = gql`
     wagePercentage
     transferFee
     addonClause
+    createdAt
   }
 `
 
@@ -80,5 +83,6 @@ export const transferFragment = gql`
     fee
     tradedPlayer
     addonClause
+    createdAt
   }
 `

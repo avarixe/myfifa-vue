@@ -18,6 +18,7 @@ export default class Transfer extends Model {
       fee: this.number(null).nullable(),
       tradedPlayer: this.string(null).nullable(),
       addonClause: this.number(null).nullable(),
+      createdAt: this.string(''),
 
       // Associations
       player: this.belongsTo(Player, 'playerId', 'id')
