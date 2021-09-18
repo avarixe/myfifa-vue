@@ -21,6 +21,7 @@ export default class Contract extends Model {
       endedOn: this.string(''),
       startedOn: this.string(''),
       conclusion: this.string(null).nullable(),
+      createdAt: this.string(''),
 
       // Associations
       player: this.belongsTo(Player, 'playerId', 'id')

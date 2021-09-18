@@ -12,7 +12,8 @@ export default class Injury extends Model {
       // Database fields
       startedOn: this.string(''),
       endedOn: this.string('').nullable(),
-      description: this.string('')
+      description: this.string(''),
+      createdAt: this.string('')
     }
   }
 

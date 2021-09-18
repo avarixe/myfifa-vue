@@ -45,7 +45,7 @@
           ...this.player.injuries,
           ...this.player.loans,
           ...this.player.transfers
-        ], 'date', 'desc')
+        ], ['date', 'createdAt'], ['desc', 'desc'])
       },
       dense () {
         switch (this.$vuetify.breakpoint.name) {
