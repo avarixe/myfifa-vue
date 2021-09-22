@@ -31,7 +31,9 @@
       onSearchInputUpdate () {
         clearTimeout(this.timeout)
         if (this.searchInput && this.searchInput.length >= 3) {
-          this.timeout = setTimeout(this.searchItems, 300)
+          if (this.searchInput !== this.$attrs.value) {
+            this.timeout = setTimeout(this.searchItems, 300)
+          }
         } else {
           this.items = []
         }
