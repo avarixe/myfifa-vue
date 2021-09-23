@@ -43,16 +43,17 @@
           this.loading = true
 
           const query = gql`
-            query fetchTeamNames($search: String) {
-              teamNames(search: $search)
+            query fetchTeamOptions($category: OptionCategory!, $search: String) {
+              options(category: $category, search: $search)
             }
           `
 
-          const { teamNames } = await this.$graphql.default.request(query, {
+          const { options } = await this.$graphql.default.request(query, {
+            category: 'Team',
             search: this.searchInput
           })
 
-          this.items = teamNames
+          this.items = options
         } catch (e) {
           console.error(e)
         } finally {
