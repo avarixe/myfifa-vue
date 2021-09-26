@@ -24,7 +24,7 @@
           v-model="attributes.champion"
           label="Champion"
           prepend-icon="mdi-crown"
-          :items="record.teamOptions"
+          :items="championOptions"
           :rules="rulesFor.champion"
         />
       </v-col>
@@ -180,6 +180,49 @@
               .map(c => c.name)
           )
         ]
+      },
+      lastStage () {
+        return this.$store.$db().model('Stage')
+          .query()
+          .where('competitionId', this.record.id)
+          .orderBy('id')
+          .last()
+      },
+      championOptions () {
+        if (this.lastStage) {
+          if (this.lastStage.table) {
+            return this.$store.$db().model('TableRow')
+              .query()
+              .whereHas('stage', query => {
+                query
+                  .where('competitionId', this.record.id)
+                  .where('table', true)
+              })
+              .all()
+              .reduce((teams, row) => {
+                if (row.name && !teams.includes(row.name)) {
+                  teams.push(row.name)
+                }
+                return teams
+              }, [])
+          } else {
+            return this.$store.$db().model('Fixture')
+              .query()
+              .where('stageId', this.lastStage.id)
+              .all()
+              .reduce((teams, row) => {
+                if (row.homeTeam && !teams.includes(row.homeTeam)) {
+                  teams.push(row.homeTeam)
+                }
+                if (row.awayTeam && !teams.includes(row.awayTeam)) {
+                  teams.push(row.awayTeam)
+                }
+                return teams
+              }, [])
+          }
+        } else {
+          return []
+        }
       }
     },
     watch: {

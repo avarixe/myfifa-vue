@@ -10,9 +10,6 @@ export default {
         .query()
         .with('stages.tableRows|fixtures')
         .find(this.$route.params.competitionId)
-    },
-    competitionTeams () {
-      return this.competition.teamOptions
     }
   },
   methods: {
