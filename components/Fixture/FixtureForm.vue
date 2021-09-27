@@ -18,29 +18,21 @@
     </template>
     <template #form>
       <v-col cols="12">
-        <v-combobox
+        <team-combobox
           v-model="attributes.homeTeam"
           label="Home Team"
           prepend-icon="mdi-home"
-          :items="competitionTeams"
+          :default-items="teamOptions"
           hide-details
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
         />
       </v-col>
       <v-col cols="12">
-        <v-combobox
+        <team-combobox
           v-model="attributes.awayTeam"
           label="Away Team"
           prepend-icon="mdi-bus"
-          :items="competitionTeams"
+          :default-items="teamOptions"
           hide-details
-          spellcheck="false"
-          autocapitalize="words"
-          autocomplete="off"
-          autocorrect="off"
         />
       </v-col>
       <v-col
@@ -105,11 +97,58 @@
           awayScore: '',
           _destroy: false
         }]
-      }
+      },
+      expandHomeOptions: false,
+      expandAwayOptions: false
     }),
     computed: {
       title () {
         return this.record ? 'Edit Fixture' : 'Add Fixture'
+      },
+      previousStage () {
+        return this.$store.$db().model('Stage')
+          .query()
+          .where('competitionId', this.competition.id)
+          .where(stage => stage.id < this.stage.id)
+          .last()
+      },
+      teamOptions () {
+        if (this.previousStage) {
+          if (this.previousStage.table) {
+            // get all Team options from table stages
+            return this.$store.$db().model('TableRow')
+              .query()
+              .whereHas('stage', query => {
+                query
+                  .where('competitionId', this.competition.id)
+                  .where('table', true)
+              })
+              .all()
+              .reduce((teams, row) => {
+                if (row.name && !teams.includes(row.name)) {
+                  teams.push(row.name)
+                }
+                return teams
+              }, [])
+          } else {
+            // get all Team options from previous stage
+            return this.$store.$db().model('Fixture')
+              .query()
+              .where('stageId', this.previousStage.id)
+              .all()
+              .reduce((teams, fixture) => {
+                if (fixture.homeTeam && !teams.includes(fixture.homeTeam)) {
+                  teams.push(fixture.homeTeam)
+                }
+                if (fixture.awayTeam && !teams.includes(fixture.awayTeam)) {
+                  teams.push(fixture.awayTeam)
+                }
+                return teams
+              }, [])
+          }
+        } else {
+          return []
+        }
       }
     },
     watch: {

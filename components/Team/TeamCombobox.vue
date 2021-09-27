@@ -18,12 +18,24 @@
 
   export default {
     name: 'TeamCombobox',
+    props: {
+      defaultItems: { type: Array, default: () => [] }
+    },
     data: () => ({
       timeout: null,
       loading: false,
       searchInput: null,
       items: []
     }),
+    watch: {
+      defaultItems: {
+        immediate: true,
+        deep: true,
+        handler (items) {
+          this.items = items
+        }
+      }
+    },
     beforeDestroy () {
       clearTimeout(this.timeout)
     },
@@ -35,7 +47,7 @@
             this.timeout = setTimeout(this.searchItems, 300)
           }
         } else {
-          this.items = []
+          this.items = this.defaultItems
         }
       },
       async searchItems () {

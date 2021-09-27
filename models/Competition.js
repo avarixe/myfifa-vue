@@ -65,19 +65,6 @@ class Competition extends Model {
       return 'gray'
     }
   }
-
-  get teamOptions () {
-    let array = this.stages.reduce((arr, stage) => {
-      return [
-        ...arr,
-        ...stage.tableRows.map(row => row.name),
-        ...stage.fixtures.reduce((names, fixture) => {
-          return [ ...names, fixture.homeTeam, fixture.awayTeam ]
-        }, [])
-      ]
-    }, [])
-    return [ ...new Set(array.filter(team => team !== null && team !== '')) ].sort()
-  }
 }
 
 export default Competition

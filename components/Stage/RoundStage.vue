@@ -31,42 +31,42 @@
       disable-sort
       hide-default-footer
     >
-      <template #item.homeTeam="{ item }">
-        <span :class="teamClass(item.homeTeam)">{{ item.homeTeam }}</span>
-      </template>
-      <template #item.score="{ item }">
-        <div
-          v-for="leg in item.legs"
-          :key="leg.id"
-        >
-          {{ leg.score }}
-        </div>
-      </template>
-      <template #item.awayTeam="{ item }">
-        <span :class="teamClass(item.awayTeam)">{{ item.awayTeam }}</span>
-      </template>
-      <template #item.edit="{ item }">
-        <fixture-form
-          :stage="round"
-          :record="item"
-          class="d-inline-block"
-        >
-          <template #activator="{ on }">
-            <tooltip-button
-              label="Edit Fixture"
-              icon="mdi-pencil"
-              color="orange"
-              :on="on"
+      <template #item="{ item }">
+        <tr>
+          <td :class="`text-right ${teamClass(item.homeTeam)}`">
+            {{ item.homeTeam }}
+          </td>
+          <td class="text-center">
+            <div
+              v-for="leg in item.legs"
+              :key="leg.id"
+            >
+              {{ leg.score }}
+            </div>
+          </td>
+          <td :class="teamClass(item.awayTeam)">{{ item.awayTeam }}</td>
+          <td v-if="!readonly">
+            <fixture-form
+              :stage="round"
+              :record="item"
+              class="d-inline-block"
+            >
+              <template #activator="{ on }">
+                <tooltip-button
+                  label="Edit Fixture"
+                  icon="mdi-pencil"
+                  color="orange"
+                  :on="on"
+                />
+              </template>
+            </fixture-form>
+            <record-remove
+              :record="item"
+              store="fixtures"
+              label="Fixture"
             />
-          </template>
-        </fixture-form>
-      </template>
-      <template #item.delete="{ item }">
-        <record-remove
-          :record="item"
-          store="fixtures"
-          label="Fixture"
-        />
+          </td>
+        </tr>
       </template>
     </v-data-table>
   </v-card>
@@ -103,12 +103,7 @@
           headers.push({
             text: '',
             value: 'edit',
-            width: 40
-          })
-          headers.push({
-            text: '',
-            value: 'delete',
-            width: 40
+            width: 120
           })
         }
 
