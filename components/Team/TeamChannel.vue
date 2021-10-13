@@ -11,6 +11,8 @@
     name: 'TeamChannel',
     data: () => ({
       socket: null,
+      reconnectTimeout: null,
+      reconnectWait: 250,
       timeout: null,
       insertBuffer: {},
       deleteBuffer: {}
@@ -24,35 +26,48 @@
       }
     },
     mounted () {
-      if (!this.socket && this.token) {
-        this.socket = new WebSocket(
-          `${this.cableURL}?access_token=${this.token}`
-        )
-
-        this.socket.onmessage = event => {
-          const { message } = JSON.parse(event.data)
-          const { type, data, destroyed } = message || {}
-          if (type) {
-            // console.log(type, data, destroyed)
-            this.addToBuffer({ type, data, destroyed })
-          }
-        }
-
-        this.socket.onopen = () => {
-          this.socket.send(JSON.stringify({
-            command: 'subscribe',
-            identifier: JSON.stringify({
-              channel: 'TeamChannel',
-              id: this.$route.query.teamId
-            })
-          }))
-        }
-      }
+      this.connectToWebSocket()
     },
     destroyed () {
+      this.socket.onclose = null
       this.socket.close()
     },
     methods: {
+      connectToWebSocket () {
+        if (this.token) {
+          this.socket = new WebSocket(
+            `${this.cableURL}?access_token=${this.token}`
+          )
+
+          this.socket.onmessage = event => {
+            const { message } = JSON.parse(event.data)
+            const { type, data, destroyed } = message || {}
+            if (type) {
+              // console.log(type, data, destroyed)
+              this.addToBuffer({ type, data, destroyed })
+            }
+          }
+
+          this.socket.onopen = () => {
+            this.reconnectWait = 250
+            this.socket.send(JSON.stringify({
+              command: 'subscribe',
+              identifier: JSON.stringify({
+                channel: 'TeamChannel',
+                id: this.$route.params.teamId
+              })
+            }))
+          }
+
+          this.socket.onclose = () => {
+            delete this.socket
+            this.reconnectTimeout = setTimeout(
+              this.connectToWebSocket,
+              Math.min(10000, this.reconnectWait *= 2)
+            )
+          }
+        }
+      },
       addToBuffer ({ type, data, destroyed }) {
         let buffer = destroyed ? this.deleteBuffer : this.insertBuffer
 
