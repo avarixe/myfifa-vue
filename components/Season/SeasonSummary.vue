@@ -12,8 +12,8 @@
         <delta-statistic
           label="Team Value"
           :formatter="x => `${team.currency}${parseInt(x).toLocaleString()}`"
-          :start-value="startTeamValue"
-          :end-value="endTeamValue"
+          :start-value="parseInt(teamDevelopmentStats.startValue)"
+          :end-value="parseInt(teamDevelopmentStats.endValue)"
         />
       </v-col>
       <v-col
@@ -24,8 +24,8 @@
           label="Team OVR"
           :formatter="parseInt"
           average
-          :start-value="startTeamOvr"
-          :end-value="endTeamOvr"
+          :start-value="teamDevelopmentStats.startOvr"
+          :end-value="teamDevelopmentStats.endOvr"
         />
       </v-col>
       <v-col cols="12">
@@ -75,31 +75,11 @@
     name: 'SeasonSummary',
     props: {
       competitionStats: { type: Array, required: true },
-      playerDevelopmentStats: { type: Array, required: true }
+      teamDevelopmentStats: { type: Object, required: true }
     },
     computed: {
       team () {
         return this.$store.$db().model('Team').find(this.$route.params.teamId)
-      },
-      startTeamValue () {
-        return this.playerDevelopmentStats
-          .reduce((total, stats) => total + stats.value[0], 0)
-      },
-      endTeamValue () {
-        return this.playerDevelopmentStats
-          .reduce((total, stats) => total + stats.value[1], 0)
-      },
-      startTeamOvr () {
-        return this.playerDevelopmentStats.reduce(
-          (total, stats) => total + stats.ovr[0],
-          0
-        ) / (this.playerDevelopmentStats.length || 1)
-      },
-      endTeamOvr () {
-        return this.playerDevelopmentStats.reduce(
-          (total, stats) => total + stats.ovr[1],
-          0
-        ) / (this.playerDevelopmentStats.length || 1)
       },
       numWins () {
         return this.competitionStats

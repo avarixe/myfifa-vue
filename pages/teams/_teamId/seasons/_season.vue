@@ -22,7 +22,7 @@
           <v-card-text>
             <season-summary
               :competition-stats="competitionStats"
-              :player-development-stats="playerDevelopmentStats"
+              :team-development-stats="teamDevelopmentStats"
             />
           </v-card-text>
         </v-card>
@@ -80,6 +80,7 @@
     playerFragment,
     playerPerformanceStatsFragment,
     playerDevelopmentStatsFragment,
+    teamDevelopmentStatsFragment,
     contractFragment,
     transferFragment,
     loanFragment
@@ -100,7 +101,7 @@
     },
     async asyncData ({ store, params, $graphql }) {
       const query = gql`
-        query fetchSeason($id: ID!, $season: Int) {
+        query fetchSeason($id: ID!, $season: Int!) {
           team(id: $id) {
             ...TeamData
             competitions { ...CompetitionData }
@@ -108,6 +109,7 @@
             competitionStats(season: $season) { ...CompetitionStatsData }
             playerPerformanceStats(season: $season) { ...PlayerPerformanceStatsData }
             playerDevelopmentStats(season: $season) { ...PlayerDevelopmentStatsData }
+            teamDevelopmentStats(season: $season) { ...TeamDevelopmentStatsData }
             transferActivity(season: $season) {
               arrivals { ...ContractData }
               departures { ...ContractData }
@@ -122,6 +124,7 @@
         ${competitionStatsFragment}
         ${playerPerformanceStatsFragment}
         ${playerDevelopmentStatsFragment}
+        ${teamDevelopmentStatsFragment}
         ${contractFragment}
         ${transferFragment}
         ${loanFragment}
@@ -138,6 +141,7 @@
         competitionStats,
         playerPerformanceStats,
         playerDevelopmentStats,
+        teamDevelopmentStats,
         transferActivity
       } = team
 
@@ -145,6 +149,7 @@
         competitionStats,
         playerPerformanceStats,
         playerDevelopmentStats,
+        teamDevelopmentStats,
         transferActivity,
         tab: 0
       }
