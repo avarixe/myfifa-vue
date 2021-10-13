@@ -41,17 +41,11 @@
           />
         </v-col>
         <v-col cols="12">
-          <v-combobox
+          <competition-combobox
             v-model="attributes.name"
             label="Name"
             prepend-icon="mdi-trophy"
-            :items="competitions"
             :rules="rulesFor.name"
-            :loading="loadingCompetitions"
-            spellcheck="false"
-            autocapitalize="words"
-            autocomplete="off"
-            autocorrect="off"
           />
         </v-col>
         <template v-if="!record">
@@ -133,7 +127,6 @@
     },
     data: () => ({
       valid: false,
-      loadingCompetitions: false,
       attributes: {
         season: null,
         name: '',
@@ -236,10 +229,6 @@
         } else {
           this.attributes.season = this.season
         }
-
-        if (this.competitions.length === 0) {
-          this.loadCompetitions()
-        }
       }
     },
     methods: {
@@ -248,16 +237,6 @@
         createCompetition: 'create',
         updateCompetition: 'update'
       }),
-      async loadCompetitions () {
-        try {
-          this.loadingCompetitions = true
-          await this.fetchCompetitions({ teamId: this.team.id })
-        } catch (e) {
-          alert(e.message)
-        } finally {
-          this.loadingCompetitions = false
-        }
-      },
       async submit () {
         if (this.record) {
           await this.updateCompetition({

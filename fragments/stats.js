@@ -33,3 +33,13 @@ export const playerDevelopmentStatsFragment = gql`
     value
   }
 `
+
+export const teamDevelopmentStatsFragment = gql`
+  fragment TeamDevelopmentStatsData on TeamDevelopmentStats {
+    season
+    startOvr
+    startValue
+    endOvr
+    endValue
+  }
+`
