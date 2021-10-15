@@ -1,3 +1,90 @@
+<script>
+  import {
+    ref,
+    computed,
+    watchEffect,
+    useContext,
+    useFetch,
+    useRoute,
+    useRouter,
+    useStore
+  } from '@nuxtjs/composition-api'
+  import { gql } from 'nuxt-graphql-request'
+  import { useTeam } from '@/composables'
+  import { competitionFragment, stageFragment } from '@/fragments'
+
+  export default {
+    name: 'CompetitionPage',
+    setup () {
+      const store = useStore()
+      const { teamId, season, seasonLabel } = useTeam()
+
+      const route = useRoute()
+      const competitionId = computed(() => route.value.params.competitionId)
+      const competition = computed(() => {
+        return store.$db().model('Competition')
+          .query()
+          .with('stages.tableRows')
+          .with('stages.fixtures.legs')
+          .find(competitionId.value)
+      })
+      const competitionSeason = computed(() =>
+        seasonLabel(competition.value.season)
+      )
+
+      const router = useRouter()
+      watchEffect(() => {
+        if (!competition.value) {
+          router.push({
+            name: 'teams-teamId-seasons-season',
+            params: {
+              teamId: teamId.value,
+              season: season.value
+            }
+          })
+        }
+      })
+
+      const { $graphql } = useContext()
+      const readonly = ref(0)
+      useFetch(async () => {
+        const query = gql`
+          query fetchCompetition($id: ID!) {
+            competition(id: $id) {
+              ...CompetitionData
+              stages { ...StageData }
+            }
+          }
+          ${competitionFragment}
+          ${stageFragment}
+        `
+
+        const { competition: competitionData } =
+          await $graphql.default.request(query, { id: competitionId.value })
+        await store.$db().model('Competition').insert({ data: competitionData })
+
+        readonly.value = competitionData.champion && competitionData.champion.length > 0
+
+        const title = `${competitionData.name} (${competitionSeason.value})`
+        store.commit('app/setPage', {
+          title,
+          headline: title
+        })
+      })
+
+      const stages = computed(() => competition.value.stages)
+      return {
+        competition,
+        competitionSeason,
+        tables: computed(() => stages.value.filter(stage => stage.table)),
+        rounds: computed(() => stages.value.filter(stage => !stage.table)),
+        tableKey: ref(0),
+        readonly
+      }
+    }
+  }
+</script>
+
 <template>
   <v-container>
     <v-row>
@@ -107,7 +194,7 @@
         <v-card outlined>
           <v-card-text>
             <v-tabs
-              v-model="table"
+              v-model="tableKey"
               centered
               center-active
             >
@@ -119,7 +206,7 @@
               </v-tab>
             </v-tabs>
             <v-tabs-items
-              v-model="table"
+              v-model="tableKey"
               touchless
             >
               <v-tab-item
@@ -169,93 +256,6 @@
     </v-row>
   </v-container>
 </template>
-
-<script>
-  import { mapMutations } from 'vuex'
-  import { gql } from 'nuxt-graphql-request'
-  import { TeamAccessible } from '@/mixins'
-  import { competitionFragment, stageFragment } from '@/fragments'
-
-  export default {
-    name: 'CompetitionPage',
-    mixins: [
-      TeamAccessible
-    ],
-    data: () => ({
-      table: 0,
-      readonly: true
-    }),
-    computed: {
-      competitionId () {
-        return parseInt(this.$route.params.competitionId)
-      },
-      competition () {
-        return this.$store.$db().model('Competition')
-          .query()
-          .with('stages.tableRows')
-          .with('stages.fixtures.legs')
-          .find(this.competitionId)
-      },
-      title () {
-        return this.competition
-          ? `${this.competition.name} (${this.competitionSeason})`
-          : 'Competition'
-      },
-      stages () {
-        return this.competition.stages
-      },
-      tables () {
-        return this.stages.filter(stage => stage.table)
-      },
-      rounds () {
-        return this.stages.filter(stage => !stage.table)
-      },
-      competitionSeason () {
-        return this.seasonLabel(this.competition.season)
-      }
-    },
-    watch: {
-      competition () {
-        if (!this.competition) {
-          this.$router.push({
-            name: 'teams-teamId-seasons-season',
-            params: {
-              teamId: this.team.id,
-              season: this.season
-            }
-          })
-        }
-      }
-    },
-    async fetch () {
-      const query = gql`
-        query fetchCompetition($id: ID!) {
-          competition(id: $id) {
-            ...CompetitionData
-            stages { ...StageData }
-          }
-        }
-        ${competitionFragment}
-        ${stageFragment}
-      `
-
-      const { competition } = await this.$graphql.default.request(query, {
-        id: this.competitionId
-      })
-      await this.$store.$db().model('Competition').insert({ data: competition })
-
-      this.readonly = competition.champion && competition.champion.length > 0
-
-      this.setPage({
-        title: this.title,
-        headline: this.title
-      })
-    },
-    methods: mapMutations('app', {
-      setPage: 'setPage'
-    })
-  }
-</script>
 
 <style scoped>
   .v-card + .v-card {

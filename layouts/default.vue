@@ -1,3 +1,43 @@
+<script>
+  import { computed, watchEffect, useContext, useMeta, useRoute, useStore } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'Layout',
+    middleware: [
+      'authenticated'
+    ],
+    transition: 'fade-transition',
+    head: {},
+    setup () {
+      const store = useStore()
+      useMeta({
+        title: store.state.app.title
+      })
+
+      const { $graphql, $vuetify } = useContext()
+      const token = computed(() => store.state.auth.token)
+      const currentUser = computed(() => store.getters.currentUser)
+      watchEffect(() => {
+        if (token.value) {
+          $graphql.default.setHeader('Authorization', `Bearer ${token.value}`)
+          $vuetify.theme.dark = currentUser.value.darkMode
+        } else {
+          $graphql.default.setHeaders({})
+          $vuetify.theme.dark = true
+        }
+      }, { immediate: true })
+
+      const route = useRoute()
+      const team = computed(() => store.$db().model('Team').find(route.value.params.teamID))
+
+      return {
+        currentUser,
+        team
+      }
+    }
+  }
+</script>
+
 <template>
   <v-app>
     <template v-if="currentUser">
@@ -15,53 +55,3 @@
     </v-main>
   </v-app>
 </template>
-
-<script>
-  import { mapState, mapGetters } from 'vuex'
-
-  export default {
-    name: 'Layout',
-    middleware: [
-      'authenticated'
-    ],
-    transition: 'fade-transition',
-    head () {
-      return {
-        title: this.title
-      }
-    },
-    computed: {
-      ...mapState('auth', [
-        'token'
-      ]),
-      ...mapState('app', [
-        'title'
-      ]),
-      ...mapGetters([
-        'currentUser'
-      ]),
-      team () {
-        return this.$store.$db().model('Team').find(this.$route.params.teamId)
-      }
-    },
-    watch: {
-      'currentUser.darkMode': {
-        immediate: true,
-        handler (darkModeOn) {
-          this.$vuetify.theme.dark = darkModeOn
-        }
-      },
-      token: {
-        immediate: true,
-        handler (token) {
-          if (token) {
-            this.$graphql.default.setHeader('Authorization', `Bearer ${token}`)
-          } else {
-            this.$graphql.default.setHeaders({})
-            this.$vuetify.theme.dark = true
-          }
-        }
-      }
-    }
-  }
-</script>

@@ -47,6 +47,7 @@ export default {
   // loading: '~/components/App/LoadingOverlay.vue', // { color: '#3B8070' },
 
   buildModules: [
+    '@nuxtjs/composition-api/module',
     '@nuxtjs/vuetify',
     'nuxt-graphql-request'
   ],

@@ -1,3 +1,139 @@
+<script>
+  import { ref, reactive, useFetch, useStore } from '@nuxtjs/composition-api'
+  import { format } from 'date-fns'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'ImportPlayersPage',
+    head: {
+      script: [
+        { src: '//cdn.jsdelivr.net/npm/xlsx@0.17.0/dist/xlsx.mini.min.js' }
+      ]
+    },
+    setup () {
+      const numPlayers = ref(0)
+      const players = reactive({ value: [] })
+
+      const store = useStore()
+      useFetch(() => {
+        store.commit('app/setPage', {
+          title: 'Import Players',
+          headline: 'Import Players'
+        })
+      })
+
+      const { team } = useTeam()
+      function importPlayer (player) {
+        players.value.push({
+          rowId: numPlayers.value++,
+          name: player['Name'],
+          pos: player['Position'],
+          nationality: player['Nationality'],
+          secPos: player['Secondary Position(s)']?.split(','),
+          ovr: player['OVR'],
+          value: player['Value'],
+          kitNo: player['Kit Number'],
+          age: player['Age'],
+          contractsAttributes: [
+            {
+              signedOn: team.value.currentlyOn,
+              startedOn: team.value.currentlyOn,
+              endedOn: player['Contract Ends'] &&
+                format(player['Contract Ends'], 'yyyy-MM-dd'),
+              wage: player['Wage'],
+              releaseClause: player['Release Clause'],
+              signingBonus: player['Signing Bonus'],
+              performanceBonus: player['Performance Bonus'],
+              bonusReq: player['Bonus Req'],
+              bonusReqType: player['Bonus Req. Type']
+            }
+          ]
+        })
+      }
+
+      const uploader = ref(null)
+
+      return {
+        valid: ref(false),
+        submitted: ref(0),
+        cleared: ref(0),
+        players,
+        uploader,
+        headers: [
+          { text: '', value: 'icon', class: 'stick-left' },
+          { text: 'Name', value: 'name' },
+          { text: 'Nationality', value: 'nationality' },
+          { text: 'Position', value: 'pos' },
+          { text: 'Secondary Position(s)', value: 'secPos' },
+          { text: 'Age', value: 'age' },
+          { text: 'OVR', value: 'ovr' },
+          { text: 'Value', value: 'value' },
+          { text: 'Kit Number', value: 'kitNo' },
+          { text: 'Contract Ends', value: 'contractEnds' },
+          { text: 'Wage', value: 'wage' },
+          { text: 'Signing Bonus', value: 'signingBonus' },
+          { text: 'Release Clause', value: 'releaseClause' },
+          { text: 'Performance Bonus', value: 'performanceBonus' },
+          { text: '', value: 'bonusReq' },
+          { text: '', value: 'bonusReqType' }
+        ],
+        addPlayer: () => {
+          players.value.push({
+            rowId: numPlayers.value++,
+            name: '',
+            pos: '',
+            nationality: null,
+            secPos: [],
+            ovr: null,
+            value: 0,
+            kitNo: null,
+            age: null,
+            contractsAttributes: [
+              {
+                signedOn: team.value.currentlyOn,
+                startedOn: team.value.currentlyOn,
+                endedOn: team.value.currentlyOn,
+                wage: null,
+                releaseClause: null,
+                signingBonus: null,
+                performanceBonus: null,
+                bonusReq: null,
+                bonusReqType: null
+              }
+            ]
+          })
+        },
+        removePlayer: row => {
+          players.value = players.value.filter(player => player.rowId !== row.rowId)
+        },
+        upload: event => {
+          const reader = new FileReader()
+          reader.onload = (e) => {
+            // Parse data
+            const bstr = e.target.result
+            const wb = window.XLSX.read(bstr, { type: 'binary', cellDates: true })
+            // Get first worksheet
+            const wsname = wb.SheetNames[0]
+            const ws = wb.Sheets[wsname]
+            // Convert array of arrays
+            const data = window.XLSX.utils.sheet_to_json(ws)
+            // Update state
+            data.forEach(player => importPlayer(player))
+          }
+
+          const files = event.target.files
+
+          if (files && files.length > 0) {
+            reader.readAsBinaryString(files[0])
+          }
+
+          uploader.value.value = null
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <v-container>
     <v-row>
@@ -64,7 +200,7 @@
                 </thead>
                 <tbody>
                   <player-import-row
-                    v-for="player in players"
+                    v-for="player in players.value"
                     :key="player.rowId"
                     :player="player"
                     :submitted="submitted"
@@ -98,136 +234,3 @@
     </v-row>
   </v-container>
 </template>
-
-<script>
-  import { mapMutations } from 'vuex'
-  import { format } from 'date-fns'
-  import { TeamAccessible } from '@/mixins'
-
-  export default {
-    name: 'ImportPlayersPage',
-    mixins: [
-      TeamAccessible
-    ],
-    head: () => ({
-      script: [
-        { src: '//cdn.jsdelivr.net/npm/xlsx@0.17.0/dist/xlsx.mini.min.js' }
-      ]
-    }),
-    data: () => ({
-      valid: false,
-      numPlayers: 0,
-      submitted: 0,
-      cleared: 0,
-      players: [],
-      headers: [
-        { text: '', value: 'icon', class: 'stick-left' },
-        { text: 'Name', value: 'name' },
-        { text: 'Nationality', value: 'nationality' },
-        { text: 'Position', value: 'pos' },
-        { text: 'Secondary Position(s)', value: 'secPos' },
-        { text: 'Age', value: 'age' },
-        { text: 'OVR', value: 'ovr' },
-        { text: 'Value', value: 'value' },
-        { text: 'Kit Number', value: 'kitNo' },
-        { text: 'Contract Ends', value: 'contractEnds' },
-        { text: 'Wage', value: 'wage' },
-        { text: 'Signing Bonus', value: 'signingBonus' },
-        { text: 'Release Clause', value: 'releaseClause' },
-        { text: 'Performance Bonus', value: 'performanceBonus' },
-        { text: '', value: 'bonusReq' },
-        { text: '', value: 'bonusReqType' }
-      ]
-    }),
-    mounted () {
-      this.setPage({
-        title: 'Import Players',
-        headline: 'Import Players'
-      })
-    },
-    methods: {
-      ...mapMutations('app', {
-        setPage: 'setPage'
-      }),
-      addPlayer () {
-        this.players.push({
-          rowId: this.numPlayers++,
-          name: '',
-          pos: '',
-          nationality: null,
-          secPos: [],
-          ovr: null,
-          value: 0,
-          kitNo: null,
-          age: null,
-          contractsAttributes: [
-            {
-              signedOn: this.team.currentlyOn,
-              startedOn: this.team.currentlyOn,
-              endedOn: this.team.currentlyOn,
-              wage: null,
-              releaseClause: null,
-              signingBonus: null,
-              performanceBonus: null,
-              bonusReq: null,
-              bonusReqType: null
-            }
-          ]
-        })
-      },
-      removePlayer (row) {
-        this.players = this.players.filter(player => player.rowId !== row.rowId)
-      },
-      upload (event) {
-        const reader = new FileReader()
-        reader.onload = (e) => {
-          // Parse data
-          const bstr = e.target.result
-          const wb = window.XLSX.read(bstr, { type: 'binary', cellDates: true })
-          // Get first worksheet
-          const wsname = wb.SheetNames[0]
-          const ws = wb.Sheets[wsname]
-          // Convert array of arrays
-          const data = window.XLSX.utils.sheet_to_json(ws)
-          // Update state
-          data.forEach(player => this.importPlayer(player))
-        }
-
-        const files = event.target.files
-
-        if (files && files.length > 0) {
-          reader.readAsBinaryString(files[0])
-        }
-
-        this.$refs.uploader.value = null
-      },
-      importPlayer (player) {
-        this.players.push({
-          rowId: this.numPlayers++,
-          name: player['Name'],
-          pos: player['Position'],
-          nationality: player['Nationality'],
-          secPos: player['Secondary Position(s)']?.split(','),
-          ovr: player['OVR'],
-          value: player['Value'],
-          kitNo: player['Kit Number'],
-          age: player['Age'],
-          contractsAttributes: [
-            {
-              signedOn: this.team.currentlyOn,
-              startedOn: this.team.currentlyOn,
-              endedOn: player['Contract Ends'] &&
-                format(player['Contract Ends'], 'yyyy-MM-dd'),
-              wage: player['Wage'],
-              releaseClause: player['Release Clause'],
-              signingBonus: player['Signing Bonus'],
-              performanceBonus: player['Performance Bonus'],
-              bonusReq: player['Bonus Req'],
-              bonusReqType: player['Bonus Req. Type']
-            }
-          ]
-        })
-      }
-    }
-  }
-</script>

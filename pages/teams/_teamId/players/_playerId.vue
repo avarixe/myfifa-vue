@@ -1,7 +1,137 @@
+<script>
+  import {
+    reactive,
+    computed,
+    watchEffect,
+    useContext,
+    useFetch,
+    useRoute,
+    useRouter,
+    useStore
+  } from '@nuxtjs/composition-api'
+  import { gql } from 'nuxt-graphql-request'
+  import { useTeam } from '@/composables'
+  import {
+    contractFragment,
+    transferFragment,
+    loanFragment,
+    injuryFragment,
+    playerFragment,
+    playerHistoryFragment,
+    playerPerformanceStatsFragment
+  } from '@/fragments'
+
+  export default {
+    name: 'PlayerPage',
+    head: () => ({
+      link: [
+        { rel: 'stylesheet', href: '//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css' }
+      ]
+    }),
+    setup () {
+      const store = useStore()
+
+      const route = useRoute()
+      const playerId = computed(() => parseInt(route.value.params.playerId))
+      const player = computed(() => {
+        return store.$db().model('Player')
+          .query()
+          .withAll()
+          .find(playerId.value)
+      })
+
+      const router = useRouter()
+      const { teamId, team } = useTeam()
+      watchEffect(() => {
+        if (!player.value) {
+          router.push({
+            name: 'teams-teamId-players',
+            params: { teamId: teamId.value }
+          })
+        }
+      })
+
+      const { $graphql } = useContext()
+      const playerStats = reactive({
+        numMatches: 0,
+        numCleanSheets: 0,
+        numGoals: 0,
+        numAssists: 0
+      })
+      const { fetchState } = useFetch(async () => {
+        const query = gql`
+          query fetchPlayerPage($teamId: ID!, $playerId: ID!) {
+            player(id: $playerId) {
+              ...PlayerData
+              contracts { ...ContractData }
+              transfers { ...TransferData }
+              loans { ...LoanData }
+              injuries { ...InjuryData }
+              histories { ...PlayerHistoryData }
+            }
+            team(id: $teamId) {
+              playerPerformanceStats(playerIds: [$playerId]) {
+                ...PlayerPerformanceStatsData
+              }
+            }
+          }
+          ${playerFragment}
+          ${contractFragment}
+          ${transferFragment}
+          ${loanFragment}
+          ${injuryFragment}
+          ${playerHistoryFragment}
+          ${playerPerformanceStatsFragment}
+        `
+
+        const { player: playerData, team: { playerPerformanceStats } } =
+          await $graphql.default.request(query, {
+            teamId: parseInt(teamId.value),
+            playerId: parseInt(playerId.value)
+          })
+
+        await store.$db().model('Player').insert({ data: playerData })
+
+        store.commit('app/setPage', {
+          title: player.value.name,
+          headline: player.value.name
+        })
+
+        playerPerformanceStats.forEach(stats => {
+          for (const stat in playerStats) {
+            playerStats[stat] += stats[stat]
+          }
+        })
+      })
+
+      return {
+        player,
+        playerStats,
+        team,
+        fetchState,
+        updatePlayerAttribute: async (playerId, attribute, value) => {
+          try {
+            await store.dispatch('player/update', {
+              id: playerId,
+              attributes: { [attribute]: value }
+            })
+          } catch (e) {
+            this.key++
+            store.commit('broadcaster/announce', {
+              message: e.message,
+              color: 'red'
+            })
+          }
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <v-container>
     <v-skeleton-loader
-      :loading="$fetchState.pending"
+      :loading="fetchState.pending"
       type="article"
     >
       <v-row
@@ -112,28 +242,28 @@
                   cols="6"
                   sm="3"
                 >
-                  <div class="text-h4 teal--text">{{ numMatches || 0 }}</div>
+                  <div class="text-h4 teal--text">{{ playerStats.numMatches || 0 }}</div>
                   <div class="subheading">Matches</div>
                 </v-col>
                 <v-col
                   cols="6"
                   sm="3"
                 >
-                  <div class="text-h4 pink--text">{{ numCleanSheets || 0 }}</div>
+                  <div class="text-h4 pink--text">{{ playerStats.numCleanSheets || 0 }}</div>
                   <div class="subheading">Clean Sheets</div>
                 </v-col>
                 <v-col
                   cols="6"
                   sm="3"
                 >
-                  <div class="text-h4 blue--text">{{ numGoals || 0 }}</div>
+                  <div class="text-h4 blue--text">{{ playerStats.numGoals || 0 }}</div>
                   <div class="subheading">Goals</div>
                 </v-col>
                 <v-col
                   cols="6"
                   sm="3"
                 >
-                  <div class="text-h4 orange--text">{{ numAssists || 0 }}</div>
+                  <div class="text-h4 orange--text">{{ playerStats.numAssists || 0 }}</div>
                   <div class="subheading">Assists</div>
                 </v-col>
               </v-row>
@@ -174,129 +304,3 @@
     </v-skeleton-loader>
   </v-container>
 </template>
-
-<script>
-  import { mapMutations, mapActions } from 'vuex'
-  import { gql } from 'nuxt-graphql-request'
-  import { TeamAccessible } from '@/mixins'
-  import {
-    contractFragment,
-    transferFragment,
-    loanFragment,
-    injuryFragment,
-    playerFragment,
-    playerHistoryFragment,
-    playerPerformanceStatsFragment
-  } from '@/fragments'
-
-  export default {
-    name: 'PlayerPage',
-    mixins: [
-      TeamAccessible
-    ],
-    head: () => ({
-      link: [
-        { rel: 'stylesheet', href: '//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css' }
-      ]
-    }),
-    computed: {
-      playerId () {
-        return parseInt(this.$route.params.playerId)
-      },
-      player () {
-        return this.$store.$db().model('Player')
-          .query()
-          .withAll()
-          .find(this.playerId)
-      }
-    },
-    watch: {
-      player () {
-        if (!this.player) {
-          this.$router.push({
-            name: 'teams-teamId-players',
-            params: this.$route.params
-          })
-        }
-      }
-    },
-    async asyncData ({ store, params, $graphql }) {
-      const query = gql`
-        query fetchPlayerPage($teamId: ID!, $playerId: ID!) {
-          player(id: $playerId) {
-            ...PlayerData
-            contracts { ...ContractData }
-            transfers { ...TransferData }
-            loans { ...LoanData }
-            injuries { ...InjuryData }
-            histories { ...PlayerHistoryData }
-          }
-          team(id: $teamId) {
-            playerPerformanceStats(playerIds: [$playerId]) {
-              ...PlayerPerformanceStatsData
-            }
-          }
-        }
-        ${playerFragment}
-        ${contractFragment}
-        ${transferFragment}
-        ${loanFragment}
-        ${injuryFragment}
-        ${playerHistoryFragment}
-        ${playerPerformanceStatsFragment}
-      `
-
-      const { player, team: { playerPerformanceStats } } =
-        await $graphql.default.request(query, {
-          teamId: parseInt(params.teamId),
-          playerId: parseInt(params.playerId)
-        })
-
-      await store.$db().model('Player').insert({ data: player })
-
-      const data = {
-        numMatches: 0,
-        numCleanSheets: 0,
-        numGoals: 0,
-        numAssists: 0
-      }
-
-      playerPerformanceStats.forEach(stats => {
-        for (const stat in data) {
-          data[stat] += stats[stat]
-        }
-      })
-
-      return data
-    },
-    async fetch () {
-      this.setPage({
-        title: this.player.name,
-        headline: this.player.name
-      })
-    },
-    methods: {
-      ...mapMutations({
-        setPage: 'app/setPage',
-        announce: 'broadcaster/announce'
-      }),
-      ...mapActions('players', {
-        updatePlayer: 'update'
-      }),
-      async updatePlayerAttribute (playerId, attribute, value) {
-        try {
-          await this.updatePlayer({
-            id: playerId,
-            attributes: { [attribute]: value }
-          })
-        } catch (e) {
-          this.key++
-          this.announce({
-            message: e.message,
-            color: 'red'
-          })
-        }
-      }
-    }
-  }
-</script>

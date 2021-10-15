@@ -1,3 +1,104 @@
+<script>
+  import { computed, reactive, useContext, useFetch, useStore } from '@nuxtjs/composition-api'
+  import { gql } from 'nuxt-graphql-request'
+  import { useTeam } from '@/composables'
+  import {
+    teamFragment,
+    matchFragment,
+    competitionFragment
+  } from '@/fragments'
+
+  export default {
+    name: 'TeamPage',
+    setup () {
+      const { teamId, team, season } = useTeam()
+
+      const teamData = reactive({
+        injuredPlayers: [],
+        loanedPlayers: [],
+        expiringPlayers: []
+      })
+
+      const { $graphql } = useContext()
+      const store = useStore()
+      useFetch(async () => {
+        const query = gql`
+          query loadDashboard($id: ID!) {
+            team(id: $id) {
+              ...TeamData
+              lastMatch { ...MatchData }
+              injuredPlayers {
+                id
+                name
+                pos
+                currentInjury {
+                  description
+                  startedOn
+                  endedOn
+                }
+              }
+              loanedPlayers {
+                id
+                name
+                pos
+                value
+                currentLoan {
+                  transferFee
+                  addonClause
+                }
+              }
+              expiringPlayers {
+                id
+                name
+                pos
+                value
+                currentContract {
+                  wage
+                }
+              }
+              competitions { ...CompetitionData }
+            }
+          }
+          ${teamFragment}
+          ${matchFragment}
+          ${competitionFragment}
+        `
+
+        const { team: teamRes } =
+          await $graphql.default.request(query, { id: parseInt(teamId.value) })
+
+        await store.$db().model('Team').insert({ data: teamRes })
+        if (teamRes.lastMatch) {
+          await store.$db().model('Match').insert({ data: teamRes.lastMatch })
+        }
+
+        store.commit('app/setPage', {
+          title: team.value.name,
+          headline: 'Dashboard'
+        })
+
+        teamData.injuredPlayers = teamRes.injuredPlayers
+        teamData.loanedPlayers = teamRes.loanedPlayers
+        teamData.expiringPlayers = teamRes.expiringPlayers
+      })
+
+      return {
+        team,
+        teamId,
+        season,
+        teamData,
+        lastMatch: computed(() => {
+          return store.$db().model('Match')
+            .query()
+            .where('teamId', teamId)
+            .orderBy('playedOn', 'desc')
+            .first()
+        })
+      }
+    }
+  }
+</script>
+
 <template>
   <v-container>
     <v-row v-if="team">
@@ -71,7 +172,7 @@
           <injury-list-card
             title="Injured Players"
             color="pink"
-            :players="injuredPlayers"
+            :players="teamData.injuredPlayers"
           />
         </v-col>
         <!-- Loaned Players -->
@@ -79,7 +180,7 @@
           <loan-list-card
             title="Loaned Players"
             color="deep-orange"
-            :players="loanedPlayers"
+            :players="teamData.loanedPlayers"
           />
         </v-col>
         <!-- Expiring Contracts -->
@@ -87,112 +188,13 @@
           <contract-list-card
             title="Expiring Contracts"
             color="red darken-1"
-            :players="expiringPlayers"
+            :players="teamData.expiringPlayers"
           />
         </v-col>
       </v-col>
     </v-row>
   </v-container>
 </template>
-
-<script>
-  import { gql } from 'nuxt-graphql-request'
-  import { TeamAccessible } from '@/mixins'
-  import {
-    teamFragment,
-    matchFragment,
-    competitionFragment
-  } from '@/fragments'
-
-  export default {
-    name: 'TeamPage',
-    mixins: [
-      TeamAccessible
-    ],
-    computed: {
-      lastMatch () {
-        return this.$store.$db().model('Match')
-          .query()
-          .where('teamId', this.teamId)
-          .orderBy('playedOn', 'desc')
-          .first()
-      },
-      expiringContracts () {
-        return this.contracts.filter(contract => {
-          return !contract.conclusion &&
-            (!contract.endedOn || contract.endedOn <= this.seasonEnd)
-        })
-      }
-    },
-    async asyncData ({ $graphql, params, store }) {
-      const query = gql`
-        query loadDashboard($id: ID!) {
-          team(id: $id) {
-            ...TeamData
-            lastMatch { ...MatchData }
-            injuredPlayers {
-              id
-              name
-              pos
-              currentInjury {
-                description
-                startedOn
-                endedOn
-              }
-            }
-            loanedPlayers {
-              id
-              name
-              pos
-              value
-              currentLoan {
-                transferFee
-                addonClause
-              }
-            }
-            expiringPlayers {
-              id
-              name
-              pos
-              value
-              currentContract {
-                wage
-              }
-            }
-            competitions { ...CompetitionData }
-          }
-        }
-        ${teamFragment}
-        ${matchFragment}
-        ${competitionFragment}
-      `
-
-      const { team } =
-        await $graphql.default.request(query, { id: parseInt(params.teamId) })
-      const {
-        injuredPlayers,
-        loanedPlayers,
-        expiringPlayers
-      } = team
-
-      await store.$db().model('Team').insert({ data: team })
-      if (team.lastMatch) {
-        await store.$db().model('Match').insert({ data: team.lastMatch })
-      }
-
-      store.commit('app/setPage', {
-        title: team.name,
-        headline: 'Dashboard'
-      })
-
-      return {
-        injuredPlayers,
-        loanedPlayers,
-        expiringPlayers
-      }
-    }
-  }
-</script>
 
 <style scoped>
   .v-item--active {

@@ -1,3 +1,50 @@
+<script>
+  import { reactive, useContext, useFetch, useStore } from '@nuxtjs/composition-api'
+  import { gql } from 'nuxt-graphql-request'
+  import { useTeam } from '@/composables'
+  import { playerFragment, playerDevelopmentStatsFragment } from '@/fragments'
+
+  export default {
+    name: 'DevelopmentStatisticsPage',
+    setup () {
+      const { $graphql } = useContext()
+      const store = useStore()
+      const { teamId } = useTeam()
+      const stats = reactive({ value: [] })
+      useFetch(async () => {
+        const query = gql`
+          query fetchPlayersPage($teamId: ID!) {
+            team(id: $teamId) {
+              name
+              players { ...PlayerData }
+              playerDevelopmentStats { ...PlayerDevelopmentStatsData }
+            }
+          }
+          ${playerFragment}
+          ${playerDevelopmentStatsFragment}
+        `
+
+        const { team: { name, players, playerDevelopmentStats } } =
+          await $graphql.default.request(query, { teamId: teamId.value })
+
+        await store.$db().model('Player').insert({ data: players })
+
+        store.commit('app/setPage', {
+          title: `${name} - Player Development`,
+          headline: 'Player Development'
+        })
+
+        stats.value = playerDevelopmentStats
+      })
+
+      return {
+        teamId,
+        stats
+      }
+    }
+  }
+</script>
+
 <template>
   <v-container>
     <v-row>
@@ -20,50 +67,8 @@
         </v-btn>
       </v-col>
       <v-col cols="12">
-        <player-development-grid :stats="playerDevelopmentStats" />
+        <player-development-grid :stats="stats.value" />
       </v-col>
     </v-row>
   </v-container>
 </template>
-
-<script>
-  import { mapMutations } from 'vuex'
-  import { gql } from 'nuxt-graphql-request'
-  import { TeamAccessible } from '@/mixins'
-  import { playerFragment, playerDevelopmentStatsFragment } from '@/fragments'
-
-  export default {
-    name: 'DevelopmentStatisticsPage',
-    mixins: [
-      TeamAccessible
-    ],
-    async asyncData ({ params, store, $graphql }) {
-      const query = gql`
-        query fetchPlayersPage($teamId: ID!) {
-          team(id: $teamId) {
-            players { ...PlayerData }
-            playerDevelopmentStats { ...PlayerDevelopmentStatsData }
-          }
-        }
-        ${playerFragment}
-        ${playerDevelopmentStatsFragment}
-      `
-
-      const { team: { players, playerDevelopmentStats } } =
-        await $graphql.default.request(query, { teamId: parseInt(params.teamId) })
-
-      await store.$db().model('Player').insert({ data: players })
-
-      return { playerDevelopmentStats }
-    },
-    async fetch () {
-      this.setPage({
-        title: `${this.team.name} - Player Development`,
-        headline: 'Player Development'
-      })
-    },
-    methods: mapMutations('app', {
-      setPage: 'setPage'
-    })
-  }
-</script>

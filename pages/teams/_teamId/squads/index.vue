@@ -1,3 +1,44 @@
+<script>
+  import { useContext, useFetch, useStore } from '@nuxtjs/composition-api'
+  import { gql } from 'nuxt-graphql-request'
+  import { useTeam } from '@/composables'
+  import { teamFragment, squadFragment, playerFragment } from '@/fragments'
+
+  export default {
+    name: 'SquadsPage',
+    setup () {
+      const { $graphql } = useContext()
+      const store = useStore()
+      const { teamId } = useTeam()
+      useFetch(async () => {
+        const query = gql`
+          query fetchSquadsPage($teamId: ID!) {
+            team(id: $teamId) {
+              ...TeamData
+              squads { ...SquadData }
+              players { ...PlayerData }
+            }
+          }
+          ${teamFragment}
+          ${squadFragment}
+          ${playerFragment}
+        `
+
+        const { team } = await $graphql.default.request(query, {
+          teamId: teamId.value
+        })
+
+        await store.$db().model('Team').insert({ data: team })
+
+        store.commit('app/setPage', {
+          title: `${team.name} - Squads`,
+          headline: 'Squads'
+        })
+      })
+    }
+  }
+</script>
+
 <template>
   <v-container>
     <v-row>
@@ -7,46 +48,3 @@
     </v-row>
   </v-container>
 </template>
-
-<script>
-  import { mapMutations } from 'vuex'
-  import { gql } from 'nuxt-graphql-request'
-  import { teamFragment, squadFragment, playerFragment } from '@/fragments'
-
-  export default {
-    name: 'SquadsPage',
-    computed: {
-      teamId () {
-        return parseInt(this.$route.params.teamId)
-      }
-    },
-    async fetch () {
-      const query = gql`
-        query fetchSquadsPage($teamId: ID!) {
-          team(id: $teamId) {
-            ...TeamData
-            squads { ...SquadData }
-            players { ...PlayerData }
-          }
-        }
-        ${teamFragment}
-        ${squadFragment}
-        ${playerFragment}
-      `
-
-      const { team } = await this.$graphql.default.request(query, {
-        teamId: this.teamId
-      })
-
-      await this.$store.$db().model('Team').insert({ data: team })
-
-      this.setPage({
-        title: `${team.name} - Squads`,
-        headline: 'Squads'
-      })
-    },
-    methods: mapMutations('app', {
-      setPage: 'setPage'
-    })
-  }
-</script>

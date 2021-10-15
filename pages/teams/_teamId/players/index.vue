@@ -1,3 +1,51 @@
+<script>
+  import { useContext, useFetch, useStore } from '@nuxtjs/composition-api'
+  import { gql } from 'nuxt-graphql-request'
+  import { useTeam } from '@/composables'
+  import { teamFragment, playerFragment, contractFragment } from '@/fragments'
+
+  export default {
+    name: 'PlayersPage',
+    setup () {
+      const { $graphql } = useContext()
+      const store = useStore()
+      const { teamId } = useTeam()
+      useFetch(async () => {
+        const query = gql`
+          query fetchPlayersPage($teamId: ID!) {
+            team(id: $teamId) {
+              ...TeamData
+              players {
+                ...PlayerData
+                currentContract { ...ContractData }
+              }
+            }
+          }
+          ${teamFragment}
+          ${playerFragment}
+          ${contractFragment}
+        `
+
+        const { team } =
+          await $graphql.default.request(query, { teamId: teamId.value })
+        const contracts = team.players.map(player => player.currentContract)
+
+        await Promise.all([
+          store.$db().model('Team').insert({ data: team }),
+          store.$db().model('Contract').insert({ data: contracts })
+        ])
+
+        store.commit('app/setPage', {
+          title: `${team.name} - Players`,
+          headline: 'Players'
+        })
+      })
+
+      return { teamId }
+    }
+  }
+</script>
+
 <template>
   <v-container>
     <v-row>
@@ -27,51 +75,3 @@
     </v-row>
   </v-container>
 </template>
-
-<script>
-  import { mapMutations } from 'vuex'
-  import { gql } from 'nuxt-graphql-request'
-  import { teamFragment, playerFragment, contractFragment } from '@/fragments'
-
-  export default {
-    name: 'PlayersPage',
-    computed: {
-      teamId () {
-        return parseInt(this.$route.params.teamId)
-      }
-    },
-    async fetch () {
-      const query = gql`
-        query fetchPlayersPage($teamId: ID!) {
-          team(id: $teamId) {
-            ...TeamData
-            players {
-              ...PlayerData
-              currentContract { ...ContractData }
-            }
-          }
-        }
-        ${teamFragment}
-        ${playerFragment}
-        ${contractFragment}
-      `
-
-      const { team } =
-        await this.$graphql.default.request(query, { teamId: this.teamId })
-      const contracts = team.players.map(player => player.currentContract)
-
-      await Promise.all([
-        this.$store.$db().model('Team').insert({ data: team }),
-        this.$store.$db().model('Contract').insert({ data: contracts })
-      ])
-
-      this.setPage({
-        title: `${team.name} - Players`,
-        headline: 'Players'
-      })
-    },
-    methods: mapMutations('app', {
-      setPage: 'setPage'
-    })
-  }
-</script>

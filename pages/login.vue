@@ -1,3 +1,51 @@
+<script>
+  import { ref, computed, onMounted, useStore } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'LoginPage',
+    setup () {
+      const store = useStore()
+      onMounted(() => {
+        store.dispatch('app/setTitle', '')
+      })
+
+      const username = ref(null)
+      const password = ref(null)
+      const error = ref(false)
+      const errorMessage = ref(null)
+
+      return {
+        username,
+        password,
+        error,
+        errorMessage,
+        visible: ref(false),
+        titleStyle: {
+          backgroundColor: 'rgba(0, 0, 0, 0.3)',
+          textShadow: '0 0 2px black'
+        },
+        version: computed(() => store.state.version),
+        login: async () => {
+          try {
+            error.value = false
+            errorMessage.value = null
+            await store.dispatch('auth/createToken', {
+              username: username.value,
+              password: password.value
+            })
+          } catch (e) {
+            console.error(e)
+            error.value = true
+            errorMessage.value = e.response
+              ? 'Invalid Username/Password. Please try again.'
+              : 'API is not enabled.'
+          }
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <v-container class="fill-height">
     <v-row
@@ -95,52 +143,3 @@
     </v-row>
   </v-container>
 </template>
-
-<script>
-  import { mapState, mapMutations, mapActions } from 'vuex'
-
-  export default {
-    name: 'LoginPage',
-    data: () => ({
-      username: null,
-      password: null,
-      error: false,
-      errorMessage: null,
-      visible: false,
-      titleStyle: {
-        backgroundColor: 'rgba(0, 0, 0, 0.3)',
-        textShadow: '0 0 2px black'
-      }
-    }),
-    computed: mapState([
-      'version'
-    ]),
-    mounted () {
-      this.setTitle('')
-    },
-    methods: {
-      ...mapMutations('app', [
-        'setTitle'
-      ]),
-      ...mapActions('auth', [
-        'createToken'
-      ]),
-      async login () {
-        try {
-          this.error = false
-          this.errorMessage = null
-          await this.createToken({
-            username: this.username,
-            password: this.password
-          })
-        } catch (e) {
-          console.error(e)
-          this.error = true
-          this.errorMessage = e.response
-            ? 'Invalid Username/Password. Please try again.'
-            : 'API is not enabled.'
-        }
-      }
-    }
-  }
-</script>

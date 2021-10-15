@@ -1,3 +1,84 @@
+<script>
+  import { ref, reactive, computed, useFetch, useContext, useStore } from '@nuxtjs/composition-api'
+  import { gql } from 'nuxt-graphql-request'
+  import { parseISO, differenceInYears } from 'date-fns'
+  import { teamFragment } from '@/fragments'
+
+  export default {
+    name: 'HomePage',
+    setup () {
+      const teamIndex = ref(0)
+      const latestTeams = reactive({ value: [] })
+      const currentTeam = computed(() => latestTeams.value[teamIndex.value])
+
+      const { $graphql, $config } = useContext()
+      const store = useStore()
+      useFetch(async () => {
+        store.commit('app/setPage', { headline: 'Home' })
+
+        const query = gql`
+          query fetchTeams {
+            teams {
+              ...TeamData
+              lastMatch {
+                id
+                home
+                away
+                competition
+                playedOn
+              }
+            }
+          }
+          ${teamFragment}
+        `
+
+        const { teams } = await $graphql.default.request(query)
+
+        latestTeams.value = teams.slice(0, 5)
+      })
+
+      return {
+        latestTeams,
+        teamIndex,
+        currentTeam,
+        lastMatch: computed(() => currentTeam.value && currentTeam.value.lastMatch),
+        badgeUrl: team => {
+          return team.badgePath
+            ? `${$config.baseURL.replace(/\/api/, '')}${team.badgePath}`
+            : null
+        },
+        teamLinks: team => {
+          const date = parseISO(team.startedOn)
+          const currentDate = parseISO(team.currentlyOn)
+          const season = differenceInYears(currentDate, date)
+          return [
+            {
+              to: `/teams/${team.id}/seasons/${season}`,
+              icon: 'mdi-calendar',
+              text: 'Current Season'
+            },
+            {
+              to: `/teams/${team.id}/players`,
+              icon: 'mdi-run',
+              text: 'Players'
+            },
+            {
+              to: `/teams/${team.id}/matches`,
+              icon: 'mdi-soccer-field',
+              text: 'Matches'
+            },
+            {
+              to: `/teams/${team.id}/squads`,
+              icon: 'mdi-clipboard-text',
+              text: 'Squads'
+            }
+          ]
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <v-container class="fill-height">
     <v-row
@@ -125,7 +206,7 @@
         </v-card>
       </v-col>
       <v-col
-        v-for="(team, i) in latestTeams"
+        v-for="(team, i) in latestTeams.value"
         v-show="i !== teamIndex"
         :key="i"
         cols="3"
@@ -168,85 +249,3 @@
     </v-row>
   </v-container>
 </template>
-
-<script>
-  import { mapMutations } from 'vuex'
-  import { gql } from 'nuxt-graphql-request'
-  import { parseISO, differenceInYears } from 'date-fns'
-  import { teamFragment } from '@/fragments'
-
-  export default {
-    name: 'HomePage',
-    computed: {
-      currentTeam () {
-        return this.latestTeams[this.teamIndex]
-      },
-      lastMatch () {
-        return this.currentTeam && this.currentTeam.lastMatch
-      }
-    },
-    async asyncData ({ store, $graphql }) {
-      store.commit('app/setPage', { headline: 'Home' })
-
-      const query = gql`
-        query fetchTeams {
-          teams {
-            ...TeamData
-            lastMatch {
-              id
-              home
-              away
-              competition
-              playedOn
-            }
-          }
-        }
-        ${teamFragment}
-      `
-
-      const { teams } = await $graphql.default.request(query)
-
-      return {
-        latestTeams: teams.slice(0, 5),
-        teamIndex: 0
-      }
-    },
-    methods: {
-      ...mapMutations('app', {
-        setPage: 'setPage'
-      }),
-      badgeUrl (team) {
-        return team.badgePath
-          ? `${this.$config.baseURL.replace(/\/api/, '')}${team.badgePath}`
-          : null
-      },
-      teamLinks (team) {
-        const date = parseISO(team.startedOn)
-        const currentDate = parseISO(team.currentlyOn)
-        const season = differenceInYears(currentDate, date)
-        return [
-          {
-            to: `/teams/${team.id}/seasons/${season}`,
-            icon: 'mdi-calendar',
-            text: 'Current Season'
-          },
-          {
-            to: `/teams/${team.id}/players`,
-            icon: 'mdi-run',
-            text: 'Players'
-          },
-          {
-            to: `/teams/${team.id}/matches`,
-            icon: 'mdi-soccer-field',
-            text: 'Matches'
-          },
-          {
-            to: `/teams/${team.id}/squads`,
-            icon: 'mdi-clipboard-text',
-            text: 'Squads'
-          }
-        ]
-      }
-    }
-  }
-</script>

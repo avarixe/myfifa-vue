@@ -1,3 +1,33 @@
+<script>
+  import { useContext, useFetch, useStore } from '@nuxtjs/composition-api'
+  import { gql } from 'nuxt-graphql-request'
+  import { teamFragment } from '@/fragments'
+
+  export default {
+    name: 'TeamsPage',
+    setup () {
+      const { $graphql } = useContext()
+      const store = useStore()
+
+      useFetch(async () => {
+        store.commit('app/setPage', {
+          headline: 'Teams'
+        })
+
+        const query = gql`
+          query fetchTeams {
+            teams { ...TeamData }
+          }
+          ${teamFragment}
+        `
+
+        const { teams } = await $graphql.default.request(query)
+        await store.$db().model('Team').insert({ data: teams })
+      })
+    }
+  }
+</script>
+
 <template>
   <v-container>
     <v-row>
@@ -17,31 +47,3 @@
     </v-row>
   </v-container>
 </template>
-
-<script>
-  import { mapMutations } from 'vuex'
-  import { gql } from 'nuxt-graphql-request'
-  import { teamFragment } from '@/fragments'
-
-  export default {
-    name: 'TeamsPage',
-    async fetch () {
-      this.setPage({
-        headline: 'Teams'
-      })
-
-      const query = gql`
-        query fetchTeams {
-          teams { ...TeamData }
-        }
-        ${teamFragment}
-      `
-
-      const { teams } = await this.$graphql.default.request(query)
-      await this.$store.$db().model('Team').insert({ data: teams })
-    },
-    methods: mapMutations('app', {
-      setPage: 'setPage'
-    })
-  }
-</script>
