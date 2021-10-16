@@ -1,27 +1,31 @@
-<template>
-  <div :class="['flag', `size-${size}`]">
-    <img :src="imageUrl">
-  </div>
-</template>
-
 <script>
+  import { computed } from '@nuxtjs/composition-api'
+
   export default {
     name: 'VFlag',
     props: {
       iso: { type: String, required: true },
       size: { type: String, default: 'm', validator: v => ['s', 'm', 'l', 'xl'].indexOf(v) >= 0 }
     },
-    computed: {
-      imageUrl () {
-        const size = this.size === 'xl' ? 'l' : this.size
-        const iso = this.iso && this.iso.toUpperCase()
-        return iso
-          ? `//cdn.jsdelivr.net/gh/avarixe/flagpack-core/svg/${size}/${iso}.svg`
-          : null
+    setup (props) {
+      return {
+        imageUrl: computed(() => {
+          const size = props.size === 'xl' ? 'l' : props.size
+          const iso = props.iso?.toUpperCase()
+          return iso
+            ? `//cdn.jsdelivr.net/gh/avarixe/flagpack-core/svg/${size}/${iso}.svg`
+            : null
+        })
       }
     }
   }
 </script>
+
+<template>
+  <div :class="['flag', `size-${size}`]">
+    <img :src="imageUrl">
+  </div>
+</template>
 
 <style scoped lang="scss">
   .flag {

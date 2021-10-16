@@ -1,3 +1,33 @@
+<script>
+  import { ref, watchEffect, onMounted } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'DialogForm',
+    props: {
+      value: { type: Boolean, required: true },
+      submit: { type: Function, required: true },
+      title: { type: String, default: '' },
+      titleIcon: { type: String, default: '' },
+      fullWidth: { type: Boolean, default: false }
+    },
+    setup (props, { emit }) {
+      const dialog = ref(false)
+
+      watchEffect(() => {
+        emit('input', dialog.value)
+      })
+
+      onMounted(() => {
+        dialog.value = props.value
+      })
+
+      return {
+        dialog
+      }
+    }
+  }
+</script>
+
 <template>
   <v-dialog
     v-model="dialog"
@@ -69,32 +99,3 @@
     </base-form>
   </v-dialog>
 </template>
-
-<script>
-  import BaseForm from './BaseForm'
-
-  export default {
-    name: 'DialogForm',
-    components: {
-      BaseForm
-    },
-    props: {
-      value: { type: Boolean, required: true },
-      submit: { type: Function, required: true },
-      title: { type: String, default: '' },
-      titleIcon: { type: String, default: '' },
-      fullWidth: { type: Boolean, default: false }
-    },
-    data: () => ({
-      dialog: null
-    }),
-    watch: {
-      dialog (val) {
-        this.$emit('input', val)
-      }
-    },
-    mounted () {
-      this.dialog = this.value
-    }
-  }
-</script>

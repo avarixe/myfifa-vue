@@ -1,3 +1,30 @@
+<script>
+  import { ref, computed, watchEffect, useStore } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'AppBroadcaster',
+    setup () {
+      const store = useStore()
+      const snackbar = ref(false)
+      const message = computed(() => store.state.broadcaster.message)
+
+      watchEffect(() => {
+        snackbar.value = message.value.length > 0
+
+        if (!snackbar.value) {
+          store.commit('broadcaster/clear')
+        }
+      })
+
+      return {
+        snackbar,
+        message,
+        color: computed(() => store.state.broadcaster.color)
+      }
+    }
+  }
+</script>
+
 <template>
   <v-snackbar
     v-model="snackbar"
@@ -18,29 +45,3 @@
     </template>
   </v-snackbar>
 </template>
-
-<script>
-  import { mapState, mapMutations } from 'vuex'
-
-  export default {
-    name: 'AppBroadcaster',
-    data: () => ({
-      snackbar: false
-    }),
-    computed: mapState('broadcaster', [
-      'message',
-      'color'
-    ]),
-    watch: {
-      message (val) {
-        this.snackbar = val.length > 0
-      },
-      snackbar (val) {
-        !val && this.clearBroadcast()
-      }
-    },
-    methods: mapMutations('broadcaster', {
-      clearBroadcast: 'clear'
-    })
-  }
-</script>

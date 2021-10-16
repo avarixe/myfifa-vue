@@ -25,7 +25,7 @@
 
       const { $graphql } = useContext()
       const store = useStore()
-      const { teamId, season } = useTeam()
+      const { teamId, currentSeason } = useTeam()
       const seasonStats = reactive({
         competitionStats: [],
         playerPerformanceStats: [],
@@ -87,7 +87,7 @@
       return {
         pageSeason,
         seasonStats,
-        season,
+        currentSeason,
         tab: ref(0),
         linkToSeason: season => {
           return {
@@ -117,7 +117,7 @@
         <v-btn
           :to="linkToSeason(pageSeason + 1)"
           nuxt
-          :disabled="pageSeason >= season"
+          :disabled="pageSeason >= currentSeason"
         >
           Next Season
         </v-btn>

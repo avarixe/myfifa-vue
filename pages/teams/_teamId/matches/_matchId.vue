@@ -9,9 +9,8 @@
     useRouter,
     useStore
   } from '@nuxtjs/composition-api'
-  import { mapMutations } from 'vuex'
   import { gql } from 'nuxt-graphql-request'
-  import { useTeam } from '@/composables'
+  import { useMatch, useTeam } from '@/composables'
   import {
     matchFragment,
     capFragment,
@@ -27,18 +26,8 @@
   export default {
     name: 'MatchPage',
     setup () {
-      const store = useStore()
-
-      const route = useRoute()
-      const matchId = computed(() => route.value.params.matchId)
-      const match = computed(() => {
-        return store.$db().model('Match')
-          .query()
-          .with('team|goals|bookings|substitutions|penaltyShootout')
-          .with('caps.player')
-          .find(matchId.value)
-      })
-
+      const { matchId, match } = useMatch()
+      const { teamId } = useTeam()
       const router = useRouter()
       watchEffect(() => {
         if (!match.value) {
@@ -50,7 +39,7 @@
       })
 
       const { $graphql } = useContext()
-      const { teamId } = useTeam()
+      const store = useStore()
       const readonly = ref(true)
       useFetch(async () => {
         const query = gql`

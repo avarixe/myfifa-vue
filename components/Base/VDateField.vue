@@ -1,6 +1,65 @@
+<script>
+  import { ref, toRefs, computed, watch } from '@nuxtjs/composition-api'
+  import { nextTick } from 'vue'
+  import { format, parseISO } from 'date-fns'
+  import { isRequired } from '@/functions'
+
+  export default {
+    name: 'VDateField',
+    props: {
+      value: { type: String, default: null },
+      label: { type: String, required: true },
+      min: { type: String, default: null },
+      max: { type: String, default: null },
+      color: { type: String, default: null },
+      prependIcon: { type: String, default: null },
+      appendOuterIcon: { type: String, default: null },
+      required: { type: Boolean, default: false },
+      startWithYear: { type: Boolean, default: false },
+      disabled: { type: Boolean, default: false },
+      dense: { type: Boolean, default: false },
+      outlined: { type: Boolean, default: false },
+      hideDetails: { type: Boolean, default: false },
+      clearable: { type: Boolean, default: false }
+    },
+    setup (props, { emit }) {
+      const menu = ref(false)
+      const date = ref(null)
+      const activePicker = ref('DATE')
+
+      const { value } = toRefs(props)
+      watch(value, () => {
+        date.value = value.value
+      }, { immediate: true })
+
+      watch(date, dateValue => {
+        emit('input', dateValue)
+      })
+
+      watch(menu, async (open) => {
+        if (open && props.startWithYear) {
+          await nextTick()
+          activePicker.value = 'YEAR'
+        }
+      })
+
+      return {
+        menu,
+        date,
+        activePicker,
+        formattedDate: computed(() => {
+          return date.value
+            ? format(parseISO(date.value), 'MMM dd, yyyy')
+            : null
+        }),
+        rules: computed(() => props.required ? [isRequired(props.label)] : [])
+      }
+    }
+  }
+</script>
+
 <template>
   <v-menu
-    ref="menu"
     v-model="menu"
     :close-on-content-click="false"
     transition="scale-transition"
@@ -33,61 +92,3 @@
     />
   </v-menu>
 </template>
-
-<script>
-  import { format, parseISO } from 'date-fns'
-  import { isRequired } from '@/functions'
-
-  export default {
-    name: 'VDateField',
-    props: {
-      value: { type: String, default: null },
-      label: { type: String, required: true },
-      min: { type: String, default: null },
-      max: { type: String, default: null },
-      color: { type: String, default: null },
-      prependIcon: { type: String, default: null },
-      appendOuterIcon: { type: String, default: null },
-      required: { type: Boolean, default: false },
-      startWithYear: { type: Boolean, default: false },
-      disabled: { type: Boolean, default: false },
-      dense: { type: Boolean, default: false },
-      outlined: { type: Boolean, default: false },
-      hideDetails: { type: Boolean, default: false },
-      clearable: { type: Boolean, default: false }
-    },
-    data: () => ({
-      menu: false,
-      date: null,
-      activePicker: 'DATE'
-    }),
-    computed: {
-      formattedDate () {
-        return this.date
-          ? format(parseISO(this.date), 'MMM dd, yyyy')
-          : null
-      },
-      rules () {
-        return this.required ? [isRequired(this.label)] : []
-      }
-    },
-    watch: {
-      value: {
-        handler () {
-          this.date = this.value
-        },
-        immediate: true
-      },
-      date (value) {
-        this.$emit('input', value)
-      },
-      menu (val) {
-        if (val && this.startWithYear) {
-          this.$nextTick(() => {
-            this.activePicker = 'YEAR'
-          })
-        }
-      }
-    }
-  }
-</script>

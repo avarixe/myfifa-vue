@@ -1,3 +1,65 @@
+<script>
+  import { ref, onBeforeUnmount } from '@nuxtjs/composition-api'
+  import { nextTick } from 'vue'
+
+  export default {
+    name: 'ScrollText',
+    props: {
+      text: { type: String, default: '' },
+      speed: { type: Number, default: 6 },
+      automatic: { type: Boolean, default: false }
+    },
+    setup (props) {
+      const scroller = ref(null)
+      const scrolledText = ref(null)
+      function getOverflowWidth () {
+        return scrolledText.value
+          ? scrolledText.value.clientWidth - scroller.value.clientWidth
+          : 0
+      }
+
+      const textClass = ref('truncated')
+      const textCssVars = ref({})
+      async function toggleScroll () {
+        textClass.value = null
+        await nextTick()
+        const overflowWidth = getOverflowWidth()
+        if (overflowWidth > 0) {
+          textClass.value = 'scrolling'
+          textCssVars.value = {
+            '--overflow-width': `-${overflowWidth + 4}px`,
+            // distance in pixels divided by desired scroll speed
+            // pad with 2 if overflow is small
+            '--duration': `${overflowWidth / props.speed + 2}s`
+          }
+        } else {
+          textClass.value = 'truncated'
+        }
+      }
+
+      const resizeListener = ref(null)
+      onBeforeUnmount(() => {
+        window.removeEventListener('resize', resizeListener.value)
+      })
+
+      return {
+        scroller,
+        scrolledText,
+        textClass,
+        textCssVars,
+        onEnter: () => {
+          toggleScroll()
+          resizeListener.value = window.addEventListener('resize', toggleScroll)
+        },
+        onLeave: () => {
+          window.removeEventListener('resize', resizeListener.value)
+          textClass.value = 'truncated'
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <div
     id="scroller"
@@ -6,69 +68,13 @@
     @mouseleave="onLeave"
   >
     <div
-      ref="text"
+      ref="scrolledText"
       :class="textClass"
       :style="textCssVars"
       v-text="text"
     />
   </div>
 </template>
-
-<script>
-  export default {
-    name: 'ScrollText',
-    props: {
-      text: { type: String, default: '' },
-      speed: { type: Number, default: 6 },
-      automatic: { type: Boolean, default: false }
-    },
-    data: () => ({
-      textClass: 'truncated',
-      textCssVars: {},
-      resizeListener: null
-    }),
-    beforeDestroy () {
-      window.removeEventListener('resize', this.resizeListener)
-    },
-    methods: {
-      onEnter () {
-        this.toggleScroll()
-        this.resizeListener = window.addEventListener('resize', this.toggleScroll)
-      },
-      onLeave () {
-        window.removeEventListener('resize', this.resizeListener)
-        this.textClass = 'truncated'
-      },
-      toggleScroll () {
-        this.textClass = null
-        this.$nextTick(() => {
-          if (this.hasOverflow()) {
-            this.textClass = 'scrolling'
-            this.textCssVars = {
-              '--overflow-width': `-${this.getOverflowWidth() + 4}px`,
-              '--duration': `${this.computeScrollDuration()}s`
-            }
-          } else {
-            this.textClass = 'truncated'
-          }
-        })
-      },
-      hasOverflow () {
-        return this.getOverflowWidth() > 0
-      },
-      getOverflowWidth () {
-        return this.$refs.text
-          ? this.$refs.text.clientWidth - this.$refs.scroller.clientWidth
-          : 0
-      },
-      computeScrollDuration () {
-        // distance in pixels divided by desired scroll speed
-        // pad with 2 if overflow is small
-        return this.getOverflowWidth() / this.speed + 2
-      }
-    }
-  }
-</script>
 
 <style scoped lang="scss">
   #scroller {

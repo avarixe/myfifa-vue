@@ -1,3 +1,49 @@
+<script>
+  import { ref, toRef, useRouter, useStore } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'RecordRemove',
+    props: {
+      record: { type: Object, required: true },
+      store: { type: String, required: true },
+      redirect: { type: [String, Object], default: null },
+      label: { type: String, default: null }
+    },
+    setup (props) {
+      const dialog = ref(false)
+      const loading = ref(false)
+      const error = ref(false)
+      const errorMessage = ref('')
+      const record = toRef(props, 'record')
+      const router = useRouter()
+      const store = useStore()
+      return {
+        dialog,
+        loading,
+        error,
+        errorMessage,
+        remove: async () => {
+          try {
+            loading.value = true
+
+            await Promise.all([
+              store.dispatch(`${props.store}/remove`, record.value.id),
+              () => { props.redirect && router.push(props.redirect) }
+            ])
+
+            dialog.value = false
+          } catch (e) {
+            errorMessage.value = e.message
+            error.value = true
+          } finally {
+            loading.value = false
+          }
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <v-dialog
     v-model="dialog"
@@ -56,45 +102,3 @@
     </v-card>
   </v-dialog>
 </template>
-
-<script>
-  import TooltipButton from './TooltipButton'
-
-  export default {
-    name: 'RecordRemove',
-    components: {
-      TooltipButton
-    },
-    props: {
-      record: { type: Object, required: true },
-      store: { type: String, required: true },
-      redirect: { type: [String, Object], default: null },
-      label: { type: String, default: null }
-    },
-    data: () => ({
-      dialog: false,
-      loading: false,
-      error: false,
-      errorMessage: ''
-    }),
-    methods: {
-      async remove () {
-        try {
-          this.loading = true
-
-          await Promise.all([
-            this.$store.dispatch(`${this.store}/remove`, this.record.id),
-            () => { this.redirect && this.$router.push(this.redirect) }
-          ])
-
-          this.dialog = false
-        } catch (e) {
-          this.errorMessage = e.message
-          this.error = true
-        } finally {
-          this.loading = false
-        }
-      }
-    }
-  }
-</script>

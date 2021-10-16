@@ -1,3 +1,16 @@
+<script>
+  export default {
+    name: 'ListOption',
+    props: {
+      item: { type: null, required: true },
+      optionAvatar: { type: String, default: null },
+      optionText: { type: String, default: null },
+      selected: { type: Boolean, default: false },
+      dense: { type: Boolean, default: false }
+    }
+  }
+</script>
+
 <template>
   <v-list-item
     :input-value="selected"
@@ -17,16 +30,3 @@
     </v-list-item-content>
   </v-list-item>
 </template>
-
-<script>
-  export default {
-    name: 'ListOption',
-    props: {
-      item: { type: null, required: true },
-      optionAvatar: { type: String, default: null },
-      optionText: { type: String, default: null },
-      selected: { type: Boolean, default: false },
-      dense: { type: Boolean, default: false }
-    }
-  }
-</script>

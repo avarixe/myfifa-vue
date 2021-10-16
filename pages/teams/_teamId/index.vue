@@ -11,7 +11,7 @@
   export default {
     name: 'TeamPage',
     setup () {
-      const { teamId, team, season } = useTeam()
+      const { teamId, team, currentSeason } = useTeam()
 
       const teamData = reactive({
         injuredPlayers: [],
@@ -85,7 +85,7 @@
       return {
         team,
         teamId,
-        season,
+        currentSeason,
         teamData,
         lastMatch: computed(() => {
           return store.$db().model('Match')
@@ -159,7 +159,7 @@
         </v-col>
         <!-- Current Season -->
         <v-col cols="12">
-          <season-card :season="season" />
+          <season-card :season="currentSeason" />
         </v-col>
       </v-col>
       <v-col

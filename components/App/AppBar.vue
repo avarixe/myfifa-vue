@@ -1,3 +1,68 @@
+<script>
+  import { ref, computed, useRouter, useStore } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'AppBar',
+    setup () {
+      const store = useStore()
+
+      const infoDialog = ref(false)
+      const togglingMode = ref(false)
+
+      const headline = computed(() => store.getters['app/headline'])
+      const currentUser = computed(() => store.getters.currentUser)
+
+      const { team } = useTeam()
+
+      const router = useRouter()
+      return {
+        headline,
+        infoDialog,
+        togglingMode,
+        team,
+        actions: computed(() => [
+          {
+            icon: 'mdi-home',
+            text: 'Home',
+            click: () => router.push({ name: 'index' })
+          },
+          {
+            icon: 'mdi-account',
+            text: 'Account',
+            click: () => router.push({ name: 'account' })
+          },
+          {
+            icon: `mdi-weather-${currentUser.value.darkMode ? 'night' : 'sunny'}`,
+            text: `${currentUser.value.darkMode ? 'Dark' : 'Light'} Mode`,
+            click: async () => {
+              try {
+                togglingMode.value = true
+                await store.dispatch('user/setDarkMode', !currentUser.value.darkMode)
+              } catch (e) {
+                console.error(e)
+              } finally {
+                togglingMode.value = false
+              }
+            },
+            loading: togglingMode.value
+          },
+          {
+            icon: 'mdi-information-outline',
+            text: 'About',
+            click: () => { infoDialog.value = true }
+          },
+          {
+            icon: 'mdi-exit-to-app',
+            text: 'Log Out',
+            click: () => store.dispatch('auth/revokeTOken')
+          }
+        ])
+      }
+    }
+  }
+</script>
+
 <template>
   <v-app-bar
     app
@@ -76,84 +141,3 @@
     </template>
   </v-app-bar>
 </template>
-
-<script>
-  import { mapState, mapGetters, mapActions } from 'vuex'
-
-  export default {
-    name: 'AppBar',
-    data: () => ({
-      infoDialog: false,
-      togglingMode: false
-    }),
-    computed: {
-      ...mapState('app', [
-        'headline'
-      ]),
-      ...mapGetters([
-        'currentUser'
-      ]),
-      teamId () {
-        return this.$route.params.teamId
-      },
-      team () {
-        return this.$store.$db().model('Team').find(this.teamId)
-      },
-      actions () {
-        return [
-          {
-            icon: 'mdi-home',
-            text: 'Home',
-            click: this.goToIndex
-          },
-          {
-            icon: 'mdi-account',
-            text: 'Account',
-            click: this.goToAccount
-          },
-          {
-            icon: `mdi-weather-${this.currentUser.darkMode ? 'night' : 'sunny'}`,
-            text: `${this.currentUser.darkMode ? 'Dark' : 'Light'} Mode`,
-            click: this.toggleMode,
-            loading: this.togglingMode
-          },
-          {
-            icon: 'mdi-information-outline',
-            text: 'About',
-            click: this.openInfoDialog
-          },
-          {
-            icon: 'mdi-exit-to-app',
-            text: 'Log Out',
-            click: this.logout
-          }
-        ]
-      }
-    },
-    methods: {
-      ...mapActions({
-        logout: 'auth/revokeToken',
-        setDarkMode: 'user/setDarkMode'
-      }),
-      goToIndex () {
-        this.$router.push({ name: 'index' })
-      },
-      goToAccount () {
-        this.$router.push({ name: 'account' })
-      },
-      openInfoDialog () {
-        this.infoDialog = true
-      },
-      async toggleMode () {
-        try {
-          this.togglingMode = true
-          await this.setDarkMode(!this.currentUser.darkMode)
-        } catch (e) {
-          console.error(e)
-        } finally {
-          this.togglingMode = false
-        }
-      }
-    }
-  }
-</script>

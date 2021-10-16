@@ -4,7 +4,6 @@
     v-model="dialog"
     :title="`${team.badgePath ? 'Change' : 'Upload'} Badge`"
     :submit="submit"
-    :color="color"
   >
     <template #activator="{ on }">
       <slot

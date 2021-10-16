@@ -1,5 +1,12 @@
 <script>
-  import { computed, watchEffect, useContext, useMeta, useRoute, useStore } from '@nuxtjs/composition-api'
+  import {
+    computed,
+    watchEffect,
+    useContext,
+    useMeta,
+    useStore
+  } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
 
   export default {
     name: 'Layout',
@@ -25,11 +32,9 @@
           $graphql.default.setHeaders({})
           $vuetify.theme.dark = true
         }
-      }, { immediate: true })
+      })
 
-      const route = useRoute()
-      const team = computed(() => store.$db().model('Team').find(route.value.params.teamID))
-
+      const { team } = useTeam()
       return {
         currentUser,
         team

@@ -1,20 +1,5 @@
-<template>
-  <v-text-field
-    v-model="money"
-    v-money="money ? config : null"
-    :rules="rules"
-    :label="label"
-    :prefix="prefix"
-    :clearable="!required"
-    :dense="dense"
-    :outlined="outlined"
-    :hide-details="hideDetails"
-    :autofocus="autofocus"
-    inputmode="numeric"
-  />
-</template>
-
 <script>
+  import { ref, reactive, toRef, computed, watch } from '@nuxtjs/composition-api'
   import { VMoney } from 'v-money'
   import { isRequired } from '@/functions'
 
@@ -33,39 +18,51 @@
       outlined: { type: Boolean, default: false },
       hideDetails: { type: Boolean, default: false }
     },
-    data: () => ({
-      money: null,
-      config: {
-        decimal: '.',
-        thousands: ',',
-        precision: 0
-      }
-    }),
-    computed: {
-      moneyNum () {
-        if (this.money) {
-          const money = this.money.replace(/,/g, '')
-          return money.length > 0 && !isNaN(money)
-            ? parseInt(money)
+    setup (props, { emit }) {
+      const money = ref(null)
+      const moneyNum = computed(() => {
+        if (money.value) {
+          const formattedMoney = money.value.replace(/,/g, '')
+          return formattedMoney.length > 0 && !isNaN(formattedMoney)
+            ? parseInt(formattedMoney)
             : null
         } else {
           return null
         }
-      },
-      rules () {
-        return this.required ? [isRequired(this.label)] : []
-      }
-    },
-    watch: {
-      value: {
-        handler () {
-          this.money = this.value ? this.value.toString() : ''
-        },
-        immediate: true
-      },
-      money (value) {
-        this.$emit('input', this.moneyNum)
+      })
+
+      const { value } = toRef(props, 'value')
+      watch(value, () => {
+        money.value = value.value ? value.value.toString() : ''
+      }, { immediate: true })
+
+      watch(money, () => emit('input', moneyNum.value))
+
+      return {
+        money,
+        config: reactive({
+          decimal: '.',
+          thousands: ',',
+          precision: 0
+        }),
+        rules: computed(() => props.required ? [isRequired(props.label)] : [])
       }
     }
   }
 </script>
+
+<template>
+  <v-text-field
+    v-model="money"
+    v-money="money ? config : null"
+    :rules="rules"
+    :label="label"
+    :prefix="prefix"
+    :clearable="!required"
+    :dense="dense"
+    :outlined="outlined"
+    :hide-details="hideDetails"
+    :autofocus="autofocus"
+    inputmode="numeric"
+  />
+</template>

@@ -1,3 +1,35 @@
+<script>
+  import { ref, computed, toRef, watch, onUnmounted, useStore } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'AppInfo',
+    props: {
+      value: { type: Boolean, required: true }
+    },
+    setup (props, { emit }) {
+      const dialog = ref(false)
+      watch(dialog, open => {
+        emit('input', open)
+      })
+
+      const value = toRef(props, 'value')
+      watch(value, open => {
+        dialog.value = open
+      })
+
+      onUnmounted(() => {
+        dialog.value = false
+      })
+
+      const store = useStore()
+      return {
+        dialog,
+        version: computed(() => store.state.version)
+      }
+    }
+  }
+</script>
+
 <template>
   <v-dialog
     v-model="dialog"
@@ -61,34 +93,3 @@
     </v-card>
   </v-dialog>
 </template>
-
-<script>
-  import { mapState } from 'vuex'
-
-  export default {
-    name: 'AppInfo',
-    props: {
-      value: { type: Boolean, required: true }
-    },
-    data: () => ({
-      dialog: false
-    }),
-    computed: {
-      ...mapState([
-        'version'
-      ])
-    },
-    watch: {
-      value (open) {
-        this.dialog = open
-      },
-      dialog (open) {
-        console.log('emitting dialog', new Date())
-        this.$emit('input', open)
-      }
-    },
-    beforeDestroy () {
-      this.dialog = false
-    }
-  }
-</script>

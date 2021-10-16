@@ -1,3 +1,31 @@
+<script>
+  import { toRefs, computed } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'DeltaStatistic',
+    props: {
+      label: { type: String, required: true },
+      formatter: { type: Function, default: x => x },
+      startValue: { type: [String, Number], default: null },
+      endValue: { type: [String, Number], default: null }
+    },
+    setup (props) {
+      const { startValue, endValue } = toRefs(props)
+
+      const valueIncreased = computed(() => startValue.value <= endValue.value)
+
+      return {
+        valueIncreased,
+        color: computed(() => valueIncreased.value ?  'green' : 'red'),
+        icon: computed(() => valueIncreased.value ? 'menu-up' : 'menu-down'),
+        percentage: computed(() =>
+          Math.abs((endValue.value - startValue.value) / startValue.value) * 100
+        )
+      }
+    }
+  }
+</script>
+
 <template>
   <div>
     <v-tooltip
@@ -24,29 +52,3 @@
     <div class="subheading">{{ label }}</div>
   </div>
 </template>
-
-<script>
-  export default {
-    name: 'DeltaStatistic',
-    props: {
-      label: { type: String, required: true },
-      formatter: { type: Function, default: x => x },
-      startValue: { type: [String, Number], default: null },
-      endValue: { type: [String, Number], default: null }
-    },
-    computed: {
-      color () {
-        return this.valueIncreased ? 'green' : 'red'
-      },
-      icon () {
-        return this.valueIncreased ? 'menu-up' : 'menu-down'
-      },
-      percentage () {
-        return Math.abs((this.endValue - this.startValue) / this.startValue) * 100
-      },
-      valueIncreased () {
-        return this.startValue <= this.endValue
-      }
-    }
-  }
-</script>

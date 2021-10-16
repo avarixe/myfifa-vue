@@ -17,7 +17,7 @@
     name: 'CompetitionPage',
     setup () {
       const store = useStore()
-      const { teamId, season, seasonLabel } = useTeam()
+      const { teamId, seasonLabel } = useTeam()
 
       const route = useRoute()
       const competitionId = computed(() => route.value.params.competitionId)
@@ -28,18 +28,14 @@
           .with('stages.fixtures.legs')
           .find(competitionId.value)
       })
-      const competitionSeason = computed(() =>
-        seasonLabel(competition.value.season)
-      )
 
       const router = useRouter()
       watchEffect(() => {
         if (!competition.value) {
           router.push({
-            name: 'teams-teamId-seasons-season',
+            name: 'teams-teamId',
             params: {
-              teamId: teamId.value,
-              season: season.value
+              teamId: teamId.value
             }
           })
         }
@@ -47,6 +43,7 @@
 
       const { $graphql } = useContext()
       const readonly = ref(0)
+      const competitionSeason = ref('')
       useFetch(async () => {
         const query = gql`
           query fetchCompetition($id: ID!) {
@@ -64,6 +61,7 @@
         await store.$db().model('Competition').insert({ data: competitionData })
 
         readonly.value = competitionData.champion && competitionData.champion.length > 0
+        competitionSeason.value = seasonLabel(competitionData.season)
 
         const title = `${competitionData.name} (${competitionSeason.value})`
         store.commit('app/setPage', {
@@ -72,7 +70,7 @@
         })
       })
 
-      const stages = computed(() => competition.value.stages)
+      const stages = computed(() => competition.value?.stages || [])
       return {
         competition,
         competitionSeason,
@@ -87,7 +85,7 @@
 
 <template>
   <v-container>
-    <v-row>
+    <v-row v-if="competition">
       <v-col cols="12">
         <v-btn
           :to="competition.linkToSeason"

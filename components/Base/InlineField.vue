@@ -1,3 +1,70 @@
+<script>
+  import { ref, toRefs, computed, watch } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+  import { isRequired } from '@/functions'
+
+  export default {
+    name: 'InlineField',
+    props: {
+      item: { type: Object, required: true },
+      attribute: { type: String, required: true },
+      label: { type: String, default: null },
+      options: { type: Array, default: () => [] },
+      optionAvatar: { type: String, default: null },
+      optionText: { type: String, default: null },
+      optionValue: { type: String, default: null },
+      rules: { type: Array, default: () => [] },
+      inputType: { type: String, default: null },
+      display: { type: [String, Number], default: null },
+      displayClass: { type: String, default: null },
+      readonly: { type: Boolean, default: false },
+      required: { type: Boolean, default: false }
+    },
+    setup (props, { emit }) {
+      const value = ref(null)
+      const original = ref(null)
+      const key = ref(0)
+
+      const { display, item, attribute } = toRefs(props)
+
+      function reset () {
+        value.value = item.value[attribute.value]
+        original.value = value.value
+        key.value++
+      }
+
+      watch(item, reset, { immediate: true })
+      watch(attribute, reset)
+
+      const { team } = useTeam()
+      const isDirty = computed(() => value.value !== original.value)
+      const allRules = computed(() => {
+        return props.required
+          ? [isRequired(props.label), ...props.rules]
+          : props.rules
+      })
+      return {
+        value,
+        key,
+        humanizedDisplay: computed(() => {
+          const val = display.value || value.value
+          return !val && val !== 0 ? '-' : val
+        }),
+        allRules,
+        team,
+        close: () => {
+          if (allRules.value.some(rule => typeof rule(value.value) === 'string')) {
+            reset()
+          } else if (isDirty.value) {
+            emit('close', value.value)
+            key.value++
+          }
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <div :key="key">
     <template v-if="readonly">
@@ -68,81 +135,3 @@
     </template>
   </div>
 </template>
-
-<script>
-  import { TeamAccessible } from '@/mixins'
-  import { isRequired } from '@/functions'
-  import ListOption from './ListOption'
-  import VMoneyField from './VMoneyField'
-
-  export default {
-    name: 'InlineField',
-    components: {
-      ListOption,
-      VMoneyField
-    },
-    mixins: [
-      TeamAccessible
-    ],
-    props: {
-      item: { type: Object, required: true },
-      attribute: { type: String, required: true },
-      label: { type: String, default: null },
-      options: { type: Array, default: () => [] },
-      optionAvatar: { type: String, default: null },
-      optionText: { type: String, default: null },
-      optionValue: { type: String, default: null },
-      rules: { type: Array, default: () => [] },
-      inputType: { type: String, default: null },
-      display: { type: [String, Number], default: null },
-      displayClass: { type: String, default: null },
-      readonly: { type: Boolean, default: false },
-      required: { type: Boolean, default: false }
-    },
-    data: () => ({
-      value: null,
-      original: null,
-      key: 0
-    }),
-    computed: {
-      humanizedDisplay () {
-        const value = this.display || this.value
-        return !value && value !== 0 ? '-' : value
-      },
-      isDirty () {
-        return this.value !== this.original
-      },
-      allRules () {
-        return this.required
-          ? [isRequired(this.label), ...this.rules]
-          : this.rules
-      }
-    },
-    watch: {
-      item: {
-        handler () {
-          this.reset()
-        },
-        immediate: true
-      },
-      attribute () {
-        this.reset()
-      }
-    },
-    methods: {
-      reset () {
-        this.value = this.item[this.attribute]
-        this.original = this.value
-        this.key++
-      },
-      close () {
-        if (this.allRules.some(rule => typeof rule(this.value) === 'string')) {
-          this.reset()
-        } else if (this.isDirty) {
-          this.$emit('close', this.value)
-          this.key++
-        }
-      }
-    }
-  }
-</script>
