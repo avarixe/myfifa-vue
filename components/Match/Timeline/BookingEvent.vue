@@ -1,3 +1,22 @@
+<script>
+  import { toRef, computed } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'BookingEvent',
+    props: {
+      match: { type: Object, required: true },
+      event: { type: Object, required: true },
+      readonly: { type: Boolean, default: false }
+    },
+    setup (props) {
+      const event = toRef(props, 'event')
+      const color = computed(() => event.value.redCard ? 'red' : 'amber')
+
+      return { color }
+    }
+  }
+</script>
+
 <template>
   <base-match-event
     :match="match"
@@ -14,19 +33,3 @@
     {{ event.playerName }}
   </base-match-event>
 </template>
-
-<script>
-  export default {
-    name: 'BookingEvent',
-    props: {
-      match: { type: Object, required: true },
-      event: { type: Object, required: true },
-      readonly: { type: Boolean, default: false }
-    },
-    computed: {
-      color () {
-        return this.event.redCard ? 'red' : 'amber'
-      }
-    }
-  }
-</script>

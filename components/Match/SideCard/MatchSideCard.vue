@@ -1,3 +1,28 @@
+<script>
+  import { ref, toRef, computed } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'MatchSideCard',
+    props: {
+      match: { type: Object, required: true },
+      side: { type: String, required: true }
+    },
+    setup (props) {
+      const match = toRef(props, 'match')
+      const sideTeam = computed(() => match.value[props.side])
+
+      const menu = ref(false)
+      const { team } = useTeam()
+      return {
+        menu,
+        sideTeam,
+        team
+      }
+    }
+  }
+</script>
+
 <template>
   <v-menu
     v-model="menu"
@@ -65,27 +90,6 @@
     </v-card>
   </v-menu>
 </template>
-
-<script>
-  export default {
-    name: 'MatchSideCard',
-    props: {
-      match: { type: Object, required: true },
-      side: { type: String, required: true }
-    },
-    data: () => ({
-      menu: false
-    }),
-    computed: {
-      team () {
-        return this.$store.$db().model('Team').find(this.$route.params.teamId)
-      },
-      sideTeam () {
-        return this.match[this.side]
-      }
-    }
-  }
-</script>
 
 <style scoped>
   .match-side-label {

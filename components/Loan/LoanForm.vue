@@ -1,3 +1,106 @@
+<script>
+  import { ref, reactive, toRefs, computed, watchEffect, useStore } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+  import { isRequired, isNumber, inRange } from '@/functions'
+
+  export default {
+    name: 'LoanForm',
+    props: {
+      player: { type: Object, required: true },
+      record: { type: Object, default: null },
+      color: { type: String, default: null },
+      dark: { type: Boolean, default: false }
+    },
+    setup (props) {
+      const attributes = reactive({
+        signedOn: null,
+        startedOn: null,
+        endedOn: null,
+        origin: null,
+        destination: null,
+        wagePercentage: null,
+        transferFee: null,
+        addonClause: 0
+      })
+
+      const { record, player } = toRefs(props)
+      const loanOut = computed(() => {
+        return record.value
+          ? team.value.name === record.value.origin
+          : player.value.status?.length > 0
+      })
+
+      const dialog = ref(false)
+      const title = ref('Record New Loan')
+      const { team } = useTeam()
+      watchEffect(() => {
+        if (dialog.value) {
+          if (record.value) {
+            attributes.signedOn = record.value.signedOn
+            attributes.startedOn = record.value.startedOn
+            attributes.endedOn = record.value.endedOn
+            attributes.origin = record.value.origin
+            attributes.destination = record.value.destination
+            attributes.wagePercentage = record.value.wagePercentage
+            attributes.transferFee = record.value.transferFee
+            attributes.addonClause = record.value.addonClause
+          } else {
+            attributes.signedOn = team.value.currentlyOn
+            attributes.startedOn = team.value.currentlyOn
+            if (loanOut.value) {
+              attributes.origin = team.value.name
+            } else {
+              attributes.destination = team.value.name
+            }
+          }
+        }
+      })
+
+      watchEffect(() => {
+        if (!attributes.addonClause) {
+          attributes.addonClause = 0
+        }
+      })
+
+      const store = useStore()
+      const submit = async () => {
+        if (record.value) {
+          await store.dispatch('loans/update', {
+            id: record.value.id,
+            attributes
+          })
+        } else {
+          await store.dispatch('loans/create', {
+            playerId: player.value.id,
+            attributes
+          })
+        }
+      }
+
+      return {
+        attributes,
+        dialog,
+        title,
+        loanOut,
+        submit,
+        team,
+        rulesFor: {
+          origin: [isRequired('Origin')],
+          destination: [isRequired('Destination')],
+          wagePercentage: [
+            isNumber('Wage Percentage'),
+            inRange('Wage Percentage', [0, 100])
+          ],
+          addonClause: [
+            isNumber('Add-On Clause'),
+            inRange('Add-On Clause', [0, 25])
+          ]
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
     v-model="dialog"
@@ -89,108 +192,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import pick from 'lodash.pick'
-  import { TeamAccessible, DialogFormable } from '@/mixins'
-  import { isRequired, isNumber, inRange } from '@/functions'
-
-  export default {
-    name: 'LoanForm',
-    mixins: [
-      DialogFormable,
-      TeamAccessible
-    ],
-    props: {
-      player: { type: Object, required: true },
-      record: { type: Object, default: null },
-      color: { type: String, default: null },
-      dark: { type: Boolean, default: false }
-    },
-    data: () => ({
-      attributes: {
-        signedOn: null,
-        startedOn: null,
-        endedOn: null,
-        origin: null,
-        destination: null,
-        wagePercentage: null,
-        transferFee: null,
-        addonClause: 0
-      },
-      rulesFor: {
-        origin: [isRequired('Origin')],
-        destination: [isRequired('Destination')],
-        wagePercentage: [
-          isNumber('Wage Percentage'),
-          inRange('Wage Percentage', [0, 100])
-        ],
-        addonClause: [
-          isNumber('Add-On Clause'),
-          inRange('Add-On Clause', [0, 25])
-        ]
-      }
-    }),
-    computed: {
-      loanOut () {
-        return this.record
-          ? this.team.name === this.record.origin
-          : this.player.status && this.player.status.length > 0
-      },
-      title () {
-        return this.record ? 'Update Loan' : 'Record New Loan'
-      }
-    },
-    watch: {
-      dialog (val) {
-        if (val) {
-          if (this.record) {
-            this.attributes = pick(this.record, [
-              'signedOn',
-              'startedOn',
-              'endedOn',
-              'origin',
-              'destination',
-              'wagePercentage',
-              'transferFee',
-              'addonClause'
-            ])
-          } else {
-            this.attributes.signedOn = this.team.currentlyOn
-            this.attributes.startedOn = this.team.currentlyOn
-            if (this.loanOut) {
-              this.attributes.origin = this.team.name
-            } else {
-              this.attributes.destination = this.team.name
-            }
-          }
-        }
-      },
-      'attributes.addonClause' (addonClause) {
-        if (!addonClause) {
-          this.attributes.addonClause = 0
-        }
-      }
-    },
-    methods: {
-      ...mapActions('loans', {
-        createLoan: 'create',
-        updateLoan: 'update'
-      }),
-      async submit () {
-        if (this.record) {
-          await this.updateLoan({
-            id: this.record.id,
-            attributes: this.attributes
-          })
-        } else {
-          await this.createLoan({
-            playerId: this.player.id,
-            attributes: this.attributes
-          })
-        }
-      }
-    }
-  }
-</script>

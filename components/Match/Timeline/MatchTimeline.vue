@@ -1,7 +1,37 @@
+<script>
+  import { toRef, computed } from '@nuxtjs/composition-api'
+  import orderBy from 'lodash.orderby'
+
+  export default {
+    props: {
+      match: { type: Object, required: true },
+      readonly: { type: Boolean, default: true }
+    },
+    setup (props) {
+      const match = toRef(props, 'match')
+      const matchEvents = computed(() => {
+        const events = orderBy([
+          ...match.value.bookings,
+          ...match.value.substitutions,
+          ...match.value.goals
+        ], ['minute', 'createdAt'], ['asc', 'asc'])
+
+        if (match.value.penaltyShootout) {
+          events.push(match.value.penaltyShootout)
+        }
+
+        return events
+      })
+
+      return { matchEvents }
+    }
+  }
+</script>
+
 <template>
   <v-timeline dense>
-    <template v-if="events.length > 0 || match.penaltyShootout">
-      <template v-for="event in events">
+    <template v-if="matchEvents.length > 0">
+      <template v-for="event in matchEvents">
         <component
           :is="`${event.type}-event`"
           :key="`${event.type}-${event.id}`"
@@ -21,32 +51,6 @@
     </v-timeline-item>
   </v-timeline>
 </template>
-
-<script>
-  import orderBy from 'lodash.orderby'
-
-  export default {
-    props: {
-      match: { type: Object, required: true },
-      readonly: { type: Boolean, default: true }
-    },
-    computed: {
-      events () {
-        const events = orderBy([
-          ...this.match.bookings,
-          ...this.match.substitutions,
-          ...this.match.goals
-        ], ['minute', 'createdAt'], ['asc', 'asc'])
-
-        if (this.match.penaltyShootout) {
-          events.push(this.match.penaltyShootout)
-        }
-
-        return events
-      }
-    }
-  }
-</script>
 
 <style scoped>
   .v-card > .container {

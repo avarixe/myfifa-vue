@@ -1,3 +1,56 @@
+<script>
+  import { ref, toRef, useStore } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'LoanBuyOptionActivator',
+    props: {
+      player: { type: Object, required: true },
+      loan: { type: Object, required: true }
+    },
+    setup (props) {
+      const dialog = ref(false)
+      const loading = ref(false)
+      const error = ref(false)
+      const errorMessage = ref('')
+      const store = useStore()
+      const loan = toRef(props, 'loan')
+      const { team } = useTeam()
+      const activateBuyOption = async () => {
+        try {
+          loading.value = true
+          await store.dispatch('loans/update', {
+            id: loan.value.id,
+            attributes: {
+              signedOn: loan.value.signedOn,
+              startedOn: loan.value.startedOn,
+              wage: loan.value.wage,
+              origin: loan.value.origin,
+              destination: loan.value.destination,
+              endedOn: team.value.currentlyOn,
+              activatedBuyOption: true
+            }
+          })
+          dialog.value = false
+        } catch (e) {
+          errorMessage.value = e.message
+          error.value = true
+        } finally {
+          loading.value = false
+        }
+      }
+
+      return {
+        dialog,
+        loading,
+        error,
+        errorMessage,
+        activateBuyOption
+      }
+    }
+  }
+</script>
+
 <template>
   <v-dialog
     v-model="dialog"
@@ -54,57 +107,3 @@
     </v-card>
   </v-dialog>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import pick from 'lodash.pick'
-
-  export default {
-    name: 'LoanBuyOptionActivator',
-    props: {
-      player: { type: Object, required: true },
-      loan: { type: Object, required: true }
-    },
-    data: () => ({
-      dialog: false,
-      loading: false,
-      error: false,
-      errorMessage: ''
-    }),
-    computed: {
-      team () {
-        return this.$store.$db().model('Team').find(this.$route.params.teamId)
-      }
-    },
-    methods: {
-      ...mapActions('loans', {
-        updateLoan: 'update'
-      }),
-      async activateBuyOption () {
-        try {
-          this.loading = true
-          await this.updateLoan({
-            id: this.loan.id,
-            attributes: {
-              ...pick(this.loan, [
-                'signedOn',
-                'startedOn',
-                'wage',
-                'origin',
-                'destination'
-              ]),
-              endedOn: this.team.currentlyOn,
-              activatedBuyOption: true
-            }
-          })
-          this.dialog = false
-        } catch (e) {
-          this.errorMessage = e.message
-          this.error = true
-        } finally {
-          this.loading = false
-        }
-      }
-    }
-  }
-</script>

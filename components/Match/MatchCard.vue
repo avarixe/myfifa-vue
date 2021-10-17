@@ -1,3 +1,15 @@
+<script>
+  export default {
+    name: 'MatchCard',
+    props: {
+      match: { type: Object, default: null },
+      title: { type: String, default: null },
+      color: { type: String, default: 'info' },
+      compact: { type: Boolean, default: false }
+    }
+  }
+</script>
+
 <template>
   <v-card>
     <v-toolbar
@@ -46,15 +58,3 @@
     </div>
   </v-card>
 </template>
-
-<script>
-  export default {
-    name: 'MatchCard',
-    props: {
-      match: { type: Object, default: null },
-      title: { type: String, default: null },
-      color: { type: String, default: 'info' },
-      compact: { type: Boolean, default: false }
-    }
-  }
-</script>

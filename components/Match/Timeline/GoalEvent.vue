@@ -1,3 +1,22 @@
+<script>
+  import { toRef, computed } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'GoalEvent',
+    props: {
+      match: { type: Object, required: true },
+      event: { type: Object, required: true },
+      readonly: { type: Boolean, default: false }
+    },
+    setup (props) {
+      const event = toRef(props, 'event')
+      const color = computed(() => event.value.ownGoal ? 'blue-grey' : 'blue')
+
+      return { color }
+    }
+  }
+</script>
+
 <template>
   <base-match-event
     :match="match"
@@ -28,19 +47,3 @@
     </div>
   </base-match-event>
 </template>
-
-<script>
-  export default {
-    name: 'GoalEvent',
-    props: {
-      match: { type: Object, required: true },
-      event: { type: Object, required: true },
-      readonly: { type: Boolean, default: false }
-    },
-    computed: {
-      color () {
-        return this.event.ownGoal ? 'blue-grey' : 'blue'
-      }
-    }
-  }
-</script>

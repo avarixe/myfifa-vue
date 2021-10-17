@@ -1,3 +1,26 @@
+<script>
+  import { formatDistance, parseISO } from 'date-fns'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'InjuryListCard',
+    props: {
+      players: { type: Array, required: true },
+      title: { type: String, required: true },
+      color: { type: String, required: true }
+    },
+    setup () {
+      const injuryDuration = player => formatDistance(
+        parseISO(player.currentInjury.endedOn),
+        parseISO(player.currentInjury.startedOn)
+      )
+
+      const { teamId } = useTeam()
+      return { injuryDuration, teamId }
+    }
+  }
+</script>
+
 <template>
   <v-card>
     <v-toolbar
@@ -23,7 +46,7 @@
           v-for="player in players"
           :key="player.id"
           v-ripple
-          @click="$router.push(`/teams/${team.id}/players/${player.id}`)"
+          @click="$router.push(`/teams/${teamId}/players/${player.id}`)"
         >
           <td>{{ player.name }}</td>
           <td class="text-center">{{ player.pos }}</td>
@@ -36,31 +59,6 @@
     </v-simple-table>
   </v-card>
 </template>
-
-<script>
-  import { formatDistance, parseISO } from 'date-fns'
-  import { TeamAccessible } from '@/mixins'
-
-  export default {
-    name: 'InjuryListCard',
-    mixins: [
-      TeamAccessible
-    ],
-    props: {
-      players: { type: Array, required: true },
-      title: { type: String, required: true },
-      color: { type: String, required: true }
-    },
-    methods: {
-      injuryDuration (player) {
-        return formatDistance(
-          parseISO(player.currentInjury.endedOn),
-          parseISO(player.currentInjury.startedOn)
-        )
-      }
-    }
-  }
-</script>
 
 <style scoped>
   tbody > tr {

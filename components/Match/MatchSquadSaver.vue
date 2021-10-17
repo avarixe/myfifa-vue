@@ -1,3 +1,74 @@
+<script>
+  import { ref, toRef, computed, useStore } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'MatchSquadSaver',
+    props: {
+      match: { type: Object, required: true }
+    },
+    setup (props) {
+      const menu = ref(false)
+      const loading = ref(false)
+      const squadName = ref('')
+
+      const match = toRef(props, 'match')
+      const starters = computed(() =>
+        match.value.caps.filter(cap => cap.start === 0)
+      )
+
+      const store = useStore()
+      const { teamId } = useTeam()
+      const squads = computed(() => {
+        return store.$db().model('Squad')
+          .query()
+          .with('squadPlayers')
+          .where('teamId', parseInt(teamId.value))
+          .get()
+      })
+
+      const saveLineupToSquad = async squadId => {
+        try {
+          if (squadId) {
+            await store.dispatch('squads/storeLineup', {
+              squadId,
+              matchId: match.value.id
+            })
+          } else if (squadName.value) {
+            loading.value = true
+
+            await store.dispatch('squads/create', {
+              teamId: teamId.value,
+              attributes: {
+                name: squadName.value,
+                squadPlayersAttributes: starters.value.map(cap => ({
+                  playerId: cap.playerId,
+                  pos: cap.pos
+                }))
+              }
+            })
+          }
+
+          menu.value = false
+        } catch (e) {
+          alert(e.message)
+        } finally {
+          loading.value = false
+        }
+      }
+
+      return {
+        menu,
+        loading,
+        squadName,
+        squads,
+        starters,
+        saveLineupToSquad
+      }
+    }
+  }
+</script>
+
 <template>
   <v-tooltip
     v-if="starters.length === 11"
@@ -44,67 +115,3 @@
     Save Lineup to Squad
   </v-tooltip>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import { TeamAccessible } from '@/mixins'
-
-  export default {
-    name: 'MatchSquadSaver',
-    mixins: [
-      TeamAccessible
-    ],
-    props: {
-      match: { type: Object, required: true }
-    },
-    data: () => ({
-      menu: false,
-      loading: false,
-      squadName: ''
-    }),
-    computed: {
-      squads () {
-        return this.$store.$db().model('Squad')
-          .query()
-          .with('squadPlayers')
-          .where('teamId', this.team.id)
-          .get()
-      },
-      starters () {
-        return this.match.caps.filter(c => c.start === 0)
-      }
-    },
-    methods: {
-      ...mapActions('squads', {
-        createSquad: 'create',
-        storeLineup: 'storeLineup'
-      }),
-      async saveLineupToSquad (squadId) {
-        try {
-          if (squadId) {
-            await this.storeLineup({ squadId, matchId: this.match.id })
-          } else if (this.squadName) {
-            this.loading = true
-
-            await this.createSquad({
-              teamId: this.team.id,
-              attributes: {
-                name: this.squadName,
-                squadPlayersAttributes: this.starters.map(cap => ({
-                  playerId: cap.playerId,
-                  pos: cap.pos
-                }))
-              }
-            })
-          }
-
-          this.menu = false
-        } catch (e) {
-          alert(e.message)
-        } finally {
-          this.loading = false
-        }
-      }
-    }
-  }
-</script>

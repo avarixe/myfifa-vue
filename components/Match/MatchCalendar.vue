@@ -1,3 +1,91 @@
+<script>
+  import { ref, reactive, computed, onMounted, useStore } from '@nuxtjs/composition-api'
+  import Vue from 'vue'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'MatchCalendar',
+    setup () {
+      const day = ref(new Date())
+      const selectedEvent = reactive({ value: {} })
+      const selectedElement = ref(null)
+      const selectedOpen = ref(false)
+      const competitionColors = reactive({})
+
+      const store = useStore()
+      const { team } = useTeam()
+      const matches = computed(() => {
+        return store.$db().model('Match')
+          .query()
+          .with('team')
+          .where('teamId', team.value.id)
+          .get()
+      })
+
+      const eventColors = [
+        'blue',
+        'purple',
+        'cyan',
+        'lime darken-2',
+        'teal',
+        'indigo',
+        'blue-grey'
+      ]
+      const events = computed(() => {
+        return matches.value.map(match => {
+          if (!competitionColors[match.competition]) {
+            Vue.set(
+              competitionColors,
+              match.competition,
+              eventColors[Object.keys(competitionColors).length % eventColors.length]
+            )
+          }
+          return {
+            ...match,
+            name: match.stage
+              ? `${match.competition} · ${match.stage}`
+              : match.competition,
+            color: competitionColors[match.competition],
+            opponent: match.opponent,
+            link: match.link
+          }
+        })
+      })
+
+      onMounted(() => {
+        day.value = team.value.currentlyOn
+      })
+
+      const viewMatch = ({ nativeEvent, event }) => {
+        const open = () => {
+          selectedEvent.value = event
+          selectedElement.value = nativeEvent.target
+          setTimeout(() => {
+            selectedOpen.value = true
+          }, 10)
+        }
+
+        if (selectedOpen.value) {
+          selectedOpen.value = false
+          setTimeout(open, 10)
+        } else {
+          open()
+        }
+      }
+
+      return {
+        events,
+        team,
+        day,
+        selectedEvent,
+        selectedElement,
+        selectedOpen,
+        viewMatch
+      }
+    }
+  }
+</script>
+
 <template>
   <v-card>
     <v-toolbar
@@ -68,90 +156,12 @@
         offset-overflow
       >
         <match-card
-          :match="selectedEvent"
-          :title="selectedEvent.competition"
-          :color="selectedEvent.color"
+          :match="selectedEvent.value"
+          :title="selectedEvent.value.competition"
+          :color="selectedEvent.value.color"
           compact
         />
       </v-menu>
     </v-card-text>
   </v-card>
 </template>
-
-<script>
-  import { TeamAccessible } from '@/mixins'
-
-  const eventColors = [
-    'blue',
-    'purple',
-    'cyan',
-    'lime darken-2',
-    'teal',
-    'indigo',
-    'blue-grey'
-  ]
-
-  export default {
-    name: 'MatchCalendar',
-    mixins: [
-      TeamAccessible
-    ],
-    data: () => ({
-      day: new Date(),
-      selectedEvent: {},
-      selectedElement: null,
-      selectedOpen: false,
-      competitionColors: {}
-    }),
-    computed: {
-      matches () {
-        return this.$store.$db().model('Match')
-          .query()
-          .with('team')
-          .where('teamId', this.teamId)
-          .get()
-      },
-      events () {
-        return this.matches.map(match => {
-          if (!this.competitionColors[match.competition]) {
-            this.$set(
-              this.competitionColors,
-              match.competition,
-              eventColors[Object.keys(this.competitionColors).length % eventColors.length]
-            )
-          }
-          return {
-            ...match,
-            name: match.stage
-              ? `${match.competition} · ${match.stage}`
-              : match.competition,
-            color: this.competitionColors[match.competition],
-            opponent: match.opponent,
-            link: match.link
-          }
-        })
-      }
-    },
-    mounted () {
-      this.day = this.team.currentlyOn
-    },
-    methods: {
-      viewMatch ({ nativeEvent, event }) {
-        const open = () => {
-          this.selectedEvent = event
-          this.selectedElement = nativeEvent.target
-          setTimeout(() => {
-            this.selectedOpen = true
-          }, 10)
-        }
-
-        if (this.selectedOpen) {
-          this.selectedOpen = false
-          setTimeout(open, 10)
-        } else {
-          open()
-        }
-      }
-    }
-  }
-</script>

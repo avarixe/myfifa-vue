@@ -1,3 +1,74 @@
+<script>
+  import { toRefs, computed } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'BaseMatchEvent',
+    props: {
+      match: { type: Object, required: true },
+      event: { type: Object, required: true },
+      readonly: { type: Boolean, default: false }
+    },
+    setup (props) {
+      const { match, event } = toRefs(props)
+
+      const { team } = useTeam()
+      const teamIsHome = computed(() => {
+        if (event.value.type === 'substitution') {
+          return match.value.home === team.value.name
+        } else {
+          return event.value.home
+        }
+      })
+
+      const itemColor = computed(() => {
+        if (event.value.type === 'penalty-shootout') {
+          return 'indigo'
+        } else {
+          return teamIsHome.value ? 'teal' : 'purple'
+        }
+      })
+
+      const itemTitle = computed(() => {
+        if (event.value.type === 'penalty-shootout') {
+          return 'Penalty Shootout'
+        } else {
+          return teamIsHome.value ? match.value.home : match.value.away
+        }
+      })
+
+      const minute = computed(() => {
+        if (event.value.type === 'penalty-shootout') {
+          return match.value.extraTime ? 120 : 90
+        } else {
+          return event.value.minute
+        }
+      })
+
+      const buttonLabel = computed(() => {
+        return event.value.type === 'penalty-shootout'
+          ? 'Penalty Shootout'
+          : `${event.value.type[0].toUpperCase()}${event.value.type.slice(1)}`
+      })
+
+      const store = computed(() => {
+        return event.value.type === 'penalty-shootout'
+          ? 'penaltyShootout'
+          : `${event.value.type}s`
+      })
+
+      return {
+        teamIsHome,
+        itemColor,
+        itemTitle,
+        minute,
+        buttonLabel,
+        store
+      }
+    }
+  }
+</script>
+
 <template>
   <v-timeline-item
     :color="itemColor"
@@ -41,56 +112,3 @@
     <slot />
   </v-timeline-item>
 </template>
-
-<script>
-  export default {
-    name: 'BaseMatchEvent',
-    props: {
-      match: { type: Object, required: true },
-      event: { type: Object, required: true },
-      readonly: { type: Boolean, default: false }
-    },
-    computed: {
-      teamIsHome () {
-        if (this.event.type === 'substitution') {
-          const team = this.$store.$db().model('Team')
-            .find(this.$route.params.teamId)
-          return team.name === this.match.home
-        } else {
-          return this.event.home
-        }
-      },
-      itemColor () {
-        if (this.event.type === 'penalty-shootout') {
-          return 'indigo'
-        } else {
-          return this.teamIsHome ? 'teal' : 'purple'
-        }
-      },
-      itemTitle () {
-        if (this.event.type === 'penalty-shootout') {
-          return 'Penalty Shootout'
-        } else {
-          return this.teamIsHome ? this.match.home : this.match.away
-        }
-      },
-      minute () {
-        if (this.event.type === 'penalty-shootout') {
-          return this.match.extraTime ? 120 : 90
-        } else {
-          return this.event.minute
-        }
-      },
-      buttonLabel () {
-        return this.event.type === 'penalty-shootout'
-          ? 'Penalty Shootout'
-          : `${this.event.type[0].toUpperCase()}${this.event.type.slice(1)}`
-      },
-      store () {
-        return this.event.type === 'penalty-shootout'
-          ? 'penaltyShootout'
-          : `${this.event.type}s`
-      }
-    }
-  }
-</script>

@@ -1,3 +1,50 @@
+<script>
+  import { reactive, toRef, watchEffect, useStore } from '@nuxtjs/composition-api'
+  import { useMatch } from '@/composables'
+  import { isRequired } from '@/functions'
+
+  export default {
+    name: 'MatchSideBookingForm',
+    props: {
+      side: { type: String, required: true }
+    },
+    setup (props, { emit }) {
+      const attributes = reactive({
+        home: true,
+        playerName: '',
+        redCard: false
+      })
+
+      const side = toRef(props, 'side')
+      watchEffect(() => {
+        attributes.home = side.value === 'home'
+      })
+
+      const store = useStore()
+      const { matchId, minute } = useMatch()
+      const saveBooking = async () => {
+        await store.dispatch('bookings/create', {
+          matchId: matchId.value,
+          attributes: {
+            ...attributes,
+            minute: minute.value
+          }
+        })
+        emit('submitted')
+      }
+
+      return {
+        attributes,
+        minute,
+        saveBooking,
+        rules: {
+          playerName: [isRequired('Player')]
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <base-form
     :submit="saveBooking"
@@ -45,56 +92,3 @@
     </template>
   </base-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import { MatchAccessible } from '@/mixins'
-  import { isRequired } from '@/functions'
-
-  export default {
-    name: 'MatchSideBookingForm',
-    mixins: [
-      MatchAccessible
-    ],
-    props: {
-      side: { type: String, required: true }
-    },
-    data: () => ({
-      attributes: {
-        home: true,
-        playerName: '',
-        redCard: false
-      }
-    }),
-    computed: {
-      rules () {
-        return {
-          playerName: [isRequired('Player')]
-        }
-      }
-    },
-    watch: {
-      side: {
-        immediate: true,
-        handler (side) {
-          this.attributes.home = side === 'home'
-        }
-      }
-    },
-    methods: {
-      ...mapActions('bookings', {
-        createBooking: 'create'
-      }),
-      async saveBooking () {
-        await this.createBooking({
-          matchId: this.match.id,
-          attributes: {
-            ...this.attributes,
-            minute: this.minute
-          }
-        })
-        this.$emit('submitted')
-      }
-    }
-  }
-</script>

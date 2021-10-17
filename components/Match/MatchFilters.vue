@@ -1,3 +1,118 @@
+<script>
+  import { ref, computed, useStore } from '@nuxtjs/composition-api'
+  import { nextTick } from 'vue'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'MatchFilters',
+    props: {
+      filters: {
+        type: Object,
+        default: () => ({
+          Season: null,
+          Competition: null,
+          Stage: null,
+          Team: null,
+          Result: null
+        })
+      }
+    },
+    setup (props) {
+      const resetKey = ref(0)
+      const filterType = ref(null)
+      const filterValue = ref(null)
+      const filterValueMenuOpen = ref(false)
+
+      const { currentSeason, seasonLabel, teamId } = useTeam()
+      const seasons = computed(() => {
+        return [...Array(currentSeason.value + 1).keys()].reverse().map(i => ({
+          value: i,
+          text: seasonLabel(i)
+        }))
+      })
+
+      const store = useStore()
+      const filters = props.filters
+      const competitions = computed(() => {
+        return store.$db().model('Competition')
+          .query()
+          .where('teamId', parseInt(teamId.value))
+          .where(comp => [null, comp.season].includes(filters.Season))
+          .orderBy('season', 'desc')
+          .get()
+          .map(comp => comp.name)
+      })
+
+      const filterTypeOptions = computed(() =>
+        Object.keys(filters).filter(filterType => filters[filterType] === null)
+      )
+
+      const filterValueOptions = computed(() => {
+        switch (filterType.value) {
+          case 'Season':
+            return seasons.value
+          case 'Competition':
+            return [...new Set(competitions.value)]
+          case 'Result':
+            return ['Win', 'Draw', 'Loss']
+          default:
+            return []
+        }
+      })
+
+      const filterValues = computed(() => {
+        const values = {}
+        for (const filter in filters) {
+          const filterValue = filters[filter]
+          if (filterValue !== null) {
+            values[filter] = filter === 'Season'
+              ? seasonLabel(filterValue)
+              : filterValue
+          }
+        }
+        return values
+      })
+
+      const filterValueSelect = ref(null)
+      const filterValueField = ref(null)
+      const openFilterValueField = async () => {
+        await nextTick()
+        if (filterValueOptions.value.length > 0) {
+          filterValueSelect.value.activateMenu()
+        } else {
+          filterValueField.value.focus()
+        }
+      }
+
+      const closeFilterValueField = () => {
+        filterType.value = null
+        resetKey.value++
+      }
+
+      const applyFilter = () => {
+        filters[filterType.value] = filterValue.value
+        filterValue.value = null
+        filterType.value = null
+      }
+
+      return {
+        resetKey,
+        filterType,
+        filterValue,
+        filterValueMenuOpen,
+        filterTypeOptions,
+        filterValueOptions,
+        filterValues,
+        filterValueSelect,
+        filterValueField,
+        openFilterValueField,
+        closeFilterValueField,
+        applyFilter
+      }
+    }
+  }
+</script>
+
 <template>
   <div :key="resetKey">
     <v-select
@@ -48,97 +163,3 @@
     </div>
   </div>
 </template>
-
-<script>
-  import { TeamAccessible } from '@/mixins'
-
-  export default {
-    name: 'MatchFilters',
-    mixins: [
-      TeamAccessible
-    ],
-    props: {
-      filters: {
-        type: Object,
-        default: () => ({
-          Season: null,
-          Competition: null,
-          Stage: null,
-          Team: null,
-          Result: null
-        })
-      }
-    },
-    data: () => ({
-      resetKey: 0,
-      filterType: null,
-      filterValue: null,
-      filterValueMenuOpen: false
-    }),
-    computed: {
-      seasons () {
-        return [...Array(this.season + 1).keys()].reverse().map(i => ({
-          value: i,
-          text: this.seasonLabel(i)
-        }))
-      },
-      competitions () {
-        return this.$store.$db().model('Competition')
-          .query()
-          .where('teamId', this.team.id)
-          .where(comp => [null, comp.season].includes(this.filters.Season))
-          .orderBy('season', 'desc')
-          .get()
-          .map(comp => comp.name)
-      },
-      filterTypeOptions () {
-        return Object.keys(this.filters)
-          .filter(filterType => this.filters[filterType] === null)
-      },
-      filterValueOptions () {
-        switch (this.filterType) {
-          case 'Season':
-            return this.seasons
-          case 'Competition':
-            return [...new Set(this.competitions)]
-          case 'Result':
-            return ['Win', 'Draw', 'Loss']
-          default:
-            return []
-        }
-      },
-      filterValues () {
-        const values = {}
-        for (const filter in this.filters) {
-          const filterValue = this.filters[filter]
-          if (filterValue !== null) {
-            values[filter] = filter === 'Season'
-              ? this.seasonLabel(filterValue)
-              : filterValue
-          }
-        }
-        return values
-      }
-    },
-    methods: {
-      openFilterValueField () {
-        this.$nextTick(() => {
-          if (this.filterValueOptions.length > 0) {
-            this.$refs.filterValueSelect.activateMenu()
-          } else {
-            this.$refs.filterValueField.focus()
-          }
-        })
-      },
-      closeFilterValueField () {
-        this.filterType = null
-        this.resetKey++
-      },
-      applyFilter () {
-        this.filters[this.filterType] = this.filterValue
-        this.filterValue = null
-        this.filterType = null
-      }
-    }
-  }
-</script>

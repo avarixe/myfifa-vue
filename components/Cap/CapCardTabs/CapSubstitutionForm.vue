@@ -30,7 +30,7 @@
             minute: minute.value
           }
         })
-        this.$emit('submitted')
+        emit('submitted')
       }
 
       const activePlayers = useActivePlayers()

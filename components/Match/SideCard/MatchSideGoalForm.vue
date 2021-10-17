@@ -1,3 +1,62 @@
+<script>
+  import { reactive, toRef, watchEffect, useStore } from '@nuxtjs/composition-api'
+  import { useMatch } from '@/composables'
+  import { isRequired } from '@/functions'
+
+  export default {
+    name: 'MatchSideGoalForm',
+    props: {
+      side: { type: String, required: true }
+    },
+    setup (props, { emit }) {
+      const attributes = reactive({
+        home: true,
+        playerName: '',
+        assistedBy: '',
+        ownGoal: false,
+        penalty: false
+      })
+
+      const side = toRef(props, 'side')
+      watchEffect(() => {
+        attributes.home = side.value === 'home'
+        if (attributes.ownGoal || attributes.penalty) {
+          attributes.assistedBy = null
+        }
+      })
+
+      const store = useStore()
+      const { matchId, minute } = useMatch()
+      const saveGoal = async () => {
+        await store.dispatch('goals/create', {
+          matchId: matchId.value,
+          attributes: {
+            ...attributes,
+            minute: minute.value
+          }
+        })
+        emit('submitted')
+      }
+
+      const resetAttributes = () => {
+        attributes.ownGoal = false
+        attributes.penalty = false
+      }
+
+      return {
+        attributes,
+        minute,
+        saveGoal,
+        resetAttributes,
+        rules: {
+          playerName: [isRequired('Goal Scorer')]
+        }
+      }
+    }
+  }
+</script>
+
+
 <template>
   <base-form
     :submit="saveGoal"
@@ -35,14 +94,12 @@
           label="Penalty"
           :disabled="attributes.ownGoal"
           hide-details
-          @change="clearAssistedBy"
         />
         <v-checkbox
           v-model="attributes.ownGoal"
           label="Own Goal"
           :disabled="attributes.penalty"
           hide-details
-          @change="clearAssistedBy"
         />
         <div class="d-flex">
           <v-spacer />
@@ -60,67 +117,3 @@
     </template>
   </base-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import { MatchAccessible } from '@/mixins'
-  import { isRequired } from '@/functions'
-
-  export default {
-    name: 'MatchSideGoalForm',
-    mixins: [
-      MatchAccessible
-    ],
-    props: {
-      side: { type: String, required: true }
-    },
-    data: () => ({
-      attributes: {
-        home: true,
-        playerName: '',
-        assistedBy: '',
-        ownGoal: false,
-        penalty: false
-      }
-    }),
-    computed: {
-      rules () {
-        return {
-          playerName: [isRequired('Goal Scorer')]
-        }
-      }
-    },
-    watch: {
-      side: {
-        immediate: true,
-        handler (side) {
-          this.attributes.home = side === 'home'
-        }
-      }
-    },
-    methods: {
-      ...mapActions('goals', {
-        createGoal: 'create'
-      }),
-      clearAssistedBy (bool) {
-        if (bool) {
-          this.attributes.assistedBy = null
-        }
-      },
-      async saveGoal () {
-        await this.createGoal({
-          matchId: this.match.id,
-          attributes: {
-            ...this.attributes,
-            minute: this.minute
-          }
-        })
-        this.$emit('submitted')
-      },
-      resetAttributes () {
-        this.attributes.ownGoal = false
-        this.attributes.penalty = false
-      }
-    }
-  }
-</script>

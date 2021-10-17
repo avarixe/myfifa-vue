@@ -1,3 +1,82 @@
+<script>
+  import { ref, toRef, computed, onMounted, useContext, useStore } from '@nuxtjs/composition-api'
+  import { nextTick } from 'vue'
+  import { useTeam } from '@/composables'
+  import { matchPositions } from '@/constants'
+
+  export default {
+    name: 'MatchOverview',
+    props: {
+      match: { type: Object, required: true },
+      readonly: { type: Boolean, default: true }
+    },
+    setup (props) {
+      const { team } = useTeam()
+      const match = toRef(props, 'match')
+
+      const teamPlayed = computed(() =>
+        [match.value.home, match.value.away].includes(team.value.name)
+      )
+
+      const mode = ref('formation')
+      const modeText = computed(() => {
+        switch (mode.value) {
+          case 'formation':
+            return 'Formation'
+          case 'lineup':
+            return 'Lineup'
+          default:
+            return null
+        }
+      })
+
+      const store = useStore()
+      const avgOVR = positionType => {
+        const playerIds = []
+
+        match.value.caps.forEach(cap => {
+          if (matchPositions[cap.pos] === positionType) {
+            playerIds.push(cap.playerId)
+          }
+        })
+
+        const totalOvr = store.$db().model('Player')
+          .query()
+          .whereIdIn(playerIds)
+          .get()
+          .reduce((sum, player) => sum + player.ovrAt(match.value.playedOn), 0)
+
+        return Math.round(totalOvr / playerIds.length)
+      }
+      const defOVR = computed(() => avgOVR('DEF'))
+      const midOVR = computed(() => avgOVR('MID'))
+      const attOVR = computed(() => avgOVR('ATT'))
+
+      const { $vuetify } = useContext()
+      onMounted(async () => {
+        if (!teamPlayed.value) {
+          mode.value = 'lineup'
+        }
+
+        await nextTick()
+
+        if (['xs', 'sm'].includes($vuetify.breakpoint.name)) {
+          mode.value = 'lineup'
+        }
+      })
+
+      return {
+        mode,
+        modeText,
+        teamPlayed,
+        defOVR,
+        midOVR,
+        attOVR
+      }
+    }
+  }
+</script>
+
 <template>
   <v-container>
     <v-row
@@ -76,78 +155,3 @@
     />
   </v-container>
 </template>
-
-<script>
-  import { matchPositions } from '@/constants'
-
-  export default {
-    name: 'MatchOverview',
-    props: {
-      match: { type: Object, required: true },
-      readonly: { type: Boolean, default: true }
-    },
-    data: () => ({
-      mode: 'formation'
-    }),
-    computed: {
-      team () {
-        return this.$store.$db().model('Team').find(this.$route.params.teamId)
-      },
-      teamPlayed () {
-        return [this.match.home, this.match.away].includes(this.team.name)
-      },
-      modeText () {
-        switch (this.mode) {
-          case 'formation':
-            return 'Formation'
-          case 'lineup':
-            return 'Lineup'
-          default:
-            return null
-        }
-      },
-      defOVR () {
-        return this.avgOVR('DEF')
-      },
-      midOVR () {
-        return this.avgOVR('MID')
-      },
-      attOVR () {
-        return this.avgOVR('ATT')
-      }
-    },
-    mounted () {
-      if (!this.teamPlayed) {
-        this.mode = 'lineup'
-      }
-
-      this.$nextTick(() => {
-        if (['xs', 'sm'].includes(this.$vuetify.breakpoint.name)) {
-          this.mode = 'lineup'
-        }
-      })
-    },
-    methods: {
-      avgOVR (positionType) {
-        let playerIds = []
-
-        this.match.caps.forEach(cap => {
-          if (matchPositions[cap.pos] === positionType) {
-            playerIds.push(cap.playerId)
-          }
-        })
-
-        const totalOvr = this.$store.$db().model('Player')
-          .query()
-          .whereIdIn(playerIds)
-          .get()
-          .reduce(
-            (sum, player) => sum + player.ovrAt(this.match.playedOn),
-            0
-          )
-
-        return Math.round(totalOvr / playerIds.length)
-      }
-    }
-  }
-</script>

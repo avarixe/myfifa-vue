@@ -1,3 +1,53 @@
+<script>
+  import { toRef, computed } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+  import { matchPositions } from '@/constants'
+
+  export default {
+    name: 'MatchLineup',
+    props: {
+      match: { type: Object, required: true },
+      readonly: { type: Boolean, default: false }
+    },
+    setup (props) {
+      const { team } = useTeam()
+      const match = toRef(props, 'match')
+
+      const teamPlayed = computed(() =>
+        [match.value.home, match.value.away].includes(team.value.name)
+      )
+
+      const positions = Object.keys(matchPositions)
+      const sortedCaps = computed(() => {
+        return [...match.value.caps].sort((a, b) => {
+          if (a.start !== b.start) {
+            return a.start - b.start
+          } else {
+            return positions.indexOf(a.pos) - positions.indexOf(b.pos)
+          }
+        })
+      })
+
+      const nonTeamSides = computed(() => {
+        const nonTeamSides = []
+        const sides = ['home', 'away']
+        sides.forEach(side => {
+          if (match.value[side] !== team.value.name) {
+            nonTeamSides.push(side)
+          }
+        })
+        return nonTeamSides
+      })
+
+      return {
+        teamPlayed,
+        sortedCaps,
+        nonTeamSides
+      }
+    }
+  }
+</script>
+
 <template>
   <v-list dense>
     <template v-if="teamPlayed">
@@ -47,44 +97,3 @@
     </match-side-card>
   </v-list>
 </template>
-
-<script>
-  import { matchPositions } from '@/constants'
-
-  const positions = Object.keys(matchPositions)
-
-  export default {
-    name: 'MatchLineup',
-    props: {
-      match: { type: Object, required: true },
-      readonly: { type: Boolean, default: false }
-    },
-    computed: {
-      team () {
-        return this.$store.$db().model('Team').find(this.$route.params.teamId)
-      },
-      teamPlayed () {
-        return [this.match.home, this.match.away].includes(this.team.name)
-      },
-      sortedCaps () {
-        return [...this.match.caps].sort((a, b) => {
-          if (a.start !== b.start) {
-            return a.start - b.start
-          } else {
-            return positions.indexOf(a.pos) - positions.indexOf(b.pos)
-          }
-        })
-      },
-      nonTeamSides () {
-        const nonTeamSides = []
-        const sides = ['home', 'away']
-        sides.forEach(side => {
-          if (this.match[side] !== this.team.name) {
-            nonTeamSides.push(side)
-          }
-        })
-        return nonTeamSides
-      }
-    }
-  }
-</script>

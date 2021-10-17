@@ -1,3 +1,41 @@
+<script>
+  import { computed, useStore } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'MatchSquadApplier',
+    props: {
+      match: { type: Object, required: true }
+    },
+    setup (props) {
+      const store = useStore()
+      const { teamId } = useTeam()
+      const squads = computed(() => {
+        return store.$db().model('Squad')
+          .query()
+          .where('teamId', teamId.value)
+          .get()
+      })
+
+      const applySquadToMatch = async squadId => {
+        try {
+          await store.dispatch('matches/applySquad', {
+            matchId: props.match.id,
+            squadId
+          })
+        } catch (e) {
+          alert(e.message)
+        }
+      }
+
+      return {
+        squads,
+        applySquadToMatch
+      }
+    }
+  }
+</script>
+
 <template>
   <v-tooltip
     v-if="squads.length > 0"
@@ -32,41 +70,3 @@
     Apply Squad
   </v-tooltip>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import { TeamAccessible } from '@/mixins'
-
-  export default {
-    name: 'MatchSquadApplier',
-    mixins: [
-      TeamAccessible
-    ],
-    props: {
-      match: { type: Object, required: true }
-    },
-    computed: {
-      squads () {
-        return this.$store.$db().model('Squad')
-          .query()
-          .where('teamId', this.team.id)
-          .get()
-      }
-    },
-    methods: {
-      ...mapActions('matches', [
-        'applySquad'
-      ]),
-      async applySquadToMatch (squadId) {
-        try {
-          await this.applySquad({
-            matchId: this.match.id,
-            squadId
-          })
-        } catch (e) {
-          alert(e.message)
-        }
-      }
-    }
-  }
-</script>

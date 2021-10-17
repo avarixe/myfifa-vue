@@ -1,3 +1,101 @@
+<script>
+  import { ref, reactive, toRef, watchEffect, useStore } from '@nuxtjs/composition-api'
+  import Vue from 'vue'
+  import { useTeam } from '@/composables'
+  import { isRequired, isNumber } from '@/functions'
+
+  export default {
+    name: 'InjuryForm',
+    props: {
+      player: { type: Object, required: true },
+      record: { type: Object, default: null },
+      color: { type: String, default: null },
+      dark: { type: Boolean, default: false }
+    },
+    setup (props) {
+      const attributes = reactive({
+        startedOn: null,
+        endedOn: null,
+        duration: {
+          length: null,
+          timespan: null
+        },
+        description: ''
+      })
+
+      const { team } = useTeam()
+
+      const dialog = ref(false)
+      const title = ref('Record New Injury')
+      const durationOn = ref(false)
+      const record = toRef(props, 'record')
+      watchEffect(() => {
+        if (dialog.value) {
+          if (record.value) {
+            attributes.startedOn = record.value.startedOn
+            attributes.endedOn = record.value.endedOn
+            attributes.description = record.value.description
+            durationOn.value = false
+            title.value = 'Update Injury'
+          } else {
+            attributes.startedOn = team.value.currentlyOn
+            attributes.endedOn = team.value.currentlyOn
+            durationOn.value = true
+          }
+        }
+      })
+
+      watchEffect(() => {
+        if (durationOn.value) {
+          Vue.set(attributes, 'duration', {
+            length: null,
+            timespan: null
+          })
+        } else {
+          Vue.delete(attributes, 'duration')
+        }
+      })
+
+      const store = useStore()
+      const submit = async () => {
+        if (record.value) {
+          await store.dispatch('injuries/update', {
+            id: record.value.id,
+            attributes
+          })
+        } else {
+          await store.dispatch('injures/create', {
+            playerId: props.player.id,
+            attributes
+          })
+        }
+      }
+
+      return {
+        attributes,
+        dialog,
+        submit,
+        title,
+        durationOn,
+        rulesFor: {
+          description: [isRequired('Description')],
+          durationLength: [
+            isRequired('Length of Duration'),
+            isNumber('Length of Duration')
+          ],
+          durationTimespan: [isRequired('Timespan')]
+        },
+        timespans: [
+          'Days',
+          'Weeks',
+          'Months',
+          'Years'
+        ],
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
     v-model="dialog"
@@ -26,7 +124,7 @@
           required
         />
       </v-col>
-      <template v-if="durationOn">
+      <template v-if="durationOn && attributes.duration">
         <v-col cols="6">
           <v-text-field
             v-model.number="attributes.duration['length']"
@@ -76,104 +174,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import pick from 'lodash.pick'
-  import { DialogFormable } from '@/mixins'
-  import { isRequired, isNumber } from '@/functions'
-
-  export default {
-    name: 'InjuryForm',
-    mixins: [
-      DialogFormable
-    ],
-    props: {
-      player: { type: Object, required: true },
-      record: { type: Object, default: null },
-      color: { type: String, default: null },
-      dark: { type: Boolean, default: false }
-    },
-    data: () => ({
-      attributes: {
-        startedOn: null,
-        endedOn: null,
-        duration: {
-          length: null,
-          timespan: null
-        },
-        description: ''
-      },
-      rulesFor: {
-        description: [isRequired('Description')],
-        durationLength: [
-          isRequired('Length of Duration'),
-          isNumber('Length of Duration')
-        ],
-        durationTimespan: [isRequired('Timespan')]
-      },
-      timespans: [
-        'Days',
-        'Weeks',
-        'Months',
-        'Years'
-      ],
-      durationOn: false
-    }),
-    computed: {
-      team () {
-        return this.$store.$db().model('Team').find(this.$route.params.teamId)
-      },
-      title () {
-        return this.record ? 'Update Injury' : 'Record New Injury'
-      }
-    },
-    watch: {
-      dialog (val) {
-        if (val) {
-          if (this.record) {
-            this.attributes = pick(this.record, [
-              'startedOn',
-              'endedOn',
-              'description'
-            ])
-            this.durationOn = false
-          } else {
-            this.attributes.startedOn = this.team.currentlyOn
-            this.attributes.endedOn = this.team.currentlyOn
-            this.durationOn = true
-          }
-        }
-      },
-      durationOn (durationOn) {
-        if (durationOn) {
-          this.$set(this.attributes, 'duration', {
-            length: null,
-            timespan: null
-          })
-        } else {
-          this.$delete(this.attributes, 'duration')
-        }
-      }
-    },
-    methods: {
-      ...mapActions('injuries', {
-        createInjury: 'create',
-        updateInjury: 'update'
-      }),
-      async submit () {
-        if (this.record) {
-          await this.updateInjury({
-            id: this.record.id,
-            attributes: this.attributes
-          })
-        } else {
-          await this.createInjury({
-            playerId: this.player.id,
-            attributes: this.attributes
-          })
-        }
-      }
-    }
-  }
-</script>

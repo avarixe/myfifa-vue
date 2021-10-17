@@ -1,3 +1,26 @@
+<script>
+  import { toRefs, computed } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'PenaltyShootoutEvent',
+    props: {
+      match: { type: Object, required: true },
+      event: { type: Object, required: true },
+      readonly: { type: Boolean, default: false }
+    },
+    setup (props) {
+      const { event, match } = toRefs(props)
+      const winner = computed(() => {
+        return event.value.homeScore > event.value.awayScore
+          ? match.value.home
+          : match.value.away
+      })
+
+      return { winner }
+    }
+  }
+</script>
+
 <template>
   <base-match-event
     :match="match"
@@ -12,21 +35,3 @@
     </div>
   </base-match-event>
 </template>
-
-<script>
-  export default {
-    name: 'PenaltyShootoutEvent',
-    props: {
-      match: { type: Object, required: true },
-      event: { type: Object, required: true },
-      readonly: { type: Boolean, default: false }
-    },
-    computed: {
-      winner () {
-        return this.event.homeScore > this.event.awayScore
-          ? this.match.home
-          : this.match.away
-      }
-    }
-  }
-</script>

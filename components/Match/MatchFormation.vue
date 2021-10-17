@@ -1,3 +1,56 @@
+<script>
+  import { toRefs, computed } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'MatchFormation',
+    props: {
+      match: { type: Object, required: true },
+      readonly: { type: Boolean, default: false }
+    },
+    setup (props) {
+      const { match, readonly } = toRefs(props)
+
+      const starters = computed(() => {
+        return match.value.caps.filter(c => c.start === 0)
+      })
+      const substitutes = computed(() => {
+        return match.value.caps.filter(c => c.start > 0)
+      })
+      const substitutesRowLength = computed(() => {
+        return readonly.value ? 5 : 4
+      })
+      const firstSubstitutesRow = computed(() => {
+        return substitutes.value.slice(0, substitutesRowLength.value)
+      })
+      const firstRowPadding = computed(() => {
+        return substitutesRowLength.value - substitutes.value.length
+      })
+      const numExtraSubstitutesRows = computed(() => {
+        return Math.floor(substitutes.value.length / substitutesRowLength.value)
+      })
+
+      const substitutesRow = i => substitutes.value.slice(
+        i * substitutesRowLength.value,
+        (i + 1) * substitutesRowLength.value
+      )
+
+      const { team } = useTeam()
+
+      return {
+        starters,
+        substitutes,
+        substitutesRowLength,
+        firstSubstitutesRow,
+        firstRowPadding,
+        numExtraSubstitutesRows,
+        substitutesRow,
+        team
+      }
+    }
+  }
+</script>
+
 <template>
   <formation-grid :players="starters">
     <template #position="{ player }">
@@ -104,44 +157,3 @@
     </template>
   </formation-grid>
 </template>
-
-<script>
-  export default {
-    name: 'MatchFormation',
-    props: {
-      match: { type: Object, required: true },
-      readonly: { type: Boolean, default: false }
-    },
-    computed: {
-      team () {
-        return this.$store.$db().model('Team').find(this.$route.params.teamId)
-      },
-      starters () {
-        return this.match.caps.filter(c => c.start === 0)
-      },
-      substitutes () {
-        return this.match.caps.filter(c => c.start > 0)
-      },
-      substitutesRowLength () {
-        return this.readonly ? 5 : 4
-      },
-      firstSubstitutesRow () {
-        return this.substitutes.slice(0, this.substitutesRowLength)
-      },
-      firstRowPadding () {
-        return this.substitutesRowLength - this.substitutes.length
-      },
-      numExtraSubstitutesRows () {
-        return Math.floor(this.substitutes.length / this.substitutesRowLength)
-      }
-    },
-    methods: {
-      substitutesRow (i) {
-        return this.substitutes.slice(
-          i * this.substitutesRowLength,
-          (i + 1) * this.substitutesRowLength
-        )
-      }
-    }
-  }
-</script>

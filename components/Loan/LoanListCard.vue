@@ -1,3 +1,29 @@
+<script>
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'LoanListCard',
+    props: {
+      players: { type: Array, required: true },
+      title: { type: String, required: true },
+      color: { type: String, required: true }
+    },
+    setup () {
+      const { team } = useTeam()
+
+      const rowColor = player => ({
+        'red--text': player.currentLoan.transferFee &&
+          player.currentLoan.transferFee < player.value
+      })
+
+      return {
+        rowColor,
+        team
+      }
+    }
+  }
+</script>
+
 <template>
   <v-card>
     <v-toolbar
@@ -42,31 +68,6 @@
     </v-simple-table>
   </v-card>
 </template>
-
-<script>
-  export default {
-    name: 'LoanListCard',
-    props: {
-      players: { type: Array, required: true },
-      title: { type: String, required: true },
-      color: { type: String, required: true }
-    },
-    computed: {
-      team () {
-        return this.$store.$db().model('Team')
-          .find(parseInt(this.$route.params.teamId))
-      }
-    },
-    methods: {
-      rowColor (player) {
-        return {
-          'red--text': player.currentLoan.transferFee &&
-            player.currentLoan.transferFee < player.value
-        }
-      }
-    }
-  }
-</script>
 
 <style scoped>
   tbody > tr {

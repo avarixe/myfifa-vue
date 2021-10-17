@@ -1,3 +1,72 @@
+<script>
+  import { reactive, computed, useStore } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'MatchGrid',
+    setup () {
+      const filters = reactive({
+        Season: null,
+        Competition: null,
+        Stage: null,
+        Team: null,
+        Result: null
+      })
+
+      const matchPassesFilter = (match, filter) => {
+        const filterValue = filters[filter]
+
+        if (filterValue === null) {
+          return true
+        }
+
+        switch (filter) {
+          case 'Season':
+            return filterValue === match.season
+          case 'Competition':
+            return filterValue === match.competition
+          case 'Stage':
+            return match.stage &&
+              match.stage.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
+          case 'Team':
+            return match.home.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0 ||
+              match.away.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
+          case 'Result':
+            return filterValue.toLowerCase() === match.teamResult
+        }
+      }
+
+      const store = useStore()
+      const { teamId } = useTeam()
+      const matches = computed(() => {
+        return store.$db().model('Match')
+          .query()
+          .where('teamId', parseInt(teamId.value))
+          .where(match => {
+            for (const filter in filters) {
+              if (!matchPassesFilter(match, filter)) {
+                return false
+              }
+            }
+            return true
+          })
+          .get()
+      })
+
+      return {
+        headers: [
+          { text: 'Match', value: 'score', align: 'center', sortable: false, width: 250 },
+          { text: 'Competition', value: 'competition', align: 'center', sortable: false, width: 250 },
+          { text: 'Date Played', value: 'playedOn', width: 120 },
+          { text: 'Link', value: 'link', align: 'center', class: 'stick-right', sortable: false, width: 40 }
+        ],
+        filters,
+        matches
+      }
+    }
+  }
+</script>
+
 <template>
   <v-card>
     <v-card-text>
@@ -40,65 +109,3 @@
     </v-card-text>
   </v-card>
 </template>
-
-<script>
-  export default {
-    name: 'MatchGrid',
-    data: () => ({
-      headers: [
-        { text: 'Match', value: 'score', align: 'center', sortable: false, width: 250 },
-        { text: 'Competition', value: 'competition', align: 'center', sortable: false, width: 250 },
-        { text: 'Date Played', value: 'playedOn', width: 120 },
-        { text: 'Link', value: 'link', align: 'center', class: 'stick-right', sortable: false, width: 40 }
-      ],
-      filters: {
-        Season: null,
-        Competition: null,
-        Stage: null,
-        Team: null,
-        Result: null
-      }
-    }),
-    computed: {
-      matches () {
-        return this.$store.$db().model('Match')
-          .query()
-          .where('teamId', parseInt(this.$route.params.teamId))
-          .where(match => {
-            for (const filter in this.filters) {
-              if (!this.matchPassesFilter(match, filter)) {
-                return false
-              }
-            }
-
-            return true
-          })
-          .get()
-      }
-    },
-    methods: {
-      matchPassesFilter (match, filter) {
-        const filterValue = this.filters[filter]
-
-        if (filterValue === null) {
-          return true
-        }
-
-        switch (filter) {
-          case 'Season':
-            return filterValue === match.season
-          case 'Competition':
-            return filterValue === match.competition
-          case 'Stage':
-            return match.stage &&
-              match.stage.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
-          case 'Team':
-            return match.home.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0 ||
-              match.away.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
-          case 'Result':
-            return filterValue.toLowerCase() === match.teamResult
-        }
-      }
-    }
-  }
-</script>
