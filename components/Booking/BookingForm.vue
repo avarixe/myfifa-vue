@@ -6,7 +6,7 @@
   export default {
     name: 'BookingForm',
     props: {
-      record: { type: Object, default: null }
+      record: { type: Object, required: true }
     },
     setup (props) {
       const attributes = reactive({
@@ -17,22 +17,15 @@
       })
 
       const dialog = ref(false)
-      const title = ref('')
       const record = toRef(props, 'record')
       const { minute, match, unsubbedPlayers } = useMatch()
       watchEffect(() => {
         if (dialog.value) {
-          if (record.value) {
-            attributes.home = record.value.home
-            attributes.playerId = record.value.playerId
-            attributes.playerName = record.value.playerName
-            attributes.redCard = record.value.redCard
-            minute.value = record.value.minute
-            title.value = 'Edit Booking'
-          } else {
-            attributes.redCard = false
-            title.value = 'New Booking'
-          }
+          attributes.home = record.value.home
+          attributes.playerId = record.value.playerId
+          attributes.playerName = record.value.playerName
+          attributes.redCard = record.value.redCard
+          minute.value = record.value.minute
         }
       })
 
@@ -43,22 +36,13 @@
 
       const store = useStore()
       const submit = async () => {
-        const fullAttributes = {
-          ...attributes,
-          minute: minute.value
-        }
-
-        if (record.value) {
-          await store.dispatch('bookings/update', {
-            id: record.value.id,
-            attributes: fullAttributes
-          })
-        } else {
-          await store.dispatch('bookings/create', {
-            matchId: match.value.id,
-            attributes: fullAttributes
-          })
-        }
+        await store.dispatch('bookings/update', {
+          id: record.value.id,
+          attributes: {
+            ...attributes,
+            minute: minute.value
+          }
+        })
       }
 
       const { team } = useTeam()
@@ -66,7 +50,6 @@
         dialog,
         attributes,
         minute,
-        title,
         team,
         match,
         rulesFor: {
@@ -84,7 +67,7 @@
   <dialog-form
     v-model="dialog"
     title-icon="mdi-book"
-    :title="title"
+    title="Edit Booking"
     :submit="submit"
   >
     <template #activator="{ on }">

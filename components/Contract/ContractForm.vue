@@ -1,3 +1,121 @@
+<script>
+  import { ref, reactive, toRef, computed, watch, useStore } from '@nuxtjs/composition-api'
+  import { addYears, format, parseISO } from 'date-fns'
+  import { useTeam } from '@/composables'
+  import { isRequired, isNumber } from '@/functions'
+
+  export default {
+    name: 'ContractForm',
+    props: {
+      player: { type: Object, required: true },
+      record: { type: Object, default: null },
+      color: { type: String, default: null },
+      dark: { type: Boolean, default: false }
+    },
+    setup (props) {
+      const attributes = reactive({
+        startedOn: null,
+        endedOn: null,
+        numSeasons: null,
+        wage: null,
+        signingBonus: null,
+        releaseClause: null,
+        performanceBonus: null,
+        bonusReq: null,
+        bonusReqType: null
+      })
+      const numSeasonsOn = ref(true)
+
+      const maxEndDate = computed(() =>
+        attributes.startedOn && format(
+          addYears(parseISO(attributes.startedOn), 6),
+          'yyyy-MM-dd'
+        )
+      )
+
+      const dialog = ref(false)
+      const record = toRef(props, 'record')
+      const title = ref('Sign New Contract')
+      watch(dialog, open => {
+        if (open) {
+          if (record.value) {
+            attributes.signedOn = record.value.signedOn
+            attributes.startedOn = record.value.startedOn
+            attributes.endedOn = record.value.endedOn
+            attributes.wage = record.value.wage
+            attributes.signingBonus = record.value.signingBonus
+            attributes.releaseClause = record.value.releaseClause
+            attributes.performanceBonus = record.value.performanceBonus
+            attributes.bonusReq = record.value.bonusReq
+            attributes.bonusReqType = record.value.bonusReqType
+            numSeasonsOn.value = false
+            title.value = 'Edit Contract'
+          } else {
+            attributes.signedOn = team.value.currentlyOn
+            attributes.startedOn = team.value.currentlyOn
+            numSeasonsOn.value = true
+          }
+        }
+      })
+
+      watch(attributes, () => {
+        if (!attributes.performanceBonus) {
+          attributes.bonusReq = null
+          attributes.bonusReqType = null
+        }
+      })
+
+      watch(numSeasonsOn, () => {
+        if (numSeasonsOn.value) {
+          attributes.numSeasons = null
+        } else {
+          delete attributes.numSeasons
+        }
+      })
+
+      const store = useStore()
+      const submit = async () => {
+        if (record.value) {
+          await store.dispatch('contracts/update', {
+            id: record.value.id,
+            attributes
+          })
+        } else {
+          await store.dispatch('contracts/create', {
+            playerId: props.player.id,
+            attributes
+          })
+        }
+      }
+
+      const { team } = useTeam()
+      return {
+        dialog,
+        attributes,
+        numSeasonsOn,
+        maxEndDate,
+        submit,
+        team,
+        title,
+        rulesFor: {
+          numSeasons: [
+            isRequired('Number of Seasons'),
+            isNumber('Number of Seasons')
+          ],
+          bonusReq: [isRequired('Bonus Req.')],
+          bonusReqType: [isRequired('Bonus Req. Type')]
+        },
+        bonusRequirementTypes: [
+          'Appearances',
+          'Goals',
+          'Assists',
+          'Clean Sheets'
+        ]
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
     v-model="dialog"
@@ -116,121 +234,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import { addYears, format, parseISO } from 'date-fns'
-  import pick from 'lodash.pick'
-  import { TeamAccessible, DialogFormable } from '@/mixins'
-  import { isRequired, isNumber } from '@/functions'
-
-  export default {
-    name: 'ContractForm',
-    mixins: [
-      DialogFormable,
-      TeamAccessible
-    ],
-    props: {
-      player: { type: Object, required: true },
-      record: { type: Object, default: null },
-      color: { type: String, default: null },
-      dark: { type: Boolean, default: false }
-    },
-    data: () => ({
-      valid: false,
-      attributes: {
-        startedOn: null,
-        endedOn: null,
-        numSeasons: null,
-        wage: null,
-        signingBonus: null,
-        releaseClause: null,
-        performanceBonus: null,
-        bonusReq: null,
-        bonusReqType: null
-      },
-      rulesFor: {
-        numSeasons: [
-          isRequired('Number of Seasons'),
-          isNumber('Number of Seasons')
-        ],
-        bonusReq: [isRequired('Bonus Req.')],
-        bonusReqType: [isRequired('Bonus Req. Type')]
-      },
-      bonusRequirementTypes: [
-        'Appearances',
-        'Goals',
-        'Assists',
-        'Clean Sheets'
-      ],
-      numSeasonsOn: true
-    }),
-    computed: {
-      title () {
-        return this.record ? 'Edit Contract' : 'Sign New Contract'
-      },
-      maxEndDate () {
-        return this.attributes.startedOn && format(
-          addYears(parseISO(this.attributes.startedOn), 6),
-          'yyyy-MM-dd'
-        )
-      }
-    },
-    watch: {
-      dialog (val) {
-        if (val) {
-          if (this.record) {
-            this.attributes = pick(this.record, [
-              'signedOn',
-              'startedOn',
-              'endedOn',
-              'wage',
-              'signingBonus',
-              'releaseClause',
-              'performanceBonus',
-              'bonusReq',
-              'bonusReqType'
-            ])
-            this.numSeasonsOn = false
-          } else {
-            this.attributes.signedOn = this.team.currentlyOn
-            this.attributes.startedOn = this.team.currentlyOn
-            this.numSeasonsOn = true
-          }
-        }
-      },
-      'attributes.performanceBonus' (val) {
-        if (!val) {
-          this.attributes.bonusReq = null
-          this.attributes.bonusReqType = null
-        }
-      },
-      numSeasonsOn (numSeasonsOn) {
-        if (numSeasonsOn) {
-          this.$set(this.attributes, 'numSeasons', null)
-        } else {
-          this.$delete(this.attributes, 'numSeasons')
-        }
-      }
-    },
-    methods: {
-      ...mapActions('contracts', {
-        createContract: 'create',
-        updateContract: 'update'
-      }),
-      async submit () {
-        if (this.record) {
-          await this.updateContract({
-            id: this.record.id,
-            attributes: this.attributes
-          })
-        } else {
-          await this.createContract({
-            playerId: this.player.id,
-            attributes: this.attributes
-          })
-        }
-      }
-    }
-  }
-</script>

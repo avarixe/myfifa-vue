@@ -29,7 +29,7 @@ export default () => {
   const unsubbedPlayers = computed(() => {
     return sortedCaps.value.filter(cap => {
       return minute.value
-        ? cap.start <= this.minute && this.minute <= cap.stop
+        ? cap.start <= minute.value && minute.value <= cap.stop
         : !cap.subbedOut
     })
   })

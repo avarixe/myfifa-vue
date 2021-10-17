@@ -42,7 +42,7 @@
       })
 
       const { $graphql } = useContext()
-      const readonly = ref(0)
+      const readonly = ref(false)
       const competitionSeason = ref('')
       useFetch(async () => {
         const query = gql`

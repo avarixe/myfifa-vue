@@ -1,8 +1,106 @@
+<script>
+  import { ref, reactive, toRef, computed, watchEffect, useStore } from '@nuxtjs/composition-api'
+  import { useMatch, useTeam } from '@/composables'
+  import { isRequired } from '@/functions'
+
+  export default {
+    name: 'GoalForm',
+    props: {
+      record: { type: Object, required: true }
+    },
+    setup (props) {
+      const attributes = reactive({
+        home: true,
+        playerId: null,
+        playerName: '',
+        assistedBy: '',
+        assistId: '',
+        ownGoal: false,
+        penalty: false
+      })
+
+      const { match, minute, unsubbedPlayers } = useMatch()
+
+      const scorerOptions = computed(() =>
+        unsubbedPlayers.value.filter(cap => cap.playerId !== attributes.assistId)
+      )
+
+      const assistOptions = computed(() =>
+        unsubbedPlayers.value.filter(cap => cap.playerId !== attributes.playerId)
+      )
+
+      const { team } = useTeam()
+      const teamGoal = computed(() =>
+        !attributes.home ^ match.value.home === team.value.name
+      )
+
+      const dialog = ref(false)
+      const record = toRef(props, 'record')
+      watchEffect(() => {
+        if (dialog.value) {
+          attributes.home = record.value.home
+          attributes.playerId = record.value.playerId
+          attributes.playerName = record.value.playerName
+          attributes.assistedBy = record.value.assistedBy
+          attributes.assistId = record.value.assistId
+          attributes.ownGoal = record.value.ownGoal
+          attributes.penalty = record.value.penalty
+          minute.value = record.value.minute
+        }
+      })
+
+      watchEffect(() => {
+        if (!attributes.assistId && teamGoal.value) {
+          attributes.assistedBy = null
+        }
+
+        if (attributes.ownGoal || attributes.penalty) {
+          attributes.assistId = null
+          attributes.assistedBy = null
+        }
+      })
+
+      const clearNames = () => {
+        attributes.playerId = null
+        attributes.playerName = null
+        attributes.assistId = null
+        attributes.assistedBy = null
+      }
+
+      const store = useStore()
+      const submit = async () => {
+        await store.dispatch('goals/update', {
+          id: record.value.id,
+          attributes: {
+            ...attributes,
+            minute: minute.value
+          }
+        })
+      }
+
+      return {
+        attributes,
+        minute,
+        dialog,
+        match,
+        clearNames,
+        submit,
+        scorerOptions,
+        assistOptions,
+        teamGoal,
+        rulesFor: {
+          playerName: [isRequired('Goal Scorer')]
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
     v-model="dialog"
     title-icon="mdi-soccer"
-    :title="title"
+    title="Edit Goal"
     :submit="submit"
   >
     <template #activator="{ on }">
@@ -97,123 +195,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import pick from 'lodash.pick'
-  import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
-  import { isRequired } from '@/functions'
-
-  export default {
-    name: 'GoalForm',
-    mixins: [
-      TeamAccessible,
-      DialogFormable,
-      MatchAccessible
-    ],
-    props: {
-      record: { type: Object, default: null }
-    },
-    data: () => ({
-      attributes: {
-        home: true,
-        playerId: null,
-        playerName: '',
-        assistedBy: '',
-        assistId: '',
-        ownGoal: false,
-        penalty: false
-      },
-      rulesFor: {
-        playerName: [isRequired('Goal Scorer')]
-      }
-    }),
-    computed: {
-      title () {
-        return `${this.record ? 'Edit' : 'Record'} Goal`
-      },
-      scorerOptions () {
-        return this.unsubbedPlayers.filter(cap =>
-          cap.playerId !== this.attributes.assistId
-        )
-      },
-      assistOptions () {
-        return this.unsubbedPlayers.filter(cap =>
-          cap.playerId !== this.attributes.playerId
-        )
-      },
-      teamGoal () {
-        return !this.attributes.home ^ this.match.home === this.team.name
-      }
-    },
-    watch: {
-      dialog (val) {
-        if (val) {
-          if (this.record) {
-            this.attributes = pick(this.record, [
-              'home',
-              'playerId',
-              'playerName',
-              'assistedBy',
-              'assistId',
-              'ownGoal',
-              'penalty'
-            ])
-            this.minute = this.record.minute
-          } else {
-            this.attributes.ownGoal = false
-            this.attributes.penalty = false
-          }
-        }
-      },
-      'attributes.assistId' (val) {
-        if (!val && this.teamGoal) {
-          this.attributes.assistedBy = ''
-        }
-      },
-      'attributes.penalty' (val) {
-        this.clearAssistedBy(val)
-      },
-      'attributes.ownGoal' (val) {
-        this.clearAssistedBy(val)
-      }
-    },
-    methods: {
-      ...mapActions('goals', {
-        createGoal: 'create',
-        updateGoal: 'update'
-      }),
-      clearNames () {
-        this.attributes.playerId = null
-        this.attributes.playerName = null
-        this.attributes.assistId = null
-        this.attributes.assistedBy = null
-      },
-      clearAssistedBy (val) {
-        console.log(`clearAssistedBy `, val)
-        if (val) {
-          this.attributes.assistId = null
-          this.attributes.assistedBy = null
-        }
-      },
-      async submit () {
-        const attributes = {
-          ...this.attributes,
-          minute: this.minute
-        }
-
-        if (this.record) {
-          await this.updateGoal({
-            id: this.record.id,
-            attributes
-          })
-        } else {
-          await this.createGoal({
-            matchId: this.match.id,
-            attributes
-          })
-        }
-      }
-    }
-  }
-</script>

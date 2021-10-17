@@ -1,3 +1,95 @@
+<script>
+  import { reactive, computed } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'PlayerHistoryChart',
+    props: {
+      chartData: { type: Object, required: true },
+      color: { type: String, default: '#d70206' },
+      min: { type: Number, default: null },
+      max: { type: Number, default: null },
+      prefix: { type: String, default: null },
+      ratio: { type: String, default: 'ct-major-tenth' },
+      showArea: { type: Boolean, default: false },
+      tooltipXModifier: { type: Function, default: x => x },
+      tooltipYModifier: { type: Function, default: y => y },
+      axisX: { type: Object, default: () => ({}) }
+    },
+    setup (props) {
+      const tooltip = reactive({
+        show: false,
+        pos: {
+          x: 0,
+          y: 0
+        },
+        value: {
+          x: 0,
+          y: 0
+        }
+      })
+
+      const chartOptions = computed(() => ({
+        axisX: props.axisX,
+        axisY: {
+          offset: 80,
+          labelInterpolationFnc (value) {
+            return `${props.prefix || ''}${value.toLocaleString()}`
+          }
+        },
+        low: props.min,
+        high: props.max,
+        onlyInteger: true,
+        showArea: props.showArea
+      }))
+
+      const eventHandlers = computed(() => [{
+        event: 'draw',
+        fn: context => {
+          const node = context.element.getNode()
+          switch (context.type) {
+            case 'area':
+              context.element.attr({
+                style: `fill: ${props.color}`
+              })
+              break
+            case 'point':
+              context.element.attr({
+                style: `stroke: ${props.color}`
+              })
+              node.addEventListener('mouseover', function (evt) {
+                tooltip.show = true
+                tooltip.pos = {
+                  x: evt.x,
+                  y: evt.y
+                }
+                tooltip.value = {
+                  x: props.tooltipXModifier(context.value.x),
+                  y: props.tooltipYModifier(context.value.y)
+                }
+                node.style.strokeWidth = '15px'
+              })
+              node.addEventListener('mouseout', function () {
+                tooltip.show = false
+                node.style.strokeWidth = '10px'
+              })
+              break
+            case 'line':
+              context.element.attr({
+                style: `stroke: ${props.color}`
+              })
+          }
+        }
+      }])
+
+      return {
+        tooltip,
+        chartOptions,
+        eventHandlers
+      }
+    }
+  }
+</script>
+
 <template>
   <div>
     <chartist
@@ -32,104 +124,3 @@
     </v-menu>
   </div>
 </template>
-
-<script>
-  export default {
-    name: 'PlayerHistoryChart',
-    props: {
-      chartData: { type: Object, required: true },
-      color: { type: String, default: '#d70206' },
-      min: { type: Number, default: null },
-      max: { type: Number, default: null },
-      prefix: { type: String, default: null },
-      ratio: { type: String, default: 'ct-major-tenth' },
-      showArea: { type: Boolean, default: false },
-      tooltipXModifier: { type: Function, default: x => x },
-      tooltipYModifier: { type: Function, default: y => y },
-      axisX: { type: Object, default: () => ({}) }
-    },
-    data: () => ({
-      tooltip: {
-        show: false,
-        pos: {
-          x: 0,
-          y: 0
-        },
-        value: {
-          x: 0,
-          y: 0
-        }
-      }
-    }),
-    computed: {
-      chartOptions () {
-        const prefix = this.prefix || ''
-        return {
-          axisX: this.axisX,
-          axisY: {
-            offset: 80,
-            labelInterpolationFnc (value) {
-              return `${prefix}${value.toLocaleString()}`
-            }
-          },
-          low: this.min,
-          high: this.max,
-          onlyInteger: true,
-          showArea: this.showArea
-        }
-      },
-      eventHandlers () {
-        return [{
-          event: 'draw',
-          fn: this.drawContext
-        }]
-      }
-    },
-    methods: {
-      drawContext (context) {
-        const node = context.element.getNode()
-        const { showTooltip, hideTooltip } = this
-        switch (context.type) {
-          case 'area':
-            context.element.attr({
-              style: `fill: ${this.color}`
-            })
-            break
-          case 'point':
-            context.element.attr({
-              style: `stroke: ${this.color}`
-            })
-            node.addEventListener('mouseover', function (evt) {
-              showTooltip(context, evt)
-              node.style.strokeWidth = '15px'
-            })
-            node.addEventListener('mouseout', function () {
-              hideTooltip()
-              node.style.strokeWidth = '10px'
-            })
-            break
-          case 'line':
-            context.element.attr({
-              style: `stroke: ${this.color}`
-            })
-        }
-      },
-      showTooltip (context, evt) {
-        this.tooltip = {
-          show: true,
-          pos: {
-            x: evt.x,
-            y: evt.y
-          },
-          value: {
-            x: this.tooltipXModifier(context.value.x),
-            y: this.tooltipYModifier(context.value.y)
-          }
-        }
-      },
-      hideTooltip () {
-        this.tooltip.show = false
-      }
-    }
-  }
-</script>

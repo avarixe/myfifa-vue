@@ -1,3 +1,21 @@
+<script>
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'ContractListCard',
+    props: {
+      players: { type: Array, required: true },
+      title: { type: String, required: true },
+      color: { type: String, required: true }
+    },
+    setup () {
+      const { team } = useTeam()
+
+      return { team }
+    }
+  }
+</script>
+
 <template>
   <v-card>
     <v-toolbar
@@ -38,22 +56,6 @@
     </v-simple-table>
   </v-card>
 </template>
-
-<script>
-  import { TeamAccessible } from '@/mixins'
-
-  export default {
-    name: 'ContractListCard',
-    mixins: [
-      TeamAccessible
-    ],
-    props: {
-      players: { type: Array, required: true },
-      title: { type: String, required: true },
-      color: { type: String, required: true }
-    }
-  }
-</script>
 
 <style scoped>
   tbody > tr {

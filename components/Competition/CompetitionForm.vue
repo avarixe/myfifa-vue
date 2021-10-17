@@ -1,3 +1,159 @@
+<script>
+  import {
+    ref,
+    reactive,
+    toRef,
+    computed,
+    watchEffect,
+    useRouter,
+    useStore
+  } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+  import { isRequired, isNumber } from '@/functions'
+
+  export default {
+    name: 'CompetitionForm',
+    props: {
+      record: { type: Object, default: null },
+      close: { type: Boolean, default: false }
+    },
+    setup (props) {
+      const attributes = reactive({
+        season: null,
+        name: '',
+        presetFormat: null,
+        numTeams: null,
+        numTeamsPerGroup: null,
+        numAdvancesFromGroup: null
+      })
+
+      const record = toRef(props, 'record')
+      const { currentSeason, seasonLabel, teamId } = useTeam()
+      const dialog = ref(false)
+      watchEffect(() => {
+        if (dialog.value && record.value) {
+          attributes.name = record.value.name
+          attributes.champion = record.value.champion
+          attributes.season = record.value.season
+        } else {
+          attributes.season = currentSeason.value
+        }
+      })
+
+      const store = useStore()
+      const championOptions = computed(() => {
+        if (!record.value) {
+          return []
+        }
+
+        const lastStage = store.$db().model('Stage')
+          .query()
+          .where('competitionId', record.value.id)
+          .orderBy('id')
+          .last()
+
+        if (lastStage) {
+          if (lastStage.table) {
+            return store.$db().model('TableRow')
+              .query()
+              .whereHas('stage', query => {
+                query
+                  .where('competitionId', record.value.id)
+                  .where('table', true)
+              })
+              .all()
+              .reduce((teams, row) => {
+                if (row.name && !teams.includes(row.name)) {
+                  teams.push(row.name)
+                }
+                return teams
+              }, [])
+          } else {
+            return store.$db().model('Fixture')
+              .query()
+              .where('stageId', lastStage.id)
+              .all()
+              .reduce((teams, row) => {
+                if (row.homeTeam && !teams.includes(row.homeTeam)) {
+                  teams.push(row.homeTeam)
+                }
+                if (row.awayTeam && !teams.includes(row.awayTeam)) {
+                  teams.push(row.awayTeam)
+                }
+                return teams
+              }, [])
+          }
+        } else {
+          return []
+        }
+      })
+
+      const router = useRouter()
+      const submit = async () => {
+        if (record.value) {
+          await store.dispatch('competitions/update', {
+            id: record.value.id,
+            attributes
+          })
+        } else {
+          const { id: competitionId } = await store.dispatch('competitions/create', {
+            teamId: teamId.value,
+            attributes
+          })
+          router.push({
+            name: 'teams-teamId-competitions-competitionId',
+            params: {
+              teamId: teamId.value,
+              competitionId
+            }
+          })
+        }
+      }
+
+      const title = computed(() => {
+        if (props.close) {
+          return 'Close Competition'
+        } else if (record.value) {
+          return 'Edit Competition'
+        } else {
+          return 'New Competition'
+        }
+      })
+
+      return {
+        dialog,
+        attributes,
+        rulesFor: {
+          name: [isRequired('Name')],
+          numTeams: [
+            isRequired('Number of Teams'),
+            isNumber('Number of Teams')
+          ],
+          numTeamsPerGroup: [
+            isRequired('Teams per Group'),
+            isNumber('Teams per Group')
+          ],
+          numAdvancesFromGroup: [
+            isRequired('Teams Advance per Group'),
+            isNumber('Teams Advance per Group')
+          ],
+          champion: [isRequired('Champion')]
+        },
+        presetFormats: [
+          'League',
+          'Knockout',
+          'Group + Knockout'
+        ],
+        championOptions,
+        seasonLabel,
+        currentSeason,
+        title,
+        submit
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
     v-model="dialog"
@@ -34,7 +190,7 @@
       >
         <v-col cols="12">
           <v-text-field
-            :value="seasonLabel(season)"
+            :value="seasonLabel(currentSeason)"
             label="Season"
             prepend-icon="mdi-calendar-text"
             disabled
@@ -102,161 +258,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import pick from 'lodash.pick'
-  import { TeamAccessible, DialogFormable } from '@/mixins'
-  import { isRequired, isNumber } from '@/functions'
-
-  const presetFormats = [
-    'League',
-    'Knockout',
-    'Group + Knockout'
-  ]
-
-  export default {
-    name: 'CompetitionForm',
-    mixins: [
-      DialogFormable,
-      TeamAccessible
-    ],
-    props: {
-      record: { type: Object, default: null },
-      close: { type: Boolean, default: false }
-    },
-    data: () => ({
-      valid: false,
-      attributes: {
-        season: null,
-        name: '',
-        presetFormat: null,
-        numTeams: null,
-        numTeamsPerGroup: null,
-        numAdvancesFromGroup: null
-      },
-      rulesFor: {
-        name: [isRequired('Name')],
-        numTeams: [
-          isRequired('Number of Teams'),
-          isNumber('Number of Teams')
-        ],
-        numTeamsPerGroup: [
-          isRequired('Teams per Group'),
-          isNumber('Teams per Group')
-        ],
-        numAdvancesFromGroup: [
-          isRequired('Teams Advance per Group'),
-          isNumber('Teams Advance per Group')
-        ],
-        champion: [isRequired('Champion')]
-      },
-      presetFormats
-    }),
-    computed: {
-      title () {
-        if (this.close) {
-          return 'Close Competition'
-        } else if (this.record) {
-          return 'Edit Competition'
-        } else {
-          return 'New Competition'
-        }
-      },
-      competitions () {
-        return [
-          ...new Set(
-            this.$store.$db().model('Competition')
-              .query()
-              .where('teamId', this.team.id)
-              .get()
-              .map(c => c.name)
-          )
-        ]
-      },
-      lastStage () {
-        return this.$store.$db().model('Stage')
-          .query()
-          .where('competitionId', this.record.id)
-          .orderBy('id')
-          .last()
-      },
-      championOptions () {
-        if (this.lastStage) {
-          if (this.lastStage.table) {
-            return this.$store.$db().model('TableRow')
-              .query()
-              .whereHas('stage', query => {
-                query
-                  .where('competitionId', this.record.id)
-                  .where('table', true)
-              })
-              .all()
-              .reduce((teams, row) => {
-                if (row.name && !teams.includes(row.name)) {
-                  teams.push(row.name)
-                }
-                return teams
-              }, [])
-          } else {
-            return this.$store.$db().model('Fixture')
-              .query()
-              .where('stageId', this.lastStage.id)
-              .all()
-              .reduce((teams, row) => {
-                if (row.homeTeam && !teams.includes(row.homeTeam)) {
-                  teams.push(row.homeTeam)
-                }
-                if (row.awayTeam && !teams.includes(row.awayTeam)) {
-                  teams.push(row.awayTeam)
-                }
-                return teams
-              }, [])
-          }
-        } else {
-          return []
-        }
-      }
-    },
-    watch: {
-      dialog (val) {
-        if (val && this.record) {
-          this.attributes = pick(this.record, [
-            'name',
-            'champion',
-            'season'
-          ])
-        } else {
-          this.attributes.season = this.season
-        }
-      }
-    },
-    methods: {
-      ...mapActions('competitions', {
-        fetchCompetitions: 'fetch',
-        createCompetition: 'create',
-        updateCompetition: 'update'
-      }),
-      async submit () {
-        if (this.record) {
-          await this.updateCompetition({
-            id: this.record.id,
-            attributes: this.attributes
-          })
-        } else {
-          const { id: competitionId } = await this.createCompetition({
-            teamId: this.team.id,
-            attributes: this.attributes
-          })
-          this.$router.push({
-            name: 'teams-teamId-competitions-competitionId',
-            params: {
-              teamId: this.team.id,
-              competitionId
-            }
-          })
-        }
-      }
-    }
-  }
-</script>

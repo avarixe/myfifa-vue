@@ -1,3 +1,137 @@
+<script>
+  import {
+    ref,
+    reactive,
+    toRef,
+    computed,
+    watchEffect,
+    useStore
+  } from '@nuxtjs/composition-api'
+  import { useCompetition } from '@/composables'
+
+  export default {
+    name: 'FixtureForm',
+    props: {
+      stage: { type: Object, required: true },
+      record: { type: Object, default: null }
+    },
+    setup (props) {
+      const key = ref(0)
+      const attributes = reactive({
+        homeTeam: '',
+        awayTeam: '',
+        legsAttributes: [{
+          homeScore: '',
+          awayScore: '',
+          _destroy: false
+        }]
+      })
+
+      const record = toRef(props, 'record')
+
+      const title = computed(() => record.value ? 'Edit Fixture' : 'Add Fixture')
+
+      const { competitionId } = useCompetition()
+      const teamOptions = computed(() => {
+        if (!record.value) {
+          return []
+        }
+
+        const previousStage = store.$db().model('Stage')
+          .query()
+          .where('competitionId', parseInt(competitionId.value))
+          .where(stage => stage.id < props.stage.id)
+          .last()
+
+        if (previousStage) {
+          if (previousStage.table) {
+            // get all Team options from table stages
+            return store.$db().model('TableRow')
+              .query()
+              .whereHas('stage', query => {
+                query
+                  .where('competitionId', parseInt(competitionId.value))
+                  .where('table', true)
+              })
+              .all()
+              .reduce((teams, row) => {
+                if (row.name && !teams.includes(row.name)) {
+                  teams.push(row.name)
+                }
+                return teams
+              }, [])
+          } else {
+            // get all Team options from previous stage
+            return store.$db().model('Fixture')
+              .query()
+              .where('stageId', previousStage.id)
+              .all()
+              .reduce((teams, fixture) => {
+                if (fixture.homeTeam && !teams.includes(fixture.homeTeam)) {
+                  teams.push(fixture.homeTeam)
+                }
+                if (fixture.awayTeam && !teams.includes(fixture.awayTeam)) {
+                  teams.push(fixture.awayTeam)
+                }
+                return teams
+              }, [])
+          }
+        } else {
+          return []
+        }
+      })
+
+      const dialog = ref(false)
+      watchEffect(() => {
+        if (dialog.value && record.value) {
+          attributes.homeTeam = record.value.homeTeam
+          attributes.awayTeam = record.value.awayTeam
+          attributes.legsAttributes = record.value.legs.map(leg => ({
+            id: leg.id,
+            homeScore: leg.homeScore,
+            awayScore: leg.awayScore,
+            _destroy: false
+          }))
+        }
+      })
+
+      const addLeg =  () => {
+        attributes.legsAttributes.push({
+          homeScore: '',
+          awayScore: '',
+          _destroy: false
+        })
+        key.value++
+      }
+
+      const store = useStore()
+      const submit = async () => {
+        if (record.value) {
+          await store.dispatch('fixtures/update', {
+            id: record.value.id,
+            attributes
+          })
+        } else {
+          await store.dispatch('fixtures/create', {
+            stageId: props.stage.id,
+            attributes
+          })
+        }
+      }
+
+      return {
+        key,
+        attributes,
+        teamOptions,
+        dialog,
+        title,
+        addLeg,
+        submit
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
     v-model="dialog"
@@ -71,127 +205,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import pick from 'lodash.pick'
-  import { CompetitionAccessible, DialogFormable } from '@/mixins'
-
-  export default {
-    name: 'FixtureForm',
-    mixins: [
-      CompetitionAccessible,
-      DialogFormable
-    ],
-    props: {
-      stage: { type: Object, required: true },
-      record: { type: Object, default: null }
-    },
-    data: () => ({
-      key: 0,
-      attributes: {
-        homeTeam: '',
-        awayTeam: '',
-        legsAttributes: [{
-          homeScore: '',
-          awayScore: '',
-          _destroy: false
-        }]
-      },
-      expandHomeOptions: false,
-      expandAwayOptions: false
-    }),
-    computed: {
-      title () {
-        return this.record ? 'Edit Fixture' : 'Add Fixture'
-      },
-      previousStage () {
-        return this.$store.$db().model('Stage')
-          .query()
-          .where('competitionId', this.competition.id)
-          .where(stage => stage.id < this.stage.id)
-          .last()
-      },
-      teamOptions () {
-        if (this.previousStage) {
-          if (this.previousStage.table) {
-            // get all Team options from table stages
-            return this.$store.$db().model('TableRow')
-              .query()
-              .whereHas('stage', query => {
-                query
-                  .where('competitionId', this.competition.id)
-                  .where('table', true)
-              })
-              .all()
-              .reduce((teams, row) => {
-                if (row.name && !teams.includes(row.name)) {
-                  teams.push(row.name)
-                }
-                return teams
-              }, [])
-          } else {
-            // get all Team options from previous stage
-            return this.$store.$db().model('Fixture')
-              .query()
-              .where('stageId', this.previousStage.id)
-              .all()
-              .reduce((teams, fixture) => {
-                if (fixture.homeTeam && !teams.includes(fixture.homeTeam)) {
-                  teams.push(fixture.homeTeam)
-                }
-                if (fixture.awayTeam && !teams.includes(fixture.awayTeam)) {
-                  teams.push(fixture.awayTeam)
-                }
-                return teams
-              }, [])
-          }
-        } else {
-          return []
-        }
-      }
-    },
-    watch: {
-      dialog (val) {
-        if (val && this.record) {
-          this.attributes = pick(this.record, [
-            'homeTeam',
-            'awayTeam'
-          ])
-          this.attributes.legsAttributes = this.record.legs.map(leg => ({
-            ...pick(leg, ['id', 'homeScore', 'awayScore']),
-            _destroy: false
-          }))
-        }
-      }
-    },
-    methods: {
-      ...mapActions('fixtures', {
-        createFixture: 'create',
-        updateFixture: 'update'
-      }),
-      addLeg () {
-        this.attributes.legsAttributes.push({
-          homeScore: '',
-          awayScore: '',
-          _destroy: false
-        })
-        this.key++
-      },
-      async submit () {
-        if (this.record) {
-          await this.updateFixture({
-            id: this.record.id,
-            attributes: this.attributes
-          })
-        } else {
-          await this.createFixture({
-            stageId: this.stage.id,
-            attributes: this.attributes
-          })
-        }
-      }
-
-    }
-  }
-</script>

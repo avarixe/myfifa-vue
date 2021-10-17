@@ -1,3 +1,31 @@
+<script>
+  import { toRef } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'FormationGrid',
+    props: {
+      players: { type: Array, required: true }
+    },
+    setup (props) {
+      const players = toRef(props, 'players')
+      const playerInPosition = pos => players.value.find(player => player.pos === pos)
+
+      return {
+        playerInPosition,
+        positions: [
+          [null, 'LS', 'ST', 'RS', null],
+          ['LW', 'LF', 'CF', 'RF', 'RW'],
+          [null, 'LAM', 'CAM', 'RAM', null],
+          ['LM', 'LCM', 'CM', 'RCM', 'RM'],
+          ['LWB', 'LDM', 'CDM', 'RDM', 'RWB'],
+          ['LB', 'LCB', 'CB', 'RCB', 'RB'],
+          [null, null, 'GK', null, null]
+        ]
+      }
+    }
+  }
+</script>
+
 <template>
   <v-container>
     <v-row
@@ -24,30 +52,3 @@
     <slot name="footer" />
   </v-container>
 </template>
-
-<script>
-  export default {
-    name: 'FormationGrid',
-    props: {
-      players: { type: Array, required: true }
-    },
-    computed: {
-      positions () {
-        return [
-          [null, 'LS', 'ST', 'RS', null],
-          ['LW', 'LF', 'CF', 'RF', 'RW'],
-          [null, 'LAM', 'CAM', 'RAM', null],
-          ['LM', 'LCM', 'CM', 'RCM', 'RM'],
-          ['LWB', 'LDM', 'CDM', 'RDM', 'RWB'],
-          ['LB', 'LCB', 'CB', 'RCB', 'RB'],
-          [null, null, 'GK', null, null]
-        ]
-      }
-    },
-    methods: {
-      playerInPosition (pos) {
-        return this.players.find(player => player.pos === pos)
-      }
-    }
-  }
-</script>
