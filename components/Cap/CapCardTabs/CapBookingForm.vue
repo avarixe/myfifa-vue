@@ -1,3 +1,50 @@
+<script>
+  import { reactive, toRef, watchEffect, useStore } from '@nuxtjs/composition-api'
+  import { useMatch } from '@/composables'
+
+  export default {
+    name: 'CapBookingForm',
+    props: {
+      cap: { type: Object, required: true }
+    },
+    setup (props, { emit }) {
+      const attributes = reactive({
+        home: true,
+        playerId: null,
+        playerName: '',
+        redCard: false
+      })
+
+      const { matchId, minute, isTeamHome } = useMatch()
+
+      const cap = toRef(props, 'cap')
+      watchEffect(() => {
+        attributes.playerId = cap.value.playerId
+        attributes.playerName = cap.value.name
+        attributes.home = isTeamHome.value
+      })
+
+      const store = useStore()
+      const saveBooking = async () => {
+        await store.dispatch('bookings/create', {
+          matchId: matchId.value,
+          attributes: {
+            ...attributes,
+            minute: minute.value
+          }
+        })
+        emit('submitted')
+      }
+
+      return {
+        attributes,
+        minute,
+        saveBooking
+      }
+    }
+  }
+</script>
+
 <template>
   <base-form
     :submit="saveBooking"
@@ -37,57 +84,3 @@
     </template>
   </base-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import { TeamAccessible, MatchAccessible } from '@/mixins'
-
-  export default {
-    name: 'CapBookingForm',
-    mixins: [
-      TeamAccessible,
-      MatchAccessible
-    ],
-    props: {
-      cap: { type: Object, required: true }
-    },
-    data: () => ({
-      attributes: {
-        home: true,
-        playerId: null,
-        playerName: '',
-        redCard: false
-      }
-    }),
-    watch: {
-      cap: {
-        immediate: true,
-        handler (cap) {
-          this.attributes.playerId = cap.playerId
-          this.attributes.playerName = cap.name
-        }
-      },
-      'match.home': {
-        immediate: true,
-        handler (home) {
-          this.attributes.home = home === this.team.name
-        }
-      }
-    },
-    methods: {
-      ...mapActions('bookings', {
-        createBooking: 'create'
-      }),
-      async saveBooking () {
-        await this.createBooking({
-          matchId: this.match.id,
-          attributes: {
-            ...this.attributes,
-            minute: this.minute
-          }
-        })
-        this.$emit('submitted')
-      }
-    }
-  }
-</script>

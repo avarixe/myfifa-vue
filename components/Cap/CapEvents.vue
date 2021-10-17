@@ -1,3 +1,57 @@
+<script>
+  import { toRefs, computed } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'CapEvents',
+    props: {
+      cap: { type: Object, required: true },
+      match: { type: Object, required: true }
+    },
+    setup (props) {
+      const { cap, match } = toRefs(props)
+
+      const numGoals = computed(() =>
+        match.value.goals
+          .filter(goal => goal.playerId === cap.value.playerId && !goal.ownGoal)
+          .length
+      )
+
+      const numAssists = computed(() =>
+        match.value.goals
+          .filter(goal => goal.assistId === cap.value.playerId)
+          .length
+      )
+
+      const booking = computed(() => {
+        const bookings = match.value.bookings.filter(booking =>
+          booking.playerId === cap.value.playerId
+        )
+
+        if (bookings.some(b => b.redCard)) {
+          return 'red'
+        } else if (bookings.length > 0) {
+          return 'yellow darken-2'
+        } else {
+          return null
+        }
+      })
+
+      const injured = computed(() =>
+        match.value.substitutions.some(sub =>
+          sub.playerId === cap.value.playerId && sub.injury
+        )
+      )
+
+      return {
+        numGoals,
+        numAssists,
+        booking,
+        injured
+      }
+    }
+  }
+</script>
+
 <template>
   <div>
     <v-badge
@@ -80,46 +134,6 @@
     </v-badge>
   </div>
 </template>
-
-<script>
-  export default {
-    name: 'CapEvents',
-    props: {
-      cap: { type: Object, required: true },
-      match: { type: Object, required: true }
-    },
-    computed: {
-      numGoals () {
-        return this.match.goals
-          .filter(g => g.playerId === this.cap.playerId && !g.ownGoal)
-          .length
-      },
-      numAssists () {
-        return this.match.goals
-          .filter(g => g.assistId === this.cap.playerId)
-          .length
-      },
-      booking () {
-        const bookings = this.match.bookings.filter(booking =>
-          booking.playerId === this.cap.playerId
-        )
-
-        if (bookings.some(b => b.redCard)) {
-          return 'red'
-        } else if (bookings.length > 0) {
-          return 'yellow darken-2'
-        } else {
-          return null
-        }
-      },
-      injured () {
-        return this.match.substitutions.some(s =>
-          s.playerId === this.cap.playerId && s.injury
-        )
-      }
-    }
-  }
-</script>
 
 <style scoped lang="scss">
   .counter {

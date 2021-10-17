@@ -1,5 +1,6 @@
 import { ref, computed, useRoute, useStore } from '@nuxtjs/composition-api'
 import orderBy from 'lodash.orderby'
+import useTeam from './useTeam'
 import { matchPositions } from '@/constants'
 
 export default () => {
@@ -7,13 +8,19 @@ export default () => {
   const matchId = computed(() => route.value.params.matchId)
 
   const store = useStore()
-  const match = computed(() => store.$db().model('Match').find(matchId.value))
+  const match = computed(() =>
+    store.$db().model('Match')
+      .query()
+      .with('team|goals|bookings|substitutions|penaltyShootout')
+      .with('caps.player')
+      .find(matchId.value)
+  )
 
-  const positions = computed(() => Object.keys(matchPositions))
+  const positions = Object.keys(matchPositions)
   const sortedCaps = computed(() => {
     return orderBy(
       match.value.caps,
-      cap => positions.value.indexOf(cap.pos),
+      cap => positions.indexOf(cap.pos),
       'start'
     )
   })
@@ -27,12 +34,16 @@ export default () => {
     })
   })
 
+  const { team } = useTeam()
+  const isTeamHome = computed(() => match.value.home === team.value.name)
+
   return {
     matchId,
     match,
     minute,
     positions,
     sortedCaps,
-    unsubbedPlayers
+    unsubbedPlayers,
+    isTeamHome
   }
 }

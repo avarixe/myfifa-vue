@@ -1,3 +1,30 @@
+<script>
+  import { isRequired } from '@/functions'
+
+  export default {
+    name: 'PlayerSelect',
+    props: {
+      value: { type: [String, Number], default: null },
+      caps: { type: Array, default: () => [] },
+      label: { type: String, default: 'Player' },
+      icon: { type: String, default: 'mdi-account' },
+      itemValue: { type: String, default: 'playerId' },
+      required: { type: Boolean, default: false },
+      disabled: { type: Boolean, default: false },
+      clearable: { type: Boolean, default: false },
+      hideDetails: { type: Boolean, default: false }
+    },
+    setup (props, { emit }) {
+      const updateValue = value => emit('input', value || null)
+
+      return {
+        rules: props.required ? [isRequired(props.label)] : [],
+        updateValue
+      }
+    }
+  }
+</script>
+
 <template>
   <v-select
     :items="caps"
@@ -23,32 +50,3 @@
     </template>
   </v-select>
 </template>
-
-<script>
-  import { isRequired } from '@/functions'
-
-  export default {
-    name: 'PlayerSelect',
-    props: {
-      value: { type: [String, Number], default: null },
-      caps: { type: Array, default: () => [] },
-      label: { type: String, default: 'Player' },
-      icon: { type: String, default: 'mdi-account' },
-      itemValue: { type: String, default: 'playerId' },
-      required: { type: Boolean, default: false },
-      disabled: { type: Boolean, default: false },
-      clearable: { type: Boolean, default: false },
-      hideDetails: { type: Boolean, default: false }
-    },
-    computed: {
-      rules () {
-        return this.required ? [isRequired(this.label)] : []
-      }
-    },
-    methods: {
-      updateValue (value) {
-        this.$emit('input', value || null)
-      }
-    }
-  }
-</script>

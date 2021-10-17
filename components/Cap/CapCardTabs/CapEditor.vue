@@ -1,3 +1,61 @@
+<script>
+  import { ref, toRef, watchEffect, useStore } from '@nuxtjs/composition-api'
+  import { useActivePlayers } from '@/composables'
+  import { matchPositions } from '@/constants'
+
+  export default {
+    name: 'CapEditor',
+    props: {
+      cap: { type: Object, required: true }
+    },
+    setup (props, { emit }) {
+      const pos = ref(null)
+      const playerId = ref(null)
+
+      const cap = toRef(props, 'cap')
+      watchEffect(() => {
+        pos.value = cap.value.pos
+        playerId.value = cap.value.playerId
+      })
+
+      const store = useStore()
+      const updateCapAttribute = async (key, value) => {
+        try {
+          await store.dispatch('caps/update', {
+            id: cap.value.id,
+            attributes: { [key]: value }
+          })
+          emit('submitted')
+        } catch (e) {
+          pos.value = cap.value.pos
+          playerId.value = cap.value.playerId
+          store.commit('broadcaster/announce', {
+            message: e.message,
+            color: 'red'
+          })
+        }
+      }
+
+      const setPosition = async value => {
+        await updateCapAttribute('pos', value)
+      }
+      const setPlayer = async value => {
+        await updateCapAttribute('playerId', value)
+      }
+
+      const activePlayers = useActivePlayers()
+      return {
+        pos,
+        playerId,
+        positions: Object.keys(matchPositions),
+        activePlayers,
+        setPosition,
+        setPlayer
+      }
+    }
+  }
+</script>
+
 <template>
   <div class="pa-2">
     <div class="text-subtitle-2 pb-2">
@@ -22,67 +80,3 @@
     />
   </div>
 </template>
-
-<script>
-  import { mapMutations, mapActions } from 'vuex'
-  import { ActivePlayerSelectable } from '@/mixins'
-  import { matchPositions } from '@/constants'
-
-  export default {
-    name: 'CapEditor',
-    mixins: [
-      ActivePlayerSelectable
-    ],
-    props: {
-      cap: { type: Object, required: true }
-    },
-    data: () => ({
-      pos: null,
-      playerId: null
-    }),
-    computed: {
-      positions () {
-        return Object.keys(matchPositions)
-      }
-    },
-    watch: {
-      cap: {
-        immediate: true,
-        handler (cap) {
-          this.pos = cap.pos
-          this.playerId = cap.playerId
-        }
-      }
-    },
-    methods: {
-      ...mapMutations('broadcaster', [
-        'announce'
-      ]),
-      ...mapActions('caps', {
-        updateCap: 'update'
-      }),
-      async setPosition (position) {
-        await this.updateCapAttribute('pos', position)
-      },
-      async setPlayer (playerId) {
-        await this.updateCapAttribute('playerId', playerId)
-      },
-      async updateCapAttribute (key, value) {
-        try {
-          await this.updateCap({
-            id: this.cap.id,
-            attributes: { [key]: value }
-          })
-          this.$emit('submitted')
-        } catch (e) {
-          this.pos = this.cap.pos
-          this.playerId = this.cap.playerId
-          this.announce({
-            message: e.message,
-            color: 'red'
-          })
-        }
-      }
-    }
-  }
-</script>

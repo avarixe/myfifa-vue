@@ -1,6 +1,44 @@
+<script>
+  import { reactive, useStore } from '@nuxtjs/composition-api'
+  import { useActivePlayers } from '@/composables'
+  import { matchPositions } from '@/constants'
+  import { isRequired } from '@/functions'
+
+  export default {
+    name: 'CapForm',
+    props: {
+      match: { type: Object, required: true }
+    },
+    setup () {
+      const attributes = reactive({
+        playerId: null,
+        pos: ''
+      })
+
+      const store = useStore()
+      const submit = async () => {
+        await store.dispatch('caps/create', {
+          matchId: props.match.id,
+          attributes
+        })
+      }
+
+      const activePlayers = useActivePlayers()
+      return {
+        attributes,
+        rulesFor: {
+          pos: [isRequired('Position')]
+        },
+        positions: Object.keys(matchPositions),
+        activePlayers,
+        submit
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
-    v-model="dialog"
     title="Add Cap"
     :submit="submit"
   >
@@ -39,46 +77,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import { matchPositions } from '@/constants'
-  import { ActivePlayerSelectable, DialogFormable } from '@/mixins'
-  import { isRequired } from '@/functions'
-
-  export default {
-    name: 'CapForm',
-    mixins: [
-      ActivePlayerSelectable,
-      DialogFormable
-    ],
-    props: {
-      match: { type: Object, required: true }
-    },
-    data: () => ({
-      attributes: {
-        playerId: null,
-        pos: ''
-      },
-      rulesFor: {
-        pos: [isRequired('Position')]
-      }
-    }),
-    computed: {
-      positions () {
-        return Object.keys(matchPositions)
-      }
-    },
-    methods: {
-      ...mapActions('caps', {
-        createCap: 'create'
-      }),
-      async submit () {
-        await this.createCap({
-          matchId: this.match.id,
-          attributes: this.attributes
-        })
-      }
-    }
-  }
-</script>

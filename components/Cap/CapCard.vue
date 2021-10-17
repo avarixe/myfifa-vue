@@ -1,3 +1,27 @@
+<script>
+  import { ref, toRef, computed, useStore } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'CapCard',
+    props: {
+      cap: { type: Object, required: true },
+      match: { type: Object, required: true }
+    },
+    setup (props) {
+      const cap = toRef(props, 'cap')
+      const store = useStore()
+      const player = computed(() =>
+        store.$db().model('Player').find(cap.value.playerId)
+      )
+
+      return {
+        menu: ref(false),
+        player
+      }
+    }
+  }
+</script>
+
 <template>
   <v-menu
     v-model="menu"
@@ -89,21 +113,3 @@
     </v-card>
   </v-menu>
 </template>
-
-<script>
-  export default {
-    name: 'CapCard',
-    props: {
-      cap: { type: Object, required: true },
-      match: { type: Object, required: true }
-    },
-    data: () => ({
-      menu: false
-    }),
-    computed: {
-      player () {
-        return this.$store.$db().model('Player').find(this.cap.playerId)
-      }
-    }
-  }
-</script>

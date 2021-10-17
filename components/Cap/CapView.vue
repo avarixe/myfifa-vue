@@ -1,3 +1,24 @@
+<script>
+  import { toRef, computed, useStore } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'CapView',
+    props: {
+      cap: { type: Object, required: true },
+      match: { type: Object, required: true }
+    },
+    setup (props) {
+      const store = useStore()
+      const cap = toRef(props, 'cap')
+      const player = computed(() =>
+        store.$db().model('Player').find(cap.value.playerId)
+      )
+
+      return { player }
+    }
+  }
+</script>
+
 <template>
   <div>
     <div class="font-weight-bold">{{ cap.pos }}</div>
@@ -11,18 +32,3 @@
     />
   </div>
 </template>
-
-<script>
-  export default {
-    name: 'CapView',
-    props: {
-      cap: { type: Object, required: true },
-      match: { type: Object, required: true }
-    },
-    computed: {
-      player () {
-        return this.$store.$db().model('Player').find(this.cap.playerId)
-      }
-    }
-  }
-</script>

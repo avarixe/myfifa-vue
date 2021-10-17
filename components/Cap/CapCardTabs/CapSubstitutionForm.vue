@@ -1,3 +1,56 @@
+<script>
+  import { reactive, toRef, computed, watchEffect, useStore } from '@nuxtjs/composition-api'
+  import { useActivePlayers, useMatch } from '@/composables'
+
+  export default {
+    name: 'CapSubstitutionForm',
+    props: {
+      cap: { type: Object, required: true }
+    },
+    setup (props, { emit }) {
+      const attributes = reactive({
+        playerId: null,
+        replacementId: '',
+        injury: false
+      })
+
+      const cap = toRef(props, 'cap')
+      watchEffect(() => {
+        attributes.playerId = cap.value.playerId
+      })
+
+      const { sortedCaps, matchId, minute } = useMatch()
+
+      const store = useStore()
+      const saveSubstitution = async () => {
+        await store.dispatch('substitutions/create', {
+          matchId: matchId.id,
+          attributes: {
+            ...attributes,
+            minute: minute.value
+          }
+        })
+        this.$emit('submitted')
+      }
+
+      const activePlayers = useActivePlayers()
+      const availablePlayers = computed(() => {
+        const selectedIds = sortedCaps.value.map(cap => cap.playerId)
+        return activePlayers.value.filter(player =>
+          selectedIds.includes(player.id)
+        )
+      })
+
+      return {
+        attributes,
+        minute,
+        availablePlayers,
+        saveSubstitution
+      }
+    }
+  }
+</script>
+
 <template>
   <base-form
     :submit="saveSubstitution"
@@ -38,61 +91,3 @@
     </template>
   </base-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import { ActivePlayerSelectable, MatchAccessible } from '@/mixins'
-
-  export default {
-    name: 'CapSubstitutionForm',
-    mixins: [
-      ActivePlayerSelectable,
-      MatchAccessible
-    ],
-    props: {
-      cap: { type: Object, required: true }
-    },
-    data: () => ({
-      attributes: {
-        playerId: null,
-        replacementId: '',
-        injury: false
-      }
-    }),
-    computed: {
-      availablePlayers () {
-        const selectedIds = this.sortedCaps.map(cap => cap.playerId)
-        return this.activePlayers.filter(player => {
-          if (selectedIds.indexOf(player.id) < 0) {
-            return true
-          } else if (this.record) {
-            return player.id === this.record.replacementId
-          }
-        })
-      }
-    },
-    watch: {
-      cap: {
-        immediate: true,
-        handler (cap) {
-          this.attributes.playerId = cap.playerId
-        }
-      }
-    },
-    methods: {
-      ...mapActions('substitutions', {
-        createSubstitution: 'create'
-      }),
-      async saveSubstitution () {
-        await this.createSubstitution({
-          matchId: this.match.id,
-          attributes: {
-            ...this.attributes,
-            minute: this.minute
-          }
-        })
-        this.$emit('submitted')
-      }
-    }
-  }
-</script>

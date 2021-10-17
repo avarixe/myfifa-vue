@@ -1,3 +1,72 @@
+<script>
+  import { reactive, toRef, computed, watchEffect, useStore } from '@nuxtjs/composition-api'
+  import { useMatch } from '@/composables'
+
+  export default {
+    name: 'CapGoalForm',
+    props: {
+      cap: { type: Object, required: true }
+    },
+    setup (props, { emit }) {
+      const attributes = reactive({
+        home: true,
+        playerId: null,
+        playerName: '',
+        assistedBy: '',
+        assistId: '',
+        ownGoal: false,
+        penalty: false
+      })
+
+      const { unsubbedPlayers, isTeamHome, minute, matchId } = useMatch()
+
+      const assistOptions = computed(() =>
+        unsubbedPlayers.value.filter(cap => cap.playerId !== attributes.playerId)
+      )
+
+      const cap = toRef(props, 'cap')
+      watchEffect(() => {
+        attributes.playerId = cap.value.playerId
+        attributes.playerName = cap.value.name
+        attributes.home = isTeamHome.value
+      })
+
+      const clearAssistedBy = bool => {
+        if (bool) {
+          attributes.assistId = null
+          attributes.assistedBy = null
+        }
+      }
+
+      const resetAttributes = () => {
+        attributes.ownGoal = false
+        attributes.penalty = false
+      }
+
+      const store = useStore()
+      const saveGoal = async () => {
+        await store.dispatch('goals/create', {
+          matchId: matchId.value,
+          attributes: {
+            ...attributes,
+            minute: minute.value
+          }
+        })
+        emit('submitted')
+      }
+
+      return {
+        attributes,
+        minute,
+        assistOptions,
+        clearAssistedBy,
+        resetAttributes,
+        saveGoal
+      }
+    }
+  }
+</script>
+
 <template>
   <base-form
     :submit="saveGoal"
@@ -48,77 +117,3 @@
     </template>
   </base-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import { TeamAccessible, MatchAccessible } from '@/mixins'
-
-  export default {
-    name: 'CapGoalForm',
-    mixins: [
-      TeamAccessible,
-      MatchAccessible
-    ],
-    props: {
-      cap: { type: Object, required: true }
-    },
-    data: () => ({
-      attributes: {
-        home: true,
-        playerId: null,
-        playerName: '',
-        assistedBy: '',
-        assistId: '',
-        ownGoal: false,
-        penalty: false
-      }
-    }),
-    computed: {
-      assistOptions () {
-        return this.unsubbedPlayers.filter(cap =>
-          cap.playerId !== this.attributes.playerId
-        )
-      }
-    },
-    watch: {
-      cap: {
-        immediate: true,
-        handler (cap) {
-          this.attributes.playerId = cap.playerId
-          this.attributes.playerName = cap.name
-        }
-      },
-      'match.home': {
-        immediate: true,
-        handler (home) {
-          this.attributes.home = home === this.team.name
-        }
-      }
-    },
-    methods: {
-      ...mapActions('goals', {
-        createGoal: 'create'
-      }),
-      clearAssistedBy (bool) {
-        if (bool) {
-          this.attributes.assistId = null
-          this.attributes.assistedBy = null
-        }
-      },
-      async saveGoal () {
-        await this.createGoal({
-          matchId: this.match.id,
-          attributes: {
-            ...this.attributes,
-            minute: this.minute
-          }
-        })
-        this.$emit('submitted')
-      },
-      resetAttributes () {
-        this.attributes.ownGoal = false
-        this.attributes.penalty = false
-      }
-    }
-  }
-</script>

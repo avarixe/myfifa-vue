@@ -25,14 +25,7 @@
   export default {
     name: 'MatchPage',
     setup () {
-      const { matchId } = useMatch()
-      const store = useStore()
-      const match = computed(() =>
-        store.$db().model('Match')
-          .query()
-          .withAll()
-          .find(matchId.value)
-      )
+      const { matchId, match } = useMatch()
 
       const { teamId } = useTeam()
       const router = useRouter()
@@ -46,6 +39,7 @@
       })
 
       const { $graphql } = useContext()
+      const store = useStore()
       const readonly = ref(true)
       useFetch(async () => {
         const query = gql`
