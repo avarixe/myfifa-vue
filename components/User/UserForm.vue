@@ -1,6 +1,42 @@
+<script>
+  import { ref, reactive, useStore } from '@nuxtjs/composition-api'
+  import { isRequired, isEmail } from '@/functions'
+
+  export default {
+    name: 'UserForm',
+    setup () {
+      const attributes = reactive({
+        fullName: '',
+        username: '',
+        email: '',
+        password: '',
+        passwordConfirmation: ''
+      })
+
+      const store = useStore()
+      return {
+        attributes,
+        rulesFor: {
+          fullName: [isRequired('Name')],
+          username: [isRequired('Username')],
+          email: [
+            isRequired('Email Address'),
+            isEmail
+          ],
+          password: [isRequired('Password')],
+          passwordConfirmation: [isRequired('Password Confirmation')]
+        },
+        visible: ref(false),
+        submit: async () => {
+          await store.dispatch('user/create', attributes)
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
-    v-model="dialog"
     title="New Account"
     :submit="submit"
   >
@@ -65,45 +101,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import { DialogFormable } from '@/mixins'
-  import { isRequired, isEmail } from '@/functions'
-
-  export default {
-    name: 'UserForm',
-    mixins: [
-      DialogFormable
-    ],
-    data: () => ({
-      passwordMode: false,
-      attributes: {
-        fullName: '',
-        username: '',
-        email: '',
-        password: '',
-        passwordConfirmation: ''
-      },
-      rulesFor: {
-        fullName: [isRequired('Name')],
-        username: [isRequired('Username')],
-        email: [
-          isRequired('Email Address'),
-          isEmail
-        ],
-        password: [isRequired('Password')],
-        passwordConfirmation: [isRequired('Password Confirmation')]
-      },
-      visible: false
-    }),
-    methods: {
-      ...mapActions('user', {
-        createUser: 'create'
-      }),
-      async submit () {
-        await this.createUser(this.attributes)
-      }
-    }
-  }
-</script>

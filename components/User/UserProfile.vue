@@ -1,3 +1,54 @@
+<script>
+  import { reactive, computed, onMounted, useStore } from '@nuxtjs/composition-api'
+  import { isRequired, isEmail } from '@/functions'
+
+  export default {
+    name: 'UserProfile',
+    setup () {
+      const attributes = reactive({
+        fullName: null,
+        username: null,
+        email: null
+      })
+
+      const store = useStore()
+      const currentUser = computed(() => store.getters.currentUser)
+      onMounted(() => {
+        attributes.fullName = currentUser.value.fullName
+        attributes.username = currentUser.value.username
+        attributes.email = currentUser.value.email
+      })
+
+
+      return {
+        attributes,
+        rulesFor: {
+          fullName: [isRequired('Name')],
+          username: [isRequired('Username')],
+          email: [
+            isRequired('Email Address'),
+            isEmail
+          ]
+        },
+        submit: async () => {
+          try {
+            await store.dispatch('user/update', attributes)
+            store.commit('broadcaster/announce', {
+              message: 'Profile has been updated!',
+              color: 'success'
+            })
+          } catch (e) {
+            store.commit('broadcaster/announce', {
+              message: e.message,
+              color: 'red'
+            })
+          }
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <base-form
     :submit="submit"
@@ -65,65 +116,3 @@
     </template>
   </base-form>
 </template>
-
-<script>
-  import { mapGetters, mapMutations, mapActions } from 'vuex'
-  import pick from 'lodash.pick'
-  import { isRequired, isEmail } from '@/functions'
-
-  export default {
-    name: 'UserProfile',
-    data: () => ({
-      attributes: {
-        fullName: null,
-        username: null,
-        email: null
-      },
-      rulesFor: {
-        fullName: [isRequired('Name')],
-        username: [isRequired('Username')],
-        email: [
-          isRequired('Email Address'),
-          isEmail
-        ]
-      }
-    }),
-    computed: {
-      ...mapGetters([
-        'currentUser'
-      ])
-    },
-    mounted () {
-      this.attributes = pick(this.currentUser, [
-        'fullName',
-        'username',
-        'email'
-      ])
-    },
-    methods: {
-      ...mapMutations('broadcaster', [
-        'announce'
-      ]),
-      ...mapActions('user', {
-        updateUser: 'update'
-      }),
-      async submit () {
-        try {
-          this.loading = true
-          await this.updateUser(this.attributes)
-          this.announce({
-            message: 'Profile has been updated!',
-            color: 'success'
-          })
-        } catch (e) {
-          this.announce({
-            message: e.message,
-            color: 'red'
-          })
-        } finally {
-          this.loading = false
-        }
-      }
-    }
-  }
-</script>

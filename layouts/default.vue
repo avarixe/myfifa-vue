@@ -27,7 +27,9 @@
       watchEffect(() => {
         if (token.value) {
           $graphql.default.setHeader('Authorization', `Bearer ${token.value}`)
-          $vuetify.theme.dark = currentUser.value.darkMode
+          $vuetify.theme.dark = currentUser.value
+            ? currentUser.value.darkMode
+            : true
         } else {
           $graphql.default.setHeaders({})
           $vuetify.theme.dark = true

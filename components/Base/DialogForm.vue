@@ -4,7 +4,7 @@
   export default {
     name: 'DialogForm',
     props: {
-      value: { type: Boolean, required: true },
+      value: { type: Boolean, default: false },
       submit: { type: Function, required: true },
       title: { type: String, default: '' },
       titleIcon: { type: String, default: '' },

@@ -1,3 +1,44 @@
+<script>
+  import { ref, reactive, useStore } from '@nuxtjs/composition-api'
+  import { isRequired } from '@/functions'
+
+  export default {
+    name: 'UserPasswordForm',
+    setup () {
+      const attributes = reactive({
+        currentPassword: null,
+        password: null,
+        passwordConfirmation: null
+      })
+
+      const store = useStore()
+      return {
+        attributes,
+        rulesFor: {
+          currentPassword: [isRequired('Current Password')],
+          new_password: [isRequired('New Password')],
+          passwordConfirmation: [isRequired('Password Confirmation')]
+        },
+        visible: ref(false),
+        submit: async () => {
+          try {
+            await store.dispatch('user/changePassword', attributes)
+            store.commit('broadcaster/announce', {
+              message: 'Password has been changed!',
+              color: 'success'
+            })
+          } catch (e) {
+            store.commit('broadcaster/announce', {
+              message: e.message,
+              color: 'red'
+            })
+          }
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <base-form :submit="submit">
     <template #default="{ loading, valid }">
@@ -65,55 +106,3 @@
     </template>
   </base-form>
 </template>
-
-<script>
-  import { mapGetters, mapMutations, mapActions } from 'vuex'
-  import { isRequired } from '@/functions'
-
-  export default {
-    name: 'UserPasswordForm',
-    data: () => ({
-      attributes: {
-        currentPassword: null,
-        password: null,
-        passwordConfirmation: null
-      },
-      rulesFor: {
-        currentPassword: [isRequired('Current Password')],
-        new_password: [isRequired('New Password')],
-        passwordConfirmation: [isRequired('Password Confirmation')]
-      },
-      visible: false
-    }),
-    computed: {
-      ...mapGetters([
-        'currentUser'
-      ])
-    },
-    methods: {
-      ...mapMutations('broadcaster', [
-        'announce'
-      ]),
-      ...mapActions('user', [
-        'changePassword'
-      ]),
-      async submit () {
-        try {
-          this.loading = true
-          await this.changePassword(this.attributes)
-          this.announce({
-            message: 'Password has been changed!',
-            color: 'success'
-          })
-        } catch (e) {
-          this.announce({
-            message: e.message,
-            color: 'red'
-          })
-        } finally {
-          this.loading = false
-        }
-      }
-    }
-  }
-</script>

@@ -6,7 +6,7 @@
     setup () {
       const store = useStore()
       onMounted(() => {
-        store.dispatch('app/setTitle', '')
+        store.commit('app/setTitle', '')
       })
 
       const username = ref(null)

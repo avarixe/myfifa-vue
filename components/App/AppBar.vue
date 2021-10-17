@@ -55,7 +55,7 @@
           {
             icon: 'mdi-exit-to-app',
             text: 'Log Out',
-            click: () => store.dispatch('auth/revokeTOken')
+            click: () => store.dispatch('auth/revokeToken')
           }
         ])
       }
