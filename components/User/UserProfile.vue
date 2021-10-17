@@ -19,6 +19,20 @@
         attributes.email = currentUser.value.email
       })
 
+      const submit = async () => {
+        try {
+          await store.dispatch('user/update', attributes)
+          store.commit('broadcaster/announce', {
+            message: 'Profile has been updated!',
+            color: 'success'
+          })
+        } catch (e) {
+          store.commit('broadcaster/announce', {
+            message: e.message,
+            color: 'red'
+          })
+        }
+      }
 
       return {
         attributes,
@@ -30,20 +44,7 @@
             isEmail
           ]
         },
-        submit: async () => {
-          try {
-            await store.dispatch('user/update', attributes)
-            store.commit('broadcaster/announce', {
-              message: 'Profile has been updated!',
-              color: 'success'
-            })
-          } catch (e) {
-            store.commit('broadcaster/announce', {
-              message: e.message,
-              color: 'red'
-            })
-          }
-        }
+        submit
       }
     }
   }

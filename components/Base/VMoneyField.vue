@@ -31,7 +31,7 @@
         }
       })
 
-      const { value } = toRef(props, 'value')
+      const value = toRef(props, 'value')
       watch(value, () => {
         money.value = value.value ? value.value.toString() : ''
       }, { immediate: true })
@@ -45,7 +45,7 @@
           thousands: ',',
           precision: 0
         }),
-        rules: computed(() => props.required ? [isRequired(props.label)] : [])
+        rules: props.required ? [isRequired(props.label)] : []
       }
     }
   }

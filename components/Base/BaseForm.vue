@@ -9,7 +9,7 @@
     },
     setup (props, { emit }) {
       const form = ref(null)
-      async function resetForm () {
+      const resetForm = async () => {
         key.value++
         form.value.reset()
       }
@@ -19,6 +19,26 @@
       const errorMessage = ref('')
       const loading = ref(false)
       const resetAfterSubmit = toRef(props, 'resetAfterSubmit')
+      const submitForm = async () => {
+        if (form.value.validate()) {
+          try {
+            loading.value = true
+            error.value = false
+            await props.submit()
+            emit('success')
+            if (resetAfterSubmit.value) {
+              resetForm()
+              emit('reset')
+            }
+          } catch (err) {
+            errorMessage.value = err.message
+            error.value = true
+          } finally {
+            loading.value = false
+          }
+        }
+      }
+
       return {
         key,
         error,
@@ -27,25 +47,7 @@
         valid: ref(false),
         form,
         resetForm,
-        submitForm: async () => {
-          if (form.value.validate()) {
-            try {
-              loading.value = true
-              error.value = false
-              await props.submit()
-              emit('success')
-              if (resetAfterSubmit.value) {
-                resetForm()
-                emit('reset')
-              }
-            } catch (err) {
-              errorMessage.value = err.message
-              error.value = true
-            } finally {
-              loading.value = false
-            }
-          }
-        }
+        submitForm
       }
     }
   }

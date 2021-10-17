@@ -10,54 +10,56 @@
       const infoDialog = ref(false)
       const togglingMode = ref(false)
 
-      const headline = computed(() => store.getters['app/headline'])
+      const headline = computed(() => store.state.app.headline)
       const currentUser = computed(() => store.getters.currentUser)
 
       const { team } = useTeam()
 
       const router = useRouter()
+      const actions = computed(() => [
+        {
+          icon: 'mdi-home',
+          text: 'Home',
+          click: () => router.push({ name: 'index' })
+        },
+        {
+          icon: 'mdi-account',
+          text: 'Account',
+          click: () => router.push({ name: 'account' })
+        },
+        {
+          icon: `mdi-weather-${currentUser.value.darkMode ? 'night' : 'sunny'}`,
+          text: `${currentUser.value.darkMode ? 'Dark' : 'Light'} Mode`,
+          click: async () => {
+            try {
+              togglingMode.value = true
+              await store.dispatch('user/setDarkMode', !currentUser.value.darkMode)
+            } catch (e) {
+              console.error(e)
+            } finally {
+              togglingMode.value = false
+            }
+          },
+          loading: togglingMode.value
+        },
+        {
+          icon: 'mdi-information-outline',
+          text: 'About',
+          click: () => { infoDialog.value = true }
+        },
+        {
+          icon: 'mdi-exit-to-app',
+          text: 'Log Out',
+          click: () => store.dispatch('auth/revokeToken')
+        }
+      ])
+
       return {
         headline,
         infoDialog,
         togglingMode,
         team,
-        actions: computed(() => [
-          {
-            icon: 'mdi-home',
-            text: 'Home',
-            click: () => router.push({ name: 'index' })
-          },
-          {
-            icon: 'mdi-account',
-            text: 'Account',
-            click: () => router.push({ name: 'account' })
-          },
-          {
-            icon: `mdi-weather-${currentUser.value.darkMode ? 'night' : 'sunny'}`,
-            text: `${currentUser.value.darkMode ? 'Dark' : 'Light'} Mode`,
-            click: async () => {
-              try {
-                togglingMode.value = true
-                await store.dispatch('user/setDarkMode', !currentUser.value.darkMode)
-              } catch (e) {
-                console.error(e)
-              } finally {
-                togglingMode.value = false
-              }
-            },
-            loading: togglingMode.value
-          },
-          {
-            icon: 'mdi-information-outline',
-            text: 'About',
-            click: () => { infoDialog.value = true }
-          },
-          {
-            icon: 'mdi-exit-to-app',
-            text: 'Log Out',
-            click: () => store.dispatch('auth/revokeToken')
-          }
-        ])
+        actions
       }
     }
   }

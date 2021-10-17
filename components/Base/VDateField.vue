@@ -43,16 +43,17 @@
         }
       })
 
+      const formattedDate = computed(() => {
+        return date.value
+          ? format(parseISO(date.value), 'MMM dd, yyyy')
+          : null
+      })
       return {
         menu,
         date,
         activePicker,
-        formattedDate: computed(() => {
-          return date.value
-            ? format(parseISO(date.value), 'MMM dd, yyyy')
-            : null
-        }),
-        rules: computed(() => props.required ? [isRequired(props.label)] : [])
+        formattedDate,
+        rules: props.required ? [isRequired(props.label)] : []
       }
     }
   }

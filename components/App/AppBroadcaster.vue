@@ -16,10 +16,12 @@
         }
       })
 
+      const color = computed(() => store.state.broadcaster.color)
+
       return {
         snackbar,
         message,
-        color: computed(() => store.state.broadcaster.color)
+        color
       }
     }
   }

@@ -17,28 +17,30 @@
       const record = toRef(props, 'record')
       const router = useRouter()
       const store = useStore()
+      const remove = async () => {
+        try {
+          loading.value = true
+
+          await Promise.all([
+            store.dispatch(`${props.store}/remove`, record.value.id),
+            () => { props.redirect && router.push(props.redirect) }
+          ])
+
+          dialog.value = false
+        } catch (e) {
+          errorMessage.value = e.message
+          error.value = true
+        } finally {
+          loading.value = false
+        }
+      }
+
       return {
         dialog,
         loading,
         error,
         errorMessage,
-        remove: async () => {
-          try {
-            loading.value = true
-
-            await Promise.all([
-              store.dispatch(`${props.store}/remove`, record.value.id),
-              () => { props.redirect && router.push(props.redirect) }
-            ])
-
-            dialog.value = false
-          } catch (e) {
-            errorMessage.value = e.message
-            error.value = true
-          } finally {
-            loading.value = false
-          }
-        }
+        remove
       }
     }
   }

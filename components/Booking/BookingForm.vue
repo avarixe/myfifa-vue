@@ -1,10 +1,91 @@
+<script>
+  import { ref, reactive, toRef, watchEffect, useStore } from '@nuxtjs/composition-api'
+  import { useMatch, useTeam } from '@/composables'
+  import { isRequired } from '@/functions'
+
+  export default {
+    name: 'BookingForm',
+    props: {
+      record: { type: Object, default: null }
+    },
+    setup (props) {
+      const attributes = reactive({
+        home: true,
+        playerId: null,
+        playerName: '',
+        redCard: false
+      })
+
+      const dialog = ref(false)
+      const title = ref('')
+      const record = toRef(props, 'record')
+      const { minute, match, unsubbedPlayers } = useMatch()
+      watchEffect(() => {
+        if (dialog.value) {
+          if (record.value) {
+            attributes.home = record.value.home
+            attributes.playerId = record.value.playerId
+            attributes.playerName = record.value.playerName
+            attributes.redCard = record.value.redCard
+            minute.value = record.value.minute
+            title.value = 'Edit Booking'
+          } else {
+            attributes.redCard = false
+            title.value = 'New Booking'
+          }
+        }
+      })
+
+      const clearNames = () => {
+        attributes.playerId = null
+        attributes.playerName = null
+      }
+
+      const store = useStore()
+      const submit = async () => {
+        const fullAttributes = {
+          ...attributes,
+          minute: minute.value
+        }
+
+        if (record.value) {
+          await store.dispatch('bookings/update', {
+            id: record.value.id,
+            attributes: fullAttributes
+          })
+        } else {
+          await store.dispatch('bookings/create', {
+            matchId: match.value.id,
+            attributes: fullAttributes
+          })
+        }
+      }
+
+      const { team } = useTeam()
+      return {
+        dialog,
+        attributes,
+        minute,
+        title,
+        team,
+        match,
+        rulesFor: {
+          playerName: [isRequired('Player')]
+        },
+        clearNames,
+        submit,
+        unsubbedPlayers
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
     v-model="dialog"
     title-icon="mdi-book"
     :title="title"
     :submit="submit"
-    :color="color"
   >
     <template #activator="{ on }">
       <slot
@@ -75,83 +156,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import pick from 'lodash.pick'
-  import { TeamAccessible, DialogFormable, MatchAccessible } from '@/mixins'
-  import { isRequired } from '@/functions'
-
-  export default {
-    name: 'BookingForm',
-    mixins: [
-      DialogFormable,
-      TeamAccessible,
-      MatchAccessible
-    ],
-    props: {
-      record: { type: Object, default: null }
-    },
-    data: () => ({
-      attributes: {
-        home: true,
-        playerId: null,
-        playerName: '',
-        redCard: false
-      },
-      rulesFor: {
-        playerName: [isRequired('Player')]
-      }
-    }),
-    computed: {
-      title () {
-        return `${this.record ? 'Edit' : 'Record'} Booking`
-      }
-    },
-    watch: {
-      dialog (val) {
-        if (val) {
-          if (this.record) {
-            this.attributes = pick(this.record, [
-              'home',
-              'playerId',
-              'playerName',
-              'redCard'
-            ])
-            this.minute = this.record.minute
-          }
-        } else {
-          this.attributes.redCard = false
-        }
-      }
-    },
-    methods: {
-      ...mapActions('bookings', {
-        createBooking: 'create',
-        updateBooking: 'update'
-      }),
-      clearNames () {
-        this.attributes.playerId = null
-        this.attributes.playerName = null
-      },
-      async submit () {
-        const attributes = {
-          ...this.attributes,
-          minute: this.minute
-        }
-
-        if (this.record) {
-          await this.updateBooking({
-            id: this.record.id,
-            attributes
-          })
-        } else {
-          await this.createBooking({
-            matchId: this.match.id,
-            attributes
-          })
-        }
-      }
-    }
-  }
-</script>

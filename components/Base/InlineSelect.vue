@@ -25,7 +25,7 @@
 
       const { display, item, attribute } = toRefs(props)
 
-      function reset () {
+      const reset = () => {
         value.value = item.value[attribute.value]
         original.value = value.value
         key.value++
@@ -34,17 +34,19 @@
       watch(item, reset, { immediate: true })
       watch(attribute, reset)
 
+      const humanizedDisplay = computed(() => {
+        const val = display.value || value.value
+        return val === null || val === '' ? '-' : val
+      })
+      const emitChange = item => {
+        emit('change', props.optionValue ? item[props.optionValue] : item)
+      }
       return {
         value,
         key,
         menu,
-        humanizedDisplay: computed(() => {
-          const val = display.value || value.value
-          return val === null || val === '' ? '-' : val
-        }),
-        emitChange: item => {
-          emit('change', props.optionValue ? item[props.optionValue] : item)
-        }
+        humanizedDisplay,
+        emitChange
       }
     }
   }

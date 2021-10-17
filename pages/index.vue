@@ -37,43 +37,49 @@
         latestTeams.value = teams.slice(0, 5)
       })
 
+      const lastMatch = computed(() => currentTeam.value?.lastMatch)
+
+      const badgeUrl = team => {
+        return team.badgePath
+          ? `${$config.baseURL.replace(/\/api/, '')}${team.badgePath}`
+          : null
+      }
+
+      const teamLinks = team => {
+        const date = parseISO(team.startedOn)
+        const currentDate = parseISO(team.currentlyOn)
+        const season = differenceInYears(currentDate, date)
+        return [
+          {
+            to: `/teams/${team.id}/seasons/${season}`,
+            icon: 'mdi-calendar',
+            text: 'Current Season'
+          },
+          {
+            to: `/teams/${team.id}/players`,
+            icon: 'mdi-run',
+            text: 'Players'
+          },
+          {
+            to: `/teams/${team.id}/matches`,
+            icon: 'mdi-soccer-field',
+            text: 'Matches'
+          },
+          {
+            to: `/teams/${team.id}/squads`,
+            icon: 'mdi-clipboard-text',
+            text: 'Squads'
+          }
+        ]
+      }
+
       return {
         latestTeams,
         teamIndex,
         currentTeam,
-        lastMatch: computed(() => currentTeam.value && currentTeam.value.lastMatch),
-        badgeUrl: team => {
-          return team.badgePath
-            ? `${$config.baseURL.replace(/\/api/, '')}${team.badgePath}`
-            : null
-        },
-        teamLinks: team => {
-          const date = parseISO(team.startedOn)
-          const currentDate = parseISO(team.currentlyOn)
-          const season = differenceInYears(currentDate, date)
-          return [
-            {
-              to: `/teams/${team.id}/seasons/${season}`,
-              icon: 'mdi-calendar',
-              text: 'Current Season'
-            },
-            {
-              to: `/teams/${team.id}/players`,
-              icon: 'mdi-run',
-              text: 'Players'
-            },
-            {
-              to: `/teams/${team.id}/matches`,
-              icon: 'mdi-soccer-field',
-              text: 'Matches'
-            },
-            {
-              to: `/teams/${team.id}/squads`,
-              icon: 'mdi-clipboard-text',
-              text: 'Squads'
-            }
-          ]
-        }
+        lastMatch,
+        badgeUrl,
+        teamLinks
       }
     }
   }

@@ -10,7 +10,7 @@
       const { $graphql } = useContext()
       const store = useStore()
       const { teamId } = useTeam()
-      const stats = reactive({ value: [] })
+      const stats = reactive([])
       useFetch(async () => {
         const query = gql`
           query fetchPlayersPage($teamId: ID!) {
@@ -34,7 +34,7 @@
           headline: 'Player Development'
         })
 
-        stats.value = playerDevelopmentStats
+        playerDevelopmentStats.forEach(stat => stats.push(stat))
       })
 
       return {
@@ -67,7 +67,7 @@
         </v-btn>
       </v-col>
       <v-col cols="12">
-        <player-development-grid :stats="stats.value" />
+        <player-development-grid :stats="stats" />
       </v-col>
     </v-row>
   </v-container>

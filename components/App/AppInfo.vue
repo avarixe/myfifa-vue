@@ -22,9 +22,11 @@
       })
 
       const store = useStore()
+      const version = computed(() => store.state.version)
+
       return {
         dialog,
-        version: computed(() => store.state.version)
+        version
       }
     }
   }

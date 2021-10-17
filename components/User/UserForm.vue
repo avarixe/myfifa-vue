@@ -14,6 +14,10 @@
       })
 
       const store = useStore()
+      const submit = async () => {
+        await store.dispatch('user/create', attributes)
+      }
+
       return {
         attributes,
         rulesFor: {
@@ -27,9 +31,7 @@
           passwordConfirmation: [isRequired('Password Confirmation')]
         },
         visible: ref(false),
-        submit: async () => {
-          await store.dispatch('user/create', attributes)
-        }
+        submit
       }
     }
   }

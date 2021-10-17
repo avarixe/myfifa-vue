@@ -9,10 +9,28 @@
         store.commit('app/setTitle', '')
       })
 
+      const version = computed(() => store.state.version)
+
       const username = ref(null)
       const password = ref(null)
       const error = ref(false)
       const errorMessage = ref(null)
+      const login = async () => {
+        try {
+          error.value = false
+          errorMessage.value = null
+          await store.dispatch('auth/createToken', {
+            username: username.value,
+            password: password.value
+          })
+        } catch (e) {
+          console.error(e)
+          error.value = true
+          errorMessage.value = e.response
+            ? 'Invalid Username/Password. Please try again.'
+            : 'API is not enabled.'
+        }
+      }
 
       return {
         username,
@@ -24,23 +42,8 @@
           backgroundColor: 'rgba(0, 0, 0, 0.3)',
           textShadow: '0 0 2px black'
         },
-        version: computed(() => store.state.version),
-        login: async () => {
-          try {
-            error.value = false
-            errorMessage.value = null
-            await store.dispatch('auth/createToken', {
-              username: username.value,
-              password: password.value
-            })
-          } catch (e) {
-            console.error(e)
-            error.value = true
-            errorMessage.value = e.response
-              ? 'Invalid Username/Password. Please try again.'
-              : 'API is not enabled.'
-          }
-        }
+        version,
+        login
       }
     }
   }

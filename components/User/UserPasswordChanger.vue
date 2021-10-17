@@ -12,6 +12,21 @@
       })
 
       const store = useStore()
+      const submit = async () => {
+        try {
+          await store.dispatch('user/changePassword', attributes)
+          store.commit('broadcaster/announce', {
+            message: 'Password has been changed!',
+            color: 'success'
+          })
+        } catch (e) {
+          store.commit('broadcaster/announce', {
+            message: e.message,
+            color: 'red'
+          })
+        }
+      }
+
       return {
         attributes,
         rulesFor: {
@@ -20,20 +35,7 @@
           passwordConfirmation: [isRequired('Password Confirmation')]
         },
         visible: ref(false),
-        submit: async () => {
-          try {
-            await store.dispatch('user/changePassword', attributes)
-            store.commit('broadcaster/announce', {
-              message: 'Password has been changed!',
-              color: 'success'
-            })
-          } catch (e) {
-            store.commit('broadcaster/announce', {
-              message: e.message,
-              color: 'red'
-            })
-          }
-        }
+        submit
       }
     }
   }

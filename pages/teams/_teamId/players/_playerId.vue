@@ -33,12 +33,12 @@
 
       const route = useRoute()
       const playerId = computed(() => parseInt(route.value.params.playerId))
-      const player = computed(() => {
-        return store.$db().model('Player')
+      const player = computed(() =>
+        store.$db().model('Player')
           .query()
           .withAll()
           .find(playerId.value)
-      })
+      )
 
       const router = useRouter()
       const { teamId, team } = useTeam()
@@ -58,7 +58,7 @@
         numGoals: 0,
         numAssists: 0
       })
-      const { fetchState } = useFetch(async () => {
+      useFetch(async () => {
         const query = gql`
           query fetchPlayerPage($teamId: ID!, $playerId: ID!) {
             player(id: $playerId) {
@@ -104,25 +104,25 @@
         })
       })
 
+      const updatePlayerAttribute = async (playerId, attribute, value) => {
+        try {
+          await store.dispatch('player/update', {
+            id: playerId,
+            attributes: { [attribute]: value }
+          })
+        } catch (e) {
+          store.commit('broadcaster/announce', {
+            message: e.message,
+            color: 'red'
+          })
+        }
+      }
+
       return {
         player,
         playerStats,
         team,
-        fetchState,
-        updatePlayerAttribute: async (playerId, attribute, value) => {
-          try {
-            await store.dispatch('player/update', {
-              id: playerId,
-              attributes: { [attribute]: value }
-            })
-          } catch (e) {
-            this.key++
-            store.commit('broadcaster/announce', {
-              message: e.message,
-              color: 'red'
-            })
-          }
-        }
+        updatePlayerAttribute
       }
     }
   }

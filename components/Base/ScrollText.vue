@@ -12,7 +12,7 @@
     setup (props) {
       const scroller = ref(null)
       const scrolledText = ref(null)
-      function getOverflowWidth () {
+      const getOverflowWidth = () => {
         return scrolledText.value
           ? scrolledText.value.clientWidth - scroller.value.clientWidth
           : 0
@@ -20,7 +20,7 @@
 
       const textClass = ref('truncated')
       const textCssVars = ref({})
-      async function toggleScroll () {
+      const toggleScroll = async () => {
         textClass.value = null
         await nextTick()
         const overflowWidth = getOverflowWidth()
@@ -42,19 +42,21 @@
         window.removeEventListener('resize', resizeListener.value)
       })
 
+      const onEnter = () => {
+        toggleScroll()
+        resizeListener.value = window.addEventListener('resize', toggleScroll)
+      }
+      const onLeave = () => {
+        window.removeEventListener('resize', resizeListener.value)
+        textClass.value = 'truncated'
+      }
       return {
         scroller,
         scrolledText,
         textClass,
         textCssVars,
-        onEnter: () => {
-          toggleScroll()
-          resizeListener.value = window.addEventListener('resize', toggleScroll)
-        },
-        onLeave: () => {
-          window.removeEventListener('resize', resizeListener.value)
-          textClass.value = 'truncated'
-        }
+        onEnter,
+        onLeave
       }
     }
   }

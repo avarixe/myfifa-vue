@@ -12,7 +12,7 @@
     },
     setup () {
       const numPlayers = ref(0)
-      const players = reactive({ value: [] })
+      const players = reactive([])
 
       const store = useStore()
       useFetch(() => {
@@ -23,8 +23,8 @@
       })
 
       const { team } = useTeam()
-      function importPlayer (player) {
-        players.value.push({
+      const importPlayer = player => {
+        players.push({
           rowId: numPlayers.value++,
           name: player['Name'],
           pos: player['Position'],
@@ -51,7 +51,62 @@
         })
       }
 
+      const addPlayer = () => {
+        players.push({
+          rowId: numPlayers.value++,
+          name: '',
+          pos: '',
+          nationality: null,
+          secPos: [],
+          ovr: null,
+          value: 0,
+          kitNo: null,
+          age: null,
+          contractsAttributes: [
+            {
+              signedOn: team.value.currentlyOn,
+              startedOn: team.value.currentlyOn,
+              endedOn: team.value.currentlyOn,
+              wage: null,
+              releaseClause: null,
+              signingBonus: null,
+              performanceBonus: null,
+              bonusReq: null,
+              bonusReqType: null
+            }
+          ]
+        })
+      }
+
+      const removePlayer = row => {
+        const index = players.findIndex(player => player.rowId === row.rowId)
+        players.splice(index, 1)
+      }
+
       const uploader = ref(null)
+      const upload = event => {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          // Parse data
+          const bstr = e.target.result
+          const wb = window.XLSX.read(bstr, { type: 'binary', cellDates: true })
+          // Get first worksheet
+          const wsname = wb.SheetNames[0]
+          const ws = wb.Sheets[wsname]
+          // Convert array of arrays
+          const data = window.XLSX.utils.sheet_to_json(ws)
+          // Update state
+          data.forEach(player => importPlayer(player))
+        }
+
+        const files = event.target.files
+
+        if (files && files.length > 0) {
+          reader.readAsBinaryString(files[0])
+        }
+
+        uploader.value.value = null
+      }
 
       return {
         valid: ref(false),
@@ -77,58 +132,9 @@
           { text: '', value: 'bonusReq' },
           { text: '', value: 'bonusReqType' }
         ],
-        addPlayer: () => {
-          players.value.push({
-            rowId: numPlayers.value++,
-            name: '',
-            pos: '',
-            nationality: null,
-            secPos: [],
-            ovr: null,
-            value: 0,
-            kitNo: null,
-            age: null,
-            contractsAttributes: [
-              {
-                signedOn: team.value.currentlyOn,
-                startedOn: team.value.currentlyOn,
-                endedOn: team.value.currentlyOn,
-                wage: null,
-                releaseClause: null,
-                signingBonus: null,
-                performanceBonus: null,
-                bonusReq: null,
-                bonusReqType: null
-              }
-            ]
-          })
-        },
-        removePlayer: row => {
-          players.value = players.value.filter(player => player.rowId !== row.rowId)
-        },
-        upload: event => {
-          const reader = new FileReader()
-          reader.onload = (e) => {
-            // Parse data
-            const bstr = e.target.result
-            const wb = window.XLSX.read(bstr, { type: 'binary', cellDates: true })
-            // Get first worksheet
-            const wsname = wb.SheetNames[0]
-            const ws = wb.Sheets[wsname]
-            // Convert array of arrays
-            const data = window.XLSX.utils.sheet_to_json(ws)
-            // Update state
-            data.forEach(player => importPlayer(player))
-          }
-
-          const files = event.target.files
-
-          if (files && files.length > 0) {
-            reader.readAsBinaryString(files[0])
-          }
-
-          uploader.value.value = null
-        }
+        addPlayer,
+        removePlayer,
+        upload
       }
     }
   }
@@ -200,7 +206,7 @@
                 </thead>
                 <tbody>
                   <player-import-row
-                    v-for="player in players.value"
+                    v-for="player in players"
                     :key="player.rowId"
                     :player="player"
                     :submitted="submitted"

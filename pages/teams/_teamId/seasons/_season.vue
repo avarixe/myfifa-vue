@@ -84,20 +84,20 @@
         seasonStats.transferActivity = team.transferActivity
       })
 
+      const linkToSeason = season => ({
+        name: 'teams-teamId-seasons-season',
+        params: {
+          teamId: teamId.value,
+          season
+        }
+      })
+
       return {
         pageSeason,
         seasonStats,
         currentSeason,
         tab: ref(0),
-        linkToSeason: season => {
-          return {
-            name: 'teams-teamId-seasons-season',
-            params: {
-              teamId: teamId.value,
-              season
-            }
-          }
-        }
+        linkToSeason
       }
     }
   }

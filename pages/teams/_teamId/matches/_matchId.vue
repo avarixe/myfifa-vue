@@ -5,7 +5,6 @@
     watchEffect,
     useContext,
     useFetch,
-    useRoute,
     useRouter,
     useStore
   } from '@nuxtjs/composition-api'
@@ -26,7 +25,15 @@
   export default {
     name: 'MatchPage',
     setup () {
-      const { matchId, match } = useMatch()
+      const { matchId } = useMatch()
+      const store = useStore()
+      const match = computed(() =>
+        store.$db().model('Match')
+          .query()
+          .withAll()
+          .find(matchId.value)
+      )
+
       const { teamId } = useTeam()
       const router = useRouter()
       watchEffect(() => {
@@ -39,7 +46,6 @@
       })
 
       const { $graphql } = useContext()
-      const store = useStore()
       const readonly = ref(true)
       useFetch(async () => {
         const query = gql`
@@ -81,34 +87,46 @@
 
         readonly.value = matchData.playedOn !== team.currentlyOn
 
+        let caption = null
+        if (team.name === matchData.home) {
+          caption = `v ${matchData.away}`
+        } else if (team.name === matchData.away) {
+          caption = `v ${matchData.home}`
+        } else {
+          caption = `${matchData.home} v ${matchData.away}`
+        }
+
         store.commit('app/setPage', {
           title: `${matchData.home} vs ${matchData.away}`,
           headline: 'Match',
-          caption: `v ${match.value.opponent}`
+          caption
         })
+      })
+
+      const prevMatchLink = computed(() => {
+        const prevMatch = store.$db().model('Match')
+          .query()
+          .where('teamId', teamId.value)
+          .where('playedOn', date => date < match.value.playedOn)
+          .orderBy('playedOn')
+          .last()
+        return prevMatch ? prevMatch.link : null
+      })
+      const nextMatchLink = computed(() => {
+        const nextMatch = store.$db().model('Match')
+          .query()
+          .where('teamId', teamId.value)
+          .where('playedOn', date => date > match.value.playedOn)
+          .orderBy('playedOn')
+          .first()
+        return nextMatch ? nextMatch.link : null
       })
 
       return {
         match,
         readonly,
-        prevMatchLink: computed(() => {
-          const prevMatch = store.$db().model('Match')
-            .query()
-            .where('teamId', teamId.value)
-            .where('playedOn', date => date < match.value.playedOn)
-            .orderBy('playedOn')
-            .last()
-          return prevMatch ? prevMatch.link : null
-        }),
-        nextMatchLink: computed(() => {
-          const nextMatch = store.$db().model('Match')
-            .query()
-            .where('teamId', teamId.value)
-            .where('playedOn', date => date > match.value.playedOn)
-            .orderBy('playedOn')
-            .first()
-          return nextMatch ? nextMatch.link : null
-        })
+        prevMatchLink,
+        nextMatchLink
       }
     }
   }

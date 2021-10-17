@@ -13,14 +13,17 @@
       const { startValue, endValue } = toRefs(props)
 
       const valueIncreased = computed(() => startValue.value <= endValue.value)
+      const color = computed(() => valueIncreased.value ?  'green' : 'red')
+      const icon = computed(() => valueIncreased.value ? 'menu-up' : 'menu-down')
+      const percentage = computed(() =>
+        Math.abs((endValue.value - startValue.value) / startValue.value) * 100
+      )
 
       return {
         valueIncreased,
-        color: computed(() => valueIncreased.value ?  'green' : 'red'),
-        icon: computed(() => valueIncreased.value ? 'menu-up' : 'menu-down'),
-        percentage: computed(() =>
-          Math.abs((endValue.value - startValue.value) / startValue.value) * 100
-        )
+        color,
+        icon,
+        percentage
       }
     }
   }

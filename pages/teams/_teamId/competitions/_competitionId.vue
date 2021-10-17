@@ -71,11 +71,14 @@
       })
 
       const stages = computed(() => competition.value?.stages || [])
+      const tables = computed(() => stages.value.filter(stage => stage.table))
+      const rounds = computed(() => stages.value.filter(stage => !stage.table))
+
       return {
         competition,
         competitionSeason,
-        tables: computed(() => stages.value.filter(stage => stage.table)),
-        rounds: computed(() => stages.value.filter(stage => !stage.table)),
+        tables,
+        rounds,
         tableKey: ref(0),
         readonly
       }

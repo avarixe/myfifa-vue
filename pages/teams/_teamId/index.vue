@@ -82,18 +82,20 @@
         teamData.expiringPlayers = teamRes.expiringPlayers
       })
 
+      const lastMatch = computed(() =>
+        store.$db().model('Match')
+          .query()
+          .where('teamId', teamId)
+          .orderBy('playedOn', 'desc')
+          .first()
+      )
+
       return {
         team,
         teamId,
         currentSeason,
         teamData,
-        lastMatch: computed(() => {
-          return store.$db().model('Match')
-            .query()
-            .where('teamId', teamId)
-            .orderBy('playedOn', 'desc')
-            .first()
-        })
+        lastMatch
       }
     }
   }

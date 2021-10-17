@@ -27,7 +27,7 @@
 
       const { display, item, attribute } = toRefs(props)
 
-      function reset () {
+      const reset = () => {
         value.value = item.value[attribute.value]
         original.value = value.value
         key.value++
@@ -43,23 +43,26 @@
           ? [isRequired(props.label), ...props.rules]
           : props.rules
       })
+      const close = () => {
+        if (allRules.value.some(rule => typeof rule(value.value) === 'string')) {
+          reset()
+        } else if (isDirty.value) {
+          emit('close', value.value)
+          key.value++
+        }
+      }
+
+      const humanizedDisplay = computed(() => {
+        const val = display.value || value.value
+        return !val && val !== 0 ? '-' : val
+      })
       return {
         value,
         key,
-        humanizedDisplay: computed(() => {
-          const val = display.value || value.value
-          return !val && val !== 0 ? '-' : val
-        }),
+        humanizedDisplay,
         allRules,
         team,
-        close: () => {
-          if (allRules.value.some(rule => typeof rule(value.value) === 'string')) {
-            reset()
-          } else if (isDirty.value) {
-            emit('close', value.value)
-            key.value++
-          }
-        }
+        close
       }
     }
   }

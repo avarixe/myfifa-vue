@@ -27,29 +27,35 @@ export default () => {
     }
   })
 
+  const seasonEnd = computed(() => {
+    if (team.value) {
+      const date = parseISO(seasonStart.value)
+      return format(addYears(date, 1), 'yyyy-MM-dd')
+    } else {
+      return null
+    }
+  })
+
+  const seasonLabel = season => {
+    const start = addYears(parseISO(team.value.startedOn), season)
+    const end = addYears(start, 1)
+    return `${format(start, 'yyyy')} - ${format(end, 'yyyy')}`
+  }
+
+  const linkTo = page => {
+    return {
+      name: `teams-teamId-${page}`,
+      params: { teamId: teamId.value }
+    }
+  }
+
   return {
     teamId,
     team,
     currentSeason,
     seasonStart,
-    seasonEnd: computed(() => {
-      if (team.value) {
-        const date = parseISO(seasonStart.value)
-        return format(addYears(date, 1), 'yyyy-MM-dd')
-      } else {
-        return null
-      }
-    }),
-    seasonLabel: season => {
-      const start = addYears(parseISO(team.value.startedOn), season)
-      const end = addYears(start, 1)
-      return `${format(start, 'yyyy')} - ${format(end, 'yyyy')}`
-    },
-    linkTo: page => {
-      return {
-        name: `teams-teamId-${page}`,
-        params: { teamId: teamId.value }
-      }
-    }
+    seasonEnd,
+    seasonLabel,
+    linkTo
   }
 }
