@@ -1,7 +1,97 @@
+<script>
+  import {
+    ref,
+    toRef,
+    reactive,
+    computed,
+    watchEffect,
+    useStore
+  } from '@nuxtjs/composition-api'
+  import { useActivePlayers, useTeam } from '@/composables'
+  import { matchPositions } from '@/constants'
+  import { isRequired } from '@/functions'
+
+  export default {
+    name: 'SquadForm',
+    props: {
+      record: { type: Object, default: null }
+    },
+    setup (props) {
+      const attributes = reactive({
+        name: '',
+        squadPlayersAttributes: new Array(11).fill().map((_, id) => ({
+          id,
+          playerId: null,
+          pos: null
+        }))
+      })
+
+      const positions = Object.keys(matchPositions)
+      const sortedSquadPlayers = computed(() =>
+        [...attributes.squadPlayersAttributes].sort((a, b) => {
+          return a.pos && positions.indexOf(a.pos) < positions.indexOf(b.pos)
+            ? -1
+            : 1
+        })
+      )
+
+      const dialog = ref(false)
+      const record = toRef(props, 'record')
+      const title = ref('New Squad')
+      watchEffect(() => {
+        if (dialog.value && record.value) {
+          attributes.name = record.value.name
+          attributes.squadPlayersAttributes = record.value.squadPlayers
+            .map(squadPlayer => ({
+              id: squadPlayer.id,
+              playerId: squadPlayer.playerId,
+              pos: squadPlayer.pos
+            }))
+        }
+      })
+
+      const store = useStore()
+      const { teamId } = useTeam()
+      const submit = async () => {
+        if (record.value) {
+          await store.dispatch('squads/update', {
+            id: record.value.id,
+            attributes
+          })
+        } else {
+          attributes.squadPlayersAttributes.forEach(attributes => {
+            delete attributes.id
+          })
+          await store.dispatch('squads/create', {
+            teamId: teamId.value,
+            attributes
+          })
+        }
+      }
+
+      const activePlayers = useActivePlayers()
+
+      return {
+        attributes,
+        dialog,
+        title,
+        submit,
+        sortedSquadPlayers,
+        positions,
+        activePlayers,
+        rulesFor: {
+          name: [isRequired('Name')],
+          pos: [isRequired('Position')]
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
     v-model="dialog"
-    title="Edit Squad"
+    :title="title"
     :submit="submit"
   >
     <template #activator="{ on }">
@@ -55,88 +145,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import { ActivePlayerSelectable, DialogFormable, TeamAccessible } from '@/mixins'
-  import { matchPositions } from '@/constants'
-  import { isRequired } from '@/functions'
-
-  export default {
-    name: 'SquadForm',
-    mixins: [
-      ActivePlayerSelectable,
-      DialogFormable,
-      TeamAccessible
-    ],
-    props: {
-      record: { type: Object, default: null }
-    },
-    data: () => ({
-      valid: false,
-      key: 0,
-      attributes: {
-        name: '',
-        squadPlayersAttributes: new Array(11).fill().map((_, id) => ({
-          id,
-          playerId: null,
-          pos: null
-        }))
-      },
-      rulesFor: {
-        name: [isRequired('Name')],
-        pos: [isRequired('Position')]
-      }
-    }),
-    computed: {
-      title () {
-        return this.record ? 'Edit Squad' : 'New Squad'
-      },
-      positions () {
-        return Object.keys(matchPositions)
-      },
-      sortedSquadPlayers () {
-        return [...this.attributes.squadPlayersAttributes].sort((a, b) => {
-          return a.pos && this.positions.indexOf(a.pos) < this.positions.indexOf(b.pos)
-            ? -1
-            : 1
-        })
-      }
-    },
-    watch: {
-      dialog (val) {
-        if (val && this.record) {
-          this.attributes.name = this.record.name
-          this.attributes.squadPlayersAttributes = this.record.squadPlayers
-            .map(squadPlayer => ({
-              id: squadPlayer.id,
-              playerId: squadPlayer.playerId,
-              pos: squadPlayer.pos
-            }))
-        }
-      }
-    },
-    methods: {
-      ...mapActions('squads', {
-        createSquad: 'create',
-        updateSquad: 'update'
-      }),
-      async submit () {
-        if (this.record) {
-          await this.updateSquad({
-            id: this.record.id,
-            attributes: this.attributes
-          })
-        } else {
-          this.attributes.squadPlayersAttributes.forEach(attributes => {
-            delete attributes.id
-          })
-          await this.createSquad({
-            teamId: this.team.id,
-            attributes: this.attributes
-          })
-        }
-      }
-    }
-  }
-</script>

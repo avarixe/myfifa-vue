@@ -13,7 +13,7 @@
       const loading = ref(false)
       const badge = ref(null)
 
-      const { $config } = useContext()
+      const { $config, $graphql } = useContext()
       const team = toRef(props, 'team')
       const badgeUrl = computed(() => {
         return team.value.badgePath
@@ -33,7 +33,7 @@
         `
 
         const { uploadBadge: { team: teamData, errors } } =
-          await this.$graphql.default.request(query, {
+          await $graphql.default.request(query, {
             teamId: team.value.id,
             badge: badge.value
           })

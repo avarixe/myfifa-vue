@@ -1,3 +1,55 @@
+<script>
+  import { ref, toRefs, computed, useStore } from '@nuxtjs/composition-api'
+  import { useCompetition } from '@/composables'
+
+  export default {
+    name: 'RoundStage',
+    props: {
+      round: { type: Object, required: true },
+      readonly: { type: Boolean, default: false }
+    },
+    setup (props) {
+      const key = ref(0)
+
+      const { round, readonly } = toRefs(props)
+      const items = computed(() => Object.values(round.value.fixtures) || [])
+
+      const headers = computed(() => [
+        { text: 'Home Team', value: 'homeTeam', align: 'right' },
+        { text: 'Score', value: 'score', align: 'center' },
+        { text: 'Away Team', value: 'awayTeam' },
+        ...(readonly.value ? [] : [{ text: '', value: 'edit', width: 120 }])
+      ])
+
+      const store = useStore()
+      const updateStageAttribute = async (stageId, attribute, value) => {
+        try {
+          await store.dispatch('stages/update', {
+            id: stageId,
+            attributes: { [attribute]: value }
+          })
+        } catch (e) {
+          key.value++
+          store.commit('broadcaster/announce', {
+            message: e.message,
+            color: 'red'
+          })
+        }
+      }
+
+      const { teamClass } = useCompetition()
+
+      return {
+        key,
+        headers,
+        items,
+        updateStageAttribute,
+        teamClass
+      }
+    }
+  }
+</script>
+
 <template>
   <v-card flat>
     <v-card-title>
@@ -71,66 +123,3 @@
     </v-data-table>
   </v-card>
 </template>
-
-<script>
-  import { mapMutations, mapActions } from 'vuex'
-  import { CompetitionAccessible } from '@/mixins'
-
-  export default {
-    name: 'RoundStage',
-    mixins: [
-      CompetitionAccessible
-    ],
-    props: {
-      round: { type: Object, required: true },
-      readonly: { type: Boolean, default: false }
-    },
-    data: () => ({
-      key: 0
-    }),
-    computed: {
-      items () {
-        return Object.values(this.round.fixtures) || []
-      },
-      headers () {
-        const headers = [
-          { text: 'Home Team', value: 'homeTeam', align: 'right' },
-          { text: 'Score', value: 'score', align: 'center' },
-          { text: 'Away Team', value: 'awayTeam' }
-        ]
-
-        if (!this.readonly) {
-          headers.push({
-            text: '',
-            value: 'edit',
-            width: 120
-          })
-        }
-
-        return headers
-      }
-    },
-    methods: {
-      ...mapMutations('broadcaster', [
-        'announce'
-      ]),
-      ...mapActions('stages', {
-        updateStage: 'update'
-      }),
-      async updateStageAttribute (stageId, attribute, value) {
-        try {
-          await this.updateStage({
-            id: stageId,
-            attributes: { [attribute]: value }
-          })
-        } catch (e) {
-          this.key++
-          this.announce({
-            message: e.message,
-            color: 'red'
-          })
-        }
-      }
-    }
-  }
-</script>

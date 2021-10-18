@@ -1,3 +1,25 @@
+<script>
+  import { computed, useStore } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'SquadGrid',
+    setup () {
+      const store = useStore()
+      const { teamId } = useTeam()
+      const squads = computed(() =>
+        store.$db().model('Squad')
+          .query()
+          .with('squadPlayers')
+          .where('teamId', parseInt(teamId.value))
+          .get()
+      )
+
+      return { squads }
+    }
+  }
+</script>
+
 <template>
   <v-row>
     <v-col
@@ -10,23 +32,3 @@
     </v-col>
   </v-row>
 </template>
-
-<script>
-  import { TeamAccessible } from '@/mixins'
-
-  export default {
-    name: 'SquadGrid',
-    mixins: [
-      TeamAccessible
-    ],
-    computed: {
-      squads () {
-        return this.$store.$db().model('Squad')
-          .query()
-          .with('squadPlayers')
-          .where('teamId', this.teamId)
-          .get()
-      }
-    }
-  }
-</script>

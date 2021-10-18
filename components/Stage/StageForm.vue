@@ -1,3 +1,62 @@
+<script>
+  import { ref, reactive, computed, watch, useStore } from '@nuxtjs/composition-api'
+  import { isRequired, isNumber } from '@/functions'
+
+  export default {
+    name: 'StageForm',
+    props: {
+      competition: { type: Object, required: true }
+    },
+    setup (props) {
+      const attributes = reactive({
+        name: '',
+        numTeams: null,
+        numFixtures: null,
+        table: false
+      })
+
+      const dialog = ref(false)
+      watch(dialog, open => {
+        if (open) {
+          attributes.table = false
+        }
+      })
+
+      const table = computed(() => attributes.table)
+      watch(table, () => {
+        if (table.value) {
+          attributes.numFixtures = null
+        }
+      })
+
+      const store = useStore()
+      const submit = async () => {
+        await store.dispatch('stages/create', {
+          competitionId: props.competition.id,
+          attributes
+        })
+      }
+
+      return {
+        attributes,
+        dialog,
+        submit,
+        rulesFor: {
+          name: [isRequired('Name')],
+          numTeams: [
+            isRequired('Number of Teams'),
+            isNumber('Number of Teams')
+          ],
+          numFixtures: [
+            isRequired('Number of Fixtures'),
+            isNumber('Number of Fixtures')
+          ]
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
     v-model="dialog"
@@ -74,62 +133,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import { DialogFormable } from '@/mixins'
-  import { isRequired, isNumber } from '@/functions'
-
-  export default {
-    name: 'StageForm',
-    mixins: [
-      DialogFormable
-    ],
-    props: {
-      competition: { type: Object, required: true }
-    },
-    data: () => ({
-      valid: false,
-      attributes: {
-        name: '',
-        numTeams: null,
-        numFixtures: null,
-        table: false
-      },
-      rulesFor: {
-        name: [isRequired('Name')],
-        numTeams: [
-          isRequired('Number of Teams'),
-          isNumber('Number of Teams')
-        ],
-        numFixtures: [
-          isRequired('Number of Fixtures'),
-          isNumber('Number of Fixtures')
-        ]
-      }
-    }),
-    watch: {
-      dialog (open) {
-        if (open) {
-          this.attributes.table = false
-        }
-      },
-      'attributes.table' (val) {
-        if (val) {
-          this.attributes.numFixtures = null
-        }
-      }
-    },
-    methods: {
-      ...mapActions('stages', {
-        createStage: 'create'
-      }),
-      async submit () {
-        await this.createStage({
-          competitionId: this.competition.id,
-          stage: this.stage
-        })
-      }
-    }
-  }
-</script>

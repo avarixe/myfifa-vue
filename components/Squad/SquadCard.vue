@@ -1,3 +1,56 @@
+<script>
+  import { toRef, computed, useStore } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'SquadCard',
+    props: {
+      squad: { type: Object, required: true }
+    },
+    setup (props) {
+      const squad = toRef(props, 'squad')
+      const store = useStore()
+      const avgOVR = positionType => {
+        let playerIds = []
+
+        squad.value.squadPlayers.forEach(squadPlayer => {
+          if (squadPlayer.positionType === positionType) {
+            playerIds.push(squadPlayer.playerId)
+          }
+        })
+
+        const totalOvr = store.$db().model('Player')
+          .query()
+          .whereIdIn(playerIds)
+          .sum('ovr')
+
+        return Math.round(totalOvr / (playerIds.length || 1))
+      }
+
+      const defOVR = computed(() => avgOVR('DEF'))
+      const midOVR = computed(() => avgOVR('MID'))
+      const attOVR = computed(() => avgOVR('ATT'))
+
+      const nameOf = playerId => {
+        const player = store.$db().model('Player').find(playerId)
+        return player ? player.name : ''
+      }
+
+      const statusColor = playerId => {
+        const player = store.$db().model('Player').find(playerId)
+        return player?.status === 'Active' ? '' : 'red--text'
+      }
+
+      return {
+        defOVR,
+        midOVR,
+        attOVR,
+        nameOf,
+        statusColor
+      }
+    }
+  }
+</script>
+
 <template>
   <v-card>
     <v-toolbar
@@ -63,53 +116,3 @@
     </v-card-text>
   </v-card>
 </template>
-
-<script>
-  export default {
-    name: 'SquadCard',
-    props: {
-      squad: { type: Object, required: true }
-    },
-    computed: {
-      defOVR () {
-        return this.avgOVR('DEF')
-      },
-      midOVR () {
-        return this.avgOVR('MID')
-      },
-      attOVR () {
-        return this.avgOVR('ATT')
-      }
-    },
-    methods: {
-      avgOVR (positionType) {
-        let playerIds = []
-
-        this.squad.squadPlayers.forEach(squadPlayer => {
-          if (squadPlayer.positionType === positionType) {
-            playerIds.push(squadPlayer.playerId)
-          }
-        })
-
-        const totalOvr = this.$store.$db().model('Player')
-          .query()
-          .whereIdIn(playerIds)
-          .sum('ovr')
-
-        return Math.round(totalOvr / (playerIds.length || 1))
-      },
-      nameOf (playerId) {
-        const player = this.$store.$db().model('Player').find(playerId)
-        return player ? player.name : ''
-      },
-      statusColor (playerId) {
-        const player = this.$store.$db().model('Player').find(playerId)
-        if (player && player.status === 'Active') {
-          return ''
-        } else {
-          return 'red--text'
-        }
-      }
-    }
-  }
-</script>

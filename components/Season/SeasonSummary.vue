@@ -1,3 +1,46 @@
+<script>
+  import { toRef, computed } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'SeasonSummary',
+    props: {
+      competitionStats: { type: Array, required: true },
+      teamDevelopmentStats: { type: Object, required: true }
+    },
+    setup (props) {
+      const competitionStats = toRef(props, 'competitionStats')
+
+      const numWins = computed(() =>
+        competitionStats.value.reduce((total, stats) => total + stats.wins, 0)
+      )
+      const numDraws = computed(() =>
+        competitionStats.value.reduce((total, stats) => total + stats.draws, 0)
+      )
+      const numLosses = computed(() =>
+        competitionStats.value.reduce((total, stats) => total + stats.losses, 0)
+      )
+      const numGoalsFor = computed(() =>
+        competitionStats.value.reduce((total, stats) => total + stats.goalsFor, 0)
+      )
+      const numGoalsAgainst = computed(() =>
+        competitionStats.value.reduce((total, stats) => total + stats.goalsAgainst, 0)
+      )
+
+      const { team } = useTeam()
+
+      return {
+        team,
+        numWins,
+        numDraws,
+        numLosses,
+        numGoalsFor,
+        numGoalsAgainst
+      }
+    }
+  }
+</script>
+
 <template>
   <v-container>
     <v-row
@@ -69,38 +112,3 @@
     </v-row>
   </v-container>
 </template>
-
-<script>
-  export default {
-    name: 'SeasonSummary',
-    props: {
-      competitionStats: { type: Array, required: true },
-      teamDevelopmentStats: { type: Object, required: true }
-    },
-    computed: {
-      team () {
-        return this.$store.$db().model('Team').find(this.$route.params.teamId)
-      },
-      numWins () {
-        return this.competitionStats
-          .reduce((total, stats) => total + stats.wins, 0)
-      },
-      numDraws () {
-        return this.competitionStats
-          .reduce((total, stats) => total + stats.draws, 0)
-      },
-      numLosses () {
-        return this.competitionStats
-          .reduce((total, stats) => total + stats.losses, 0)
-      },
-      numGoalsFor () {
-        return this.competitionStats
-          .reduce((total, stats) => total + stats.goalsFor, 0)
-      },
-      numGoalsAgainst () {
-        return this.competitionStats
-          .reduce((total, stats) => total + stats.goalsAgainst, 0)
-      }
-    }
-  }
-</script>

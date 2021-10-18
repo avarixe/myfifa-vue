@@ -1,3 +1,66 @@
+<script>
+  import { ref, toRefs, computed, useStore } from '@nuxtjs/composition-api'
+  import orderBy from 'lodash.orderby'
+  import { useCompetition } from '@/composables'
+
+  export default {
+    name: 'TableStage',
+    props: {
+      table: { type: Object, required: true },
+      readonly: { type: Boolean, default: false }
+    },
+    setup (props) {
+      const key = ref(0)
+
+      const { table, readonly } = toRefs(props)
+      const headers = computed(() => [
+        { text: '#', value: 'standing', align: 'center', width: 60 },
+        { text: 'Team', value: 'name' },
+        { text: 'W', value: 'wins', align: 'center' },
+        { text: 'D', value: 'draws', align: 'center' },
+        { text: 'L', value: 'losses', align: 'center' },
+        { text: 'GF', value: 'goalsFor', align: 'center' },
+        { text: 'GA', value: 'goalsAgainst', align: 'center' },
+        { text: 'GD', value: 'goalDifference', align: 'center' },
+        { text: 'PTS', value: 'points', align: 'center' },
+        ...(readonly.value ? [] : [{ text: '', value: 'edit', sortable: false, width: 120 }])
+      ])
+
+      const items = computed(() => orderBy(
+        table.value.tableRows,
+        ['points', 'goalDifference', 'goalsFor', 'name'],
+        ['desc', 'desc', 'desc', 'asc']
+      ).map((row, i) => ({ ...row, standing: i + 1 })))
+
+      const store = useStore()
+      const updateStageAttribute = async (stageId, attribute, value) => {
+        try {
+          await store.dispatch('stages/update', {
+            id: stageId,
+            attributes: { [attribute]: value }
+          })
+        } catch (e) {
+          key.value++
+          store.commit('broadcast/announce', {
+            message: e.message,
+            color: 'red'
+          })
+        }
+      }
+
+      const { teamClass } = useCompetition()
+
+      return {
+        key,
+        headers,
+        items,
+        updateStageAttribute,
+        teamClass
+      }
+    }
+  }
+</script>
+
 <template>
   <v-card flat>
     <v-card-title>
@@ -72,78 +135,3 @@
     </v-data-table>
   </v-card>
 </template>
-
-<script>
-  import { mapMutations, mapActions } from 'vuex'
-  import orderBy from 'lodash.orderby'
-  import { CompetitionAccessible } from '@/mixins'
-
-  export default {
-    name: 'TableStage',
-    mixins: [
-      CompetitionAccessible
-    ],
-    props: {
-      table: { type: Object, required: true },
-      readonly: { type: Boolean, default: false }
-    },
-    data: () => ({
-      key: 0
-    }),
-    computed: {
-      items () {
-        return orderBy(
-          this.table.tableRows,
-          ['points', 'goalDifference', 'goalsFor', 'name'],
-          ['desc', 'desc', 'desc', 'asc']
-        ).map((row, i) => ({ ...row, standing: i + 1 }))
-      },
-      headers () {
-        const headers = [
-          { text: '#', value: 'standing', align: 'center', width: 60 },
-          { text: 'Team', value: 'name' },
-          { text: 'W', value: 'wins', align: 'center' },
-          { text: 'D', value: 'draws', align: 'center' },
-          { text: 'L', value: 'losses', align: 'center' },
-          { text: 'GF', value: 'goalsFor', align: 'center' },
-          { text: 'GA', value: 'goalsAgainst', align: 'center' },
-          { text: 'GD', value: 'goalDifference', align: 'center' },
-          { text: 'PTS', value: 'points', align: 'center' }
-        ]
-
-        if (!this.readonly) {
-          headers.push({
-            text: '',
-            value: 'edit',
-            sortable: false,
-            width: 120
-          })
-        }
-
-        return headers
-      }
-    },
-    methods: {
-      ...mapMutations('broadcaster', [
-        'announce'
-      ]),
-      ...mapActions('stages', {
-        updateStage: 'update'
-      }),
-      async updateStageAttribute (stageId, attribute, value) {
-        try {
-          await this.updateStage({
-            id: stageId,
-            attributes: { [attribute]: value }
-          })
-        } catch (e) {
-          this.key++
-          this.announce({
-            message: e.message,
-            color: 'red'
-          })
-        }
-      }
-    }
-  }
-</script>

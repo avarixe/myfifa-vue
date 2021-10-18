@@ -1,3 +1,42 @@
+<script>
+  import { toRef, computed, useStore } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'SeasonCard',
+    props: {
+      season: { type: Number, required: true }
+    },
+    setup (props) {
+      const { team, seasonLabel } = useTeam()
+      const store = useStore()
+      const season = toRef(props, 'season')
+      const competitions = computed(() =>
+        store.$db().model('Competition')
+          .query()
+          .with('team')
+          .where('teamId', team.value.id)
+          .where('season', season.value)
+          .get()
+      )
+
+      const link = computed(() => ({
+        name: 'teams-teamId-seasons-season',
+        params: {
+          teamId: team.value.id,
+          season: season.value
+        }
+      }))
+
+      return {
+        seasonLabel,
+        competitions,
+        link
+      }
+    }
+  }
+</script>
+
 <template>
   <v-card>
     <v-toolbar
@@ -6,7 +45,7 @@
       dense
     >
       <v-toolbar-title class="font-weight-light">
-        {{ seasonLabel }}
+        {{ seasonLabel(season) }}
       </v-toolbar-title>
       <v-spacer />
       <v-btn
@@ -41,41 +80,3 @@
     </v-list>
   </v-card>
 </template>
-
-<script>
-  import { addYears, format, parseISO } from 'date-fns'
-
-  export default {
-    name: 'SeasonCard',
-    props: {
-      season: { type: Number, required: true }
-    },
-    computed: {
-      team () {
-        return this.$store.$db().model('Team').find(this.$route.params.teamId)
-      },
-      competitions () {
-        return this.$store.$db().model('Competition')
-          .query()
-          .with('team')
-          .where('teamId', this.team.id)
-          .where('season', this.season)
-          .get()
-      },
-      seasonLabel () {
-        let start = addYears(parseISO(this.team.startedOn), this.season)
-        const end = addYears(start, 1)
-        return `${format(start, 'yyyy')} - ${format(end, 'yyyy')}`
-      },
-      link () {
-        return {
-          name: 'teams-teamId-seasons-season',
-          params: {
-            teamId: this.team.id,
-            season: this.season
-          }
-        }
-      }
-    }
-  }
-</script>

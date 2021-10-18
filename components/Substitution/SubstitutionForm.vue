@@ -1,5 +1,12 @@
 <script>
-  import { ref, toRef, reactive, computed, watchEffect } from '@nuxtjs/composition-api'
+  import {
+    ref,
+    toRef,
+    reactive,
+    computed,
+    watchEffect,
+    useStore
+  } from '@nuxtjs/composition-api'
   import { useActivePlayers, useMatch } from '@/composables'
 
   export default {
@@ -39,8 +46,9 @@
         }
       })
 
+      const store = useStore()
       const submit = async () => {
-        await this.updateSubstitution({
+        await store.dispatch('substitutions/update', {
           id: record.value.id,
           attributes: {
             ...attributes,

@@ -19,6 +19,7 @@
         const query = gql`
           query fetchPlayersPage($teamId: ID!) {
             team(id: $teamId) {
+              name
               players { ...PlayerData }
               playerPerformanceStats { ...PlayerPerformanceStatsData }
               competitions { ...CompetitionData }

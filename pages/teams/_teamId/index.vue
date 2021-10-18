@@ -73,7 +73,7 @@
         }
 
         store.commit('app/setPage', {
-          title: team.value.name,
+          title: teamRes.name,
           headline: 'Dashboard'
         })
 
@@ -85,7 +85,7 @@
       const lastMatch = computed(() =>
         store.$db().model('Match')
           .query()
-          .where('teamId', teamId)
+          .where('teamId', parseInt(teamId.value))
           .orderBy('playedOn', 'desc')
           .first()
       )

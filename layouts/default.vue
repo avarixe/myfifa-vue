@@ -1,5 +1,6 @@
 <script>
   import {
+    defineComponent,
     computed,
     watchEffect,
     useContext,
@@ -8,7 +9,7 @@
   } from '@nuxtjs/composition-api'
   import { useTeam } from '@/composables'
 
-  export default {
+  export default defineComponent({
     name: 'Layout',
     middleware: [
       'authenticated'
@@ -17,9 +18,9 @@
     head: {},
     setup () {
       const store = useStore()
-      useMeta({
+      useMeta(() => ({
         title: store.state.app.title
-      })
+      }))
 
       const { $graphql, $vuetify } = useContext()
       const token = computed(() => store.state.auth.token)
@@ -42,7 +43,7 @@
         team
       }
     }
-  }
+  })
 </script>
 
 <template>
