@@ -1,3 +1,39 @@
+<script>
+  import { ref, toRef, watchEffect } from '@nuxtjs/composition-api'
+  import { nationalities } from '@/constants'
+
+  export default {
+    name: 'NationalityField',
+    props: {
+      value: { type: [String, Number], default: null },
+      label: { type: String, default: 'Nationality' },
+      icon: { type: String, default: 'mdi-flag' },
+      dense: { type: Boolean, default: false },
+      outlined: { type: Boolean, default: false },
+      hideDetails: { type: Boolean, default: false }
+    },
+    setup (props, { emit }) {
+      const nationality = ref(null)
+      const value = toRef(props, 'value')
+      watchEffect(() => {
+        nationality.value = value.value
+      })
+
+      watchEffect(() => {
+        emit('input', nationality.value)
+      })
+
+      const items = Object.keys(nationalities).sort()
+
+      return {
+        nationality,
+        nationalities,
+        items
+      }
+    }
+  }
+</script>
+
 <template>
   <v-autocomplete
     v-model="nationality"
@@ -26,41 +62,3 @@
     </template>
   </v-autocomplete>
 </template>
-
-<script>
-  import { nationalities } from '@/constants'
-
-  export default {
-    name: 'NationalityField',
-    props: {
-      value: { type: [String, Number], default: null },
-      label: { type: String, default: 'Nationality' },
-      icon: { type: String, default: 'mdi-flag' },
-      dense: { type: Boolean, default: false },
-      outlined: { type: Boolean, default: false },
-      hideDetails: { type: Boolean, default: false }
-    },
-    data: () => ({
-      nationality: null
-    }),
-    computed: {
-      nationalities () {
-        return nationalities
-      },
-      items () {
-        return Object.keys(nationalities).sort()
-      }
-    },
-    watch: {
-      value: {
-        handler () {
-          this.nationality = this.value
-        },
-        immediate: true
-      },
-      nationality (value) {
-        this.$emit('input', value)
-      }
-    }
-  }
-</script>

@@ -1,3 +1,21 @@
+<script>
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'ContractEvent',
+    props: {
+      player: { type: Object, required: true },
+      event: { type: Object, required: true },
+      dense: { type: Boolean, default: false }
+    },
+    setup () {
+      const { team } = useTeam()
+
+      return { team }
+    }
+  }
+</script>
+
 <template>
   <base-player-event
     :player="player"
@@ -45,19 +63,3 @@
     </template>
   </base-player-event>
 </template>
-
-<script>
-  import { TeamAccessible } from '@/mixins'
-
-  export default {
-    name: 'ContractEvent',
-    mixins: [
-      TeamAccessible
-    ],
-    props: {
-      player: { type: Object, required: true },
-      event: { type: Object, required: true },
-      dense: { type: Boolean, default: false }
-    }
-  }
-</script>

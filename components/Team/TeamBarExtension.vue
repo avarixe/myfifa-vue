@@ -1,3 +1,32 @@
+<script>
+  import { toRef, computed, useContext, useStore } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'TeamBarExtension',
+    props: {
+      team: { type: Object, required: true }
+    },
+    setup (props) {
+      const store = useStore()
+      const headline = computed(() => store.state.app.headline)
+      const caption = computed(() => store.state.app.caption)
+
+      const team = toRef(props, 'team')
+      const { $config } = useContext()
+      const badgeUrl = computed(() => {
+        return team.value.badgePath &&
+          `${$config.baseURL.replace(/\/api/, '')}${team.value.badgePath}`
+      })
+
+      return {
+        headline,
+        caption,
+        badgeUrl
+      }
+    }
+  }
+</script>
+
 <template>
   <v-sheet
     color="transparent"
@@ -43,24 +72,3 @@
     <team-date-picker />
   </v-sheet>
 </template>
-
-<script>
-  import { mapState } from 'vuex'
-
-  export default {
-    name: 'TeamBarExtension',
-    props: {
-      team: { type: Object, required: true }
-    },
-    computed: {
-      ...mapState('app', [
-        'headline',
-        'caption'
-      ]),
-      badgeUrl () {
-        return this.team.badgePath &&
-          `${this.$config.baseURL.replace(/\/api/, '')}${this.team.badgePath}`
-      }
-    }
-  }
-</script>

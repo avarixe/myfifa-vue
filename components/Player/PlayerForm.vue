@@ -1,3 +1,111 @@
+<script>
+  import {
+    ref,
+    reactive,
+    toRef,
+    computed,
+    watchEffect,
+    useRouter,
+    useStore
+  } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+  import { positions } from '@/constants'
+  import { isRequired, inRange, isNumber } from '@/functions'
+
+  export default {
+    name: 'PlayerForm',
+    props: {
+      record: { type: Object, default: null }
+    },
+    setup (props) {
+      const attributes = reactive({
+        name: '',
+        pos: '',
+        nationality: null,
+        secPos: [],
+        ovr: null,
+        value: '',
+        kitNo: null,
+        age: null,
+        youth: false
+      })
+
+      const dialog = ref(false)
+      const title = ref('New Player')
+      const record = toRef(props, 'record')
+      watchEffect(() => {
+        if (dialog.value) {
+          if (record.value) {
+            attributes.name = record.value.name
+            attributes.pos = record.value.pos
+            attributes.age = record.value.age
+            attributes.nationality = record.value.nationality
+            attributes.ovr = record.value.ovr
+            attributes.value = record.value.value
+            attributes.kitNo = record.value.kitNo
+            attributes.youth = record.value.youth
+            attributes.secPos = [...record.value.secPos]
+            title.value = 'Edit Player'
+          } else {
+            attributes.secPos = []
+            attributes.youth = false
+          }
+        }
+      })
+
+      const store = useStore()
+      const router = useRouter()
+      const { team } = useTeam()
+      const submit = async () => {
+        if (record.value) {
+          await store.dispatch('players/update', {
+            id: record.value.id,
+            attributes
+          })
+        } else {
+          const { id: playerId } = await store.dispatch('players/create', {
+            teamId: team.value.id,
+            attributes
+          })
+          router.push({
+            name: 'teams-teamId-players-playerId',
+            params: {
+              teamId: team.value.id,
+              playerId
+            }
+          })
+        }
+      }
+
+      return {
+        attributes,
+        dialog,
+        title,
+        submit,
+        team,
+        rulesFor: {
+          name: [isRequired('Name')],
+          pos: [isRequired('Position')],
+          age: [
+            isRequired('Age'),
+            isNumber('Age')
+          ],
+          ovr: [
+            isRequired('OVR'),
+            isNumber('OVR'),
+            inRange('OVR', [40, 100])
+          ],
+          kitNo: [
+            isNumber('Kit Number'),
+            inRange('Kit Number', [1, 99])
+          ]
+        },
+        positions
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
     v-model="dialog"
@@ -92,107 +200,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import pick from 'lodash.pick'
-  import { DialogFormable, TeamAccessible } from '@/mixins'
-  import { positions } from '@/constants'
-  import { isRequired, inRange, isNumber } from '@/functions'
-
-  export default {
-    name: 'PlayerForm',
-    mixins: [
-      DialogFormable,
-      TeamAccessible
-    ],
-    props: {
-      record: { type: Object, default: null }
-    },
-    data: () => ({
-      valid: false,
-      attributes: {
-        name: '',
-        pos: '',
-        nationality: null,
-        secPos: [],
-        ovr: null,
-        value: '',
-        kitNo: null,
-        age: null,
-        youth: false
-      },
-      rulesFor: {
-        name: [isRequired('Name')],
-        pos: [isRequired('Position')],
-        age: [
-          isRequired('Age'),
-          isNumber('Age')
-        ],
-        ovr: [
-          isRequired('OVR'),
-          isNumber('OVR'),
-          inRange('OVR', [40, 100])
-        ],
-        kitNo: [
-          isNumber('Kit Number'),
-          inRange('Kit Number', [1, 99])
-        ]
-      },
-      positions
-    }),
-    computed: {
-      title () {
-        return this.record ? `Edit ${this.attributes.name}` : 'New Player'
-      }
-    },
-    watch: {
-      dialog (val) {
-        if (val) {
-          if (this.record) {
-            this.attributes = pick(this.record, [
-              'name',
-              'pos',
-              'age',
-              'nationality',
-              'ovr',
-              'value',
-              'kitNo',
-              'youth'
-            ])
-            this.attributes.secPos = [...this.record.secPos]
-          } else {
-            this.attributes.secPos = []
-            this.attributes.youth = false
-          }
-        }
-      }
-    },
-    methods: {
-      ...mapActions('players', {
-        createPlayer: 'create',
-        updatePlayer: 'update'
-      }),
-      async submit () {
-        if (this.record) {
-          await this.updatePlayer({
-            id: this.record.id,
-            attributes: this.attributes
-          })
-        } else {
-          const { id: playerId } = await this.createPlayer({
-            teamId: this.team.id,
-            attributes: this.attributes
-          })
-          this.$router.push({
-            name: 'teams-teamId-players-playerId',
-            params: {
-              teamId: this.team.id,
-              playerId
-            }
-          })
-        }
-      }
-    }
-  }
-</script>

@@ -1,3 +1,64 @@
+<script>
+  import { ref, toRefs, reactive, watchEffect, useStore } from '@nuxtjs/composition-api'
+  import { isNumber } from '@/functions'
+
+  export default {
+    name: 'TableRowForm',
+    props: {
+      stage: { type: Object, required: true },
+      record: { type: Object, default: null }
+    },
+    setup (props) {
+      const attributes = reactive({
+        name: '',
+        wins: null,
+        draws: null,
+        losses: null,
+        goalsFor: null,
+        goalsAgainst: null
+      })
+
+      const dialog = ref(false)
+      const title = ref('Add Table Row')
+      const { stage, record } = toRefs(props)
+      watchEffect(() => {
+        if (dialog.value && record.value) {
+          attributes.name = record.value.name
+          attributes.wins = record.value.wins
+          attributes.draws = record.value.draws
+          attributes.losses = record.value.losses
+          attributes.goalsFor = record.value.goalsFor
+          attributes.goalsAgainst = record.value.goalsAgainst
+          title.value = 'Edit Table Row'
+        }
+      })
+
+      const store = useStore()
+      const submit = async () => {
+        if (record.value) {
+          await store.dispatch('tableRows/update', {
+            id: record.value.id,
+            attributes
+          })
+        } else {
+          await store.dispatch('tableRows/create', {
+            stageId: stage.value.id,
+            attributes
+          })
+        }
+      }
+
+      return {
+        attributes,
+        dialog,
+        title,
+        submit,
+        rulesForNumber: [isNumber()]
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
     v-model="dialog"
@@ -75,70 +136,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import pick from 'lodash.pick'
-  import { DialogFormable } from '@/mixins'
-  import { isNumber } from '@/functions'
-
-  export default {
-    name: 'TableRowForm',
-    mixins: [
-      DialogFormable
-    ],
-    props: {
-      stage: { type: Object, required: true },
-      record: { type: Object, default: null }
-    },
-    data: () => ({
-      attributes: {
-        name: '',
-        wins: null,
-        draws: null,
-        losses: null,
-        goalsFor: null,
-        goalsAgainst: null
-      },
-      rulesForNumber: [isNumber()]
-    }),
-    computed: {
-      title () {
-        return `${this.record ? 'Edit' : 'Add'} Table Row`
-      }
-    },
-    watch: {
-      dialog (val) {
-        if (val && this.record) {
-          this.attributes = pick(this.record, [
-            'name',
-            'wins',
-            'draws',
-            'losses',
-            'goalsFor',
-            'goalsAgainst'
-          ])
-        }
-      }
-    },
-    methods: {
-      ...mapActions('tableRows', {
-        createTableRow: 'create',
-        updateTableRow: 'update'
-      }),
-      async submit () {
-        if (this.record) {
-          await this.updateTableRow({
-            id: this.record.id,
-            attributes: this.attributes
-          })
-        } else {
-          await this.createTableRow({
-            stageId: this.stage.id,
-            attributes: this.attributes
-          })
-        }
-      }
-    }
-  }
-</script>

@@ -1,3 +1,17 @@
+<script>
+  export default {
+    name: 'BasePlayerEvent',
+    props: {
+      player: { type: Object, required: true },
+      event: { type: Object, required: true },
+      title: { type: String, required: true },
+      icon: { type: String, required: true },
+      color: { type: String, required: true },
+      dense: { type: Boolean, default: false }
+    }
+  }
+</script>
+
 <template>
   <v-timeline-item
     :icon="icon"
@@ -57,17 +71,3 @@
     </v-card>
   </v-timeline-item>
 </template>
-
-<script>
-  export default {
-    name: 'BasePlayerEvent',
-    props: {
-      player: { type: Object, required: true },
-      event: { type: Object, required: true },
-      title: { type: String, required: true },
-      icon: { type: String, required: true },
-      color: { type: String, required: true },
-      dense: { type: Boolean, default: false }
-    }
-  }
-</script>

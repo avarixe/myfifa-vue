@@ -1,3 +1,19 @@
+<script>
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'PlayerGrowth',
+    props: {
+      player: { type: Object, required: true }
+    },
+    setup () {
+      const { team } = useTeam()
+
+      return { team }
+    }
+  }
+</script>
+
 <template>
   <v-card flat>
     <v-card-text>
@@ -25,17 +41,3 @@
     </v-card-text>
   </v-card>
 </template>
-
-<script>
-  export default {
-    name: 'PlayerGrowth',
-    props: {
-      player: { type: Object, required: true }
-    },
-    computed: {
-      team () {
-        return this.$store.$db().model('Team').find(this.$route.params.teamId)
-      }
-    }
-  }
-</script>

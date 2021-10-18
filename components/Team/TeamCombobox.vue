@@ -1,7 +1,72 @@
+<script>
+  import { ref, reactive, toRef, watchEffect, useContext, onBeforeUnmount } from '@nuxtjs/composition-api'
+  import { gql } from 'nuxt-graphql-request'
+
+  export default {
+    name: 'TeamCombobox',
+    props: {
+      defaultItems: { type: Array, default: () => [] }
+    },
+    setup (props, { attrs }) {
+      const items = reactive({ value: [] })
+      const defaultItems = toRef(props, 'defaultItems')
+      watchEffect(() => {
+        items.value = defaultItems.value
+      })
+
+      const { $graphql } = useContext()
+      const loading = ref(false)
+      const searchInput = ref(null)
+      const searchItems = async () => {
+        try {
+          loading.value = true
+
+          const query = gql`
+            query fetchTeamOptions($category: OptionCategory!, $search: String) {
+              options(category: $category, search: $search)
+            }
+          `
+
+          const { options } = await $graphql.default.request(query, {
+            category: 'Team',
+            search: searchInput.value
+          })
+
+          items.value = options
+        } catch (e) {
+          console.error(e)
+        } finally {
+          loading.value = false
+        }
+      }
+
+      const timeout = ref(null)
+      onBeforeUnmount(() => clearTimeout(timeout.value))
+      const onSearchInputUpdate = () => {
+        clearTimeout(timeout.value)
+        if (searchInput.value?.length >= 3) {
+          if (searchInput.value !== attrs.value) {
+            timeout.value = setTimeout(searchItems, 300)
+          }
+        } else {
+          items.value = defaultItems.value
+        }
+      }
+
+      return {
+        loading,
+        searchInput,
+        items,
+        onSearchInputUpdate
+      }
+    }
+  }
+</script>
+
 <template>
   <v-combobox
     v-bind="$attrs"
-    :items="items"
+    :items="items.value"
     :search-input.sync="searchInput"
     :loading="loading"
     spellcheck="false"
@@ -12,66 +77,3 @@
     @update:search-input="onSearchInputUpdate"
   />
 </template>
-
-<script>
-  import { gql } from 'nuxt-graphql-request'
-
-  export default {
-    name: 'TeamCombobox',
-    props: {
-      defaultItems: { type: Array, default: () => [] }
-    },
-    data: () => ({
-      timeout: null,
-      loading: false,
-      searchInput: null,
-      items: []
-    }),
-    watch: {
-      defaultItems: {
-        immediate: true,
-        deep: true,
-        handler (items) {
-          this.items = items
-        }
-      }
-    },
-    beforeDestroy () {
-      clearTimeout(this.timeout)
-    },
-    methods: {
-      onSearchInputUpdate () {
-        clearTimeout(this.timeout)
-        if (this.searchInput && this.searchInput.length >= 3) {
-          if (this.searchInput !== this.$attrs.value) {
-            this.timeout = setTimeout(this.searchItems, 300)
-          }
-        } else {
-          this.items = this.defaultItems
-        }
-      },
-      async searchItems () {
-        try {
-          this.loading = true
-
-          const query = gql`
-            query fetchTeamOptions($category: OptionCategory!, $search: String) {
-              options(category: $category, search: $search)
-            }
-          `
-
-          const { options } = await this.$graphql.default.request(query, {
-            category: 'Team',
-            search: this.searchInput
-          })
-
-          this.items = options
-        } catch (e) {
-          console.error(e)
-        } finally {
-          this.loading = false
-        }
-      }
-    }
-  }
-</script>

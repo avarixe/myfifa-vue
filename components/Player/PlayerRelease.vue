@@ -1,3 +1,42 @@
+<script>
+  import { ref, useStore } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'PlayerRelease',
+    props: {
+      player: { type: Object, required: true }
+    },
+    setup (props) {
+      const dialog = ref(false)
+      const loading = ref(false)
+      const error = ref(false)
+      const errorMessage = ref('')
+
+      const store = useStore()
+      const release = async () => {
+        try {
+          loading.value = true
+          await store.dispatch('players/release', props.player.id)
+          dialog.value = false
+        } catch (e) {
+          errorMessage.value = e.message
+          error.value = true
+        } finally {
+          loading.value = false
+        }
+      }
+
+      return {
+        dialog,
+        loading,
+        error,
+        errorMessage,
+        release
+      }
+    }
+  }
+</script>
+
 <template>
   <v-dialog
     v-model="dialog"
@@ -51,37 +90,3 @@
     </v-card>
   </v-dialog>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-
-  export default {
-    name: 'PlayerRelease',
-    props: {
-      player: { type: Object, required: true }
-    },
-    data: () => ({
-      dialog: false,
-      loading: false,
-      error: false,
-      errorMessage: ''
-    }),
-    methods: {
-      ...mapActions('players', {
-        releasePlayer: 'release'
-      }),
-      async release () {
-        try {
-          this.loading = true
-          await this.releasePlayer(this.player.id)
-          this.dialog = false
-        } catch (e) {
-          this.errorMessage = e.message
-          this.error = true
-        } finally {
-          this.loading = false
-        }
-      }
-    }
-  }
-</script>

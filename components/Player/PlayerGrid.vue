@@ -1,3 +1,112 @@
+<script>
+  import { ref, computed, useStore } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+  import { positions } from '@/constants'
+
+  export default {
+    name: 'PlayerGrid',
+    setup () {
+      const store = useStore()
+      const { team } = useTeam()
+
+      const players = computed(() =>
+        store.$db().model('Player')
+          .query()
+          .with('team|contracts')
+          .where('teamId', parseInt(team.value.id))
+          .get()
+      )
+
+      const filters = [
+        { text: 'All', color: 'blue', icon: 'earth' },
+        { text: 'Youth', color: 'cyan', icon: 'school' },
+        { text: 'Active', color: 'light-green', icon: 'account-check' },
+        { text: 'Injured', color: 'pink', icon: 'ambulance' },
+        { text: 'Loaned', color: 'deep-orange', icon: 'transit-transfer' },
+        { text: 'Pending', color: 'orange', icon: 'lock-clock' }
+      ]
+      const filter = ref(2)
+      const currentFilter = computed(() => filters[filter.value])
+
+      const rows = computed(() =>
+        players.value.filter(player => {
+          switch (filter.value) {
+            case 0: // All
+              return true
+            case 1: // Youth
+              return player.youth
+            case 2: // Active
+              return player.status && player.status !== 'Pending'
+            case 3: // Injured
+            case 4: // Loaned
+            case 5: // Pending
+              return player.status === currentFilter.value.text
+          }
+        }).map(player => {
+          const contract = player.contract()
+          return {
+            ...player,
+            flag: player.flag,
+            link: player.link,
+            statusIcon: player.statusIcon,
+            statusColor: player.statusColor,
+
+            wage: contract.wage,
+            endDate: contract.endedOn
+          }
+        })
+      )
+
+      const key = ref(0)
+      const updatePlayerAttribute = async (playerId, attribute, value) => {
+        try {
+          await store.dispatch('players/update', {
+            id: playerId,
+            attributes: { [attribute]: value }
+          })
+        } catch (e) {
+          key.value++
+          store.commit('broadcaster/announce', {
+            message: e.message,
+            color: 'red'
+          })
+        }
+      }
+
+      const search = ref('')
+      const loading = ref(false)
+
+      const sortPos = (posA, posB) => {
+        return positions.indexOf(posA) - positions.indexOf(posB)
+      }
+      return {
+        key,
+        filter,
+        search,
+        loading,
+        currentFilter,
+        rows,
+        updatePlayerAttribute,
+        team,
+        headers: [
+          { text: 'Name', value: 'name', width: 200, class: 'stick-left' },
+          { text: 'Nationality', value: 'nationality', align: 'center', width: 120 },
+          { text: 'Status', value: 'status', align: 'center', width: 100 },
+          { text: 'Age', value: 'age', align: 'center', width: 100 },
+          { text: 'Pos', value: 'pos', align: 'center', width: 100, sort: sortPos },
+          { text: '2nd Pos', value: 'secPos', sortable: false, align: 'center', width: 100 },
+          { text: 'Kit No', value: 'kitNo', align: 'center', width: 100 },
+          { text: 'OVR', value: 'ovr', align: 'center', width: 80 },
+          { text: 'Value', value: 'value', align: 'end', width: 100, class: 'text-right' },
+          { text: 'Wage', value: 'wage', align: 'end', width: 100, class: 'text-right' },
+          { text: 'Contracts Ends', value: 'endDate', align: 'end', width: 120, class: 'text-right' }
+        ],
+        filters
+      }
+    }
+  }
+</script>
+
 <template>
   <v-card>
     <v-toolbar flat>
@@ -127,111 +236,3 @@
     </v-card-text>
   </v-card>
 </template>
-
-<script>
-  import { mapMutations, mapActions } from 'vuex'
-  import { TeamAccessible } from '@/mixins'
-  import { positions } from '@/constants'
-
-  function sortPos (posA, posB) {
-    return positions.indexOf(posA) - positions.indexOf(posB)
-  }
-
-  export default {
-    name: 'PlayerGrid',
-    mixins: [
-      TeamAccessible
-    ],
-    data: () => ({
-      key: 0,
-      headers: [
-        { text: 'Name', value: 'name', width: 200, class: 'stick-left' },
-        { text: 'Nationality', value: 'nationality', align: 'center', width: 120 },
-        { text: 'Status', value: 'status', align: 'center', width: 100 },
-        { text: 'Age', value: 'age', align: 'center', width: 100 },
-        { text: 'Pos', value: 'pos', align: 'center', width: 100, sort: sortPos },
-        { text: '2nd Pos', value: 'secPos', sortable: false, align: 'center', width: 100 },
-        { text: 'Kit No', value: 'kitNo', align: 'center', width: 100 },
-        { text: 'OVR', value: 'ovr', align: 'center', width: 80 },
-        { text: 'Value', value: 'value', align: 'end', width: 100, class: 'text-right' },
-        { text: 'Wage', value: 'wage', align: 'end', width: 100, class: 'text-right' },
-        { text: 'Contracts Ends', value: 'endDate', align: 'end', width: 120, class: 'text-right' }
-      ],
-      filter: 2,
-      filters: [
-        { text: 'All', color: 'blue', icon: 'earth' },
-        { text: 'Youth', color: 'cyan', icon: 'school' },
-        { text: 'Active', color: 'light-green', icon: 'account-check' },
-        { text: 'Injured', color: 'pink', icon: 'ambulance' },
-        { text: 'Loaned', color: 'deep-orange', icon: 'transit-transfer' },
-        { text: 'Pending', color: 'orange', icon: 'lock-clock' }
-      ],
-      search: '',
-      loading: false
-    }),
-    computed: {
-      players () {
-        return this.$store.$db().model('Player')
-          .query()
-          .with('team|contracts')
-          .where('teamId', this.teamId)
-          .get()
-      },
-      currentFilter () {
-        return this.filters[this.filter]
-      },
-      rows () {
-        return this.players
-          .filter(player => {
-            switch (this.filter) {
-              case 0: // All
-                return true
-              case 1: // Youth
-                return player.youth
-              case 2: // Active
-                return player.status && player.status !== 'Pending'
-              case 3: // Injured
-              case 4: // Loaned
-              case 5: // Pending
-                return player.status === this.currentFilter.text
-            }
-          })
-          .map(player => {
-            const contract = player.contract()
-            return {
-              ...player,
-              flag: player.flag,
-              link: player.link,
-              statusIcon: player.statusIcon,
-              statusColor: player.statusColor,
-
-              wage: contract.wage,
-              endDate: contract.endedOn
-            }
-          })
-      }
-    },
-    methods: {
-      ...mapMutations('broadcaster', [
-        'announce'
-      ]),
-      ...mapActions('players', {
-        updatePlayer: 'update'
-      }),
-      async updatePlayerAttribute (playerId, attribute, value) {
-        try {
-          await this.updatePlayer({
-            id: playerId,
-            attributes: { [attribute]: value }
-          })
-        } catch (e) {
-          this.key++
-          this.announce({
-            message: e.message,
-            color: 'red'
-          })
-        }
-      }
-    }
-  }
-</script>

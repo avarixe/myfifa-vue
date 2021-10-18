@@ -1,3 +1,49 @@
+<script>
+  import { ref, computed, watch, useStore } from '@nuxtjs/composition-api'
+  import { format, parseISO } from 'date-fns'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'TeamDatePicker',
+    props: {
+      menuClass: { type: String, default: 'd-inline-block' },
+      origin: { type: String, default: 'top right' }
+    },
+    setup () {
+      const calendar = ref(false)
+      const currentDate = ref(format(new Date(), 'yyyy-MM-dd'))
+
+      const formattedDate = computed(() =>
+        format(parseISO(currentDate.value), 'MMM dd, yyyy')
+      )
+
+      const { team, seasonStart, seasonEnd } = useTeam()
+      const currentlyOn = computed(() => team.value.currentlyOn)
+      watch(currentlyOn, () => {
+        currentDate.value = currentlyOn.value
+      })
+
+      watch(currentDate, async (val, oldVal) => {
+        if (oldVal) {
+          await store.dispatch('teams/update', {
+            id: team.value.id,
+            attributes: { currentlyOn: val }
+          })
+          calendar.value = false
+        }
+      })
+
+      return {
+        calendar,
+        currentDate,
+        formattedDate,
+        seasonStart,
+        seasonEnd
+      }
+    }
+  }
+</script>
+
 <template>
   <v-menu
     v-model="calendar"
@@ -31,49 +77,3 @@
     />
   </v-menu>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import { format, parseISO } from 'date-fns'
-  import { TeamAccessible } from '@/mixins'
-
-  export default {
-    name: 'TeamDatePicker',
-    mixins: [
-      TeamAccessible
-    ],
-    props: {
-      menuClass: { type: String, default: 'd-inline-block' },
-      origin: { type: String, default: 'top right' }
-    },
-    data: () => ({
-      calendar: false,
-      currentDate: format(new Date(), 'yyyy-MM-dd')
-    }),
-    computed: {
-      formattedDate () {
-        return format(parseISO(this.currentDate), 'MMM dd, yyyy')
-      }
-    },
-    watch: {
-      'team.currentlyOn': {
-        handler (currentlyOn) {
-          this.currentDate = currentlyOn
-        },
-        immediate: true
-      },
-      async currentDate (val, oldVal) {
-        if (oldVal) {
-          await this.updateTeam({
-            id: this.team.id,
-            attributes: { currentlyOn: val }
-          })
-          this.calendar = false
-        }
-      }
-    },
-    methods: mapActions('teams', {
-      updateTeam: 'update'
-    })
-  }
-</script>

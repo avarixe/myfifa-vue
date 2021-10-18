@@ -1,7 +1,68 @@
+<script>
+  import { ref, toRef, computed, useContext, useStore } from '@nuxtjs/composition-api'
+  import { gql } from 'nuxt-graphql-request'
+  import { isRequired } from '@/functions'
+
+  export default {
+    name: 'TeamBadgeUploader',
+    props: {
+      team: { type: Object, required: true }
+    },
+    setup (props) {
+      const key = ref(0)
+      const loading = ref(false)
+      const badge = ref(null)
+
+      const { $config } = useContext()
+      const team = toRef(props, 'team')
+      const badgeUrl = computed(() => {
+        return team.value.badgePath
+          ? `${$config.baseURL.replace(/\/api/, '')}${team.value.badgePath}`
+          : null
+      })
+
+      const store = useStore()
+      const submit = async () => {
+        const query = gql`
+          mutation uploadBadge($teamId: ID!, $badge: Upload!) {
+            uploadBadge(teamId: $teamId, badge: $badge) {
+              team { badgePath }
+              errors { fullMessages }
+            }
+          }
+        `
+
+        const { uploadBadge: { team: teamData, errors } } =
+          await this.$graphql.default.request(query, {
+            teamId: team.value.id,
+            badge: badge.value
+          })
+
+        if (teamData) {
+          store.$db().model('Team').update({
+            id: team.value.id,
+            badgePath: teamData.badgePath
+          })
+        } else {
+          throw new Error(errors.fullMessages[0])
+        }
+      }
+
+      return {
+        key,
+        loading,
+        badge,
+        badgeUrl,
+        submit,
+        rulesForBadge: [isRequired('Badge')]
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
     :key="key"
-    v-model="dialog"
     :title="`${team.badgePath ? 'Change' : 'Upload'} Badge`"
     :submit="submit"
   >
@@ -36,59 +97,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { gql } from 'nuxt-graphql-request'
-  import { DialogFormable } from '@/mixins'
-  import { isRequired } from '@/functions'
-
-  export default {
-    name: 'TeamBadgeUploader',
-    mixins: [
-      DialogFormable
-    ],
-    props: {
-      team: { type: Object, required: true }
-    },
-    data: () => ({
-      key: 0,
-      loading: false,
-      badge: null,
-      rulesForBadge: [isRequired('Badge')]
-    }),
-    computed: {
-      badgeUrl () {
-        return this.team.badgePath
-          ? `${this.$config.baseURL.replace(/\/api/, '')}${this.team.badgePath}`
-          : null
-      }
-    },
-    methods: {
-      async submit () {
-        const query = gql`
-          mutation uploadBadge($teamId: ID!, $badge: Upload!) {
-            uploadBadge(teamId: $teamId, badge: $badge) {
-              team { badgePath }
-              errors { fullMessages }
-            }
-          }
-        `
-
-        const { uploadBadge: { team, errors } } =
-          await this.$graphql.default.request(query, {
-            teamId: this.team.id,
-            badge: this.badge
-          })
-
-        if (team) {
-          this.$store.$db().model('Team').update({
-            id: this.team.id,
-            badgePath: team.badgePath
-          })
-        } else {
-          throw new Error(errors.fullMessages[0])
-        }
-      }
-    }
-  }
-</script>

@@ -1,3 +1,51 @@
+<script>
+  import { toRef, computed } from '@nuxtjs/composition-api'
+  import { formatDistance, parseISO } from 'date-fns'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'LoanEvent',
+    props: {
+      player: { type: Object, required: true },
+      event: { type: Object, required: true },
+      dense: { type: Boolean, default: false }
+    },
+    setup (props) {
+      const event = toRef(props, 'event')
+      const { team } = useTeam()
+
+      const title = computed(() => {
+        return team.value.name === event.value.origin
+          ? `Loan at ${event.value.destination}`
+          : `Loan from ${event.value.origin}`
+      })
+
+      const timeBeforeDeparture = computed(() => formatDistance(
+        parseISO(event.value.startedOn),
+        parseISO(team.value.currentlyOn)
+      ))
+
+      const duration = computed(() => formatDistance(
+        parseISO(event.value.endedOn),
+        parseISO(event.value.startedOn)
+      ))
+
+      const buyOptionAvailable = computed(() =>
+        event.value.endedOn > team.value.currentlyOn &&
+        (event.value.transferFee || event.value.addonClause)
+      )
+
+      return {
+        title,
+        team,
+        timeBeforeDeparture,
+        duration,
+        buyOptionAvailable
+      }
+    }
+  }
+</script>
+
 <template>
   <base-player-event
     :player="player"
@@ -76,43 +124,3 @@
     </template>
   </base-player-event>
 </template>
-
-<script>
-  import { formatDistance, parseISO } from 'date-fns'
-  import { TeamAccessible } from '@/mixins'
-
-  export default {
-    name: 'LoanEvent',
-    mixins: [
-      TeamAccessible
-    ],
-    props: {
-      player: { type: Object, required: true },
-      event: { type: Object, required: true },
-      dense: { type: Boolean, default: false }
-    },
-    computed: {
-      title () {
-        return this.team.name === this.event.origin
-          ? `Loan at ${this.event.destination}`
-          : `Loan from ${this.event.origin}`
-      },
-      timeBeforeDeparture () {
-        return formatDistance(
-          parseISO(this.event.startedOn),
-          parseISO(this.team.currentlyOn)
-        )
-      },
-      duration () {
-        return formatDistance(
-          parseISO(this.event.endedOn),
-          parseISO(this.event.startedOn)
-        )
-      },
-      buyOptionAvailable () {
-        return this.event.endedOn > this.team.currentlyOn &&
-          (this.event.transferFee || this.event.addonClause)
-      }
-    }
-  }
-</script>

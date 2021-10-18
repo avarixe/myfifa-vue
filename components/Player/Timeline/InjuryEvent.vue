@@ -1,3 +1,31 @@
+<script>
+  import { toRef, computed } from '@nuxtjs/composition-api'
+  import { formatDistance, parseISO } from 'date-fns'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'InjuryEvent',
+    props: {
+      player: { type: Object, required: true },
+      event: { type: Object, required: true },
+      dense: { type: Boolean, default: false }
+    },
+    setup (props) {
+      const event = toRef(props, 'event')
+      const length = computed(() => formatDistance(
+        parseISO(event.value.endedOn),
+        parseISO(event.value.startedOn)
+      ))
+
+      const { team } = useTeam()
+      return {
+        length,
+        team
+      }
+    }
+  }
+</script>
+
 <template>
   <base-player-event
     :player="player"
@@ -22,28 +50,3 @@
     </template>
   </base-player-event>
 </template>
-
-<script>
-  import { formatDistance, parseISO } from 'date-fns'
-  import { TeamAccessible } from '@/mixins'
-
-  export default {
-    name: 'InjuryEvent',
-    mixins: [
-      TeamAccessible
-    ],
-    props: {
-      player: { type: Object, required: true },
-      event: { type: Object, required: true },
-      dense: { type: Boolean, default: false }
-    },
-    computed: {
-      length () {
-        return formatDistance(
-          parseISO(this.event.endedOn),
-          parseISO(this.event.startedOn)
-        )
-      }
-    }
-  }
-</script>

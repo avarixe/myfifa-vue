@@ -1,3 +1,36 @@
+<script>
+  import { toRef, computed, useStore } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'PlayerAction',
+    props: {
+      player: { type: Object, required: true }
+    },
+    setup (props) {
+      const store = useStore()
+      const player = toRef(props, 'player')
+
+      const injury = computed(() =>
+        store.$db().model('Injury')
+          .query()
+          .where('playerId', player.value.id)
+          .last()
+      )
+      const loan = computed(() =>
+        store.$db().model('Loan')
+          .query()
+          .where('playerId', player.value.id)
+          .last()
+      )
+
+      return {
+        injury,
+        loan
+      }
+    }
+  }
+</script>
+
 <template>
   <div>
     <player-form :record="player">
@@ -31,26 +64,3 @@
     />
   </div>
 </template>
-
-<script>
-  export default {
-    name: 'PlayerAction',
-    props: {
-      player: { type: Object, required: true }
-    },
-    computed: {
-      injury () {
-        return this.$store.$db().model('Injury')
-          .query()
-          .where('playerId', this.player.id)
-          .last()
-      },
-      loan () {
-        return this.$store.$db().model('Loan')
-          .query()
-          .where('playerId', this.player.id)
-          .last()
-      }
-    }
-  }
-</script>

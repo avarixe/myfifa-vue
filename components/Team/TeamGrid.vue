@@ -1,3 +1,38 @@
+<script>
+  import { ref, computed, useContext, useStore } from '@nuxtjs/composition-api'
+
+  export default {
+    name: 'TeamGrid',
+    setup () {
+      const store = useStore()
+      const teams = computed(() =>
+        store.$db().model('Team').query().orderBy('id', 'desc').get()
+      )
+
+      const { $config } = useContext()
+      const badgeUrl = team => {
+        return team.badgePath
+          ? `${$config.baseURL.replace(/\/api/, '')}${team.badgePath}`
+          : null
+      }
+
+      const search = ref('')
+
+      return {
+        teams,
+        search,
+        badgeUrl,
+        headers: [
+          { text: 'Name', value: 'name', align: 'center' },
+          { text: 'Badge', value: 'badgePath', align: 'center', width: '32px', sortable: false },
+          { text: 'Start Date', value: 'startedOn', align: 'center' },
+          { text: 'Current Date', value: 'currentlyOn', align: 'center' }
+        ]
+      }
+    }
+  }
+</script>
+
 <template>
   <v-card>
     <v-card-text>
@@ -46,33 +81,3 @@
     </v-card-text>
   </v-card>
 </template>
-
-<script>
-  export default {
-    name: 'TeamGrid',
-    data: () => ({
-      headers: [
-        { text: 'Name', value: 'name', align: 'center' },
-        { text: 'Badge', value: 'badgePath', align: 'center', width: '32px', sortable: false },
-        { text: 'Start Date', value: 'startedOn', align: 'center' },
-        { text: 'Current Date', value: 'currentlyOn', align: 'center' }
-      ],
-      search: ''
-    }),
-    computed: {
-      teams () {
-        return this.$store.$db().model('Team')
-          .query()
-          .orderBy('id', 'desc')
-          .get()
-      }
-    },
-    methods: {
-      badgeUrl (team) {
-        return team.badgePath
-          ? `${this.$config.baseURL.replace(/\/api/, '')}${team.badgePath}`
-          : null
-      }
-    }
-  }
-</script>

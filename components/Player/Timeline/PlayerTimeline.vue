@@ -1,3 +1,40 @@
+<script>
+  import { toRef, computed, useContext } from '@nuxtjs/composition-api'
+  import orderBy from 'lodash.orderby'
+
+  export default {
+    name: 'PlayerTimeline',
+    props: {
+      player: { type: Object, required: true }
+    },
+    setup (props) {
+      const player = toRef(props, 'player')
+      const events = computed(() => orderBy([
+        ...player.value.contracts,
+        ...player.value.injuries,
+        ...player.value.loans,
+        ...player.value.transfers
+      ], ['date', 'createdAt'], ['desc', 'desc']))
+
+      const { $vuetify } = useContext()
+      const dense = computed(() => {
+        switch ($vuetify.breakpoint.name) {
+          case 'sm':
+          case 'md':
+            return false
+          default:
+            return true
+        }
+      })
+
+      return {
+        events,
+        dense
+      }
+    }
+  }
+</script>
+
 <template>
   <v-card flat>
     <v-card-text>
@@ -25,37 +62,3 @@
     </v-card-text>
   </v-card>
 </template>
-
-<script>
-  import orderBy from 'lodash.orderby'
-  import { TeamAccessible } from '@/mixins'
-
-  export default {
-    name: 'PlayerTimeline',
-    mixins: [
-      TeamAccessible
-    ],
-    props: {
-      player: { type: Object, required: true }
-    },
-    computed: {
-      events () {
-        return orderBy([
-          ...this.player.contracts,
-          ...this.player.injuries,
-          ...this.player.loans,
-          ...this.player.transfers
-        ], ['date', 'createdAt'], ['desc', 'desc'])
-      },
-      dense () {
-        switch (this.$vuetify.breakpoint.name) {
-          case 'sm':
-          case 'md':
-            return false
-          default:
-            return true
-        }
-      }
-    }
-  }
-</script>

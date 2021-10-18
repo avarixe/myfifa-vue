@@ -1,3 +1,98 @@
+<script>
+  import { ref, reactive, toRefs, computed, watchEffect, useStore } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+  import { isRequired, isNumber, inRange } from '@/functions'
+
+  export default {
+    name: 'TransferForm',
+    props: {
+      player: { type: Object, required: true },
+      record: { type: Object, default: null },
+      dark: { type: Boolean, default: null }
+    },
+    setup (props) {
+      const attributes = reactive({
+        signedOn: null,
+        movedOn: null,
+        origin: '',
+        destination: '',
+        fee: null,
+        addonClause: 0
+      })
+
+      const { player, record } = toRefs(props)
+      const { team } = useTeam()
+      const transferOut = computed(() => {
+        return record.value
+          ? team.value.name === record.value.origin
+          : player.value.status?.length > 0
+      })
+
+      const transferColor = computed(() => transferOut.value ?  'red' : 'green')
+
+      const dialog = ref(false)
+      watchEffect(() => {
+        if (dialog.value) {
+          if (record.value) {
+            attributes.signedOn = record.value.signedOn
+            attributes.movedOn = record.value.movedOn
+            attributes.origin = record.value.origin
+            attributes.destination = record.value.destination
+            attributes.fee = record.value.fee
+            attributes.addonClause = record.value.addonClause
+          } else {
+            attributes.signedOn = team.value.currentlyOn
+            attributes.movedOn = team.value.currentlyOn
+            if (transferOut.value) {
+              attributes.origin = team.value.name
+            } else {
+              attributes.destination = team.value.name
+            }
+          }
+        }
+      })
+
+      watchEffect(() => {
+        if (!attributes.addonClause) {
+          attributes.addonClause = 0
+        }
+      })
+
+      const store = useStore()
+      const submit = async () => {
+        if (record.value) {
+          await store.dispatch('transfers/update', {
+            id: record.value.id,
+            attributes
+          })
+        } else {
+          await store.dispatch('transfers/create', {
+            playerId: player.value.id,
+            attributes
+          })
+        }
+      }
+
+      return {
+        attributes,
+        dialog,
+        submit,
+        transferOut,
+        transferColor,
+        team,
+        rulesFor: {
+          origin: [isRequired('Origin')],
+          destination: [isRequired('Destination')],
+          addonClause: [
+            isNumber('Add-On Clause'),
+            inRange('Add-On Clause', [0, 25])
+          ]
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
     v-model="dialog"
@@ -71,99 +166,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import pick from 'lodash.pick'
-  import { TeamAccessible, DialogFormable } from '@/mixins'
-  import { isRequired, isNumber, inRange } from '@/functions'
-
-  export default {
-    name: 'TransferForm',
-    mixins: [
-      DialogFormable,
-      TeamAccessible
-    ],
-    props: {
-      player: { type: Object, required: true },
-      record: { type: Object, default: null },
-      dark: { type: Boolean, default: null }
-    },
-    data: () => ({
-      attributes: {
-        signedOn: null,
-        movedOn: null,
-        origin: '',
-        destination: '',
-        fee: null,
-        addonClause: 0
-      },
-      rulesFor: {
-        origin: [isRequired('Origin')],
-        destination: [isRequired('Destination')],
-        addonClause: [
-          isNumber('Add-On Clause'),
-          inRange('Add-On Clause', [0, 25])
-        ]
-      }
-    }),
-    computed: {
-      transferOut () {
-        return this.record
-          ? this.team.name === this.record.origin
-          : this.player.status && this.player.status.length > 0
-      },
-      transferColor () {
-        return this.transferOut ? 'red' : 'green'
-      }
-    },
-    watch: {
-      dialog (val) {
-        if (val) {
-          if (this.record) {
-            this.attributes = pick(this.record, [
-              'signedOn',
-              'movedOn',
-              'origin',
-              'destination',
-              'fee',
-              'addonClause'
-            ])
-          } else {
-            this.attributes.signedOn = this.team.currentlyOn
-            this.attributes.movedOn = this.team.currentlyOn
-            if (this.transferOut) {
-              this.attributes.origin = this.team.name
-            } else {
-              this.attributes.destination = this.team.name
-            }
-          }
-        }
-      },
-      'attributes.addonClause' (addonClause) {
-        if (!addonClause) {
-          this.attributes.addonClause = 0
-        }
-      }
-    },
-    methods: {
-      ...mapActions('transfers', {
-        createTransfer: 'create',
-        updateTransfer: 'update'
-      }),
-      async submit () {
-        if (this.record) {
-          await this.updateTransfer({
-            id: this.record.id,
-            attributes: this.attributes
-          })
-        } else {
-          await this.createTransfer({
-            playerId: this.player.id,
-            attributes: this.attributes
-          })
-        }
-      }
-    }
-  }
-</script>

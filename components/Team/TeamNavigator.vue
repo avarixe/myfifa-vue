@@ -1,3 +1,55 @@
+<script>
+  import { computed } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'TeamNavigator',
+    setup () {
+      const { teamId } = useTeam()
+      const links = computed(() => [
+        {
+          text: 'Dashboard',
+          icon: 'mdi-view-dashboard',
+          to: {
+            name: 'teams-teamId',
+            params: { teamId: teamId.value }
+          },
+          exact: true
+        },
+        {
+          text: 'Players',
+          icon: 'mdi-run',
+          to: {
+            name: 'teams-teamId-players',
+            params: { teamId: teamId.value }
+          },
+          exact: true
+        },
+        {
+          text: 'Matches',
+          icon: 'mdi-soccer-field',
+          to: {
+            name: 'teams-teamId-matches',
+            params: { teamId: teamId.value }
+          },
+          exact: true
+        },
+        {
+          text: 'Squads',
+          icon: 'mdi-clipboard-text',
+          to: {
+            name: 'teams-teamId-squads',
+            params: { teamId: teamId.value }
+          },
+          exact: true
+        }
+      ])
+
+      return { links }
+    }
+  }
+</script>
+
 <template>
   <v-bottom-navigation
     app
@@ -16,45 +68,3 @@
     <team-forms-menu />
   </v-bottom-navigation>
 </template>
-
-<script>
-  export default {
-    name: 'TeamNavigator',
-    computed: {
-      teamId () {
-        return parseInt(this.$route.params.teamId)
-      },
-      team () {
-        return this.$store.$db().model('Team').find(this.teamId)
-      },
-      links () {
-        return [
-          {
-            text: 'Dashboard',
-            icon: 'mdi-view-dashboard',
-            to: {
-              name: 'teams-teamId',
-              params: { teamId: this.teamId }
-            },
-            exact: true
-          },
-          {
-            text: 'Players',
-            icon: 'mdi-run',
-            to: this.team.linkTo('players')
-          },
-          {
-            text: 'Matches',
-            icon: 'mdi-soccer-field',
-            to: this.team.linkTo('matches')
-          },
-          {
-            text: 'Squads',
-            icon: 'mdi-clipboard-text',
-            to: this.team.linkTo('squads')
-          }
-        ]
-      }
-    }
-  }
-</script>

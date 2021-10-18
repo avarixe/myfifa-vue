@@ -1,3 +1,9 @@
+<script>
+  export default {
+    name: 'TeamFormsMenu'
+  }
+</script>
+
 <template>
   <v-menu
     :close-on-content-click="false"
@@ -55,9 +61,3 @@
     </v-list>
   </v-menu>
 </template>
-
-<script>
-  export default {
-    name: 'TeamFormsMenu'
-  }
-</script>

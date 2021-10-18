@@ -1,8 +1,71 @@
+<script>
+  import { ref, toRef, reactive, computed, watchEffect } from '@nuxtjs/composition-api'
+  import { useActivePlayers, useMatch } from '@/composables'
+
+  export default {
+    name: 'SubstitutionForm',
+    props: {
+      record: { type: Object, required: true }
+    },
+    setup (props) {
+      const attributes = reactive({
+        playerId: null,
+        replacementId: '',
+        injury: false
+      })
+
+      const { minute, sortedCaps, unsubbedPlayers } = useMatch()
+      const record = toRef(props, 'record')
+
+      const activePlayers = useActivePlayers()
+      const availablePlayers = computed(() => {
+        const selectedIds = sortedCaps.value.map(cap => cap.playerId)
+        return activePlayers.value.filter(player => {
+          if (selectedIds.indexOf(player.id) < 0) {
+            return true
+          } else if (record.value) {
+            return player.id === record.value.replacementId
+          }
+        })
+      })
+
+      const dialog = ref(false)
+      watchEffect(() => {
+        if (dialog.value) {
+          attributes.playerId = record.value.playerId
+          attributes.replacementId = record.value.replacementId
+          attributes.injury = record.value.injury
+          minute.value = record.value.minute
+        }
+      })
+
+      const submit = async () => {
+        await this.updateSubstitution({
+          id: record.value.id,
+          attributes: {
+            ...attributes,
+            minute: minute.value
+          }
+        })
+      }
+
+      return {
+        attributes,
+        minute,
+        dialog,
+        submit,
+        unsubbedPlayers,
+        availablePlayers
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
     v-model="dialog"
     title-icon="mdi-repeat"
-    :title="title"
+    title="Edit Substitution"
     :submit="submit"
   >
     <template #activator="{ on }">
@@ -43,89 +106,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import pick from 'lodash.pick'
-  import { ActivePlayerSelectable, DialogFormable, MatchAccessible } from '@/mixins'
-
-  export default {
-    name: 'SubstitutionForm',
-    mixins: [
-      ActivePlayerSelectable,
-      DialogFormable,
-      MatchAccessible
-    ],
-    props: {
-      record: { type: Object, default: null }
-    },
-    data: () => ({
-      attributes: {
-        playerId: null,
-        replacementId: '',
-        injury: false
-      }
-    }),
-    computed: {
-      title () {
-        return `${this.record ? 'Edit' : 'Record'} Substitution`
-      },
-      availablePlayers () {
-        const selectedIds = this.sortedCaps.map(cap => cap.playerId)
-        return this.activePlayers.filter(player => {
-          if (selectedIds.indexOf(player.id) < 0) {
-            return true
-          } else if (this.record) {
-            return player.id === this.record.replacementId
-          }
-        })
-      },
-      unsubbedPlayers () {
-        return this.sortedCaps.filter(cap =>
-          (cap.playerId !== this.attributes.replacementId && !cap.subbedOut) ||
-          (this.record && cap.playerId === this.record.playerId)
-        )
-      }
-    },
-    watch: {
-      dialog (val) {
-        if (val) {
-          if (this.record) {
-            this.attributes = pick(this.record, [
-              'playerId',
-              'replacementId',
-              'injury'
-            ])
-            this.minute = this.record.minute
-          } else {
-            this.attributes.injury = false
-          }
-        }
-      }
-    },
-    methods: {
-      ...mapActions('substitutions', {
-        createSubstitution: 'create',
-        updateSubstitution: 'update'
-      }),
-      async submit () {
-        const attributes = {
-          ...this.attributes,
-          minute: this.minute
-        }
-
-        if (this.record) {
-          await this.updateSubstitution({
-            id: this.record.id,
-            attributes
-          })
-        } else {
-          await this.createSubstitution({
-            matchId: this.match.id,
-            attributes
-          })
-        }
-      }
-    }
-  }
-</script>

@@ -1,55 +1,44 @@
-<template>
-  <div />
-</template>
-
 <script>
-  import { mapState } from 'vuex'
+  import {
+    ref,
+    reactive,
+    computed,
+    onMounted,
+    onBeforeUnmount,
+    useContext,
+    useStore
+  } from '@nuxtjs/composition-api'
   import mapKeys from 'lodash.mapkeys'
   import camelCase from 'lodash.camelcase'
+  import { useTeam } from '@/composables'
 
   export default {
     name: 'TeamChannel',
-    data: () => ({
-      socket: null,
-      timeout: null,
-      insertBuffer: {},
-      deleteBuffer: {}
-    }),
-    computed: mapState('auth', [
-      'token'
-    ]),
-    mounted () {
-      if (!this.cable && this.token) {
-        this.socket = new WebSocket(
-          `${this.$config.cableURL}?access_token=${this.token}`
-        )
+    setup () {
+      const socket = ref(null)
+      const timeout = ref(null)
+      const insertBuffer = reactive({})
+      const deleteBuffer = reactive({})
 
-        this.socket.onmessage = event => {
-          const { message } = JSON.parse(event.data)
-          const { type, data, destroyed } = message || {}
-          if (type) {
-            // console.log(type, data, destroyed)
-            this.addToBuffer({ type, data, destroyed })
-          }
-        }
+      const store = useStore()
+      const updateStore = () => {
+        Object.keys(deleteBuffer).forEach(async type => {
+          const ids = deleteBuffer[type].map(data => data.id)
+          await store.$db().model(type).delete(record => ids.indexOf(record.id) > -1)
+          delete deleteBuffer[type]
+        })
 
-        this.socket.onopen = () => {
-          this.socket.send(JSON.stringify({
-            command: 'subscribe',
-            identifier: JSON.stringify({
-              channel: 'TeamChannel',
-              id: this.$route.params.teamId
-            })
-          }))
-        }
+        Object.keys(insertBuffer).forEach(async type => {
+          const data = insertBuffer[type].map(
+            record => mapKeys(record, (_v, k) => camelCase(k))
+          )
+          await store.$db().model(type).insertOrUpdate({ data })
+          delete insertBuffer[type]
+        })
       }
-    },
-    destroyed () {
-      this.socket.close()
-    },
-    methods: {
-      addToBuffer ({ type, data, destroyed }) {
-        let buffer = destroyed ? this.deleteBuffer : this.insertBuffer
+
+      const addToBuffer = ({ type, data, destroyed }) => {
+        let buffer = destroyed ? deleteBuffer : insertBuffer
 
         if (type in buffer) {
           buffer[type].push(data)
@@ -57,27 +46,48 @@
           buffer[type] = [data]
         }
 
-        if (this.timeout) {
-          clearTimeout(this.timeout)
+        clearTimeout(timeout.value)
+        timeout.value = setTimeout(updateStore, 300)
+      }
+
+      const token = computed(() => store.state.auth.token)
+      const { $config } = useContext()
+      const { teamId } = useTeam()
+      onMounted(() => {
+        if (token.value) {
+          socket.value = new WebSocket(
+            `${$config.cableURL}?access_token=${token.value}`
+          )
+
+          socket.value.onmessage = event => {
+            const { message } = JSON.parse(event.data)
+            const { type, data, destroyed } = message || {}
+            if (type) {
+              // console.log(type, data, destroyed)
+              addToBuffer({ type, data, destroyed })
+            }
+          }
+
+          socket.value.onopen = () => {
+            socket.value.send(JSON.stringify({
+              command: 'subscribe',
+              identifier: JSON.stringify({
+                channel: 'TeamChannel',
+                id: teamId.value
+              })
+            }))
+          }
         }
 
-        this.timeout = setTimeout(this.updateStore, 300)
-      },
-      updateStore () {
-        Object.keys(this.deleteBuffer).forEach(async type => {
-          const ids = this.deleteBuffer[type].map(data => data.id)
-          await this.$store.$db().model(type).delete(record => ids.indexOf(record.id) > -1)
-          delete this.deleteBuffer[type]
-        })
+      })
 
-        Object.keys(this.insertBuffer).forEach(async type => {
-          const data = this.insertBuffer[type].map(
-            record => mapKeys(record, (_v, k) => camelCase(k))
-          )
-          await this.$store.$db().model(type).insertOrUpdate({ data })
-          delete this.insertBuffer[type]
-        })
-      }
+      onBeforeUnmount(() => {
+        socket.value.close()
+      })
     }
   }
 </script>
+
+<template>
+  <div />
+</template>

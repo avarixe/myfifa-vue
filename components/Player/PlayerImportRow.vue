@@ -1,3 +1,84 @@
+<script>
+  import { ref, toRefs, computed, watch, useStore } from '@nuxtjs/composition-api'
+  import { addYears, format, parseISO } from 'date-fns'
+  import { useTeam } from '@/composables'
+  import { positions } from '@/constants'
+  import { isRequired, isNumber, inRange } from '@/functions'
+
+  export default {
+    name: 'PlayerImportRow',
+    props: {
+      player: { type: Object, required: true },
+      submitted: { type: Number, default: 0 },
+      cleared: { type: Number, default: 0 }
+    },
+    setup (props, { emit }) {
+      const { player, submitted, cleared } = toRefs(props)
+      const contract = computed(() => player.value.contractsAttributes[0])
+
+      const maxEndDate = computed(() => {
+        return contract.value.startedOn && format(
+          addYears(parseISO(contract.value.startedOn), 6),
+          'yyyy-MM-dd'
+        )
+      })
+
+      const loading = ref(false)
+      const saved = ref(false)
+      const error = ref('')
+      const { team } = useTeam()
+      const store = useStore()
+      const savePlayer = async () => {
+        try {
+          loading.value = true
+
+          const attributes = { ...player.value }
+          delete attributes.rowId
+          await store.dispatch('players/create', {
+            teamId: team.value.id,
+            attributes
+          })
+          saved.value = true
+        } catch (e) {
+          error.value = e.message
+        } finally {
+          loading.value = false
+        }
+      }
+      watch(submitted, () => {
+        if (!loading.value && !saved.value) {
+          savePlayer()
+        }
+      })
+
+      watch(cleared, () => {
+        if (saved.value) {
+          emit('remove', player.value)
+        }
+      })
+
+      return {
+        loading,
+        saved,
+        error,
+        contract,
+        maxEndDate,
+        team,
+        isRequired: isRequired(),
+        isNumber: isNumber(),
+        inRange,
+        positions,
+        bonusRequirementTypes: [
+          'Appearances',
+          'Goals',
+          'Assists',
+          'Clean Sheets'
+        ]
+      }
+    }
+  }
+</script>
+
 <template>
   <tr>
     <td class="stick-left pa-1">
@@ -212,82 +293,6 @@
     </td>
   </tr>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import { addYears, format, parseISO } from 'date-fns'
-  import { positions } from '@/constants'
-  import { isRequired, isNumber, inRange } from '@/functions'
-
-  export default {
-    name: 'PlayerImportRow',
-    props: {
-      player: { type: Object, required: true },
-      submitted: { type: Number, default: 0 },
-      cleared: { type: Number, default: 0 }
-    },
-    data: () => ({
-      loading: false,
-      saved: false,
-      error: '',
-      isRequired: isRequired(),
-      isNumber: isNumber(),
-      inRange,
-      positions,
-      bonusRequirementTypes: [
-        'Appearances',
-        'Goals',
-        'Assists',
-        'Clean Sheets'
-      ]
-    }),
-    computed: {
-      team () {
-        return this.$store.$db().model('Team').find(this.$route.params.teamId)
-      },
-      contract () {
-        return this.player.contractsAttributes[0]
-      },
-      maxEndDate () {
-        return this.contract.startedOn && format(
-          addYears(parseISO(this.contract.startedOn), 6),
-          'yyyy-MM-dd'
-        )
-      }
-    },
-    watch: {
-      submitted () {
-        if (!this.loading && !this.saved) {
-          this.savePlayer()
-        }
-      },
-      cleared () {
-        if (this.saved) {
-          this.$emit('remove', this.player)
-        }
-      }
-    },
-    methods: {
-      ...mapActions('players', {
-        createPlayer: 'create'
-      }),
-      async savePlayer () {
-        try {
-          this.loading = true
-
-          const attributes = { ...this.player }
-          delete attributes.rowId
-          await this.createPlayer({ teamId: this.team.id, attributes })
-          this.saved = true
-        } catch (e) {
-          this.error = e.message
-        } finally {
-          this.loading = false
-        }
-      }
-    }
-  }
-</script>
 
 <style scoped>
   td:not(:first-child) {

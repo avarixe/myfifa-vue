@@ -1,3 +1,70 @@
+<script>
+  import {
+    ref,
+    toRef,
+    reactive,
+    watchEffect,
+    useRouter,
+    useStore
+  } from '@nuxtjs/composition-api'
+  import { format } from 'date-fns'
+  import { isRequired } from '@/functions'
+
+  export default {
+    name: 'TeamForm',
+    props: {
+      record: { type: Object, default: null }
+    },
+    setup (props) {
+      const attributes = reactive({
+        name: '',
+        startedOn: format(new Date(), 'yyyy-MM-dd'),
+        currency: '$'
+      })
+
+      const dialog = ref(false)
+      const record = toRef(props, 'record')
+      const title = ref('New Team')
+      watchEffect(() => {
+        if (dialog.value && record.value) {
+          attributes.name = record.value.name
+          attributes.startedOn = record.value.startedOn
+          attributes.currency = record.value.currency
+          title.value = 'Edit Team'
+        }
+      })
+
+      const store = useStore()
+      const router = useRouter()
+      const submit = async () => {
+        if (record.value) {
+          await store.dispatch('teams/update', {
+            id: record.value.id,
+            attributes
+          })
+        } else {
+          const { id: teamId } = await store.dispatch('teams/create', attributes)
+          router.push({
+            name: 'teams-teamId',
+            params: { teamId }
+          })
+        }
+      }
+
+      return {
+        attributes,
+        dialog,
+        title,
+        submit,
+        rulesFor: {
+          name: [isRequired('Name')],
+          currency: [isRequired('Currency')]
+        }
+      }
+    }
+  }
+</script>
+
 <template>
   <dialog-form
     v-model="dialog"
@@ -56,68 +123,3 @@
     </template>
   </dialog-form>
 </template>
-
-<script>
-  import { mapActions } from 'vuex'
-  import { format } from 'date-fns'
-  import pick from 'lodash.pick'
-  import { DialogFormable } from '@/mixins'
-  import { isRequired } from '@/functions'
-
-  export default {
-    name: 'TeamForm',
-    mixins: [
-      DialogFormable
-    ],
-    props: {
-      record: { type: Object, default: null }
-    },
-    data: () => ({
-      attributes: {
-        name: '',
-        startedOn: format(new Date(), 'yyyy-MM-dd'),
-        currency: '$'
-      },
-      rulesFor: {
-        name: [isRequired('Name')],
-        currency: [isRequired('Currency')]
-      }
-    }),
-    computed: {
-      title () {
-        return this.record ? 'Edit Team' : 'New Team'
-      }
-    },
-    watch: {
-      dialog (val) {
-        if (val && this.record) {
-          this.attributes = pick(this.record, [
-            'name',
-            'startedOn',
-            'currency'
-          ])
-        }
-      }
-    },
-    methods: {
-      ...mapActions('teams', {
-        createTeam: 'create',
-        updateTeam: 'update'
-      }),
-      async submit () {
-        if (this.record) {
-          await this.updateTeam({
-            id: this.record.id,
-            attributes: this.attributes
-          })
-        } else {
-          const { id: teamId } = await this.createTeam(this.attributes)
-          this.$router.push({
-            name: 'teams-teamId',
-            params: { teamId }
-          })
-        }
-      }
-    }
-  }
-</script>

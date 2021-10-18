@@ -1,3 +1,42 @@
+<script>
+  import { toRef, computed } from '@nuxtjs/composition-api'
+  import { useTeam } from '@/composables'
+
+  export default {
+    name: 'TransferEvent',
+    props: {
+      player: { type: Object, required: true },
+      event: { type: Object, required: true },
+      dense: { type: Boolean, default: false }
+    },
+    setup (props) {
+      const event = toRef(props, 'event')
+      const { team } = useTeam()
+
+      const transferOut = computed(() =>
+        event.value.origin === team.value.name
+      )
+      const title = computed(() => {
+        return transferOut.value
+          ? `Transfer to ${event.value.destination}`
+          : `Transfer from ${event.value.origin}`
+      })
+      const icon = computed(() =>
+        `mdi-airplane-${transferOut.value ? 'takeoff' : 'landing'}`
+      )
+      const color = computed(() => transferOut.value ? 'red' : 'green')
+
+      return {
+        team,
+        transferOut,
+        title,
+        icon,
+        color
+      }
+    }
+  }
+</script>
+
 <template>
   <base-player-event
     :player="player"
@@ -34,35 +73,3 @@
     </template>
   </base-player-event>
 </template>
-
-<script>
-  import { TeamAccessible } from '@/mixins'
-
-  export default {
-    name: 'TransferEvent',
-    mixins: [
-      TeamAccessible
-    ],
-    props: {
-      player: { type: Object, required: true },
-      event: { type: Object, required: true },
-      dense: { type: Boolean, default: false }
-    },
-    computed: {
-      transferOut () {
-        return this.event.origin === this.team.name
-      },
-      title () {
-        return this.transferOut
-          ? `Transfer to ${this.event.destination}`
-          : `Transfer from ${this.event.origin}`
-      },
-      icon () {
-        return `mdi-airplane-${this.transferOut ? 'takeoff' : 'landing'}`
-      },
-      color () {
-        return this.transferOut ? 'red' : 'green'
-      }
-    }
-  }
-</script>
