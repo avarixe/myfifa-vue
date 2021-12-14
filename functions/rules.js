@@ -1,7 +1,7 @@
 import EmailValidator from 'email-validator'
 
 export function isRequired (label) {
-  return v => !!v || `${label || 'Field'} is required`
+  return v => !!v || v === 0 || `${label || 'Field'} is required`
 }
 
 export function isNumber (label) {
