@@ -44,7 +44,7 @@
         }
       }
 
-      const { team, seasonLabel } = useTeam()
+      const { team, seasonLabel, currentSeason } = useTeam()
       const headers = computed(() => {
         const headers = [
           { text: 'Name', value: 'name', width: 200, class: 'stick-left' },
@@ -59,7 +59,7 @@
           }
         ]
 
-        for (let i = 0; i <= team.value.season; i++) {
+        for (let i = 0; i <= currentSeason.value; i++) {
           headers.push({
             text: seasonLabel(i),
             value: `${currentMetric.value.value}Diff.${i}`,
@@ -176,6 +176,7 @@
         headers,
         rows,
         team,
+        currentSeason,
         ovrColor,
         valueColor
       }
@@ -291,7 +292,7 @@
             <template v-if="metric === 0">
               <td class="text-right">{{ item.startovr }}</td>
               <td
-                v-for="(_, season) in new Array(team.season + 1)"
+                v-for="(_, season) in new Array(currentSeason + 1)"
                 :key="season"
                 :class="`text-right ${ovrColor(item.ovrDiff[season])}`"
               >
@@ -305,7 +306,7 @@
                 {{ item.startValue | formatMoney(team.currency) }}
               </td>
               <td
-                v-for="(_, season) in new Array(team.season + 1)"
+                v-for="(_, season) in new Array(currentSeason + 1)"
                 :key="season"
                 :class="`text-right ${valueColor(item.valueDiff[season])}`"
               >

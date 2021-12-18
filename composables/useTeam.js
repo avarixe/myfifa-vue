@@ -42,20 +42,12 @@ export default () => {
     return `${format(start, 'yyyy')} - ${format(end, 'yyyy')}`
   }
 
-  const linkTo = page => {
-    return {
-      name: `teams-teamId-${page}`,
-      params: { teamId: teamId.value }
-    }
-  }
-
   return {
     teamId,
     team,
     currentSeason,
     seasonStart,
     seasonEnd,
-    seasonLabel,
-    linkTo
+    seasonLabel
   }
 }
