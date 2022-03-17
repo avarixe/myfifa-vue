@@ -7,7 +7,7 @@
         item-key="id"
         no-data-text="No Teams Recorded"
       >
-        <template #item.name="{ item }">
+        <template #[`item.name`]="{ item }">
           <v-btn
             :to="item.link"
             nuxt
@@ -17,7 +17,7 @@
             {{ item.name }}
           </v-btn>
         </template>
-        <template #item.badgePath="{ item }">
+        <template #[`item.badgePath`]="{ item }">
           <v-img
             v-if="item.badgePath"
             :src="badgeUrl(item)"
@@ -36,10 +36,10 @@
             <span>Edit Team to upload Badge</span>
           </v-tooltip>
         </template>
-        <template #item.startedOn="{ item }">
+        <template #[`item.startedOn`]="{ item }">
           {{ item.startedOn | formatDate }}
         </template>
-        <template #item.currentlyOn="{ item }">
+        <template #[`item.currentlyOn`]="{ item }">
           {{ item.currentlyOn | formatDate }}
         </template>
       </v-data-table>

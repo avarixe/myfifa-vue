@@ -109,21 +109,6 @@
     mixins: [
       TeamAccessible
     ],
-    computed: {
-      lastMatch () {
-        return this.$store.$db().model('Match')
-          .query()
-          .where('teamId', this.teamId)
-          .orderBy('playedOn', 'desc')
-          .first()
-      },
-      expiringContracts () {
-        return this.contracts.filter(contract => {
-          return !contract.conclusion &&
-            (!contract.endedOn || contract.endedOn <= this.seasonEnd)
-        })
-      }
-    },
     async asyncData ({ $graphql, params, store }) {
       const query = gql`
         query loadDashboard($id: ID!) {
@@ -189,6 +174,21 @@
         injuredPlayers,
         loanedPlayers,
         expiringPlayers
+      }
+    },
+    computed: {
+      lastMatch () {
+        return this.$store.$db().model('Match')
+          .query()
+          .where('teamId', this.teamId)
+          .orderBy('playedOn', 'desc')
+          .first()
+      },
+      expiringContracts () {
+        return this.contracts.filter(contract => {
+          return !contract.conclusion &&
+            (!contract.endedOn || contract.endedOn <= this.seasonEnd)
+        })
       }
     }
   }

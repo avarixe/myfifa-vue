@@ -36,7 +36,7 @@
               <v-card-title>
                 <div class="text-h5">{{ currentTeam.name }}</div>
                 <v-spacer />
-                <v-hover #default="{ hover }">
+                <v-hover v-slot="{ hover }">
                   <v-btn
                     :to="`/teams/${currentTeam.id}`"
                     nuxt
@@ -88,7 +88,7 @@
                       <b>{{ lastMatch.home }} v {{ lastMatch.away }}</b>
                       <div>{{ lastMatch.competition }}</div>
                       <div><i>{{ lastMatch.playedOn | formatDate }}</i></div>
-                      <v-hover #default="{ hover }">
+                      <v-hover v-slot="{ hover }">
                         <v-btn
                           :to="`/teams/${currentTeam.id}/matches/${lastMatch.id}`"
                           nuxt
@@ -108,7 +108,7 @@
                 <v-hover
                   v-for="(link, i) in teamLinks(currentTeam)"
                   :key="i"
-                  #default="{ hover }"
+                  v-slot="{ hover }"
                 >
                   <v-btn
                     :to="link.to"
@@ -177,14 +177,6 @@
 
   export default {
     name: 'HomePage',
-    computed: {
-      currentTeam () {
-        return this.latestTeams[this.teamIndex]
-      },
-      lastMatch () {
-        return this.currentTeam && this.currentTeam.lastMatch
-      }
-    },
     async asyncData ({ store, $graphql }) {
       store.commit('app/setPage', { headline: 'Home' })
 
@@ -209,6 +201,14 @@
       return {
         latestTeams: teams.slice(0, 5),
         teamIndex: 0
+      }
+    },
+    computed: {
+      currentTeam () {
+        return this.latestTeams[this.teamIndex]
+      },
+      lastMatch () {
+        return this.currentTeam && this.currentTeam.lastMatch
       }
     },
     methods: {

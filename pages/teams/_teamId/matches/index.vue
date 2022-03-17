@@ -36,11 +36,6 @@
     data: () => ({
       mode: 'grid'
     }),
-    computed: {
-      teamId () {
-        return parseInt(this.$route.params.teamId)
-      }
-    },
     async fetch () {
       const query = gql`
         query fetchMatchesPage($teamId: ID!) {
@@ -64,6 +59,11 @@
         title: `${team.name} - Matches`,
         headline: 'Matches'
       })
+    },
+    computed: {
+      teamId () {
+        return parseInt(this.$route.params.teamId)
+      }
     },
     methods: mapMutations('app', {
       setPage: 'setPage'

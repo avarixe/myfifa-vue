@@ -194,32 +194,6 @@
     mixins: [
       TeamAccessible
     ],
-    head: () => ({
-      link: [
-        { rel: 'stylesheet', href: '//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css' }
-      ]
-    }),
-    computed: {
-      playerId () {
-        return parseInt(this.$route.params.playerId)
-      },
-      player () {
-        return this.$store.$db().model('Player')
-          .query()
-          .withAll()
-          .find(this.playerId)
-      }
-    },
-    watch: {
-      player () {
-        if (!this.player) {
-          this.$router.push({
-            name: 'teams-teamId-players',
-            params: this.$route.params
-          })
-        }
-      }
-    },
     async asyncData ({ store, params, $graphql }) {
       const query = gql`
         query fetchPlayerPage($teamId: ID!, $playerId: ID!) {
@@ -274,6 +248,32 @@
         title: this.player.name,
         headline: this.player.name
       })
+    },
+    head: () => ({
+      link: [
+        { rel: 'stylesheet', href: '//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css' }
+      ]
+    }),
+    computed: {
+      playerId () {
+        return parseInt(this.$route.params.playerId)
+      },
+      player () {
+        return this.$store.$db().model('Player')
+          .query()
+          .withAll()
+          .find(this.playerId)
+      }
+    },
+    watch: {
+      player () {
+        if (!this.player) {
+          this.$router.push({
+            name: 'teams-teamId-players',
+            params: this.$route.params
+          })
+        }
+      }
     },
     methods: {
       ...mapMutations({

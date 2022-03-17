@@ -41,7 +41,7 @@
         :mobile-breakpoint="0"
         no-data-text="No Players Recorded"
       >
-        <template #item.name="{ item }">
+        <template #[`item.name`]="{ item }">
           <v-btn
             :to="item.link"
             nuxt
@@ -53,15 +53,15 @@
             {{ item.name }}
           </v-btn>
         </template>
-        <template #item.ovrChange="{ item }">
+        <template #[`item.ovrChange`]="{ item }">
           <span :class="ovrColor(item)">
             {{ item.ovrChange > 0 ? '+' : '' }}{{ item.ovrChange }}
           </span>
         </template>
-        <template #item.endValue="{ item }">
+        <template #[`item.endValue`]="{ item }">
           {{ item.endValue | formatMoney(team.currency) }}
         </template>
-        <template #item.valueChange="{ item }">
+        <template #[`item.valueChange`]="{ item }">
           <span :class="valueColor(item)">
             {{ item.valueChange.toFixed(2) }}%
           </span>

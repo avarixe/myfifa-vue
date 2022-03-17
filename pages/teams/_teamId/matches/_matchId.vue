@@ -188,52 +188,6 @@
     data: () => ({
       readonly: true
     }),
-    computed: {
-      matchId () {
-        return parseInt(this.$route.params.matchId)
-      },
-      match () {
-        return this.$store.$db().model('Match')
-          .query()
-          .with('team|goals|bookings|substitutions|penaltyShootout')
-          .with('caps.player')
-          .find(this.matchId)
-      },
-      players () {
-        return this.$store.$db().model('Player')
-          .query()
-          .where('teamId', this.teamId)
-          .get()
-      },
-      prevMatchLink () {
-        const prevMatch = this.$store.$db().model('Match')
-          .query()
-          .where('teamId', this.teamId)
-          .where('playedOn', date => date < this.match.playedOn)
-          .orderBy('playedOn')
-          .last()
-        return prevMatch?.link
-      },
-      nextMatchLink () {
-        const nextMatch = this.$store.$db().model('Match')
-          .query()
-          .where('teamId', this.teamId)
-          .where('playedOn', date => date > this.match.playedOn)
-          .orderBy('playedOn')
-          .first()
-        return nextMatch?.link
-      }
-    },
-    watch: {
-      match () {
-        if (!this.match) {
-          this.$router.push({
-            name: 'teams-teamId-matches',
-            params: this.$route.params
-          })
-        }
-      }
-    },
     async fetch () {
       const query = gql`
         query fetchMatchPage($matchId: ID!, $teamId: ID!) {
@@ -280,6 +234,52 @@
         headline: 'Match',
         caption: `v ${this.match.opponent}`
       })
+    },
+    computed: {
+      matchId () {
+        return parseInt(this.$route.params.matchId)
+      },
+      match () {
+        return this.$store.$db().model('Match')
+          .query()
+          .with('team|goals|bookings|substitutions|penaltyShootout')
+          .with('caps.player')
+          .find(this.matchId)
+      },
+      players () {
+        return this.$store.$db().model('Player')
+          .query()
+          .where('teamId', this.teamId)
+          .get()
+      },
+      prevMatchLink () {
+        const prevMatch = this.$store.$db().model('Match')
+          .query()
+          .where('teamId', this.teamId)
+          .where('playedOn', date => date < this.match.playedOn)
+          .orderBy('playedOn')
+          .last()
+        return prevMatch?.link
+      },
+      nextMatchLink () {
+        const nextMatch = this.$store.$db().model('Match')
+          .query()
+          .where('teamId', this.teamId)
+          .where('playedOn', date => date > this.match.playedOn)
+          .orderBy('playedOn')
+          .first()
+        return nextMatch?.link
+      }
+    },
+    watch: {
+      match () {
+        if (!this.match) {
+          this.$router.push({
+            name: 'teams-teamId-matches',
+            params: this.$route.params
+          })
+        }
+      }
     },
     methods: mapMutations('app', {
       setPage: 'setPage'

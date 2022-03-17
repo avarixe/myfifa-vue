@@ -12,10 +12,10 @@
         offset-overflow
         class="d-inline-block"
       >
-        <template #activator="{ on: menu }">
+        <template #activator="{ on: openMenu }">
           <v-btn
             icon
-            v-on="{ ...menu, ...tooltip }"
+            v-on="{ ...openMenu, ...tooltip }"
           >
             <v-icon color="teal">mdi-upload</v-icon>
           </v-btn>

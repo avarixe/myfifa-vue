@@ -7,10 +7,10 @@
       dense
     >
       <formation-cell
-        v-for="(pos, j) in row"
+        v-for="(position, j) in row"
         :key="j"
-        :pos="pos"
-        :player="playerInPosition(pos)"
+        :pos="position"
+        :player="playerInPosition(position)"
       >
         <template #default="{ pos, player }">
           <slot

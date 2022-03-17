@@ -35,11 +35,6 @@
 
   export default {
     name: 'PlayersPage',
-    computed: {
-      teamId () {
-        return parseInt(this.$route.params.teamId)
-      }
-    },
     async fetch () {
       const query = gql`
         query fetchPlayersPage($teamId: ID!) {
@@ -69,6 +64,11 @@
         title: `${team.name} - Players`,
         headline: 'Players'
       })
+    },
+    computed: {
+      teamId () {
+        return parseInt(this.$route.params.teamId)
+      }
     },
     methods: mapMutations('app', {
       setPage: 'setPage'
