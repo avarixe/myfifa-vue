@@ -127,7 +127,7 @@
       async submit () {
         await this.createStage({
           competitionId: this.competition.id,
-          stage: this.stage
+          attributes: this.attributes
         })
       }
     }
