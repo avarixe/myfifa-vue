@@ -91,14 +91,6 @@
     mixins: [
       TeamAccessible
     ],
-    computed: {
-      title () {
-        return `${this.seasonLabel(this.pageSeason)} Season`
-      },
-      pageSeason () {
-        return parseInt(this.$route.params.season)
-      }
-    },
     async asyncData ({ store, params, $graphql }) {
       const query = gql`
         query fetchSeason($id: ID!, $season: Int!) {
@@ -159,6 +151,14 @@
         title: this.title,
         headline: this.title
       })
+    },
+    computed: {
+      title () {
+        return `${this.seasonLabel(this.pageSeason)} Season`
+      },
+      pageSeason () {
+        return parseInt(this.$route.params.season)
+      }
     },
     methods: {
       ...mapMutations('app', {

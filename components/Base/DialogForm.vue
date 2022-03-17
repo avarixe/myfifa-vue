@@ -15,7 +15,7 @@
       :submit="submit"
       @success="dialog = false"
     >
-      <template #default="{ error, errorMessage, loading, valid }">
+      <template #default="{ error, errorMessage, onErrorInput, loading, valid }">
         <v-card>
           <v-toolbar dense>
             <slot name="header">
@@ -34,10 +34,11 @@
             </v-container>
           </v-card-text>
           <v-alert
-            v-model="error"
+            :value="error"
             type="error"
             dismissible
             tile
+            @input="onErrorInput"
           >
             {{ errorMessage }}
           </v-alert>

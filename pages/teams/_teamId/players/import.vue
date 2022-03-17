@@ -109,11 +109,6 @@
     mixins: [
       TeamAccessible
     ],
-    head: () => ({
-      script: [
-        { src: '//cdn.jsdelivr.net/npm/xlsx@0.17.0/dist/xlsx.mini.min.js' }
-      ]
-    }),
     data: () => ({
       valid: false,
       numPlayers: 0,
@@ -137,6 +132,11 @@
         { text: 'Performance Bonus', value: 'performanceBonus' },
         { text: '', value: 'bonusReq' },
         { text: '', value: 'bonusReqType' }
+      ]
+    }),
+    head: () => ({
+      script: [
+        { src: '//cdn.jsdelivr.net/npm/xlsx@0.17.0/dist/xlsx.mini.min.js' }
       ]
     }),
     mounted () {

@@ -107,7 +107,7 @@
         <v-card outlined>
           <v-card-text>
             <v-tabs
-              v-model="table"
+              v-model="tableTab"
               centered
               center-active
             >
@@ -119,7 +119,7 @@
               </v-tab>
             </v-tabs>
             <v-tabs-items
-              v-model="table"
+              v-model="tableTab"
               touchless
             >
               <v-tab-item
@@ -182,9 +182,33 @@
       TeamAccessible
     ],
     data: () => ({
-      table: 0,
+      tableTab: 0,
       readonly: true
     }),
+    async fetch () {
+      const query = gql`
+        query fetchCompetition($id: ID!) {
+          competition(id: $id) {
+            ...CompetitionData
+            stages { ...StageData }
+          }
+        }
+        ${competitionFragment}
+        ${stageFragment}
+      `
+
+      const { competition } = await this.$graphql.default.request(query, {
+        id: this.competitionId
+      })
+      await this.$store.$db().model('Competition').insert({ data: competition })
+
+      this.readonly = competition.champion && competition.champion.length > 0
+
+      this.setPage({
+        title: this.title,
+        headline: this.title
+      })
+    },
     computed: {
       competitionId () {
         return parseInt(this.$route.params.competitionId)
@@ -226,30 +250,6 @@
           })
         }
       }
-    },
-    async fetch () {
-      const query = gql`
-        query fetchCompetition($id: ID!) {
-          competition(id: $id) {
-            ...CompetitionData
-            stages { ...StageData }
-          }
-        }
-        ${competitionFragment}
-        ${stageFragment}
-      `
-
-      const { competition } = await this.$graphql.default.request(query, {
-        id: this.competitionId
-      })
-      await this.$store.$db().model('Competition').insert({ data: competition })
-
-      this.readonly = competition.champion && competition.champion.length > 0
-
-      this.setPage({
-        title: this.title,
-        headline: this.title
-      })
     },
     methods: mapMutations('app', {
       setPage: 'setPage'

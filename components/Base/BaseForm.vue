@@ -8,6 +8,7 @@
     <slot
       :error="error"
       :error-message="errorMessage"
+      :on-error-input="onErrorInput"
       :loading="loading"
       :valid="valid"
     />
@@ -62,6 +63,9 @@
             this.loading = false
           }
         }
+      },
+      onErrorInput (val) {
+        this.error = val
       }
     }
   }

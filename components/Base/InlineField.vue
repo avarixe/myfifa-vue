@@ -34,13 +34,13 @@
             autocorrect="off"
             autofocus
           >
-            <template #item="{ item }">
+            <template #item="{ item: option }">
               <slot
                 name="option"
-                :item="item"
+                :item="option"
               >
                 <list-option
-                  :item="item"
+                  :item="option"
                   :option-avatar="optionAvatar"
                   :option-text="optionText"
                 />

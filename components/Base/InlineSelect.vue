@@ -11,10 +11,10 @@
       v-model="menu"
       auto
     >
-      <template #activator="{ on: menu }">
+      <template #activator="{ on: openMenu }">
         <v-tooltip bottom>
           <template #activator="{ on: tooltip }">
-            <span v-on="{ ...menu, ...tooltip }">
+            <span v-on="{ ...openMenu, ...tooltip }">
               <v-badge color="transparent">
                 <template #badge>
                   <v-icon color="grey">mdi-circle-edit-outline</v-icon>

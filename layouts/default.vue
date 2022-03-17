@@ -20,7 +20,7 @@
   import { mapState, mapGetters } from 'vuex'
 
   export default {
-    name: 'Layout',
+    name: 'DefaultLayout',
     middleware: [
       'authenticated'
     ],
