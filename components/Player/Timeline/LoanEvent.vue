@@ -8,6 +8,16 @@
     :dense="dense"
   >
     <template #heading>
+      <v-chip
+        v-if="!event.signedOn"
+        color="error"
+        small
+        label
+        outlined
+      >
+        <v-icon left small>mdi-pencil-off</v-icon>
+        UNSIGNED
+      </v-chip>
       <template v-if="event.startedOn > team.currentlyOn">
         Scheduled on {{ event.startedOn | formatDate }}
       </template>
@@ -110,7 +120,8 @@
         )
       },
       buyOptionAvailable () {
-        return this.event.endedOn > this.team.currentlyOn &&
+        return this.event.signedOn &&
+          this.event.endedOn > this.team.currentlyOn &&
           (this.event.transferFee || this.event.addonClause)
       }
     }

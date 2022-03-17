@@ -11,7 +11,7 @@ export default class Loan extends Model {
 
       // Database fields
       startedOn: this.string(''),
-      signedOn: this.string(''),
+      signedOn: this.string(null).nullable(),
       endedOn: this.string('').nullable(),
       origin: this.string(''),
       destination: this.string(''),

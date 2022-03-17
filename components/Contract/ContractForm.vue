@@ -23,7 +23,7 @@
           v-model="attributes.signedOn"
           label="Signed Date"
           prepend-icon="mdi-calendar-edit"
-          required
+          clearable
         />
       </v-col>
       <v-col cols="12">

@@ -23,7 +23,7 @@
           v-model="attributes.signedOn"
           label="Signed Date"
           prepend-icon="mdi-calendar-edit"
-          required
+          clearable
         />
       </v-col>
       <v-col cols="12">
@@ -93,6 +93,7 @@
 <script>
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
+  import { format, parseISO, addYears } from 'date-fns'
   import { TeamAccessible, DialogFormable } from '@/mixins'
   import { isRequired, isNumber, inRange } from '@/functions'
 
@@ -159,6 +160,10 @@
           } else {
             this.attributes.signedOn = this.team.currentlyOn
             this.attributes.startedOn = this.team.currentlyOn
+            this.attributes.endedOn = format(
+              addYears(parseISO(this.team.currentlyOn), 1),
+              'yyyy-MM-dd'
+            )
             if (this.loanOut) {
               this.attributes.origin = this.team.name
             } else {
