@@ -23,6 +23,7 @@
           v-model="attributes.signedOn"
           label="Signed Date"
           prepend-icon="mdi-calendar-edit"
+          :prefill="team.currentlyOn"
           clearable
         />
       </v-col>
@@ -32,6 +33,7 @@
           label="Effective Date"
           prepend-icon="mdi-calendar-today"
           :min="attributes.signedOn"
+          :prefill="team.currentlyOn"
           required
         />
       </v-col>

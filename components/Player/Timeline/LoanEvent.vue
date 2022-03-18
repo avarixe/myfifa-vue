@@ -15,7 +15,12 @@
         label
         outlined
       >
-        <v-icon left small>mdi-pencil-off</v-icon>
+        <v-icon
+          left
+          small
+        >
+          mdi-pencil-off
+        </v-icon>
         UNSIGNED
       </v-chip>
       <template v-if="event.startedOn > team.currentlyOn">
