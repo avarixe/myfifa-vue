@@ -11,7 +11,7 @@ export default class Contract extends Model {
       playerId: this.number(0),
 
       // Database fields
-      signedOn: this.string(''),
+      signedOn: this.string(null).nullable(),
       wage: this.number(null).nullable(),
       signingBonus: this.number(null).nullable(),
       releaseClause: this.number(null).nullable(),

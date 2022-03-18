@@ -23,7 +23,8 @@
           v-model="attributes.signedOn"
           label="Signed Date"
           prepend-icon="mdi-calendar-edit"
-          required
+          :prefill="team.currentlyOn"
+          clearable
         />
       </v-col>
       <v-col cols="12">
@@ -33,6 +34,7 @@
           prepend-icon="mdi-calendar-today"
           :min="attributes.signedOn"
           :max="attributes.endedOn"
+          :prefill="team.currentlyOn"
           required
         />
       </v-col>
@@ -42,6 +44,7 @@
           label="Return Date"
           prepend-icon="mdi-calendar"
           :min="attributes.startedOn"
+          :prefill="team.currentlyOn"
           required
         />
       </v-col>
@@ -93,6 +96,7 @@
 <script>
   import { mapActions } from 'vuex'
   import pick from 'lodash.pick'
+  import { format, parseISO, subDays } from 'date-fns'
   import { TeamAccessible, DialogFormable } from '@/mixins'
   import { isRequired, isNumber, inRange } from '@/functions'
 
@@ -157,8 +161,11 @@
               'addonClause'
             ])
           } else {
-            this.attributes.signedOn = this.team.currentlyOn
             this.attributes.startedOn = this.team.currentlyOn
+            this.attributes.endedOn = format(
+              subDays(parseISO(this.seasonEnd), 1),
+              'yyyy-MM-dd'
+            )
             if (this.loanOut) {
               this.attributes.origin = this.team.name
             } else {

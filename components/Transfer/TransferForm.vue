@@ -23,7 +23,8 @@
           v-model="attributes.signedOn"
           label="Signed Date"
           prepend-icon="mdi-calendar-edit"
-          required
+          :prefill="team.currentlyOn"
+          clearable
         />
       </v-col>
       <v-col cols="12">
@@ -32,6 +33,7 @@
           label="Effective Date"
           prepend-icon="mdi-calendar-today"
           :min="attributes.signedOn"
+          :prefill="team.currentlyOn"
           required
         />
       </v-col>
@@ -130,7 +132,6 @@
               'addonClause'
             ])
           } else {
-            this.attributes.signedOn = this.team.currentlyOn
             this.attributes.movedOn = this.team.currentlyOn
             if (this.transferOut) {
               this.attributes.origin = this.team.name

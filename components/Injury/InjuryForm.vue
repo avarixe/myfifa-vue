@@ -57,6 +57,7 @@
           prepend-icon="mdi-calendar"
           :append-outer-icon="record ? null : 'mdi-ruler'"
           :min="attributes.startedOn"
+          :prefill="team.currentlyOn"
           required
           @click:append-outer="durationOn = true"
         />

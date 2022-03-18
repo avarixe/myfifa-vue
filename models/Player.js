@@ -105,6 +105,7 @@ export default class Player extends Model {
     const contract = Contract
       .query()
       .where('playerId', this.id)
+      .where('signedOn', date => !!date)
       .where('startedOn', date => date <= this.team.currentlyOn)
       .where('endedOn', date => this.team.currentlyOn < date)
       .last()

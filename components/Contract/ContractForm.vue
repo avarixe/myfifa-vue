@@ -23,7 +23,8 @@
           v-model="attributes.signedOn"
           label="Signed Date"
           prepend-icon="mdi-calendar-edit"
-          required
+          :prefill="team.currentlyOn"
+          clearable
         />
       </v-col>
       <v-col cols="12">
@@ -33,6 +34,7 @@
           prepend-icon="mdi-calendar-today"
           :min="attributes.signedOn"
           :max="attributes.endedOn"
+          :prefill="team.currentlyOn"
           required
         />
       </v-col>
@@ -193,7 +195,6 @@
             ])
             this.numSeasonsOn = false
           } else {
-            this.attributes.signedOn = this.team.currentlyOn
             this.attributes.startedOn = this.team.currentlyOn
             this.numSeasonsOn = true
           }

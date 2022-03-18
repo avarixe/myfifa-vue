@@ -11,7 +11,7 @@ export default class Transfer extends Model {
       playerId: this.number(0),
 
       // Database fields
-      signedOn: this.string(''),
+      signedOn: this.string(null).nullable(),
       movedOn: this.string(''),
       origin: this.string(''),
       destination: this.string(''),

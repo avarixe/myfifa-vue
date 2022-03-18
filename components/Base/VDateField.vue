@@ -12,6 +12,7 @@
         :rules="rules"
         :label="label"
         :prepend-icon="prependIcon"
+        :append-icon="prefill ? 'mdi-calendar-arrow-left' : null"
         :append-outer-icon="appendOuterIcon"
         readonly
         :clearable="clearable"
@@ -20,6 +21,8 @@
         :outlined="outlined"
         :hide-details="hideDetails"
         v-on="{ ...on, ...$listeners }"
+        @click:append="date = prefill"
+        @click:clear="date = null"
       />
     </template>
     <v-date-picker
@@ -54,7 +57,8 @@
       dense: { type: Boolean, default: false },
       outlined: { type: Boolean, default: false },
       hideDetails: { type: Boolean, default: false },
-      clearable: { type: Boolean, default: false }
+      clearable: { type: Boolean, default: false },
+      prefill: { type: String, default: null }
     },
     data: () => ({
       menu: false,
