@@ -132,7 +132,6 @@
               'addonClause'
             ])
           } else {
-            this.attributes.signedOn = this.team.currentlyOn
             this.attributes.movedOn = this.team.currentlyOn
             if (this.transferOut) {
               this.attributes.origin = this.team.name

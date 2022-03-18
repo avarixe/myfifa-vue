@@ -195,7 +195,6 @@
             ])
             this.numSeasonsOn = false
           } else {
-            this.attributes.signedOn = this.team.currentlyOn
             this.attributes.startedOn = this.team.currentlyOn
             this.numSeasonsOn = true
           }

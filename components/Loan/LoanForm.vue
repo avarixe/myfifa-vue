@@ -161,7 +161,6 @@
               'addonClause'
             ])
           } else {
-            this.attributes.signedOn = this.team.currentlyOn
             this.attributes.startedOn = this.team.currentlyOn
             this.attributes.endedOn = format(
               subDays(parseISO(this.seasonEnd), 1),
