@@ -186,32 +186,40 @@
       readonly: true
     }),
     async fetch () {
-      const query = gql`
-        query fetchCompetition($id: ID!) {
-          competition(id: $id) {
-            ...CompetitionData
-            stages { ...StageData }
+      const { teamId, competitionId } = this.$route.query
+
+      if (teamId && competitionId) {
+        const query = gql`
+          query fetchCompetition($id: ID!) {
+            competition(id: $id) {
+              ...CompetitionData
+              stages { ...StageData }
+            }
           }
-        }
-        ${competitionFragment}
-        ${stageFragment}
-      `
+          ${competitionFragment}
+          ${stageFragment}
+        `
 
-      const { competition } = await this.$graphql.default.request(query, {
-        id: this.competitionId
-      })
-      await this.$store.$db().model('Competition').insert({ data: competition })
+        const { competition } = await this.$graphql.default.request(query, {
+          id: this.competitionId
+        })
+        await this.$store.$db().model('Competition').insert({ data: competition })
 
-      this.readonly = competition.champion && competition.champion.length > 0
+        this.readonly = competition.champion && competition.champion.length > 0
 
-      this.setPage({
-        title: this.title,
-        headline: this.title
-      })
+        this.setPage({
+          title: this.title,
+          headline: this.title
+        })
+      } else if (teamId) {
+        this.$router.push({ name: 'team', query: { teamId } })
+      } else {
+        this.$router.push('/')
+      }
     },
     computed: {
       competitionId () {
-        return parseInt(this.$route.params.competitionId)
+        return parseInt(this.$route.query.competitionId)
       },
       competition () {
         return this.$store.$db().model('Competition')
@@ -242,14 +250,15 @@
       competition () {
         if (!this.competition) {
           this.$router.push({
-            name: 'teams-teamId-seasons-season',
-            params: {
+            name: 'season',
+            query: {
               teamId: this.team.id,
               season: this.season
             }
           })
         }
-      }
+      },
+      '$route.query': '$fetch'
     },
     methods: mapMutations('app', {
       setPage: 'setPage'

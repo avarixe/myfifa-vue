@@ -24,7 +24,7 @@
           :key="player.id"
           v-ripple
           :class="rowColor(player)"
-          @click="$router.push(`/teams/${team.id}/players/${player.id}`)"
+          @click="$router.push({ name: 'player', query: { teamId: team.id, playerId: player.id } })"
         >
           <td>{{ player.name }}</td>
           <td class="text-center">{{ player.pos }}</td>
@@ -54,7 +54,7 @@
     computed: {
       team () {
         return this.$store.$db().model('Team')
-          .find(parseInt(this.$route.params.teamId))
+          .find(parseInt(this.$route.query.teamId))
       }
     },
     methods: {

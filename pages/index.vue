@@ -38,7 +38,7 @@
                 <v-spacer />
                 <v-hover v-slot="{ hover }">
                   <v-btn
-                    :to="`/teams/${currentTeam.id}`"
+                    :to="{ name: 'team', query: { teamId: currentTeam.id } }"
                     nuxt
                     text
                     class="my-2"
@@ -90,7 +90,7 @@
                       <div><i>{{ lastMatch.playedOn | formatDate }}</i></div>
                       <v-hover v-slot="{ hover }">
                         <v-btn
-                          :to="`/teams/${currentTeam.id}/matches/${lastMatch.id}`"
+                          :to="{ name: 'match', query: { teamId: currentTeam.id, matchId: lastMatch.id } }"
                           nuxt
                           outlined
                           color="info"
@@ -226,22 +226,22 @@
         const season = differenceInYears(currentDate, date)
         return [
           {
-            to: `/teams/${team.id}/seasons/${season}`,
+            to: { name: 'season', query: { teamId: team.id, season } },
             icon: 'mdi-calendar',
             text: 'Current Season'
           },
           {
-            to: `/teams/${team.id}/players`,
+            to: { name: 'players', query: { teamId: team.id } },
             icon: 'mdi-run',
             text: 'Players'
           },
           {
-            to: `/teams/${team.id}/matches`,
+            to: { name: 'matches', query: { teamId: team.id } },
             icon: 'mdi-soccer-field',
             text: 'Matches'
           },
           {
-            to: `/teams/${team.id}/squads`,
+            to: { name: 'squads', query: { teamId: team.id } },
             icon: 'mdi-clipboard-text',
             text: 'Squads'
           }

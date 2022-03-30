@@ -60,7 +60,7 @@
                 text
                 color="info"
                 class="text-capitalize"
-                @click.stop="$router.push(`/teams/${teamId}/players/${item.id}`)"
+                @click.stop="$router.push({ name: 'player', query: { teamId, playerId: item.id } })"
               >
                 {{ item.name }}
               </v-btn>

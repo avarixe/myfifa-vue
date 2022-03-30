@@ -3,7 +3,7 @@ import { addYears, differenceInYears, format, parseISO } from 'date-fns'
 export default {
   computed: {
     teamId () {
-      return parseInt(this.$route.params.teamId)
+      return parseInt(this.$route.query.teamId)
     },
     team () {
       return this.$store.$db().model('Team').find(this.teamId)
@@ -30,8 +30,8 @@ export default {
     },
     linkTo (page) {
       return {
-        name: `teams-teamId-${page}`,
-        params: { teamId: this.team.id }
+        name: page,
+        query: { teamId: this.team.id }
       }
     }
   }

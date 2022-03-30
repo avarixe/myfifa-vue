@@ -94,7 +94,7 @@
         'currentUser'
       ]),
       teamId () {
-        return this.$route.params.teamId
+        return this.$route.query.teamId
       },
       team () {
         return this.$store.$db().model('Team').find(this.teamId)

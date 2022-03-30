@@ -64,7 +64,7 @@
     }),
     computed: {
       team () {
-        return this.$store.$db().model('Team').find(this.$route.params.teamId)
+        return this.$store.$db().model('Team').find(this.$route.query.teamId)
       },
       competitions () {
         return this.$store.$db().model('Competition')

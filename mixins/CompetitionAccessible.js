@@ -9,7 +9,7 @@ export default {
       return this.$store.$db().model('Competition')
         .query()
         .with('stages.tableRows|fixtures')
-        .find(this.$route.params.competitionId)
+        .find(this.$route.query.competitionId)
     }
   },
   methods: {

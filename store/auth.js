@@ -44,7 +44,7 @@ export const actions = {
         this.$cookies.remove('targetRoute')
 
         // load Team if required
-        if (targetRoute.params.teamId) {
+        if (targetRoute.query.teamId) {
           const query = gql`
             fetchTeam($id: ID!) {
               team(id: $id) { ...TeamData }
@@ -54,7 +54,7 @@ export const actions = {
 
           const { team } = await this.$graphql.default.request(
             query,
-            { id: parseInt(targetRoute.params.teamId) },
+            { id: parseInt(targetRoute.query.teamId) },
             { Authorization: `Bearer ${token}` }
           )
 

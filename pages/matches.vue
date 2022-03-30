@@ -37,32 +37,38 @@
       mode: 'grid'
     }),
     async fetch () {
-      const query = gql`
-        query fetchMatchesPage($teamId: ID!) {
-          team(id: $teamId) {
-            ...TeamData
-            matches { ...MatchData }
-            competitions { ...CompetitionData }
+      const { teamId } = this.$route.query
+
+      if (teamId) {
+        const query = gql`
+          query fetchMatchesPage($teamId: ID!) {
+            team(id: $teamId) {
+              ...TeamData
+              matches { ...MatchData }
+              competitions { ...CompetitionData }
+            }
           }
-        }
-        ${teamFragment}
-        ${matchFragment}
-        ${competitionFragment}
-      `
+          ${teamFragment}
+          ${matchFragment}
+          ${competitionFragment}
+        `
 
-      const { team } =
-        await this.$graphql.default.request(query, { teamId: this.teamId })
+        const { team } =
+          await this.$graphql.default.request(query, { teamId: this.teamId })
 
-      await this.$store.$db().model('Team').insert({ data: team })
+        await this.$store.$db().model('Team').insert({ data: team })
 
-      this.setPage({
-        title: `${team.name} - Matches`,
-        headline: 'Matches'
-      })
+        this.setPage({
+          title: `${team.name} - Matches`,
+          headline: 'Matches'
+        })
+      } else {
+        this.$router.push('/')
+      }
     },
     computed: {
       teamId () {
-        return parseInt(this.$route.params.teamId)
+        return parseInt(this.$route.query.teamId)
       }
     },
     methods: mapMutations('app', {

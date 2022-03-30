@@ -27,7 +27,7 @@ export const mutations = {
 
 // actions
 export const actions = {
-  async nuxtClientInit ({ commit }, { params, $cookies, $graphql }) {
+  async nuxtClientInit ({ commit }, { route, $cookies, $graphql }) {
     const token = $cookies.get('token')
 
     if (token) {
@@ -36,17 +36,17 @@ export const actions = {
 
       try {
         const query = `
-          query fetchUser${params.teamId ? '($teamId: ID!)' : ''} {
+          query fetchUser${route.query.teamId ? '($teamId: ID!)' : ''} {
             user { ...UserData }
-            ${params.teamId ? 'team(id: $teamId) { ...TeamData }' : ''}
+            ${route.query.teamId ? 'team(id: $teamId) { ...TeamData }' : ''}
           }
           ${userFragment}
-          ${params.teamId ? teamFragment : ''}
+          ${route.query.teamId ? teamFragment : ''}
         `
 
         const { user, team } = await $graphql.default.request(
           query,
-          { teamId: params.teamId },
+          { teamId: route.query.teamId },
           { Authorization: `Bearer ${token}` }
         )
 

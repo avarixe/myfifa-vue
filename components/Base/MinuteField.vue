@@ -19,7 +19,7 @@
     },
     computed: {
       match () {
-        return this.$store.$db().model('Match').find(this.$route.params.matchId)
+        return this.$store.$db().model('Match').find(this.$route.query.matchId)
       },
       rules () {
         const label = 'Minute'

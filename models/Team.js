@@ -34,8 +34,8 @@ export default class Team extends Model {
 
   get link () {
     return {
-      name: 'teams-teamId',
-      params: { teamId: this.id }
+      name: 'team',
+      query: { teamId: this.id }
     }
   }
 
@@ -47,15 +47,15 @@ export default class Team extends Model {
 
   linkTo (page) {
     return {
-      name: `teams-teamId-${page}`,
-      params: { teamId: this.id }
+      name: page,
+      query: { teamId: this.id }
     }
   }
 
   linkToSeason (season) {
     return {
-      name: 'teams-teamId-seasons-season',
-      params: {
+      name: 'season',
+      query: {
         teamId: this.id,
         season
       }

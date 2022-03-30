@@ -28,8 +28,8 @@ class Competition extends Model {
 
   get link () {
     return {
-      name: 'teams-teamId-competitions-competitionId',
-      params: {
+      name: 'competition',
+      query: {
         teamId: this.teamId,
         competitionId: this.id
       }
@@ -38,8 +38,8 @@ class Competition extends Model {
 
   get linkToSeason () {
     return {
-      name: 'teams-teamId-seasons-season',
-      params: {
+      name: 'season',
+      query: {
         teamId: this.teamId,
         season: this.season
       }

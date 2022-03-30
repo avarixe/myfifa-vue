@@ -3,14 +3,14 @@
     <v-row>
       <v-col cols="12">
         <v-btn
-          :to="`/teams/${teamId}/players`"
+          :to="{ name: 'players', query: { teamId } }"
           nuxt
         >
           <v-icon left>mdi-arrow-left</v-icon>
           Back
         </v-btn>
         <v-btn
-          :to="`/teams/${teamId}/statistics/performances`"
+          :to="{ name: 'statistics-performances', query: { teamId } }"
           nuxt
           color="purple"
           dark
@@ -37,24 +37,30 @@
     mixins: [
       TeamAccessible
     ],
-    async asyncData ({ params, store, $graphql }) {
-      const query = gql`
-        query fetchPlayersPage($teamId: ID!) {
-          team(id: $teamId) {
-            players { ...PlayerData }
-            playerDevelopmentStats { ...PlayerDevelopmentStatsData }
+    async asyncData ({ route, store, $graphql, redirect }) {
+      const { teamId } = route.query
+
+      if (teamId) {
+        const query = gql`
+          query fetchPlayersPage($teamId: ID!) {
+            team(id: $teamId) {
+              players { ...PlayerData }
+              playerDevelopmentStats { ...PlayerDevelopmentStatsData }
+            }
           }
-        }
-        ${playerFragment}
-        ${playerDevelopmentStatsFragment}
-      `
+          ${playerFragment}
+          ${playerDevelopmentStatsFragment}
+        `
 
-      const { team: { players, playerDevelopmentStats } } =
-        await $graphql.default.request(query, { teamId: parseInt(params.teamId) })
+        const { team: { players, playerDevelopmentStats } } =
+          await $graphql.default.request(query, { teamId: parseInt(teamId) })
 
-      await store.$db().model('Player').insert({ data: players })
+        await store.$db().model('Player').insert({ data: players })
 
-      return { playerDevelopmentStats }
+        return { playerDevelopmentStats }
+      } else {
+        redirect('/')
+      }
     },
     async fetch () {
       this.setPage({

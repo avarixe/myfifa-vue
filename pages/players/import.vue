@@ -140,6 +140,10 @@
       ]
     }),
     mounted () {
+      if (!this.$route.query.teamId) {
+        this.$router.push('/')
+      }
+
       this.setPage({
         title: 'Import Players',
         headline: 'Import Players'

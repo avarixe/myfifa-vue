@@ -114,7 +114,7 @@
     },
     computed: {
       team () {
-        return this.$store.$db().model('Team').find(this.$route.params.teamId)
+        return this.$store.$db().model('Team').find(this.$route.query.teamId)
       },
       starters () {
         return this.match.caps.filter(c => c.start === 0)

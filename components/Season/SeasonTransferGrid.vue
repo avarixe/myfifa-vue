@@ -12,7 +12,7 @@
       <tr>
         <td class="stick-left">
           <v-btn
-            :to="`/teams/${teamId}/players/${item.playerId}`"
+            :to="{ name: 'player', query: { teamId, playerId: item.playerId } }"
             nuxt
             small
             text
@@ -135,7 +135,7 @@
     }),
     computed: {
       teamId () {
-        return parseInt(this.$route.params.teamId)
+        return parseInt(this.$route.query.teamId)
       },
       team () {
         return this.$store.$db().model('Team').find(this.teamId)

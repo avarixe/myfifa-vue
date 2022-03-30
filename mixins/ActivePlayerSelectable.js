@@ -6,7 +6,7 @@ export default {
       return orderBy(
         this.$store.$db().model('Player')
           .query()
-          .where('teamId', parseInt(this.$route.params.teamId))
+          .where('teamId', parseInt(this.$route.query.teamId))
           .where('status', status => status)
           .get(),
         ['posIdx', 'ovr'],

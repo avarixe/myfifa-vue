@@ -38,7 +38,7 @@
             command: 'subscribe',
             identifier: JSON.stringify({
               channel: 'TeamChannel',
-              id: this.$route.params.teamId
+              id: this.$route.query.teamId
             })
           }))
         }
