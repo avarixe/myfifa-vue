@@ -27,7 +27,7 @@ export const mutations = {
 
 // actions
 export const actions = {
-  async nuxtServerInit ({ commit }, { params, $cookies, $graphql }) {
+  async nuxtClientInit ({ commit }, { params, $cookies, $graphql }) {
     const token = $cookies.get('token')
 
     if (token) {

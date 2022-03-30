@@ -2,6 +2,8 @@ import pkg from './package'
 import nodeExternals from 'webpack-node-externals'
 
 export default {
+  target: 'static',
+
   server: {
     host: '0.0.0.0',
     port: process.env.NODE_ENV === 'production' ? '8080' : '4000'
@@ -74,7 +76,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/custom/filters.js',
+    '@/plugins/filters.js',
+    { src: '@/plugins/nuxt-client-init.js', ssr: false },
     '@/plugins/vue-chartist.js'
   ],
 
