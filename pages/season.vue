@@ -5,6 +5,7 @@
         <v-btn
           :to="linkToSeason(pageSeason - 1)"
           nuxt
+          exact
           :disabled="pageSeason === 0"
         >
           Previous Season
@@ -12,6 +13,7 @@
         <v-btn
           :to="linkToSeason(pageSeason + 1)"
           nuxt
+          exact
           :disabled="pageSeason >= season"
         >
           Next Season
@@ -91,59 +93,67 @@
     mixins: [
       TeamAccessible
     ],
-    async asyncData ({ store, params, $graphql }) {
-      const query = gql`
-        query fetchSeason($id: ID!, $season: Int!) {
-          team(id: $id) {
-            ...TeamData
-            competitions { ...CompetitionData }
-            players { ...PlayerData }
-            competitionStats(season: $season) { ...CompetitionStatsData }
-            playerPerformanceStats(season: $season) { ...PlayerPerformanceStatsData }
-            playerDevelopmentStats(season: $season) { ...PlayerDevelopmentStatsData }
-            teamDevelopmentStats(season: $season) { ...TeamDevelopmentStatsData }
-            transferActivity(season: $season) {
-              arrivals { ...ContractData }
-              departures { ...ContractData }
-              transfers { ...TransferData }
-              loans { ...LoanData }
+    async asyncData ({ store, route, $graphql, redirect }) {
+      const { teamId, season } = route.query
+
+      if (teamId && !isNaN(season)) {
+        const query = gql`
+          query fetchSeason($id: ID!, $season: Int!) {
+            team(id: $id) {
+              ...TeamData
+              competitions { ...CompetitionData }
+              players { ...PlayerData }
+              competitionStats(season: $season) { ...CompetitionStatsData }
+              playerPerformanceStats(season: $season) { ...PlayerPerformanceStatsData }
+              playerDevelopmentStats(season: $season) { ...PlayerDevelopmentStatsData }
+              teamDevelopmentStats(season: $season) { ...TeamDevelopmentStatsData }
+              transferActivity(season: $season) {
+                arrivals { ...ContractData }
+                departures { ...ContractData }
+                transfers { ...TransferData }
+                loans { ...LoanData }
+              }
             }
           }
+          ${teamFragment}
+          ${competitionFragment}
+          ${playerFragment}
+          ${competitionStatsFragment}
+          ${playerPerformanceStatsFragment}
+          ${playerDevelopmentStatsFragment}
+          ${teamDevelopmentStatsFragment}
+          ${contractFragment}
+          ${transferFragment}
+          ${loanFragment}
+        `
+
+        const { team } = await $graphql.default.request(query, {
+          id: parseInt(route.query.teamId),
+          season: parseInt(route.query.season)
+        })
+
+        await store.$db().model('Team').insert({ data: team })
+
+        const {
+          competitionStats,
+          playerPerformanceStats,
+          playerDevelopmentStats,
+          teamDevelopmentStats,
+          transferActivity
+        } = team
+
+        return {
+          competitionStats,
+          playerPerformanceStats,
+          playerDevelopmentStats,
+          teamDevelopmentStats,
+          transferActivity,
+          tab: 0
         }
-        ${teamFragment}
-        ${competitionFragment}
-        ${playerFragment}
-        ${competitionStatsFragment}
-        ${playerPerformanceStatsFragment}
-        ${playerDevelopmentStatsFragment}
-        ${teamDevelopmentStatsFragment}
-        ${contractFragment}
-        ${transferFragment}
-        ${loanFragment}
-      `
-
-      const { team } = await $graphql.default.request(query, {
-        id: parseInt(params.teamId),
-        season: parseInt(params.season)
-      })
-
-      await store.$db().model('Team').insert({ data: team })
-
-      const {
-        competitionStats,
-        playerPerformanceStats,
-        playerDevelopmentStats,
-        teamDevelopmentStats,
-        transferActivity
-      } = team
-
-      return {
-        competitionStats,
-        playerPerformanceStats,
-        playerDevelopmentStats,
-        teamDevelopmentStats,
-        transferActivity,
-        tab: 0
+      } else if (teamId) {
+        redirect({ name: 'team', query: { teamId } })
+      } else {
+        redirect('/')
       }
     },
     async fetch () {
@@ -157,17 +167,21 @@
         return `${this.seasonLabel(this.pageSeason)} Season`
       },
       pageSeason () {
-        return parseInt(this.$route.params.season)
+        return parseInt(this.$route.query.season)
       }
     },
+    watch: {
+      '$route.query': '$fetch'
+    },
+    watchQuery: ['season'],
     methods: {
       ...mapMutations('app', {
         setPage: 'setPage'
       }),
       linkToSeason (season) {
         return {
-          name: 'teams-teamId-seasons-season',
-          params: {
+          name: 'season',
+          query: {
             teamId: this.team.id,
             season
           }

@@ -63,7 +63,7 @@
       matches () {
         return this.$store.$db().model('Match')
           .query()
-          .where('teamId', parseInt(this.$route.params.teamId))
+          .where('teamId', parseInt(this.$route.query.teamId))
           .where(match => {
             for (const filter in this.filters) {
               if (!this.matchPassesFilter(match, filter)) {

@@ -249,8 +249,8 @@
             attributes: this.attributes
           })
           this.$router.push({
-            name: 'teams-teamId-competitions-competitionId',
-            params: {
+            name: 'competition',
+            query: {
               teamId: this.team.id,
               competitionId
             }

@@ -6,6 +6,7 @@
           v-if="prevMatchLink"
           :to="prevMatchLink"
           class="mb-1"
+          exact
         >
           Previous Match
         </v-btn>
@@ -13,6 +14,7 @@
           v-if="nextMatchLink"
           :to="nextMatchLink"
           class="mb-1"
+          exact
         >
           Next Match
         </v-btn>
@@ -189,55 +191,63 @@
       readonly: true
     }),
     async fetch () {
-      const query = gql`
-        query fetchMatchPage($matchId: ID!, $teamId: ID!) {
-          match(id: $matchId) {
-            ...MatchData
-            caps { ...CapData }
-            goals { ...GoalData }
-            substitutions { ...SubstitutionData }
-            bookings { ...BookingData }
-            penaltyShootout { ...PenaltyShootoutData }
-          }
-          team(id: $teamId) {
-            ...TeamData
-            players { ...PlayerData }
-            squads { ...BaseSquadData }
-          }
-        }
-        ${matchFragment}
-        ${capFragment}
-        ${goalFragment}
-        ${substitutionFragment}
-        ${bookingFragment}
-        ${penaltyShootoutFragment}
-        ${teamFragment}
-        ${playerFragment}
-        ${baseSquadFragment}
-      `
+      const { teamId, matchId } = this.$route.query
 
-      const { match, team } =
-        await this.$graphql.default.request(query, {
-          matchId: this.matchId,
-          teamId: this.teamId
+      if (teamId && matchId) {
+        const query = gql`
+          query fetchMatchPage($matchId: ID!, $teamId: ID!) {
+            match(id: $matchId) {
+              ...MatchData
+              caps { ...CapData }
+              goals { ...GoalData }
+              substitutions { ...SubstitutionData }
+              bookings { ...BookingData }
+              penaltyShootout { ...PenaltyShootoutData }
+            }
+            team(id: $teamId) {
+              ...TeamData
+              players { ...PlayerData }
+              squads { ...BaseSquadData }
+            }
+          }
+          ${matchFragment}
+          ${capFragment}
+          ${goalFragment}
+          ${substitutionFragment}
+          ${bookingFragment}
+          ${penaltyShootoutFragment}
+          ${teamFragment}
+          ${playerFragment}
+          ${baseSquadFragment}
+        `
+
+        const { match, team } =
+          await this.$graphql.default.request(query, {
+            matchId: this.matchId,
+            teamId: this.teamId
+          })
+
+        await Promise.all([
+          this.$store.$db().model('Match').insert({ data: match }),
+          this.$store.$db().model('Team').insert({ data: team })
+        ])
+
+        this.readonly = match.playedOn !== team.currentlyOn
+
+        this.setPage({
+          title: `${match.home} vs ${match.away}`,
+          headline: 'Match',
+          caption: `v ${this.match.opponent}`
         })
-
-      await Promise.all([
-        this.$store.$db().model('Match').insert({ data: match }),
-        this.$store.$db().model('Team').insert({ data: team })
-      ])
-
-      this.readonly = match.playedOn !== team.currentlyOn
-
-      this.setPage({
-        title: `${match.home} vs ${match.away}`,
-        headline: 'Match',
-        caption: `v ${this.match.opponent}`
-      })
+      } else if (teamId) {
+        this.$router.push({ name: 'team', query: { teamId } })
+      } else {
+        this.$router.push('/')
+      }
     },
     computed: {
       matchId () {
-        return parseInt(this.$route.params.matchId)
+        return parseInt(this.$route.query.matchId)
       },
       match () {
         return this.$store.$db().model('Match')
@@ -275,11 +285,12 @@
       match () {
         if (!this.match) {
           this.$router.push({
-            name: 'teams-teamId-matches',
-            params: this.$route.params
+            name: 'matches',
+            query: this.$route.query
           })
         }
-      }
+      },
+      '$route.query': '$fetch'
     },
     methods: mapMutations('app', {
       setPage: 'setPage'

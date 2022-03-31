@@ -44,8 +44,8 @@ export default class Match extends Model {
 
   get link () {
     return {
-      name: 'teams-teamId-matches-matchId',
-      params: {
+      name: 'match',
+      query: {
         teamId: this.teamId,
         matchId: this.id
       }

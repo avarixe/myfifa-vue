@@ -22,7 +22,7 @@
     name: 'TeamNavigator',
     computed: {
       teamId () {
-        return parseInt(this.$route.params.teamId)
+        return parseInt(this.$route.query.teamId)
       },
       team () {
         return this.$store.$db().model('Team').find(this.teamId)
@@ -33,8 +33,8 @@
             text: 'Dashboard',
             icon: 'mdi-view-dashboard',
             to: {
-              name: 'teams-teamId',
-              params: { teamId: this.teamId }
+              name: 'team',
+              query: { teamId: this.teamId }
             },
             exact: true
           },

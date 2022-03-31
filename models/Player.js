@@ -51,8 +51,8 @@ export default class Player extends Model {
 
   get link () {
     return {
-      name: 'teams-teamId-players-playerId',
-      params: {
+      name: 'player',
+      query: {
         teamId: this.teamId,
         playerId: this.id
       }

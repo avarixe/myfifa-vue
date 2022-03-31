@@ -23,7 +23,7 @@
           v-for="player in players"
           :key="player.id"
           v-ripple
-          @click="$router.push(`/teams/${team.id}/players/${player.id}`)"
+          @click="$router.push({ name: 'player', query: { teamId, playerId: player.id } })"
         >
           <td>{{ player.name }}</td>
           <td class="text-center">{{ player.pos }}</td>

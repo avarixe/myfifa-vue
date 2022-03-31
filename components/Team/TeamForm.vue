@@ -112,10 +112,7 @@
           })
         } else {
           const { id: teamId } = await this.createTeam(this.attributes)
-          this.$router.push({
-            name: 'teams-teamId',
-            params: { teamId }
-          })
+          this.$router.push({ name: 'team', query: { teamId } })
         }
       }
     }

@@ -52,7 +52,7 @@
     },
     computed: {
       team () {
-        return this.$store.$db().model('Team').find(this.$route.params.teamId)
+        return this.$store.$db().model('Team').find(this.$route.query.teamId)
       },
       competitions () {
         return this.$store.$db().model('Competition')
@@ -69,8 +69,8 @@
       },
       link () {
         return {
-          name: 'teams-teamId-seasons-season',
-          params: {
+          name: 'season',
+          query: {
             teamId: this.team.id,
             season: this.season
           }

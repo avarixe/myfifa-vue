@@ -85,7 +85,7 @@
           <tr>
             <td class="stick-left">
               <v-btn
-                :to="`/teams/${teamId}/players/${item.id}`"
+                :to="{ name: 'player', query: { teamId, playerId: item.id } }"
                 small
                 text
                 nuxt

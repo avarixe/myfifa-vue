@@ -19,7 +19,7 @@
         </team-form>
         <v-btn
           class="mb-1"
-          :to="`/teams/${teamId}/players/import`"
+          :to="{ name: 'players-import', query: { teamId } }"
           nuxt
           color="primary"
           dark
@@ -109,71 +109,77 @@
     mixins: [
       TeamAccessible
     ],
-    async asyncData ({ $graphql, params, store }) {
-      const query = gql`
-        query loadDashboard($id: ID!) {
-          team(id: $id) {
-            ...TeamData
-            lastMatch { ...MatchData }
-            injuredPlayers {
-              id
-              name
-              pos
-              currentInjury {
-                description
-                startedOn
-                endedOn
+    async asyncData ({ $graphql, route, store, redirect }) {
+      const { teamId } = route.query
+
+      if (teamId) {
+        const query = gql`
+          query loadDashboard($id: ID!) {
+            team(id: $id) {
+              ...TeamData
+              lastMatch { ...MatchData }
+              injuredPlayers {
+                id
+                name
+                pos
+                currentInjury {
+                  description
+                  startedOn
+                  endedOn
+                }
               }
-            }
-            loanedPlayers {
-              id
-              name
-              pos
-              value
-              currentLoan {
-                transferFee
-                addonClause
+              loanedPlayers {
+                id
+                name
+                pos
+                value
+                currentLoan {
+                  transferFee
+                  addonClause
+                }
               }
-            }
-            expiringPlayers {
-              id
-              name
-              pos
-              value
-              currentContract {
-                wage
+              expiringPlayers {
+                id
+                name
+                pos
+                value
+                currentContract {
+                  wage
+                }
               }
+              competitions { ...CompetitionData }
             }
-            competitions { ...CompetitionData }
           }
+          ${teamFragment}
+          ${matchFragment}
+          ${competitionFragment}
+        `
+
+        const { team } =
+          await $graphql.default.request(query, { id: parseInt(route.query.teamId) })
+        const {
+          injuredPlayers,
+          loanedPlayers,
+          expiringPlayers
+        } = team
+
+        await store.$db().model('Team').insert({ data: team })
+        if (team.lastMatch) {
+          await store.$db().model('Match').insert({ data: team.lastMatch })
         }
-        ${teamFragment}
-        ${matchFragment}
-        ${competitionFragment}
-      `
 
-      const { team } =
-        await $graphql.default.request(query, { id: parseInt(params.teamId) })
-      const {
-        injuredPlayers,
-        loanedPlayers,
-        expiringPlayers
-      } = team
+        store.commit('app/setPage', {
+          title: team.name,
+          headline: 'Dashboard'
+        })
 
-      await store.$db().model('Team').insert({ data: team })
-      if (team.lastMatch) {
-        await store.$db().model('Match').insert({ data: team.lastMatch })
-      }
-
-      store.commit('app/setPage', {
-        title: team.name,
-        headline: 'Dashboard'
-      })
-
-      return {
-        injuredPlayers,
-        loanedPlayers,
-        expiringPlayers
+        return {
+          injuredPlayers,
+          loanedPlayers,
+          expiringPlayers
+        }
+      } else {
+        redirect('/')
       }
     },
     computed: {
@@ -190,7 +196,8 @@
             (!contract.endedOn || contract.endedOn <= this.seasonEnd)
         })
       }
-    }
+    },
+    watchQuery: ['teamId']
   }
 </script>
 

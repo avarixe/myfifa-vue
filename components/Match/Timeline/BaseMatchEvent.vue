@@ -54,7 +54,7 @@
       teamIsHome () {
         if (this.event.type === 'substitution') {
           const team = this.$store.$db().model('Team')
-            .find(this.$route.params.teamId)
+            .find(this.$route.query.teamId)
           return team.name === this.match.home
         } else {
           return this.event.home
