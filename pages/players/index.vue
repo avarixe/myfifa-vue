@@ -35,6 +35,7 @@
 
   export default {
     name: 'PlayersPage',
+    transition: 'fade-transition',
     async fetch () {
       const { teamId } = this.$route.query
 

@@ -244,8 +244,6 @@
           headline: player.name
         })
 
-        console.log(data)
-
         return data
       } else if (teamId) {
         redirect({ name: 'team', query: { teamId } })

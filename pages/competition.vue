@@ -181,6 +181,7 @@
     mixins: [
       TeamAccessible
     ],
+    transition: 'fade-transition',
     data: () => ({
       tableTab: 0,
       readonly: true

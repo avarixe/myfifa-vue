@@ -177,6 +177,7 @@
 
   export default {
     name: 'HomePage',
+    transition: 'fade-transition',
     async asyncData ({ store, $graphql }) {
       store.commit('app/setPage', { headline: 'Home' })
 

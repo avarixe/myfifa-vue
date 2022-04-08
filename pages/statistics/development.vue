@@ -37,6 +37,7 @@
     mixins: [
       TeamAccessible
     ],
+    transition: 'fade-transition',
     async asyncData ({ route, store, $graphql, redirect }) {
       const { teamId } = route.query
 

@@ -109,6 +109,7 @@
     mixins: [
       TeamAccessible
     ],
+    transition: 'fade-transition',
     data: () => ({
       valid: false,
       numPlayers: 0,

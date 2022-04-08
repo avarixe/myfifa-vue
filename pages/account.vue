@@ -22,6 +22,7 @@
 
   export default {
     name: 'AccountPage',
+    transition: 'fade-transition',
     fetch () {
       this.setPage({
         title: 'Account',

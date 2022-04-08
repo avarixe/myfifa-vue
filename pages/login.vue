@@ -101,6 +101,7 @@
 
   export default {
     name: 'LoginPage',
+    transition: 'fade-transition',
     data: () => ({
       username: null,
       password: null,
