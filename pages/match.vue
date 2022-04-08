@@ -195,8 +195,13 @@
         return 'fade-transition'
       }
     },
-    async asyncData ({ route, $graphql, store, redirect }) {
-      const { teamId, matchId } = route.query
+    data: () => ({
+      readonly: true,
+      previousMatch: null,
+      nextMatch: null
+    }),
+    async fetch () {
+      const { teamId, matchId } = this.$route.query
 
       if (teamId && matchId) {
         const query = gql`
@@ -229,25 +234,29 @@
         `
 
         const { match, team } =
-          await $graphql.default.request(query, {
+          await this.$graphql.default.request(query, {
             matchId: parseInt(matchId),
             teamId: parseInt(teamId)
           })
 
         await Promise.all([
-          store.$db().model('Match').insert({ data: match }),
-          store.$db().model('Team').insert({ data: team })
+          this.$store.$db().model('Match').insert({ data: match }),
+          this.$store.$db().model('Team').insert({ data: team })
         ])
 
-        return {
-          readonly: match.playedOn !== team.currentlyOn,
-          previousMatch: match.previousMatch,
-          nextMatch: match.nextMatch
-        }
+        this.readonly = match.playedOn !== team.currentlyOn
+        this.previousMatch = match.previousMatch
+        this.nextMatch = match.nextMatch
+
+        this.setPage({
+          title: `${this.match.home} vs ${this.match.away}`,
+          headline: 'Match',
+          caption: `v ${this.match.opponent}`
+        })
       } else if (teamId) {
-        redirect({ name: 'team', query: { teamId } })
+        this.$router.push({ name: 'team', query: { teamId } })
       } else {
-        redirect('/')
+        this.$router.push('/')
       }
     },
     computed: {
@@ -270,21 +279,15 @@
     },
     watch: {
       match () {
-        if (this.match) {
-          this.setPage({
-            title: `${this.match.home} vs ${this.match.away}`,
-            headline: 'Match',
-            caption: `v ${this.match.opponent}`
-          })
-        } else {
+        if (!this.match) {
           this.$router.push({
             name: 'matches',
             query: this.$route.query
           })
         }
-      }
+      },
+      '$route.query': '$fetch'
     },
-    watchQuery: ['matchId'],
     methods: mapMutations('app', {
       setPage: 'setPage'
     })
