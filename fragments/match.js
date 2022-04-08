@@ -24,6 +24,7 @@ export const baseCapFragment = gql`
     matchId
     playerId
     pos
+    rating
     start
     stop
     subbedOut

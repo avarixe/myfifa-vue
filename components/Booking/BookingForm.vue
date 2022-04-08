@@ -4,7 +4,6 @@
     title-icon="mdi-book"
     :title="title"
     :submit="submit"
-    :color="color"
   >
     <template #activator="{ on }">
       <slot

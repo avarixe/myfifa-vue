@@ -5,6 +5,10 @@
       :text="player.name"
       :style="{ fontSize: '0.8em', lineHeight: 1.5 }"
     />
+    <cap-rating
+      :cap="cap"
+      readonly
+    />
     <cap-events
       :cap="cap"
       :match="match"

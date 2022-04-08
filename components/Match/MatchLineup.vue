@@ -20,6 +20,12 @@
                   :match="match"
                 />
               </v-list-item-content>
+              <v-list-item-action>
+                <cap-rating
+                  :cap="cap"
+                  :readonly="readonly"
+                />
+              </v-list-item-action>
             </v-list-item>
           </template>
         </cap-card>
