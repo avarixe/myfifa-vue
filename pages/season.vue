@@ -90,9 +90,17 @@
 
   export default {
     name: 'SeasonPage',
+    key: to => to.fullPath,
     mixins: [
       TeamAccessible
     ],
+    transition (to, from) {
+      if (from && from.query.season) {
+        return `scroll-x${+to.query.season < +from.query.season ? '' : '-reverse'}-transition`
+      } else {
+        return 'fade-transition'
+      }
+    },
     async asyncData ({ store, route, $graphql, redirect }) {
       const { teamId, season } = route.query
 

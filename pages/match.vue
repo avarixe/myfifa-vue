@@ -3,16 +3,16 @@
     <v-row v-if="match">
       <v-col cols="12">
         <v-btn
-          v-if="prevMatchLink"
-          :to="prevMatchLink"
+          v-if="previousMatch"
+          :to="{ name: 'match', query: { teamId, matchId: previousMatch.id } }"
           class="mb-1"
           exact
         >
           Previous Match
         </v-btn>
         <v-btn
-          v-if="nextMatchLink"
-          :to="nextMatchLink"
+          v-if="nextMatch"
+          :to="{ name: 'match', query: { teamId, matchId: nextMatch.id } }"
           class="mb-1"
           exact
         >
@@ -184,14 +184,19 @@
 
   export default {
     name: 'MatchPage',
+    key: to => to.fullPath,
     mixins: [
       TeamAccessible
     ],
-    data: () => ({
-      readonly: true
-    }),
-    async fetch () {
-      const { teamId, matchId } = this.$route.query
+    transition (to, from) {
+      if (from && from.query.matchId) {
+        return `scroll-x${+to.query.matchId < +from.query.matchId ? '' : '-reverse'}-transition`
+      } else {
+        return 'fade-transition'
+      }
+    },
+    async asyncData ({ route, $graphql, store, redirect }) {
+      const { teamId, matchId } = route.query
 
       if (teamId && matchId) {
         const query = gql`
@@ -203,6 +208,8 @@
               substitutions { ...SubstitutionData }
               bookings { ...BookingData }
               penaltyShootout { ...PenaltyShootoutData }
+              previousMatch { id }
+              nextMatch { id }
             }
             team(id: $teamId) {
               ...TeamData
@@ -222,27 +229,25 @@
         `
 
         const { match, team } =
-          await this.$graphql.default.request(query, {
-            matchId: this.matchId,
-            teamId: this.teamId
+          await $graphql.default.request(query, {
+            matchId: parseInt(matchId),
+            teamId: parseInt(teamId)
           })
 
         await Promise.all([
-          this.$store.$db().model('Match').insert({ data: match }),
-          this.$store.$db().model('Team').insert({ data: team })
+          store.$db().model('Match').insert({ data: match }),
+          store.$db().model('Team').insert({ data: team })
         ])
 
-        this.readonly = match.playedOn !== team.currentlyOn
-
-        this.setPage({
-          title: `${match.home} vs ${match.away}`,
-          headline: 'Match',
-          caption: `v ${this.match.opponent}`
-        })
+        return {
+          readonly: match.playedOn !== team.currentlyOn,
+          previousMatch: match.previousMatch,
+          nextMatch: match.nextMatch
+        }
       } else if (teamId) {
-        this.$router.push({ name: 'team', query: { teamId } })
+        redirect({ name: 'team', query: { teamId } })
       } else {
-        this.$router.push('/')
+        redirect('/')
       }
     },
     computed: {
@@ -261,37 +266,25 @@
           .query()
           .where('teamId', this.teamId)
           .get()
-      },
-      prevMatchLink () {
-        const prevMatch = this.$store.$db().model('Match')
-          .query()
-          .where('teamId', this.teamId)
-          .where('playedOn', date => date < this.match.playedOn)
-          .orderBy('playedOn')
-          .last()
-        return prevMatch?.link
-      },
-      nextMatchLink () {
-        const nextMatch = this.$store.$db().model('Match')
-          .query()
-          .where('teamId', this.teamId)
-          .where('playedOn', date => date > this.match.playedOn)
-          .orderBy('playedOn')
-          .first()
-        return nextMatch?.link
       }
     },
     watch: {
       match () {
-        if (!this.match) {
+        if (this.match) {
+          this.setPage({
+            title: `${this.match.home} vs ${this.match.away}`,
+            headline: 'Match',
+            caption: `v ${this.match.opponent}`
+          })
+        } else {
           this.$router.push({
             name: 'matches',
             query: this.$route.query
           })
         }
-      },
-      '$route.query': '$fetch'
+      }
     },
+    watchQuery: ['matchId'],
     methods: mapMutations('app', {
       setPage: 'setPage'
     })

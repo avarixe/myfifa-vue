@@ -25,6 +25,7 @@
 
   export default {
     name: 'TeamsPage',
+    transition: 'fade-transition',
     async fetch () {
       this.setPage({
         headline: 'Teams'

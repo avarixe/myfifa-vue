@@ -33,6 +33,7 @@
 
   export default {
     name: 'MatchesPage',
+    transition: 'fade-transition',
     data: () => ({
       mode: 'grid'
     }),
