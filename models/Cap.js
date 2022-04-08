@@ -14,6 +14,7 @@ export default class Cap extends Model {
 
       // Database fields
       pos: this.string(''),
+      rating: this.number(0).nullable(),
       start: this.number(0),
       stop: this.number(90),
       subbedOut: this.boolean(false),
