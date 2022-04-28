@@ -5,6 +5,7 @@
         v-if="readonly || player.subbedOut"
         :cap="player"
         :match="match"
+        :page-readonly="readonly"
       />
       <cap-card
         v-else

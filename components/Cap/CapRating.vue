@@ -19,6 +19,7 @@
         hover
         :background-color="color[rating] || 'grey'"
         :color="color[rating] || 'grey'"
+        class="d-inline-block"
         @input="updateRating"
       >
         <template #item="{ index, click }">
@@ -31,6 +32,15 @@
           </v-icon>
         </template>
       </v-rating>
+      <v-btn
+        v-if="rating"
+        icon
+        @click="clearRating"
+      >
+        <v-icon>
+          mdi-star-off-outline
+        </v-icon>
+      </v-btn>
     </v-card>
   </v-menu>
 </template>
@@ -79,6 +89,10 @@
         } catch (e) {
           console.error(e)
         }
+      },
+      clearRating () {
+        this.rating = null
+        this.updateRating()
       }
     }
   }

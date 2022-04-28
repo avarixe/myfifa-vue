@@ -7,7 +7,7 @@
     />
     <cap-rating
       :cap="cap"
-      readonly
+      :readonly="pageReadonly"
     />
     <cap-events
       :cap="cap"
@@ -21,7 +21,8 @@
     name: 'CapView',
     props: {
       cap: { type: Object, required: true },
-      match: { type: Object, required: true }
+      match: { type: Object, required: true },
+      pageReadonly: { type: Boolean, default: false }
     },
     computed: {
       player () {
