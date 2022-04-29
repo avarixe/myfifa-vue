@@ -59,7 +59,7 @@
       ]),
       badgeUrl () {
         return this.team.badgePath &&
-          `${this.$config.baseURL.replace(/\/api/, '')}${this.team.badgePath}`
+          `${this.$config.baseURL}${this.team.badgePath}`
       }
     }
   }

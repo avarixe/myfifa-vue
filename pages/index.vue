@@ -218,7 +218,7 @@
       }),
       badgeUrl (team) {
         return team.badgePath
-          ? `${this.$config.baseURL.replace(/\/api/, '')}${team.badgePath}`
+          ? `${this.$config.baseURL}${team.badgePath}`
           : null
       },
       teamLinks (team) {

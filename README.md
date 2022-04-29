@@ -1,5 +1,7 @@
 # MyFIFA Manager
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2a484476-7f19-4832-a766-e314caa33226/deploy-status)](https://app.netlify.com/sites/myfifa/deploys)
+
 > FIFA Career Mode Tracking Web Application
 
 ## Build Setup
