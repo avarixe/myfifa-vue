@@ -15,13 +15,18 @@
       insertBuffer: {},
       deleteBuffer: {}
     }),
-    computed: mapState('auth', [
-      'token'
-    ]),
+    computed: {
+      ...mapState('auth', [
+        'token'
+      ]),
+      cableURL () {
+        return `${this.$config.baseURL.replace('http', 'ws')}/cable`
+      }
+    },
     mounted () {
-      if (!this.cable && this.token) {
+      if (!this.socket && this.token) {
         this.socket = new WebSocket(
-          `${this.$config.cableURL}?access_token=${this.token}`
+          `${this.cableURL}?access_token=${this.token}`
         )
 
         this.socket.onmessage = event => {

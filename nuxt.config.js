@@ -11,7 +11,6 @@ export default {
 
   publicRuntimeConfig: {
     baseURL: process.env.BASE_URL,
-    cableURL: process.env.CABLE_URL,
     graphql: {
       clients: {
         default: {
