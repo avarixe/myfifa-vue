@@ -110,7 +110,10 @@
       async submit () {
         try {
           this.loading = true
-          await this.updateUser(this.attributes)
+          await this.updateUser({
+            id: this.currentUser.id,
+            attributes: this.attributes
+          })
           this.announce({
             message: 'Profile has been updated!',
             color: 'success'

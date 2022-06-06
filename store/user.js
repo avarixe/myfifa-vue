@@ -51,10 +51,10 @@ export const actions = {
       throw new Error(errors.fullMessages[0])
     }
   },
-  async update (_, attributes) {
+  async update (_, { id, attributes }) {
     const query = gql`
-      mutation updateUser($attributes: UserAttributes!) {
-        updateUser(attributes: $attributes) {
+      mutation updateUser($id: ID!, $attributes: UserAttributes!) {
+        updateUser(id: $id, attributes: $attributes) {
           user { ...UserData }
           errors { fullMessages }
         }
@@ -63,7 +63,7 @@ export const actions = {
     `
 
     const { updateUser: { user, errors } } =
-      await this.$graphql.default.request(query, { attributes })
+      await this.$graphql.default.request(query, { id, attributes })
 
     if (user) {
       this.$db().model('User').update({ data: user })
