@@ -1,5 +1,24 @@
 <template>
-  <div />
+  <v-snackbar
+    v-model="snackbar"
+    top
+    app
+    :timeout="connectionState === 'Connected' ? 5000 : -1"
+    :color="connectionColor"
+  >
+    {{ connectionMessage }}
+    <template #action="{ attrs }">
+      <v-btn
+        v-if="connectionState === 'Disconnected'"
+        dark
+        text
+        v-bind="attrs"
+        @click="connectToWebSocket"
+      >
+        Reconnect
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 <script>
@@ -10,6 +29,8 @@
   export default {
     name: 'TeamChannel',
     data: () => ({
+      snackbar: true,
+      connectionState: 'Connecting',
       socket: null,
       timeout: null,
       insertBuffer: {},
@@ -21,38 +42,80 @@
       ]),
       cableURL () {
         return `${this.$config.baseURL.replace('http', 'ws')}/cable`
+      },
+      connectionMessage () {
+        switch (this.connectionState) {
+          case 'Connecting':
+            return `Connecting to ${this.cableURL}...`
+          case 'Connected':
+            return `Connected to ${this.cableURL}!`
+          case 'Disconnected':
+            return 'Connection has been terminated.'
+          default:
+            return 'Invalid State: Please refresh the page.'
+        }
+      },
+      connectionColor () {
+        switch (this.connectionState) {
+          case 'Connecting':
+            return 'warning'
+          case 'Connected':
+            return 'success'
+          case 'Disconnected':
+            return 'error'
+          default:
+            return null
+        }
       }
     },
     mounted () {
-      if (!this.socket && this.token) {
-        this.socket = new WebSocket(
-          `${this.cableURL}?access_token=${this.token}`
-        )
-
-        this.socket.onmessage = event => {
-          const { message } = JSON.parse(event.data)
-          const { type, data, destroyed } = message || {}
-          if (type) {
-            // console.log(type, data, destroyed)
-            this.addToBuffer({ type, data, destroyed })
-          }
-        }
-
-        this.socket.onopen = () => {
-          this.socket.send(JSON.stringify({
-            command: 'subscribe',
-            identifier: JSON.stringify({
-              channel: 'TeamChannel',
-              id: this.$route.query.teamId
-            })
-          }))
-        }
+      if (!this.socket) {
+        this.connectToWebSocket()
       }
     },
     destroyed () {
       this.socket.close()
     },
     methods: {
+      connectToWebSocket () {
+        if (this.token) {
+          this.connectionState = 'Connecting'
+          this.snackbar = true
+
+          this.socket = new WebSocket(
+            `${this.cableURL}?access_token=${this.token}`
+          )
+
+          this.socket.onmessage = event => {
+            const { message } = JSON.parse(event.data)
+            const { type, data, destroyed } = message || {}
+            if (type) {
+              // console.log(type, data, destroyed)
+              this.addToBuffer({ type, data, destroyed })
+            }
+          }
+
+          this.socket.onopen = () => {
+            this.socket.send(JSON.stringify({
+              command: 'subscribe',
+              identifier: JSON.stringify({
+                channel: 'TeamChannel',
+                id: this.$route.query.teamId
+              })
+            }))
+
+            this.connectionState = 'Connected'
+            setTimeout(() => {
+              this.snackbar = false
+            }, 3000)
+          }
+
+          this.socket.onclose = () => {
+            this.connectionState = 'Disconnected'
+            this.snackbar = true
+          }
+        }
+      },
       addToBuffer ({ type, data, destroyed }) {
         let buffer = destroyed ? this.deleteBuffer : this.insertBuffer
 
