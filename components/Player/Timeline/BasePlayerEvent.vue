@@ -53,6 +53,20 @@
           </template>
         </component>
         <slot name="additional-actions" />
+        <record-remove
+          :record="event"
+          :store="store"
+          :label="title"
+        >
+          <template #activator="{ on }">
+            <v-btn
+              small
+              text
+              v-on="on"
+              v-text="'Remove'"
+            />
+          </template>
+        </record-remove>
       </v-card-actions>
     </v-card>
   </v-timeline-item>
@@ -68,6 +82,22 @@
       icon: { type: String, required: true },
       color: { type: String, required: true },
       dense: { type: Boolean, default: false }
+    },
+    computed: {
+      store () {
+        switch (this.event.constructor.entity) {
+          case 'Contract':
+            return 'contracts'
+          case 'Transfer':
+            return 'transfers'
+          case 'Loan':
+            return 'loans'
+          case 'Injury':
+            return 'injuries'
+          default:
+            return null
+        }
+      }
     }
   }
 </script>
