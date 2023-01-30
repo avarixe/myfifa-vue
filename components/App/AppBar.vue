@@ -147,7 +147,10 @@
       async toggleMode () {
         try {
           this.togglingMode = true
-          await this.setDarkMode(!this.currentUser.darkMode)
+          await this.setDarkMode({
+            id: this.currentUser.id,
+            darkMode: !this.currentUser.darkMode
+          })
         } catch (e) {
           console.error(e)
         } finally {

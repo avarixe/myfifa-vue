@@ -71,7 +71,7 @@ export const actions = {
       throw new Error(errors.fullMessages[0])
     }
   },
-  async setDarkMode ({ dispatch }, darkMode) {
-    await dispatch('update', { darkMode })
+  async setDarkMode ({ dispatch }, { id, darkMode }) {
+    await dispatch('update', { id, attributes: { darkMode } })
   }
 }
