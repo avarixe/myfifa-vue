@@ -8,58 +8,44 @@ export const actions = {
       mutation createSquad($teamId: ID!, $attributes: SquadAttributes!) {
         addSquad(teamId: $teamId, attributes: $attributes) {
           squad { ...SquadData }
-          errors { fullMessages }
         }
       }
       ${squadFragment}
     `
 
-    const { addSquad: { squad, errors } } =
+    const { addSquad: { squad } } =
       await this.$graphql.default.request(query, { teamId, attributes })
 
-    if (squad) {
-      this.$db().model('Squad').insertOrUpdate({ data: squad })
-    } else {
-      throw new Error(errors.fullMessages[0])
-    }
+    this.$db().model('Squad').insertOrUpdate({ data: squad })
   },
   async update (_, { id, attributes }) {
     const query = gql`
       mutation ($id: ID!, $attributes: SquadAttributes!) {
         updateSquad(id: $id, attributes: $attributes) {
           squad { ...SquadData }
-          errors { fullMessages }
         }
       }
       ${squadFragment}
     `
 
-    const { updateSquad: { squad, errors } } =
+    const { updateSquad: { squad } } =
       await this.$graphql.default.request(query, { id, attributes })
 
-    if (squad) {
-      this.$db().model('Squad').insertOrUpdate({ data: squad })
-    } else {
-      throw new Error(errors.fullMessages[0])
-    }
+    this.$db().model('Squad').insertOrUpdate({ data: squad })
   },
   async remove (_, id) {
     const query = gql`
       mutation removeSquad($id: ID!) {
         removeSquad(id: $id) {
-          errors { fullMessages }
+          squad { ...SquadData }
         }
       }
+      ${squadFragment}
     `
 
-    const { removeSquad: { errors } } =
-      await this.$graphql.default.request(query, { id })
+    await this.$graphql.default.request(query, { id })
 
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    } else {
-      this.$db().model('Squad').delete(id)
-    }
+    this.$db().model('Squad').delete(id)
   },
   async storeLineup (_, { matchId, squadId }) {
     const query = gql`

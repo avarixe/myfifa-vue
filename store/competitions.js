@@ -22,53 +22,38 @@ export const actions = {
       mutation createCompetition($teamId: ID!, $attributes: CompetitionAttributes!) {
         addCompetition(teamId: $teamId, attributes: $attributes) {
           competition { id }
-          errors { fullMessages }
         }
       }
     `
 
-    const { addCompetition: { errors, competition } } =
+    const { addCompetition: { competition } } =
       await this.$graphql.default.request(query, { teamId, attributes })
 
-    if (competition) {
-      this.$db().model('Competition').insert({ data: competition })
-      return competition
-    } else {
-      throw new Error(errors.fullMessages[0])
-    }
+    this.$db().model('Competition').insert({ data: competition })
+    return competition
   },
   async update (_, { id, attributes }) {
     const query = gql`
       mutation ($id: ID!, $attributes: CompetitionAttributes!) {
         updateCompetition(id: $id, attributes: $attributes) {
-          errors { fullMessages }
+          competition { id }
         }
       }
     `
 
-    const { updateCompetition: { errors } } =
-      await this.$graphql.default.request(query, { id, attributes })
-
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    }
+    await this.$graphql.default.request(query, { id, attributes })
   },
   async remove (_, id) {
     const query = gql`
       mutation removeCompetition($id: ID!) {
         removeCompetition(id: $id) {
-          errors { fullMessages }
+          competition { id }
         }
       }
     `
 
-    const { removeCompetition: { errors } } =
-      await this.$graphql.default.request(query, { id })
+    await this.$graphql.default.request(query, { id })
 
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    } else {
-      this.$db().model('Competition').delete(id)
-    }
+    this.$db().model('Competition').delete(id)
   }
 }

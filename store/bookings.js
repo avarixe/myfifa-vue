@@ -1,4 +1,5 @@
 import { gql } from 'nuxt-graphql-request'
+import { bookingFragment } from '~/fragments'
 
 // actions
 export const actions = {
@@ -6,50 +7,38 @@ export const actions = {
     const query = gql`
       mutation createBooking($matchId: ID!, $attributes: BookingAttributes!) {
         addBooking(matchId: $matchId, attributes: $attributes) {
-          errors { fullMessages }
+          booking { ...BookingData }
         }
       }
+      ${bookingFragment}
     `
 
-    const { addBooking: { errors } } =
-      await this.$graphql.default.request(query, { matchId, attributes })
-
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    }
+    await this.$graphql.default.request(query, { matchId, attributes })
   },
   async update (_, { id, attributes }) {
     const query = gql`
       mutation ($id: ID!, $attributes: BookingAttributes!) {
         updateBooking(id: $id, attributes: $attributes) {
-          errors { fullMessages }
+          booking { ...BookingData }
         }
       }
+      ${bookingFragment}
     `
 
-    const { updateBooking: { errors } } =
-      await this.$graphql.default.request(query, { id, attributes })
-
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    }
+    await this.$graphql.default.request(query, { id, attributes })
   },
   async remove (_, id) {
     const query = gql`
       mutation removeBooking($id: ID!) {
         removeBooking(id: $id) {
-          errors { fullMessages }
+          booking { ...BookingData }
         }
       }
+      ${bookingFragment}
     `
 
-    const { removeBooking: { errors } } =
-      await this.$graphql.default.request(query, { id })
+    await this.$graphql.default.request(query, { id })
 
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    } else {
-      this.$db().model('Booking').delete(id)
-    }
+    this.$db().model('Booking').delete(id)
   }
 }

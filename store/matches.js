@@ -20,54 +20,39 @@ export const actions = {
       mutation createMatch($teamId: ID!, $attributes: MatchAttributes!) {
         addMatch(teamId: $teamId, attributes: $attributes) {
           match { id }
-          errors { fullMessages }
         }
       }
     `
 
-    const { addMatch: { errors, match } } =
+    const { addMatch: { match } } =
       await this.$graphql.default.request(query, { teamId, attributes })
 
-    if (match) {
-      this.$db().model('Match').insert({ data: match })
-      return match
-    } else {
-      throw new Error(errors.fullMessages[0])
-    }
+    this.$db().model('Match').insert({ data: match })
+    return match
   },
   async update (_, { id, attributes }) {
     const query = gql`
       mutation ($id: ID!, $attributes: MatchAttributes!) {
         updateMatch(id: $id, attributes: $attributes) {
-          errors { fullMessages }
+          match { id }
         }
       }
     `
 
-    const { updateMatch: { errors } } =
-      await this.$graphql.default.request(query, { id, attributes })
-
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    }
+    await this.$graphql.default.request(query, { id, attributes })
   },
   async remove (_, id) {
     const query = gql`
       mutation removeMatch($id: ID!) {
         removeMatch(id: $id) {
-          errors { fullMessages }
+          match { id }
         }
       }
     `
 
-    const { removeMatch: { errors } } =
-      await this.$graphql.default.request(query, { id })
+    await this.$graphql.default.request(query, { id })
 
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    } else {
-      this.$db().model('Match').delete(id)
-    }
+    this.$db().model('Match').delete(id)
   },
   async applySquad (_, { matchId, squadId }) {
     const query = gql`
