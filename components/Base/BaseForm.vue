@@ -51,7 +51,7 @@
               this.$emit('reset')
             }
           } catch (err) {
-            this.errorMessage = err.message
+            this.errorMessage = err.response?.errors[0].message
             // if (err.response) {
             //   const { data: { errors } } = err.response
             //   this.errorMessage = errors[0]
