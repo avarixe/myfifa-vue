@@ -120,7 +120,7 @@
           })
         } catch (e) {
           this.announce({
-            message: e.message,
+            message: e.response?.errors[0].message,
             color: 'red'
           })
         } finally {

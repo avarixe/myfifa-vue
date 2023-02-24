@@ -20,77 +20,67 @@ export const actions = {
           token
           expiresAt
           user { ...UserData }
-          errors { fullMessages }
         }
       }
       ${userFragment}
     `
 
-    const { grantAccessToken: { token, expiresAt, user, errors } } =
+    const { grantAccessToken: { token, expiresAt, user } } =
       await this.$graphql.default.request(query, { username, password })
 
-    if (token) {
-      commit('setToken', token)
-      this.$cookies.set('token', token, { expires: parseISO(expiresAt) })
-      commit('setUserId', parseInt(user.id), { root: true })
-      this.$db().model('User').insert({ data: user })
-      commit('broadcaster/announce', {
-        message: 'You have successfully logged in!',
-        color: 'success'
-      }, { root: true })
+    commit('setToken', token)
+    this.$cookies.set('token', token, { expires: parseISO(expiresAt) })
+    commit('setUserId', parseInt(user.id), { root: true })
+    this.$db().model('User').insert({ data: user })
+    commit('broadcaster/announce', {
+      message: 'You have successfully logged in!',
+      color: 'success'
+    }, { root: true })
 
-      if (this.$cookies.get('targetRoute')) {
-        const targetRoute = this.$cookies.get('targetRoute')
-        this.$cookies.remove('targetRoute')
+    if (this.$cookies.get('targetRoute')) {
+      const targetRoute = this.$cookies.get('targetRoute')
+      this.$cookies.remove('targetRoute')
 
-        // load Team if required
-        if (targetRoute.query.teamId) {
-          const query = gql`
-            fetchTeam($id: ID!) {
-              team(id: $id) { ...TeamData }
-            }
-            ${teamFragment}
-          `
+      // load Team if required
+      if (targetRoute.query.teamId) {
+        const query = gql`
+          fetchTeam($id: ID!) {
+            team(id: $id) { ...TeamData }
+          }
+          ${teamFragment}
+        `
 
-          const { team } = await this.$graphql.default.request(
-            query,
-            { id: parseInt(targetRoute.query.teamId) },
-            { Authorization: `Bearer ${token}` }
-          )
+        const { team } = await this.$graphql.default.request(
+          query,
+          { id: parseInt(targetRoute.query.teamId) },
+          { Authorization: `Bearer ${token}` }
+        )
 
-          this.$db().model('Team').insert({ data: team })
-        }
-        this.$router.push(targetRoute)
-      } else {
-        this.$router.push({ name: 'index' })
+        this.$db().model('Team').insert({ data: team })
       }
+      this.$router.push(targetRoute)
     } else {
-      throw new Error(errors.fullMessages[0])
+      this.$router.push({ name: 'index' })
     }
   },
   async revokeToken ({ state, commit, dispatch }) {
     const query = gql`
       mutation revokeAccessToken($token: String!) {
         revokeAccessToken(token: $token) {
-          errors { fullMessages }
+          confirmation
         }
       }
     `
 
-    const { revokeAccessToken: { errors } } =
-      await this.$graphql.default.request(query, { token: state.token })
+    await this.$graphql.default.request(query, { token: state.token })
 
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    } else {
-      await dispatch('orm/deleteAll', null, { root: true })
-      commit('setToken', null)
-      this.$cookies.removeAll()
-      this.$router.push({ name: 'login' })
-      commit('broadcaster/announce', {
-        message: 'You have successfully logged out!',
-        color: 'danger'
-      }, { root: true })
-    }
+    await dispatch('orm/deleteAll', null, { root: true })
+    commit('setToken', null)
+    this.$cookies.removeAll()
+    this.$router.push({ name: 'login' })
+    commit('broadcaster/announce', {
+      message: 'You have successfully logged out!',
+      color: 'danger'
+    }, { root: true })
   }
 }

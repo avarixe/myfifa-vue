@@ -1,4 +1,5 @@
 import { gql } from 'nuxt-graphql-request'
+import { fixtureFragment } from '~/fragments'
 
 // actions
 export const actions = {
@@ -6,50 +7,38 @@ export const actions = {
     const query = gql`
       mutation createFixture($stageId: ID!, $attributes: FixtureAttributes!) {
         addFixture(stageId: $stageId, attributes: $attributes) {
-          errors { fullMessages }
+          fixture { ...FixtureData }
         }
       }
+      ${fixtureFragment}
     `
 
-    const { addFixture: { errors } } =
-      await this.$graphql.default.request(query, { stageId, attributes })
-
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    }
+    await this.$graphql.default.request(query, { stageId, attributes })
   },
   async update (_, { id, attributes }) {
     const query = gql`
       mutation ($id: ID!, $attributes: FixtureAttributes!) {
         updateFixture(id: $id, attributes: $attributes) {
-          errors { fullMessages }
+          fixture { ...FixtureData }
         }
       }
+      ${fixtureFragment}
     `
 
-    const { updateFixture: { errors } } =
-      await this.$graphql.default.request(query, { id, attributes })
-
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    }
+    await this.$graphql.default.request(query, { id, attributes })
   },
   async remove (_, id) {
     const query = gql`
       mutation removeFixture($id: ID!) {
         removeFixture(id: $id) {
-          errors { fullMessages }
+          fixture { ...FixtureData }
         }
       }
+      ${fixtureFragment}
     `
 
-    const { removeFixture: { errors } } =
-      await this.$graphql.default.request(query, { id })
+    await this.$graphql.default.request(query, { id })
 
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    } else {
-      this.$db().model('Fixture').delete(id)
-    }
+    this.$db().model('Fixture').delete(id)
   }
 }

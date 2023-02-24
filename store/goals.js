@@ -1,4 +1,5 @@
 import { gql } from 'nuxt-graphql-request'
+import { goalFragment } from '~/fragments'
 
 // actions
 export const actions = {
@@ -6,50 +7,38 @@ export const actions = {
     const query = gql`
       mutation createGoal($matchId: ID!, $attributes: GoalAttributes!) {
         addGoal(matchId: $matchId, attributes: $attributes) {
-          errors { fullMessages }
+          goal { ...GoalData }
         }
       }
+      ${goalFragment}
     `
 
-    const { addGoal: { errors } } =
-      await this.$graphql.default.request(query, { matchId, attributes })
-
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    }
+    await this.$graphql.default.request(query, { matchId, attributes })
   },
   async update (_, { id, attributes }) {
     const query = gql`
       mutation ($id: ID!, $attributes: GoalAttributes!) {
         updateGoal(id: $id, attributes: $attributes) {
-          errors { fullMessages }
+          goal { ...GoalData }
         }
       }
+      ${goalFragment}
     `
 
-    const { updateGoal: { errors } } =
-      await this.$graphql.default.request(query, { id, attributes })
-
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    }
+    await this.$graphql.default.request(query, { id, attributes })
   },
   async remove (_, id) {
     const query = gql`
       mutation removeGoal($id: ID!) {
         removeGoal(id: $id) {
-          errors { fullMessages }
+          goal { ...GoalData }
         }
       }
+      ${goalFragment}
     `
 
-    const { removeGoal: { errors } } =
-      await this.$graphql.default.request(query, { id })
+    await this.$graphql.default.request(query, { id })
 
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    } else {
-      this.$db().model('Goal').delete(id)
-    }
+    this.$db().model('Goal').delete(id)
   }
 }

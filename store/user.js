@@ -18,58 +18,44 @@ export const actions = {
     const query = gql`
       mutation createUser($attributes: UserRegistrationAttributes!) {
         registerUser(attributes: $attributes) {
-          errors { fullMessages }
+          user { ...UserData }
         }
       }
+      ${userFragment}
     `
 
-    const { registerUser: { errors } } =
-      await this.$graphql.default.request(query, { attributes })
+    await this.$graphql.default.request(query, { attributes })
 
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    } else {
-      commit('broadcaster/announce', {
-        message: 'Account has been registered!',
-        color: 'success'
-      }, { root: true })
-    }
+    commit('broadcaster/announce', {
+      message: 'Account has been registered!',
+      color: 'success'
+    }, { root: true })
   },
   async changePassword (_, attributes) {
     const query = gql`
       mutation changePassword($attributes: UserPasswordChangeAttributes!) {
         changePassword(attributes: $attributes) {
-          errors { fullMessages }
+          confirmation
         }
       }
     `
 
-    const { changePassword: { errors } } =
-      await this.$graphql.default.request(query, { attributes })
-
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    }
+    await this.$graphql.default.request(query, { attributes })
   },
   async update (_, { id, attributes }) {
     const query = gql`
       mutation updateUser($id: ID!, $attributes: UserAttributes!) {
         updateUser(id: $id, attributes: $attributes) {
           user { ...UserData }
-          errors { fullMessages }
         }
       }
       ${userFragment}
     `
 
-    const { updateUser: { user, errors } } =
+    const { updateUser: { user } } =
       await this.$graphql.default.request(query, { id, attributes })
 
-    if (user) {
-      this.$db().model('User').update({ data: user })
-    } else {
-      throw new Error(errors.fullMessages[0])
-    }
+    this.$db().model('User').update({ data: user })
   },
   async setDarkMode ({ dispatch }, { id, darkMode }) {
     await dispatch('update', { id, attributes: { darkMode } })

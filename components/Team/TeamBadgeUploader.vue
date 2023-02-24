@@ -70,8 +70,7 @@
           mutation uploadBadge($teamId: ID!, $badge: Upload!) {
             uploadBadge(teamId: $teamId, badge: $badge) {
               team { badgePath }
-              errors { fullMessages }
-            }
+                }
           }
         `
 

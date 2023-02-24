@@ -7,54 +7,39 @@ export const actions = {
       mutation createPlayer($teamId: ID!, $attributes: PlayerAttributes!) {
         addPlayer(teamId: $teamId, attributes: $attributes) {
           player { id }
-          errors { fullMessages }
         }
       }
     `
 
-    const { addPlayer: { errors, player } } =
+    const { addPlayer: { player } } =
       await this.$graphql.default.request(query, { teamId, attributes })
 
-    if (player) {
-      this.$db().model('Player').insert({ data: player })
-      return player
-    } else {
-      throw new Error(errors.fullMessages[0])
-    }
+    this.$db().model('Player').insert({ data: player })
+    return player
   },
   async update (_, { id, attributes }) {
     const query = gql`
       mutation ($id: ID!, $attributes: PlayerAttributes!) {
         updatePlayer(id: $id, attributes: $attributes) {
-          errors { fullMessages }
+          player { id }
         }
       }
     `
 
-    const { updatePlayer: { errors } } =
-      await this.$graphql.default.request(query, { id, attributes })
-
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    }
+    await this.$graphql.default.request(query, { id, attributes })
   },
   async remove (_, id) {
     const query = gql`
       mutation removePlayer($id: ID!) {
         removePlayer(id: $id) {
-          errors { fullMessages }
+          player { id }
         }
       }
     `
 
-    const { removePlayer: { errors } } =
-      await this.$graphql.default.request(query, { id })
+    await this.$graphql.default.request(query, { id })
 
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    } else {
-      this.$db().model('Player').delete(id)
-    }
+    this.$db().model('Player').delete(id)
   },
   async retire (_, id) {
     const query = gql`

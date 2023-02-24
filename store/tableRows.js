@@ -6,50 +6,35 @@ export const actions = {
     const query = gql`
       mutation createTableRow($stageId: ID!, $attributes: TableRowAttributes!) {
         addTableRow(stageId: $stageId, attributes: $attributes) {
-          errors { fullMessages }
+          tableRow { id }
         }
       }
     `
 
-    const { addTableRow: { errors } } =
-      await this.$graphql.default.request(query, { stageId, attributes })
-
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    }
+    await this.$graphql.default.request(query, { stageId, attributes })
   },
   async update (_, { id, attributes }) {
     const query = gql`
       mutation ($id: ID!, $attributes: TableRowAttributes!) {
         updateTableRow(id: $id, attributes: $attributes) {
-          errors { fullMessages }
+          tableRow { id }
         }
       }
     `
 
-    const { updateTableRow: { errors } } =
-      await this.$graphql.default.request(query, { id, attributes })
-
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    }
+    await this.$graphql.default.request(query, { id, attributes })
   },
   async remove (_, id) {
     const query = gql`
       mutation removeTableRow($id: ID!) {
         removeTableRow(id: $id) {
-          errors { fullMessages }
+          tableRow { id }
         }
       }
     `
 
-    const { removeTableRow: { errors } } =
-      await this.$graphql.default.request(query, { id })
+    await this.$graphql.default.request(query, { id })
 
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    } else {
-      this.$db().model('TableRow').delete(id)
-    }
+    this.$db().model('TableRow').delete(id)
   }
 }

@@ -1,4 +1,5 @@
 import { gql } from 'nuxt-graphql-request'
+import { loanFragment } from '~/fragments'
 
 // actions
 export const actions = {
@@ -6,50 +7,38 @@ export const actions = {
     const query = gql`
       mutation createLoan($playerId: ID!, $attributes: LoanAttributes!) {
         addLoan(playerId: $playerId, attributes: $attributes) {
-          errors { fullMessages }
+          loan { ...LoanData }
         }
       }
+      ${loanFragment}
     `
 
-    const { addLoan: { errors } } =
-      await this.$graphql.default.request(query, { playerId, attributes })
-
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    }
+    await this.$graphql.default.request(query, { playerId, attributes })
   },
   async update (_, { id, attributes }) {
     const query = gql`
       mutation ($id: ID!, $attributes: LoanAttributes!) {
         updateLoan(id: $id, attributes: $attributes) {
-          errors { fullMessages }
+          loan { ...LoanData }
         }
       }
+      ${loanFragment}
     `
 
-    const { updateLoan: { errors } } =
-      await this.$graphql.default.request(query, { id, attributes })
-
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    }
+    await this.$graphql.default.request(query, { id, attributes })
   },
   async remove (_, id) {
     const query = gql`
       mutation removeLoan($id: ID!) {
         removeLoan(id: $id) {
-          errors { fullMessages }
+          loan { ...LoanData }
         }
       }
+      ${loanFragment}
     `
 
-    const { removeLoan: { errors } } =
-      await this.$graphql.default.request(query, { id })
+    await this.$graphql.default.request(query, { id })
 
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    } else {
-      this.$db().model('Loan').delete(id)
-    }
+    this.$db().model('Loan').delete(id)
   }
 }

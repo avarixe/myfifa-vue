@@ -1,4 +1,5 @@
 import { gql } from 'nuxt-graphql-request'
+import { stageFragment } from '~/fragments'
 
 // actions
 export const actions = {
@@ -6,50 +7,38 @@ export const actions = {
     const query = gql`
       mutation createStage($competitionId: ID!, $attributes: StageAttributes!) {
         addStage(competitionId: $competitionId, attributes: $attributes) {
-          errors { fullMessages }
+          stage { ...StageData }
         }
       }
+      ${stageFragment}
     `
 
-    const { addStage: { errors } } =
-      await this.$graphql.default.request(query, { competitionId, attributes })
-
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    }
+    await this.$graphql.default.request(query, { competitionId, attributes })
   },
   async update (_, { id, attributes }) {
     const query = gql`
       mutation ($id: ID!, $attributes: StageAttributes!) {
         updateStage(id: $id, attributes: $attributes) {
-          errors { fullMessages }
+          stage { ...StageData }
         }
       }
+      ${stageFragment}
     `
 
-    const { updateStage: { errors } } =
-      await this.$graphql.default.request(query, { id, attributes })
-
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    }
+    await this.$graphql.default.request(query, { id, attributes })
   },
   async remove (_, id) {
     const query = gql`
       mutation removeStage($id: ID!) {
         removeStage(id: $id) {
-          errors { fullMessages }
+          stage { ...StageData }
         }
       }
+      ${stageFragment}
     `
 
-    const { removeStage: { errors } } =
-      await this.$graphql.default.request(query, { id })
+    await this.$graphql.default.request(query, { id })
 
-    if (errors) {
-      throw new Error(errors.fullMessages[0])
-    } else {
-      this.$db().model('Stage').delete(id)
-    }
+    this.$db().model('Stage').delete(id)
   }
 }
