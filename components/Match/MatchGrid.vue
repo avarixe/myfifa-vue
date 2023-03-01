@@ -3,10 +3,12 @@
     <v-card-text>
       <v-data-table
         :headers="headers"
-        :items="matches"
-        sort-by="playedOn"
-        sort-desc
+        :items="items"
         item-key="id"
+        :options.sync="options"
+        :loading="loading"
+        :server-items-length="serverItemsLength"
+        must-sort
         no-data-text="No Matches Recorded"
         :mobile-breakpoint="0"
       >
@@ -42,6 +44,9 @@
 </template>
 
 <script>
+  import { gql } from 'nuxt-graphql-request'
+  import { matchFragment } from '@/fragments'
+
   export default {
     name: 'MatchGrid',
     data: () => ({
@@ -57,46 +62,81 @@
         Stage: null,
         Team: null,
         Result: null
+      },
+
+      // Server Side processing
+      serverItemsLength: 0,
+      timeout: null,
+      loading: false,
+      items: [],
+      options: {
+        sortBy: ['playedOn'],
+        sortDesc: [true]
       }
     }),
     computed: {
-      matches () {
-        return this.$store.$db().model('Match')
-          .query()
-          .where('teamId', parseInt(this.$route.query.teamId))
-          .where(match => {
-            for (const filter in this.filters) {
-              if (!this.matchPassesFilter(match, filter)) {
-                return false
-              }
-            }
-
-            return true
-          })
-          .get()
+      searchParams () {
+        return {
+          teamId: parseInt(this.$route.query.teamId),
+          pagination: {
+            page: this.options.page - 1,
+            itemsPerPage: this.options.itemsPerPage,
+            sortBy: this.options.sortBy[0],
+            sortDesc: this.options.sortDesc[0]
+          },
+          filters: {
+            season: this.filters.Season,
+            competition: this.filters.Competition,
+            stage: this.filters.Stage,
+            team: this.filters.Team,
+            result: this.filters.Result ? [this.filters.Result.toLowerCase()] : null
+          }
+        }
       }
     },
-    methods: {
-      matchPassesFilter (match, filter) {
-        const filterValue = this.filters[filter]
-
-        if (filterValue === null) {
-          return true
+    watch: {
+      searchParams: {
+        immediate: true,
+        deep: true,
+        handler () {
+          clearTimeout(this.timeout)
+          this.timeout = setTimeout(this.fetchMatchesPage, 300)
         }
+      }
+    },
+    beforeDestroy () {
+      clearTimeout(this.timeout)
+    },
+    methods: {
+      async fetchMatchesPage () {
+        try {
+          this.loading = true
 
-        switch (filter) {
-          case 'Season':
-            return filterValue === match.season
-          case 'Competition':
-            return filterValue === match.competition
-          case 'Stage':
-            return match.stage &&
-              match.stage.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
-          case 'Team':
-            return match.home.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0 ||
-              match.away.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
-          case 'Result':
-            return filterValue.toLowerCase() === match.teamResult
+          const query = gql`
+            query fetchMatchesPage($teamId: ID!, $pagination: PaginationAttributes, $filters: MatchFilterAttributes) {
+              team(id: $teamId) {
+                matchSet(pagination: $pagination, filters: $filters) {
+                  matches { ...MatchData }
+                  total
+                }
+              }
+            }
+            ${matchFragment}
+          `
+
+          const { team: { matchSet } } =
+            await this.$graphql.default.request(query, this.searchParams)
+
+          await this.$store.$db().model('Match').insert({ data: matchSet.matches })
+          this.items = this.$store.$db().model('Match')
+            .query()
+            .where('id', matchSet.matches.map(match => parseInt(match.id)))
+            .get()
+          this.serverItemsLength = matchSet.total
+        } catch (e) {
+          console.error(e)
+        } finally {
+          this.loading = false
         }
       }
     }
