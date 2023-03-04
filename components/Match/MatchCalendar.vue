@@ -50,6 +50,7 @@
           event-ripple
           :show-month-on-first="false"
           :style="{ minWidth: '700px' }"
+          @change="updateFilters"
           @click:event="viewMatch"
         >
           <template #event="{ event }">
@@ -79,7 +80,10 @@
 </template>
 
 <script>
+  import { gql } from 'nuxt-graphql-request'
+  import { format, parseISO, startOfWeek, endOfWeek } from 'date-fns'
   import { TeamAccessible } from '@/mixins'
+  import { matchFragment } from '@/fragments'
 
   const eventColors = [
     'blue',
@@ -101,18 +105,20 @@
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-      competitionColors: {}
+      competitionColors: {},
+
+      // Server Side processing
+      timeout: null,
+      loading: false,
+      items: [],
+      filters: {
+        startOn: null,
+        endOn: null
+      }
     }),
     computed: {
-      matches () {
-        return this.$store.$db().model('Match')
-          .query()
-          .with('team')
-          .where('teamId', this.teamId)
-          .get()
-      },
       events () {
-        return this.matches.map(match => {
+        return this.items.map(match => {
           if (!this.competitionColors[match.competition]) {
             this.$set(
               this.competitionColors,
@@ -130,10 +136,33 @@
             link: match.link
           }
         })
+      },
+      searchParams () {
+        return {
+          teamId: parseInt(this.$route.query.teamId),
+          pagination: {
+            page: 0,
+            itemsPerPage: 50
+          },
+          filters: this.filters
+        }
+      }
+    },
+    watch: {
+      searchParams: {
+        immediate: true,
+        deep: true,
+        handler () {
+          clearTimeout(this.timeout)
+          this.timeout = setTimeout(this.fetchMatchesPage, 300)
+        }
       }
     },
     mounted () {
       this.day = this.team.currentlyOn
+    },
+    beforeDestroy () {
+      clearTimeout(this.timeout)
     },
     methods: {
       viewMatch ({ nativeEvent, event }) {
@@ -150,6 +179,40 @@
           setTimeout(open, 10)
         } else {
           open()
+        }
+      },
+      updateFilters ({ start, end }) {
+        this.filters.startOn = format(startOfWeek(parseISO(start.date)), 'yyyy-MM-dd')
+        this.filters.endOn = format(endOfWeek(parseISO(end.date)), 'yyyy-MM-dd')
+      },
+      async fetchMatchesPage () {
+        try {
+          this.loading = true
+
+          const query = gql`
+              query fetchMatchesPage($teamId: ID!, $pagination: PaginationAttributes, $filters: MatchFilterAttributes) {
+                team(id: $teamId) {
+                  matchSet(pagination: $pagination, filters: $filters) {
+                    matches { ...MatchData }
+                  }
+                }
+              }
+              ${matchFragment}
+            `
+
+          const { team: { matchSet } } =
+            await this.$graphql.default.request(query, this.searchParams)
+
+          await this.$store.$db().model('Match').insert({ data: matchSet.matches })
+          this.items = this.$store.$db().model('Match')
+            .query()
+            .with('team')
+            .where('id', matchSet.matches.map(match => parseInt(match.id)))
+            .get()
+        } catch (e) {
+          console.error(e)
+        } finally {
+          this.loading = false
         }
       }
     }

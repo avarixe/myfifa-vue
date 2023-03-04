@@ -29,7 +29,7 @@
 <script>
   import { mapMutations } from 'vuex'
   import { gql } from 'nuxt-graphql-request'
-  import { teamFragment, matchFragment, competitionFragment } from '@/fragments'
+  import { teamFragment, competitionFragment } from '@/fragments'
 
   export default {
     name: 'MatchesPage',
@@ -45,12 +45,10 @@
           query fetchMatchesPage($teamId: ID!) {
             team(id: $teamId) {
               ...TeamData
-              matches { ...MatchData }
               competitions { ...CompetitionData }
             }
           }
           ${teamFragment}
-          ${matchFragment}
           ${competitionFragment}
         `
 
